@@ -32,7 +32,9 @@
                     fetchValue="#{result.vehicleName}" 
                     usingSuggestObjects="true"
                     onobjectchange="processObjectsChange()"
-                    nothingLabel="#{messages.fuelStops_noVehiclesFound}">
+                    nothingLabel="#{messages.fuelStops_noVehiclesFound}"
+                    eventsQueue="vpickerQueue" 
+                    ignoreDupResponses="true">
                       <h:column>
                         <h:outputText id="vehicleSelected" value="#{result.vehicleName}" />
                     </h:column>

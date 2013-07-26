@@ -191,11 +191,11 @@ public class GroupReportHessianDAO extends AbstractReportHessianDAO implements G
         return getVehicleScores(groupID, intervalToUse, intervalToUse, gh);
     }  
 
-    private Interval getScoringInterval(Interval interval) {
+    Interval getScoringInterval(Interval interval) {
         
         //find the days in the interval
         Days days = Days.daysBetween(interval.getStart(), interval.getEnd());
-        int daysBetween = days.getDays();
+        int daysBetween = days.getDays() < 0 ? 0 : days.getDays();
         
         //get the intervals start DateTime
         DateTime startDateTime = interval.getStart();
@@ -205,9 +205,10 @@ public class GroupReportHessianDAO extends AbstractReportHessianDAO implements G
         
         //apply the offset to the startDateTime's underlying millis. 
         //  Then change the timezone to UTC. Then adjust the millis to the Midnight value.
-        DateTime intervalToUse = startDateTime.plusMillis(offset).toDateTime(DateTimeZone.UTC).toDateMidnight().toDateTime();
+        DateTime start = startDateTime.plusMillis(offset).toDateTime(DateTimeZone.UTC).toDateMidnight().toDateTime();
+        DateTime end = start.plusDays(daysBetween);
         
-        return new Interval(intervalToUse, intervalToUse.plusDays(daysBetween-1));
+        return new Interval(start, end);
 
     }
 }

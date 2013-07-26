@@ -76,6 +76,8 @@ public class WaysmartReportsBean extends ReportsBean {
             if (!rt.isCategory(category)) continue;
             if (rt.getRequiresHOSAccount() && !getAccountIsHOS())
                 continue;
+            if (rt.getRequiresDriveTimeViolationReportAccount() && !getAccountIsDriveTimeViolationsReportEnabled())
+                continue;
             
             boolean exclude = false;
             for(int i=0;i<excludeItem.length;i++)

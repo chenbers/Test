@@ -64,7 +64,9 @@ public class ReportsFacadeImplTest extends BaseUnitTest {
         Deencapsulation.setField(reportsFacadeSUTMock, reportServiceMock);
         
         new Expectations(){{
-            reportServiceMock.getDriverHoursReportCriteria(null, GROUP_ID, INTERVAL, Locale.US);
+            List<Integer> groupIdList = new ArrayList<Integer>();
+            groupIdList.add(GROUP_ID);
+            reportServiceMock.getDriverHoursReportCriteria(null, groupIdList, INTERVAL, Locale.US);
             result = new ReportCriteria();
         }};
 

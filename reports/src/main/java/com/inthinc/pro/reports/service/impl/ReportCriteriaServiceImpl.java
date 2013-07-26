@@ -725,7 +725,7 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
 
     @Override
     public ReportCriteria getPayrollDetailReportCriteria(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, Interval interval, Locale locale) {
-        return getPayrollDetailReportCriteria(accountGroupHierarchy, groupIDList, interval, locale, ReportCriteria.DEFAULT_EXCLUDE_INACTIVE_DRIVERS, ReportCriteria.DEFAULT_EXCLUDE_ZERO_MILES_DRIVERS );
+        return getPayrollDetailReportCriteria(accountGroupHierarchy, groupIDList, interval, locale, ReportCriteria.DEFAULT_EXCLUDE_INACTIVE_DRIVERS, ReportCriteria.DEFAULT_INCLUDE_ZERO_MILES_DRIVERS );
     }
     
     @Override
@@ -744,7 +744,7 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
 
     @Override
     public ReportCriteria getPayrollSignoffReportCriteria(GroupHierarchy accountGroupHierarchy, Integer driverID, Interval interval, Locale locale) {
-        return getPayrollSignoffReportCriteria(accountGroupHierarchy, driverID, interval, locale, ReportCriteria.DEFAULT_EXCLUDE_INACTIVE_DRIVERS, ReportCriteria.DEFAULT_EXCLUDE_ZERO_MILES_DRIVERS);
+        return getPayrollSignoffReportCriteria(accountGroupHierarchy, driverID, interval, locale, ReportCriteria.DEFAULT_EXCLUDE_INACTIVE_DRIVERS, ReportCriteria.DEFAULT_INCLUDE_ZERO_MILES_DRIVERS);
     }
     
     @Override
@@ -763,7 +763,7 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
     }
 
     public ReportCriteria getPayrollSignoffReportCriteria(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, Interval interval, Locale locale) {
-        return getPayrollSignoffReportCriteria(accountGroupHierarchy, groupIDList, interval, locale,  ReportCriteria.DEFAULT_EXCLUDE_INACTIVE_DRIVERS, ReportCriteria.DEFAULT_EXCLUDE_ZERO_MILES_DRIVERS);
+        return getPayrollSignoffReportCriteria(accountGroupHierarchy, groupIDList, interval, locale,  ReportCriteria.DEFAULT_EXCLUDE_INACTIVE_DRIVERS, ReportCriteria.DEFAULT_INCLUDE_ZERO_MILES_DRIVERS);
     }
     
     @Override
@@ -850,19 +850,20 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
      * @see com.inthinc.pro.reports.service.ReportCriteriaService#getDriverHoursReportCriteria(java.lang.Integer, org.joda.time.Interval, java.util.Locale)
      */
     @Override
-    public ReportCriteria getDriverHoursReportCriteria(GroupHierarchy accountGroupHierarchy, Integer groupID, Interval interval, Locale locale) {
-        return getDriverHoursReportCriteria(accountGroupHierarchy, groupID, interval, locale, ReportCriteria.DEFAULT_EXCLUDE_INACTIVE_DRIVERS, ReportCriteria.DEFAULT_EXCLUDE_ZERO_MILES_DRIVERS);
+    public ReportCriteria getDriverHoursReportCriteria(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, Interval interval, Locale locale) {
+        return getDriverHoursReportCriteria(accountGroupHierarchy, groupIDList, interval, locale, ReportCriteria.DEFAULT_EXCLUDE_INACTIVE_DRIVERS, ReportCriteria.DEFAULT_EXCLUDE_ZERO_MILES_DRIVERS);
     }
     
     @Override
-    public ReportCriteria getDriverHoursReportCriteria(GroupHierarchy accountGroupHierarchy, Integer groupID, Interval interval, Locale locale, boolean includeInactiveDrivers, boolean includeZeroMilesDrivers) {
+    public ReportCriteria getDriverHoursReportCriteria(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, Interval interval, Locale locale, boolean includeInactiveDrivers, boolean includeZeroMilesDrivers) {
         DriverHoursReportCriteria criteria = new DriverHoursReportCriteria(locale);
+        criteria.setAccountDAO(accountDAO);
         criteria.setDriverDAO(driverDAO);
-        criteria.setDriveTimeDAO(driveTimeDAO);
+        criteria.setGroupDAO(groupDAO);
+        criteria.setHosDAO(hosDAO);
         criteria.setIncludeInactiveDrivers(includeInactiveDrivers);
-        criteria.setIncludeZeroMilesDrivers(includeZeroMilesDrivers);
+        criteria.init(accountGroupHierarchy, groupIDList, interval);
         
-        criteria.init(accountGroupHierarchy, groupID, interval);
         return criteria;
     }
 
@@ -1632,7 +1633,7 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
                                     timeFrame.getInterval(),
                                     person.getLocale(),
                                     reportSchedule.getIncludeInactiveDrivers(),
-                                     reportSchedule.getIncludeZeroMilesDrivers()
+                                    ReportCriteria.DEFAULT_INCLUDE_ZERO_MILES_DRIVERS
                                     ));
                     break;
                 case PAYROLL_SIGNOFF:
@@ -1643,7 +1644,7 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
                                         timeFrame.getInterval(),
                                         person.getLocale(),
                                         reportSchedule.getIncludeInactiveDrivers(),
-                                        reportSchedule.getIncludeZeroMilesDrivers()
+                                        ReportCriteria.DEFAULT_INCLUDE_ZERO_MILES_DRIVERS
                                         )
                                         );
                     } else {
@@ -1653,7 +1654,7 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
                                         timeFrame.getInterval(),
                                         person.getLocale(),
                                         reportSchedule.getIncludeInactiveDrivers(),
-                                        reportSchedule.getIncludeZeroMilesDrivers()
+                                        ReportCriteria.DEFAULT_INCLUDE_ZERO_MILES_DRIVERS
                                         )
                                         );
                     }
@@ -1694,7 +1695,7 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
                 case DRIVER_HOURS:
                     reportCriteriaList.add(getDriverHoursReportCriteria(
                                     groupHierarchy,
-                                    reportSchedule.getGroupID(),
+                                    reportSchedule.getGroupIDList(),
                                     timeFrame.getInterval(),
                                     person.getLocale(),
                                     reportSchedule.getIncludeInactiveDrivers(),

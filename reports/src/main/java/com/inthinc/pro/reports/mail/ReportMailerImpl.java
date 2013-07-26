@@ -1,11 +1,13 @@
 package com.inthinc.pro.reports.mail;
 
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
+
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
+
 import org.apache.log4j.Logger;
+import org.springframework.core.io.ByteArrayResource;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -55,7 +57,7 @@ public class ReportMailerImpl implements ReportMailer {
             mimeMessageHelper.setTo(toAddressArray);
             mimeMessageHelper.setFrom(fromAddress);
             for (ReportAttatchment reportAttatchment : attachments) {
-                mimeMessageHelper.addAttachment(reportAttatchment.getFileName(), reportAttatchment.getAttatchmentAsFile());
+                mimeMessageHelper.addAttachment(reportAttatchment.getFileName(), new ByteArrayResource(reportAttatchment.getAttatchmentData()));
             }
 
             mimeMessageHelper.setText(message);
@@ -78,10 +80,6 @@ public class ReportMailerImpl implements ReportMailer {
             if(logger.isDebugEnabled()) 
                 logger.debug("EMAIL SENT SUCCESSFULLY");
         } catch (MessagingException e) {
-            if(logger.isDebugEnabled()) 
-                logger.debug("EXCEPTION SENDING EMAIL");
-            logger.error(e);
-        } catch (IOException e) {
             if(logger.isDebugEnabled()) 
                 logger.debug("EXCEPTION SENDING EMAIL");
             logger.error(e);

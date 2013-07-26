@@ -5,6 +5,7 @@ import it.config.ReportTestConst;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import com.inthinc.pro.model.LatLng;
 import com.inthinc.pro.model.event.AggressiveDrivingEvent;
@@ -23,6 +24,7 @@ import com.inthinc.pro.model.event.NoteType;
 import com.inthinc.pro.model.event.ParkingBrakeEvent;
 import com.inthinc.pro.model.event.ParkingBrakeState;
 import com.inthinc.pro.model.event.QSIVersionEvent;
+import com.inthinc.pro.model.event.RFKillEvent;
 import com.inthinc.pro.model.event.SeatBeltEvent;
 import com.inthinc.pro.model.event.SpeedingEvent;
 import com.inthinc.pro.model.event.ValidDriverEvent;
@@ -188,6 +190,10 @@ public class EventGenerator
                         event = new ZoneArrivalEvent(0l, 0, NoteType.WSZONES_DEPARTURE_EX, eventTime, 0, odometer, 
                                 locations[i].getLat(), locations[i].getLng(), data.zoneID);
                         break;
+                    case ReportTestConst.RF_KILL_IDX:
+                        event = new RFKillEvent(0l, 0, NoteType.DIAGNOSTICS_REPORT, eventTime, 0, odometer, 
+                                locations[i].getLat(), locations[i].getLng());
+                        break;
                 }
             }
             else if (data.includeWaysmart && waysmartEventIndex(i) != null) {
@@ -238,6 +244,10 @@ public class EventGenerator
                     case ReportTestConst.DOT_STOPPED_IDX:
                         event = new DOTStoppedEvent(0l, 0, ReportTestConst.waySmartEventIndexes[ws].type, eventTime, 0, odometer, 
                                        locations[i].getLat(), locations[i].getLng(), DOTStoppedState.UNSAFE_VEHICLE);
+                        break;
+                    case ReportTestConst.RF_KILL_IDX:
+                        event = new RFKillEvent(0l, 0, ReportTestConst.waySmartEventIndexes[ws].type, eventTime, 0, odometer, 
+                                       locations[i].getLat(), locations[i].getLng());
                         break;
                     default:
                         event = new Event(0l, 0, ReportTestConst.waySmartEventIndexes[ws].type, eventTime, 0, odometer, 

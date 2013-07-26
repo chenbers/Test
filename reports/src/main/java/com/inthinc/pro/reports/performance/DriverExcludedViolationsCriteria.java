@@ -109,11 +109,8 @@ public class DriverExcludedViolationsCriteria extends ReportCriteria{
             logger.debug(String.format("Building DriverExcludedViolationsCriteria with groupIDs: %s", groupIDs));
             DriverExcludedViolationsCriteria driverExcludedViolationsCriteria = new DriverExcludedViolationsCriteria(locale);
             
-            driverExcludedViolationsCriteria.addDateParameter(REPORT_START_DATE, interval.getStart().toDate(), this.dateTimeZone.toTimeZone());
-            
-            /* The interval returns for the end date the beginning of the next day. We minus a second to get the previous day */
-            driverExcludedViolationsCriteria.addDateParameter(REPORT_END_DATE, interval.getEnd().minusSeconds(1).toDate(), this.dateTimeZone.toTimeZone());
-            
+            driverExcludedViolationsCriteria.addReportStartEndDateParams(interval);
+
             List<DriverForgivenEventTotalWrapper> driverForgivenEventTotalWrappers = new ArrayList<DriverExcludedViolationsCriteria.DriverForgivenEventTotalWrapper>();
             for(DriverForgivenEventTotal driverForgivenEventTotal:driverForgivenEventTotals){
                 DriverForgivenEventTotalWrapper driverForgivenEventTotalWrapper = new DriverForgivenEventTotalWrapper(driverForgivenEventTotal, groupHierarchy.getFullGroupName(driverForgivenEventTotal.getGroupID()));

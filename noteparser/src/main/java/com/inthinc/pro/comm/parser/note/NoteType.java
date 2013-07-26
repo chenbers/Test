@@ -191,7 +191,7 @@ public enum NoteType {
 	
 	SPEEDING_LOG4(192, new Attrib[]{}),
 
-	SNITCH_DIAGNOSTICS(200, new Attrib[]{}),
+	SNITCH_DIAGNOSTICS(200, new Attrib[]{Attrib.DIAGNOSTIC_CODE}),
 	UNPLUGGED(202, new Attrib[]{}),
 	SEATBELT_START(203, new Attrib[]{}),
 	IDLING(208, new Attrib[]{}),
@@ -225,6 +225,7 @@ public enum NoteType {
     DVIR_REPAIR(232, new Attrib[]{Attrib.DVIR_COMMENTS,Attrib.DVIR_MECHANIC_ID,Attrib.DVIR_INSPECTOR_ID,Attrib.DVIR_SIGNOFF_ID, Attrib.ATTR_DVIR_FORM_ID, Attrib.ATTR_DVIR_SUBMISSION_TIME}),
     ROUTE_STOP(234, new Attrib[]{Attrib.ROUTE_STOP_TYPE, Attrib.ROUTESTOPID, Attrib.ATTR_ROUTE_ID}),	
     BACKING(235, new Attrib[]{Attrib.TRIP_DURATION}),
+    DEVICE_MODEM_PAIRING(236, new Attrib[]{Attrib.IMEI, Attrib.MCMID}),
 
 	//Stripped
 	STRIPPED_ACKNOWLEDGE_ID_WITH_DATA(246, new Attrib[]{Attrib.TYPE_FWDCMD, Attrib.ACKDATA, Attrib.TYPE_FWDCMD_ID}),

@@ -10,9 +10,10 @@ import java.util.Map;
 import java.util.TimeZone;
 
 import org.joda.time.Interval;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 
 import com.inthinc.pro.dao.DriverDAO;
-import com.inthinc.pro.dao.report.DriverPerformanceDAO;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.FuelEfficiencyType;
@@ -57,6 +58,8 @@ public class ReportCriteria
     public static final String SLASH_GROUP_SEPERATOR = "/";
     public static final String DATE_FORMAT = "MM/dd/yyyy";
     public static final String REPORT_IFTA_ONLY = "iftaVehiclesOnly";
+    
+    public static final String USER_TIME_ZONE = "USER_TIME_ZONE";
 
     public static final boolean DEFAULT_EXCLUDE_INACTIVE_DRIVERS = false;
     public static final boolean DEFAULT_EXCLUDE_ZERO_MILES_DRIVERS = false;
@@ -65,6 +68,8 @@ public class ReportCriteria
     private int subsetIndex = 1;
     
     private String REPORT_DATE_FORMAT = "MMM d, yyyy h:mm a (z)";
+
+    protected DateTimeFormatter startEndDateTimeFormatter = DateTimeFormat.forPattern("MMM dd, yyyy");
     
     
     //Initialization Block
@@ -344,5 +349,8 @@ public class ReportCriteria
     public void setIncludeZeroMilesDrivers(Boolean includeZeroMilesDrivers) {
         this.includeZeroMilesDrivers = includeZeroMilesDrivers;
     }
-
+    public void addReportStartEndDateParams(Interval interval) {
+        addParameter(REPORT_START_DATE, startEndDateTimeFormatter.withLocale(locale).print(interval.getStart()));
+        addParameter(REPORT_END_DATE, startEndDateTimeFormatter.withLocale(locale).print(interval.getEnd()));
+    }
 }

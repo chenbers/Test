@@ -47,11 +47,11 @@ Trip.prototype = {
 				iconImage : {
 					anchor : new google.maps.Point(5, 13),
 					scaledSize : new google.maps.Size(20, 20),
-					url: this.imagePath + ((this.inProgress == true) ? "/images/ico_inprogress_trip.png" : "/images/ico_end_trip.png")
+					url: this.imagePath + ((this.inProgress === 'true') ? "/images/ico_inprogress_trip.png" : "/images/ico_end_trip.png")
 				}
 		});
 		
-		if (this.inProgress == true) {
+		if (this.inProgress === 'true') {
 			this.createInfoWindow(map, endTripMarker, "tripInProgressBubble", "tripForm:tripInProgressAddress");
 		}
 		else {
