@@ -23,7 +23,11 @@ public class MockEventAggregationDAO implements EventAggregationDAO{
 
     @Override
     public List<DriverForgivenEventTotal> findDriverForgivenEventTotalsByGroups(List<Integer> groupIds, Interval interval, boolean includeInactiveDrivers, boolean includeZeroMilesDrivers) {
-        // TODO Auto-generated method stub
+        return Collections.emptyList();
+    }
+
+    @Override
+    public List<LastReportedEvent> findLastEventForVehicles(List<Integer> groupIds, Interval interval) {
         return Collections.emptyList();
     }
 

@@ -125,37 +125,18 @@ public class EventAggregationJDBCDAO extends SimpleJdbcDaoSupport implements Eve
     }
     
     
+    
     private static final String SELECT_LAST_NOTE_TEMPLATE = "SELECT * from (%s) a GROUP by vehicleID ORDER by vehicleName ASC;";
     private static final String SELECT_LAST_NOTE_TEMPLATE_INNER = "SELECT v.vehicleID,v.name as 'vehicleName',l.deviceID,d.name as 'deviceName',d.serialNum," +
                                 "l.start AS 'deviceAssignedDate',l.stop AS 'deviceUnassignedDate',n.noteID,n.time AS 'noteTime',n.type AS 'noteType',g.groupID,g.name as 'groupName',(DATEDIFF(n.time,CURDATE()) * -1) as 'daysSince' FROM vehicle v " +
                                 "INNER JOIN vddlog l ON l.vehicleID = v.vehicleID INNER JOIN device d ON d.deviceID = l.deviceID " +
                                 "INNER JOIN note%s n ON n.deviceID = l.deviceID AND n.vehicleID = v.vehicleID " +
                                 "INNER JOIN groupVehicleFlat gv ON gv.vehicleID = v.vehicleID INNER JOIN groups g ON g.groupID = gv.groupID " +
-//                                "INNER JOIN (SELECT _n.vehicleID,_n.deviceID,MAX(_n.time) as 'maxTime' FROM note%s _n JOIN vehicle v ON _n.vehicleID = v.vehicleID WHERE v.status = 1 OR v.status = 2 GROUP BY _n.deviceID,_n.vehicleID) groupedNote " +
 								"INNER JOIN (SELECT _n.vehicleID,_n.deviceID,MAX(_n.time) as 'maxTime' FROM note%s _n GROUP BY _n.deviceID,_n.vehicleID) groupedNote " +
 								"ON groupedNote.maxtime = n.time AND groupedNote.deviceID = l.deviceID AND groupedNote.vehicleID = l.vehicleID " +
-                                // "WHERE n.time < :startDate AND (l.stop iS NULL OR l.stop = (SELECT max(l.stop) FROM vehicle _v WHERE _v.vehicleID = v.vehicleID)) " +
                                 "WHERE n.time < :startDate AND (l.stop iS NULL OR l.stop = (select max(stop) from vddlog where vehicleID = v.vehicleID)) " +
                                 "AND g.groupID IN (:groupList)";
-    
-//    private static final String SELECT_LAST_NOTE_TEMPLATE = "SELECT a.vehicleID,a.vehicleName,a.deviceID,a.deviceName,a.serialNum," + 
-//					            "a.deviceAssignedDate,a.deviceUnassignedDate,a.noteID,MAX(a.time) AS 'noteTime',a.noteType,a.groupID,a.groupName,(DATEDIFF(MAX(a.time),CURDATE()) * -1) AS 'daysSince' " +
-//					            "FROM (%s) a ORDER BY vehicleName ASC;";
-//					//    		"SELECT * FROM (%s) a ORDER BY vehicleName ASC;";
-//    private static final String SELECT_LAST_NOTE_TEMPLATE_INNER = 
-////    							"SELECT v.vehicleID,v.name AS 'vehicleName',l.deviceID,d.name AS 'deviceName',d.serialNum," + 
-//    							"SELECT v.vehicleID,v.name AS 'vehicleName',l.deviceID,d.name AS 'deviceName',d.serialNum," + 
-//                                "l.start AS 'deviceAssignedDate',l.stop AS 'deviceUnassignedDate',n.noteID,n.time, n.type AS 'noteType',g.groupID,g.name AS 'groupName' FROM vehicle v " + 
-//                                "INNER JOIN vddlog l ON l.vehicleID = v.vehicleID INNER JOIN device d ON d.deviceID = l.deviceID " +  
-////                                "INNER JOIN note%s n ON n.deviceID = l.deviceID AND n.vehicleID = v.vehicleID AND n.groupID IN(:groupList) " + 
-//                                "INNER JOIN groupVehicleFlat gv ON gv.vehicleID = v.vehicleID INNER JOIN groups g ON g.groupID = gv.groupID " + 
-//                                "INNER JOIN (SELECT vehicleID , deviceID, time, noteID, type, groupID FROM note%s GROUP BY deviceID,vehicleID) n ON n.deviceID = l.deviceID AND n.vehicleID = v.vehicleID " +
-////                                "INNER JOIN (SELECT _n.vehicleID,_n.deviceID,MAX(_n.time) AS 'maxTime' FROM note%s _n WHERE _n.groupID IN (:groupList) GROUP BY _n.deviceID,_n.vehicleID) groupedNote " +  
-////								"INNER JOIN (SELECT _n.vehicleID,_n.deviceID,MAX(_n.time) AS 'maxTime' FROM note%s _n GROUP BY _n.deviceID,_n.vehicleID) groupedNote " +  
-////								"ON groupedNote.maxtime = n.time AND groupedNote.deviceID = l.deviceID AND groupedNote.vehicleID = l.vehicleID " + 
-////                                "WHERE n.time < :startDate AND (l.stop iS NULL OR l.stop = (SELECT max(l.stop) FROM vehicle _v WHERE _v.vehicleID = v.vehicleID)) " + 
-//								"WHERE n.time < :startDate AND (l.stop iS NULL OR l.stop = (SELECT max(stop) FROM vddlog WHERE vehicleID = v.vehicleID)) " +
-//                                "AND g.groupID IN (:groupList)";
+
     private static final String SELECT_NEVER_ASSIGNED_VEHICLE = "SELECT v.vehicleID,v.name AS 'vehicleName',g.groupID,g.name AS 'groupName' FROM vehicle v " + 
                                 "INNER JOIN groupVehicleFlat gv ON gv.vehicleID = v.vehicleID INNER JOIN groups g ON g.groupID = gv.groupID " + 
                                 "LEFT OUTER JOIN vddlog l ON l.vehicleID = v.vehicleID WHERE " + 
@@ -234,9 +215,82 @@ public class EventAggregationJDBCDAO extends SimpleJdbcDaoSupport implements Eve
         }, params2);
         
         lastReportedEvents.addAll(vehiclesWithNoNotes);
-        
         return lastReportedEvents;
     }
+    
+    private static final String SELECT_LAST_NOTE_FOR_VEHICLE = "SELECT v.vehicleID,v.name as 'vehicleName',d.deviceID,d.name as 'deviceName',d.serialNum,max(l.time) AS 'noteTime',l.noteType AS 'noteType',g.groupID,g.name as 'groupName',(DATEDIFF(l.time,CURDATE()) * -1) as 'daysSince' "+ 
+                "FROM vehicle v "+ 
+                "INNER JOIN groupVehicleFlat gv ON gv.vehicleID = v.vehicleID INNER JOIN groups g ON g.groupID = gv.groupID " + 
+                "INNER JOIN (select max(time) maxTime  from lastLocVehicle _l group by deviceID) dmax " +
+                "INNER JOIN lastLocVehicle l on l.vehicleID = v.vehicleID and dmax.maxTime = l.time "+
+                "INNER JOIN device d ON d.deviceID = l.deviceID "+
+                "where v.vehicleID in (select vehicleID from vehicle where groupID in (:groupList)) and l.time < :startDate group by vehicleID order by vehicleName";
+                            
+    private static final String SELECT_NEVER_ASSIGNED_VEHICLES = "SELECT v.vehicleID,v.name AS 'vehicleName',g.groupID,g.name AS 'groupName' FROM vehicle v " + 
+            "INNER JOIN groupVehicleFlat gv ON gv.vehicleID = v.vehicleID INNER JOIN groups g ON g.groupID = gv.groupID " + 
+            "LEFT OUTER JOIN vddlog l ON l.vehicleID = v.vehicleID WHERE " + 
+            "NOT EXISTS (SELECT  * FROM vddlog _l WHERE _l.vehicleID = v.vehicleID) " +
+            "AND g.groupID IN (:groupList) ";
+    
+    /*
+     * (non-Javadoc)
+     * @see com.inthinc.pro.dao.EventAggregationDAO#findLastEventForVehicles(java.util.List, org.joda.time.Interval)
+     */
+    @Override
+    public List<LastReportedEvent> findLastEventForVehicles(List<Integer> groupIDs, Interval interval) {
+        
+        /* 
+         * First load all last reported events which fall before the start time of the interval. 
+         * If a vehicle doesn't have a device currently, still load it and the last note received for that vehicle from the 
+         * last device which was assigned to it.
+         */
+        String lastNotQuery = SELECT_LAST_NOTE_FOR_VEHICLE;
+        
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("groupList", groupIDs);
+        params.put("startDate", interval.getStart().toDate());
+        
+        if(logger.isDebugEnabled()){
+            logger.debug("Executing query for findLastEventForVehicles()");
+            logger.debug(String.format("Executing query: %s", lastNotQuery));
+            logger.debug(String.format("Query parameters: %s", params));
+        }
+        List<LastReportedEvent> lastReportedEvents = getSimpleJdbcTemplate().query(lastNotQuery, new ParameterizedRowMapper<LastReportedEvent>() {
+            @Override
+            public LastReportedEvent mapRow(ResultSet rs, int rowNum) throws SQLException {
+                LastReportedEvent event = new LastReportedEvent();
+                event.setType(NoteType.valueOf(rs.getInt("noteType")));
+                event.setVehicleID(rs.getInt("vehicleID"));
+                event.setVehicleName(rs.getString("vehicleName"));
+                event.setTime( rs.getTimestamp("noteTime"));
+                event.setDeviceID(rs.getInt("deviceID"));
+                event.setDeviceSerialNum(rs.getString("serialNum"));
+                event.setDaysSince(rs.getInt("daysSince"));
+                event.setGroupID(rs.getInt("groupID"));
+                event.setGroupName(rs.getString("groupName"));
+                return event;
+            }
+        },params);
+        
+        /* Now we need to load all vehicles which have never been assigned */
+        Map<String, Object> params2 = new HashMap<String, Object>();
+        params2.put("groupList", groupIDs);
+        List<LastReportedEvent> vehiclesWithNoNotes = getSimpleJdbcTemplate().query(SELECT_NEVER_ASSIGNED_VEHICLES, new ParameterizedRowMapper<LastReportedEvent>() {
+            @Override
+            public LastReportedEvent mapRow(ResultSet rs, int rowNum) throws SQLException {
+                LastReportedEvent event = new LastReportedEvent();
+                event.setVehicleID(rs.getInt("vehicleID"));
+                event.setVehicleName(rs.getString("vehicleName"));
+                event.setGroupID(rs.getInt("groupID"));
+                event.setGroupName(rs.getString("groupName"));
+                return event;
+            }
+        }, params2);
+        
+        lastReportedEvents.addAll(vehiclesWithNoNotes);
+        return lastReportedEvents;
+    }
+    
     public DriverDAO getDriverDAO() {
         return driverDAO;
     }
