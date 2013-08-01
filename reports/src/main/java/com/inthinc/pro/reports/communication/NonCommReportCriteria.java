@@ -84,7 +84,7 @@ public class NonCommReportCriteria extends ReportCriteria{
         
         public NonCommReportCriteria build(){
             logger.debug(String.format("Building NonCommReportCriteria with locale %s",locale));
-            List<LastReportedEvent> lastReportedEvents = eventAggregationDAO.findRecentEventByDevice(this.groupIDs, timeFrame.getInterval());
+            List<LastReportedEvent> lastReportedEvents = eventAggregationDAO.findLastEventForVehicles(this.groupIDs, timeFrame.getInterval());
             
             List<NonCommReportCriteria.LastReportedEventWrapper> lastReportedEventWrappers = new ArrayList<NonCommReportCriteria.LastReportedEventWrapper>();
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat(MessageUtil.formatMessageString("dateTimeFormat", locale), locale);

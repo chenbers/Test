@@ -59,6 +59,7 @@ import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.model.VehicleType;
 import com.inthinc.pro.model.Zone;
 import com.inthinc.pro.model.app.States;
+import com.inthinc.pro.model.configurator.ProductType;
 import com.inthinc.pro.model.event.Event;
 import com.inthinc.pro.model.event.NoteType;
 import com.inthinc.pro.model.security.Role;
@@ -72,7 +73,7 @@ public class DataGenForStressTesting extends DataGenForTesting {
     private String xmlPath;
     private static String configFile;
     
-    public static Integer NUM_EVENT_DAYS = 8;
+    public static Integer NUM_EVENT_DAYS = 1;
 
     public static Integer EAST = 0;
     public static Integer WEST = 1;
@@ -209,6 +210,8 @@ public class DataGenForStressTesting extends DataGenForTesting {
         System.out.println("Fleet Level User " + fleetUser.getUsername());
         fleetUserName = fleetUser.getUsername();
 
+        Date assignmentDate = DateUtil.convertTimeInSecondsToDate(DateUtil.getDaysBackDate(DateUtil.getTodaysDate(), NUM_EVENT_DAYS+2, ReportTestConst.TIMEZONE_STR));
+
         // User at team level
         for (GroupData team : teamGroupData)
         {
@@ -216,9 +219,9 @@ public class DataGenForStressTesting extends DataGenForTesting {
         	for (int i = 0; i < num; i++)
         	{
         		User user = createUser(account.getAccountID(), team.group);
-        		Device device = createDevice(team.group, user.getUserID());
+        		Device device = createDevice(team.group, user.getUserID(), assignmentDate);
         		Driver driver = createDriver(team.group);
-        		Vehicle vehicle = createVehicle(team.group, device.getDeviceID(), driver.getDriverID());
+        		Vehicle vehicle = createVehicle(team.group, device.getDeviceID(), driver.getDriverID(), assignmentDate);
         		device.setVehicleID(vehicle.getVehicleID());
                 zoneAlert(account.getAccountID(), team.group.getGroupID(), driver.getPerson().getPersonID());
                 team.userList.add(user);
@@ -567,7 +570,7 @@ public class DataGenForStressTesting extends DataGenForTesting {
         
     }
 
-    private Vehicle createVehicle(Group group, Integer deviceID, Integer driverID)
+    private Vehicle createVehicle(Group group, Integer deviceID, Integer driverID, Date assignmentDate)
     {
         VehicleHessianDAO vehicleDAO = new VehicleHessianDAO();
         vehicleDAO.setSiloService(siloService);
@@ -587,22 +590,26 @@ public class DataGenForStressTesting extends DataGenForTesting {
         vehicleDAO.setDeviceDAO(deviceDAO);
         
         vehicleDAO.setVehicleDevice(vehicleID, deviceID);
-        Date assignmentDate = DateUtil.convertTimeInSecondsToDate(DateUtil.getDaysBackDate(DateUtil.getTodaysDate(), NUM_EVENT_DAYS+2, ReportTestConst.TIMEZONE_STR));
         vehicleDAO.setVehicleDriver(vehicleID, driverID, assignmentDate);
 
         return vehicle;
     }
 
-    private Device createDevice(Group group, Integer uniqueID)
+    private Device createDevice(Group group, Integer uniqueID, Date assignmentDate)
     {
         DeviceHessianDAO deviceDAO = new DeviceHessianDAO();
         deviceDAO.setSiloService(siloService);
+        
         
         for (int retryCnt = 0; retryCnt < 100; retryCnt++) {
 	        try{
 		        Device device = new Device(0, account.getAccountID(), DeviceStatus.ACTIVE, "Device_" + uniqueID, 
 		        		genNumericID(uniqueID, 15), genNumericID(uniqueID, 19), genNumericID(uniqueID, 10), 
 		        		genNumericID(uniqueID, 10));
+                device.setActivated(assignmentDate);
+                device.setEmuMd5("696d6acbc199d607a5704642c67f4d86");
+                device.setProductVersion(ProductType.TIWIPRO);
+                device.setProductVer(ProductType.TIWIPRO.getVersions()[0]);
 		        Integer deviceID = deviceDAO.create(account.getAccountID(), device);
 		        device.setDeviceID(deviceID);
 		        

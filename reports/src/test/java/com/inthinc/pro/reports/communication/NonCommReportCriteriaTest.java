@@ -117,7 +117,7 @@ public class NonCommReportCriteriaTest extends BaseUnitTest{
         builder.setLocale(Locale.US);
         List<ReportCriteria> reportCriterias = new ArrayList<ReportCriteria>();
         new NonStrictExpectations() {{
-            eventAggregationDAO.findRecentEventByDevice((List)any, (Interval)any);
+            eventAggregationDAO.findLastEventForVehicles((List)any, (Interval)any);
             returns(lastReportedEvents);
         }};
         reportCriterias.add(builder.build());
