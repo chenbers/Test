@@ -29,14 +29,14 @@ public class EventAggregationJDBCDAOTest extends BaseJDBCTest {
     // this generates an account with a bunch of devices, vehicles, drivers and a trip for each device/vehicle
     // Set the interval day to the day the generator is run.
     // TEST_ACCOUNT_ID and EXPECTED_VALID_COUNT will need to be adjusted to reflect the new data set.
-    private static Integer TEST_ACCOUNT_ID = 695;
-    private static Integer EXPECTED_VALID_COUNT = 259;
+    private static Integer TEST_ACCOUNT_ID = 712;
+    private static Integer EXPECTED_VALID_COUNT = 47;
     
     
     private static List<Integer> testGroupList;
 
-    private static DateTime JULY_25_2013 = new DateTime(1374796800000l);
-    private static Interval VALID_TEST_INTERVAL = new Interval(JULY_25_2013, JULY_25_2013.plusDays(1)); 
+    private static DateTime AUG_02_2013 = new DateTime(1375401600000l);
+    private static Interval VALID_TEST_INTERVAL = new Interval(AUG_02_2013, AUG_02_2013.plusDays(1)); 
     
     
     private static SiloService siloService;
@@ -94,10 +94,10 @@ public class EventAggregationJDBCDAOTest extends BaseJDBCTest {
         eventAggregationJDBCDAO.setDataSource(new ITDataSource().getRealDataSource());
         
         List<LastReportedEvent> lastEventList= eventAggregationJDBCDAO.findLastEventForVehicles(testGroupList, VALID_TEST_INTERVAL);
-        assertEquals("old method of fetching matches new", EXPECTED_VALID_COUNT.intValue(), lastEventList.size());
+        assertEquals("expected count", EXPECTED_VALID_COUNT.intValue(), lastEventList.size());
         
         for (LastReportedEvent event : lastEventList) {
-            assertTrue("last date invalid for query interval", new DateTime(event.getTime()).isBefore(JULY_25_2013));
+            assertTrue("last date invalid for query interval", new DateTime(event.getTime()).isBefore(AUG_02_2013));
             
         }
 
