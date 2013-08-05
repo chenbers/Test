@@ -4,17 +4,22 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
-import java.util.TimeZone;
+import java.util.Map;
 
 import org.ajax4jsf.model.KeepAlive;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
-import org.joda.time.DateTimeZone;
+import org.joda.time.Days;
+import org.joda.time.Months;
 
 import com.inthinc.pro.backing.ui.ScoreBox;
 import com.inthinc.pro.backing.ui.ScoreBoxSizes;
+import com.inthinc.pro.dao.ScoreDAO;
 import com.inthinc.pro.dao.report.GroupReportDAO;
+import com.inthinc.pro.model.AggregationDuration;
+import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.MeasurementType;
+import com.inthinc.pro.model.ScoreableEntity;
 import com.inthinc.pro.model.TimeFrame;
 import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.model.aggregation.DriverVehicleScoreWrapper;
@@ -22,7 +27,6 @@ import com.inthinc.pro.reports.ReportCriteria;
 import com.inthinc.pro.reports.ReportRenderer;
 import com.inthinc.pro.reports.service.ReportCriteriaService;
 import com.inthinc.pro.util.MessageUtil;
-import com.inthinc.pro.util.MiscUtil;
 
 @KeepAlive
 public class TeamStatisticsBean extends BaseBean {
@@ -35,6 +39,7 @@ public class TeamStatisticsBean extends BaseBean {
     // private List<DriverVehicleScoreWrapper> driverStatistics;
     // private List<DriverVehicleScoreWrapper> driverTotals;
 
+    private ScoreDAO scoreDAO;
     private GroupReportDAO groupReportDAO;
     private TeamCommonBean teamCommonBean;
 
@@ -43,6 +48,14 @@ public class TeamStatisticsBean extends BaseBean {
 
     private ReportRenderer reportRenderer;
     private ReportCriteriaService reportCriteriaService;
+    
+    public ScoreDAO getScoreDAO() {
+        return scoreDAO;
+    }
+
+    public void setScoreDAO(ScoreDAO scoreDAO) {
+        this.scoreDAO = scoreDAO;
+    }
 
     public GroupReportDAO getGroupReportDAO() {
         return groupReportDAO;
@@ -103,6 +116,124 @@ public class TeamStatisticsBean extends BaseBean {
         }
         return driverStatistics;
     }
+    
+    private void setOverallScoreUsingTrendScore(DriverVehicleScoreWrapper driverVehicleScoreWrapper) {
+        Duration duration = Duration.DAYS;
+        
+        if(teamCommonBean.getTimeFrame().getAggregationDuration() == AggregationDuration.ONE_DAY) {
+            duration = Duration.DAYS;
+        } else if(teamCommonBean.getTimeFrame().getAggregationDuration() == AggregationDuration.ONE_MONTH) {
+            duration = Duration.THREE;
+        }
+        
+        Map<Integer, List<ScoreableEntity>> groupTrendMap;
+        
+        String key = teamCommonBean.getTimeFrame().name();
+        if (teamCommonBean.getCachedTrendResults().containsKey(key)) {
+            groupTrendMap = teamCommonBean.getCachedTrendResults().get(key);
+        } else {
+            groupTrendMap = getScoreDAO().getTrendScores(teamCommonBean.getGroup().getParentID(), duration, getGroupHierarchy());
+            
+            //fill in missing dates
+            this.populateDateGaps(groupTrendMap.get(teamCommonBean.getGroupID()));
+            
+            teamCommonBean.getCachedTrendResults().put(key, groupTrendMap);
+        }
+        
+        List<ScoreableEntity> trendsList = new ArrayList<ScoreableEntity>();
+        trendsList = teamCommonBean.getCachedTrendResults().get(teamCommonBean.getTimeFrame().name()).get(teamCommonBean.getGroupID());
+        
+        ScoreableEntity se = this.getMatchingEntity(trendsList);
+        
+        if(se != null){
+            driverVehicleScoreWrapper.getScore().setOverall(se.getScore());
+        }    
+    }
+    
+    private void populateDateGaps(List<ScoreableEntity> list) {
+        if(list == null)
+            return;
+        
+        Integer gap = 0;
+        
+        int lastIndex = 0;
+        if(list != null && list.size() > 0)
+            lastIndex = list.size() -1;
+        
+        ScoreableEntity lastEntity = list.get(lastIndex);
+            
+        DateTime lastEntityDateTime = new DateTime(lastEntity.getDate());
+        lastEntityDateTime = lastEntityDateTime.withHourOfDay(0).withMinuteOfHour(0).withSecondOfMinute(0).withMillisOfSecond(0);
+        
+        DateTime currentDateTime = teamCommonBean.getTimeFrame().getCurrent();
+        currentDateTime = currentDateTime.withHourOfDay(0).withMinuteOfHour(0).withSecondOfMinute(0).withMillisOfSecond(0);
+        
+        if (teamCommonBean.getTimeFrame() == TimeFrame.TODAY || 
+            teamCommonBean.getTimeFrame() == TimeFrame.ONE_DAY_AGO ||
+            teamCommonBean.getTimeFrame() == TimeFrame.TWO_DAYS_AGO || 
+            teamCommonBean.getTimeFrame() == TimeFrame.THREE_DAYS_AGO ||
+            teamCommonBean.getTimeFrame() == TimeFrame.FOUR_DAYS_AGO || 
+            teamCommonBean.getTimeFrame() == TimeFrame.FIVE_DAYS_AGO) {
+            gap = Days.daysBetween(lastEntityDateTime, currentDateTime).getDays();
+            
+            DateTime missingDateTime = new DateTime(lastEntity.getDate());
+            for(int i = 0; i < gap; i++) {
+                missingDateTime = missingDateTime.plusDays(1);
+                ScoreableEntity se = new ScoreableEntity(lastEntity.getEntityID(),lastEntity.getEntityType(), lastEntity.getIdentifier(), lastEntity.getScore(), missingDateTime.toDate(), lastEntity.getScoreType());
+                list.add(se);
+            }
+            return;
+        } else if (teamCommonBean.getTimeFrame() == TimeFrame.MONTH) {
+            currentDateTime = currentDateTime.dayOfMonth().withMaximumValue();
+            gap = Months.monthsBetween(lastEntityDateTime, currentDateTime).getMonths();
+            
+            DateTime missingDateTime = new DateTime(lastEntity.getDate());
+            for(int i = 0; i < gap; i++) {
+                missingDateTime = missingDateTime.plusMonths(1);
+                ScoreableEntity se = new ScoreableEntity(lastEntity.getEntityID(),lastEntity.getEntityType(), lastEntity.getIdentifier(), lastEntity.getScore(), missingDateTime.toDate(), lastEntity.getScoreType());
+                list.add(se);
+            }
+            return;
+        }
+    }
+    
+    private DateTime getFilterDateTime() {
+        DateTime filter = teamCommonBean.getTimeFrame().getCurrent();
+        filter = filter.withHourOfDay(0).withMinuteOfHour(0).withSecondOfMinute(0).withMillisOfSecond(0);
+        if (teamCommonBean.getTimeFrame() == TimeFrame.TODAY) {
+            filter = filter.minusDays(1);
+        } else if (teamCommonBean.getTimeFrame() == TimeFrame.ONE_DAY_AGO) {
+            filter = filter.minusDays(2);
+        } else if (teamCommonBean.getTimeFrame() == TimeFrame.TWO_DAYS_AGO) {
+            filter = filter.minusDays(3);
+        } else if (teamCommonBean.getTimeFrame() == TimeFrame.THREE_DAYS_AGO) {
+            filter = filter.minusDays(4);
+        } else if (teamCommonBean.getTimeFrame() == TimeFrame.FOUR_DAYS_AGO) {
+            filter = filter.minusDays(5);
+        } else if (teamCommonBean.getTimeFrame() == TimeFrame.FIVE_DAYS_AGO) {
+            filter = filter.minusDays(6);
+        } else if (teamCommonBean.getTimeFrame() == TimeFrame.MONTH) {
+            filter = filter.minusMonths(1);
+            filter = filter.dayOfMonth().withMaximumValue();
+        }
+        
+        return filter;
+    }
+    
+    private ScoreableEntity getMatchingEntity(List<ScoreableEntity> trendlist) {
+        
+        DateTime filterDateTime = this.getFilterDateTime();
+        
+        for(ScoreableEntity se : trendlist){
+            DateTime dateTime = new DateTime(se.getDate());
+            dateTime = dateTime.withHourOfDay(0).withMinuteOfHour(0).withSecondOfMinute(0).withMillisOfSecond(0);
+            
+            if(dateTime.equals(filterDateTime)){
+                return se;
+            }
+        }
+        return null;
+    }
 
     public void cleanData(List<DriverVehicleScoreWrapper> driverStatistics) {
 
@@ -129,6 +260,9 @@ public class TeamStatisticsBean extends BaseBean {
         List<DriverVehicleScoreWrapper> local = new ArrayList<DriverVehicleScoreWrapper>();
 
         DriverVehicleScoreWrapper dvsw = DriverVehicleScoreWrapper.summarize(getDriverStatistics(), teamCommonBean.getGroup());
+        
+        this.setOverallScoreUsingTrendScore(dvsw);
+        
         dvsw.setScoreStyle(ScoreBox.GetStyleFromScore(dvsw.getScore().getOverall().intValue(), ScoreBoxSizes.SMALL));
 
         local.add(dvsw);

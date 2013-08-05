@@ -15,6 +15,7 @@ import org.joda.time.Interval;
 import org.richfaces.component.UITabPanel;
 
 import com.inthinc.pro.model.Group;
+import com.inthinc.pro.model.ScoreableEntity;
 import com.inthinc.pro.model.TimeFrame;
 import com.inthinc.pro.model.aggregation.DriverVehicleScoreWrapper;
 
@@ -34,6 +35,7 @@ public class TeamCommonBean extends BaseBean {
     private String selectedTabId;
     
     private Map<String,List<DriverVehicleScoreWrapper>> cachedResults = Collections.synchronizedMap(new HashMap<String,List<DriverVehicleScoreWrapper>>());
+    private Map<String,Map<Integer, List<ScoreableEntity>>> cachedTrendResults = Collections.synchronizedMap(new HashMap<String,Map<Integer, List<ScoreableEntity>>>());
     
     public void init() {
     	//This sets the selected tab id to always be teamStatistics. Breaks the backbutton and history funtionality.
@@ -126,6 +128,14 @@ public class TeamCommonBean extends BaseBean {
 
     public void setCachedResults(Map<String, List<DriverVehicleScoreWrapper>> cachedResults) {
         this.cachedResults = cachedResults;
+    }
+    
+    public Map<String, Map<Integer, List<ScoreableEntity>>> getCachedTrendResults() {
+        return cachedTrendResults;
+    }
+
+    public void setCachedTrendResults(Map<String, Map<Integer, List<ScoreableEntity>>> cachedTrendResults) {
+        this.cachedTrendResults = cachedTrendResults;
     }
 
     public void setSelectedTabId(String selectedTabId) {
