@@ -12,12 +12,11 @@ import org.junit.Test;
 import com.inthinc.pro.backing.EditableVehicleSettings;
 import com.inthinc.pro.backing.WS850EditableVehicleSettings;
 import com.inthinc.pro.backing.WS850SettingManager;
+import com.inthinc.pro.backing.ui.IdlingSetting;
 import com.inthinc.pro.dao.hessian.ConfiguratorHessianDAO;
 import com.inthinc.pro.model.configurator.ProductType;
 import com.inthinc.pro.model.configurator.SettingType;
 import com.inthinc.pro.model.configurator.VehicleSetting;
-import com.inthinc.pro.backing.model.SensitivitySlidersMockDataCreator;
-import com.inthinc.pro.backing.ui.IdlingSetting;
 
 public class WS850SettingManagerTest {
     private SensitivitySlidersMockDataCreator sensitivitySlidersMockDataCreator;
@@ -128,6 +127,35 @@ public class WS850SettingManagerTest {
         Map<Integer, String> changes = ws850SettingManager.evaluateSettings(VEHICLE_ID, editableVehicleSettings, null);
         assertEquals(desiredIdling+"", changes.get(SettingType.WS850_IDLING_TIMEOUT.getSettingID()));
     }
+    
+    @Test
+    public void evaluateChangedSettings850IdlingBuzzer(){
+        VehicleSetting vehicleSetting = new VehicleSetting();
+        vehicleSetting.setDeviceID(DEVICE_ID);
+        vehicleSetting.setVehicleID(VEHICLE_ID);
+        
+        Map<Integer, String> actualSettings = new HashMap<Integer,String>();
+        actualSettings.put(SettingType.WS850_BUZZER_IDLE.getSettingID(), 0+"");
+        vehicleSetting.setActual(actualSettings);
+
+        Map<Integer, String> desiredSettings = new HashMap<Integer,String>();
+        desiredSettings.put(SettingType.WS850_BUZZER_IDLE.getSettingID(), 1+"");
+        vehicleSetting.setDesired(desiredSettings);
+        
+        
+        VehicleSettingManager ws850SettingManager = new WS850SettingManager(new ConfiguratorHessianDAO(),  
+                sensitivitySlidersMockDataCreator.getSensitivitySliders(), vehicleSetting);
+        EditableVehicleSettings editableVehicleSettings = ws850SettingManager.createFromExistingValues(VEHICLE_ID, vehicleSetting);
+        assertTrue("From settings idle buzzer is true", ((WS850EditableVehicleSettings)editableVehicleSettings).isIdleBuzzer());
+        
+        editableVehicleSettings = ws850SettingManager.createDefaultValues(VEHICLE_ID);
+        assertTrue("Default idle buzzer is false", !((WS850EditableVehicleSettings)editableVehicleSettings).isIdleBuzzer());
+        
+        ((WS850EditableVehicleSettings)editableVehicleSettings).setIdleBuzzer(true);
+        Map<Integer, String> changes = ws850SettingManager.evaluateSettings(VEHICLE_ID, editableVehicleSettings, null);
+        assertEquals("Expected idle buzzer after set is true", 1+"", changes.get(SettingType.WS850_BUZZER_IDLE.getSettingID()));
+    }
+
     
 }
 
