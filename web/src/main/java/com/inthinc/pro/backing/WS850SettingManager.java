@@ -32,9 +32,9 @@ public class WS850SettingManager extends VehicleSettingManager {
         Integer[] speedSettings = convertFromSpeedSettings(SpeedingConstants.INSTANCE.DEFAULT_SPEED_SET);
         Double maxSpeed = SpeedingConstants.INSTANCE.DEFAULT_MAX_SPEED_LIMIT;
         Integer idlingThresholdSeconds = IdlingSetting.DEFAULT.getSeconds();
+        boolean idleBuzzerDefault = false;
         
-        
-        return new WS850EditableVehicleSettings(vehicleID==null?-1:vehicleID, speedSettings, hardAcceleration, hardBrake, hardTurn,hardVertical,maxSpeed, WS850HOSDOTType.LIGHT_DUTY_NO_HOS.getConfiguratorSetting(), idlingThresholdSeconds);
+        return new WS850EditableVehicleSettings(vehicleID==null?-1:vehicleID, speedSettings, hardAcceleration, hardBrake, hardTurn,hardVertical,maxSpeed, WS850HOSDOTType.LIGHT_DUTY_NO_HOS.getConfiguratorSetting(), idlingThresholdSeconds, idleBuzzerDefault);
     }
     protected EditableVehicleSettings createFromExistingValues(Integer vehicleID, VehicleSetting vs){
         Integer hardVertical = hardVerticalSlider.getSliderValueFromSettings(vs);
@@ -48,7 +48,9 @@ public class WS850SettingManager extends VehicleSettingManager {
         Integer idlingThresholdSeconds = NumberUtil.convertString(vs.getBestOption(SettingType.WS850_IDLING_TIMEOUT.getSettingID()));
         Integer dotVehicleType = NumberUtil.convertString(vs.getBestOption(SettingType.WS850_HOS_SETTING.getSettingID()));
         adjustCountsForCustomValues(hardAcceleration, hardBrake, hardTurn, hardVertical);
-        return new WS850EditableVehicleSettings(vs.getVehicleID(),speedSettings, hardAcceleration, hardBrake, hardTurn,hardVertical, maxSpeed,dotVehicleType,idlingThresholdSeconds);
+        String idleBuzzerValue = vs.getBestOption(SettingType.WS850_BUZZER_IDLE.getSettingID());
+        boolean idleBuzzer = (idleBuzzerValue!=null && idleBuzzerValue.equalsIgnoreCase("1"));
+        return new WS850EditableVehicleSettings(vs.getVehicleID(),speedSettings, hardAcceleration, hardBrake, hardTurn,hardVertical, maxSpeed,dotVehicleType,idlingThresholdSeconds, idleBuzzer);
     }
     private Integer[] convertFromSpeedSettings(String speedSet){
         
@@ -126,6 +128,10 @@ public class WS850SettingManager extends VehicleSettingManager {
                     ws850EditableVehicleSettings.getIdlingSeconds().toString(), 
                     vehicleSetting.getBestOption(SettingType.WS850_IDLING_TIMEOUT.getSettingID()), 
                     fieldIsIncludedInBatchEditOrNotBatchEdit(updateField,"editableVehicleSettings.idlingSeconds"));
+            newSettings.addSettingIfNeeded(SettingType.WS850_BUZZER_IDLE, 
+                    ws850EditableVehicleSettings.getIdleBuzzer().toString(), 
+                    vehicleSetting.getBestOption(SettingType.WS850_BUZZER_IDLE.getSettingID()), 
+                    fieldIsIncludedInBatchEditOrNotBatchEdit(updateField,"editableVehicleSettings.idleBuzzer"));
 
             newSettings.addSettingIfNeeded(SettingType.WS850_HOS_SETTING,
                     ""+ws850EditableVehicleSettings.getDotVehicleType(), 

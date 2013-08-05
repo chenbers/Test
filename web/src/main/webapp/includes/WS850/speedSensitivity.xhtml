@@ -363,6 +363,22 @@
                                           <h:outputText value="#{messages.editDevice_sensitivity5}" />
                                     </td>
                                  </tr>
+                                 <tr class="tableEven">
+                                     <td style="padding: 0px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
+                     	               <ui:param name="messageKey" value="editDevice_idleBuzzer"/>
+                                       <h:selectBooleanCheckbox rendered="#{batchEdit}" id="update_#{context}-idleBuzzer" value="#{updateField['editableVehicleSettings.idleBuzzer']}" />
+                                       <h:outputText value="#{messages[messageKey]}" />
+                                     </td>
+                                     <td style="padding: 0px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
+                                     	<h:selectBooleanCheckbox id="#{context}-idleBuzzer" 
+                                     		value="#{vehiclesBean.item.editableVehicleSettings.idleBuzzer}" disabled="#{disabled or vehiclesBean.speedInfoDisabled}"
+                                     		onchange="if (checkMultiple) checkMultiple(this); adminSetCheckbox(this,'style','idleBuzzer','#{context}-update_','');" ></h:selectBooleanCheckbox>
+                                    </td>
+                                    <td style="padding: 0px 12px 6px 0px; border-bottom: 1px solid #8BAD37;" align="right">
+                                       <rich:spacer height="1"/>
+                                    </td>
+                                    <td style="padding: 0px 12px 6px 0px; border-bottom: 1px solid #8BAD37;"><rich:spacer height="1"/></td>
+                                 </tr>
                             </table>
 
                           </td>
