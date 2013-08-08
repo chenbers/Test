@@ -11,7 +11,7 @@ public class ByteArrayParser implements AttribParser {
 		
 		attribMap.put(code, Arrays.copyOfRange(data, offset, data.length));
 		
-		return offset+1;
+		return data.length;
 	}
 
 	   public Object parseString(String val){

@@ -37,6 +37,8 @@ public class StringVarLengthParser implements AttribParser {
 		
 		attribMap.put(code, new String(data, offset, length));
 
+		System.out.println("offset: " + offset);
+        System.out.println("length: " + length);
 		return offset+(length+1);
 	}
 

@@ -68,6 +68,8 @@ public class AttribParserFactory {
             return STRING_VAR_LENGTH_PARSER;            
         if (parserType.equals(AttribParserType.STRING_VAR_LENGTH60))
             return STRING_VAR_LENGTH_PARSER;            
+        if (parserType.equals(AttribParserType.STRING_VAR_LENGTH61))
+            return STRING_VAR_LENGTH_PARSER;            
 
         
         if (parserType.equals(AttribParserType.STRING_PREFACED_LENGTH))
