@@ -9,6 +9,7 @@ import java.util.Map;
 import org.ajax4jsf.model.KeepAlive;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
 import org.joda.time.Days;
 import org.joda.time.Months;
 
@@ -117,6 +118,17 @@ public class TeamStatisticsBean extends BaseBean {
         return driverStatistics;
     }
     
+    private boolean useTrendScores(){
+        return teamCommonBean.getTimeFrame() == TimeFrame.TODAY || 
+                teamCommonBean.getTimeFrame() == TimeFrame.ONE_DAY_AGO ||
+                teamCommonBean.getTimeFrame() == TimeFrame.TWO_DAYS_AGO || 
+                teamCommonBean.getTimeFrame() == TimeFrame.THREE_DAYS_AGO ||
+                teamCommonBean.getTimeFrame() == TimeFrame.FOUR_DAYS_AGO || 
+                teamCommonBean.getTimeFrame() == TimeFrame.FIVE_DAYS_AGO ||
+                teamCommonBean.getTimeFrame() == TimeFrame.SIX_DAYS_AGO ||
+                teamCommonBean.getTimeFrame() == TimeFrame.MONTH;
+    }
+    
     private void setOverallScoreUsingTrendScore(DriverVehicleScoreWrapper driverVehicleScoreWrapper) {
         Duration duration = Duration.DAYS;
         
@@ -151,7 +163,7 @@ public class TeamStatisticsBean extends BaseBean {
     }
     
     private void populateDateGaps(List<ScoreableEntity> list) {
-        if(list == null)
+        if(list == null || list.size() < 1)
             return;
         
         Integer gap = 0;
@@ -163,9 +175,11 @@ public class TeamStatisticsBean extends BaseBean {
         ScoreableEntity lastEntity = list.get(lastIndex);
             
         DateTime lastEntityDateTime = new DateTime(lastEntity.getDate());
+        lastEntityDateTime = lastEntityDateTime.withZone(DateTimeZone.UTC);
         lastEntityDateTime = lastEntityDateTime.withHourOfDay(0).withMinuteOfHour(0).withSecondOfMinute(0).withMillisOfSecond(0);
         
         DateTime currentDateTime = teamCommonBean.getTimeFrame().getCurrent();
+        currentDateTime = currentDateTime.withZone(DateTimeZone.UTC);
         currentDateTime = currentDateTime.withHourOfDay(0).withMinuteOfHour(0).withSecondOfMinute(0).withMillisOfSecond(0);
         
         if (teamCommonBean.getTimeFrame() == TimeFrame.TODAY || 
@@ -173,10 +187,12 @@ public class TeamStatisticsBean extends BaseBean {
             teamCommonBean.getTimeFrame() == TimeFrame.TWO_DAYS_AGO || 
             teamCommonBean.getTimeFrame() == TimeFrame.THREE_DAYS_AGO ||
             teamCommonBean.getTimeFrame() == TimeFrame.FOUR_DAYS_AGO || 
-            teamCommonBean.getTimeFrame() == TimeFrame.FIVE_DAYS_AGO) {
+            teamCommonBean.getTimeFrame() == TimeFrame.FIVE_DAYS_AGO ||
+            teamCommonBean.getTimeFrame() == TimeFrame.SIX_DAYS_AGO) {
             gap = Days.daysBetween(lastEntityDateTime, currentDateTime).getDays();
             
             DateTime missingDateTime = new DateTime(lastEntity.getDate());
+            missingDateTime = missingDateTime.withZone(DateTimeZone.UTC);
             for(int i = 0; i < gap; i++) {
                 missingDateTime = missingDateTime.plusDays(1);
                 ScoreableEntity se = new ScoreableEntity(lastEntity.getEntityID(),lastEntity.getEntityType(), lastEntity.getIdentifier(), lastEntity.getScore(), missingDateTime.toDate(), lastEntity.getScoreType());
@@ -184,7 +200,7 @@ public class TeamStatisticsBean extends BaseBean {
             }
             return;
         } else if (teamCommonBean.getTimeFrame() == TimeFrame.MONTH) {
-            currentDateTime = currentDateTime.dayOfMonth().withMaximumValue();
+            currentDateTime = currentDateTime.dayOfMonth().withMinimumValue();
             gap = Months.monthsBetween(lastEntityDateTime, currentDateTime).getMonths();
             
             DateTime missingDateTime = new DateTime(lastEntity.getDate());
@@ -199,33 +215,38 @@ public class TeamStatisticsBean extends BaseBean {
     
     private DateTime getFilterDateTime() {
         DateTime filter = teamCommonBean.getTimeFrame().getCurrent();
+        filter = filter.withZone(DateTimeZone.UTC);
         filter = filter.withHourOfDay(0).withMinuteOfHour(0).withSecondOfMinute(0).withMillisOfSecond(0);
-        if (teamCommonBean.getTimeFrame() == TimeFrame.TODAY) {
+        
+        if (teamCommonBean.getTimeFrame() == TimeFrame.ONE_DAY_AGO) {
             filter = filter.minusDays(1);
-        } else if (teamCommonBean.getTimeFrame() == TimeFrame.ONE_DAY_AGO) {
-            filter = filter.minusDays(2);
         } else if (teamCommonBean.getTimeFrame() == TimeFrame.TWO_DAYS_AGO) {
-            filter = filter.minusDays(3);
+            filter = filter.minusDays(2);
         } else if (teamCommonBean.getTimeFrame() == TimeFrame.THREE_DAYS_AGO) {
-            filter = filter.minusDays(4);
+            filter = filter.minusDays(3);
         } else if (teamCommonBean.getTimeFrame() == TimeFrame.FOUR_DAYS_AGO) {
-            filter = filter.minusDays(5);
+            filter = filter.minusDays(4);
         } else if (teamCommonBean.getTimeFrame() == TimeFrame.FIVE_DAYS_AGO) {
+            filter = filter.minusDays(5);
+        } else if (teamCommonBean.getTimeFrame() == TimeFrame.SIX_DAYS_AGO) {
             filter = filter.minusDays(6);
         } else if (teamCommonBean.getTimeFrame() == TimeFrame.MONTH) {
-            filter = filter.minusMonths(1);
-            filter = filter.dayOfMonth().withMaximumValue();
+            filter = filter.dayOfMonth().withMinimumValue();
         }
         
         return filter;
     }
     
     private ScoreableEntity getMatchingEntity(List<ScoreableEntity> trendlist) {
+        if(trendlist == null){
+            return null;
+        }
         
         DateTime filterDateTime = this.getFilterDateTime();
         
         for(ScoreableEntity se : trendlist){
             DateTime dateTime = new DateTime(se.getDate());
+            dateTime = dateTime.withZone(DateTimeZone.UTC); 
             dateTime = dateTime.withHourOfDay(0).withMinuteOfHour(0).withSecondOfMinute(0).withMillisOfSecond(0);
             
             if(dateTime.equals(filterDateTime)){
@@ -261,7 +282,9 @@ public class TeamStatisticsBean extends BaseBean {
 
         DriverVehicleScoreWrapper dvsw = DriverVehicleScoreWrapper.summarize(getDriverStatistics(), teamCommonBean.getGroup());
         
-        this.setOverallScoreUsingTrendScore(dvsw);
+        if(this.useTrendScores()){
+            this.setOverallScoreUsingTrendScore(dvsw);
+        }
         
         dvsw.setScoreStyle(ScoreBox.GetStyleFromScore(dvsw.getScore().getOverall().intValue(), ScoreBoxSizes.SMALL));
 

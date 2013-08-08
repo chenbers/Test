@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
 import org.joda.time.Interval;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -62,6 +63,16 @@ public class TeamStatisticsBeanTest extends BaseBeanTest  {
     private static final String PERSON_LAST_NAME = "PlastName";
     
     private static final String GROUP_NAME = "Test_Group";
+    
+    // Scorable Entity list switch
+    private enum SEListSwitch {
+        DAY_30, // 30 day list
+        MONTH,  // Month List
+        EMPTY,  // Empty List
+        NULL    // Null ;
+    }
+    
+    private SEListSwitch listSwitch;
     
     
     @BeforeClass
@@ -202,7 +213,9 @@ public class TeamStatisticsBeanTest extends BaseBeanTest  {
         
         // Test Today
         commonBean.setTimeFrame(TimeFrame.TODAY);
-        mockScoreDAO.setTimeFrame(bean.getTeamCommonBean().getTimeFrame());
+        this.listSwitch = SEListSwitch.DAY_30;
+        // clear the cache
+        bean.getTeamCommonBean().getCachedTrendResults().clear();
         List<DriverVehicleScoreWrapper> dvswList = bean.getDriverTotals();
         assertNotNull(dvswList);
         assertEquals(1, dvswList.size());
@@ -212,7 +225,9 @@ public class TeamStatisticsBeanTest extends BaseBeanTest  {
         
         //Test One day ago
         commonBean.setTimeFrame(TimeFrame.ONE_DAY_AGO);
-        mockScoreDAO.setTimeFrame(bean.getTeamCommonBean().getTimeFrame());
+        this.listSwitch = SEListSwitch.DAY_30;
+        // clear the cache
+        bean.getTeamCommonBean().getCachedTrendResults().clear();
         dvswList = bean.getDriverTotals();
         assertNotNull(dvswList);
         assertEquals(1, dvswList.size());
@@ -220,9 +235,35 @@ public class TeamStatisticsBeanTest extends BaseBeanTest  {
         assertNotNull(dvswList.get(0).getScore().getOverall());
         assertEquals(SCOREABLE_ENTITY_SCORE_ONE_DAY_AGO, dvswList.get(0).getScore().getOverall());
         
+        //Test empty scorable entity list
+        commonBean.setTimeFrame(TimeFrame.ONE_DAY_AGO);
+        this.listSwitch = SEListSwitch.EMPTY;
+        // clear the cache
+        bean.getTeamCommonBean().getCachedTrendResults().clear();
+        dvswList = bean.getDriverTotals();
+        assertNotNull(dvswList);
+        assertEquals(1, dvswList.size());
+        assertNotNull(dvswList.get(0).getScore());
+        assertNotNull(dvswList.get(0).getScore().getOverall());
+        assertEquals(SCORE_OVERALL, dvswList.get(0).getScore().getOverall());
+        
+       //Test null scorable entity list
+        commonBean.setTimeFrame(TimeFrame.ONE_DAY_AGO);
+        this.listSwitch = SEListSwitch.NULL;
+        // clear the cache
+        bean.getTeamCommonBean().getCachedTrendResults().clear();
+        dvswList = bean.getDriverTotals();
+        assertNotNull(dvswList);
+        assertEquals(1, dvswList.size());
+        assertNotNull(dvswList.get(0).getScore());
+        assertNotNull(dvswList.get(0).getScore().getOverall());
+        assertEquals(SCORE_OVERALL, dvswList.get(0).getScore().getOverall());
+        
         //Test Two day ago
         commonBean.setTimeFrame(TimeFrame.TWO_DAYS_AGO);
-        mockScoreDAO.setTimeFrame(bean.getTeamCommonBean().getTimeFrame());
+        this.listSwitch = SEListSwitch.DAY_30;
+        // clear the cache
+        bean.getTeamCommonBean().getCachedTrendResults().clear();
         dvswList = bean.getDriverTotals();
         assertNotNull(dvswList);
         assertEquals(1, dvswList.size());
@@ -232,7 +273,9 @@ public class TeamStatisticsBeanTest extends BaseBeanTest  {
         
         //Test Three day ago
         commonBean.setTimeFrame(TimeFrame.THREE_DAYS_AGO);
-        mockScoreDAO.setTimeFrame(bean.getTeamCommonBean().getTimeFrame());
+        this.listSwitch = SEListSwitch.DAY_30;
+        // clear the cache
+        bean.getTeamCommonBean().getCachedTrendResults().clear();
         dvswList = bean.getDriverTotals();
         assertNotNull(dvswList);
         assertEquals(1, dvswList.size());
@@ -242,7 +285,9 @@ public class TeamStatisticsBeanTest extends BaseBeanTest  {
         
         //Test Four day ago
         commonBean.setTimeFrame(TimeFrame.FOUR_DAYS_AGO);
-        mockScoreDAO.setTimeFrame(bean.getTeamCommonBean().getTimeFrame());
+        this.listSwitch = SEListSwitch.DAY_30;
+        // clear the cache
+        bean.getTeamCommonBean().getCachedTrendResults().clear();
         dvswList = bean.getDriverTotals();
         assertNotNull(dvswList);
         assertEquals(1, dvswList.size());
@@ -252,7 +297,9 @@ public class TeamStatisticsBeanTest extends BaseBeanTest  {
        
         //Test Five day ago
         commonBean.setTimeFrame(TimeFrame.FIVE_DAYS_AGO);
-        mockScoreDAO.setTimeFrame(bean.getTeamCommonBean().getTimeFrame());
+        this.listSwitch = SEListSwitch.DAY_30;
+        // clear the cache
+        bean.getTeamCommonBean().getCachedTrendResults().clear();
         dvswList = bean.getDriverTotals();
         assertNotNull(dvswList);
         assertEquals(1, dvswList.size());
@@ -262,7 +309,9 @@ public class TeamStatisticsBeanTest extends BaseBeanTest  {
         
         //Test Month
         commonBean.setTimeFrame(TimeFrame.MONTH);
-        mockScoreDAO.setTimeFrame(bean.getTeamCommonBean().getTimeFrame());
+        this.listSwitch = SEListSwitch.MONTH;
+        // clear the cache
+        bean.getTeamCommonBean().getCachedTrendResults().clear();
         dvswList = bean.getDriverTotals();
         assertNotNull(dvswList);
         assertEquals(1, dvswList.size());
@@ -366,12 +415,6 @@ public class TeamStatisticsBeanTest extends BaseBeanTest  {
     }
     
     private class MockScoreDAO implements ScoreDAO {
-        
-        private TimeFrame timeFrame = TimeFrame.TODAY;
-
-        public void setTimeFrame(TimeFrame timeFrame) {
-            this.timeFrame = timeFrame;
-        }
 
         @Override
         public ScoreableEntity findByID(Integer id) {
@@ -415,7 +458,7 @@ public class TeamStatisticsBeanTest extends BaseBeanTest  {
 
         @Override
         public Map<Integer, List<ScoreableEntity>> getTrendScores(Integer groupID, Duration duration, GroupHierarchy gh) {
-            return getGroupTrendsMap(timeFrame);
+            return getGroupTrendsMap();
         }
 
         @Override
@@ -510,17 +553,18 @@ public class TeamStatisticsBeanTest extends BaseBeanTest  {
         return retVal;
     }
     
-    private Map<Integer, List<ScoreableEntity>>getGroupTrendsMap(TimeFrame timeFrame) {
+    private Map<Integer, List<ScoreableEntity>>getGroupTrendsMap() {
         Map<Integer, List<ScoreableEntity>> retVal = new HashMap<Integer, List<ScoreableEntity>>();
-        if(timeFrame == TimeFrame.TODAY || 
-           timeFrame == TimeFrame.ONE_DAY_AGO ||
-           timeFrame == TimeFrame.TWO_DAYS_AGO || 
-           timeFrame== TimeFrame.THREE_DAYS_AGO ||
-           timeFrame == TimeFrame.FOUR_DAYS_AGO || 
-           timeFrame == TimeFrame.FIVE_DAYS_AGO) {
+        if(this.listSwitch == SEListSwitch.DAY_30) {
             retVal.put(TEAM_GROUP_ID, getScoreableEntityListByDay());
-        } else if (timeFrame == TimeFrame.MONTH) {
+        } else if (this.listSwitch == SEListSwitch.MONTH) {
             retVal.put(TEAM_GROUP_ID, getScoreableEntityListByMonth());
+        } else if (this.listSwitch == SEListSwitch.EMPTY){
+            retVal.put(TEAM_GROUP_ID, new ArrayList<ScoreableEntity>());
+        } else if (this.listSwitch == SEListSwitch.EMPTY){
+            retVal.put(TEAM_GROUP_ID, new ArrayList<ScoreableEntity>());
+        } else if (this.listSwitch == SEListSwitch.NULL){
+            retVal.put(TEAM_GROUP_ID, null);
         }
         
         return retVal;
@@ -530,7 +574,8 @@ public class TeamStatisticsBeanTest extends BaseBeanTest  {
         List<ScoreableEntity> retVal = new ArrayList<ScoreableEntity>();
         
         DateTime dateTime = new DateTime();
-        dateTime = dateTime.minusDays(31);
+        dateTime = dateTime.withZone(DateTimeZone.UTC);
+        dateTime = dateTime.minusDays(30);
         
         for(int i = 0; i < 30; i ++) {
             ScoreableEntity se = new ScoreableEntity();
