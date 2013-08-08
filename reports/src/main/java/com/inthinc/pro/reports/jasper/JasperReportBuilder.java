@@ -98,6 +98,9 @@ public class JasperReportBuilder
             reportCriteria.getPramMap().put(JRParameter.REPORT_RESOURCE_BUNDLE, reportCriteria.getReport().getResourceBundle(locale));
             reportCriteria.getPramMap().put("SUBREPORT_URL", ReportUtils.getSubReportURL(reportCriteria.getReport().getSubDirectory()));
 
+            if(formatType == FormatType.EXCEL){
+                reportCriteria.getPramMap().put(JRParameter.IS_IGNORE_PAGINATION, Boolean.TRUE);
+            }
             
             // Lets break up the report if the recordsPerReport is set
             JRBeanCollectionDataSource ds = new JRBeanCollectionDataSource(reportCriteria.getMainDataset() != null? reportCriteria.getMainDataset() : Collections.EMPTY_LIST);
