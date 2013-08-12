@@ -48,8 +48,6 @@ public class AttribParserTests {
         
         Map<String, Object> attribMap = NotebcUtil.parseNote(note);
         
-        System.out.println("attribMap: " + attribMap);
-        
         assertEquals((String)attribMap.get(Attrib.TEXTMESSAGE.getFieldName()), textMessage);
     }
 
@@ -65,9 +63,6 @@ public class AttribParserTests {
         Map<String, Object> attribMap = NotebcUtil.parseNote(note);
         
         String fetchedTextMessage = new String((byte[]) attribMap.get(Attrib.SPEEDDATAHIRES.getFieldName()));
-        System.out.println("attribMap: " + attribMap);
-        System.out.println("fetchedTextMessage: " + fetchedTextMessage);
-        System.out.println("textMessage: " + textMessage);
         
         assertEquals(fetchedTextMessage, textMessage);
     }
@@ -88,7 +83,6 @@ public class AttribParserTests {
         
         Map<String, Object> attribMap = NotebcUtil.parseNote(note);
         
-        System.out.println("attribMap: " + attribMap);
         
         assertEquals((String)attribMap.get(Attrib.DVIR_COMMENTS.getFieldName()), comments);
         assertEquals((String)attribMap.get(Attrib.DVIR_MECHANIC_ID.getFieldName()), mechanicID);
