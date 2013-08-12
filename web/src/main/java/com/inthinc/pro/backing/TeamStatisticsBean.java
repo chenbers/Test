@@ -99,17 +99,6 @@ public class TeamStatisticsBean extends BaseBean {
         }
         return driverStatistics;
     }
-    
-    private boolean useTrendScores(){
-        return teamCommonBean.getTimeFrame() == TimeFrame.TODAY || 
-                teamCommonBean.getTimeFrame() == TimeFrame.ONE_DAY_AGO ||
-                teamCommonBean.getTimeFrame() == TimeFrame.TWO_DAYS_AGO || 
-                teamCommonBean.getTimeFrame() == TimeFrame.THREE_DAYS_AGO ||
-                teamCommonBean.getTimeFrame() == TimeFrame.FOUR_DAYS_AGO || 
-                teamCommonBean.getTimeFrame() == TimeFrame.FIVE_DAYS_AGO ||
-                teamCommonBean.getTimeFrame() == TimeFrame.SIX_DAYS_AGO ||
-                teamCommonBean.getTimeFrame() == TimeFrame.MONTH;
-    }
 
     public void cleanData(List<DriverVehicleScoreWrapper> driverStatistics) {
 
@@ -137,7 +126,7 @@ public class TeamStatisticsBean extends BaseBean {
 
         DriverVehicleScoreWrapper dvsw = DriverVehicleScoreWrapper.summarize(getDriverStatistics(), teamCommonBean.getGroup());
         
-        if(this.useTrendScores()){
+        if(teamCommonBean.useTrendScores()){
             Number score = this.getTeamCommonBean().getOverallScoreUsingTrendScore(groupReportDAO);
             dvsw.getScore().setOverall(score);
         }

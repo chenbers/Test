@@ -38,7 +38,7 @@ public class TeamOverallBean extends BaseBean {
     public TeamOverallBean() {}
 
     private Integer initOverallScore(ScoreType scoreType) {
-        if(this.useTrendScores()){
+        if(teamCommonBean.useTrendScores()){
             return teamCommonBean.getOverallScoreUsingTrendScore(groupReportDAO).intValue();
         }
             
@@ -311,14 +311,5 @@ public class TeamOverallBean extends BaseBean {
         this.groupReportDAO = groupReportDAO;
     }
 
-    private boolean useTrendScores(){
-        return teamCommonBean.getTimeFrame() == TimeFrame.TODAY || 
-                teamCommonBean.getTimeFrame() == TimeFrame.ONE_DAY_AGO ||
-                teamCommonBean.getTimeFrame() == TimeFrame.TWO_DAYS_AGO || 
-                teamCommonBean.getTimeFrame() == TimeFrame.THREE_DAYS_AGO ||
-                teamCommonBean.getTimeFrame() == TimeFrame.FOUR_DAYS_AGO || 
-                teamCommonBean.getTimeFrame() == TimeFrame.FIVE_DAYS_AGO ||
-                teamCommonBean.getTimeFrame() == TimeFrame.SIX_DAYS_AGO ||
-                teamCommonBean.getTimeFrame() == TimeFrame.MONTH;
-    }
+   
 }

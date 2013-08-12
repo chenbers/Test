@@ -196,7 +196,7 @@ public class TeamCommonBean extends BaseBean {
         return retVal;
     }
 	
-	private void populateDateGaps(List<Trend> list) {
+	public void populateDateGaps(List<Trend> list) {
         if(list == null || list.size() < 1)
             return;
         
@@ -301,5 +301,16 @@ public class TeamCommonBean extends BaseBean {
             }
         }
         return null;
+    }
+    
+    public boolean useTrendScores(){
+        return this.getTimeFrame() == TimeFrame.TODAY || 
+                this.getTimeFrame() == TimeFrame.ONE_DAY_AGO ||
+                this.getTimeFrame() == TimeFrame.TWO_DAYS_AGO || 
+                this.getTimeFrame() == TimeFrame.THREE_DAYS_AGO ||
+                this.getTimeFrame() == TimeFrame.FOUR_DAYS_AGO || 
+                this.getTimeFrame() == TimeFrame.FIVE_DAYS_AGO ||
+                this.getTimeFrame() == TimeFrame.SIX_DAYS_AGO ||
+                this.getTimeFrame() == TimeFrame.MONTH;
     }
 }
