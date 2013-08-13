@@ -355,7 +355,8 @@ public enum Attrib {
 	ACKDATA(49167, AttribParserType.ACKDATA),
 	CRASHTRACE(49168, AttribParserType.BYTEARRAY),
     VSETTINGS(49169, AttribParserType.BYTEARRAY),
-    CRASHDATA(49170, AttribParserType.BYTEARRAY);
+    CRASHDATA(49170, AttribParserType.BYTEARRAY),
+    HOSRECORDS(49171, AttribParserType.BYTEARRAY);
 	
     private static Logger logger = LoggerFactory.getLogger(Attrib.class.getName());
 	private static final Map<Integer,Attrib> lookup = new HashMap<Integer,Attrib>();
