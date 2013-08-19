@@ -8,3 +8,4 @@ tp checkapp ohs8aiTh5Ug0
 weatherford checkapp ohs8aiTh5Ug0
 qa checkapp ohs8aiTh5Ug0
 dev checkapp ohs8aiTh5Ug0
+firmware jzobrist secret
