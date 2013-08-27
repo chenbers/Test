@@ -173,7 +173,7 @@ public enum NoteType implements BaseEnum {
      */
     WSZONES_ARRIVAL(78),
     
-    TEXT_MSG_CANNED(80,TextMessageEvent.class), //WAYSMART
+    TEXT_MSG_CANNED(80,TextMessageCannedEvent.class), //WAYSMART
     QUEUE_FULL(81), //WAYSMART
     GPIO_SHUT_DOWN(82), //WAYSMART
     WAYPOINT_EX(83), //WAYSMART

@@ -11,11 +11,18 @@ import com.inthinc.pro.model.MeasurementType;
 public class TextMessageEvent extends Event {
 
         private static final long serialVersionUID = 1L;
-        private Integer textId;
+
+        @EventAttrID(name="TEXT_LENGTH")
+        private Integer textMsgLength;
+
         @EventAttrID(name="TEXT_MESSAGE")
         private String textMsg;
+
+        @EventAttrID(name="EVENT_CODE")
+        private Integer textId;
         
         private static EventAttr[] eventAttrList = {
+            EventAttr.TEXT_LENGTH,
             EventAttr.TEXT_MESSAGE,
         };
         
@@ -36,6 +43,7 @@ public class TextMessageEvent extends Event {
             super(noteID, vehicleID, type, time, speed, odometer, latitude, longitude);
             this.textId = textId;
             this.textMsg = textMsg;
+            this.textMsgLength = textMsg == null ? 0 : textMsg.length();
         }
         
         @Override
@@ -68,6 +76,19 @@ public class TextMessageEvent extends Event {
 
         public void setTextMsg(String textMsg) {
             this.textMsg = textMsg;
+            setTextMsgLength(textMsg == null ? 0 : textMsg.length());
         }
+
+
+        public Integer getTextMsgLength() {
+            return textMsgLength;
+        }
+
+
+        public void setTextMsgLength(Integer textMsgLength) {
+            this.textMsgLength = textMsgLength;
+        }
+        
+        
 
 }

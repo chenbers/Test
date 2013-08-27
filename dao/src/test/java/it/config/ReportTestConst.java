@@ -51,6 +51,8 @@ public interface ReportTestConst {
     public static final int MAN_DOWN_CANCEL_IDX = 58;
     public static final int REMOTE_AUTO_MAN_DOWN_IDX = 60;
     public static final int REMOTE_MANUAL_MAN_DOWN_IDX = 62;
+    public static final int TEXT_MESSAGE_IDX = 64;
+    public static final int TEXT_MESSAGE_CANNED_IDX = 65;
     public static final int DOT_STOPPED_IDX = 70;
     public static final int HOS_NO_HOURS_REMAINING_IDX = 75;
 
@@ -83,7 +85,9 @@ public interface ReportTestConst {
         new WS(REMOTE_MANUAL_MAN_DOWN_IDX, NoteType.REMOTE_MAN_MANDOWN),
         new WS(DOT_STOPPED_IDX,NoteType.DOT_STOPPED),
         new WS(HOS_NO_HOURS_REMAINING_IDX, NoteType.HOS_NO_HOURS),
-        new WS(RF_KILL_IDX, NoteType.SATELLITE_SWITCH)
+        new WS(RF_KILL_IDX, NoteType.SATELLITE_SWITCH),
+        new WS(TEXT_MESSAGE_IDX, NoteType.TEXT_MSG),
+        new WS(TEXT_MESSAGE_CANNED_IDX, NoteType.TEXT_MSG_CANNED)
     };
     public static String TIMEZONE_STR = "US/Mountain";
     public static TimeZone timeZone = TimeZone.getTimeZone(TIMEZONE_STR);
