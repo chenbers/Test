@@ -7,6 +7,7 @@ import java.beans.XMLEncoder;
 import java.io.BufferedInputStream;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -23,6 +24,7 @@ import com.inthinc.pro.model.GroupType;
 import com.inthinc.pro.model.LatLng;
 import com.inthinc.pro.model.Person;
 import com.inthinc.pro.model.RedFlagAlert;
+import com.inthinc.pro.model.Status;
 import com.inthinc.pro.model.User;
 import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.model.Zone;
@@ -33,11 +35,36 @@ public class ITData extends BaseITData{
 	public RedFlagAlert zoneAlert;
 	public List<RedFlagAlert> redFlagAlertList;
 
+    public String hardCodedAccountName;
+    
     
     public void createTestData(SiloService siloService, XMLEncoder xml, Date assignmentDate, boolean includeUnknown, boolean includeZonesAndAlerts)
     {
         createTestData(siloService, xml, assignmentDate, includeUnknown, includeZonesAndAlerts, false);
     }
+    public void createTestData(SiloService siloService, XMLEncoder xml, Date assignmentDate, boolean includeUnknown, boolean includeZonesAndAlerts, boolean includeWSGroup, String hardCodedAccountName) {
+        
+        removeAccount(siloService, hardCodedAccountName);
+        this.hardCodedAccountName = hardCodedAccountName;
+        createTestData(siloService, xml, assignmentDate, includeUnknown, includeZonesAndAlerts, includeWSGroup);
+    }
+    private void removeAccount(SiloService siloService, String accountName) {
+        AccountHessianDAO accountDAO = new AccountHessianDAO();
+        accountDAO.setSiloService(siloService);
+        
+        List<Account> accountList = accountDAO.getAllAcctIDs();
+        for (Account account : accountList) {
+            if (account.getAcctName().equalsIgnoreCase(accountName)) {
+                String timeStamp = Calendar.getInstance().getTime().toString();
+                account.setAcctName("DEL " + accountName + timeStamp.substring(11));
+                account.setStatus(Status.DELETED);
+                accountDAO.update(account);
+                break;
+            }
+        }
+
+    }
+
     public void createTestData(SiloService siloService, XMLEncoder xml, Date assignmentDate, boolean includeUnknown, boolean includeZonesAndAlerts, boolean includeWSGroup)
     {
     	this.siloService = siloService;
@@ -47,7 +74,9 @@ public class ITData extends BaseITData{
         init();
 
         // Account
-        createAccount(includeWSGroup);
+        if (hardCodedAccountName != null)
+            createAccount(includeWSGroup, hardCodedAccountName);
+        else createAccount(includeWSGroup);
         writeObject(account);
 
         // Address

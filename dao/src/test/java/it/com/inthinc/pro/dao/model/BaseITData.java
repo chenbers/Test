@@ -321,17 +321,20 @@ public abstract class BaseITData {
         return empID;
     }
  
-    protected void createAccount(boolean includeWSGroup)
+    protected void createAccount(boolean includeWSGroup) {
+        String timeStamp = Calendar.getInstance().getTime().toString();
+        createAccount(includeWSGroup, "TEST " + timeStamp.substring(11));
+        
+    }
+    protected void createAccount(boolean includeWSGroup, String accountName)
     {
         AccountHessianDAO accountDAO = new AccountHessianDAO();
         accountDAO.setSiloService(siloService);
         
         account = new Account(null, Status.ACTIVE);
-        String timeStamp = Calendar.getInstance().getTime().toString();
-        account.setAcctName("TEST " + timeStamp.substring(11));
+        account.setAcctName(accountName);
         account.setHos(AccountHOSType.HOS_SUPPORT);
         account.setProps(new AccountAttributes());
-System.out.println("acct name: " + "TEST " + timeStamp.substring(11));        
         if (includeWSGroup) {
                 account.getProps().setWaySmart("true");
         }

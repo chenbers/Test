@@ -5,7 +5,6 @@ import it.config.ReportTestConst;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 import com.inthinc.pro.model.LatLng;
 import com.inthinc.pro.model.event.AggressiveDrivingEvent;
@@ -27,7 +26,8 @@ import com.inthinc.pro.model.event.QSIVersionEvent;
 import com.inthinc.pro.model.event.RFKillEvent;
 import com.inthinc.pro.model.event.SeatBeltEvent;
 import com.inthinc.pro.model.event.SpeedingEvent;
-import com.inthinc.pro.model.event.ValidDriverEvent;
+import com.inthinc.pro.model.event.TextMessageCannedEvent;
+import com.inthinc.pro.model.event.TextMessageEvent;
 import com.inthinc.pro.model.event.VersionState;
 import com.inthinc.pro.model.event.WitnessVersionEvent;
 import com.inthinc.pro.model.event.ZoneArrivalEvent;
@@ -248,6 +248,14 @@ public class EventGenerator
                     case ReportTestConst.RF_KILL_IDX:
                         event = new RFKillEvent(0l, 0, ReportTestConst.waySmartEventIndexes[ws].type, eventTime, 0, odometer, 
                                        locations[i].getLat(), locations[i].getLng());
+                        break;
+                    case ReportTestConst.TEXT_MESSAGE_IDX:
+                        event = new TextMessageEvent(0l, 0, ReportTestConst.waySmartEventIndexes[ws].type, eventTime, 0, odometer, 
+                                locations[i].getLat(), locations[i].getLng(), 0, "Integration Test Text Message");
+                        break;
+                    case ReportTestConst.TEXT_MESSAGE_CANNED_IDX:
+                        event = new TextMessageCannedEvent(0l, 0, ReportTestConst.waySmartEventIndexes[ws].type, eventTime, 0, odometer, 
+                                       locations[i].getLat(), locations[i].getLng(), 4, "");
                         break;
                     default:
                         event = new Event(0l, 0, ReportTestConst.waySmartEventIndexes[ws].type, eventTime, 0, odometer, 
