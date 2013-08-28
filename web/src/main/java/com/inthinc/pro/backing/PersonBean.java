@@ -79,6 +79,8 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
     private static final Map<String, State> STATES;
     private static final String REQUIRED_KEY = "required";
     private static final int MAX_FOB_ID_LENGTH = 24;
+    private static final int TRANSITION_PREVIOUS_EMP_ID_LENGTH = 20;
+    private static final int TRANSITION_CURRENT_EMP_ID_LENGTH = 10;
     static {
         // available columns
         AVAILABLE_COLUMNS = new ArrayList<String>();
@@ -1810,5 +1812,27 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
 	public void setSelectedMap(Map<Integer, Boolean> selectedMap) {
 		this.selectedMap = selectedMap;
 	}
+
+    /**
+     * Returns the max editing length of the employee id field.
+     * This is used to prevent new persons being added with employee ids > 10 chars.
+     *
+     * <p>
+     * <b>note: </b> If the decision to restructure the database and all employee id reference everywhere is made
+     * then this method becomes useless and the value {@link PersonBean#TRANSITION_CURRENT_EMP_ID_LENGTH} should be hardcoded in the editPerson.xhtml page.
+     * </p>
+     *
+     * @return {@link PersonBean#TRANSITION_CURRENT_EMP_ID_LENGTH} or {@link PersonBean#TRANSITION_PREVIOUS_EMP_ID_LENGTH}
+     */
+    public int getTransitionEmpIdMaxEditLength(){
+        if (getItem() == null)
+            return TRANSITION_PREVIOUS_EMP_ID_LENGTH;
+
+        //Depending on state (editing or adding) and current value length
+        if (isAdd() || (item.getEmpid()==null || item.getEmpid().length()<=10))
+            return TRANSITION_CURRENT_EMP_ID_LENGTH;
+        else
+            return TRANSITION_PREVIOUS_EMP_ID_LENGTH;
+    }
 
 }

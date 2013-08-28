@@ -460,7 +460,7 @@
                           <td>
                             <rich:message for="editPerson-empId" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
                             <h:inputText value="#{personBean.item.empid}" id="editPerson-empId" disabled="#{!personBean.item.userEditable or personBean.employeeInfoDisabled}" onchange="checkMultiple(this)" styleClass="text" size="30"
-                              style="text-transform: uppercase;" maxlength="20" converter="ForceUpperCaseConverter"/>
+                              style="text-transform: uppercase;" maxlength="#{personBean.transitionEmpIdMaxEditLength}" converter="ForceUpperCaseConverter"/>
                           </td>
                         </tr>   
                         </ui:fragment>
