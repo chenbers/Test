@@ -1,0 +1,153 @@
+package com.inthinc.pro.model;
+
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement
+public class TrailerReportItem extends BaseEntity implements Comparable<TrailerReportItem> {
+    
+    private static final long serialVersionUID = 2285846054728010424L;
+    
+    private String groupName;
+    private Integer groupID;
+    private String driverName;
+    private String trailerYMM;
+    private Integer driverID;
+    private String vehicleName;
+    private Integer vehicleID;
+    private String trailerName;
+    private Integer trailerID;
+    private String vehicleYMM;
+    private Number milesDriven;
+    private Number odometer;
+    private Integer overallScore;
+    private Integer speedScore;
+    private Integer styleScore;
+    
+    public Number getOdometer() {
+        return odometer;
+    }
+
+    public void setOdometer(Number odometer) {
+        this.odometer = odometer;
+    }
+
+    public String getTrailerYMM() {
+        return trailerYMM;
+    }
+
+    public void setTrailerYMM(String trailerYMM) {
+        this.trailerYMM = trailerYMM;
+    }
+
+    public String getGroupName() {
+        return groupName;
+    }
+
+    public void setGroupName(String groupName) {
+        this.groupName = groupName;
+    }
+
+    public Integer getGroupID() {
+        return groupID;
+    }
+
+    public void setGroupID(Integer groupID) {
+        this.groupID = groupID;
+    }
+
+    public String getDriverName() {
+        return driverName;
+    }
+
+    public void setDriverName(String driverName) {
+        this.driverName = driverName;
+    }
+
+    public Integer getDriverID() {
+        return driverID;
+    }
+
+    public void setDriverID(Integer driverID) {
+        this.driverID = driverID;
+    }
+
+    public String getVehicleName() {
+        return vehicleName;
+    }
+
+    public void setVehicleName(String vehicleName) {
+        this.vehicleName = vehicleName;
+    }
+
+    public Integer getVehicleID() {
+        return vehicleID;
+    }
+
+    public void setVehicleID(Integer vehicleID) {
+        this.vehicleID = vehicleID;
+    }
+
+    public String getTrailerName() {
+        return trailerName;
+    }
+
+    public void setTrailerName(String trailerName) {
+        this.trailerName = trailerName;
+    }
+
+    public Integer getTrailerID() {
+        return trailerID;
+    }
+
+    public void setTrailerID(Integer trailerID) {
+        this.trailerID = trailerID;
+    }
+
+    public String getVehicleYMM() {
+        return vehicleYMM;
+    }
+
+    public void setVehicleYMM(String vehicleYMM) {
+        this.vehicleYMM = vehicleYMM;
+    }
+
+    public Number getMilesDriven() {
+        return milesDriven;
+    }
+
+    public void setMilesDriven(Number milesDriven) {
+        this.milesDriven = milesDriven;
+    }
+
+    public Integer getOverallScore() {
+        return overallScore;
+    }
+
+    public void setOverallScore(Integer overallScore) {
+        this.overallScore = overallScore;
+    }
+
+    public Integer getSpeedScore() {
+        return speedScore;
+    }
+
+    public void setSpeedScore(Integer speedScore) {
+        this.speedScore = speedScore;
+    }
+
+    public Integer getStyleScore() {
+        return styleScore;
+    }
+
+    public void setStyleScore(Integer styleScore) {
+        this.styleScore = styleScore;
+    }
+
+    @Override
+    public int compareTo(TrailerReportItem item) {
+        if (trailerName != null && item.getTrailerName() != null)
+            return trailerName.toLowerCase().compareTo(item.getTrailerName().toLowerCase());
+        return 0;
+    }
+    
+}

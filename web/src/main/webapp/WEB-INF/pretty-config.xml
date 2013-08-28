@@ -164,6 +164,16 @@
         <action onPostback="false">#{pagingVehicleReportBean.searchAction}</action>
     </url-mapping>
     
+    <url-mapping id="trailersReport">
+        <pattern>/app/reports/trailersReport</pattern>
+        <view-id>/secured/pagingreports/trailers.faces</view-id>
+    </url-mapping>
+    <url-mapping id="trailersReportWithCriteria">
+        <pattern>/app/reports/trailersReport/</pattern>
+        <view-id>/secured/pagingreports/trailers.faces</view-id>
+        <action onPostback="false">#{pagingTrailerReportBean.searchAction}</action>
+    </url-mapping>
+    
     
     <url-mapping id="idlingReport">
         <pattern>/app/reports/idlingReport</pattern>
