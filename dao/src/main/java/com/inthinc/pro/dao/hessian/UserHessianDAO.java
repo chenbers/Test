@@ -49,6 +49,16 @@ public class UserHessianDAO extends GenericHessianDAO<User, Integer> implements 
     }
 
     @Override
+    public List<User> getUsersByGroupId(Integer groupID) {
+
+        try {
+            return MiscUtil.removeInThinc(getMapper().convertToModelObject(getSiloService().getUsersByGroupID(groupID), User.class));
+        } catch (EmptyResultSetException e) {
+            return Collections.emptyList();
+        }
+    }
+
+    @Override
     public User getUserByPersonID(Integer personID) {
         try {
             return getMapper().convertToModelObject(this.getSiloService().getUserByPersonID(personID), User.class);

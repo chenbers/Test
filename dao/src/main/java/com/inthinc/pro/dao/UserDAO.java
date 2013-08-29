@@ -10,5 +10,7 @@ public interface UserDAO extends GenericDAO<User, Integer>
   
   List<User> getUsersInGroupHierarchy(Integer groupID);
 
+  List<User> getUsersByGroupId(Integer groupID);
+
   User getUserByPersonID(Integer personID);
 }

@@ -43,6 +43,14 @@ public class UserDaoStub implements UserDAO {
     }
 
     /* (non-Javadoc)
+     * @see com.inthinc.pro.dao.UserDAO#getUsersByGroupId(java.lang.Integer)
+     */
+    @Override
+    public List<User> getUsersByGroupId(Integer groupID) {
+        return new ArrayList<User>();
+    }
+
+    /* (non-Javadoc)
      * @see com.inthinc.pro.dao.GenericDAO#create(java.lang.Object, java.lang.Object)
      */
     @Override

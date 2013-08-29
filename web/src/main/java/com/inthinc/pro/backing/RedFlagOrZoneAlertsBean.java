@@ -34,6 +34,7 @@ import com.inthinc.pro.model.TableType;
 import com.inthinc.pro.model.Zone;
 import com.inthinc.pro.model.configurator.SpeedingConstants;
 import com.inthinc.pro.model.event.EventSubCategory;
+import com.inthinc.pro.model.User;
 import com.inthinc.pro.util.MessageUtil;
 import com.inthinc.pro.util.SelectItemUtil;
 
@@ -83,12 +84,22 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
 
     @Override
     protected List<RedFlagOrZoneAlertView> loadItems() {
-        List<RedFlagAlert> plainRedFlagOrZoneAlerts = null;
+        List<RedFlagAlert> plainRedFlagOrZoneAlerts = new ArrayList<RedFlagAlert>();
+
+        // Get for current user and users of lower groups if admin
         if (this.getProUser().isAdmin()) {
-            plainRedFlagOrZoneAlerts = redFlagAlertsDAO.getRedFlagAlertsByUserIDDeep(getUser().getUserID());
+            plainRedFlagOrZoneAlerts.addAll(redFlagAlertsDAO.getRedFlagAlertsByUserIDDeep(getUser().getUserID()));
+        } else {
+            plainRedFlagOrZoneAlerts.addAll(redFlagAlertsDAO.getRedFlagAlertsByUserID(getUser().getUserID()));
         }
-        else {
-            plainRedFlagOrZoneAlerts = redFlagAlertsDAO.getRedFlagAlertsByUserID(getUser().getUserID());
+
+        // Get a list of all users in this group and remove the current user
+        List<User> allUsersInGroup = userDAO.getUsersByGroupId(getUser().getGroupID());
+        allUsersInGroup.remove(this.getUser());
+
+        // Find flags for all users in the list and concatenate
+        for (User user : allUsersInGroup) {
+            plainRedFlagOrZoneAlerts.addAll(redFlagAlertsDAO.getRedFlagAlertsByUserID(user.getUserID()));
         }
 
         // convert the RedFlagAlerts to RedFlagOrZoneAlertViews
