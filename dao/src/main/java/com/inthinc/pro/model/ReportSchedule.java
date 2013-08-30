@@ -357,9 +357,18 @@ public class ReportSchedule implements Cloneable {
 
     public ReportSchedule clone() {
         try {
-            return (ReportSchedule) super.clone();
+            // First, use Object clone
+            ReportSchedule cloned = (ReportSchedule) super.clone();
+
+            // Then clone lists
+            cloned.dayOfWeek = this.dayOfWeek==null?null:(List<Boolean>) ((ArrayList<Boolean>)this.dayOfWeek).clone();
+            cloned.driverIDList = this.driverIDList==null?null:(List<Integer>) ((ArrayList<Integer>)this.driverIDList).clone();
+            cloned.emailTo = this.emailTo==null?null:(List<String>) ((ArrayList<String>)this.emailTo).clone();
+            cloned.groupIDList = this.groupIDList==null?null:(List<Integer>) ((ArrayList<Integer>)this.groupIDList).clone();
+
+            // Primitives and enums clone fine, just return
+            return cloned;
         } catch (CloneNotSupportedException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
             return null;
         }
