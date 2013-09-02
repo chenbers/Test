@@ -7,10 +7,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.io.OutputStream;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-import java.util.TimeZone;
+import java.util.*;
 
 import org.easymock.EasyMock;
 import org.joda.time.DateMidnight;
@@ -434,6 +431,31 @@ public class EmailReportJobTest
       emailReportJob.dispatchReports(reportSchedules);
       assertEquals("expected reports to be sent should be 0 due to error", 0, mockReportCreator.mockReport.emailReportCnt);
         
+    }
+
+    @Test
+    public void whiteSpaceInEmailAddress()
+    {
+        ReportSchedule reportSchedule = new ReportSchedule();
+        reportSchedule.setReportDuration(Duration.DAYS);
+        reportSchedule.setStatus(Status.ACTIVE);
+        reportSchedule.setName("Report Schedule");
+        reportSchedule.setUserID(MOCK_USER_ID);
+        reportSchedule.setGroupID(MOCK_GROUP_ID);
+        reportSchedule.setReportID(1);
+        reportSchedule.setAccountID(MOCK_ACCOUNT_ID);
+
+
+        List<String> emailList = new ArrayList<String>();
+        emailList.add("foo@inthinc.com");
+        emailList.add("  bar@inthinc.com");
+        emailList.add("baz@inthinc.com");
+        reportSchedule.setEmailTo(emailList);
+        Iterator<String> itr = reportSchedule.getEmailTo().iterator();
+        while (itr.hasNext()) {
+            assertTrue("email address doesn't contains white spaces",!itr.next().contains(" "));
+        }
+
     }
 
     

@@ -123,6 +123,9 @@ public class ReportSchedule implements Cloneable {
 
     public void setEmailTo(List<String> emailTo) {
         this.emailTo = emailTo;
+        for (int i=0; i<emailTo.size(); i++ ) {
+            this.emailTo.set(i,this.emailTo.get(i)==null?this.emailTo.get(i):this.emailTo.get(i).trim());
+        }
     }
 
     public Integer getAccountID() {
