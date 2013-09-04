@@ -593,9 +593,13 @@
   <validator-class>com.inthinc.pro.validators.EscalationEmailValidator</validator-class>
  </validator>
  <validator>
-  <validator-id>com.inthinc.pro.validators.EmailValidator</validator-id>
-  <validator-class>com.inthinc.pro.validators.EmailValidator</validator-class>
- </validator>
+    <validator-id>com.inthinc.pro.validators.EmailValidator</validator-id>
+    <validator-class>com.inthinc.pro.validators.EmailValidator</validator-class>
+</validator>
+<validator>
+    <validator-id>com.inthinc.pro.validators.MultipleEmailValidator</validator-id>
+    <validator-class>com.inthinc.pro.validators.MultipleEmailValidator</validator-class>
+</validator>
  <validator>
   <validator-id>com.inthinc.pro.validators.WaySmartSerialNumberValidator</validator-id>
   <validator-class>com.inthinc.pro.validators.WaySmartSerialNumberValidator</validator-class>
