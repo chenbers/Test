@@ -451,9 +451,8 @@ public class EmailReportJobTest
         emailList.add("  bar@inthinc.com");
         emailList.add("baz@inthinc.com");
         reportSchedule.setEmailTo(emailList);
-        Iterator<String> itr = reportSchedule.getEmailTo().iterator();
-        while (itr.hasNext()) {
-            assertTrue("email address doesn't contains white spaces",!itr.next().contains(" "));
+        for(String email : emailList) {
+            assertTrue("email address contains white spaces",!email.contains(" "));
         }
 
     }
