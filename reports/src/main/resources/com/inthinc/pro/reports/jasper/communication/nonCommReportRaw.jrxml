@@ -10,7 +10,6 @@
 	<field name="lastReportedEvent.vehicleName" class="java.lang.String"/>
 	<field name="lastReportedEvent.time" class="java.util.Date"/>
 	<field name="noteDate" class="java.lang.String"/>
-	<field name="lastReportedEvent.lastUnassignedDate" class="java.util.Date"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -105,8 +104,6 @@
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement mode="Transparent" x="183" y="1" width="137" height="20">
-					<!-- This was commented out as if the device serial number is available it should always be shown -->
-					<!-- <printWhenExpression><![CDATA[$F{lastReportedEvent.type} != null && $F{lastReportedEvent.lastUnassignedDate} == null]]></printWhenExpression> -->
 					<printWhenExpression><![CDATA[$F{lastReportedEvent.deviceSerialNum} != null]]></printWhenExpression>
 				</reportElement>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
@@ -129,8 +126,6 @@
 			</textField>
 			<textField>
 				<reportElement mode="Transparent" x="183" y="1" width="137" height="20">
-					<!-- if the vehicle does not have a device serial number display 'unassigned' -->
-					<!-- <printWhenExpression><![CDATA[$F{lastReportedEvent.type} == null || $F{lastReportedEvent.lastUnassignedDate} != null]]></printWhenExpression> -->
 					<printWhenExpression><![CDATA[$F{lastReportedEvent.deviceSerialNum} == null]]></printWhenExpression>
 				</reportElement>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>

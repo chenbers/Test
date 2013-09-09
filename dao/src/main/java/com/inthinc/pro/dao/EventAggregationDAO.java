@@ -37,11 +37,24 @@ public interface EventAggregationDAO {
     
     /**
      * Returns the last event that was sent in for devices currently assigned to vehicles for the groups.
+     * Deprecated because of performance issues with doing it this way i.e. querying the note shards directly.
+     * Leaving though for now to verify that the new method for this (findLastEventForVehicles) returns the same results.  
      * 
      * @param groupIds
      * @param interval
      * @return
      */
+    @Deprecated
     public List<LastReportedEvent> findRecentEventByDevice(List<Integer> groupIds,Interval interval);
+
+    
+    /**
+     * Returns the last event that was sent in for vehicles for the groups. (used in the vehicle non-comm report)
+     * 
+     * @param groupIds
+     * @param interval
+     * @return
+     */
+    public List<LastReportedEvent> findLastEventForVehicles(List<Integer> groupIds,Interval interval);
 
 }

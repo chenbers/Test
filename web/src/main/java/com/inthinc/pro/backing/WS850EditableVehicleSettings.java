@@ -27,6 +27,8 @@ public class WS850EditableVehicleSettings extends EditableVehicleSettings {
     private Integer hardVertical; //SensitivitySlider value
 
     private Integer dotVehicleType;
+    private boolean idleBuzzer;
+
 
     public WS850EditableVehicleSettings(Integer vehicleID,
                                         Integer[] speedSettings, 
@@ -36,7 +38,8 @@ public class WS850EditableVehicleSettings extends EditableVehicleSettings {
                                         Integer hardVertical, 
                                         double maxSpeed,
                                         Integer dotVehicleType, 
-                                        Integer idlingThreshold) {
+                                        Integer idlingThreshold,
+                                        boolean idleBuzzer) {
         super(vehicleID, ProductType.WS850, null);
         this.speedSettings = speedSettings;
         this.maxSpeed = maxSpeed;
@@ -46,6 +49,7 @@ public class WS850EditableVehicleSettings extends EditableVehicleSettings {
         this.hardVertical = hardVertical;
         this.dotVehicleType = dotVehicleType;
         this.idlingSeconds = idlingThreshold;
+        this.idleBuzzer = idleBuzzer;
     }
     public WS850EditableVehicleSettings() {
         super();
@@ -188,4 +192,19 @@ public class WS850EditableVehicleSettings extends EditableVehicleSettings {
     public Integer getIdlingSecondsMax() {
         return IdlingSetting.MAX.getSlider();
     }
+    public boolean isIdleBuzzer() {
+        return idleBuzzer;
+    }
+    public void setIdleBuzzer(boolean idleBuzzer) {
+        this.idleBuzzer = idleBuzzer;
+    }
+    /**
+     * Returns an Integer value representing the idleBuzzer setting.
+     * @return 1 if idleBuzzer set to true
+     *         0 if idleBuzzer set to false
+     */
+    public Integer getIdleBuzzer() {
+        return idleBuzzer?1:0;
+    }
+
 }

@@ -38,6 +38,10 @@ public class TeamOverallBean extends BaseBean {
     public TeamOverallBean() {}
 
     private Integer initOverallScore(ScoreType scoreType) {
+        if(teamCommonBean.useTrendScores()){
+            return teamCommonBean.getOverallScoreUsingTrendScore(groupReportDAO).intValue();
+        }
+            
         ScoreableEntity scoreableEntity = getScoreableEntityNumber();               
         if (scoreableEntity == null || scoreableEntity.getScore() == null) {
             return -1;
@@ -307,5 +311,5 @@ public class TeamOverallBean extends BaseBean {
         this.groupReportDAO = groupReportDAO;
     }
 
-
+   
 }

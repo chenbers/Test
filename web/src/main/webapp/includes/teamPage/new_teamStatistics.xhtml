@@ -185,8 +185,6 @@
 					</pretty:link>
                    	<h:outputText value="#{total.score.safetyTotal}" rendered="#{total.score.safetyTotal eq 0}"/>
 				</rich:column>
-<!-- 
-US6954 - Removing backing events from portal until after firmware side implements.  				
 				<rich:column rendered="#{tableColumns['backing_time'].visible}" id="newTeamStatsTab-totalBackingTime">
 					<f:facet name="header">
 						#{messages.team_backing_time}
@@ -202,8 +200,7 @@ US6954 - Removing backing events from portal until after firmware side implement
 						#{messages.team_backing}
 					</f:facet>
                    	<h:outputText value="#{total.score.backingEvents}"/>
-				</rich:column>
- -->											
+				</rich:column>							
 				</rich:subTable>
 				</f:facet>
 				<rich:column rendered="#{tableColumns['driver_team'].visible}" sortBy="#{item.driver.person.first}" id="newTeamStatsTab-driverName">
@@ -345,8 +342,6 @@ US6954 - Removing backing events from portal until after firmware side implement
 					</pretty:link>
                    	<h:outputText value="#{item.score.safetyTotal}" rendered="#{item.score.safetyTotal eq 0}"/>
 				</rich:column>							
-<!-- 
-US6954 - Removing backing events from portal until after firmware side implements.  				
 				<rich:column rendered="#{tableColumns['backing_time'].visible}" sortBy="#{item.score.backingTime}" id="newTeamStatsTab-backingTime">
 					<f:facet name="header">
 						#{messages.team_backing_time}
@@ -362,8 +357,7 @@ US6954 - Removing backing events from portal until after firmware side implement
 						#{messages.team_backing}
 					</f:facet>
                    	<h:outputText value="#{item.score.backingEvents}"/>
-				</rich:column>
--->											
+				</rich:column>							
 				<f:facet name="footer">				
 					<h:panelGroup>
 						<rich:datascroller align="center" id="driverScroller" />

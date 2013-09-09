@@ -8,8 +8,19 @@ import org.slf4j.LoggerFactory;
 
 public class LatLngUtil {
 	private static Logger logger = LoggerFactory.getLogger(LatLngUtil.class);
-	
-	
+
+	public static byte[] encodeLng(double lng)
+    {
+        return ReadUtil.convertIntToBytes((int)(lng  / 360.0 * 4294967295L));      
+
+    }
+
+    public static byte[] encodeLat(double lat)
+    {
+        return ReadUtil.convertIntToBytes((int)((90.0 - lat ) / 180.0 * 4294967295L));      
+    }
+
+/*	
 	public static byte[] encodeLng(double lng)
 	{
 		byte[] position_encoded_bytes = new byte[3];
@@ -44,7 +55,8 @@ public class LatLngUtil {
 		
 		return position_encoded_bytes;
 	}
-	
+*/
+    
 /*	
 	public static LatLng readLatLng(byte[] data, int size)
 	{
