@@ -102,11 +102,8 @@ public enum ReportGroup {
             ReportCategory.DriverPerformance, EnumSet.of(ReportAccountType.PERFORMANCE), ReportType.DRIVER_COACHING),
     DRIVER_EXCLUDED_VIOLATIONS("Driver Coaching", 42, EntityType.ENTITY_GROUP, new CriteriaType[] { CriteriaType.TIMEFRAME, CriteriaType.INACTIVE_DRIVERS, CriteriaType.ZERO_MILES_DRIVERS }, new GroupType[] { GroupType.DIVISION, GroupType.FLEET, GroupType.TEAM },
             ReportCategory.DriverPerformance, EnumSet.of(ReportAccountType.PERFORMANCE), ReportType.DRIVER_EXCLUDED_VIOLATIONS),
-/*
-    US6954 - Removing backing events from portal until after firmware side implements.                  
     BACKING_REPORT("Back-Up Events Report", 108, EntityType.ENTITY_GROUP, new CriteriaType[] { CriteriaType.TIMEFRAME_STRICT, CriteriaType.INACTIVE_DRIVERS, CriteriaType.ZERO_MILES_DRIVERS }, new GroupType[] { GroupType.DIVISION, GroupType.FLEET,
                     GroupType.TEAM }, ReportCategory.DriverPerformance, EnumSet.of(ReportAccountType.PERFORMANCE), ReportType.BACKING_REPORT),
- */
 
             
      /* Forms */

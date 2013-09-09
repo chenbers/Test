@@ -12,11 +12,7 @@ import org.junit.Test;
 public class EventCategoryTest {
 
     Integer[] expectedNoteInCatCounts = {
-/*
-US6954 - Removing backing events from portal until after firmware side implements.
             11,
-*/
-            10,
             19,
             0,
             11,
@@ -60,17 +56,9 @@ US6954 - Removing backing events from portal until after firmware side implement
             5,  //  DVIR
     		4,	//  EMERGENCY
     		3,	//  HOS
-/*
-            US6954 - Removing backing events from portal until after firmware side implements.
     		2,	//  NONE
-*/    		
-            3,  //  NONE
     		1,	//  TEXT
-/*
-    	    US6954 - Removing backing events from portal until after firmware side implements.        
-            10, //  VIOLATION
-*/            
-    		9,	//  VIOLATION
+    		10,	//  VIOLATION
     		18,	//  WARNING
     		2	//  ZONE
     };

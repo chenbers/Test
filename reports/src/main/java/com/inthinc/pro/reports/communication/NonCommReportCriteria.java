@@ -84,7 +84,7 @@ public class NonCommReportCriteria extends ReportCriteria{
         
         public NonCommReportCriteria build(){
             logger.debug(String.format("Building NonCommReportCriteria with locale %s",locale));
-            List<LastReportedEvent> lastReportedEvents = eventAggregationDAO.findRecentEventByDevice(this.groupIDs, timeFrame.getInterval());
+            List<LastReportedEvent> lastReportedEvents = eventAggregationDAO.findLastEventForVehicles(this.groupIDs, timeFrame.getInterval());
             
             List<NonCommReportCriteria.LastReportedEventWrapper> lastReportedEventWrappers = new ArrayList<NonCommReportCriteria.LastReportedEventWrapper>();
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat(MessageUtil.formatMessageString("dateTimeFormat", locale), locale);
@@ -99,10 +99,8 @@ public class NonCommReportCriteria extends ReportCriteria{
             
             NonCommReportCriteria criteria = new NonCommReportCriteria(this.locale);
             criteria.setMainDataset(lastReportedEventWrappers);
-            criteria.addDateParameter(REPORT_START_DATE, timeFrame.getInterval().getStart().toDate(), this.dateTimeZone.toTimeZone());
+            criteria.addDateParameter(REPORT_START_DATE, timeFrame.getInterval().getStart().toDate(), DateTimeZone.UTC.toTimeZone());
             
-            /* The interval returns for the end date the beginning of the next day. We minus a second to get the previous day */
-            criteria.addDateParameter(REPORT_END_DATE, timeFrame.getInterval().getEnd().minusSeconds(1).toDate(), this.dateTimeZone.toTimeZone());
             return criteria;
             
         }

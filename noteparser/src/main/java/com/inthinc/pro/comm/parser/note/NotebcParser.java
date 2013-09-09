@@ -33,7 +33,7 @@ public class NotebcParser implements NoteParser{
     			AttribParser parser = null;
     			int attribCode = ReadUtil.read(data, offset, 2);
     
-    			logger.debug("attribCode: " + attribCode);
+//    			logger.debug("attribCode: " + attribCode);
     			
     			offset += 2;
     			Attrib attrib = Attrib.get(attribCode);

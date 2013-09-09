@@ -82,7 +82,8 @@ public enum SettingType implements BaseEnum
     WS850_SPEED_LIMIT(54,10054,0,0,"speed_limit"),
     WS850_MAX_SPEED_LIMIT(55,10030,0,0,"max_speed_threshold"),
     WS850_IDLING_TIMEOUT(56,10060,0,0,"idleThreshold"),
-    WS850_HOS_SETTING(57, 10029, 0, 0, "hos_vehicle_type");
+    WS850_HOS_SETTING(57, 10029, 0, 0, "hos_vehicle_type"),
+    WS850_BUZZER_IDLE(58, 10116, 2, 0, "idleBuzzer");
     
     private Integer       settingsCount; //This is how many possible values there are for this device setting
     private Integer       settingID; //SettingID in settingDefs table

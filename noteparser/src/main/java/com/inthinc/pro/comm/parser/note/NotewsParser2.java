@@ -17,7 +17,7 @@ public class NotewsParser2 implements NoteParser{
 
 	public Map<String, Object> parseNote(byte[] data)
 	{
-		HashMap<String, Object> attribMap = new HashMap<String, Object>();
+		Map<String, Object> attribMap = new HashMap<String, Object>();
 		
 		try {
     		int noteTypeCode = ReadUtil.read(data, 0, 1);
@@ -101,13 +101,13 @@ public class NotewsParser2 implements NoteParser{
 					AttribParser attribParser = AttribParserFactory.getParserForParserType(Attrib.LOWIDLE2.getAttribParserType()); 
 					attribParser.parseAttrib(data, offset, Attrib.LOWIDLE2.getFieldName(), attribMap);
 					offset += 2;
-					logger.info("EXTRADATA_LOWIDLE: " + attribMap.get(Attrib.LOWIDLE2.getFieldName()));
+//					logger.info("EXTRADATA_LOWIDLE: " + attribMap.get(Attrib.LOWIDLE2.getFieldName()));
 					
 					
 					attribParser = AttribParserFactory.getParserForParserType(Attrib.HIGHIDLE2.getAttribParserType()); 
 					attribParser.parseAttrib(data, offset, Attrib.HIGHIDLE2.getFieldName(), attribMap);
 					offset += 2;
-					logger.info("EXTRADATA_HIGHIDLE: " + attribMap.get(Attrib.HIGHIDLE2.getFieldName()));
+//					logger.info("EXTRADATA_HIGHIDLE: " + attribMap.get(Attrib.HIGHIDLE2.getFieldName()));
 				}
 	
 				if ((extraData & EXTRA_DATA_TEMPERATURE) == EXTRA_DATA_TEMPERATURE)
@@ -120,7 +120,7 @@ public class NotewsParser2 implements NoteParser{
 				{
 					AttribParser attribParser = AttribParserFactory.getParserForParserType(Attrib.DRIVERSTR.getAttribParserType()); 
 					attribParser.parseAttrib(data, offset, Attrib.DRIVERSTR.getFieldName(), attribMap);
-					logger.info("EXTRADATA_DRIVERID: " + attribMap.get(Attrib.DRIVERSTR.getFieldName()));
+					logger.debug("EXTRADATA_DRIVERID: " + attribMap.get(Attrib.DRIVERSTR.getFieldName()));
 				}
 			}
 		} catch(Throwable e)

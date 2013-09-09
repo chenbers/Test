@@ -14,11 +14,7 @@ import com.inthinc.pro.model.BaseEnum;
 @XmlRootElement
 public enum EventCategory implements BaseEnum
 {
-/*
-    US6954 - Removing backing events from portal until after firmware side implements.                  
     VIOLATION(1, "VIOLATION", EnumSet.of(EventSubCategory.DRIVING_STYLE, EventSubCategory.SPEED, EventSubCategory.COMPLIANCE, EventSubCategory.FATIGUE, EventSubCategory.REVERSE)),
-*/    
-    VIOLATION(1, "VIOLATION", EnumSet.of(EventSubCategory.DRIVING_STYLE, EventSubCategory.SPEED, EventSubCategory.COMPLIANCE, EventSubCategory.FATIGUE)),
     WARNING(2, "WARNING", EnumSet.of(EventSubCategory.VEHICLE, EventSubCategory.WIRELINE, EventSubCategory.INSTALLATION)),
 //    DRIVER(3, "DRIVER"),
     NONE(4, "NONE"),

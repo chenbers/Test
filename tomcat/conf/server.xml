@@ -133,8 +133,9 @@
 
         <!-- Access log processes all example.
              Documentation at: /docs/config/valve.html -->
-        <Valve className="org.apache.catalina.valves.AccessLogValve" directory="logs"  
-               prefix="localhost_access_log." suffix=".txt" pattern="common" resolveHosts="false"/>
+<!--        <Valve className="org.apache.catalina.valves.AccessLogValve" directory="logs"  
+               prefix="localhost_access_log." suffix=".txt" pattern="common" resolveHosts="false"/> -->
+
         <Valve className="org.apache.catalina.valves.AccessLogValve"
                 directory="logs" prefix="access_log." suffix=".txt"
                 pattern="%{X-Forwarded-For}i %l %u %t &quot;%r&quot; %s %b &quot;%{Referer}i&quot; &quot;%{User-Agent}i&quot;"

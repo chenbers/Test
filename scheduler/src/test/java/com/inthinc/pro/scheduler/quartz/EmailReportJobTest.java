@@ -7,11 +7,12 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.io.OutputStream;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-import java.util.TimeZone;
+import java.util.*;
 
+import com.inthinc.pro.model.GroupType;
+import com.inthinc.pro.model.MeasurementType;
+import com.inthinc.pro.reports.ifta.StateMileageByVehicleReportCriteria;
+import com.inthinc.pro.reports.ifta.model.MileageByVehicle;
 import org.easymock.EasyMock;
 import org.joda.time.DateMidnight;
 import org.joda.time.DateTime;
@@ -69,6 +70,135 @@ public class EmailReportJobTest
             return mockReport;
         }
 
+    }
+
+    @Test
+    public void emailDuplicationTest(){
+        // Mock dao
+        AccountDAO accountDAO = initMockAccountDAO();
+
+        UserDAO userDAO = createMock(UserDAO.class);
+        User user = new User();
+        user.setUserID(MOCK_USER_ID);
+        user.setUsername("Hello");
+        user.setStatus(Status.ACTIVE);
+        Person p = new Person();
+        p.setLocale(Locale.US);
+        p.setPriEmail("fb@inthinc.com");
+        p.setTimeZone(TimeZone.getTimeZone("MST"));
+        p.setLocale(Locale.ENGLISH);
+        user.setPerson(p);
+        EasyMock.makeThreadSafe(userDAO, true);
+        expect(userDAO.findByID(EasyMock.isA(Integer.class))).andReturn(user).anyTimes();
+        replay(userDAO);
+
+        GroupDAO groupDAO = createMock(GroupDAO.class);
+        Group group = new Group();
+        group.setGroupID(MOCK_GROUP_ID);
+        group.setAccountID(MOCK_ACCOUNT_ID);
+        group.setParentID(0);
+        group.setName("group");
+        group.setType(GroupType.TEAM);
+        expect(groupDAO.findByID(EasyMock.isA(Integer.class))).andReturn(group).anyTimes();
+        List<Group> groupList = new ArrayList<Group>();
+        groupList.add(group);
+        EasyMock.makeThreadSafe(groupDAO, true);
+        expect(groupDAO.getGroupsByAcctID(EasyMock.isA(Integer.class))).andReturn(groupList).anyTimes();
+        expect(groupDAO.getGroupHierarchy(EasyMock.isA(Integer.class),EasyMock.isA(Integer.class))).andReturn(groupList).anyTimes();
+        replay(groupDAO);
+        DriverDAO driverDAO = initMockDriverDAO(1);
+
+        List<Integer> driverIDList = new ArrayList<Integer>();
+        for (Driver driver : driverDAO.getAllDrivers(MOCK_GROUP_ID))
+            driverIDList.add(driver.getDriverID());
+
+        List<Integer> groupIDList = new ArrayList<Integer>();
+        groupIDList.add(MOCK_GROUP_ID);
+
+        // Configure the schedule
+        ReportSchedule reportSchedule = buildReportSchedule(Occurrence.DAILY, TimeZone.getTimeZone("MST"));
+        reportSchedule.setReportScheduleID(MOCK_REPORT_SCHEDULE_ID);
+        reportSchedule.setAccountID(MOCK_ACCOUNT_ID);
+        reportSchedule.setReportID(ReportGroup.DRIVER_PERFORMANCE_INDIVIDUAL.getCode());
+        reportSchedule.setGroupIDList(groupIDList);
+        reportSchedule.setDeliverToManagers(true);
+        reportSchedule.setIftaOnly(false);
+        reportSchedule.setIncludeInactiveDrivers(true);
+        reportSchedule.setIncludeZeroMilesDrivers(true);
+        reportSchedule.setName("Mock Report Schedule");
+
+        ReportScheduleDAO reportScheduleDAO = initReportScheduleDAO(reportSchedule);
+        List<ReportSchedule> reportSchedules = new ArrayList<ReportSchedule>();
+        reportSchedules.add(reportSchedule);
+
+        List<ReportCriteria> criteriaList = new ArrayList<ReportCriteria>();
+        for (Integer driverID : driverIDList) {
+            ReportCriteria reportCriteria = new DriverPerformanceReportCriteria(ReportType.DRIVER_PERFORMANCE_INDIVIDUAL, Locale.ENGLISH);
+            List<DriverPerformance> driverDataList = new ArrayList<DriverPerformance>();
+            DriverPerformance dp = new DriverPerformance();
+            dp.setDriverID(driverID);
+            driverDataList.add(dp);
+            reportCriteria.setMainDataset(driverDataList);
+            criteriaList.add(reportCriteria);
+        }
+
+        ReportCriteriaService reportCriteriaService = EasyMock.createMock(ReportCriteriaService.class);
+        EasyMock.makeThreadSafe(reportCriteriaService, true);
+        expect(reportCriteriaService.getDriverPerformanceIndividualReportCriteria(EasyMock.isA(GroupHierarchy.class),
+                EasyMock.isA(Integer.class), EasyMock.isA(List.class),
+                EasyMock.isA(Interval.class),EasyMock.isA(Locale.class), EasyMock.isA(Boolean.class), EasyMock.anyBoolean(),EasyMock.anyBoolean())).andReturn(criteriaList).anyTimes();
+        replay(reportCriteriaService);
+
+        // Configure the report
+        MockReportCreator mockReportCreator = new MockReportCreator();
+        EmailReportJob emailReportJob = new EmailReportJob();
+        emailReportJob.setAccountDAO(accountDAO);
+        emailReportJob.setGroupDAO(groupDAO);
+        emailReportJob.setUserDAO(userDAO);
+        emailReportJob.setDriverDAO(driverDAO);
+        emailReportJob.setReportScheduleDAO(reportScheduleDAO);
+        emailReportJob.setReportCriteriaService(reportCriteriaService);
+        emailReportJob.setWebContextPath("Mock");
+        emailReportJob.setEncryptPassword("mockPassword");
+        emailReportJob.initTextEncryptor();
+        emailReportJob.setReportCreator((ReportCreator)mockReportCreator);
+        emailReportJob.setWebContextPath(null);
+
+        // Execute and assert
+        reportSchedule.setLastDate(null);
+        List<String> emailTo = reportSchedule.getEmailTo();
+
+        for (int i = 1; i<=10; i++)
+            emailReportJob.dispatchReports(reportSchedules);
+
+        assertTrue(reportSchedule.getEmailTo().equals(emailTo));
+
+        // Change, execute and assert
+        reportSchedule.setReportID(ReportGroup.STATE_MILEAGE_BY_VEHICLE.getCode());
+        reportScheduleDAO = initReportScheduleDAO(reportSchedule);
+        emailReportJob.setReportScheduleDAO(reportScheduleDAO);
+
+        ReportCriteria reportCriteria = new StateMileageByVehicleReportCriteria(Locale.ENGLISH);
+        List<MileageByVehicle> mileageDataList = new ArrayList<MileageByVehicle>();
+        MileageByVehicle mv = new MileageByVehicle();
+        mv.setVehicleName("some car");
+        mileageDataList.add(mv);
+        reportCriteria.setMainDataset(mileageDataList);
+
+        reportCriteriaService = EasyMock.createMock(ReportCriteriaService.class);
+        EasyMock.makeThreadSafe(reportCriteriaService, true);
+
+        expect(reportCriteriaService.getStateMileageByVehicleReportCriteria(EasyMock.isA(GroupHierarchy.class), EasyMock.isA(List.class),
+                EasyMock.isA(Interval.class), EasyMock.isA(Locale.class), EasyMock.isA(MeasurementType.class), EasyMock.anyBoolean())).andReturn(reportCriteria).anyTimes();
+        replay(reportCriteriaService);
+        emailReportJob.setReportCriteriaService(reportCriteriaService);
+
+        assertTrue(reportSchedule.getEmailTo().equals(emailTo));
+
+        for (int i = 1; i<=10; i++)
+            emailReportJob.dispatchReports(reportSchedules);
+
+        assertTrue(reportSchedule.getEmailTo().equals(emailTo));
     }
     
     @Test
@@ -436,6 +566,30 @@ public class EmailReportJobTest
         
     }
 
+    @Test
+    public void whiteSpaceInEmailAddress()
+    {
+        ReportSchedule reportSchedule = new ReportSchedule();
+        reportSchedule.setReportDuration(Duration.DAYS);
+        reportSchedule.setStatus(Status.ACTIVE);
+        reportSchedule.setName("Report Schedule");
+        reportSchedule.setUserID(MOCK_USER_ID);
+        reportSchedule.setGroupID(MOCK_GROUP_ID);
+        reportSchedule.setReportID(1);
+        reportSchedule.setAccountID(MOCK_ACCOUNT_ID);
+
+
+        List<String> emailList = new ArrayList<String>();
+        emailList.add("foo@inthinc.com");
+        emailList.add("  bar@inthinc.com");
+        emailList.add("baz@inthinc.com");
+        reportSchedule.setEmailTo(emailList);
+        for(String email : emailList) {
+            assertTrue("email address contains white spaces",!email.contains(" "));
+        }
+
+    }
+
     
     class JobThread extends Thread {
         EmailReportJob emailReportJob;
@@ -449,7 +603,7 @@ public class EmailReportJobTest
         }
         public void run() {
             int reportCount = emailReportJob.dispatchReports(reportSchedules);
-            
+
             assertEquals(getName() + " expected reports to be sent", expectedReportCount, reportCount);
         }
         

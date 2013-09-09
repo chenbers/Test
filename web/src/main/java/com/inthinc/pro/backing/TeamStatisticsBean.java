@@ -4,12 +4,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
-import java.util.TimeZone;
 
 import org.ajax4jsf.model.KeepAlive;
 import org.apache.log4j.Logger;
-import org.joda.time.DateTime;
-import org.joda.time.DateTimeZone;
 
 import com.inthinc.pro.backing.ui.ScoreBox;
 import com.inthinc.pro.backing.ui.ScoreBoxSizes;
@@ -22,7 +19,6 @@ import com.inthinc.pro.reports.ReportCriteria;
 import com.inthinc.pro.reports.ReportRenderer;
 import com.inthinc.pro.reports.service.ReportCriteriaService;
 import com.inthinc.pro.util.MessageUtil;
-import com.inthinc.pro.util.MiscUtil;
 
 @KeepAlive
 public class TeamStatisticsBean extends BaseBean {
@@ -129,6 +125,12 @@ public class TeamStatisticsBean extends BaseBean {
         List<DriverVehicleScoreWrapper> local = new ArrayList<DriverVehicleScoreWrapper>();
 
         DriverVehicleScoreWrapper dvsw = DriverVehicleScoreWrapper.summarize(getDriverStatistics(), teamCommonBean.getGroup());
+        
+        if(teamCommonBean.useTrendScores()){
+            Number score = this.getTeamCommonBean().getOverallScoreUsingTrendScore(groupReportDAO);
+            dvsw.getScore().setOverall(score);
+        }
+        
         dvsw.setScoreStyle(ScoreBox.GetStyleFromScore(dvsw.getScore().getOverall().intValue(), ScoreBoxSizes.SMALL));
 
         local.add(dvsw);

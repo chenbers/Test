@@ -8,6 +8,7 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import com.inthinc.pro.backing.TeamMockData.SEListSwitch;
 import com.inthinc.pro.dao.mock.data.UnitTestStats;
 import com.inthinc.pro.model.TimeFrame;
 import com.inthinc.pro.model.aggregation.DriverVehicleScoreWrapper;
@@ -41,6 +42,7 @@ public class TeamStatisticsBeanTest extends BaseBeanTest  {
         assertNotNull(bean.getReportRenderer());
         assertNotNull(bean.getReportCriteriaService());
         assertNotNull(bean.getAccountDAO());
+        assertNotNull(bean.getGroupReportDAO());
    
         // Timeframe initialized correctly?
         TeamCommonBean tcb = bean.getTeamCommonBean();
@@ -127,5 +129,134 @@ public class TeamStatisticsBeanTest extends BaseBeanTest  {
         assertEquals(lTotals.get(0).getScore().getSafetyTotal().intValue(),140);
         assertEquals(lTotals.get(0).getScore().getBackingTime(),140);
         assertEquals(lTotals.get(0).getScore().getBackingEvents(),3);
-    }   
+    }  
+    
+    @Test
+    public void testGetDriverTotals() {
+     
+        // fleet manager level
+        ProUser pu = loginUser(UnitTestStats.UNIT_TEST_LOGIN);
+        
+        //pacify compiler
+        pu.getClass();
+        
+        TeamStatisticsBean bean = new TeamStatisticsBean();
+        TeamMockData mockData = new TeamMockData();
+        bean.setGroupReportDAO(mockData.getMockGroupReportDAO());
+        
+        TeamCommonBean commonBean = new TeamCommonBean();
+        
+        commonBean.setGroupID(TeamMockData.TEAM_GROUP_ID);
+        commonBean.setGroup(mockData.getGroup());
+       
+        bean.setTeamCommonBean(commonBean);
+        
+        // Test Today
+        commonBean.setTimeFrame(TimeFrame.TODAY);
+        mockData.setListSwitch(SEListSwitch.DAY_30);
+        // clear the cache
+        bean.getTeamCommonBean().getCachedTrendResults().clear();
+        List<DriverVehicleScoreWrapper> dvswList = bean.getDriverTotals();
+        assertNotNull(dvswList);
+        assertEquals(1, dvswList.size());
+        assertNotNull(dvswList.get(0).getScore());
+        assertNotNull(dvswList.get(0).getScore().getOverall());
+        assertEquals(TeamMockData.TREND_SCORE_TODAY, dvswList.get(0).getScore().getOverall());
+        
+        //Test One day ago
+        commonBean.setTimeFrame(TimeFrame.ONE_DAY_AGO);
+        mockData.setListSwitch(SEListSwitch.DAY_30);
+        // clear the cache
+        bean.getTeamCommonBean().getCachedTrendResults().clear();
+        dvswList = bean.getDriverTotals();
+        assertNotNull(dvswList);
+        assertEquals(1, dvswList.size());
+        assertNotNull(dvswList.get(0).getScore());
+        assertNotNull(dvswList.get(0).getScore().getOverall());
+        assertEquals(TeamMockData.TREND_SCORE_ONE_DAY_AGO, dvswList.get(0).getScore().getOverall());
+        
+        //Test empty scorable entity list
+        commonBean.setTimeFrame(TimeFrame.ONE_DAY_AGO);
+        mockData.setListSwitch(SEListSwitch.EMPTY);
+        // clear the cache
+        bean.getTeamCommonBean().getCachedTrendResults().clear();
+        dvswList = bean.getDriverTotals();
+        assertNotNull(dvswList);
+        assertEquals(1, dvswList.size());
+        assertNotNull(dvswList.get(0).getScore());
+        assertNotNull(dvswList.get(0).getScore().getOverall());
+        assertEquals(TeamMockData.SCORE_NA, dvswList.get(0).getScore().getOverall());
+        
+       //Test null scorable entity list
+        commonBean.setTimeFrame(TimeFrame.ONE_DAY_AGO);
+        mockData.setListSwitch(SEListSwitch.NULL);
+        // clear the cache
+        bean.getTeamCommonBean().getCachedTrendResults().clear();
+        dvswList = bean.getDriverTotals();
+        assertNotNull(dvswList);
+        assertEquals(1, dvswList.size());
+        assertNotNull(dvswList.get(0).getScore());
+        assertNotNull(dvswList.get(0).getScore().getOverall());
+        assertEquals(TeamMockData.SCORE_NA, dvswList.get(0).getScore().getOverall());
+        
+        //Test Two day ago
+        commonBean.setTimeFrame(TimeFrame.TWO_DAYS_AGO);
+        mockData.setListSwitch(SEListSwitch.DAY_30);
+        // clear the cache
+        bean.getTeamCommonBean().getCachedTrendResults().clear();
+        dvswList = bean.getDriverTotals();
+        assertNotNull(dvswList);
+        assertEquals(1, dvswList.size());
+        assertNotNull(dvswList.get(0).getScore());
+        assertNotNull(dvswList.get(0).getScore().getOverall());
+        assertEquals(TeamMockData.TREND_SCORE_TWO_DAY_AGO, dvswList.get(0).getScore().getOverall());
+        
+        //Test Three day ago
+        commonBean.setTimeFrame(TimeFrame.THREE_DAYS_AGO);
+        mockData.setListSwitch(SEListSwitch.DAY_30);
+        // clear the cache
+        bean.getTeamCommonBean().getCachedTrendResults().clear();
+        dvswList = bean.getDriverTotals();
+        assertNotNull(dvswList);
+        assertEquals(1, dvswList.size());
+        assertNotNull(dvswList.get(0).getScore());
+        assertNotNull(dvswList.get(0).getScore().getOverall());
+        assertEquals(TeamMockData.TREND_SCORE_THREE_DAY_AGO, dvswList.get(0).getScore().getOverall());
+        
+        //Test Four day ago
+        commonBean.setTimeFrame(TimeFrame.FOUR_DAYS_AGO);
+        mockData.setListSwitch(SEListSwitch.DAY_30);
+        // clear the cache
+        bean.getTeamCommonBean().getCachedTrendResults().clear();
+        dvswList = bean.getDriverTotals();
+        assertNotNull(dvswList);
+        assertEquals(1, dvswList.size());
+        assertNotNull(dvswList.get(0).getScore());
+        assertNotNull(dvswList.get(0).getScore().getOverall());
+        assertEquals(TeamMockData.TREND_SCORE_FOUR_DAY_AGO, dvswList.get(0).getScore().getOverall());
+       
+        //Test Five day ago
+        commonBean.setTimeFrame(TimeFrame.FIVE_DAYS_AGO);
+        mockData.setListSwitch(SEListSwitch.DAY_30);
+        // clear the cache
+        bean.getTeamCommonBean().getCachedTrendResults().clear();
+        dvswList = bean.getDriverTotals();
+        assertNotNull(dvswList);
+        assertEquals(1, dvswList.size());
+        assertNotNull(dvswList.get(0).getScore());
+        assertNotNull(dvswList.get(0).getScore().getOverall());
+        assertEquals(TeamMockData.TREND_SCORE_FIVE_DAY_AGO, dvswList.get(0).getScore().getOverall());
+        
+        //Test Month
+        commonBean.setTimeFrame(TimeFrame.MONTH);
+        mockData.setListSwitch(SEListSwitch.MONTH);
+        // clear the cache
+        bean.getTeamCommonBean().getCachedTrendResults().clear();
+        dvswList = bean.getDriverTotals();
+        assertNotNull(dvswList);
+        assertEquals(1, dvswList.size());
+        assertNotNull(dvswList.get(0).getScore());
+        assertNotNull(dvswList.get(0).getScore().getOverall());
+        assertEquals(TeamMockData.TREND_SCORE_MONTH, dvswList.get(0).getScore().getOverall());
+    }
 }
