@@ -22,7 +22,7 @@
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
-			<version>4.8.1</version>
+			<version>4.8.2</version>
 			<scope>test</scope>
 		</dependency>
 
@@ -41,8 +41,6 @@
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
-			<version>5.1.9</version>
-			<type>jar</type>
 		</dependency>
 		<dependency>
 			<groupId>commons-dbcp</groupId>
@@ -54,9 +52,6 @@
 		<dependency>
 			<groupId>joda-time</groupId>
 			<artifactId>joda-time</artifactId>
-			<version>1.6</version>
-			<scope>compile</scope>
-			<type>jar</type>
 		</dependency>
 
 	</dependencies>
