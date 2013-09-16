@@ -61,12 +61,12 @@ function setup_defaults {
     if [ ! "${LOCATION}" ]; then LOCATION="QA"; fi
     if [ ! "${MY_FORMS_PASSWORD}" ]; then MY_FORMS_PASSWORD="jhoward"; fi
     if [ ! "${MY_FORMS_USERNAME}" ]; then MY_FORMS_USERNAME="password"; fi
-    if [ ! "${MY_GIS_ADDRESS}" ]; then MY_GIS_ADDRESS="tp-mapserv0"; fi
+    if [ ! "${MY_GIS_ADDRESS}" ]; then MY_GIS_ADDRESS="tp-map.tiwii.com"; fi
     if [ ! "${MY_GIS_PASSWORD}" ]; then MY_GIS_PASSWORD="du0Oifo5aeth9ei"; fi
     if [ ! "${MY_GIS_USER}" ]; then MY_GIS_USER="proprod"; fi
     if [ ! "${MY_MAPSERVER_ADDRESS}" ]; then MY_MAPSERVER_ADDRESS="67.208.132.73"; fi
     if [ ! "${MY_MAPSERVER_PORT}" ]; then MY_MAPSERVER_PORT="8081"; fi
-    if [ ! "${MY_POSTGRES_SERVER}" ]; then MY_POSTGRES_SERVER="tp-mapserv0"; fi
+    if [ ! "${MY_POSTGRES_SERVER}" ]; then MY_POSTGRES_SERVER="tp-map.tiwii.com"; fi
     if [ ! "${MYSQL_ROOT_PASSWORD}" ]; then MYSQL_ROOT_PASSWORD="asdfasdfasdf"; fi
     if [ ! "${MY_TEEN_CENT_PORT}" ]; then MY_TEEN_CENT_PORT="8095"; fi
     if [ ! "${MY_TEEN_SILO_PORT}" ]; then MY_TEEN_SILO_PORT="8099"; fi
