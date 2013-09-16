@@ -357,7 +357,16 @@ public class TripWS {
 		
 		trip.setEndNoteID(note.getNoteID());
 		trip.setEndNoteType(note.getType());
-		trip.setEndTime(note.getTime());
+        
+		//For timestamp, back off a second otherwise trip double counter
+		if (note.getType() == Note.TYPE_TIMESTAMP) {
+            Calendar cal = new GregorianCalendar();
+            cal.setTime(note.getTime());
+            cal.add(Calendar.SECOND, -1);
+            trip.setEndTime(cal.getTime());
+        }
+        else
+            trip.setEndTime(note.getTime());
 	}
 
 	private void setTripStartFields(Trip trip, Note note)
@@ -368,8 +377,18 @@ public class TripWS {
 		trip.setStartNoteID(note.getNoteID());
 		trip.setStartNoteType(note.getType());
 		trip.setStartOdometer(note.getOdometer());
-		trip.setStartTime(note.getTime());
 		trip.setStatus(TripStatus.TRIP_IN_TRIP);
+		
+        //For timestamp, add a second otherwise trip double counter
+		if (note.getType() == Note.TYPE_TIMESTAMP) {
+		    Calendar cal = new GregorianCalendar();
+	        cal.setTime(note.getTime());
+	        cal.add(Calendar.SECOND, 1);
+            trip.setStartTime(cal.getTime());
+		}
+		else
+	        trip.setStartTime(note.getTime());
+
 	}
 
 }
