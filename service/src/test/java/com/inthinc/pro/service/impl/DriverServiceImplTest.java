@@ -133,7 +133,7 @@ public class DriverServiceImplTest extends BaseUnitTest {
         Response response = serviceSUT.getLastTrips(expectedDriver, todayAsString());
         
         assertNotNull(response);
-        assertEquals(Response.Status.NOT_FOUND.getStatusCode(),response.getStatus() );
+        assertEquals(Response.Status.OK.getStatusCode(),response.getStatus() );
     }
     
     @Test
@@ -151,7 +151,7 @@ public class DriverServiceImplTest extends BaseUnitTest {
         Response response = serviceSUT.getLastTrips(expectedDriver, todayAsString());
         
         assertNotNull(response);
-        assertEquals(Response.Status.NOT_FOUND.getStatusCode(),response.getStatus() );
+        assertEquals(Response.Status.OK.getStatusCode(),response.getStatus() );
     }
     
     @Test

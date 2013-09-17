@@ -52,8 +52,8 @@ public class HOSServiceImpl extends BaseReportServiceImpl implements HOSService 
             return Response.status(Status.INTERNAL_SERVER_ERROR).build();
         }
         logger.debug(method+"done.");
-        if (violationsList == null || violationsList.isEmpty()) {
-            return Response.status(Status.NOT_FOUND).build();
+        if (violationsList == null) {
+            violationsList = new ArrayList<ViolationsDetail>();
         }
         
         return Response.ok(new GenericEntity<List<ViolationsDetail>>(violationsList) {}).build();

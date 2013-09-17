@@ -40,8 +40,7 @@ public interface IFTAServiceStateMileageFuelByVehicle {
      *            More information in the <a href="javascript:{var apiUrl = document.URL.substring(0,document.URL.indexOf('jaxrsdocs')) + 'jaxrsdocs/group/{groupID}/report/ifta/mileage/index.html'; window.location = apiUrl;}">mileage Web Service documentation</a></br><p>  
      *         
      * @returnWrapped java.util.List<com.inthinc.pro.reports.ifta.model.StateMileageFuelByVehicle> the list of beans
-     * @HTTP HTTP 200 - OK if any StateMileageFuelByVehicle found
-     * @HTTP HTTP 404 - NOT FOUND if no StateMileageFuelByVehicle found
+     * @HTTP HTTP 200 - OK if valid request - can return empty list
      * @HTTP HTTP 400 - BAD REQUEST if locale or measurement type are invalid
      */ 
     @GET
@@ -72,8 +71,7 @@ public interface IFTAServiceStateMileageFuelByVehicle {
      *            More information in the <a href="javascript:{var apiUrl = document.URL.substring(0,document.URL.indexOf('jaxrsdocs')) + 'jaxrsdocs/group/{groupID}/report/ifta/mileage/index.html'; window.location = apiUrl;}">mileage Web Service documentation</a></br><p>  
      *
      * @returnWrapped java.util.List<com.inthinc.pro.reports.ifta.model.StateMileageFuelByVehicle> the list of beans
-     * @HTTP HTTP 200 - OK if any StateMileageFuelByVehicle found
-     * @HTTP HTTP 404 - NOT FOUND if no StateMileageFuelByVehicle found
+     * @HTTP HTTP 200 - OK if valid request - can return empty list
      * @HTTP HTTP 400 - BAD REQUEST if locale or measurement type are invalid
      */ 
     @GET
@@ -104,8 +102,7 @@ public interface IFTAServiceStateMileageFuelByVehicle {
      *            More information in the <a href="javascript:{var apiUrl = document.URL.substring(0,document.URL.indexOf('jaxrsdocs')) + 'jaxrsdocs/group/{groupID}/report/ifta/mileage/index.html'; window.location = apiUrl;}">mileage Web Service documentation</a></br><p>  
      *          
      * @returnWrapped java.util.List<com.inthinc.pro.reports.ifta.model.StateMileageFuelByVehicle> the list of beans
-     * @HTTP HTTP 200 - OK if any StateMileageFuelByVehicle found
-     * @HTTP HTTP 404 - NOT FOUND if no StateMileageFuelByVehicle found
+     * @HTTP HTTP 200 - OK if valid request - can return empty list
      * @HTTP HTTP 400 - BAD REQUEST if locale or measurement type are invalid
      */ 
     @GET
@@ -138,8 +135,7 @@ public interface IFTAServiceStateMileageFuelByVehicle {
      *            More information in the <a href="javascript:{var apiUrl = document.URL.substring(0,document.URL.indexOf('jaxrsdocs')) + 'jaxrsdocs/group/{groupID}/report/ifta/mileage/index.html'; window.location = apiUrl;}">mileage Web Service documentation</a></br><p>  
      *
      * @returnWrapped java.util.List<com.inthinc.pro.reports.ifta.model.StateMileageFuelByVehicle> the list of beans
-     * @HTTP HTTP 200 - OK if any StateMileageFuelByVehicle found
-     * @HTTP HTTP 404 - NOT FOUND if no StateMileageFuelByVehicle found
+     * @HTTP HTTP 200 - OK if valid request - can return empty list
      * @HTTP HTTP 400 - BAD REQUEST if locale or measurement type are invalid
      */ 
     @GET
@@ -176,8 +172,7 @@ public interface IFTAServiceStateMileageFuelByVehicle {
      *            More information in the <a href="javascript:{var apiUrl = document.URL.substring(0,document.URL.indexOf('jaxrsdocs')) + 'jaxrsdocs/group/{groupID}/report/ifta/mileage/index.html'; window.location = apiUrl;}">mileage Web Service documentation</a></br><p>  
      *
      * @returnWrapped java.util.List<com.inthinc.pro.reports.ifta.model.StateMileageFuelByVehicle> the list of beans
-     * @HTTP HTTP 200 - OK if any StateMileageFuelByVehicle found
-     * @HTTP HTTP 404 - NOT FOUND if no StateMileageFuelByVehicle found
+     * @HTTP HTTP 200 - OK if valid request - can return empty list
      * @HTTP HTTP 400 - BAD REQUEST if locale or measurement type are invalid
      */ 
     @POST
@@ -217,8 +212,7 @@ public interface IFTAServiceStateMileageFuelByVehicle {
      *            More information in the <a href="javascript:{var apiUrl = document.URL.substring(0,document.URL.indexOf('jaxrsdocs')) + 'jaxrsdocs/group/{groupID}/report/ifta/mileage/index.html'; window.location = apiUrl;}">mileage Web Service documentation</a></br><p>  
      *
      * @returnWrapped java.util.List<com.inthinc.pro.reports.ifta.model.StateMileageFuelByVehicle> the list of beans
-     * @HTTP HTTP 200 - OK if any StateMileageFuelByVehicle found
-     * @HTTP HTTP 404 - NOT FOUND if no StateMileageFuelByVehicle found
+     * @HTTP HTTP 200 - OK if valid request - can return empty list
      * @HTTP HTTP 400 - BAD REQUEST if locale or measurement type are invalid
      */ 
     @POST
@@ -257,8 +251,7 @@ public interface IFTAServiceStateMileageFuelByVehicle {
      *            More information in the <a href="javascript:{var apiUrl = document.URL.substring(0,document.URL.indexOf('jaxrsdocs')) + 'jaxrsdocs/group/{groupID}/report/ifta/mileage/index.html'; window.location = apiUrl;}">mileage Web Service documentation</a></br><p>  
      *
      * @returnWrapped java.util.List<com.inthinc.pro.reports.ifta.model.StateMileageFuelByVehicle> the list of beans
-     * @HTTP HTTP 200 - OK if any StateMileageFuelByVehicle found
-     * @HTTP HTTP 404 - NOT FOUND if no StateMileageFuelByVehicle found
+     * @HTTP HTTP 200 - OK if valid request - can return empty list
      * @HTTP HTTP 400 - BAD REQUEST if locale or measurement type are invalid
      */ 
     @POST
@@ -299,8 +292,7 @@ public interface IFTAServiceStateMileageFuelByVehicle {
      *            More information in the <a href="javascript:{var apiUrl = document.URL.substring(0,document.URL.indexOf('jaxrsdocs')) + 'jaxrsdocs/group/{groupID}/report/ifta/mileage/index.html'; window.location = apiUrl;}">mileage Web Service documentation</a></br><p>  
      *
      * @returnWrapped java.util.List<com.inthinc.pro.reports.ifta.model.StateMileageFuelByVehicle> the list of beans
-     * @HTTP HTTP 200 - OK if any StateMileageFuelByVehicle found
-     * @HTTP HTTP 404 - NOT FOUND if no StateMileageFuelByVehicle found
+     * @HTTP HTTP 200 - OK if valid request - can return empty list
      * @HTTP HTTP 400 - BAD REQUEST if locale or measurement type are invalid
      */ 
     @POST
