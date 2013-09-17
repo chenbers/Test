@@ -85,7 +85,7 @@ public class ITDataOneTeamExt extends BaseITData {
         	team.driverList = new ArrayList<Driver>();
         	team.vehicleList = new ArrayList<Vehicle>();
 
-        	Device device = createDevice(team.group, assignmentDate, "Waysmart820 2144", "MCMWS8201", "30003123456AAAA", ProductType.WAYSMART, 1375374693);
+        	Device device = createDevice(team.group, assignmentDate, "Waysmart820 2144", "MCMWS8201", "30003123456AAAA", 2, 1375374693);
             Driver driver = createDriver(team.group, "TestDriver", "empid123");
             Vehicle vehicle = createVehicle(team.group, device.getDeviceID(), driver.getDriverID(), "Waysmart820 2144");
             writeObject(device);
@@ -95,21 +95,21 @@ public class ITDataOneTeamExt extends BaseITData {
             team.vehicleList.add(vehicle);
             team.driverList.add(driver);
 
-            device = createDevice(team.group, assignmentDate, "Waysmart820 339", "MCMWS8202", "30003123456BBBB", ProductType.WAYSMART, 1375370000);
+            device = createDevice(team.group, assignmentDate, "Waysmart820 339", "MCMWS8202", "30003123456BBBB", 2, 1375370000);
             vehicle = createVehicle(team.group, device.getDeviceID(), account.getUnkDriverID(), "Waysmart820 339");
             writeObject(device);
             writeObject(vehicle);
             team.deviceList.add(device);
             team.vehicleList.add(vehicle);
             
-            device = createDevice(team.group, assignmentDate, "Waysmart850", "MCMWS850", "MCMWS8202", ProductType.WS850, 1375370000);
+            device = createDevice(team.group, assignmentDate, "Waysmart850", "MCMWS850", "30003123456CCCC", 12, 1375370000);
             vehicle = createVehicle(team.group, device.getDeviceID(), account.getUnkDriverID(), "Waysmart850");
             writeObject(device);
             writeObject(vehicle);
             team.deviceList.add(device);
             team.vehicleList.add(vehicle);
 
-            device = createDevice(team.group, assignmentDate, "Tiwipro", "123456789876543", "123456789876543", ProductType.TIWIPRO, 1375370000);
+            device = createDevice(team.group, assignmentDate, "Tiwipro", "123456789876543", "123456789876543", 3, 1375370000);
             vehicle = createVehicle(team.group, device.getDeviceID(), account.getUnkDriverID(), "Tiwipro");
             writeObject(device);
             writeObject(vehicle);
@@ -156,7 +156,7 @@ public class ITDataOneTeamExt extends BaseITData {
 		return groupIDList;
 	}
 
-    protected Device createDevice(Group group, Date assignmentDate, String name, String mcmID, String imei, ProductType productVersion, Integer firmwareVersion)
+    protected Device createDevice(Group group, Date assignmentDate, String name, String mcmID, String imei, int productVersion, Integer firmwareVersion)
     {
         Device device = null;
         DeviceHessianDAO deviceDAO = new DeviceHessianDAO();
@@ -176,7 +176,7 @@ public class ITDataOneTeamExt extends BaseITData {
                     genNumericID(group.getGroupID(), 10));
             device.setActivated(assignmentDate);
             device.setEmuMd5("696d6acbc199d607a5704642c67f4d86");
-            device.setProductVer(productVersion.getCode());
+            device.setProductVer(productVersion);
             device.setMcmid(mcmID);
             device.setImei(imei);
             device.setFirmwareVersion(firmwareVersion);
@@ -246,12 +246,9 @@ public class ITDataOneTeamExt extends BaseITData {
         VehicleHessianDAO vehicleDAO = new VehicleHessianDAO();
         vehicleDAO.setSiloService(siloService);
 
-        Vehicle existingVehicle = vehicleDAO.findByVIN("VIN_" + name);
-        if (existingVehicle != null)
-            vehicleDAO.deleteByID(existingVehicle.getVehicleID());
         
         Vehicle vehicle = new Vehicle(0, group.getGroupID(), Status.ACTIVE, name, "Make", "Model", 2000, "Red", 
-                    VehicleType.LIGHT, "VIN_" + name, 1000, "UT " + group.getGroupID(), 
+                    VehicleType.LIGHT, String.valueOf(new Date().getTime()), 1000, "UT " + group.getGroupID(), 
                     States.getStateByAbbrev("UT"));
         Integer vehicleID = vehicleDAO.create(group.getGroupID(), vehicle);
         vehicle.setVehicleID(vehicleID);

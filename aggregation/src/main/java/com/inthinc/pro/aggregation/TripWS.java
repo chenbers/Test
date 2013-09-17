@@ -1,23 +1,22 @@
 package com.inthinc.pro.aggregation;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
-import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.TimeZone;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.inthinc.pro.aggregation.db.DBUtil;
 import com.inthinc.pro.aggregation.model.DeviceDay;
 import com.inthinc.pro.aggregation.model.Note;
 import com.inthinc.pro.aggregation.model.Trip;
 import com.inthinc.pro.aggregation.model.TripStatus;
 import com.inthinc.pro.aggregation.util.DateUtil;
-import com.inthinc.pro.aggregation.db.DBUtil;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 
 public class TripWS {
@@ -44,7 +43,6 @@ public class TripWS {
 		AggregationProperties.initProperties(filePath);
 		AggregationProperties properties = AggregationProperties.getInstance(); 
 		DBUtil.setDataSource(properties);
-		
 		TripWS tripWS = new TripWS();
 		try {
 			tripWS.updateTripsWS();
@@ -59,7 +57,7 @@ public class TripWS {
 	
 	public void updateTripsWS() throws SQLException
 	{
-		List<DeviceDay> ddList = DBUtil.getDeviceDay2Agg();
+	    List<DeviceDay> ddList = DBUtil.getDeviceDay2Agg();
 	    
 		GregorianCalendar endDayCalendar = new GregorianCalendar();
 		
@@ -67,8 +65,6 @@ public class TripWS {
 		{
 			endDayCalendar.setTime(dd.getDay());
 			endDayCalendar.add(Calendar.DATE, 1);
-//			int startTS = (int) (dd.getDay().getTime()/1000);
-//			int endTS = (int) (endDayCalendar.getTime().getTime()/1000);
 			logger.debug("Day: " + dd.getDay());
 			
 			Date startTS = DBUtil.fetchTripEndTimeStampBeforeDay(dd.getDeviceID(), dd.getDay());
@@ -157,6 +153,19 @@ public class TripWS {
 					
 					break;
 					
+				case Note.TYPE_TIMESTAMP:
+                    setTripEndFields(trip, note);
+                    trip.setStatus(TripStatus.TRIP_COMPLETED);
+                    if (isRealTrip(trip))
+                        insertTrip(trip, day);
+
+                    trip = new Trip();
+                    tripStarted = true;
+                    tripEnded = false;
+                    setTripStartFields(trip, note);
+                    setTripEndFields(trip, note);
+                    break;
+                    
 				case Note.TYPE_CLEAR_DRIVER:
 				case Note.TYPE_IGNITION_OFF:
 				case Note.TYPE_LOW_BATTERY:
@@ -348,7 +357,16 @@ public class TripWS {
 		
 		trip.setEndNoteID(note.getNoteID());
 		trip.setEndNoteType(note.getType());
-		trip.setEndTime(note.getTime());
+        
+		//For timestamp, back off a second otherwise trip double counter
+		if (note.getType() == Note.TYPE_TIMESTAMP) {
+            Calendar cal = new GregorianCalendar();
+            cal.setTime(note.getTime());
+            cal.add(Calendar.SECOND, -1);
+            trip.setEndTime(cal.getTime());
+        }
+        else
+            trip.setEndTime(note.getTime());
 	}
 
 	private void setTripStartFields(Trip trip, Note note)
@@ -359,8 +377,18 @@ public class TripWS {
 		trip.setStartNoteID(note.getNoteID());
 		trip.setStartNoteType(note.getType());
 		trip.setStartOdometer(note.getOdometer());
-		trip.setStartTime(note.getTime());
 		trip.setStatus(TripStatus.TRIP_IN_TRIP);
+		
+        //For timestamp, add a second otherwise trip double counter
+		if (note.getType() == Note.TYPE_TIMESTAMP) {
+		    Calendar cal = new GregorianCalendar();
+	        cal.setTime(note.getTime());
+	        cal.add(Calendar.SECOND, 1);
+            trip.setStartTime(cal.getTime());
+		}
+		else
+	        trip.setStartTime(note.getTime());
+
 	}
 
 }

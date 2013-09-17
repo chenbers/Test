@@ -7,21 +7,32 @@ import static org.junit.Assert.fail;
 import it.com.inthinc.pro.dao.jdbc.BaseJDBCTest;
 import it.config.ITDataSource;
 import it.config.IntegrationConfig;
+import it.config.ReportTestConst;
 
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.TimeZone;
+
+import javax.sql.DataSource;
 
 import org.apache.log4j.Logger;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import com.inthinc.pro.aggregation.TripWS;
+import com.inthinc.pro.aggregation.db.DBUtil;
 import com.inthinc.pro.dao.hessian.AccountHessianDAO;
 import com.inthinc.pro.dao.hessian.DeviceHessianDAO;
 import com.inthinc.pro.dao.hessian.DriverHessianDAO;
@@ -33,16 +44,14 @@ import com.inthinc.pro.dao.hessian.VehicleHessianDAO;
 import com.inthinc.pro.dao.hessian.extension.HessianTCPProxyFactory;
 import com.inthinc.pro.dao.hessian.proserver.SiloService;
 import com.inthinc.pro.dao.hessian.proserver.SiloServiceCreator;
-import com.inthinc.pro.dao.jdbc.FwdCmdSpoolWSHttpJDBCDAO;
-import com.inthinc.pro.dao.jdbc.FwdCmdSpoolWSIridiumJDBCDAO;
 import com.inthinc.pro.model.Account;
 import com.inthinc.pro.model.Device;
 import com.inthinc.pro.model.Driver;
-import com.inthinc.pro.model.ForwardCommandSpool;
 import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.model.app.States;
 import com.inthinc.pro.model.configurator.ProductType;
 import com.inthinc.pro.model.event.Event;
+import com.inthinc.pro.model.event.IdleEvent;
 import com.inthinc.pro.model.event.NewDriverEvent;
 import com.inthinc.pro.model.event.NoteType;
 import com.inthinc.pro.notegen.MCMSimulator;
@@ -51,12 +60,10 @@ import com.inthinc.pro.notegen.TiwiProNoteSender;
 import com.inthinc.pro.notegen.WSNoteSender;
 import it.com.inthinc.pro.dao.model.ITDataOneTeamExt;
 
-public class DriverLogoffTest extends BaseJDBCTest{
+public class WSAggregationTest extends BaseJDBCTest{
     private static final Logger logger = Logger.getLogger(DriverLogoffTest.class);
     private static SiloService siloService;
     private static final String XML_DATA_FILE = "OneTeamData.xml";
-    private static FwdCmdSpoolWSHttpJDBCDAO httpSpoolDAO;
-    private static FwdCmdSpoolWSIridiumJDBCDAO iridiumSpoolDAO;
     private static EventHessianDAO eventDAO;
     private static DriverHessianDAO driverDAO;
     private static GroupHessianDAO groupDAO;
@@ -113,19 +120,6 @@ public class DriverLogoffTest extends BaseJDBCTest{
         states.setStateDAO(stateDAO);
         states.init();
 
-        DeviceHessianDAO deviceDAO = new DeviceHessianDAO();
-        deviceDAO.setSiloService(siloService);
-        
-        VehicleHessianDAO vehicleDAO = new VehicleHessianDAO();
-        vehicleDAO.setSiloService(siloService);
-
-        DriverHessianDAO driverDAO = new DriverHessianDAO();
-        driverDAO.setSiloService(siloService);
-        
-        deviceDAO.setVehicleDAO(vehicleDAO);
-        vehicleDAO.setDeviceDAO(deviceDAO);
-        driverDAO.setVehicleDAO(vehicleDAO);
-        
         Device device = getDeviceByName("Waysmart820 2144");
         Account account = accountDAO.findByID(device.getAccountID());
         unkDriverID = account.getUnkDriverID();
@@ -139,82 +133,200 @@ public class DriverLogoffTest extends BaseJDBCTest{
     }
 
     @Test
-    public void logoffForwardCommands() {
+    public void checkAgg() {
         final String EMPID = "empid123"; 
-        Date startTime = new Date(); 
-        
-        List<Integer> cmd2144List = new ArrayList<Integer>(); 
-        cmd2144List.add(2144);
-        List<Integer> cmd339List = new ArrayList<Integer>(); 
-        cmd339List.add(339);
-        
-        Vehicle vehicleTiwipro = getVehicleByName("Tiwipro");
-        Driver driver = getDriver();
-        vehicleDAO.setVehicleDriver(vehicleTiwipro.getVehicleID(), driver.getDriverID());
-        Device deviceTiwipro = getDeviceByName("Tiwipro");
-
-        
-        //Logon empID on deviceWS2144   
-        Device deviceWS2144 = getDeviceByName("Waysmart820 2144");
-        deviceWS2144.setProductVersion(ProductType.WAYSMART);
-        updateDeviceFirmwareVer(deviceWS2144.getDeviceID(), 1375374693);
-        Vehicle vehicleWS2144 = getVehicleByName("Waysmart820 2144");
-        deviceWS2144.setVehicleID(vehicleWS2144.getVehicleID());
-        genNewDriverEvent(deviceWS2144, EMPID);
-
-        //Check to see if 2144 logoff sent to deviceTiwipro
-        List<ForwardCommandSpool>  fcsList = httpSpoolDAO.getForDevice(deviceTiwipro.getDeviceID(), cmd2144List);
-        assertTrue("Tiwipro 2144 Logoff command sent", commandExists(fcsList, startTime));
-        
-        //Logon empID on deviceWS339   
-        Device deviceWS339 = getDeviceByName("Waysmart820 339");
-        deviceWS339.setProductVersion(ProductType.WAYSMART);
-        Vehicle vehicleWS339 = getVehicleByName("Waysmart820 339");
-        deviceWS339.setVehicleID(vehicleWS339.getVehicleID());
-        genNewDriverEvent(deviceWS339, EMPID);
-        
-        //Check to see if 2144 logoff sent to deviceWS2144
-        fcsList = iridiumSpoolDAO.getForDevice(deviceWS2144.getDeviceID(), cmd2144List);
-        assertTrue("WS 2144 Logoff command sent", commandExists(fcsList, startTime));
-
-        //Set deviceWS2144 to unknown, then login to using deviceWS339 empID
-        setUnknowndriverForVehicle(vehicleWS2144.getVehicleID());
-        startTime = new Date();
-        genNewDriverEvent(deviceWS2144, EMPID);
-        
-        //Check to see if 339 logoff sent to deviceWS339
-        fcsList = iridiumSpoolDAO.getForDevice(deviceWS339.getDeviceID(), cmd339List);
-        assertTrue("339 Logoff command sent", commandExists(fcsList, startTime));
-        
-
-        setUnknowndriverForVehicles();
-        
-        //Create WS850 and Tiwipro devices
+        //Create WS850
         Device deviceWS850 = getDeviceByName("Waysmart850");
+        
         deviceWS850.setProductVersion(ProductType.WAYSMART);
         Vehicle vehicleWS850 = getVehicleByName("Waysmart850");
         deviceWS850.setVehicleID(vehicleWS850.getVehicleID());
+
+        try {
+            clearNotes(deviceWS850.getDeviceID());
+        } catch(Exception e)
+        {}
+
         
-        //Logon empID on deviceWS850   
-        startTime = new Date();
-        genNewDriverEvent(deviceWS850, EMPID);
-        //Logon empID on deviceTiwipro   
-        genNewDriverEvent(deviceWS339, EMPID);
-        //Check to see if 339 logoff sent to deviceWS850
-        fcsList = iridiumSpoolDAO.getForDevice(deviceWS850.getDeviceID(), cmd339List);
-        assertTrue("WS850 339 Logoff command sent", commandExists(fcsList, startTime));
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        dateFormat.setTimeZone(ReportTestConst.timeZone);
+        Date today = new Date();
+        Calendar cal = new GregorianCalendar();
+        cal.setTimeZone(ReportTestConst.timeZone);
+        cal.setTime(getStartOfDay(today, ReportTestConst.timeZone));
+        String endDay = dateFormat.format(cal.getTime());
+        cal.add(Calendar.DATE, -1); //Start of yesterday;
+        String startDay = dateFormat.format(cal.getTime());
+        
+        cal.add(Calendar.HOUR, 21);
+        int odometer = 10;
+        Event event = new Event(0L, 0, NoteType.IGNITION_ON, cal.getTime(), 60, odometer, DEFAULT_LAT, DEFAULT_LNG);
+        event.setHeading(DEFAULT_HEADING);
+        event.setSats(DEFAULT_SATS);
+        genEvent(event, deviceWS850);
+
+        cal.add(Calendar.MINUTE, 1);
+        event =  new NewDriverEvent(0L, 0, NoteType.NEWDRIVER_HOSRULE, cal.getTime(), 60, odometer, DEFAULT_LAT, DEFAULT_LNG, EMPID);
+        event.setHeading(DEFAULT_HEADING);
+        event.setSats(DEFAULT_SATS);
+        genEvent(event, deviceWS850);
+        
+        cal.add(Calendar.MINUTE, 59);
+        odometer += 50;
+        event =  new IdleEvent(0L, 0, NoteType.IDLE, cal.getTime(), 60, odometer, DEFAULT_LAT, DEFAULT_LNG, 100, 100);
+        event.setHeading(DEFAULT_HEADING);
+        event.setSats(DEFAULT_SATS);
+        genEvent(event, deviceWS850);
+
+        cal.add(Calendar.HOUR, 2);
+        odometer += 100;
+        event =  new Event(0L, 0, NoteType.TIMESTAMP, cal.getTime(), 60, odometer, DEFAULT_LAT, DEFAULT_LNG);
+        event.setHeading(DEFAULT_HEADING);
+        event.setSats(DEFAULT_SATS);
+        genEvent(event, deviceWS850);
+        
+        cal.add(Calendar.HOUR, 6);
+        odometer += 300;
+        event =  new Event(0L, 0, NoteType.IGNITION_OFF, cal.getTime(), 60, odometer, DEFAULT_LAT, DEFAULT_LNG);
+        event.setHeading(DEFAULT_HEADING);
+        event.setSats(DEFAULT_SATS);
+        genEvent(event, deviceWS850);
+        
+        DBUtil.setDataSource(new ITDataSource().getRealDataSource());
+        TripWS tripWS = new TripWS();
+        try {
+            insertDeviceDay2Agg(deviceWS850.getDeviceID(), startDay);
+            insertDeviceDay2Agg(deviceWS850.getDeviceID(), endDay);
+            tripWS.updateTripsWS();
+            assertTrue("Miles start day", getAggMiles(deviceWS850.getDeviceID(), startDay) == 15000); 
+            assertTrue("Miles start day", getAggMiles(deviceWS850.getDeviceID(), endDay) == 30000); 
+        } catch(Exception e)
+        {}
     }
 
     
-    private boolean commandExists(List<ForwardCommandSpool> fcsList, Date startTime)
-    {
-        for (ForwardCommandSpool fcs : fcsList){
-            if (fcs.getModified().getTime() >= startTime.getTime())
-                return true;
+    private static final String INSERT_DEVICEDAY2AGG = "INSERT IGNORE INTO deviceDay2Agg(deviceID, day) VALUES(?,?)";               
+    public static void insertDeviceDay2Agg(Integer deviceID, String day) {
+
+        Connection conn = null;
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+
+        if (deviceID != 0)
+        {
+            try {
+                conn = new ITDataSource().getRealDataSource().getConnection();;
+                
+                statement = (PreparedStatement) conn.prepareStatement(INSERT_DEVICEDAY2AGG);
+                statement.setLong(1, deviceID);
+                statement.setString(2, day);
+    
+                statement.executeUpdate();
+            }
+            catch (Throwable e)
+            { // handle database alerts in the usual manner
+                logger.error("Exception: " + e);
+                e.printStackTrace();
+    
+            }   // end catch
+            finally
+            { // clean up and release the connection
+    //              socket.close();
+                try {
+                    if (conn != null)
+                        conn.close();
+                    if (statement != null)
+                        statement.close();
+                    if (resultSet != null)
+                        resultSet.close();
+                } catch (Exception e){}
+            } // end finally    
         }
-        
-        return false;
     }
+
+    
+    private static final String SELECT_AGG_MILES = "SELECT sum(odometer6) FROM  agg%02d WHERE deviceID = ? AND aggDate = ?";
+    private static int getAggMiles(Integer deviceId, String day)  throws SQLException
+    {
+        Connection conn = null;
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+        int odometer = 0;
+
+        int shard = (int) (deviceId%32);
+        String sqlStatement = String.format(SELECT_AGG_MILES, shard);
+        
+        try
+        {
+            
+            conn = new ITDataSource().getRealDataSource().getConnection();
+            statement = conn.prepareStatement(sqlStatement);
+            statement.setInt(1, deviceId);
+            statement.setString(2, day);
+            
+            logger.debug(statement.toString());
+
+            resultSet = statement.executeQuery();
+            if (resultSet.next())
+            {
+                odometer = resultSet.getInt(1);
+                
+            }
+        }   // end try
+        catch (SQLException e)
+        { // handle database hosLogs in the usual manner
+            
+            throw e;
+        }   // end catch
+        finally
+        { // clean up and release the connection
+            if (conn != null)
+                conn.close();
+            if (statement != null)
+                statement.close();
+            if (resultSet != null)
+                resultSet.close();
+        } // end finally 
+        return odometer;
+    }
+    
+    private static final String CLEAR_NOTES_FOR_DEVICE = "DELETE FROM note%02d WHERE deviceID = ?";
+    private static void clearNotes(Integer deviceId)  throws SQLException
+    {
+        Connection conn = null;
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+
+        int shard = (int) (deviceId%32);
+        String sqlStatement = String.format(CLEAR_NOTES_FOR_DEVICE, shard);
+        
+        try
+        {
+            
+            conn = new ITDataSource().getRealDataSource().getConnection();
+            statement = conn.prepareStatement(sqlStatement);
+            statement.setInt(1, deviceId);
+            
+            logger.debug(statement.toString());
+
+            statement.executeUpdate();
+        }   // end try
+        catch (SQLException e)
+        { // handle database hosLogs in the usual manner
+            
+            throw e;
+        }   // end catch
+        finally
+        { // clean up and release the connection
+            if (conn != null)
+                conn.close();
+            if (statement != null)
+                statement.close();
+            if (resultSet != null)
+                resultSet.close();
+        } // end finally 
+    }
+
     
     private static Device getDeviceByName(String name){
         for (Device device : itData.teamGroupListData.get(0).deviceList) {
@@ -310,10 +422,6 @@ public class DriverLogoffTest extends BaseJDBCTest{
 
     private static void initDAOs()
     {
-        httpSpoolDAO = new FwdCmdSpoolWSHttpJDBCDAO();
-        httpSpoolDAO.setDataSource(new ITDataSource().getRealDataSource());
-        iridiumSpoolDAO = new FwdCmdSpoolWSIridiumJDBCDAO();
-        iridiumSpoolDAO.setDataSource(new ITDataSource().getRealDataSource());
         
         eventDAO = new EventHessianDAO();
         driverDAO = new DriverHessianDAO();
@@ -322,49 +430,29 @@ public class DriverLogoffTest extends BaseJDBCTest{
         vehicleDAO = new VehicleHessianDAO();
         groupDAO.setSiloService(siloService);
         eventDAO.setSiloService(siloService);
+        driverDAO.setSiloService(siloService);
         personDAO.setSiloService(siloService);
         vehicleDAO.setSiloService(siloService);
     }
 
-    
-    private static final String UPDATE_DEVICEFIRMVER = "UPDATE device SET firmVer=? WHERE deviceID=?";               
-    public static void updateDeviceFirmwareVer(Integer deviceID, Integer firmVer) {
-
-        Connection conn = null;
-        PreparedStatement statement = null;
-        ResultSet resultSet = null;
-
-        if (deviceID != 0)
+    private static Date getStartOfDay(Date date, TimeZone timeZone)
+    {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        dateFormat.setTimeZone(timeZone);
+        
+        String timeAsStr = dateFormat.format(date);
+        timeAsStr = timeAsStr.substring(0, 10) + " 00:00:00";
+        try
         {
-            try {
-                conn = new ITDataSource().getRealDataSource().getConnection();;
-                
-                statement = (PreparedStatement) conn.prepareStatement(UPDATE_DEVICEFIRMVER);
-
-                statement.setInt(1, firmVer);
-                statement.setInt(2, deviceID);
-    
-                statement.executeUpdate();
-            }
-            catch (Throwable e)
-            { // handle database alerts in the usual manner
-                logger.error("Exception: " + e);
-                e.printStackTrace();
-    
-            }   // end catch
-            finally
-            { // clean up and release the connection
-    //              socket.close();
-                try {
-                    if (conn != null)
-                        conn.close();
-                    if (statement != null)
-                        statement.close();
-                    if (resultSet != null)
-                        resultSet.close();
-                } catch (Exception e){}
-            } // end finally    
+            Date startOfDay = dateFormat.parse(timeAsStr);
+            return startOfDay;
         }
+        catch (ParseException e)
+        {
+            logger.error(e);
+        }
+
+        return null;
     }
 
 }

@@ -104,7 +104,6 @@ public class CrashTest extends BaseJDBCTest{
         itData = new ITDataOneTeamExt();
 
         InputStream stream = Thread.currentThread().getContextClassLoader().getResourceAsStream(XML_DATA_FILE);
-//        InputStream stream = new FileInputStream(XML_DATA_FILE);
         if (!itData.parseTestDataExt(stream, siloService)) {
             throw new Exception("Error parsing Test data xml file");
         }

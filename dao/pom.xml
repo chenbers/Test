@@ -20,6 +20,10 @@
 			<artifactId>noteparser</artifactId>
 		</dependency>
 		<dependency>
+			<groupId>com.inthinc.pro.aggregation</groupId>
+			<artifactId>aggregation</artifactId>
+		</dependency>
+		<dependency>
 			<groupId>me.prettyprint</groupId>
 			<artifactId>hector-core</artifactId>
 			<version>1.0-3</version>
