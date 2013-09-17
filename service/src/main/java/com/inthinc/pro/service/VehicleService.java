@@ -64,8 +64,7 @@ public interface VehicleService {
      * @param fromDateTime the startDate of the interval to search. This date must be max 30 days before today. 
      * @param toDateTime the endDate of the interval to search. This date must be after the fromDateTime. 
      * @returnWrapped List<Trip> the driver trips performed between a given date and today
-     * @HTTP HTTP 200 - OK if trips performed between a given date and today were found
-     * @HTTP HTTP 404 - NOT FOUND if no trips found 
+     * @HTTP HTTP 200 - OK if trips performed between a given date and today were found - can be empty result
      * @HTTP HTTP 400 - BAD REQUEST if date is more than 30 days back from today 
      */
     @GET

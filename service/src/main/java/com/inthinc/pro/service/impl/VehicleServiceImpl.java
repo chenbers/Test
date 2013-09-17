@@ -220,9 +220,10 @@ public class VehicleServiceImpl extends AbstractService<Vehicle, VehicleDAOAdapt
             
             if(diffDays <= 30L) {
                 List<Trip> trips =  this.getDao().getTrips(vehicleID, fromDate,toDate);
-                if(trips != null && !trips.isEmpty()) {
-                    return Response.ok(new GenericEntity<List<Trip>>(trips) {}).build();
+                if(trips == null) {
+                    trips = new ArrayList<Trip>();
                 }
+                return Response.ok(new GenericEntity<List<Trip>>(trips) {}).build();
             }
             else {
                 return Response.status(Status.BAD_REQUEST).build();
