@@ -3,7 +3,6 @@ package it.com.inthinc.pro.dao.model;
 import static org.junit.Assert.assertNotNull;
 import it.com.inthinc.pro.dao.Util;
 import it.config.ReportTestConst;
-import it.util.DataGenForFormsTesting;
 
 import java.beans.XMLDecoder;
 import java.beans.XMLEncoder;
@@ -594,6 +593,18 @@ public abstract class BaseITData {
 
         
     }
+    
+    
+    
+    public void setDriverDOTType(Driver driver, RuleSetType ruleSetType) {
+        DriverHessianDAO driverDAO = new DriverHessianDAO();
+        driverDAO.setSiloService(siloService);
+        
+        driver.setDot(ruleSetType);
+        driverDAO.update(driver);
+        
+    }
+
 
 
 }
