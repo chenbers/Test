@@ -141,7 +141,7 @@ public class IFTAServiceStateMileageFuelByVehicleImplTest {
 
     @SuppressWarnings("unchecked")
     @Test
-    public void testReturns404OnEmptyList() {
+    public void testReturns200OnEmptyList() {
 
         final DateMidnight dateMidnight = new DateMidnight();
 
@@ -159,24 +159,24 @@ public class IFTAServiceStateMileageFuelByVehicleImplTest {
 
         Response response = iftaService.getStateMileageFuelByVehicleDefaults(SAMPLE_GROUP_ID, 
                 sampleLocale, sampleMeasurementType);
-        assertEquals(Status.NOT_FOUND.getStatusCode(), response.getStatus());
+        assertEquals(Status.OK.getStatusCode(), response.getStatus());
 
         response = iftaService.getStateMileageFuelByVehicleWithIfta(SAMPLE_GROUP_ID, 
                 sampleLocale, sampleMeasurementType);
-        assertEquals(Status.NOT_FOUND.getStatusCode(), response.getStatus());
+        assertEquals(Status.OK.getStatusCode(), response.getStatus());
 
         response = iftaService.getStateMileageFuelByVehicleWithDates(SAMPLE_GROUP_ID, 
                 expectedStartDate, expectedEndDate, sampleLocale, sampleMeasurementType);
-        assertEquals(Status.NOT_FOUND.getStatusCode(), response.getStatus());
+        assertEquals(Status.OK.getStatusCode(), response.getStatus());
 
         response = iftaService.getStateMileageFuelByVehicleWithIftaAndDates(SAMPLE_GROUP_ID, 
                 expectedStartDate, expectedEndDate, sampleLocale, sampleMeasurementType);
-        assertEquals(Status.NOT_FOUND.getStatusCode(), response.getStatus());
+        assertEquals(Status.OK.getStatusCode(), response.getStatus());
     }
 
     @SuppressWarnings("unchecked")
     @Test
-    public void testReturns404OnNull() {
+    public void testReturns200OnNull() {
 
         final DateMidnight dateMidnight = new DateMidnight();
 
@@ -193,19 +193,19 @@ public class IFTAServiceStateMileageFuelByVehicleImplTest {
 
         Response response = iftaService.getStateMileageFuelByVehicleDefaults(SAMPLE_GROUP_ID, 
                 sampleLocale, sampleMeasurementType);
-        assertEquals(Status.NOT_FOUND.getStatusCode(), response.getStatus());
+        assertEquals(Status.OK.getStatusCode(), response.getStatus());
 
         response = iftaService.getStateMileageFuelByVehicleWithIfta(SAMPLE_GROUP_ID, 
                 sampleLocale, sampleMeasurementType);
-        assertEquals(Status.NOT_FOUND.getStatusCode(), response.getStatus());
+        assertEquals(Status.OK.getStatusCode(), response.getStatus());
 
         response = iftaService.getStateMileageFuelByVehicleWithDates(SAMPLE_GROUP_ID, 
                 expectedStartDate, expectedEndDate, sampleLocale, sampleMeasurementType);
-        assertEquals(Status.NOT_FOUND.getStatusCode(), response.getStatus());
+        assertEquals(Status.OK.getStatusCode(), response.getStatus());
 
         response = iftaService.getStateMileageFuelByVehicleWithIftaAndDates(SAMPLE_GROUP_ID, 
                 expectedStartDate, expectedEndDate, sampleLocale, sampleMeasurementType);
-        assertEquals(Status.NOT_FOUND.getStatusCode(), response.getStatus());
+        assertEquals(Status.OK.getStatusCode(), response.getStatus());
     }
 
     @SuppressWarnings("unchecked")

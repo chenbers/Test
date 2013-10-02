@@ -365,7 +365,7 @@ public class AssetServiceImplTest {
 
     @SuppressWarnings("unchecked")
     @Test
-    public void testReturns404IfRedflagListIsEmpty(final RedFlagDAO redflagDaoMock, final Clock systemClock) {
+    public void testReturns200IfRedflagListIsEmpty(final RedFlagDAO redflagDaoMock, final Clock systemClock) {
 
         // Expectations & stubbing
         new Expectations() {
@@ -383,10 +383,10 @@ public class AssetServiceImplTest {
         AssetServiceImpl assetService = new AssetServiceImpl(redflagDaoMock, systemClock);
 
         Response response = assetService.getRedFlags(SAMPLE_GROUP_ID, PAGE_START_ROW, PAGE_END_ROW, new Date(), new Date());
-        assertEquals(404, response.getStatus());
+        assertEquals(200, response.getStatus());
 
         response = assetService.getRedFlags(SAMPLE_GROUP_ID, PAGE_START_ROW, PAGE_END_ROW, new Date(), new Date());
-        assertEquals(404, response.getStatus());
+        assertEquals(200, response.getStatus());
     }
 
     private PageParams createPageParams() {

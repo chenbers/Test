@@ -64,9 +64,8 @@ public class IFTAServiceStateMileageByMonthImpl extends BaseReportServiceImpl im
         try {
             interval = DateUtil.getInterval(startDate, endDate);
             list = reportsFacade.getStateMileageByMonth(groupList, interval, iftaOnly, locale, measurementType);
-            if (list == null || list.isEmpty()) {
-                // No data found
-                return Response.status(Status.NOT_FOUND).build();            
+            if (list == null) {
+                list = new ArrayList<StateMileageByMonth>();
             }
             
         } catch(BadDateRangeException bdre){

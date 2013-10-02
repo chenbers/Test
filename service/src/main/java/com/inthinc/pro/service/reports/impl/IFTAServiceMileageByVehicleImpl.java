@@ -135,8 +135,8 @@ public class IFTAServiceMileageByVehicleImpl extends BaseReportServiceImpl imple
         try{
             interval = DateUtil.getInterval(startDate, endDate);
             list = reportsFacade.getMileageByVehicle(idlist, interval, iftaOnly, locale, measurementType);
-            if (list == null || list.isEmpty()) {
-                return Response.status(Status.NOT_FOUND).build();
+            if (list == null) {
+                list = new ArrayList<MileageByVehicle>();
             }
         } catch(BadDateRangeException bdre){
             return BadDateRangeExceptionMapper.getResponse(bdre);

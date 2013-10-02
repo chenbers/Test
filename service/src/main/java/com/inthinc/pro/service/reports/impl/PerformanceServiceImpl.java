@@ -1,5 +1,6 @@
 package com.inthinc.pro.service.reports.impl;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -74,8 +75,8 @@ public class PerformanceServiceImpl extends BaseReportServiceImpl implements Per
         }
         
         logger.debug(method+"done.");
-        if (violations == null || violations.isEmpty()) {
-            return Response.status(Status.NOT_FOUND).build();
+        if (violations == null) {
+            violations = new ArrayList<TenHoursViolation>();
         }
         
         return Response.ok(new GenericEntity<List<TenHoursViolation>>(violations) {}).build();
@@ -121,8 +122,8 @@ public class PerformanceServiceImpl extends BaseReportServiceImpl implements Per
             return Response.status(Status.INTERNAL_SERVER_ERROR).build();
         }
         logger.debug(method+"done.");
-        if (driverHoursList == null || driverHoursList.isEmpty()) {
-            return Response.status(Status.NOT_FOUND).build();
+        if (driverHoursList == null) {
+            driverHoursList = new ArrayList<DriverHours>();
         }
         
         return Response.ok(new GenericEntity<List<DriverHours>>(driverHoursList) {}).build();

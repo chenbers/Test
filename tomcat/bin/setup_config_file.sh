@@ -2,7 +2,7 @@
 USER_DATA_FILE="/etc/user-data.sh"
 CHECKAPP_FILE="/etc/tiwipro/monitor/checkapp.txt"
 #DEBUG=1
-
+#Addding useless comment to see if it lets me make a new pull request from this commit
 MY_VARS="AMI AWS_ZONE CHECK_USER CHECK_USER_PASSWORD COMMANDS DISK_DEVICE EC2_RUN_OPTS F_INSTALL_PACKAGES FS_BASE GOOGLE_ID GROUP HOST_NAME INSTANCE_TYPE J_INSTALL_PHASE2_PACKAGES K_SSH_CMD LOCATION MINA_IRIDIUM_PASSWORD MINA_IRIDIUM_USER MY_ELB_ADDRESS MY_FORMS_PASSWORD MY_FORMS_USERNAME MY_GIS_ADDRESS MY_GIS_PASSWORD MY_GIS_USER MY_MAPSERVER_ADDRESS MY_MAPSERVER_PORT MY_POSTGRES_SERVER MYSQL_ROOT_PASSWORD MY_TEEN_CENT_PORT MY_TEEN_SILO_PORT MY_VOXEO_ADDRESS NS_SERVERS ODK_DB_PASSWORD ODK_DB_SERVER ODK_DB_USER O_VOXEO_TOKEN POSTGRES_PASSWORD POSTGRES_USER PRIV_KEY_NAME Q_GOOGLE_ANALYTICS_KEY REGION SILO_NAME SQL_IRIDIUMPASS TIWIPRO_CLIENT_CENT_SERVER TIWIPRO_CLIENT_DB_SERVER TIWIPRO_SERVER_ID USER_HOME U_USER VOLUME_SIZE VOXEO_TOKEN WEB_DB_PASSWORD WEB_DB_SERVER WEB_DB_USER Y_SILO_ID MINA_CLIENT_DB_SERVER"
 
 function create_default_user_data {
@@ -61,12 +61,12 @@ function setup_defaults {
     if [ ! "${LOCATION}" ]; then LOCATION="QA"; fi
     if [ ! "${MY_FORMS_PASSWORD}" ]; then MY_FORMS_PASSWORD="jhoward"; fi
     if [ ! "${MY_FORMS_USERNAME}" ]; then MY_FORMS_USERNAME="password"; fi
-    if [ ! "${MY_GIS_ADDRESS}" ]; then MY_GIS_ADDRESS="tp-mapserv0"; fi
+    if [ ! "${MY_GIS_ADDRESS}" ]; then MY_GIS_ADDRESS="my-map.tiwii.com"; fi
     if [ ! "${MY_GIS_PASSWORD}" ]; then MY_GIS_PASSWORD="du0Oifo5aeth9ei"; fi
     if [ ! "${MY_GIS_USER}" ]; then MY_GIS_USER="proprod"; fi
     if [ ! "${MY_MAPSERVER_ADDRESS}" ]; then MY_MAPSERVER_ADDRESS="67.208.132.73"; fi
     if [ ! "${MY_MAPSERVER_PORT}" ]; then MY_MAPSERVER_PORT="8081"; fi
-    if [ ! "${MY_POSTGRES_SERVER}" ]; then MY_POSTGRES_SERVER="tp-mapserv0"; fi
+    if [ ! "${MY_POSTGRES_SERVER}" ]; then MY_POSTGRES_SERVER="my-map.tiwii.com"; fi
     if [ ! "${MYSQL_ROOT_PASSWORD}" ]; then MYSQL_ROOT_PASSWORD="asdfasdfasdf"; fi
     if [ ! "${MY_TEEN_CENT_PORT}" ]; then MY_TEEN_CENT_PORT="8095"; fi
     if [ ! "${MY_TEEN_SILO_PORT}" ]; then MY_TEEN_SILO_PORT="8099"; fi
@@ -78,7 +78,7 @@ function setup_defaults {
     if [ ! "${PRIV_KEY_NAME}" ]; then PRIV_KEY_NAME="jzkeys"; fi
     if [ ! "${Q_GOOGLE_ANALYTICS_KEY}" ]; then Q_GOOGLE_ANALYTICS_KEY="UA-2634129-14"; fi
     if [ ! "${REGION}" ]; then REGION="us-east-1"; fi
-    if [ ! "${SILO_NAME}" ]; then SILO_NAME="tp"; fi
+    if [ ! "${SILO_NAME}" ]; then SILO_NAME="my"; fi
     if [ ! "${MY_ELB_ADDRESS}" ]; then MY_ELB_ADDRESS="${SILO_NAME}.inthinc.com"; fi
     if [ ! "${TIWIPRO_CLIENT_CENT_SERVER}" ]; then TIWIPRO_CLIENT_CENT_SERVER="67.208.132.73"; fi
     if [ ! "${TIWIPRO_CLIENT_DB_SERVER}" ]; then TIWIPRO_CLIENT_DB_SERVER="${SILO_NAME}-dbnode0.tiwipro.com"; fi

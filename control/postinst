@@ -90,6 +90,7 @@ then
 service ${MY_USER} start
 else
     echo "${MY_USER} doesn't seem to be installed as a service, attempting to manually restart it"
+    echo "su ${MY_USER} -c \"source ${MY_USER_HOME}/.bashrc; ${MY_USER_HOME}/bin/shutdown.sh\""
     su ${MY_USER} -c "source ${MY_USER_HOME}/.bashrc; ${MY_USER_HOME}/bin/shutdown.sh"
     sleep 5
     for WAR in ${WARS}
@@ -104,7 +105,8 @@ else
             chmod u+rw,g+r,o-rwx ${TOMCAT_WEBAPPS_DIR}/${WAR}.war
         fi
     done
-    su ${MY_USER} -c "source ${MY_USER_HOME}/.bashrc; ${MY_USER_HOME}/bin/startup.sh"
+    echo "su ${MY_USER} -c \"source ${MY_USER_HOME}/.bashrc; ${MY_USER_HOME}/bin/restarttomcat\""
+    su ${MY_USER} -c "source ${MY_USER_HOME}/.bashrc; ${MY_USER_HOME}/bin/restarttomcat"
 fi
 
 if [ -f "/etc/nginx/sites-available/tiwipro" ] && [ ! -L "/etc/nginx/sites-enabled/tiwipro" ]
@@ -117,7 +119,12 @@ then
         NGINX_RELOAD=1
     fi
 else
-    echo "No /etc/nginx/sites-available/tiwipro"
+    if [ -L "/etc/nginx/sites-enabled/tiwipro" ]
+    then
+        echo "Link already exists for /etc/nginx/sites-enabled/tiwipro, not creating"
+    else
+        echo "No /etc/nginx/sites-available/tiwipro"
+    fi
 fi
 
 NGINX_USER="$(grep user /etc/nginx/nginx.conf | awk '{ print $2 }' | sed -e 's/;$//')"

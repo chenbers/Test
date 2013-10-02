@@ -87,14 +87,11 @@ public class IFTAServiceStateMileageByVehicleRoadStatusImpl extends BaseReportSe
         } catch (Exception e) {
             return Response.status(Status.INTERNAL_SERVER_ERROR).build();
         }
-
-            if (list != null && !list.isEmpty()) {
-                return Response.ok(new GenericEntity<List<StateMileageByVehicleRoadStatus>>(list) {}).build();
-            }
-            // No data found
-            else {
-                return Response.status(Status.NOT_FOUND).build();
-            }
+        
+        if (list == null) {
+            list = new ArrayList<StateMileageByVehicleRoadStatus>();
+        }
+        return Response.ok(new GenericEntity<List<StateMileageByVehicleRoadStatus>>(list) {}).build();
     }
 
     /**

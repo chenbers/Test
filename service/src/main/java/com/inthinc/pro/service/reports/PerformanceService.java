@@ -28,8 +28,7 @@ public interface PerformanceService {
      *            Example:</br> <code>http://server:8080/service?locale=fr_CA </code></br>
      *            More information in the <a href="javascript:{var apiUrl = document.URL.substring(0,document.URL.indexOf('jaxrsdocs')) + 'jaxrsdocs/group/{groupID}/report/ifta/mileage/index.html'; window.location = apiUrl;}">mileage Web Service documentation</a></br><p>   
      * @returnWrapped java.util.List<com.inthinc.pro.reports.performance.model.TenHoursViolation> the list of violations
-     * @HTTP HTTP 200 - OK if any violations found
-     * @HTTP HTTP 404 - NOT FOUND if no violations found
+     * @HTTP HTTP 200 - OK if valid request - can return empty list
      * @HTTP HTTP 400 - BAD REQUEST if locale is invalid
      */ 
     @GET
@@ -47,8 +46,7 @@ public interface PerformanceService {
      *            Example:</br> <code>http://server:8080/service?locale=fr_CA </code></br>
      *            More information in the <a href="javascript:{var apiUrl = document.URL.substring(0,document.URL.indexOf('jaxrsdocs')) + 'jaxrsdocs/group/{groupID}/report/ifta/mileage/index.html'; window.location = apiUrl;}">mileage Web Service documentation</a></br><p>   
      * @returnWrapped java.util.List<com.inthinc.pro.reports.performance.model.TenHoursViolation> the list of violations
-     * @HTTP HTTP 200 - OK if any violations found
-     * @HTTP HTTP 404 - NOT FOUND if no violations found
+     * @HTTP HTTP 200 - OK if valid request - can return empty list
      * @HTTP HTTP 400 - BAD REQUEST if locale is invalid
      */ 
     @GET
@@ -67,8 +65,7 @@ public interface PerformanceService {
      *            Example:</br> <code>http://server:8080/service?locale=fr_CA </code></br>
      *            More information in the <a href="javascript:{var apiUrl = document.URL.substring(0,document.URL.indexOf('jaxrsdocs')) + 'jaxrsdocs/group/{groupID}/report/ifta/mileage/index.html'; window.location = apiUrl;}">mileage Web Service documentation</a></br><p>   
      * @returnWrapped java.util.List<com.inthinc.pro.reports.performance.model.> the list of driver's hours
-     * @HTTP HTTP 200 - OK if any record found
-     * @HTTP HTTP 404 - NOT FOUND if no record found
+     * @HTTP HTTP 200 - OK if valid request - can return empty list
      * @HTTP HTTP 400 - BAD REQUEST if locale is invalid
      */ 
     @GET
@@ -86,8 +83,7 @@ public interface PerformanceService {
      *            Example:</br> <code>http://server:8080/service?locale=fr_CA </code></br>
      *            More information in the <a href="javascript:{var apiUrl = document.URL.substring(0,document.URL.indexOf('jaxrsdocs')) + 'jaxrsdocs/group/{groupID}/report/ifta/mileage/index.html'; window.location = apiUrl;}">mileage Web Service documentation</a></br><p>   
      * @returnWrapped java.util.List<com.inthinc.pro.reports.performance.model.DriverHours> the list of violations
-     * @HTTP HTTP 200 - OK if any record found
-     * @HTTP HTTP 404 - NOT FOUND if no record found
+     * @HTTP HTTP 200 - OK if valid request - can return empty list
      * @HTTP HTTP 400 - BAD REQUEST if locale is invalid
      */ 
     @GET

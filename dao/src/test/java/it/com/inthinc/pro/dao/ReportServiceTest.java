@@ -925,20 +925,25 @@ public class ReportServiceTest {
         // test some of the fields that appear on the team stats pages
         for (int teamType = ITData.GOOD; teamType <= ITData.BAD; teamType++) {
             for (TimeFrame timeFrame : testTimeFrames) {
-                List<DriverVehicleScoreWrapper> driverScoreList = groupReportHessianDAO.getDriverScores(itData.teamGroupData.get(teamType).group.getGroupID(), timeFrame.getInterval(dateTimeZone),
-                        getGroupHierarchy());
-                List<DriverVehicleScoreWrapper> vehicleScoreList = groupReportHessianDAO.getDriverScores(itData.teamGroupData.get(teamType).group.getGroupID(), timeFrame.getInterval(dateTimeZone),
-                        getGroupHierarchy());
+                List<DriverVehicleScoreWrapper> driverScoreList = null;
+                List<DriverVehicleScoreWrapper> vehicleScoreList = null;
+                if (timeFrame == TimeFrame.ONE_DAY_AGO || timeFrame == TimeFrame.FIVE_DAYS_AGO) {
+                    driverScoreList = groupReportHessianDAO.getDriverScores(itData.teamGroupData.get(teamType).group.getGroupID(), timeFrame.getInterval(dateTimeZone).getStart(), getGroupHierarchy());
+                    vehicleScoreList = groupReportHessianDAO.getVehicleScores(itData.teamGroupData.get(teamType).group.getGroupID(), timeFrame.getInterval(dateTimeZone).getStart(), getGroupHierarchy());
+                }
+                else {
+                    driverScoreList = groupReportHessianDAO.getDriverScores(itData.teamGroupData.get(teamType).group.getGroupID(), timeFrame.getInterval(dateTimeZone), getGroupHierarchy());
+                    vehicleScoreList = groupReportHessianDAO.getVehicleScores(itData.teamGroupData.get(teamType).group.getGroupID(), timeFrame.getInterval(dateTimeZone), getGroupHierarchy());
+                }
                 assertEquals("1 driver expected", Integer.valueOf(1), Integer.valueOf(driverScoreList.size()));
                 assertEquals("1 vehicle expected", Integer.valueOf(1), Integer.valueOf(vehicleScoreList.size()));
                 Score dscore = driverScoreList.get(0).getScore();
                 Score vscore = vehicleScoreList.get(0).getScore();
 
-// US6954 - removoving until firmware implements feature                
-//                if (teamType == ITData.BAD && timeFrame != TimeFrame.YEAR) {
-//                    assertEquals("Bad group should have one Backing per day " + timeFrame, timeFrame.getNumberOfDays(), dscore.getBackingEvents());
-//
-//                }
+                if (teamType == ITData.BAD && timeFrame != TimeFrame.YEAR) {
+                    assertEquals("Bad group should have one Backing per day " + timeFrame, timeFrame.getNumberOfDays(), dscore.getBackingEvents());
+
+                }
 
                 assertEquals("Trips", dscore.getTrips(), vscore.getTrips());
                 if (timeFrame != TimeFrame.YEAR) {
@@ -954,9 +959,8 @@ public class ReportServiceTest {
                 assertEquals("Crashes", dscore.getCrashEvents(), vscore.getCrashEvents());
                 assertEquals("Seatbelt Clicks", dscore.getSeatbeltClicks(), vscore.getSeatbeltClicks());
                 assertEquals("Safety Total", dscore.getSafetyTotal(), vscore.getSafetyTotal());
-// US6954 - removoving until firmware implements feature                
-//                assertEquals("Backing", dscore.getBackingTime(), vscore.getBackingTime());
-//                assertEquals("Backing Events", dscore.getBackingEvents(), vscore.getBackingEvents());
+                assertEquals("Backing", dscore.getBackingTime(), vscore.getBackingTime());
+                assertEquals("Backing Events", dscore.getBackingEvents(), vscore.getBackingEvents());
             }
         }
 
