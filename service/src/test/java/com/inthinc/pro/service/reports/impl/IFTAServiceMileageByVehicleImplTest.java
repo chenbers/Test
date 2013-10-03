@@ -90,7 +90,7 @@ public class IFTAServiceMileageByVehicleImplTest extends BaseUnitTest {
         Response response = iftaServiceSUT.getMileageByVehicle(expectedGroupID, 
                 startDate, endDate, true, locale, measureType);
         assertNotNull(response);
-        assertEquals(Status.NOT_FOUND.getStatusCode(), response.getStatus());
+        assertEquals(Status.OK.getStatusCode(), response.getStatus());
     }
 
     @Test
@@ -105,7 +105,7 @@ public class IFTAServiceMileageByVehicleImplTest extends BaseUnitTest {
         Response response = iftaServiceSUT.getMileageByVehicle(expectedGroupID, 
                 startDate, endDate, true, locale, measureType);
         assertNotNull(response);
-        assertEquals(Status.NOT_FOUND.getStatusCode(), response.getStatus());
+        assertEquals(Status.OK.getStatusCode(), response.getStatus());
     }
 
     @Test

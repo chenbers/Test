@@ -41,7 +41,7 @@ public class DBUtil {
 		return tiwiproDS;
 	}
 
-	public void setDataSource(DataSource ds) {
+	public static void setDataSource(DataSource ds) {
 		tiwiproDS = ds;
 	}
 	
@@ -197,7 +197,7 @@ public class DBUtil {
         return deviceList;
     }
     
-	private static final String FETCH_WAYSMARTS= "SELECT deviceID FROM device WHERE status!=3 AND productVer=2";
+	private static final String FETCH_WAYSMARTS= "SELECT deviceID FROM device WHERE status!=3 AND productVer IN (2,12)";
     public static List<Device> getWSDevices(Integer accountID) throws SQLException
     {
         List<Device> deviceList = new ArrayList<Device>();
@@ -232,7 +232,7 @@ public class DBUtil {
         return deviceList;
     }
 	
-	private static final String FETCH_WS_TRIPNOTES_BETWEEN = "SELECT noteID,vehicleID,driverID,groupID,type,DATE_FORMAT(time, '%Y-%m-%d %H:%i:%s'),speed,odometer,state,flags,maprev,latitude,longitude,topSpeed,avgSpeed,speedLimit,distance,deltaX,deltaY,deltaZ,attrs FROM __NOTETABLE__ WHERE deviceID=? AND `type` IN (7,19,20,22,66,73,96,113,116,140,166,208,219) AND time BETWEEN  ? AND ? ORDER BY time, created";
+	private static final String FETCH_WS_TRIPNOTES_BETWEEN = "SELECT noteID,vehicleID,driverID,groupID,type,DATE_FORMAT(time, '%Y-%m-%d %H:%i:%s'),speed,odometer,state,flags,maprev,latitude,longitude,topSpeed,avgSpeed,speedLimit,distance,deltaX,deltaY,deltaZ,attrs FROM __NOTETABLE__ WHERE deviceID=? AND `type` IN (7,19,20,22,66,73,96,113,116,140,166,208,219,42) AND time BETWEEN  ? AND ? ORDER BY time, created";
     public static List<Note> getWSTripNotesForDevice(Long deviceID, Date startTimeStamp, Date endTimeStamp)  throws SQLException
     {
     	final String ATTR_driverFlag	= "8201";
@@ -520,9 +520,10 @@ public class DBUtil {
         } // end finally   
     }
 
-	private static final String UPDATE_AGG = "INSERT INTO agg%02d (aggDate, driverID, vehicleID, deviceID, driveTime, odometer6, trips, modified) VALUES(?, ?, ?, ?, ?, ?, 1,UTC_TIMESTAMP()) " +
-			"ON DUPLICATE KEY UPDATE trips=trips+1, driveTime=driveTime + ?, odometer6=odometer6 + ?, modified=UTC_TIMESTAMP()";
 
+    
+    private static final String UPDATE_AGG = "INSERT INTO agg%02d (aggDate, driverID, vehicleID, deviceID, driveTime, odometer6, trips, modified) VALUES(?, ?, ?, ?, ?, ?, 1,UTC_TIMESTAMP()) " +
+			"ON DUPLICATE KEY UPDATE trips=trips+1, driveTime=driveTime + ?, odometer6=odometer6 + ?, modified=UTC_TIMESTAMP()";
 	public static void updateAgg(Trip trip, Date day, TimeZone driverTZ)  throws SQLException
     {
         Connection conn = null;

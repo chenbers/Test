@@ -131,8 +131,8 @@ public class AssetServiceImpl implements AssetService {
 
         List<RedFlag> result = redFlagDAO.getRedFlagPage(groupID, normalizedStartDate, normalizedEndDate, RedFlagDAO.INCLUDE_FORGIVEN, expectedPageParams);
         
-        if (result == null || result.isEmpty()) {
-            return Response.status(Status.NOT_FOUND).build();
+        if (result == null) {
+            result = new ArrayList<RedFlag>();
         }
 
         return Response.ok(new GenericEntity<List<RedFlag>>(result) {}).build();

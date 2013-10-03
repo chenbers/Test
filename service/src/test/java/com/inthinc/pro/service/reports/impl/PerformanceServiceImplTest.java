@@ -142,10 +142,10 @@ public class PerformanceServiceImplTest extends BaseUnitTest {
         Assert.assertEquals(1, entity.getEntity().size());
         Assert.assertEquals(driverHoursMock, entity.getEntity().get(0));
         
-        // check the 404 response
+        // check the 200 empty response
         response = serviceSUT.getDriverHours(GROUP_ID, null);
         Assert.assertNotNull(response);
-        Assert.assertEquals(Status.NOT_FOUND.getStatusCode(), response.getStatus());
+        Assert.assertEquals(Status.OK.getStatusCode(), response.getStatus());
     }
 
     @SuppressWarnings("unchecked")
