@@ -98,7 +98,7 @@ public class IFTAServiceStateMileageByMonthImplTest extends BaseUnitTest {
         Response response = serviceSUT.getStateMileageByVehicleByMonthWithIftaAndDates(expectedGroupID, startDate, endDate, locale, measureType);
 
         assertNotNull(response);
-        assertEquals(Response.Status.NOT_FOUND.getStatusCode(), response.getStatus());
+        assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
     }
 
     @Test
@@ -123,7 +123,7 @@ public class IFTAServiceStateMileageByMonthImplTest extends BaseUnitTest {
         Response response = serviceSUT.getStateMileageByVehicleByMonthWithIftaAndDates(expectedGroupID, startDate, endDate, locale, measureType);
 
         assertNotNull(response);
-        assertEquals(Response.Status.NOT_FOUND.getStatusCode(), response.getStatus());
+        assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
     }
 
     @Test
@@ -256,7 +256,7 @@ public class IFTAServiceStateMileageByMonthImplTest extends BaseUnitTest {
         Response response = serviceSUT.getStateMileageByVehicleByMonthWithIftaAndDatesMultiGroup(gl, startDate, endDate, locale, measureType);
 
         assertNotNull(response);
-        assertEquals(Response.Status.NOT_FOUND.getStatusCode(), response.getStatus());
+        assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
     }
 
     @Test
@@ -284,7 +284,7 @@ public class IFTAServiceStateMileageByMonthImplTest extends BaseUnitTest {
                 startDate, endDate, locale, measureType);
 
         assertNotNull(response);
-        assertEquals(Response.Status.NOT_FOUND.getStatusCode(), response.getStatus());
+        assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
     }
 
     @Test

@@ -165,9 +165,10 @@ public class DriverServiceImpl extends AbstractService<Driver, DriverDAOAdapter>
             
             if(diffDays <= 30L) {
                 List<Trip> trips =  this.getDao().getLastTrips(driverID, startDate);
-                if(trips != null && !trips.isEmpty()) {
-                    return Response.ok(new GenericEntity<List<Trip>>(trips) {}).build();
+                if(trips == null) {
+                    trips = new ArrayList<Trip>();
                 }
+                return Response.ok(new GenericEntity<List<Trip>>(trips) {}).build();
             }
             else {
                 return Response.status(Status.BAD_REQUEST).build();
@@ -257,9 +258,10 @@ public class DriverServiceImpl extends AbstractService<Driver, DriverDAOAdapter>
             
             if(diffDays <= 30L) {
                 List<Trip> trips =  this.getDao().getTrips(driverID, fromDate,toDate);
-                if(trips != null && !trips.isEmpty()) {
-                    return Response.ok(new GenericEntity<List<Trip>>(trips) {}).build();
+                if(trips == null) {
+                    trips = new ArrayList<Trip>();
                 }
+                return Response.ok(new GenericEntity<List<Trip>>(trips) {}).build();
             }
             else {
                 return Response.status(Status.BAD_REQUEST).build();

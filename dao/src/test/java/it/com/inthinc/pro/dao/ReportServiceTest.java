@@ -925,10 +925,16 @@ public class ReportServiceTest {
         // test some of the fields that appear on the team stats pages
         for (int teamType = ITData.GOOD; teamType <= ITData.BAD; teamType++) {
             for (TimeFrame timeFrame : testTimeFrames) {
-                List<DriverVehicleScoreWrapper> driverScoreList = groupReportHessianDAO.getDriverScores(itData.teamGroupData.get(teamType).group.getGroupID(), timeFrame.getInterval(dateTimeZone),
-                        getGroupHierarchy());
-                List<DriverVehicleScoreWrapper> vehicleScoreList = groupReportHessianDAO.getDriverScores(itData.teamGroupData.get(teamType).group.getGroupID(), timeFrame.getInterval(dateTimeZone),
-                        getGroupHierarchy());
+                List<DriverVehicleScoreWrapper> driverScoreList = null;
+                List<DriverVehicleScoreWrapper> vehicleScoreList = null;
+                if (timeFrame == TimeFrame.ONE_DAY_AGO || timeFrame == TimeFrame.FIVE_DAYS_AGO) {
+                    driverScoreList = groupReportHessianDAO.getDriverScores(itData.teamGroupData.get(teamType).group.getGroupID(), timeFrame.getInterval(dateTimeZone).getStart(), getGroupHierarchy());
+                    vehicleScoreList = groupReportHessianDAO.getVehicleScores(itData.teamGroupData.get(teamType).group.getGroupID(), timeFrame.getInterval(dateTimeZone).getStart(), getGroupHierarchy());
+                }
+                else {
+                    driverScoreList = groupReportHessianDAO.getDriverScores(itData.teamGroupData.get(teamType).group.getGroupID(), timeFrame.getInterval(dateTimeZone), getGroupHierarchy());
+                    vehicleScoreList = groupReportHessianDAO.getVehicleScores(itData.teamGroupData.get(teamType).group.getGroupID(), timeFrame.getInterval(dateTimeZone), getGroupHierarchy());
+                }
                 assertEquals("1 driver expected", Integer.valueOf(1), Integer.valueOf(driverScoreList.size()));
                 assertEquals("1 vehicle expected", Integer.valueOf(1), Integer.valueOf(vehicleScoreList.size()));
                 Score dscore = driverScoreList.get(0).getScore();

@@ -1,5 +1,6 @@
 package com.inthinc.pro.service.reports.impl;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -149,8 +150,8 @@ public class IFTAServiceStateMileageByVehicleImpl extends BaseReportServiceImpl 
             interval = DateUtil.getInterval(startDate, endDate);
             list = reportsFacade.getStateMileageByVehicle(groupList.getValueListAsIntegers(), interval, 
                     iftaOnly, locale, measurementType);
-            if (list == null || list.isEmpty()) {
-                return Response.status(Status.NOT_FOUND).build();
+            if (list == null) {
+                list = new ArrayList<MileageByVehicle>();
             }
         } catch(BadDateRangeException bdre){
             return BadDateRangeExceptionMapper.getResponse(bdre);

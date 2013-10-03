@@ -6,6 +6,7 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 import it.com.inthinc.pro.dao.model.ITData;
+import it.config.ITDataSource;
 import it.config.IntegrationConfig;
 
 import java.io.InputStream;
@@ -37,6 +38,7 @@ import com.inthinc.pro.dao.hessian.ConfiguratorHessianDAO;
 import com.inthinc.pro.dao.hessian.DeviceHessianDAO;
 import com.inthinc.pro.dao.hessian.DriverHessianDAO;
 import com.inthinc.pro.dao.hessian.EventHessianDAO;
+import com.inthinc.pro.dao.hessian.EventHessianJdbcHybridDAO;
 import com.inthinc.pro.dao.hessian.ForwardCommandDefHessianDAO;
 import com.inthinc.pro.dao.hessian.GroupHessianDAO;
 import com.inthinc.pro.dao.hessian.LocationHessianDAO;
@@ -443,8 +445,9 @@ public class SiloServiceTest {
     @Test
     //@Ignore
     public void driversEvents() {
-        EventHessianDAO eventDAO = new EventHessianDAO();
+        EventHessianJdbcHybridDAO eventDAO = new EventHessianJdbcHybridDAO();
         eventDAO.setSiloService(siloService);
+        eventDAO.setDataSource(new ITDataSource().getRealDataSource());
         // year time frame from today back
         Date endDate = new Date();
         Date startDate = DateUtil.getDaysBackDate(endDate, 365);
