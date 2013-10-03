@@ -13,6 +13,8 @@ import java.util.*;
 
 import com.inthinc.pro.model.GroupType;
 import com.inthinc.pro.model.MeasurementType;
+import com.inthinc.pro.model.form.SubmissionData;
+import com.inthinc.pro.reports.forms.DVIRPreTripReportCriteria;
 import com.inthinc.pro.reports.ifta.StateMileageByVehicleReportCriteria;
 import com.inthinc.pro.reports.ifta.model.MileageByVehicle;
 import org.easymock.EasyMock;
