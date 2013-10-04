@@ -5,7 +5,9 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.TimeZone;
 
 import org.slf4j.Logger;
@@ -75,8 +77,8 @@ public class TripWS {
 			
 			if (noteList.size() > 0)
 			{
-				String driverTZName = getDriverTZNameFromNotes(noteList);
-				updateAggs(dd.getDay(), dd.getDeviceID(), driverTZName);
+				Map<Long, String> driverTZMap = getDriverTZNameFromNotes(noteList);
+				updateAggs(dd.getDay(), dd.getDeviceID(), driverTZMap);
 			}
 			
 			DBUtil.deleteDeviceDay2Agg(dd.getDeviceID(), dd.getDay());
@@ -84,20 +86,18 @@ public class TripWS {
 	}
 	
 	
-	private String getDriverTZNameFromNotes(List<Note> noteList)
+	private Map<Long, String> getDriverTZNameFromNotes(List<Note> noteList)
 	{
-		String driverTZ = "UTC";
+		Map<Long, String> driverTZMap = new HashMap<Long, String>(); 
 		for (Note note : noteList)
 		{
-			driverTZ = DBUtil.getDriverTimeZone(note.getDriverID());
-			logger.debug("getTriverTZNameFromNotes driverId: " + note.getDriverID() + " driverTZ: " + driverTZ);
-			if (driverTZ != null && !driverTZ.equalsIgnoreCase("UTC"))
-				break;
-		}
-		if (driverTZ == null)
-			driverTZ = "UTC";
-		
-		return driverTZ;
+		    if (driverTZMap.get(note.getDriverID()) == null) {
+    			String driverTZ = DBUtil.getDriverTimeZone(note.getDriverID());
+    			logger.debug("getTriverTZNameFromNotes driverId: " + note.getDriverID() + " driverTZ: " + driverTZ);
+    			driverTZMap.put(note.getDriverID(), driverTZ);
+		    }
+    	}
+		return driverTZMap;
 	}
 	
 	
@@ -251,61 +251,57 @@ public class TripWS {
 		}
 	}
 
-	private void updateAggs(Date tripDay, Long deviceId, String tzName) throws SQLException
+	private void updateAggs(Date tripDay, Long deviceId, Map<Long, String> driverTZMap) throws SQLException
 	{
 		logger.debug("updateAggs tripDay: " + tripDay);
-
 		
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 		dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
 		String strDay = dateFormat.format(tripDay);
 		logger.debug("strDay: " + strDay);
 
-	    TimeZone driverTZ = TimeZone.getTimeZone(tzName);
-	    
-	    GregorianCalendar tripDayEndCal = new GregorianCalendar();
-	    tripDayEndCal.setTime(tripDay);
-	    tripDayEndCal.add(Calendar.DATE, 1);
-	    
-		//We are converting a Trip Day (UTC) into a Driver Day (Driver TZ)
-	    GregorianCalendar driverDayCal = new GregorianCalendar();
-	    driverDayCal.setTimeZone(driverTZ);
-	    int year = Integer.parseInt(strDay.substring(0,4));
-	    int month = Integer.parseInt(strDay.substring(5,7));
-	    int day = Integer.parseInt(strDay.substring(8,10));
-	    driverDayCal.set(year, month-1, day, 0, 0, 0);
-
-    	driverDayCal.add(Calendar.DATE, -1);
-	    
-		//We update the aggs that the newly aggregated trips may have effected.
-	    while (driverDayCal.getTime().before(tripDayEndCal.getTime()))
-	    {
-			logger.debug("updateAggs driverDayCal: " + driverDayCal);
-			updateAgg(deviceId, driverDayCal.getTime(), driverTZ);
-	    	driverDayCal.add(Calendar.DATE, 1);
-	    }
+		for (Map.Entry<Long, String> driverTZEntry : driverTZMap.entrySet())
+		{
+		    TimeZone driverTZ = TimeZone.getTimeZone(driverTZEntry.getValue());
+    	    
+	        Calendar tripDayEndCal = createCalendar(tripDay);
+    	    tripDayEndCal.add(Calendar.DATE, 1);
+    	    
+    		//We are converting a Trip Day (UTC) into a Driver Day (Driver TZ)
+            Calendar driverDayCal = createCalendar(tripDay, driverTZ);
+    	    int year = Integer.parseInt(strDay.substring(0,4));
+    	    int month = Integer.parseInt(strDay.substring(5,7));
+    	    int day = Integer.parseInt(strDay.substring(8,10));
+    	    driverDayCal.set(year, month-1, day, 0, 0, 0);
+    
+        	driverDayCal.add(Calendar.DATE, -1);
+    	    
+    		//We update the aggs that the newly aggregated trips may have effected.
+    	    while (driverDayCal.getTime().before(tripDayEndCal.getTime()))
+    	    {
+    			logger.debug("updateAggs driverDayCal: " + driverDayCal);
+    			updateAgg(deviceId, driverTZEntry.getKey(), driverDayCal.getTime(), driverTZ);
+    	    	driverDayCal.add(Calendar.DATE, 1);
+    	    }
+		}    
 	}
-
 	
-	
-	private void updateAgg(Long deviceId, Date startDayTimeDriver, TimeZone driverTZ)  throws SQLException
+	private void updateAgg(Long deviceId, Long driverId, Date startDayTimeDriver, TimeZone driverTZ)  throws SQLException
 	{
 		logger.debug("updateAgg startDayTimeDriver: " + startDayTimeDriver);
-		
-		GregorianCalendar endDayCalendar = new GregorianCalendar();
-		endDayCalendar.setTime(startDayTimeDriver);
+
+        Calendar endDayCalendar = createCalendar(startDayTimeDriver);
 		endDayCalendar.add(Calendar.DATE, 1);
 		
 		//Fetch the trips for the driver's agg day. We are filtering using driver's TZ and trip start/end times are converted to driver TZ.
-        List<Trip> tripList = DBUtil.fetchTripsForAggDay(startDayTimeDriver, endDayCalendar.getTime(), deviceId, driverTZ);
+        List<Trip> tripList = DBUtil.fetchTripsForAggDay(startDayTimeDriver, endDayCalendar.getTime(), deviceId, driverId, driverTZ);
 
-        DBUtil.clearAgg(deviceId, startDayTimeDriver, driverTZ);
+        DBUtil.clearAgg(deviceId, driverId, startDayTimeDriver, driverTZ);
         for (Trip trip : tripList)
         {
 			//Update the agg with this trip. If trip spans agg days it's prorated
         	DBUtil.updateAgg(trip, startDayTimeDriver, driverTZ);
         }
-
 	}
 	
 	private void insertTrip(Trip trip, Date day) throws SQLException
@@ -360,8 +356,7 @@ public class TripWS {
         
 		//For timestamp, back off a second otherwise trip double counter
 		if (note.getType() == Note.TYPE_TIMESTAMP) {
-            Calendar cal = new GregorianCalendar();
-            cal.setTime(note.getTime());
+            Calendar cal = createCalendar(note.getTime());
             cal.add(Calendar.SECOND, -1);
             trip.setEndTime(cal.getTime());
         }
@@ -381,8 +376,7 @@ public class TripWS {
 		
         //For timestamp, add a second otherwise trip double counter
 		if (note.getType() == Note.TYPE_TIMESTAMP) {
-		    Calendar cal = new GregorianCalendar();
-	        cal.setTime(note.getTime());
+		    Calendar cal = createCalendar(note.getTime());
 	        cal.add(Calendar.SECOND, 1);
             trip.setStartTime(cal.getTime());
 		}
@@ -391,4 +385,16 @@ public class TripWS {
 
 	}
 
+    private Calendar createCalendar(Date date) {
+        return createCalendar(date, null);
+    }
+	private Calendar createCalendar(Date date, TimeZone tz) {
+        Calendar cal = new GregorianCalendar();
+        cal.setTime(date);
+        
+        if (tz != null)
+            cal.setTimeZone(tz);
+        
+        return cal;
+	}
 }

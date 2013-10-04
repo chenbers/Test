@@ -483,8 +483,8 @@ public class DBUtil {
         return tripTime;
     }
 
-	private static final String CLEAR_AGG = "UPDATE agg%02d SET driveTime=0, odometer6=0, trips=0, modified=UTC_TIMESTAMP() WHERE deviceID = ? AND aggDate = ?";
-    public static void clearAgg(Long deviceId, Date day, TimeZone driverTZ)  throws SQLException
+	private static final String CLEAR_AGG = "UPDATE agg%02d SET driveTime=0, odometer6=0, trips=0, modified=UTC_TIMESTAMP() WHERE deviceID = ? AND driverID = ? AND aggDate = ?";
+    public static void clearAgg(Long deviceId, Long driverId, Date day, TimeZone driverTZ)  throws SQLException
     {
         Connection conn = null;
         PreparedStatement statement = null;
@@ -498,11 +498,12 @@ public class DBUtil {
             conn = tiwiproDS.getConnection();
             statement = conn.prepareStatement(sqlStatement);
             statement.setLong(1, deviceId);
+            statement.setLong(2, driverId);
             
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
             dateFormat.setTimeZone(driverTZ);
             
-            statement.setString(2, dateFormat.format(day));
+            statement.setString(3, dateFormat.format(day));
 //            statement.setDate(2, new java.sql.Date(day.getTime()));
             
             logger.debug(statement.toString());
@@ -629,10 +630,10 @@ public class DBUtil {
         } // end finally   
     }
 
-	private static final String SELECT_TRIPS_FOR_AGG = "SELECT tripID,driverID,vehicleID,coalesce(idleTime,0),coalesce(mileage,0),coalesce(mileageOffset,0),DATE_FORMAT(CONVERT_TZ(startTime, 'GMT', ?), '%Y-%m-%d %H:%i:%s'), DATE_FORMAT(CONVERT_TZ(COALESCE(endTime,UTC_TIMESTAMP()), 'GMT', ?), '%Y-%m-%d %H:%i:%s'), startOdometer, endOdometer FROM trip WHERE deviceID = ? " +
+	private static final String SELECT_TRIPS_FOR_AGG = "SELECT tripID,driverID,vehicleID,coalesce(idleTime,0),coalesce(mileage,0),coalesce(mileageOffset,0),DATE_FORMAT(CONVERT_TZ(startTime, 'GMT', ?), '%Y-%m-%d %H:%i:%s'), DATE_FORMAT(CONVERT_TZ(COALESCE(endTime,UTC_TIMESTAMP()), 'GMT', ?), '%Y-%m-%d %H:%i:%s'), startOdometer, endOdometer FROM trip WHERE deviceID = ? AND driverID=? " +
 			"AND (CONVERT_TZ(startTime, 'GMT', ?) BETWEEN ? AND ? OR CONVERT_TZ(endTime, 'GMT', ?) BETWEEN ? AND ? " +
 			"OR (CONVERT_TZ(startTime, 'GMT', ?) < ? AND CONVERT_TZ(endTime, 'GMT', ?) > ?)) AND (coalesce(mileage,0) > 0 OR coalesce(mileageOffset,0) > 0)";
-	public static List<Trip> fetchTripsForAggDay(Date startDayTimeDriverTZ, Date endDayTimeDriverTZ, Long deviceId, TimeZone driverTZ) throws SQLException
+	public static List<Trip> fetchTripsForAggDay(Date startDayTimeDriverTZ, Date endDayTimeDriverTZ, Long deviceId, Long driverId, TimeZone driverTZ) throws SQLException
 	{
         Connection conn = null;
         PreparedStatement statement = null;
@@ -651,16 +652,17 @@ public class DBUtil {
             statement.setString(1, driverTZ.getID());
             statement.setString(2, driverTZ.getID());
             statement.setLong(3, deviceId);
-            statement.setString(4, driverTZ.getID());
-            statement.setString(5, dateFormat.format(startDayTimeDriverTZ));
-            statement.setString(6, dateFormat.format(endDayTimeDriverTZ));
-            statement.setString(7, driverTZ.getID());
-            statement.setString(8, dateFormat.format(startDayTimeDriverTZ));
-            statement.setString(9, dateFormat.format(endDayTimeDriverTZ));
-            statement.setString(10, driverTZ.getID());
-            statement.setString(11, dateFormat.format(startDayTimeDriverTZ));
-            statement.setString(12, driverTZ.getID());
-            statement.setString(13, dateFormat.format(endDayTimeDriverTZ));
+            statement.setLong(4, driverId);
+            statement.setString(5, driverTZ.getID());
+            statement.setString(6, dateFormat.format(startDayTimeDriverTZ));
+            statement.setString(7, dateFormat.format(endDayTimeDriverTZ));
+            statement.setString(8, driverTZ.getID());
+            statement.setString(9, dateFormat.format(startDayTimeDriverTZ));
+            statement.setString(10, dateFormat.format(endDayTimeDriverTZ));
+            statement.setString(11, driverTZ.getID());
+            statement.setString(12, dateFormat.format(startDayTimeDriverTZ));
+            statement.setString(13, driverTZ.getID());
+            statement.setString(14, dateFormat.format(endDayTimeDriverTZ));
 			
             logger.debug(statement.toString());
             
