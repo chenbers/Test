@@ -46,9 +46,11 @@
     <bean id="groupReportDAO" class="com.inthinc.pro.dao.hessian.report.GroupReportHessianDAO">
         <property name="reportService" ref="reportServiceBean" />
     </bean>
-    
-    <bean id="reportDAO" class="com.inthinc.pro.dao.hessian.ReportHessianDAO"  parent="genericDAO"/>
-    
+
+    <bean id="reportDAO" class="com.inthinc.pro.dao.hessian.ReportHessianDAO"  parent="genericDAO">
+        <property name="driverPerformanceMapper" ref="driverPerformanceMapper" />
+    </bean>
+
      <!-- Address Lookup -->
     <bean id="geonamesAddressLookupBean" class="com.inthinc.pro.map.GeonamesAddressLookup">
       	<property name="mapServerURLString" value="${mapserver.geonames.url}"/>
@@ -57,5 +59,8 @@
   </bean>
   
   <bean id="latLngFormatterBean" class="com.inthinc.pro.map.LatLngFormatterBean"/>
+
+    <!-- Custom Mappers -->
+    <bean id="driverPerformanceMapper" class="com.inthinc.pro.dao.hessian.mapper.DriverPerformanceMapper"/>
 
 </beans>

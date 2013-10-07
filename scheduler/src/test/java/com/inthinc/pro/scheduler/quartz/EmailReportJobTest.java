@@ -4,6 +4,8 @@ import static org.easymock.EasyMock.expect;
 import static org.easymock.classextension.EasyMock.createMock;
 import static org.easymock.classextension.EasyMock.replay;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.io.OutputStream;
@@ -11,6 +13,8 @@ import java.util.*;
 
 import com.inthinc.pro.model.GroupType;
 import com.inthinc.pro.model.MeasurementType;
+import com.inthinc.pro.model.form.SubmissionData;
+import com.inthinc.pro.reports.forms.DVIRPreTripReportCriteria;
 import com.inthinc.pro.reports.ifta.StateMileageByVehicleReportCriteria;
 import com.inthinc.pro.reports.ifta.model.MileageByVehicle;
 import org.easymock.EasyMock;
@@ -201,6 +205,111 @@ public class EmailReportJobTest
         assertTrue(reportSchedule.getEmailTo().equals(emailTo));
     }
     
+    @Test
+    public void nullCriteriaListReportJobTest() {
+        // Mock dao
+        AccountDAO accountDAO = initMockAccountDAO();
+        UserDAO userDAO = createMock(UserDAO.class);
+        User user = new User();
+        user.setUserID(MOCK_USER_ID);
+        user.setUsername("Hello");
+        user.setStatus(Status.ACTIVE);
+        Person p = new Person();
+        p.setLocale(Locale.US);
+        p.setPriEmail("am@inthinc.com");
+        p.setTimeZone(TimeZone.getTimeZone("MST"));
+        p.setLocale(Locale.ENGLISH);
+        user.setPerson(p);
+        EasyMock.makeThreadSafe(userDAO, true);
+        expect(userDAO.findByID(EasyMock.isA(Integer.class))).andReturn(user).anyTimes();
+        replay(userDAO);
+
+        GroupDAO groupDAO = createMock(GroupDAO.class);
+        Group group = new Group();
+        group.setGroupID(MOCK_GROUP_ID);
+        group.setAccountID(MOCK_ACCOUNT_ID);
+        group.setParentID(0);
+        group.setName("group");
+        group.setType(GroupType.TEAM);
+        expect(groupDAO.findByID(EasyMock.isA(Integer.class))).andReturn(group).anyTimes();
+        List<Group> groupList = new ArrayList<Group>();
+        groupList.add(group);
+        EasyMock.makeThreadSafe(groupDAO, true);
+        expect(groupDAO.getGroupsByAcctID(EasyMock.isA(Integer.class))).andReturn(groupList).anyTimes();
+        expect(groupDAO.getGroupHierarchy(EasyMock.isA(Integer.class), EasyMock.isA(Integer.class))).andReturn(groupList).anyTimes();
+        replay(groupDAO);
+        DriverDAO driverDAO = initMockDriverDAO(1);
+
+        List<Integer> driverIDList = new ArrayList<Integer>();
+        for (Driver driver : driverDAO.getAllDrivers(MOCK_GROUP_ID))
+            driverIDList.add(driver.getDriverID());
+
+        List<Integer> groupIDList = new ArrayList<Integer>();
+        groupIDList.add(MOCK_GROUP_ID);
+
+        // Configure the schedule
+        ReportSchedule reportSchedule = buildReportSchedule(Occurrence.DAILY, TimeZone.getTimeZone("MST"));
+        reportSchedule.setReportScheduleID(MOCK_REPORT_SCHEDULE_ID);
+        reportSchedule.setAccountID(MOCK_ACCOUNT_ID);
+        reportSchedule.setReportID(ReportGroup.DVIR_PRE_TRIP.getCode());
+        reportSchedule.setDeliverToManagers(false);
+        reportSchedule.setIftaOnly(false);
+        reportSchedule.setIncludeInactiveDrivers(true);
+        reportSchedule.setIncludeZeroMilesDrivers(true);
+        reportSchedule.setName("Mock Report Schedule");
+        reportSchedule.setGroupID(MOCK_GROUP_ID);
+        ReportScheduleDAO reportScheduleDAO = initReportScheduleDAO(reportSchedule);
+
+        ReportCriteria reportCriteria = new DVIRPreTripReportCriteria(Locale.ENGLISH);
+        List<SubmissionData> submissionDatas = new ArrayList<SubmissionData>();
+        SubmissionData sd = new SubmissionData();
+        sd.setDriverID(driverIDList.get(0));
+        submissionDatas.add(sd);
+        reportCriteria.setMainDataset(submissionDatas);
+        List<ReportCriteria> reportCriterias = new ArrayList<ReportCriteria>();
+        reportCriterias.add(reportCriteria);
+
+        ReportCriteriaService wrongReportCriteriaService = EasyMock.createMock(ReportCriteriaService.class);
+        EasyMock.makeThreadSafe(wrongReportCriteriaService, true);
+        expect(wrongReportCriteriaService.getReportCriteria(EasyMock.isA(ReportSchedule.class), EasyMock.isA(GroupHierarchy.class),
+                EasyMock.isA(Person.class))).andReturn(null).anyTimes(); // RETURN A NULL LIST
+        replay(wrongReportCriteriaService);
+
+        // Configure the report
+        MockReportCreator mockReportCreator = new MockReportCreator();
+        EmailReportAmazonPullJob  amazonPullJob = new EmailReportAmazonPullJob ();
+        amazonPullJob.setAccountDAO(accountDAO);
+        amazonPullJob.setGroupDAO(groupDAO);
+        amazonPullJob.setUserDAO(userDAO);
+        amazonPullJob.setDriverDAO(driverDAO);
+        amazonPullJob.setReportScheduleDAO(reportScheduleDAO);
+        amazonPullJob.setReportCriteriaService(wrongReportCriteriaService);
+        amazonPullJob.setWebContextPath("Mock");
+        amazonPullJob.setEncryptPassword("mockPassword");
+        amazonPullJob.initTextEncryptor();
+        amazonPullJob.setReportCreator((ReportCreator) mockReportCreator);
+        amazonPullJob.setWebContextPath("fake/path");
+
+        // Execute
+        reportSchedule.setLastDate(null);
+
+        // The system should not let you send a report with an empty report criteria list
+        assertFalse(amazonPullJob.dispatchReport(reportSchedule));
+
+        // When setting the correct list, it should work
+        ReportCriteriaService correctReportCriteriaService = EasyMock.createMock(ReportCriteriaService.class);
+        EasyMock.makeThreadSafe(correctReportCriteriaService, true);
+        expect(correctReportCriteriaService.getReportCriteria(EasyMock.isA(ReportSchedule.class), EasyMock.isA(GroupHierarchy.class),
+                EasyMock.isA(Person.class))).andReturn(reportCriterias).anyTimes(); // RETURN A NULL LIST
+        replay(correctReportCriteriaService);
+        amazonPullJob.setReportCriteriaService(correctReportCriteriaService);
+
+        assertTrue(amazonPullJob.dispatchReport(reportSchedule));
+        Map<String,Object> paramMap = reportCriteria.getPramMap();
+        assertNotNull(paramMap);
+        assertFalse(paramMap.isEmpty());
+    }
+
     @Test
     public void dailyMSTTest()
     {

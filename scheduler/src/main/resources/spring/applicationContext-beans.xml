@@ -235,4 +235,14 @@
         <property name="amazonSQSClient" ref="amazonSQSClient" />
         <property name="queueName" value="${AMAZONQUEUE_EMAILREPORT_QUEUENAME}" />
     </bean>
+
+    <bean id="amazonQueueLocal" class="com.inthinc.pro.scheduler.amazonaws.sqs.AmazonQueueImplLocal">
+        <!-- This property holds the pre-configured messages of the queue -->
+        <property name="messageMap">
+            <map>
+                <entry key="key" value="value"/>
+            </map>
+        </property>
+    </bean>
+
 </beans>
