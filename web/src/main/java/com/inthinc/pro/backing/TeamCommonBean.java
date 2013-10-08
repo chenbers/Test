@@ -174,19 +174,20 @@ public class TeamCommonBean extends BaseBean {
         } else {
             List<GroupTrendWrapper> groupTrendWrapperList = groupReportDAO.getSubGroupsAggregateDriverTrends(this.getGroup().getParentID(), duration, getGroupHierarchy());
             if(groupTrendWrapperList != null){
-	            for(GroupTrendWrapper gtw : groupTrendWrapperList) {
-	                if(gtw.getGroup().getGroupID().equals(this.getGroupID())) {
-	                    groupTrendWrapper = gtw;
-	                    break;
-	                }
-	            }
+                for(GroupTrendWrapper gtw : groupTrendWrapperList) {
+                    if(gtw.getGroup().getGroupID().equals(this.getGroupID())) {
+                        groupTrendWrapper = gtw;
+                        break;
+                    }
+                }
 
-	            //fill in missing date
-	            this.populateDateGaps(groupTrendWrapper.getTrendList());
+                if(groupTrendWrapper != null){
+                    //fill in missing date
+                    this.populateDateGaps(groupTrendWrapper.getTrendList());
+                }
             }
             // Put on cache 
             this.getCachedTrendResults().put(this.getTimeFrame().name(), groupTrendWrapper);
-            groupTrendWrapper = this.getCachedTrendResults().get(this.getTimeFrame().name());
         }
         if(groupTrendWrapper != null){
         	trend = this.getMatchingTrend(groupTrendWrapper.getTrendList());
