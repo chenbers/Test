@@ -224,4 +224,17 @@ public class Account extends BaseEntity implements Comparable<Account>, HasAccou
         return (options == null) ? false : Boolean.valueOf(options.getDriveTimeViolationsReportEnabled());
     }
     
+    public Boolean hasEventsQueueEnabled() {
+        AccountAttributes options = getProps();
+        if (options == null)
+            return false;
+        
+        String eventsQueueEnabled = options.getEventQueueEnabled();
+        if (eventsQueueEnabled == null)
+            return false;
+        
+        return Boolean.valueOf(eventsQueueEnabled);
+        
+    }
+
 }
