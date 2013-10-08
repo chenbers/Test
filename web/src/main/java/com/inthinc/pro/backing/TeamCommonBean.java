@@ -168,26 +168,29 @@ public class TeamCommonBean extends BaseBean {
         GroupTrendWrapper groupTrendWrapper = null;
         
         //String key = teamCommonBean.getTimeFrame().name();
+        Trend trend = null;
         if (this.getCachedTrendResults().containsKey(this.getTimeFrame().name())) {
             groupTrendWrapper = this.getCachedTrendResults().get(this.getTimeFrame().name());
         } else {
             List<GroupTrendWrapper> groupTrendWrapperList = groupReportDAO.getSubGroupsAggregateDriverTrends(this.getGroup().getParentID(), duration, getGroupHierarchy());
-                            
-            for(GroupTrendWrapper gtw : groupTrendWrapperList) {
-                if(gtw.getGroup().getGroupID().equals(this.getGroupID())) {
-                    groupTrendWrapper = gtw;
-                    break;
-                }
+            if(groupTrendWrapperList != null){
+	            for(GroupTrendWrapper gtw : groupTrendWrapperList) {
+	                if(gtw.getGroup().getGroupID().equals(this.getGroupID())) {
+	                    groupTrendWrapper = gtw;
+	                    break;
+	                }
+	            }
+
+	            //fill in missing date
+	            this.populateDateGaps(groupTrendWrapper.getTrendList());
             }
-            
-            //fill in missing date
-            this.populateDateGaps(groupTrendWrapper.getTrendList());
             // Put on cache 
             this.getCachedTrendResults().put(this.getTimeFrame().name(), groupTrendWrapper);
             groupTrendWrapper = this.getCachedTrendResults().get(this.getTimeFrame().name());
         }
-        
-        Trend trend = this.getMatchingTrend(groupTrendWrapper.getTrendList());
+        if(groupTrendWrapper != null){
+        	trend = this.getMatchingTrend(groupTrendWrapper.getTrendList());
+        }
         
         if(trend != null){
             retVal = trend.getOverall() == null ? -1 : trend.getOverall();
