@@ -35,6 +35,8 @@ public class AccountAttributes extends BaseEntity {
     private String phoneControlProvider2;
     private String phoneControlProvider3;
     private String driveTimeViolationsReportEnabled;
+    private String eventQueueEnabled;
+
 
     @Column(updateable = false)
     private String supportContacts[];
@@ -258,5 +260,14 @@ public class AccountAttributes extends BaseEntity {
         phoneControlProvider1 = null;
         phoneControlProvider2 = null;
         phoneControlProvider3 = null;
+    }
+    public String getEventQueueEnabled() {
+        if (eventQueueEnabled == null)
+            return "false";
+        return eventQueueEnabled;
+    }
+
+    public void setEventQueueEnabled(String eventQueueEnabled) {
+        this.eventQueueEnabled = eventQueueEnabled;
     }
 }
