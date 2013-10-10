@@ -14,6 +14,9 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.Socket;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -135,19 +138,64 @@ public class CrashTest extends BaseJDBCTest{
     }
 
     @Test
-    public void crash() {
+    public void crashDataWithFullEvent() {
         Vehicle vehicleTiwipro = getVehicleByName("Tiwipro");
         Driver driver = getDriver();
         vehicleDAO.setVehicleDriver(vehicleTiwipro.getVehicleID(), driver.getDriverID());
-//        sleep(2000);
         Device deviceTiwipro = getDeviceByName("Tiwipro");
         deviceTiwipro.setProductVersion(ProductType.TIWIPRO);
         deviceTiwipro.setVehicleID(vehicleTiwipro.getVehicleID());
+
+        deleteCrashesForVehicle(vehicleTiwipro.getVehicleID());
         
         Date crashTime = new Date();
         int crashTs = ((int)(crashTime.getTime()/1000));
         genFullEvent(deviceTiwipro, crashTime);
 
+        
+        MutableInt ts = new MutableInt(crashTs-20);
+
+        byte[] packet1 = createCrashData(crashTs, ts);
+        byte[] packet2 = createCrashData(crashTs, ts);
+        byte[] packet3 = createCrashData(crashTs, ts);
+
+        int retVal = sendCrashData(deviceTiwipro.getImei(), packet1);
+        assertTrue("retVal==0", retVal == 0);
+        retVal = sendCrashData(deviceTiwipro.getImei(), packet2);
+        assertTrue("retVal==0", retVal == 0);
+        retVal = sendCrashData(deviceTiwipro.getImei(), packet3);
+        assertTrue("retVal==0", retVal == 0);
+        
+        Date startTime = new Date((crashTs-30)*1000L);
+        Date endTime = new Date(ts.intValue()*1000L);
+        List<CrashReport> crashReportList = crashReportHessianDAO.findByGroupID(getTeam().getGroupID(), startTime, endTime, ForgivenType.INCLUDE);
+        assertTrue("One crash generated", crashReportList.size() == 1);
+        
+        CrashReport crashReport = crashReportList.get(0);
+        assertTrue("51 crash points", crashReport.getCrashDataPoints().size() == 51);
+
+        //Sending again to check duplicate crashes/points not being created    
+        retVal = sendCrashData(deviceTiwipro.getImei(), packet1);
+        assertTrue("retVal==0", retVal == 0);
+        crashReportList = crashReportHessianDAO.findByGroupID(getTeam().getGroupID(), startTime, endTime, ForgivenType.INCLUDE);
+        assertTrue("One crash generated", crashReportList.size() == 1);
+        crashReport = crashReportList.get(0);
+        assertTrue("51 crash points", crashReport.getCrashDataPoints().size() == 51);
+    }
+
+    @Test
+    public void crashDataForStop() {
+        Vehicle vehicleTiwipro = getVehicleByName("Tiwipro");
+        Driver driver = getDriver();
+        vehicleDAO.setVehicleDriver(vehicleTiwipro.getVehicleID(), driver.getDriverID());
+        Device deviceTiwipro = getDeviceByName("Tiwipro");
+        deviceTiwipro.setProductVersion(ProductType.TIWIPRO);
+        deviceTiwipro.setVehicleID(vehicleTiwipro.getVehicleID());
+        
+        deleteCrashesForVehicle(vehicleTiwipro.getVehicleID());
+
+        Date crashTime = new Date();
+        int crashTs = ((int)(crashTime.getTime()/1000));
         
         MutableInt ts = new MutableInt(crashTs-20);
 
@@ -465,6 +513,47 @@ public class CrashTest extends BaseJDBCTest{
             intVal = intVal | (data[startPos + i] & 0x000000FF);
         }
         return intVal;
+    }
+
+    
+    private static final String DELETE_CRASHDATA = "DELETE FROM crashData where crashID IN (SELECT crashID FROM crash where vehicleID=?)";               
+    private static final String DELETE_CRASH = "DELETE FROM crash where vehicleID=?";               
+    public static void deleteCrashesForVehicle(Integer vehicleID) {
+
+        Connection conn = null;
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+
+        try {
+            conn = new ITDataSource().getRealDataSource().getConnection();;
+            
+            statement = (PreparedStatement) conn.prepareStatement(DELETE_CRASHDATA);
+            statement.setInt(1, vehicleID);
+            statement.executeUpdate();
+            statement.close();
+            
+            statement = (PreparedStatement) conn.prepareStatement(DELETE_CRASH);
+            statement.setInt(1, vehicleID);
+            statement.executeUpdate();
+        }
+        catch (Throwable e)
+        { // handle database alerts in the usual manner
+            logger.error("Exception: " + e);
+            e.printStackTrace();
+
+        }   // end catch
+        finally
+        { // clean up and release the connection
+//              socket.close();
+            try {
+                if (conn != null)
+                    conn.close();
+                if (statement != null)
+                    statement.close();
+                if (resultSet != null)
+                    resultSet.close();
+            } catch (Exception e){}
+        } // end finally    
     }
 
     
