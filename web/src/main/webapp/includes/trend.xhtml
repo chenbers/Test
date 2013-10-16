@@ -123,11 +123,11 @@
                 				<ui:param name="context" value="#{context}-trend"/> 
 							</ui:include>
 						</td>
-						<td class="rich-table-cell " style="border-bottom: none" width="#{scroll ? 20 : 15}%">
-							<h:outputText value="#{trendBean.summaryItem.crashesPerMillionMiles}"
-								converter="PerMillionsMilesToPerMillionsKmEstimateConverter" 
-								style="font: bold 14px Verdana, Arial, Helvetica, sans-serif;"/>
-						</td>
+						<!--<td class="rich-table-cell " style="border-bottom: none" width="#{scroll ? 20 : 15}%">-->
+							<!--<h:outputText value="#{trendBean.summaryItem.crashesPerMillionMiles}"-->
+								<!--converter="PerMillionsMilesToPerMillionsKmEstimateConverter" -->
+								<!--style="font: bold 14px Verdana, Arial, Helvetica, sans-serif;"/>-->
+						<!--</td>-->
 					</tr>
 				</tbody>
 			</table>
@@ -205,22 +205,22 @@
                 		<ui:param name="context" value="#{context}-trendItem"/> 
 					</ui:include>
 				</rich:column>
-				<rich:column width="10%" sortBy="#{item.crashesPerMillionMiles}"
-					id="crashes">
-					<f:facet name="header">
-						<h:outputText value="#{messages.crash_summary_overDistanceColumn}" />
-					</f:facet>
-					<rich:toolTip for="trendTable:#{context}:crashesheader">
-						<h:outputFormat
-							value="#{messages.crash_summary_overDistanceTitle}">
-							<a4j:actionparam value="miles"
-								converter="MeasurementTextConverter" />
-						</h:outputFormat>
-					</rich:toolTip>
-					<h:outputText value="#{item.crashesPerMillionMiles}"
-						converter="PerMillionsMilesToPerMillionsKmEstimateConverter" 
-						style="font: bold 14px Verdana, Arial, Helvetica, sans-serif;"/>
-				</rich:column>
+				<!--<rich:column width="10%" sortBy="#{item.crashesPerMillionMiles}"-->
+					<!--id="crashes">-->
+					<!--<f:facet name="header">-->
+						<!--<h:outputText value="#{messages.crash_summary_overDistanceColumn}" />-->
+					<!--</f:facet>-->
+					<!--<rich:toolTip for="trendTable:#{context}:crashesheader">-->
+						<!--<h:outputFormat-->
+							<!--value="#{messages.crash_summary_overDistanceTitle}">-->
+							<!--<a4j:actionparam value="miles"-->
+								<!--converter="MeasurementTextConverter" />-->
+						<!--</h:outputFormat>-->
+					<!--</rich:toolTip>-->
+					<!--<h:outputText value="#{item.crashesPerMillionMiles}"-->
+						<!--converter="PerMillionsMilesToPerMillionsKmEstimateConverter" -->
+						<!--style="font: bold 14px Verdana, Arial, Helvetica, sans-serif;"/>-->
+				<!--</rich:column>-->
 			</rich:dataTable>
 		</div>
 		
