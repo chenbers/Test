@@ -75,9 +75,9 @@
     <properties>
         <compileSource>1.6</compileSource>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <skipUT>false</skipUT>
-        <skipIT>false</skipIT>
-        <skipAT>true</skipAT>
+        <skipUT>true</skipUT>
+        <skipIT>true</skipIT>
+        <skipAT>false</skipAT>
         <AT.threadCount>2</AT.threadCount>
         <AT.isThreadCountPerCore>true</AT.isThreadCountPerCore>
         <AT.parallelOn>classes</AT.parallelOn>
@@ -181,10 +181,28 @@
                             <threadCount>${AT.threadCount}</threadCount>
                             <perCoreThreadCount>${AT.isThreadCountPerCore}</perCoreThreadCount>
                             <excludes>
-                                <exclude>none</exclude>
+                                <exclude>**/selenium/**/AddEditUser.java,
+                                    	 **/selenium/**/Admin**.java,
+                                    	 **/selenium/**/ChangePasswordTest.java,
+                                    	 **/selenium/**/CurrentStoryTest.java,
+                                    	 **/selenium/**/DeviceTests.java,
+                                    	 **/selenium/**/DriverStatisticsTest.java,
+                                    	 **/selenium/**/GainReportsTest.java,
+                                    	 **/selenium/**/Mass**.java,
+                                    	 **/selenium/**/NotificationTest.java,
+                                    	 **/selenium/**/PasswordChangeTest.java,
+                                    	 **/selenium/**/ScheduledReportsTest.java,
+                                    	 **/selenium/**/SearchCrashesStory.java,
+                                    	 **/selenium/**/Stress**.java,
+                                    	 **/selenium/**/Verify**.java,
+                                    	 **/selenium/**/WaysmartAggregationTest.java,
+                                    	 **/selenium/**/WebDevice**.java,
+                                    	 **/selenium/**/WebRallyTest.java,
+                                    	 **/selenium/**/WebTest.java
+                                    	 </exclude>
                             </excludes>
                             <includes>
-                                <include>**/selenium/**/CurrentStoryTest.java</include>
+                                <include>**/selenium/**/**Test.java</include>
                             </includes>
                             <systemProperties>
                                 <property>
