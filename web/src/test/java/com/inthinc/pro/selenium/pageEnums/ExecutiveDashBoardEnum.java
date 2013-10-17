@@ -24,22 +24,25 @@ public enum ExecutiveDashBoardEnum implements SeleniumEnums {
     IDLING_DURATION(null, "executive-idlingPercentagePanel_form:executive-idlingPercentagePanel-***"),
     
     EXPAND(null, "***_details"),
-    EXPAND_LIVE_FLEET(null, "refresh:executive-liveFleetMapRestore"),
+//  This is no longer on this page
+//    EXPAND_LIVE_FLEET(null, "refresh:executive-liveFleetMapRestore"),
 
-    LIVE_FLEET_REFRESH(null, "refresh:executive-liveFleetMapRefresh"),
+//  This is no longer on this page
+//    LIVE_FLEET_REFRESH(null, "refresh:executive-liveFleetMapRefresh"),
     BREADCRUMB_ITEM(null, "overview_header_form:breadcrumbitem:***:executive-overviewHeader-dashboard", Xpath.start().ul(Id.id("breadcrumb")).li("***").toString()),
     OVERALL_TITLE("Overall Score", Xpath.start().span(Id.clazz("overall")).toString()),
-    CRASH_TITLE("Crash Stats", Xpath.start().span(Id.clazz("crash")).toString()),
+//    CRASH_TITLE("Crash Stats", Xpath.start().span(Id.clazz("crash")).toString()),
 
-    CRASHES_PER_TEXT("Crashes per million miles/kilometers", Xpath.start().table(Id.id("crashSummaryTable")).tbody().tr("1").td("1").toString()),
-    DAYS_SINCE_TEXT("Days since last crash", Xpath.start().table(Id.id("crashSummaryTable")).tbody().tr("1").td("2").toString()),
-    MILES_SINCE_TEXT("Miles/Kilometers since last crash", Xpath.start().table(Id.id("crashSummaryTable")).tbody().tr("1").td("3").toString()),
-
-    CRASHES_PER_NUMBER(null, Xpath.start().table(Id.id("crashSummaryTable")).tbody().tr("2").td("1").toString()),
-    DAYS_SINCE_NUMBER(null, Xpath.start().table(Id.id("crashSummaryTable")).tbody().tr("2").td("2").toString()),
-    MILES_SINCE_NUMBER(null, Xpath.start().table(Id.id("crashSummaryTable")).tbody().tr("2").td("3").toString()),
-
-    CRASHES_PER_TIME_FRAME("(Last 12 months)", Xpath.start().table(Id.id("crashSummaryTable")).tbody().tr("4").td("1").toString()),
+//   These are no longer on this page
+//    CRASHES_PER_TEXT("Crashes per million miles/kilometers", Xpath.start().table(Id.id("crashSummaryTable")).tbody().tr("1").td("1").toString()),
+//    DAYS_SINCE_TEXT("Days since last crash", Xpath.start().table(Id.id("crashSummaryTable")).tbody().tr("1").td("2").toString()),
+//    MILES_SINCE_TEXT("Miles/Kilometers since last crash", Xpath.start().table(Id.id("crashSummaryTable")).tbody().tr("1").td("3").toString()),
+//
+//    CRASHES_PER_NUMBER(null, Xpath.start().table(Id.id("crashSummaryTable")).tbody().tr("2").td("1").toString()),
+//    DAYS_SINCE_NUMBER(null, Xpath.start().table(Id.id("crashSummaryTable")).tbody().tr("2").td("2").toString()),
+//    MILES_SINCE_NUMBER(null, Xpath.start().table(Id.id("crashSummaryTable")).tbody().tr("2").td("3").toString()),
+//
+//    CRASHES_PER_TIME_FRAME("(Last 12 months)", Xpath.start().table(Id.id("crashSummaryTable")).tbody().tr("4").td("1").toString()),
 
     SPEEDING_TITLE("Speeding % (mi) ", Xpath.start().div(Id.id("speedPercentageOutputPanel_body")).div().div().span(Id.clazz("line")).toString()),
 
@@ -50,8 +53,8 @@ public enum ExecutiveDashBoardEnum implements SeleniumEnums {
 
     TREND_TITLE("Trend", Xpath.start().div(Id.id("trendDurationPanel_body")).div().div().span(Id.clazz("line")).toString()),
     TREND_SUPER_TITLE(null, Xpath.start().tbody(Id.id("trendTable:summaryitems:tb")).td("2").toString()),
-    TREND_GROUP_SORT("Division/Team"/* , "trendTable:executive:***header:sortDiv" */, Xpath.start().th("2").div().toString()),
-    TREND_SCORE_SORT("Score"/* , "trendTable:executive:***header:sortDiv" */, Xpath.start().th("3").div().toString()),
+    TREND_GROUP_SORT("Division/Team"/* , "trendTable:executive:***header:sortDiv" */, Xpath.start().th("2").div().toString()), //currently using j_id values, should give them actual id's
+    TREND_SCORE_SORT("Score"/* , "trendTable:executive:***header:sortDiv" */, Xpath.start().th("3").div().toString()), //currently using j_id values, should give them actual id's
     TREND_CRASH_SORT("Crash/Mil", "trendTable:executive:crashesheader:sortDiv", Xpath.start().th("4").div().toString()),
     
     TREND_GROUP_LINK(null, "trendTable:executive:###:executive-trendGroup", Xpath.start().tbody(Id.id("trendTable:executive:tb")).tr("###").td("2").toString()),
@@ -62,22 +65,20 @@ public enum ExecutiveDashBoardEnum implements SeleniumEnums {
     IDLING_STAT_TEXT(null, "idlingPercentageStatsMessage"),
 
     FUEL_EFFICIENCY_TITLE("Fuel Efficiency", Xpath.start().span(Id.clazz("gas")).toString()),
-    LIVE_FLEET_TITLE("Live Fleet", Xpath.start().span(Id.clazz("map")).toString()),
-    FLEET_LEGEND_TITLE("Fleet Legend", Xpath.start().span(Id.clazz("legend")).toString()),
-    FLEET_LEGEND_GROUP(null, "icos2:###", Xpath.start().tr(Id.clazz("rich-table-row carlegend"), "###").td("###").toString()),
+//    No longer on this page
+//    LIVE_FLEET_TITLE("Live Fleet", Xpath.start().span(Id.clazz("map")).toString()),
+//    FLEET_LEGEND_TITLE("Fleet Legend", Xpath.start().span(Id.clazz("legend")).toString()),
+//    FLEET_LEGEND_GROUP(null, "icos2:###", Xpath.start().tr(Id.clazz("rich-table-row carlegend"), "###").td("###").toString()),
     
     OVERALL_SCORE(null, "//div[@class='overall_score_panel']/div/table/tbody/tr/td"),
     OVERALL_SCORE_LABEL("OVERALL SCORE", "//div[@class='overall_score_panel']/div/text()"),
-    
-    
+       
     IDLING_STATS_NOTE("*Statistics reflect XXX out of YYY vehicles that are reporting idling statistics.", "idlingPercentageStatsMessage"),
     
     TOTAL_DURATION_TEXT("Total Duration:", "//span[@id='totalDriving']/../td[1]"),
     TOTAL_DURATION_VALUE(null, "totalDriving"),
     TOTAL_TIME_IDLING_TEXT("Total Time Idling:", "//span[@id='totalIdling']/../td[1]"),
     TOTAL_TIME_IDLING_VALUE(null, "totalIdling"),
-    
-
     ;
 
     private String text, url;

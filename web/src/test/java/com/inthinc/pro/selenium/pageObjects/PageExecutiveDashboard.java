@@ -56,10 +56,10 @@ public class PageExecutiveDashboard extends NavigationBar {
 			type = Types.SINGLE;
 			return new Button(ExecutiveDashBoardEnum.TOOL_BUTTON, page);
 		}
-		
-		public Button liveFleetExpand() {
-            return new Button(ExecutiveDashBoardEnum.EXPAND_LIVE_FLEET);
-        }
+		//No longer on this page
+//		public Button liveFleetExpand() {
+//            return new Button(ExecutiveDashBoardEnum.EXPAND_LIVE_FLEET);
+//        }
 		
 		public Button overallExpand() {
             return new Button(ExecutiveDashBoardEnum.EXPAND, overall);
@@ -145,34 +145,34 @@ public class PageExecutiveDashboard extends NavigationBar {
         public TextScoreTable trendGroupScore(){
             return new TextScoreTable(ExecutiveDashBoardEnum.TREND_GROUP_SCORE);
         }
-        
-        public Text labelCrashesPerMil(){
-            return new Text(ExecutiveDashBoardEnum.CRASHES_PER_TEXT);
-        }
-        
-        public Text numberCrashesPerMil(){
-            return new Text(ExecutiveDashBoardEnum.CRASHES_PER_NUMBER);
-        }
-        
-        public Text timeFrameCrashesPerMil(){
-            return new Text(ExecutiveDashBoardEnum.CRASHES_PER_TIME_FRAME);
-        }
-        
-        public Text labelDaysSinceLastCrash(){
-            return new Text(ExecutiveDashBoardEnum.DAYS_SINCE_TEXT);
-        }
-        
-        public Text numberDaysSinseLastCrash(){
-            return new Text(ExecutiveDashBoardEnum.DAYS_SINCE_NUMBER);
-        }
-        
-        public Text labelDistanceSinceLastCrash(){
-            return new Text(ExecutiveDashBoardEnum.MILES_SINCE_TEXT);
-        }
-        
-        public Text numberDistanceSinceLastCrash(){
-            return new Text(ExecutiveDashBoardEnum.MILES_SINCE_NUMBER);
-        }
+        //No longer on page
+//        public Text labelCrashesPerMil(){
+//            return new Text(ExecutiveDashBoardEnum.CRASHES_PER_TEXT);
+//        }
+//        
+//        public Text numberCrashesPerMil(){
+//            return new Text(ExecutiveDashBoardEnum.CRASHES_PER_NUMBER);
+//        }
+//        
+//        public Text timeFrameCrashesPerMil(){
+//            return new Text(ExecutiveDashBoardEnum.CRASHES_PER_TIME_FRAME);
+//        }
+//        
+//        public Text labelDaysSinceLastCrash(){
+//            return new Text(ExecutiveDashBoardEnum.DAYS_SINCE_TEXT);
+//        }
+//        
+//        public Text numberDaysSinseLastCrash(){
+//            return new Text(ExecutiveDashBoardEnum.DAYS_SINCE_NUMBER);
+//        }
+//        
+//        public Text labelDistanceSinceLastCrash(){
+//            return new Text(ExecutiveDashBoardEnum.MILES_SINCE_TEXT);
+//        }
+//        
+//        public Text numberDistanceSinceLastCrash(){
+//            return new Text(ExecutiveDashBoardEnum.MILES_SINCE_NUMBER);
+//        }
         
         public Text labelSpeedingTotalDistanceDriven(){
             return new TextLabel(ExecutiveDashBoardEnum.TOTAL_DRIVEN_LABEL);
@@ -209,10 +209,10 @@ public class PageExecutiveDashboard extends NavigationBar {
         public Text titleOverallScore(){
             return new Text(ExecutiveDashBoardEnum.OVERALL_TITLE);
         }
-        
-        public Text titleCrashStats(){
-            return new Text(ExecutiveDashBoardEnum.CRASH_TITLE);
-        }
+//      No longer on page
+//        public Text titleCrashStats(){
+//            return new Text(ExecutiveDashBoardEnum.CRASH_TITLE);
+//        }
         
         public Text titleTrend(){
             return new Text(ExecutiveDashBoardEnum.TREND_TITLE);
@@ -229,18 +229,18 @@ public class PageExecutiveDashboard extends NavigationBar {
         public Text titleFuelEfficiency(){
             return new Text(ExecutiveDashBoardEnum.FUEL_EFFICIENCY_TITLE);
         }
-        
-        public Text titleLiveFleet(){
-            return new Text(ExecutiveDashBoardEnum.LIVE_FLEET_TITLE);
-        }
-        
-        public Text titleFleetLegend(){
-            return new Text(ExecutiveDashBoardEnum.FLEET_LEGEND_TITLE);
-        }
-        
-        public TextTable entryFleetLegend(){
-            return new TextTable(ExecutiveDashBoardEnum.FLEET_LEGEND_GROUP);
-        }
+//      No longer on page
+//        public Text titleLiveFleet(){
+//            return new Text(ExecutiveDashBoardEnum.LIVE_FLEET_TITLE);
+//        }
+//        
+//        public Text titleFleetLegend(){
+//            return new Text(ExecutiveDashBoardEnum.FLEET_LEGEND_TITLE);
+//        }
+//        
+//        public TextTable entryFleetLegend(){
+//            return new TextTable(ExecutiveDashBoardEnum.FLEET_LEGEND_GROUP);
+//        }
         
         public Text noteIdlingStats(){
             return new Text(ExecutiveDashBoardEnum.IDLING_STATS_NOTE);
@@ -299,7 +299,7 @@ public class PageExecutiveDashboard extends NavigationBar {
 
     @Override
     protected boolean checkIsOnPage() {
-        return _text().labelCrashesPerMil().isPresent() && _link().fuelEfficiencyDuration(DurationEnumeration.THIRTY_DAYS).isPresent();
+        return _button().overviewTools().isPresent() && _text().overallScore().isPresent();
     }
 
 }
