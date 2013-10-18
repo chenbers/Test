@@ -297,7 +297,7 @@ public class LoginSteps extends WebSteps {
     @When("I go to the forms manage page")
     public void whenIGoToTheFormsManagePage() {
     	//loginPage.open("https://schlumberger.inthinc.com:8443/forms/");  // for slb
-    	loginPage.open("http://dev.tiwipro.com:8080/forms/");  //for dev
+    	loginPage.open("http://qa.inthinc.com/forms/");  //for qa
     }
     
     @When("I go to the admin vehicles page")
