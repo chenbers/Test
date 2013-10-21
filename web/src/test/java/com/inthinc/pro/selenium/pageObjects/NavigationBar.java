@@ -10,10 +10,6 @@ import com.inthinc.pro.selenium.pageEnums.NavigationBarEnum;
 public abstract class NavigationBar extends Masthead {
 
 	protected class NavigationBarButtons extends MastheadButtons {
-
-	    public Button logo(){
-	        return new Button(NavigationBarEnum.LOGO);
-	    }
 	    
 		public Button masterSearch() {
 			return new Button(NavigationBarEnum.SEARCH_BUTTON);
@@ -46,10 +42,6 @@ public abstract class NavigationBar extends Masthead {
 
 		public TextLink reports() {
 			return new TextLink(NavigationBarEnum.REPORTS);
-		}
-		
-		public TextLink forms() {
-			return new TextLink(NavigationBarEnum.FORMS);
 		}
 	}
 

@@ -12,7 +12,6 @@ import com.inthinc.pro.automation.utils.Xpath;
 public enum MastheadEnum implements SeleniumEnums {
     
     /* Paging elements */
-    
     FORWARD_ONE(null,Xpath.start().td(Id.text(StringEscapeUtils.unescapeHtml("&#187;"))).toString()),
     FORWARD_ALL(null,Xpath.start().td(Id.text(StringEscapeUtils.unescapeHtml("&#187;&#187;"))).toString()),
     BACK_ONE(null,Xpath.start().td(Id.text(StringEscapeUtils.unescapeHtml("&#171;"))).toString()),
@@ -20,14 +19,14 @@ public enum MastheadEnum implements SeleniumEnums {
     CHOOSE_PAGE(null,Xpath.start().td(Id.text("###")).toString()),
 
     /* Login Logo */
-    LOGIN(null, "login_logo", "//body/div[1]/div/img"),
-    LOGO(null, "headerForm:headerInitDashboard", "//form[@id='headerForm']/div[@id='logo']/a/img"),
+    LOGO(null, "//div/a"),
 
     /* Header Elements */
-    HELP("Help", "headerForm:contextSensitiveHelp", "//a[@class='tb-help']", "//div[@id='horz_nav']/ul/li[1]/span/a"),
-    LOGOUT("Log Out", "//div[@id='horz_nav']/ul/li[4]/a", "//a[@class='tb-logout']"),
-    MY_ACCOUNT("My Account", "headerForm:headerMyAccount", "//div[@id='horz_nav']/ul/li[3]/span/a"),
-    MY_MESSAGES("My Messages", "headerForm:headerMyMessages", "//form[@id='headerForm']/ul/li[2]/span/a"),
+    FLEET("Fleet", "//a[@id='headerInitDashboard']"),
+    FORMS("Forms", "//ul[1]/li[2]/a"),
+    MY_MESSAGES("My Messages", "//a[@id='headerMyMessages']"),
+    MY_ACCOUNT("My Account", "//a[@id='headerMyAccount']"),
+    LOGOUT("Log Out", "//a[@id='template-settings-logout']"),
 
     /* Footer Elements */
     COPYRIGHT("&#169;" + String.valueOf(Calendar.getInstance().get(Calendar.YEAR)) + " inthinc", "//li[@class='first']", "//form[@id='footerForm']/ul/li[1]"),

@@ -93,12 +93,12 @@ public class LoginSteps extends WebSteps {
     // login.loginProcess(user);
     // }
 
-    @Given("I am logged in as TEST_39880 user")
-    public void loggedInAsTeamOnlyUser() {
-        page._textField().username().type("TEST_39880");
-        page._textField().password().type("password");
-        page._button().logIn().click();
-    }
+//    @Given("I am logged in as TEST_39880 user")
+//    public void loggedInAsTeamOnlyUser() {
+//        page._textField().username().type("TEST_39880");
+//        page._textField().password().type("password");
+//        page._button().logIn().click();
+//    }
 
      @Given("I am logged in as a \"$roleName\" user")
      @When("I am logged in as a \"$roleName\" user")
@@ -297,7 +297,7 @@ public class LoginSteps extends WebSteps {
     @When("I go to the forms manage page")
     public void whenIGoToTheFormsManagePage() {
     	//loginPage.open("https://schlumberger.inthinc.com:8443/forms/");  // for slb
-    	loginPage.open("http://qa.inthinc.com/forms/");  //for qa
+    	loginPage.open("https://qa.inthinc.com/forms/");  //for qa
     }
     
     @When("I go to the admin vehicles page")

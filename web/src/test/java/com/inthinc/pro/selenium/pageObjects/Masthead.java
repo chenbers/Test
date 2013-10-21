@@ -7,6 +7,7 @@
 
 package com.inthinc.pro.selenium.pageObjects;
 
+import com.inthinc.pro.automation.elements.Button;
 import com.inthinc.pro.automation.elements.PageScroller;
 import com.inthinc.pro.automation.elements.Text;
 import com.inthinc.pro.automation.elements.TextLink;
@@ -120,34 +121,43 @@ public abstract class Masthead extends AbstractPage {
     }
 	
 	public class MastheadButtons {
+
+        public Button logo(){
+            return new Button(MastheadEnum.LOGO);
+        }
 	}
 
 	public class MastheadDropDowns {
 	}
 
 	public class MastheadLinks {
-		public TextLinkNewWindow help() {
-			return new TextLinkNewWindow(MastheadEnum.HELP);
-		}
+	    
+	    public TextLinkNewWindow fleet() {
+	        return new TextLinkNewWindow(MastheadEnum.FLEET);
+	    }
+        
+        public TextLink forms() {
+            return new TextLink(MastheadEnum.FORMS);
+        }
+        
+        public TextLink myMessages() {
+            return new TextLink(MastheadEnum.MY_MESSAGES);
+        }
+        
+        public TextLink myAccount() {
+            return new TextLink(MastheadEnum.MY_ACCOUNT);
+        }
 
+        public TextLink logout() {
+            return new TextLink(MastheadEnum.LOGOUT);
+        }
+        
+        public TextLinkNewWindow privacyPolicy() {
+            return new TextLinkNewWindow(MastheadEnum.PRIVACY);
+        }
+        
 		public TextLinkNewWindow legalNotice() {
 			return new TextLinkNewWindow(MastheadEnum.LEGAL);
-		}
-
-		public TextLink logout() {
-			return new TextLink(MastheadEnum.LOGOUT);
-		}
-
-		public TextLink myAccount() {
-			return new TextLink(MastheadEnum.MY_ACCOUNT);
-		}
-
-		public TextLink myMessages() {
-			return new TextLink(MastheadEnum.MY_MESSAGES);
-		}
-
-		public TextLinkNewWindow privacyPolicy() {
-			return new TextLinkNewWindow(MastheadEnum.PRIVACY);
 		}
 
 		public TextLinkNewWindow support() {
