@@ -4,12 +4,12 @@ I need a UI on the Administrator page that lists the Forms
 
 Scenario: Forms Manage Page - Generate needed forms
 Given I am logged in
-When I go to the forms manage page
+When I click the Forms link
 Then I generate 100 forms for the manage page test
 
 Scenario: TCXXXX: Forms Manage Page - Table View - UI
 Given I am logged in
-When I go to the forms manage page
+When I click the Forms link
 Then I validate the New Form button is present
 And I validate the Manage link is present
 And I validate the Published link is present
@@ -27,12 +27,12 @@ And I validate the Entries text is present
 
 Scenario: TCXXXX: Default Records dropdowns are set to 10
 Given I am logged in
-When I go to the forms manage page
+When I click the Forms link
 Then I validate the Records Per Page dropdown is "10"
 
 Scenario: TCXXXX: Forms Manage Page - Records per page test
 Given I am logged in
-When I go to the forms manage page
+When I click the Forms link
 And I select "10" from the Records Per Page dropdown 
 Then I validate the 11th Row of the Entry Name text is not present
 And I validate the Entries text contains "Showing 1 to 10 of"
@@ -48,13 +48,13 @@ And I validate the Entries text contains "Showing 1 to 100 of"
 
 Scenario: TCXXXX: Forms Manage Page - New Form button
 Given I am logged in
-When I go to the forms manage page
+When I click the Forms link
 And I click the New Form button
 Then I validate I am on the Forms Add page
 
 Scenario: TCXXXX: Forms Manage Page - Forms Edit link
 Given I am logged in
-When I go to the forms manage page
+When I click the Forms link
 And I save the 1st Row of the Entry Name text as SAVEDFORM
 And I click the 1st Row of the Gear button
 And I click the 1st Row of the Edit link
@@ -63,7 +63,7 @@ And I validate the Name field is SAVEDFORM
 
 Scenario: TCXXXX: Search - Manage tab
 Given I am logged in
-When I go to the forms manage page
+When I click the Forms link
 And I type "FormPreTrip" into the Search textfield
 Then I validate the 1st Row of the Entry Name text contains "FormPreTrip"
 And I validate the 2nd Row of the Entry Name text contains "FormPreTrip"
@@ -100,7 +100,7 @@ And I validate the 4th Row of the Entry Trigger text contains "Post Trip"
 
 Scenario: TCXXXX: Search - Manage tab stays blank
 Given I am logged in
-When I go to the forms manage page
+When I click the Forms link
 And I click the Published link
 And I type "Pre Trip" into the Search textfield
 And I click the Manage link
@@ -110,7 +110,7 @@ And I validate the Search textfield is ""
 
 Scenario: TCXXXX: Empty Search
 Given I am logged in
-When I go to the forms manage page
+When I click the Forms link
 And I type "randomstringthatwillnotcomeup" into the Search textfield
 Then I validate the No Records Error text is "No matching records found"
 And I validate the Entries text contains "Showing 0 to 0 of 0 entries"
@@ -119,7 +119,7 @@ And I validate the Next link is not present
 
 Scenario: TC6291: Copy Form with all fields and Validate
 Given I am logged in
-When I go to the forms manage page
+When I click the Forms link
 And I type "XYZ_AllFieldsTest" into the Search field
 Then I validate the 1st Row of Entry Name text is "XYZ_AllFieldsTest"
 When I click the 1st Row of the Gear button

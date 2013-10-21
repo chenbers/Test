@@ -7,7 +7,7 @@ I need an interface to create a form and to forward to devices for drivers to co
 !-- watch out for the logic of "Then I validate the 1st Row of the PublishDisabled link is not present", which returns a FALSE, though it IS present --reverse logic
 Scenario: TC6291 Forms Add Page - Save Top Button
 Given I am logged in
-When I go to the forms manage page
+When I click the Forms link
 And I click the New Form button
 And I check the 1st Row of the Groups checkbox
 And I type "Form TC6291Add1" in the Name textfield
@@ -32,7 +32,7 @@ And I validate the 1st Row of the Entry Version text is "2"
 
 Scenario: TC6291 Forms Add Page - Save Bottom Button
 Given I am logged in
-When I go to the forms manage page
+When I click the Forms link
 And I click the New Form button
 And I check the 1st Row of the Groups checkbox
 And I type "Form TC6291Add2" in the Name textfield
@@ -44,7 +44,7 @@ Then I validate the 1st Row of Entry Name text is "Form TC6291Add2"
 
 Scenario: TC6291 Forms Add Page - Cancel Top Button
 Given I am logged in
-When I go to the forms manage page
+When I click the Forms link
 And I click the New Form button
 And I check the 1st Row of the Groups checkbox
 And I type "Form TC6291Add3" in the Name field
@@ -59,7 +59,7 @@ Then I validate the 1st Row of the Entry Base Form Id text is not present
 
 Scenario: TC6291 Forms Add Page - Cancel Bottom Button
 Given I am logged in
-When I go to the forms manage page
+When I click the Forms link
 And I click the New Form button
 And I check the 1st Row of the Groups checkbox
 And I type "Form TC6291Add3" in the Name field
@@ -74,7 +74,7 @@ Then I validate the 1st Row of the Entry Base Form Id text is not present
 
 Scenario: TC6291: Forms Add Page - Add Form link top (cancel - no changes)
 Given I am logged in
-When I go to the forms manage page
+When I click the Forms link
 And I click the New Form button
 Then I validate I am on the Forms Add page
 And I validate the Name field is ""
@@ -100,7 +100,7 @@ And I validate the View Properties Label text is present
 
 Scenario: TC6291: Forms Add Page - Add Form link bottom (cancel - no changes)
 Given I am logged in
-When I go to the forms manage page
+When I click the Forms link
 And I click the New Form button
 Then I validate I am on the Forms Add page
 And I validate the Name field is ""
@@ -127,7 +127,7 @@ And I validate the View Properties Label text is present
 !-- removed attempts to select from dropdowns for now *******************************************************
 Scenario: TC6291: Forms Add Page - Add Form link top (cancel - changes)
 Given I am logged in
-When I go to the forms manage page
+When I click the Forms link
 And I click the New Form button
 Then I validate I am on the Forms Add page
 And I validate the Name field is ""
@@ -149,7 +149,7 @@ And I validate the Status dropdown is "Active"
 
 Scenario: TC6291: Forms Add Page - Add Form link bottom (cancel - changes)
 Given I am logged in
-When I go to the forms manage page
+When I click the Forms link
 And I click the New Form button
 Then I validate I am on the Forms Add page
 And I validate the Name field is ""
@@ -171,7 +171,7 @@ And I validate the Status dropdown is "Active"
 
 Scenario: TC6291 Forms Add Page - UI Test - Text link
 Given I am logged in
-When I go to the forms manage page
+When I click the Forms link
 And I click the New Form button
 And I check the 1st Row of the Groups checkbox
 And I click the Text link
@@ -193,7 +193,7 @@ And I validate the 1st Row of the Control Flow Arrow link is present
 
 Scenario: TC6291 Forms Add Page - UI Test - Numeric link
 Given I am logged in
-When I go to the forms manage page
+When I click the Forms link
 And I click the New Form button
 And I check the 1st Row of the Groups checkbox
 And I click the Numeric link
@@ -217,7 +217,7 @@ And I validate the 1st Row of the Control Flow Arrow link is present
 
 Scenario: TC6291 Forms Add Page - UI Test - Date link
 Given I am logged in
-When I go to the forms manage page
+When I click the Forms link
 And I click the New Form button
 And I check the 1st Row of the Groups checkbox
 And I click the Date link
@@ -240,7 +240,7 @@ And I validate the 1st Row of the Control Flow Arrow link is present
 
 Scenario: TC6291 Forms Add Page - UI Test - Choose One link
 Given I am logged in
-When I go to the forms manage page
+When I click the Forms link
 And I click the New Form button
 And I check the 1st Row of the Groups checkbox
 And I click the Choose One link
@@ -258,7 +258,7 @@ And I validate the 1st Row of the Control Flow Arrow link is present
 
 Scenario: TC6291 Forms Add Page - UI Test - Select Multiple link
 Given I am logged in
-When I go to the forms manage page
+When I click the Forms link
 And I click the New Form button
 And I check the 1st Row of the Groups checkbox
 And I click the Select Multiple link
@@ -276,7 +276,7 @@ And I validate the 1st Row of the Control Flow Arrow link is present
 
 Scenario: TC6291 Forms Add Page - Blank Data Name Error Text Field
 Given I am logged in
-When I go to the forms manage page
+When I click the Forms link
 And I click the New Form button
 And I check the 1st Row of the Groups checkbox
 And I click the Text link
@@ -285,7 +285,7 @@ Then I validate the Data Name Error text is "This property is required."
 
 Scenario: TC6291 Forms Add Page - Blank Data Name Error Numeric Field
 Given I am logged in
-When I go to the forms manage page
+When I click the Forms link
 And I click the New Form button
 And I check the 1st Row of the Groups checkbox
 And I click the Numeric link
@@ -294,7 +294,7 @@ Then I validate the Data Name Error text is "This property is required."
 
 Scenario: TC6291 Forms Add Page - Blank Data Name Error Date Field
 Given I am logged in
-When I go to the forms manage page
+When I click the Forms link
 And I click the New Form button
 And I check the 1st Row of the Groups checkbox
 And I click the Date link
@@ -303,7 +303,7 @@ Then I validate the Data Name Error text is "This property is required."
 
 Scenario: TC6291 Forms Add Page - Blank Data Name Error Choose One Field
 Given I am logged in
-When I go to the forms manage page
+When I click the Forms link
 And I click the New Form button
 And I check the 1st Row of the Groups checkbox
 And I click the Choose One link
@@ -312,7 +312,7 @@ Then I validate the Data Name Error text is "This property is required."
 
 Scenario: TC6291 Forms Add Page - Blank Data Name Error Select Multiple Field
 Given I am logged in
-When I go to the forms manage page
+When I click the Forms link
 And I click the New Form button
 And I check the 1st Row of the Groups checkbox
 And I click the Select Multiple link
@@ -321,7 +321,7 @@ Then I validate the Data Name Error text is "This property is required."
 
 Scenario: TC6291 Forms Add Page - Duplicate Data Name Error Text Field
 Given I am logged in
-When I go to the forms manage page
+When I click the Forms link
 And I click the New Form button
 And I check the 1st Row of the Groups checkbox
 And I click the Text link
@@ -334,7 +334,7 @@ And I validate the Data Name Error text is "This property must be unique; there 
 
 Scenario: TC6291 Forms Add Page - Duplicate Data Name Error Numeric Field
 Given I am logged in
-When I go to the forms manage page
+When I click the Forms link
 And I click the New Form button
 And I check the 1st Row of the Groups checkbox
 And I click the Numeric link
@@ -347,7 +347,7 @@ And I validate the Data Name Error text is "This property must be unique; there 
 
 Scenario: TC6291 Forms Add Page - Duplicate Data Name Error Date Field
 Given I am logged in
-When I go to the forms manage page
+When I click the Forms link
 And I click the New Form button
 And I check the 1st Row of the Groups checkbox
 And I click the Date link
@@ -360,7 +360,7 @@ And I validate the Data Name Error text is "This property must be unique; there 
 
 Scenario: TC6291 Forms Add Page - Duplicate Data Name Error Choose One Field
 Given I am logged in
-When I go to the forms manage page
+When I click the Forms link
 And I click the New Form button
 And I check the 1st Row of the Groups checkbox
 And I click the Choose One link
@@ -373,7 +373,7 @@ And I validate the Data Name Error text is "This property must be unique; there 
 
 Scenario: TC6291 Forms Add Page - Duplicate Data Name Error Select Multiple Field
 Given I am logged in
-When I go to the forms manage page
+When I click the Forms link
 And I click the New Form button
 And I check the 1st Row of the Groups checkbox
 And I click the Select Multiple link
@@ -386,7 +386,7 @@ And I validate the Data Name Error text is "This property must be unique; there 
 
 Scenario: TC6291 Forms Add Page - Duplicate Data Name Error All Fields
 Given I am logged in
-When I go to the forms manage page
+When I click the Forms link
 And I click the New Form button
 And I check the 1st Row of the Groups checkbox
 And I click the Text link
@@ -411,7 +411,7 @@ And I validate the Data Name Error text is "This property must be unique; there 
 
 Scenario: TC6291 Forms Add Page - Space Data Name Error Text Field
 Given I am logged in
-When I go to the forms manage page
+When I click the Forms link
 And I click the New Form button
 And I check the 1st Row of the Groups checkbox
 And I click the Text link
@@ -420,7 +420,7 @@ Then I validate the Data Name Error text is "Only letters and numbers are allowe
 
 Scenario: TC6291 Forms Add Page - Space Data Name Error Numeric Field
 Given I am logged in
-When I go to the forms manage page
+When I click the Forms link
 And I click the New Form button
 And I check the 1st Row of the Groups checkbox
 And I click the Numeric link
@@ -429,7 +429,7 @@ Then I validate the Data Name Error text is "Only letters and numbers are allowe
 
 Scenario: TC6291 Forms Add Page - Space Data Name Error Date Field
 Given I am logged in
-When I go to the forms manage page
+When I click the Forms link
 And I click the New Form button
 And I check the 1st Row of the Groups checkbox
 And I click the Date link
@@ -438,7 +438,7 @@ Then I validate the Data Name Error text is "Only letters and numbers are allowe
 
 Scenario: TC6291 Forms Add Page - Space Data Name Error Choose One Field
 Given I am logged in
-When I go to the forms manage page
+When I click the Forms link
 And I click the New Form button
 And I check the 1st Row of the Groups checkbox
 And I click the Choose One link
@@ -447,7 +447,7 @@ Then I validate the Data Name Error text is "Only letters and numbers are allowe
 
 Scenario: TC6291 Forms Add Page - Space Data Name Error Select Multiple Field
 Given I am logged in
-When I go to the forms manage page
+When I click the Forms link
 And I click the New Form button
 And I check the 1st Row of the Groups checkbox
 And I click the Select Multiple link
@@ -456,7 +456,7 @@ Then I validate the Data Name Error text is "Only letters and numbers are allowe
 
 Scenario: TC6291 Forms Add Page - Space Data Name Error All Fields
 Given I am logged in
-When I go to the forms manage page
+When I click the Forms link
 And I click the New Form button
 And I check the 1st Row of the Groups checkbox
 And I click the Text link
@@ -481,7 +481,7 @@ And I validate the Data Name Error text contains "Only letters and numbers are a
 
 Scenario: TC6291 Forms Add Page - Symbols Data Name Error Text Field
 Given I am logged in
-When I go to the forms manage page
+When I click the Forms link
 And I click the New Form button
 And I check the 1st Row of the Groups checkbox
 And I click the Text link
@@ -490,7 +490,7 @@ Then I validate the Data Name Error text is "Only letters and numbers are allowe
 
 Scenario: TC6291 Forms Add Page - Symbols Data Name Error Numeric Field
 Given I am logged in
-When I go to the forms manage page
+When I click the Forms link
 And I click the New Form button
 And I check the 1st Row of the Groups checkbox
 And I click the Numeric link
@@ -499,7 +499,7 @@ Then I validate the Data Name Error text is "Only letters and numbers are allowe
 
 Scenario: TC6291 Forms Add Page - Symbols Data Name Error Date Field
 Given I am logged in
-When I go to the forms manage page
+When I click the Forms link
 And I click the New Form button
 And I check the 1st Row of the Groups checkbox
 And I click the Date link
@@ -508,7 +508,7 @@ Then I validate the Data Name Error text is "Only letters and numbers are allowe
 
 Scenario: TC6291 Forms Add Page - Symbols Data Name Error Choose One Field
 Given I am logged in
-When I go to the forms manage page
+When I click the Forms link
 And I click the New Form button
 And I check the 1st Row of the Groups checkbox
 And I click the Choose One link
@@ -517,7 +517,7 @@ Then I validate the Data Name Error text is "Only letters and numbers are allowe
 
 Scenario: TC6291 Forms Add Page - Symbols Data Name Error Select Multiple Field
 Given I am logged in
-When I go to the forms manage page
+When I click the Forms link
 And I click the New Form button
 And I check the 1st Row of the Groups checkbox
 And I click the Select Multiple link
@@ -526,7 +526,7 @@ Then I validate the Data Name Error text is "Only letters and numbers are allowe
 
 Scenario: TC6291 Forms Add Page - Symbols Data Name Error All Fields
 Given I am logged in
-When I go to the forms manage page
+When I click the Forms link
 And I click the New Form button
 And I check the 1st Row of the Groups checkbox
 And I click the Text link
@@ -551,7 +551,7 @@ And I validate the Data Name Error text contains "Only letters and numbers are a
 
 Scenario: TC6291 Forms Add Page - Name required error
 Given I am logged in
-When I go to the forms manage page
+When I click the Forms link
 And I click the New Form button
 And I check the 1st Row of the Groups checkbox
 And I click the Text link
@@ -562,7 +562,7 @@ And I validate the Group Error text is not present
 
 Scenario: TC6291 Forms Add Page - Name required error
 Given I am logged in
-When I go to the forms manage page
+When I click the Forms link
 And I click the New Form button
 And I check the 1st Row of the Groups checkbox
 And I click the Text link
@@ -573,7 +573,7 @@ And I validate the Group Error text is not present
 
 Scenario: TC6291 Forms Add Page - Name required error
 Given I am logged in
-When I go to the forms manage page
+When I click the Forms link
 And I click the New Form button
 And I check the 1st Row of the Groups checkbox
 And I click the Text link
@@ -584,7 +584,7 @@ And I validate the Group Error text is not present
 
 Scenario: TC6291 Forms Add Page - Control required error
 Given I am logged in
-When I go to the forms manage page
+When I click the Forms link
 And I click the New Form button
 And I check the 1st Row of the Groups checkbox
 And I type "Form TC6291Add5" into the Name textfield
@@ -595,7 +595,7 @@ And I validate the Group Error text is not present
 
 Scenario: TC6291 Forms Add Page - Blank Group Checkbox Error 
 Given I am logged in
-When I go to the forms manage page
+When I click the Forms link
 And I click the New Form button
 And I click the Text link
 And I type "Form TC6291Add5" into the Name textfield
@@ -606,7 +606,7 @@ And I validate the Control Error text is not present
 
 Scenario: TC6291 Forms Add Page - Name, Control, and Group Errors
 Given I am logged in
-When I go to the forms manage page
+When I click the Forms link
 And I click the New Form button
 And I click the Save Top button
 Then I validate the Name Error text contains "Name is a required field."
@@ -617,7 +617,7 @@ Then I validate the Group Error text contains "Must select at least one group."
 !-- workaround is to check twice, if we need to uncheck in the 15th line of this test
 Scenario: TC6291 Forms Add Page - Name, Control, and Group Errors Add then remove
 Given I am logged in
-When I go to the forms manage page
+When I click the Forms link
 And I click the New Form button
 And I click the Save Top button
 Then I validate the Control Error text contains "Form must have at least one control"
@@ -644,7 +644,7 @@ And I validate the Group Error text is not present
 
 Scenario: TC6291 Forms Add Page - Add a Name Text Field - Read Only box checked
 Given I am logged in
-When I go to the forms manage page
+When I click the Forms link
 And I click the New Form button
 And I check the 1st Row of the Groups checkbox
 And I type "Form TC6291Add7" into the Name textfield
@@ -664,7 +664,7 @@ Then I validate the Read Only checkbox is checked
 
 Scenario: TC6291 Forms Add Page - Add a Name Text Field - Required box checked
 Given I am logged in
-When I go to the forms manage page
+When I click the Forms link
 And I click the New Form button
 And I check the 1st Row of the Groups checkbox
 And I type "Form TC6291Add8" into the Name textfield
@@ -683,7 +683,7 @@ Then I validate the Required checkbox is checked
 
 Scenario: TC6291 Forms Add Page - Add a Name Text Field - Length boxes checked
 Given I am logged in
-When I go to the forms manage page
+When I click the Forms link
 And I click the New Form button
 And I check the 1st Row of the Groups checkbox
 And I type "Form TC6291Add9" into the Name textfield
@@ -712,7 +712,7 @@ And I validate the Invalid Text textfield is "Value out of range"
 
 Scenario: TC6291 Forms Add Page - Add a Name Text Field - Required and Length boxes checked
 Given I am logged in
-When I go to the forms manage page
+When I click the Forms link
 And I click the New Form button
 And I check the 1st Row of the Groups checkbox
 And I type "Form TC6291Add10" into the Name textfield
@@ -743,7 +743,7 @@ And I validate the Invalid Text textfield is "Value out of range"
 
 Scenario: TC6291 Forms Add Page - Add a Name Text Field - Required and Length boxes unchecked
 Given I am logged in
-When I go to the forms manage page
+When I click the Forms link
 And I click the New Form button
 And I check the 1st Row of the Groups checkbox
 And I type "Form TC6291Add11" into the Name textfield
@@ -786,7 +786,7 @@ Then I validate the Maximum Text Length field is ""
 
 Scenario: TC6291 Forms Add Page - Add a Text Field - Not inclusive
 Given I am logged in
-When I go to the forms manage page
+When I click the Forms link
 And I click the New Form button
 And I check the 1st Row of the Groups checkbox
 And I type "Form TC6291Add12" into the Name textfield
@@ -813,7 +813,7 @@ And I validate the Invalid Text textfield is "Value out of range"
 
 Scenario: TC6291 Forms Add Page - Add a Numeric Field - Read Only box checked
 Given I am logged in
-When I go to the forms manage page
+When I click the Forms link
 And I click the New Form button
 And I check the 1st Row of the Groups checkbox
 And I type "Form TC6291Add13" into the Name textfield
@@ -832,7 +832,7 @@ When I validate the Read Only checkbox is checked
 
 Scenario: TC6291 Forms Add Page - Add a Numeric Field - Required box checked
 Given I am logged in
-When I go to the forms manage page
+When I click the Forms link
 And I click the New Form button
 And I check the 1st Row of the Groups checkbox
 And I type "Form TC6291Add14" into the Name textfield
@@ -851,7 +851,7 @@ When I validate the Required checkbox is checked
 
 Scenario: TC6291 Forms Add Page - Add a Numeric Field - Range boxes checked
 Given I am logged in
-When I go to the forms manage page
+When I click the Forms link
 And I click the New Form button
 And I check the 1st Row of the Groups checkbox
 And I type "Form TC6291Add15" into the Name textfield
@@ -881,7 +881,7 @@ And I validate the Invalid Text textfield is "Value out of range"
 
 Scenario: TC6291 Forms Add Page - Add a Numeric Field - Required and Range boxes checked
 Given I am logged in
-When I go to the forms manage page
+When I click the Forms link
 And I click the New Form button
 And I check the 1st Row of the Groups checkbox
 And I type "Form TC6291Add16" into the Name textfield
@@ -913,7 +913,7 @@ And I validate the Invalid Text field is "Value out of range"
 
 Scenario: TC6291 Forms Add Page - Add a Numeric Field - Required and Range boxes unchecked
 Given I am logged in
-When I go to the forms manage page
+When I click the Forms link
 And I click the New Form button
 And I check the 1st Row of the Groups checkbox
 And I type "Form TC6291Add17" into the Name textfield
@@ -933,7 +933,7 @@ And I validate the Range Enable Numeric checkbox is not checked
 
 Scenario: TC6291 Forms Add Page - Add a Numeric Field with Range minimum - Not inclusive
 Given I am logged in
-When I go to the forms manage page
+When I click the Forms link
 And I click the New Form button
 And I check the 1st Row of the Groups checkbox
 And I type "Form TC6291Add18" into the Name textfield
@@ -959,7 +959,7 @@ And I validate the Invalid Text textfield is "Value out of range"
 
 Scenario: TC6291 Forms Add Page - Add a Date Field - Read Only box checked
 Given I am logged in
-When I go to the forms manage page
+When I click the Forms link
 And I click the New Form button
 And I check the 1st Row of the Groups checkbox
 And I type "Form TC6291Add19" into the Name textfield
@@ -979,7 +979,7 @@ Then I validate the Read Only checkbox is checked
 
 Scenario: TC6291 Forms Add Page - Add a Date Field - Required box checked
 Given I am logged in
-When I go to the forms manage page
+When I click the Forms link
 And I click the New Form button
 And I check the 1st Row of the Groups checkbox
 And I type "Form TC6291Add20" into the Name textfield
@@ -999,7 +999,7 @@ Then I validate the Required checkbox is checked
 
 Scenario: TC6291 Forms Add Page - Add a Date Field - Range boxes checked
 Given I am logged in
-When I go to the forms manage page
+When I click the Forms link
 And I click the New Form button
 And I check the 1st Row of the Groups checkbox
 And I type "Form TC6291Add21" into the Name textfield
@@ -1029,7 +1029,7 @@ And I validate the Invalid Text textfield is "Value out of range"
 
 Scenario: TC6291 Forms Add Page - Add a Date Field - Required and Range boxes checked
 Given I am logged in
-When I go to the forms manage page
+When I click the Forms link
 And I click the New Form button
 And I check the 1st Row of the Groups checkbox
 And I type "Form TC6291Add22" into the Name textfield
@@ -1061,7 +1061,7 @@ And I validate the Invalid Text textfield is "Value out of range"
 
 Scenario: TC6291 Forms Add Page - Add a Date Field - Required and Range boxes unchecked
 Given I am logged in
-When I go to the forms manage page
+When I click the Forms link
 And I click the New Form button
 And I check the 1st Row of the Groups checkbox
 And I type "Form TC6291Add23" into the Name textfield
@@ -1081,7 +1081,7 @@ And I validate the Range Enable Date checkbox is not checked
 
 Scenario: TC6291 Forms Add Page - Add a Choose One Field - Read Only box checked
 Given I am logged in
-When I go to the forms manage page
+When I click the Forms link
 And I click the New Form button
 And I check the 1st Row of the Groups checkbox
 And I type "Form TC6291Add24" into the Name textfield
@@ -1106,7 +1106,7 @@ And I validate the 1st Row of the Option Underlying Value textfield is "optionon
 
 Scenario: TC6291 Forms Add Page - Add a Choose One Field - Required box checked
 Given I am logged in
-When I go to the forms manage page
+When I click the Forms link
 And I click the New Form button
 And I check the 1st Row of the Groups checkbox
 And I type "Form TC6291Add25" into the Name textfield
@@ -1131,7 +1131,7 @@ And I validate the 1st Row of the Option Underlying Value textfield is "optionon
 
 Scenario: TC6291 Forms Add Page - Add a Choose One Field - Read Only and Required box checked
 Given I am logged in
-When I go to the forms manage page
+When I click the Forms link
 And I click the New Form button
 And I check the 1st Row of the Groups checkbox
 And I type "Form TC6291Add26" into the Name textfield
@@ -1158,7 +1158,7 @@ And I validate the 1st Row of the Option Underlying Value textfield is "optionon
 
 Scenario: TC6291 Forms Add Page - Add a Choose One Field - Read Only and Required box is not checked
 Given I am logged in
-When I go to the forms manage page
+When I click the Forms link
 And I click the New Form button
 And I check the 1st Row of the Groups checkbox
 And I type "Form TC6291Add27" into the Name textfield
@@ -1183,7 +1183,7 @@ And I validate the 1st Row of the Option Underlying Value textfield is "optionon
 
 Scenario: TC6291 Forms Add Page - Add a Choose One Field - 30 option list
 Given I am logged in
-When I go to the forms manage page
+When I click the Forms link
 And I click the New Form button
 And I check the 1st Row of the Groups checkbox
 And I type "Form TC6291Add28" into the Name textfield
@@ -1351,7 +1351,7 @@ And I validate the 30th Row of the Option Underlying Value textfield is "optiont
 
 Scenario: TC6291 Forms Add Page - Add a Select Multiple Field - Read Only box checked
 Given I am logged in
-When I go to the forms manage page
+When I click the Forms link
 And I click the New Form button
 And I check the 1st Row of the Groups checkbox
 And I type "Form TC6291Add29" into the Name textfield
@@ -1377,7 +1377,7 @@ And I click the Cancel Top button
 
 Scenario: TC6291 Forms Add Page - Add a Select Multiple Field - Required box checked
 Given I am logged in
-When I go to the forms manage page
+When I click the Forms link
 And I click the New Form button
 And I check the 1st Row of the Groups checkbox
 And I type "Form TC6291Add30" into the Name textfield
@@ -1402,7 +1402,7 @@ And I validate the 1st Row of the Option Underlying Value textfield is "optionon
 
 Scenario: TC6291 Forms Add Page - Add a Select Multiple Field - Read Only and Required box checked
 Given I am logged in
-When I go to the forms manage page
+When I click the Forms link
 And I click the New Form button
 And I check the 1st Row of the Groups checkbox
 And I type "Form TC6291Add31" into the Name textfield
@@ -1429,7 +1429,7 @@ And I validate the 1st Row of the Option Underlying Value textfield is "optionon
 
 Scenario: TC6291 Forms Add Page - Add a Select Multiple Field - Read Only and Required box is not checked
 Given I am logged in
-When I go to the forms manage page
+When I click the Forms link
 And I click the New Form button
 And I check the 1st Row of the Groups checkbox
 And I type "Form TC6291Add32" into the Name textfield
@@ -1454,7 +1454,7 @@ And I validate the 1st Row of the Option Underlying Value textfield is "optionon
 
 Scenario: TC6291 Forms Add Page - Add a Select Multiple Field - 30 option list
 Given I am logged in
-When I go to the forms manage page
+When I click the Forms link
 And I click the New Form button
 And I check the 1st Row of the Groups checkbox
 And I type "Form TC6291Add33" into the Name textfield
@@ -1622,7 +1622,7 @@ And I validate the 30th Row of the Option Underlying Value textfield is "optiont
 
 Scenario: TC6291 Forms Add Page - Add a Form - Create a fully functional Pre Trip form with all options
 Given I am logged in
-When I go to the forms manage page
+When I click the Forms link
 And I click the New Form button
 And I check the 1st Row of the Groups checkbox
 And I type "Form TC6291 Pre Trip Required" in the Name textfield
@@ -1786,7 +1786,7 @@ And I validate the 4th Row of the Option Underlying Value textfield is "optionfo
 
 Scenario: TC6291 Forms Add Page - Add a Form - Create a fully functional Pre Trip form with no required boxes
 Given I am logged in
-When I go to the forms manage page
+When I click the Forms link
 And I click the New Form button
 And I check the 1st Row of the Groups checkbox
 And I check the 1st Row of the Groups checkbox

@@ -291,15 +291,6 @@ public class LoginSteps extends WebSteps {
         loginPage._textField().password().type(incorrectCaseUserName);
     }
     
-    //TODO: This can be deleted once forms is integrated into the main site
-    //will need to go through all the story files and change this line to
-    //And I click the Forms link
-    @When("I go to the forms manage page")
-    public void whenIGoToTheFormsManagePage() {
-    	//loginPage.open("https://schlumberger.inthinc.com:8443/forms/");  // for slb
-    	loginPage.open("https://qa.inthinc.com/forms/");  //for qa
-    }
-    
     @When("I go to the admin vehicles page")
     public void whenIGoToTheAdminVehiclesPage() {
     	pav.load();
