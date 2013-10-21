@@ -19,11 +19,11 @@ public enum MastheadEnum implements SeleniumEnums {
     CHOOSE_PAGE(null,Xpath.start().td(Id.text("###")).toString()),
 
     /* Login Logo */
-    LOGO(null, "//div/a"),
+    LOGO(null, "//a[@class='logo']"),
 
     /* Header Elements */
     FLEET("Fleet", "//a[@id='headerInitDashboard']"),
-    FORMS("Forms", "//ul[1]/li[2]/a"),
+    FORMS("Forms", "//a[@href='https://my.inthinc.com/forms']"),
     MY_MESSAGES("My Messages", "//a[@id='headerMyMessages']"),
     MY_ACCOUNT("My Account", "//a[@id='headerMyAccount']"),
     LOGOUT("Log Out", "//a[@id='template-settings-logout']"),

@@ -132,8 +132,8 @@ public abstract class Masthead extends AbstractPage {
 
 	public class MastheadLinks {
 	    
-	    public TextLinkNewWindow fleet() {
-	        return new TextLinkNewWindow(MastheadEnum.FLEET);
+	    public TextLink fleet() {
+	        return new TextLink(MastheadEnum.FLEET);
 	    }
         
         public TextLink forms() {
