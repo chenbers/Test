@@ -123,7 +123,7 @@ public abstract class Masthead extends AbstractPage {
 	public class MastheadButtons {
 
         public Button logo(){
-            return new Button(MastheadEnum.LOGO);
+            return new Button(MastheadEnum.LOGO_IFRAME);
         }
 	}
 

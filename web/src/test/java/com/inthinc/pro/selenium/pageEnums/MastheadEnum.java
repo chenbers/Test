@@ -19,7 +19,7 @@ public enum MastheadEnum implements SeleniumEnums {
     CHOOSE_PAGE(null,Xpath.start().td(Id.text("###")).toString()),
 
     /* Login Logo */
-    LOGO(null, "//a[@class='logo']"),
+    LOGO_IFRAME(null, "//a[@class='logo']"),
 
     /* Header Elements */
     FLEET_IFRAME("Fleet", "//a[@id='headerInitDashboard']"),
