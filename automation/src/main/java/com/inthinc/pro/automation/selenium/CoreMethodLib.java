@@ -91,6 +91,11 @@ public class CoreMethodLib extends WebDriverBackedSelenium implements CoreMethod
      */
     @Override
     public CoreMethodLib click(SeleniumEnumWrapper myEnum) {
+        //This checks to see if the element is in the iframe at the top of the page, and clicks it if it is
+        if (myEnum.toString().contains("_IFRAME")) {
+            WebElement frame = getWrappedDriver().findElement(By.tagName("iframe"));
+            getWrappedDriver().switchTo().frame(frame);
+        }
         String element = getClickable(getLocator(myEnum));
         click(element);
 //        AutomationThread.pause(20, "click(" + myEnum + ")");

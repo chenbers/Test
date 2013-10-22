@@ -133,23 +133,23 @@ public abstract class Masthead extends AbstractPage {
 	public class MastheadLinks {
 	    
 	    public TextLink fleet() {
-	        return new TextLink(MastheadEnum.FLEET);
+	        return new TextLink(MastheadEnum.FLEET_IFRAME);
 	    }
         
         public TextLink forms() {
-            return new TextLink(MastheadEnum.FORMS);
+            return new TextLink(MastheadEnum.FORMS_IFRAME);
         }
         
         public TextLink myMessages() {
-            return new TextLink(MastheadEnum.MY_MESSAGES);
+            return new TextLink(MastheadEnum.MY_MESSAGES_IFRAME);
         }
         
         public TextLink myAccount() {
-            return new TextLink(MastheadEnum.MY_ACCOUNT);
+            return new TextLink(MastheadEnum.MY_ACCOUNT_IFRAME);
         }
 
         public TextLink logout() {
-            return new TextLink(MastheadEnum.LOGOUT);
+            return new TextLink(MastheadEnum.LOGOUT_IFRAME);
         }
         
         public TextLinkNewWindow privacyPolicy() {
