@@ -53,12 +53,13 @@ public enum FormsAddEnum implements SeleniumEnums {
     PREVIEW_AREA(null, "//div[@class='workspaceScrollArea']"),
     CONTROL_FLOW_ARROW(null, "//div[###]/div[2]/div[11]"),
     DELETE_CONTROL(null, "//a[@class='deleteControl']"),
-    DELETE_ROW(null,"//div[2]/div[3]/div[2]/div[2]/div/div[2]/div[###]/div/a[@id='delete_form']"),	// this will delete the specified field by row
+    DELETE_ROW(null,"//div[3]/div[2]/div[2]/div/div[2]/div[###]/div/a[@id='delete_form']"),	// this will delete the specified field by row
     
     DATANAME_FIELD("untitled###", "property_name"),
     CAPTION_FIELD(null, "//li[2]/div/ul/li/input"),
     HINT_FIELD(null, "//li[3]/div/ul/li/input"),
-    DEFAULT_VALUE(null, "//input[@id='property_defaultValue']"),
+    DEFAULT_VALUE_TEXT_AND_NUMERIC(null, "//li[4]/div/input[2]"),
+    DEFAULT_VALUE_DATE_CHOOSE_AND_SELECT(null, "//input[@id='property_defaultValue']"),
     READ_ONLY_CHECKBOX(null, "//input[@id='property_readOnly']"),
     REQUIRED_CHECKBOX(null, "property_required"),
     LENGTH_CHECKBOX(null, "property_range_enabled"),

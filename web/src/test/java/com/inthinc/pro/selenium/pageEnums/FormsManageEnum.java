@@ -4,30 +4,21 @@ import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 
 public enum FormsManageEnum implements SeleniumEnums {
     DEFAULT_URL("forms/"),
-    TITLE(null, "//span[@class='admin']"),
-
-    //No longer on page SEARCH_HEADER("Search:", "//div[@id='staging-forms-table_filter']"),
-    //No longer on page FORMS_HEADER("Forms", "//label[@for='formSelection']"),
     
     NEW_FORM_BUTTON(null, "//i[@class='icon-plus icon-large']"),
     
     RECORDS_DROPDOWN("records per page", "//select[@name='staging-forms-table_length']"),
     SEARCH_TEXTFIELD(null, "//div[@id='staging-forms-table_filter']/label/input"),
     
-    //No longer on page SELECT_MANAGE_LINK("Select", "//th[@id='column-working-select']"),
     NAME_LINK("Name", "//th[@id='column-staging-name']"),  
     BASE_FORM_ID_LINK("Base Form ID", "//th[@id='column-staging-baseFormID']"),
     VERSION_LINK("Version", "//th[@id='column-staging-version']"),
     DESCRIPTION_LINK("Description", "//th[@id='column-staging-description']"),
     STATUS_LINK("Status", "//th[@id='column-status']"),
     TRIGGER_LINK("Trigger", "//th[@id='column-staging-trigger']"),
-    // IS CURRENTLY NO LONGER PRESENT
-    //    PUBLISH_LINK("Publish", "//th[@id='column-staging-publish']"),
+
     EDIT_LINK("Edit", "//th[@id='column-staging-edit']"),
 
-//    SELECT_ALL_CHECKBOX(null, "//th[@id='column-staging-select']/input[@id='select-all']"),
-//    CHECKBOX_ENTRY(null, "//table[@id='staging-forms-table']/tbody/tr[###]/td[1]"),
-    
     NAME_ENTRY("Name", "//table[@id='staging-forms-table']/tbody/tr[###]/td[1]"),
     BASE_FORM_ID_ENTRY("Base Form ID", "//table[@id='staging-forms-table']/tbody/tr[###]/td[2]"),
     VERSION_ENTRY("Version", "//table[@id='staging-forms-table']/tbody/tr[###]/td[3]"),

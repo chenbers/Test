@@ -5,17 +5,10 @@ import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 
 public enum FormsBarEnum implements SeleniumEnums {
 
-    MANAGE("Forms", "//div[2]/div[1]/div/ul/li[1]/a"),
-    PUBLISHED("Published", "//div[2]/div[1]/div/ul/li[2]/a"),
-    SUBMISSIONS("Submissions", "//div[2]/div[1]/div/ul/li[3]/a"),
-    CUSTOMERS("Customers", "//div[2]/div[1]/div/ul/li[4]/a"),
-
-    //THESE FIVE CAN BE MOVED UP TO THE MASTHEAD ONCE WE MERGE THE FORMS AND CURRENT PORTAL INTERFACES     
-    ACCOUNT_IMAGE(null, "//div[1]/div/div/ul[2]/li/a"),
-    MESSAGES("Messages", "//a[@id='headerForm:headerMyMessages']"),
-    HELP("Help", "//a[@id='tb-help']"),
-    ACCOUNT("Account", "//a[@id='headerForm:headerMyAccount']"),
-    LOGOUT("Logout", "//a[@id='template-settings-logout']")
+    MANAGE("Forms", "//a[@href='/forms/']"),
+    PUBLISHED("Published", "//a[@href='/forms/published']"),
+    SUBMISSIONS("Submissions", "//a[@href='/forms/submissions']"),
+    CUSTOMERS("Customers", "//a[@href='/forms/customerlocations']"),
     ;
 
     private String text, url;
