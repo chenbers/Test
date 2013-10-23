@@ -182,10 +182,12 @@ public class GroupHierarchy implements Serializable
     	List<Group> children = new ArrayList<Group>();
         for (Group group : groupMap.values())
         {
-            if (group.getParentID().equals(parent.getGroupID()))
-            {
-            	children.add(group);
-            }
+        	if (group != null && parent != null) {
+	            if (group.getParentID().equals(parent.getGroupID()))
+	            {
+	            	children.add(group);
+	            }
+        	}
         }
         
         return children.size()>0?children:null;
