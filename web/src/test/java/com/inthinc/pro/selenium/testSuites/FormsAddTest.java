@@ -10,6 +10,7 @@ import com.inthinc.pro.selenium.pageObjects.PageDriverPerformance;
 import com.inthinc.pro.selenium.pageObjects.PageExecutiveDashboard;
 import com.inthinc.pro.selenium.pageObjects.PageExecutiveOverallExpansion;
 import com.inthinc.pro.selenium.pageObjects.PageFormsAdd;
+import com.inthinc.pro.selenium.pageObjects.PageFormsEdit;
 import com.inthinc.pro.selenium.pageObjects.PageFormsManage;
 import com.inthinc.pro.selenium.pageObjects.PageFormsPublished;
 import com.inthinc.pro.selenium.pageObjects.PageFormsSubmissions;
@@ -23,9 +24,8 @@ import com.inthinc.pro.selenium.steps.LoginSteps;
 		PageExecutiveDashboard.class, PageExecutiveOverallExpansion.class, 
         PageTeamDriverStatistics.class, PageDriverPerformance.class,
         PageVehiclePerformance.class, PageFormsSubmissions.class,
-        PageFormsAdd.class, 
-        PageFormsPublished.class, 
-        PageFormsManage.class })
+        PageFormsAdd.class, PageFormsPublished.class, 
+        PageFormsManage.class, PageFormsEdit.class})
 @StoryPath(path="FormsAdd.story")
 public class FormsAddTest extends WebStories  {
 
