@@ -63,10 +63,6 @@ public class PageFormsAdd extends FormsTables {
         public TextButton delete() {
             return new TextButton(FormsAddEnum.DELETE_CONTROL);
         }
-        
-        public TextButton advancedArrow() {
-            return new TextButton(FormsAddEnum.ADVANCED_ARROW);
-        }
     }
     
     public class FormsAddCheckBoxes {
@@ -152,14 +148,6 @@ public class PageFormsAdd extends FormsTables {
             return new DropDown(FormsAddEnum.STATUS_DROPDOWN);
         }
         
-        public DropDown HOS() {
-            return new DropDown(FormsAddEnum.HOS_DROPDOWN);
-        }
-        
-        public DropDown vehicleTags() {
-            return new DropDown(FormsAddEnum.VEHICLE_TAGS_DROPDOWN);
-        }
-        
         public DropDown kind() {
             return new DropDown(FormsAddEnum.KIND_DROPDOWN);
         }
@@ -204,10 +192,6 @@ public class PageFormsAdd extends FormsTables {
         
         public TextLink addOption() {
             return new TextLink(FormsAddEnum.ADD_OPTION_LINK);
-        }
-        
-        public TextLink bulkEdit() {
-            return new TextLink(FormsAddEnum.BULK_EDIT_LINK);
         }
         
         public TextTableLink previewArea() {
@@ -268,11 +252,11 @@ public class PageFormsAdd extends FormsTables {
             return new TextField(FormsAddEnum.CAPTION_FIELD);
         }
         
-        public TextField defaultValueTextAndNumeric() {
+        public TextField dValueTextNumeric() {
             return new TextField(FormsAddEnum.DEFAULT_VALUE_TEXT_AND_NUMERIC);
         }
-
-        public TextField defaultValueDateChooseAndSelect() {
+        
+        public TextField dValueDateChooseSelect() {
             return new TextField(FormsAddEnum.DEFAULT_VALUE_DATE_CHOOSE_AND_SELECT);
         }
         
@@ -308,18 +292,6 @@ public class PageFormsAdd extends FormsTables {
             return new TextFieldTable(FormsAddEnum.OPTION_UNDERLYING_VALUE_FIELD);
         }
         
-        public TextField relevance() {
-            return new TextField(FormsAddEnum.RELEVANCE_FIELD);
-        }
-        
-        public TextField constraint() {
-            return new TextField(FormsAddEnum.CONSTRAINT_FIELD);
-        }
-        
-        public TextField instanceDestination() {
-            return new TextField(FormsAddEnum.INSTANCE_DESTINATION_FIELD);
-        }
-        
         public TextField minimumDateRange() {
             return new TextField(FormsAddEnum.MINIMUM_DATE_TEXTFIELD);
         }
@@ -330,7 +302,7 @@ public class PageFormsAdd extends FormsTables {
     }
     
     public class FormsAddTexts {
-        // public Text versionLabel() {return new Text(FormsAddEnum.VERSION_LABEL);}
+        
         public Text title() {
             return new Text(FormsAddEnum.TITLE);
         }
@@ -347,20 +319,16 @@ public class PageFormsAdd extends FormsTables {
             return new Text(FormsAddEnum.TRIGGER_LABEL);
         }
         
-        public Text routeTriggerExpressionLabel() {
-            return new Text(FormsAddEnum.ROUTE_LABEL);
+        public Text routeTriggerActionLabel() {
+            return new Text(FormsAddEnum.TRIGGER_ACTION_LABEL);
+        }
+        
+        public Text versionLabel() {
+            return new Text(FormsAddEnum.VERSION_LABEL);
         }
         
         public Text statusLabel() {
             return new Text(FormsAddEnum.STATUS_LABEL);
-        }
-        
-        public Text HOSLabel() {
-            return new Text(FormsAddEnum.HOS_LABEL);
-        }
-        
-        public Text vehicleTagsLabel() {
-            return new Text(FormsAddEnum.VEHICLE_TAGS_LABEL);
         }
         
         public Text selectGroupLabel() {
@@ -395,8 +363,8 @@ public class PageFormsAdd extends FormsTables {
             return new Text(FormsAddEnum.DATA_NAME_ERROR);
         }
         
-        public Text groupName() {
-            return new Text(FormsAddEnum.GROUPS_NAV_TEXT);
+        public Text groupNameTop() {
+            return new Text(FormsAddEnum.GROUPS_NAV_TOP_TEXT);
         }
         
         public Text groupSearchedName() {

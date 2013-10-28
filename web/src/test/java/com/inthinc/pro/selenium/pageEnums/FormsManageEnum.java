@@ -27,7 +27,7 @@ public enum FormsManageEnum implements SeleniumEnums {
     TRIGGER_ENTRY("Trigger", "//table[@id='staging-forms-table']/tbody/tr[###]/td[6]"),
     GEAR(null, "//table[@id='staging-forms-table']/tbody/tr[###]/td[7]/div/button"),
     EDIT_ENTRY_LINK("Edit", "//table[@id='staging-forms-table']/tbody/tr[###]/td[7]/div/ul/li[1]"),
-    PUBLISH_ENTRY_LINK(null,"//table[@id='staging-forms-table']/tbody/tr[###]/td[7]/div/ul/li[2]"),
+    PUBLISH_ENTRY_LINK("Publish","//table[@id='staging-forms-table']/tbody/tr[###]/td[7]/div/ul/li[2]"),
     COPY_ENTRY_LINK("Copy", "//table[@id='staging-forms-table']/tbody/tr[###]/td[7]/div/ul/li[3]"),
     PUBLISH_DISABLED_LINK(null,"//table[@id='staging-forms-table']/tbody/tr[###]/td[7]/div/ul/li[@class='disabled']/a[@class='publish']"),
 
