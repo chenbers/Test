@@ -25,7 +25,7 @@ public class FormsGenerationSteps extends LoginSteps {
     	while (i < 6) {
     	manage._button().newForm().click();
     	add._textField().name().type("FormPreTrip"+i);
-    	add._dropDown().trigger().selectTheOptionContaining("Pre Trip", 1);
+    	add._dropDown().trigger().selectTheOptionContaining("Pre-Trip", 1);
     	add._checkBox().groups().click();
     	add._link().text().click();
     	add._button().saveTop().click();
@@ -35,7 +35,7 @@ public class FormsGenerationSteps extends LoginSteps {
     	while (i < 12) {
     	manage._button().newForm().click();
     	add._textField().name().type("FormPostTrip"+i);
-    	add._dropDown().trigger().selectTheOptionContaining("Post Trip", 1);
+    	add._dropDown().trigger().selectTheOptionContaining("Post-Trip", 1);
     	add._checkBox().groups().click();
     	add._link().text().click();
     	add._button().saveTop().click();
@@ -89,7 +89,7 @@ public class FormsGenerationSteps extends LoginSteps {
     	while (j < 6) {
         	manage._button().newForm().click();
         	add._textField().name().type("FormPostTrip"+j);
-        	add._dropDown().trigger().selectTheOptionContaining("Post Trip", 1);
+        	add._dropDown().trigger().selectTheOptionContaining("Post-Trip", 1);
         	add._checkBox().groups().click();
         	add._link().text().click();
         	add._button().saveTop().click();
@@ -102,7 +102,7 @@ public class FormsGenerationSteps extends LoginSteps {
     	while (k < 6) {
     		manage._button().newForm().click();
         	add._textField().name().type("FormPreTrip"+k);
-        	add._dropDown().trigger().selectTheOptionContaining("Pre Trip", 1);
+        	add._dropDown().trigger().selectTheOptionContaining("Pre-Trip", 1);
         	add._checkBox().groups().click();
         	add._link().text().click();
         	add._button().saveTop().click();
