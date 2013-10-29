@@ -3,8 +3,146 @@ In order for drivers to submit electronic forms
 As an Administrator
 I need an interface to create a form and to forward to devices for drivers to complete
 
-!-- removed "And I validate the Advanced Arrow button is present"
-!-- watch out for the logic of "Then I validate the 1st Row of the PublishDisabled link is not present", which returns a FALSE, though it IS present --reverse logic
+Scenario: TCXXXX Forms Add Page - UI Test
+Given I am logged in
+When I click the Forms link
+And I click the New Form button
+Then I validate the Title text is present
+And I validate the Save Top button is present
+And I validate the Cancel Top button is present
+And I validate the Save Bottom button is present
+And I validate the Cancel Bottom button is present
+And I validate the Groups checkbox is present
+And I validate the Trigger dropdown is present
+And I validate the Status dropdown is present
+And I validate the Trigger Action dropdown is present
+And I validate the 1st Row of the Groups Arrow link is present
+And I validate the Text link is present
+And I validate the Numeric link is present
+And I validate the Date link is present
+And I validate the Choose One link is present
+And I validate the Select Multiple link is present
+And I validate the Name textfield is present
+And I validate the Description textfield is present
+And I validate the Filter Groups textfield is present
+And I validate the Title text is present
+And I validate the Name Label text is present
+And I validate the Description Label text is present
+And I validate the Trigger Label text is present
+And I validate the Route Trigger Action Label text is present
+And I validate the Version Label text is present
+And I validate the Status Label text is present
+And I validate the Select Group Label text is present
+And I validate the Properties Label text is present
+And I validate the View Properties Label text is present
+And I validate the Version text is present
+And I validate the Group Name Top text is present
+
+Scenario: TCXXXX Forms Add Page - UI Test - Text link
+Given I am logged in
+When I click the Forms link
+And I click the New Form button
+And I check the 1st Row of the Groups checkbox
+And I click the Text link
+Then I validate the Data Name textfield is present
+And I validate the Caption Text textfield is present
+And I validate the Hint textfield is present
+And I validate the D Value Text Numeric textfield is present
+And I validate the Read Only checkbox is present
+And I validate the Required checkbox is present
+And I validate the Length Enable checkbox is present
+And I validate the Minimum Text Length textfield is present
+And I validate the Maximum Text Length textfield is present
+And I validate the Minimum Text Inclusive checkbox is present
+And I validate the Maximum Text Inclusive checkbox is present
+And I validate the Invalid Text textfield is present
+When I click the Text link
+Then I validate the 1st Row of the Delete Row link is present
+And I validate the 1st Row of the Control Flow Arrow link is present
+
+Scenario: TCXXXX Forms Add Page - UI Test - Numeric link
+Given I am logged in
+When I click the Forms link
+And I click the New Form button
+And I check the 1st Row of the Groups checkbox
+And I click the Numeric link
+Then I validate the Delete button is present
+And I validate the Data Name textfield is present
+And I validate the Caption Text textfield is present
+And I validate the Hint textfield is present
+And I validate the D Value Text Numeric textfield is present
+And I validate the Read Only checkbox is present
+And I validate the Required checkbox is present
+And I validate the Range Enable Numeric checkbox is present
+And I validate the Minimum Numeric Range textfield is present
+And I validate the Maximum Numeric Range textfield is present
+And I validate the Minimum Numeric Inclusive checkbox is present
+And I validate the Maximum Numeric Inclusive checkbox is present
+And I validate the Invalid Text textfield is present
+And I validate the Kind dropdown is present
+When I click the Numeric link
+Then I validate the 1st Row of the Delete Row link is present
+And I validate the 1st Row of the Control Flow Arrow link is present
+
+Scenario: TCXXXX Forms Add Page - UI Test - Date link
+Given I am logged in
+When I click the Forms link
+And I click the New Form button
+And I check the 1st Row of the Groups checkbox
+And I click the Date link
+Then I validate the Delete button is present
+And I validate the Data Name textfield is present
+And I validate the Caption Text textfield is present
+And I validate the Hint textfield is present
+And I validate the D Value Date Choose Select textfield is present
+And I validate the Read Only checkbox is present
+And I validate the Required checkbox is present
+And I validate the Range Enable Date checkbox is present
+And I validate the Minimum Date Range textfield is present
+And I validate the Maximum Date Range textfield is present
+And I validate the Minimum Date Inclusive checkbox is present
+And I validate the Maximum Date Inclusive checkbox is present
+And I validate the Invalid Text textfield is present
+When I click the Date link
+Then I validate the 1st Row of the Delete Row link is present
+And I validate the 1st Row of the Control Flow Arrow link is present
+
+Scenario: TCXXXX Forms Add Page - UI Test - Choose One link
+Given I am logged in
+When I click the Forms link
+And I click the New Form button
+And I check the 1st Row of the Groups checkbox
+And I click the Choose One link
+Then I validate the Delete button is present
+And I validate the Data Name textfield is present
+And I validate the Caption Text textfield is present
+And I validate the Hint textfield is present
+And I validate the D Value Date Choose Select textfield is present
+And I validate the Read Only checkbox is present
+And I validate the Required checkbox is present
+And I validate the Add Option link is present
+When I click the Choose One link
+Then I validate the 1st Row of the Delete Row link is present
+And I validate the 1st Row of the Control Flow Arrow link is present
+
+Scenario: TCXXXX Forms Add Page - UI Test - Select Multiple link
+Given I am logged in
+When I click the Forms link
+And I click the New Form button
+And I check the 1st Row of the Groups checkbox
+And I click the Select Multiple link
+Then I validate the Delete button is present
+And I validate the Data Name textfield is present
+And I validate the Caption Text textfield is present
+And I validate the Hint textfield is present
+And I validate the D Value Date Choose Select textfield is present
+And I validate the Read Only checkbox is present
+And I validate the Required checkbox is present
+And I validate the Add Option link is present
+When I click the Select Multiple link
+Then I validate the 1st Row of the Delete Row link is present
+And I validate the 1st Row of the Control Flow Arrow link is present
+
 Scenario: TCXXXX Forms Add Page - Save Top Button
 Given I am logged in
 When I click the Forms link
@@ -14,20 +152,27 @@ And I type "Form TCXXXXAdd1" in the Name textfield
 And I click the Text link
 And I click the Save Top button
 Then I validate I am on the Forms Manage page
-When I type "Form TCXXXXAdd1" into the Search field
-Then I validate the 1st Row of Entry Name text is "Form TCXXXXAdd1"
-When I click the Published link
-Then I validate I am on the Forms Published page
-When I type "Form TCXXXXAdd1" into the Search textfield
-Then I validate the 1st Row of the Entry Base Form Id text is not present
-Given I click the Manage link
-Then I validate I am on the Forms Manage page
+And I type "Form TCXXXXAdd1" into the Search field
+And I validate the 1st Row of Entry Name text is "Form TCXXXXAdd1"
+And I click the Published link
+And I validate I am on the Forms Published page
+And I type "Form TCXXXXAdd1" into the Search textfield
+And I validate the 1st Row of the Entry Base Form Id text is not present
+And I click the Manage link
+And I validate I am on the Forms Manage page
 And I type "Form TCXXXXAdd1" into the Search field
 And I validate the 1st Row of the Entry Version text is "1"
 And I click the 1st Row of the Gear button
-Then I click the 1st Row of the Publish link
-And I validate I am on the Forms Manage page
-Then I validate the 1st Row of the PublishDisabled link is not present
+And I click the 1st Row of the Publish link
+And I validate I am on the Forms Published page
+And I click the Manage link
+And I type "Form TCXXXXAdd1" into the Search field
+And I click the 1st Row of the Gear button
+And I click the 1st Row of the Publish link
+And I validate I am on the Forms Published page
+
+And I click the Manage link
+And I type "Form TCXXXXAdd1" into the Search field
 And I validate the 1st Row of the Entry Version text is "2"
 
 Scenario: TCXXXX Forms Add Page - Save Bottom Button
@@ -144,7 +289,10 @@ And I validate the Name field is ""
 And I validate the Description field is ""
 And I validate the Trigger dropdown is "No Trigger"
 And I validate the Version text is ""
+And I validate the Status dropdown is "Active"
 And I validate the Filter Groups field is ""
+And I validate the 1st Row of the Groups checkbox is not checked
+And I validate the View Properties Label text is present
 And I validate the Status dropdown is "Active"
 
 Scenario: TCXXXX: Forms Add Page - Add Form link bottom (cancel - changes)
@@ -168,111 +316,6 @@ And I validate the Trigger dropdown is "No Trigger"
 And I validate the Version text is ""
 And I validate the Filter Groups field is ""
 And I validate the Status dropdown is "Active"
-
-Scenario: TCXXXX Forms Add Page - UI Test - Text link
-Given I am logged in
-When I click the Forms link
-And I click the New Form button
-And I check the 1st Row of the Groups checkbox
-And I click the Text link
-Then I validate the Data Name textfield is present
-And I validate the Caption Text textfield is present
-And I validate the Hint textfield is present
-And I validate the Default Value Text And Numeric textfield is present
-And I validate the Read Only checkbox is present
-And I validate the Required checkbox is present
-And I validate the Length Enable checkbox is present
-And I validate the Minimum Text Length textfield is present
-And I validate the Maximum Text Length textfield is present
-And I validate the Minimum Text Inclusive checkbox is present
-And I validate the Maximum Text Inclusive checkbox is present
-And I validate the Invalid Text textfield is present
-When I click the Text link
-Then I validate the 1st Row of the Delete Row link is present
-And I validate the 1st Row of the Control Flow Arrow link is present
-
-Scenario: TCXXXX Forms Add Page - UI Test - Numeric link
-Given I am logged in
-When I click the Forms link
-And I click the New Form button
-And I check the 1st Row of the Groups checkbox
-And I click the Numeric link
-Then I validate the Delete button is present
-And I validate the Data Name textfield is present
-And I validate the Caption Text textfield is present
-And I validate the Hint textfield is present
-And I validate the Default Value Text And Numeric textfield is present
-And I validate the Read Only checkbox is present
-And I validate the Required checkbox is present
-And I validate the Range Enable Numeric checkbox is present
-And I validate the Minimum Numeric Range textfield is present
-And I validate the Maximum Numeric Range textfield is present
-And I validate the Minimum Numeric Inclusive checkbox is present
-And I validate the Maximum Numeric Inclusive checkbox is present
-And I validate the Invalid Text textfield is present
-And I validate the Kind dropdown is present
-When I click the Numeric link
-Then I validate the 1st Row of the Delete Row link is present
-And I validate the 1st Row of the Control Flow Arrow link is present
-
-Scenario: TCXXXX Forms Add Page - UI Test - Date link
-Given I am logged in
-When I click the Forms link
-And I click the New Form button
-And I check the 1st Row of the Groups checkbox
-And I click the Date link
-Then I validate the Delete button is present
-And I validate the Data Name textfield is present
-And I validate the Caption Text textfield is present
-And I validate the Hint textfield is present
-And I validate the Default Value Date Choose And Select textfield is present
-And I validate the Read Only checkbox is present
-And I validate the Required checkbox is present
-And I validate the Range Enable Date checkbox is present
-And I validate the Minimum Date Range textfield is present
-And I validate the Maximum Date Range textfield is present
-And I validate the Minimum Date Inclusive checkbox is present
-And I validate the Maximum Date Inclusive checkbox is present
-And I validate the Invalid Text textfield is present
-When I click the Date link
-Then I validate the 1st Row of the Delete Row link is present
-And I validate the 1st Row of the Control Flow Arrow link is present
-
-Scenario: TCXXXX Forms Add Page - UI Test - Choose One link
-Given I am logged in
-When I click the Forms link
-And I click the New Form button
-And I check the 1st Row of the Groups checkbox
-And I click the Choose One link
-Then I validate the Delete button is present
-And I validate the Data Name textfield is present
-And I validate the Caption Text textfield is present
-And I validate the Hint textfield is present
-And I validate the Default Value Date Choose And Select textfield is present
-And I validate the Read Only checkbox is present
-And I validate the Required checkbox is present
-And I validate the Add Option link is present
-When I click the Choose One link
-Then I validate the 1st Row of the Delete Row link is present
-And I validate the 1st Row of the Control Flow Arrow link is present
-
-Scenario: TCXXXX Forms Add Page - UI Test - Select Multiple link
-Given I am logged in
-When I click the Forms link
-And I click the New Form button
-And I check the 1st Row of the Groups checkbox
-And I click the Select Multiple link
-Then I validate the Delete button is present
-And I validate the Data Name textfield is present
-And I validate the Caption Text textfield is present
-And I validate the Hint textfield is present
-And I validate the Default Value Date Choose And Select textfield is present
-And I validate the Read Only checkbox is present
-And I validate the Required checkbox is present
-And I validate the Add Option link is present
-When I click the Select Multiple link
-Then I validate the 1st Row of the Delete Row link is present
-And I validate the 1st Row of the Control Flow Arrow link is present
 
 Scenario: TCXXXX Forms Add Page - Blank Data Name Error Text Field
 Given I am logged in
@@ -652,7 +695,7 @@ And I click the Text link
 And I type "anXMLtag" in the Data Name textfield
 And I type "Driver Name" in the Caption Text textfield
 And I type "Hint Text" in the Hint textfield
-And I type "Default Value Text" in the Default Value Text And Numeric textfield
+And I type "Default Value Text" in the D Value Text Numeric textfield
 And I check the Read Only checkbox
 And I click the Save Top button
 And I validate I am on the Forms Manage page
@@ -672,7 +715,7 @@ And I click the Text link
 And I type "anXMLtag" in the Data Name textfield
 And I type "Driver Name" in the Caption Text textfield
 And I type "Hint Text" in the Hint textfield
-And I type "Default Value Text" in the Default Value Text And Numeric textfield
+And I type "Default Value Text" in the D Value Text Numeric textfield
 And I check the Required checkbox
 And I click the Save Top button
 And I type "Form TCXXXXAdd8" into the Search field
@@ -691,7 +734,7 @@ And I click the Text link
 And I type "anXMLtag" in the Data Name textfield
 And I type "Driver Name" in the Caption Text textfield
 And I type "Hint Text" in the Hint textfield
-And I type "Default Value Text" in the Default Value Text And Numeric textfield
+And I type "Default Value Text" in the D Value Text Numeric textfield
 And I check the Length Enable checkbox
 And I check the Minimum Text Inclusive checkbox
 And I check the Maximum Text Inclusive checkbox
@@ -720,7 +763,7 @@ And I click the Text link
 And I type "anXMLtag" in the Data Name textfield
 And I type "Driver Name" in the Caption Text textfield
 And I type "Hint Text" in the Hint textfield
-And I type "Default Value Text" in the Default Value Text And Numeric textfield
+And I type "Default Value Text" in the D Value Text Numeric textfield
 And I check the Required checkbox
 And I check the Length Enable checkbox
 And I check the Minimum Text Inclusive checkbox
@@ -794,7 +837,7 @@ And I click the Numeric link
 And I type "anXMLtag" into the Data Name textfield
 And I type "Unit" in the Caption Text textfield
 And I type "Hint" in the Hint textfield
-And I type "0000" in the Default Value Text And Numeric textfield
+And I type "0000" in the D Value Text Numeric textfield
 And I check the Length Enable checkbox
 And I type "1" into the Minimum Text Length textfield
 And I type "999" into the Maximum Text Length textfield
@@ -821,7 +864,7 @@ And I click the Numeric link
 And I type "anXMLtag" into the Data Name textfield
 And I type "Unit" in the Caption Text textfield
 And I type "Hint" in the Hint textfield
-And I type "0000" in the Default Value Text And Numeric textfield
+And I type "0000" in the D Value Text Numeric textfield
 And I check the Read Only checkbox
 And I click the Save Top button
 And I type "Form TCXXXXAdd13" into the Search field
@@ -840,7 +883,7 @@ And I click the Numeric link
 And I type "anXMLtag" into the Data Name textfield
 And I type "Unit" in the Caption Text textfield
 And I type "Hint" in the Hint textfield
-And I type "0000" in the Default Value Text And Numeric textfield
+And I type "0000" in the D Value Text Numeric textfield
 And I check the Required checkbox
 And I click the Save Top button
 And I type "Form TCXXXXAdd14" into the Search field
@@ -859,7 +902,7 @@ And I click the Numeric link
 And I type "anXMLtag" into the Data Name textfield
 And I type "Unit" in the Caption Text textfield
 And I type "Hint" in the Hint textfield
-And I type "0000" in the Default Value Text And Numeric textfield
+And I type "0000" in the D Value Text Numeric textfield
 And I check the Range Enable Numeric checkbox
 And I check the Minimum Numeric Inclusive checkbox
 And I check the Maximum Numeric Inclusive checkbox
@@ -871,7 +914,7 @@ And I type "Form TCXXXXAdd15" into the Search field
 Then I validate the 1st Row of the Entry Name text is "Form TCXXXXAdd15"
 When I click the 1st Row of the Gear button
 When I click the 1st Row of the Edit link
-When I validate I am on the Edit Form page
+Then I validate I am on the Forms Edit page
 Then I validate the Range Enable Numeric checkbox is checked
 And I validate the Minimum Numeric Inclusive checkbox is checked
 And I validate the Maximum Numeric Inclusive checkbox is checked
@@ -889,7 +932,7 @@ And I click the Numeric link
 And I type "anXMLtag" into the Data Name textfield
 And I type "Unit" in the Caption Text textfield
 And I type "Hint" in the Hint textfield
-And I type "0000" in the Default Value Text And Numeric textfield
+And I type "0000" in the D Value Text Numeric textfield
 And I check the Required checkbox
 And I check the Range Enable Numeric checkbox
 And I check the Minimum Numeric Inclusive checkbox
@@ -902,7 +945,7 @@ And I type "Form TCXXXXAdd16" into the Search field
 Then I validate the 1st Row of the Entry Name text is "Form TCXXXXAdd16"
 When I click the 1st Row of the Gear button
 When I click the 1st Row of the Edit link
-When I validate I am on the Edit Form page
+Then I validate I am on the Forms Edit page
 Then I validate the Required checkbox is checked
 And I validate the Range Enable Numeric checkbox is checked
 And I validate the Minimum Numeric Inclusive checkbox is checked
@@ -921,13 +964,13 @@ And I click the Numeric link
 And I type "anXMLtag" into the Data Name textfield
 And I type "Unit" in the Caption Text textfield
 And I type "Hint" in the Hint textfield
-And I type "0000" in the Default Value Text And Numeric textfield
+And I type "0000" in the D Value Text Numeric textfield
 And I click the Save Top button
 And I type "Form TCXXXXAdd17" into the Search field
 Then I validate the 1st Row of the Entry Name text is "Form TCXXXXAdd17"
 When I click the 1st Row of the Gear button
 When I click the 1st Row of the Edit link
-When I validate I am on the Edit Form page
+Then I validate I am on the Forms Edit page
 Then I validate the Required checkbox is not checked
 And I validate the Range Enable Numeric checkbox is not checked
 
@@ -941,7 +984,7 @@ And I click the Numeric link
 And I type "anXMLtag" into the Data Name textfield
 And I type "Unit" in the Caption Text textfield
 And I type "Hint" in the Hint textfield
-And I type "0000" in the Default Value Text And Numeric textfield
+And I type "0000" in the D Value Text Numeric textfield
 And I check the Range Enable Numeric checkbox
 And I type "1" into the Minimum Numeric Range textfield
 And I type "999" into the Maximum Numeric Range textfield
@@ -951,7 +994,7 @@ And I type "Form TCXXXXAdd18" into the Search field
 Then I validate the 1st Row of the Entry Name text is "Form TCXXXXAdd18"
 When I click the 1st Row of the Gear button
 When I click the 1st Row of the Edit link
-When I validate I am on the Edit Form page
+Then I validate I am on the Forms Edit page
 Then I validate the Range Enable Numeric checkbox is checked
 And I validate the Minimum Numeric Range textfield is "1"
 And I validate the Maximum Numeric Range textfield is "999"
@@ -967,14 +1010,14 @@ And I click the Date link
 And I type "anXMLtag" into the Data Name textfield
 And I type "Date" in the Caption Text textfield
 And I type "Hint" in the Hint textfield
-And I type "2012-01-01" into the Default Value Date Choose And Select textfield
+And I type "2012-01-01" into the D Value Date Choose Select textfield
 And I check the Read Only checkbox
 And I click the Save Top button
 And I type "Form TCXXXXAdd19" into the Search field
 Then I validate the 1st Row of the Entry Name text is "Form TCXXXXAdd19"
 When I click the 1st Row of the Gear button
 When I click the 1st Row of the Edit link
-When I validate I am on the Edit Form page
+Then I validate I am on the Forms Edit page
 Then I validate the Read Only checkbox is checked
 
 Scenario: TCXXXX Forms Add Page - Add a Date Field - Required box checked
@@ -987,14 +1030,14 @@ And I click the Date link
 And I type "anXMLtag" into the Data Name textfield
 And I type "Date" in the Caption Text textfield
 And I type "Hint" in the Hint textfield
-And I type "2012-02-02" into the Default Value Date Choose And Select textfield
+And I type "2012-02-02" into the D Value Date Choose Select textfield
 And I check the Required checkbox
 And I click the Save Top button
 And I type "Form TCXXXXAdd20" into the Search field
 Then I validate the 1st Row of the Entry Name text is "Form TCXXXXAdd20"
 When I click the 1st Row of the Gear button
 When I click the 1st Row of the Edit link
-When I validate I am on the Edit Form page
+Then I validate I am on the Forms Edit page
 Then I validate the Required checkbox is checked
 
 Scenario: TCXXXX Forms Add Page - Add a Date Field - Range boxes checked
@@ -1007,7 +1050,7 @@ And I click the Date link
 And I type "anXMLtag" into the Data Name textfield
 And I type "Unit" in the Caption Text textfield
 And I type "Hint" in the Hint textfield
-And I type "2012-02-02" in the Default Value Date Choose And Select textfield
+And I type "2012-02-02" in the D Value Date Choose Select textfield
 And I check the Range Enable Date checkbox
 And I check the Minimum Date Inclusive checkbox
 And I check the Maximum Date Inclusive checkbox
@@ -1019,7 +1062,7 @@ And I type "Form TCXXXXAdd21" into the Search field
 Then I validate the 1st Row of the Entry Name text is "Form TCXXXXAdd21"
 When I click the 1st Row of the Gear button
 When I click the 1st Row of the Edit link
-When I validate I am on the Edit Form page
+Then I validate I am on the Forms Edit page
 Then I validate the Range Enable Date checkbox is checked
 And I validate the Minimum Date Inclusive checkbox is checked
 And I validate the Maximum Date Inclusive checkbox is checked
@@ -1037,7 +1080,7 @@ And I click the Date link
 And I type "anXMLtag" into the Data Name textfield
 And I type "Unit" in the Caption Text textfield
 And I type "Hint" in the Hint textfield
-And I type "2012-02-01" in the Default Value Date Choose And Select textfield
+And I type "2012-02-01" in the D Value Date Choose Select textfield
 And I check the Required checkbox
 And I check the Range Enable Date checkbox
 And I check the Minimum Date Inclusive checkbox
@@ -1050,7 +1093,7 @@ And I type "Form TCXXXXAdd22" into the Search field
 Then I validate the 1st Row of the Entry Name text is "Form TCXXXXAdd22"
 When I click the 1st Row of the Gear button
 When I click the 1st Row of the Edit link
-When I validate I am on the Edit Form page
+Then I validate I am on the Forms Edit page
 Then I validate the Required checkbox is checked
 And I validate the Range Enable Date checkbox is checked
 And I validate the Minimum Date Inclusive checkbox is checked
@@ -1069,13 +1112,13 @@ And I click the Date link
 And I type "anXMLtag" into the Data Name textfield
 And I type "Unit" in the Caption Text textfield
 And I type "Hint" in the Hint textfield
-And I type "2012-01-01" into the Default Value Date Choose And Select textfield
+And I type "2012-01-01" into the D Value Date Choose Select textfield
 And I click the Save Top button
 And I type "Form TCXXXXAdd23" into the Search field
 Then I validate the 1st Row of the Entry Name text is "Form TCXXXXAdd23"
 When I click the 1st Row of the Gear button
 When I click the 1st Row of the Edit link
-When I validate I am on the Edit Form page
+Then I validate I am on the Forms Edit page
 Then I validate the Required checkbox is not checked
 And I validate the Range Enable Date checkbox is not checked
 
@@ -1089,7 +1132,7 @@ And I click the Choose One link
 And I type "anXMLtag" into the Data Name textfield
 And I type "Choose One" in the Caption Text textfield
 And I type "Hint" in the Hint textfield
-And I type "Default Value" in the Default Value Date Choose And Select textfield
+And I type "Default Value" in the D Value Date Choose Select textfield
 And I check the Read Only checkbox
 And I click the Add Option link
 And I type "Option 1" in the 1st Row of the Option English textfield
@@ -1099,7 +1142,7 @@ And I type "Form TCXXXXAdd24" into the Search field
 Then I validate the 1st Row of the Entry Name text is "Form TCXXXXAdd24"
 When I click the 1st Row of the Gear button
 When I click the 1st Row of the Edit link
-When I validate I am on the Edit Form page
+Then I validate I am on the Forms Edit page
 Then I validate the Read Only checkbox is checked
 And I validate the 1st Row of the Option English textfield is "Option 1"
 And I validate the 1st Row of the Option Underlying Value textfield is "optionone"
@@ -1114,7 +1157,7 @@ And I click the Choose One link
 And I type "anXMLtag" into the Data Name textfield
 And I type "Choose One" in the Caption Text textfield
 And I type "Hint" in the Hint textfield
-And I type "Default Value" in the Default Value Date Choose And Select textfield
+And I type "Default Value" in the D Value Date Choose Select textfield
 And I check the Required checkbox
 And I click the Add Option link
 And I type "Option 1" in the 1st Row of the Option English textfield
@@ -1124,7 +1167,7 @@ And I type "Form TCXXXXAdd25" into the Search field
 Then I validate the 1st Row of the Entry Name text is "Form TCXXXXAdd25"
 When I click the 1st Row of the Gear button
 When I click the 1st Row of the Edit link
-When I validate I am on the Edit Form page
+Then I validate I am on the Forms Edit page
 Then I validate the Required checkbox is checked
 And I validate the 1st Row of the Option English textfield is "Option 1"
 And I validate the 1st Row of the Option Underlying Value textfield is "optionone"
@@ -1139,7 +1182,7 @@ And I click the Choose One link
 And I type "anXMLtag" into the Data Name textfield
 And I type "Choose One" in the Caption Text textfield
 And I type "Hint" in the Hint textfield
-And I type "Default Value" in the Default Value Date Choose And Select textfield
+And I type "Default Value" in the D Value Date Choose Select textfield
 And I check the Required checkbox
 And I check the Read Only checkbox
 And I click the Add Option link
@@ -1150,7 +1193,7 @@ And I type "Form TCXXXXAdd26" into the Search field
 Then I validate the 1st Row of the Entry Name text is "Form TCXXXXAdd26"
 When I click the 1st Row of the Gear button
 When I click the 1st Row of the Edit link
-When I validate I am on the Edit Form page
+Then I validate I am on the Forms Edit page
 Then I validate the Required checkbox is checked
 And I validate the Read Only checkbox is checked
 And I validate the 1st Row of the Option English textfield is "Option 1"
@@ -1166,7 +1209,7 @@ And I click the Choose One link
 And I type "anXMLtag" into the Data Name textfield
 And I type "Choose One" in the Caption Text textfield
 And I type "Hint" in the Hint textfield
-And I type "Default Value" in the Default Value Date Choose And Select textfield
+And I type "Default Value" in the D Value Date Choose Select textfield
 And I click the Add Option link
 And I type "Option 1" in the 1st Row of the Option English textfield
 And I type "optionone" in the 1st Row of the Option Underlying Value textfield
@@ -1175,7 +1218,7 @@ And I type "Form TCXXXXAdd27" into the Search field
 Then I validate the 1st Row of the Entry Name text is "Form TCXXXXAdd27"
 When I click the 1st Row of the Gear button
 When I click the 1st Row of the Edit link
-When I validate I am on the Edit Form page
+Then I validate I am on the Forms Edit page
 Then I validate the Required checkbox is not checked
 And I validate the Read Only checkbox is not checked
 And I validate the 1st Row of the Option English textfield is "Option 1"
@@ -1191,7 +1234,7 @@ And I click the Choose One link
 And I type "anXMLtag" into the Data Name textfield
 And I type "Choose One" in the Caption Text textfield
 And I type "Hint" in the Hint textfield
-And I type "value" in the Default Value Date Choose And Select textfield
+And I type "value" in the D Value Date Choose Select textfield
 And I click the Add Option link
 And I type "Option 1" in the 1st Row of the Option English textfield
 And I type "optionone" in the 1st Row of the Option Underlying Value textfield
@@ -1287,7 +1330,7 @@ And I type "Form TCXXXXAdd28" into the Search field
 Then I validate the 1st Row of the Entry Name text is "Form TCXXXXAdd28"
 When I click the 1st Row of the Gear button
 When I click the 1st Row of the Edit link
-When I validate I am on the Edit Form page
+Then I validate I am on the Forms Edit page
 And I validate the 1st Row of the Option English textfield is "Option 1"
 And I validate the 1st Row of the Option Underlying Value textfield is "optionone"
 And I validate the 2nd Row of the Option English textfield is "Option 2"
@@ -1359,7 +1402,7 @@ And I click the Select Multiple link
 And I type "anXMLtag" into the Data Name textfield
 And I type "Select Multiple" in the Caption Text textfield
 And I type "Hint" in the Hint textfield
-And I type "Default Value" in the Default Value Date Choose And Select textfield
+And I type "Default Value" in the D Value Date Choose Select textfield
 And I check the Read Only checkbox
 And I click the Add Option link
 And I type "Option 1" in the 1st Row of the Option English textfield
@@ -1369,7 +1412,7 @@ And I type "Form TCXXXXAdd29" into the Search field
 Then I validate the 1st Row of the Entry Name text is "Form TCXXXXAdd29"
 When I click the 1st Row of the Gear button
 When I click the 1st Row of the Edit link
-When I validate I am on the Edit Form page
+Then I validate I am on the Forms Edit page
 Then I validate the Read Only checkbox is checked
 And I validate the 1st Row of the Option English textfield is "Option 1"
 And I validate the 1st Row of the Option Underlying Value textfield is "optionone"
@@ -1385,7 +1428,7 @@ And I click the Select Multiple link
 And I type "anXMLtag" into the Data Name textfield
 And I type "Select Multiple" in the Caption Text textfield
 And I type "Hint" in the Hint textfield
-And I type "Default Value" in the Default Value Date Choose And Select textfield
+And I type "Default Value" in the D Value Date Choose Select textfield
 And I check the Required checkbox
 And I click the Add Option link
 And I type "Option 1" in the 1st Row of the Option English textfield
@@ -1395,7 +1438,7 @@ And I type "Form TCXXXXAdd30" into the Search field
 Then I validate the 1st Row of the Entry Name text is "Form TCXXXXAdd30"
 When I click the 1st Row of the Gear button
 When I click the 1st Row of the Edit link
-When I validate I am on the Edit Form page
+Then I validate I am on the Forms Edit page
 Then I validate the Required checkbox is checked
 And I validate the 1st Row of the Option English textfield is "Option 1"
 And I validate the 1st Row of the Option Underlying Value textfield is "optionone"
@@ -1410,7 +1453,7 @@ And I click the Select Multiple link
 And I type "anXMLtag" into the Data Name textfield
 And I type "Select Multiple" in the Caption Text textfield
 And I type "Hint" in the Hint textfield
-And I type "Default Value" in the Default Value Date Choose And Select textfield
+And I type "Default Value" in the D Value Date Choose Select textfield
 And I check the Required checkbox
 And I check the Read Only checkbox
 And I click the Add Option link
@@ -1421,7 +1464,7 @@ And I type "Form TCXXXXAdd31" into the Search field
 Then I validate the 1st Row of the Entry Name text is "Form TCXXXXAdd31"
 When I click the 1st Row of the Gear button
 When I click the 1st Row of the Edit link
-When I validate I am on the Edit Form page
+Then I validate I am on the Forms Edit page
 Then I validate the Required checkbox is checked
 And I validate the Read Only checkbox is checked
 And I validate the 1st Row of the Option English textfield is "Option 1"
@@ -1437,7 +1480,7 @@ And I click the Select Multiple link
 And I type "anXMLtag" into the Data Name textfield
 And I type "Select Multiple" in the Caption Text textfield
 And I type "Hint" in the Hint textfield
-And I type "Default Value" in the Default Value Date Choose And Select textfield
+And I type "Default Value" in the D Value Date Choose Select textfield
 And I click the Add Option link
 And I type "Option 1" in the 1st Row of the Option English textfield
 And I type "optionone" in the 1st Row of the Option Underlying Value textfield
@@ -1446,7 +1489,7 @@ And I type "Form TCXXXXAdd32" into the Search field
 Then I validate the 1st Row of the Entry Name text is "Form TCXXXXAdd32"
 When I click the 1st Row of the Gear button
 When I click the 1st Row of the Edit link
-When I validate I am on the Edit Form page
+Then I validate I am on the Forms Edit page
 Then I validate the Required checkbox is not checked
 And I validate the Read Only checkbox is not checked
 And I validate the 1st Row of the Option English textfield is "Option 1"
@@ -1462,7 +1505,7 @@ And I click the Select Multiple link
 And I type "anXMLtag" into the Data Name textfield
 And I type "Select Multiple" in the Caption Text textfield
 And I type "Hint" in the Hint textfield
-And I type "value" in the Default Value Date Choose And Select textfield
+And I type "value" in the D Value Date Choose Select textfield
 And I click the Add Option link
 And I type "Option 1" in the 1st Row of the Option English textfield
 And I type "optionone" in the 1st Row of the Option Underlying Value textfield
@@ -1558,7 +1601,7 @@ And I type "Form TCXXXXAdd33" into the Search field
 Then I validate the 1st Row of the Entry Name text is "Form TCXXXXAdd33"
 When I click the 1st Row of the Gear button
 When I click the 1st Row of the Edit link
-When I validate I am on the Edit Form page
+Then I validate I am on the Forms Edit page
 And I validate the 1st Row of the Option English textfield is "Option 1"
 And I validate the 1st Row of the Option Underlying Value textfield is "optionone"
 And I validate the 2nd Row of the Option English textfield is "Option 2"
@@ -1627,7 +1670,7 @@ And I click the New Form button
 And I check the 1st Row of the Groups checkbox
 And I type "Form TCXXXX Pre Trip Required" in the Name textfield
 And I type "Form TCXXXX Pre Trip Required Description" in the Description textfield
-And I select the option containing "Pre Trip" from the Trigger dropdown
+And I select the option containing "Pre-Trip" from the Trigger dropdown
 And I select the option containing "Inactive" from the Status dropdown
 And I click the Date link
 And I type "date" in the Data Name textfield
@@ -1713,7 +1756,7 @@ When I click the 1st Row of the Gear button
 When I click the 1st Row of the Edit link
 Then I validate the Name textfield is "Form TCXXXX Pre Trip Required"
 And I validate the Description textfield is "Form TCXXXX Pre Trip Required Description"
-And I validate the Trigger dropdown is "Pre Trip"
+And I validate the Trigger dropdown is "Pre-Trip"
 And I validate the Version text is "1"
 And I validate the Status dropdown is "Inactive"
 And I validate the Data Name textfield is "selectMultiple"
@@ -1792,7 +1835,7 @@ And I check the 1st Row of the Groups checkbox
 And I check the 1st Row of the Groups checkbox
 And I type "Form TCXXXX Pre Trip No Required" in the Name textfield
 And I type "Form TCXXXX Pre Trip No Required Description" in the Description textfield
-And I select the option containing "Pre Trip" from the Trigger dropdown
+And I select the option containing "Pre-Trip" from the Trigger dropdown
 And I select the option containing "Active" from the Status dropdown
 And I click the Date link
 And I type "date" in the Data Name textfield
@@ -1872,7 +1915,7 @@ When I click the 1st Row of the Gear button
 When I click the 1st Row of the Edit link
 Then I validate the Name textfield is "Form TCXXXX Pre Trip No Required"
 And I validate the Description textfield is "Form TCXXXX Pre Trip No Required Description"
-And I validate the Trigger dropdown is "Pre Trip"
+And I validate the Trigger dropdown is "Pre-Trip"
 And I validate the Version text is "2"
 And I validate the Data Name textfield is "selectMultiple"
 And I validate the Caption Text textfield is "Select Multiple Caption"
