@@ -1832,7 +1832,6 @@ Given I am logged in
 When I click the Forms link
 And I click the New Form button
 And I check the 1st Row of the Groups checkbox
-And I check the 1st Row of the Groups checkbox
 And I type "Form TCXXXX Pre Trip No Required" in the Name textfield
 And I type "Form TCXXXX Pre Trip No Required Description" in the Description textfield
 And I select the option containing "Pre-Trip" from the Trigger dropdown
@@ -1978,4 +1977,3 @@ And I validate the 3rd Row of the Option English textfield is "Option 3"
 And I validate the 3rd Row of the Option Underlying Value textfield is "optionthree"
 And I validate the 4th Row of the Option English textfield is "Option 4"
 And I validate the 4th Row of the Option Underlying Value textfield is "optionfour" 
-
