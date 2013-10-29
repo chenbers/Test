@@ -58,7 +58,7 @@ When I click the Forms link
 And I save the 1st Row of the Entry Name text as SAVEDFORM
 And I click the 1st Row of the Gear button
 And I click the 1st Row of the Edit link
-Then I validate I am on the Edit Form page
+Then I validate I am on the Forms Edit page
 And I validate the Name field is SAVEDFORM
 
 Scenario: TCXXXX: Search - Manage tab
@@ -117,14 +117,14 @@ And I validate the Entries text contains "Showing 0 to 0 of 0 entries"
 And I validate the Previous link is not present
 And I validate the Next link is not present
 
-Scenario: TC6291: Copy Form with all fields and Validate
+Scenario: TCXXXX: Copy Form with all fields and Validate
 Given I am logged in
 When I click the Forms link
 And I type "XYZ_AllFieldsTest" into the Search field
 Then I validate the 1st Row of Entry Name text is "XYZ_AllFieldsTest"
 When I click the 1st Row of the Gear button
 When I click the 1st Row of the Copy link
-Then I validate I am on the Edit Form page
+Then I validate I am on the Forms Edit page
 And I validate the Name field is "XYZ_AllFieldsTest"
 And I validate the Group Name text is "826"
 And I validate the Description field is "Fill All Fields"
@@ -210,7 +210,7 @@ When I validate I am on the Forms Manage page
 Then I type "XYZ_AllFieldsTest_COPY" into the Search field
 And I validate the 1st Row of the Entry Base Form Id text is not "FORM_1354824643694"
 When I edit the last form
-When I validate I am on the Edit Form page
+Then I validate I am on the Forms Edit page
 And I validate the Name field is "XYZ_AllFieldsTest_COPY"
 And I validate the Description field is "Copy All Fields"
 And I validate the Group Name text is "826"
