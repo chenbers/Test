@@ -1910,12 +1910,13 @@ And I type "optionfour" into the 4th Row of the Option Underlying Value textfiel
 And I click the Save Top button
 And I type "Form TCXXXX Pre Trip No Required" into the Search field
 Then I validate the 1st Row of the Entry Name text is "Form TCXXXX Pre Trip No Required"
-When I click the 1st Row of the Gear button
-When I click the 1st Row of the Edit link
-Then I validate the Name textfield is "Form TCXXXX Pre Trip No Required"
+And I click the 1st Row of the Gear button
+And I click the 1st Row of the Edit link
+And I validate the Name textfield is "Form TCXXXX Pre Trip No Required"
 And I validate the Description textfield is "Form TCXXXX Pre Trip No Required Description"
 And I validate the Trigger dropdown is "Pre-Trip"
-And I validate the Version text is "2"
+And I validate the Version text is "1"
+And I validate the Status dropdown is "Active"
 And I validate the Data Name textfield is "selectMultiple"
 And I validate the Caption Text textfield is "Select Multiple Caption"
 And I validate the Hint textfield is "Select Multiple Hint"
