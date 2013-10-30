@@ -11,6 +11,7 @@ import com.inthinc.pro.automation.elements.TextTableLink;
 import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 import com.inthinc.pro.selenium.pageEnums.FormsAddEnum;
 import com.inthinc.pro.selenium.pageEnums.FormsEditEnum;
+import com.inthinc.pro.selenium.pageEnums.FormsManageEnum;
 
 public class PageFormsAdd extends FormsTables {
     
@@ -369,6 +370,10 @@ public class PageFormsAdd extends FormsTables {
         
         public Text groupSearchedName() {
             return new Text(FormsAddEnum.GROUPS_NAV_SEARCHED_TEXT);
+        }
+        
+        public Text successAlert() {
+            return new Text(FormsAddEnum.SUCCESS_ALERT);
         }
     }
     
