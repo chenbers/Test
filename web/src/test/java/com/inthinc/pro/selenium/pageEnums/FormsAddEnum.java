@@ -92,6 +92,7 @@ public enum FormsAddEnum implements SeleniumEnums {
     CONTROL_TEXT_ERROR(null, "//*[@id='payload.errors']"),	//"Form must have at least one control."
     GROUP_TEXT_ERROR(null, "//*[@id='groupIDs.errors']"),	//"Must select at least one group."
     DATA_NAME_ERROR(null, "//ul[@class='errorList']"),		//"This property is required"
+    SUCCESS_ALERT(null,"//div[@id='#success-alert']"),
     
     //GROUPS ITEMS THAT ARE NOT BEING IMPLEMENTED YET:
     GROUP_LINK("Group", "//a[@class='toolButton group ui-draggable']"),
