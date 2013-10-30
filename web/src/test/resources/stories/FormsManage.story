@@ -87,22 +87,22 @@ And I validate the 1st Row of the Entry Status text contains "Inactive"
 And I validate the 2nd Row of the Entry Status text contains "Inactive"
 And I validate the 3rd Row of the Entry Status text contains "Inactive"
 And I validate the 4th Row of the Entry Status text contains "Inactive"
-And I type "Pre Trip" into the Search textfield
-And I validate the 1st Row of the Entry Trigger text contains "Pre Trip"
-And I validate the 2nd Row of the Entry Trigger text contains "Pre Trip"
-And I validate the 3rd Row of the Entry Trigger text contains "Pre Trip"
-And I validate the 4th Row of the Entry Trigger text contains "Pre Trip"
-And I type "Post Trip" into the Search textfield
-And I validate the 1st Row of the Entry Trigger text contains "Post Trip"
-And I validate the 2nd Row of the Entry Trigger text contains "Post Trip"
-And I validate the 3rd Row of the Entry Trigger text contains "Post Trip"
-And I validate the 4th Row of the Entry Trigger text contains "Post Trip"
+And I type "Pre-Trip" into the Search textfield
+And I validate the 1st Row of the Entry Trigger text contains "Pre-Trip"
+And I validate the 2nd Row of the Entry Trigger text contains "Pre-Trip"
+And I validate the 3rd Row of the Entry Trigger text contains "Pre-Trip"
+And I validate the 4th Row of the Entry Trigger text contains "Pre-Trip"
+And I type "Post-Trip" into the Search textfield
+And I validate the 1st Row of the Entry Trigger text contains "Post-Trip"
+And I validate the 2nd Row of the Entry Trigger text contains "Post-Trip"
+And I validate the 3rd Row of the Entry Trigger text contains "Post-Trip"
+And I validate the 4th Row of the Entry Trigger text contains "Post-Trip"
 
 Scenario: TCXXXX: Search - Manage tab stays blank
 Given I am logged in
 When I click the Forms link
 And I click the Published link
-And I type "Pre Trip" into the Search textfield
+And I type "Pre-Trip" into the Search textfield
 And I click the Manage link
 Then I validate the Search textfield is ""
 And I click the Published link
@@ -117,174 +117,166 @@ And I validate the Entries text contains "Showing 0 to 0 of 0 entries"
 And I validate the Previous link is not present
 And I validate the Next link is not present
 
-Scenario: TCXXXX: Copy Form with all fields and Validate
+Scenario: TCXXXX: Forms Manage Page - Copy Form with all fields and Validate
 Given I am logged in
 When I click the Forms link
-And I type "XYZ_AllFieldsTest" into the Search field
-Then I validate the 1st Row of Entry Name text is "XYZ_AllFieldsTest"
-When I click the 1st Row of the Gear button
-When I click the 1st Row of the Copy link
-Then I validate I am on the Forms Edit page
-And I validate the Name field is "XYZ_AllFieldsTest"
-And I validate the Group Name text is "826"
-And I validate the Description field is "Fill All Fields"
-And I validate the Trigger dropdown is "Route"
-And I validate the Trigger Product dropdown is "Oxygen"
-And I validate the Trigger Action dropdown is "pickup"
+And I click the New Form button
+And I check the 1st Row of the Groups checkbox
+And I type "Form TCXXXX Pre-Trip Required Copy" in the Name textfield
+And I type "Form TCXXXX Pre-Trip Required Copy Description" in the Description textfield
+And I select the option containing "Pre-Trip" from the Trigger dropdown
+And I select the option containing "Inactive" from the Status dropdown
+And I click the Date link
+And I type "date" in the Data Name textfield
+And I type "Date" in the Caption Text textfield
+And I type "Please enter a valid date" in the Hint textfield
+And I check the Required checkbox
+And I check the Range Enable Date checkbox
+And I type "2012-07-31" into the Minimum Date Range textfield
+And I type "2012-09-01" into the Maximum Date Range textfield
+And I type "Date must be within 2012-08-01 and 2012-08-31" into the Invalid Text textfield
+And I click the Numeric link
+And I type "integer" in the Data Name textfield
+And I type "Please enter a integer" in the Caption Text textfield
+And I type "Integer must be between 1 and 100" in the Hint textfield
+And I check the Required checkbox
+And I check the Range Enable Numeric checkbox
+And I type "1" into the Minimum Numeric Range textfield
+And I type "100" into the Maximum Numeric Range textfield
+And I check the Minimum Numeric Inclusive checkbox
+And I check the Maximum Numeric Inclusive checkbox
+And I type "Integer must be between 1 and 100" into the Invalid Text textfield
+And I click the Numeric link
+And I type "decimal" in the Data Name textfield
+And I type "Please enter a decimal" in the Caption Text textfield
+And I type "Decimal must be between 1 and 100" in the Hint textfield
+And I check the Required checkbox
+And I check the Range Enable Numeric checkbox
+And I type "1" into the Minimum Numeric Range textfield
+And I type "100" into the Maximum Numeric Range textfield
+And I check the Minimum Numeric Inclusive checkbox
+And I check the Maximum Numeric Inclusive checkbox
+And I type "Decimal must be between 1 and 100" into the Invalid Text textfield
+And I select "Decimal" from the Kind dropdown
+And I click the Text link
+And I type "text" in the Data Name textfield
+And I type "Text Caption" in the Caption Text textfield
+And I type "Text Hint" in the Hint textfield
+And I check the Required checkbox
+And I click the Length Enable checkbox
+And I type "1" into the Minimum Text Length textfield
+And I type "10" into the Maximum Text Length textfield
+And I check the Minimum Text Inclusive checkbox
+And I check the Maximum Text Inclusive checkbox
+And I type "Must be less than 10 characters" into the Invalid Text textfield
+And I click the Choose One link
+And I type "chooseOne" in the Data Name textfield
+And I type "Choose One Caption" in the Caption Text textfield
+And I type "Choose One Hint" in the Hint textfield
+And I check the Required checkbox
+And I click the Add Option link
+And I type "Option 1" into the 1st Row of the Option English textfield
+And I type "optionone" into the 1st Row of the Option Underlying Value textfield
+And I click the Add Option link
+And I type "Option 2" into the 2nd Row of the Option English textfield
+And I type "optiontwo" into the 2nd Row of the Option Underlying Value textfield
+And I click the Add Option link
+And I type "Option 3" into the 3rd Row of the Option English textfield
+And I type "optionthree" into the 3rd Row of the Option Underlying Value textfield
+And I click the Add Option link
+And I type "Option 4" into the 4th Row of the Option English textfield
+And I type "optionfour" into the 4th Row of the Option Underlying Value textfield
+And I click the Select Multiple link
+And I type "selectMultiple" in the Data Name textfield
+And I type "Select Multiple Caption" in the Caption Text textfield
+And I type "Select Multiple Hint" in the Hint textfield
+And I check the Required checkbox
+And I click the Add Option link
+And I type "Option 1" into the 1st Row of the Option English textfield
+And I type "optionone" into the 1st Row of the Option Underlying Value textfield
+And I click the Add Option link
+And I type "Option 2" into the 2nd Row of the Option English textfield
+And I type "optiontwo" into the 2nd Row of the Option Underlying Value textfield
+And I click the Add Option link
+And I type "Option 3" into the 3rd Row of the Option English textfield
+And I type "optionthree" into the 3rd Row of the Option Underlying Value textfield
+And I click the Add Option link
+And I type "Option 4" into the 4th Row of the Option English textfield
+And I type "optionfour" into the 4th Row of the Option Underlying Value textfield
+And I click the Save Top button
+And I type "Form TCXXXX Pre-Trip Required Copy" into the Search field
+Then I validate the 1st Row of the Entry Name text is "Form TCXXXX Pre-Trip Required Copy"
+And I click the 1st Row of the Gear button
+And I click the 1st Row of the Copy link
+And I validate the Name textfield is "Form TCXXXX Pre-Trip Required Copy"
+And I validate the Description textfield is "Form TCXXXX Pre-Trip Required Copy Description"
+And I validate the Trigger dropdown is "Pre-Trip"
+And I validate the Version text is "1"
 And I validate the Status dropdown is "Inactive"
-And I click the First Text link
-And I validate the Data Name field is "TextName"
-And I validate the Caption Text field is "Text English Caption"
-And I validate the Hint field is "Text English Hint"
-And I validate the Value field is "Default Value"
-And I validate the Read Only checkbox is checked
+And I validate the Data Name textfield is "selectMultiple"
+And I validate the Caption Text textfield is "Select Multiple Caption"
+And I validate the Hint textfield is "Select Multiple Hint"
 And I validate the Required checkbox is checked
-And I validate the Length Enable checkbox is checked
-And I validate the Minimum Text Length field is "1"
-And I validate the Minimum Text Inclusive checkbox is checked
-And I validate the Maximum Text Length field is "35"
-And I validate the Maximum Text Inclusive checkbox is checked
-And I validate the Invalid Text field is "One to Thirty-five alpha characters"
-And I click the First Numeric link
-And I validate the Data Name field is "NumericName"
-And I validate the Caption Text field is "Numeric English Caption"
-And I validate the Hint field is "Numeric English Hint"
-And I validate the Value field is "Numeric Default"
-And I validate the Read Only checkbox is checked
-And I validate the Required checkbox is checked
-And I validate the Range Enable Numeric checkbox is checked
-And I validate the Minimum Numeric Range field is "11"
-And I validate the Minimum Numeric Inclusive checkbox is checked
-And I validate the Maximum Numeric Range field is "37"
-And I validate the Maximum Numeric Inclusive checkbox is checked
-And I validate the Invalid Text field is "Numeric Invalid English"
-And I validate the Kind dropdown is "Decimal"
-And I click First Date link
-And I validate the Data Name field is "DateName"
-And I validate the Caption Text field is "Date English Caption"
-And I validate the Hint field is "Date English Hint"
-And I validate the Value field is "Date Default"
-And I validate the Read Only checkbox is checked
+And I validate the 1st Row of the Option English textfield is "Option 1"
+And I validate the 1st Row of the Option Underlying Value textfield is "optionone"
+And I validate the 2nd Row of the Option English textfield is "Option 2"
+And I validate the 2nd Row of the Option Underlying Value textfield is "optiontwo"
+And I validate the 3rd Row of the Option English textfield is "Option 3"
+And I validate the 3rd Row of the Option Underlying Value textfield is "optionthree"
+And I validate the 4th Row of the Option English textfield is "Option 4"
+And I validate the 4th Row of the Option Underlying Value textfield is "optionfour" 
+And I click the 1st Row of the Control Flow Arrow link
+And I validate the Data Name textfield is "date"
+And I validate the Caption Text textfield is "Date"
+And I validate the Hint textfield is "Please enter a valid date"
 And I validate the Required checkbox is checked
 And I validate the Range Enable Date checkbox is checked
-And I validate the Minimum Date Range field is "2014-07-31" 
-And I validate the Maximum Date Range field is "2014-09-01" 
-And I validate the Minimum Date Inclusive checkbox is checked
-And I validate the Maximum Date Inclusive checkbox is checked
-And I validate the Invalid Text field is "Date Invalid"
-And I click the First Select One link
-And I validate the Data Name field is "ChooseOne"
-And I validate the Caption Text field is "One Caption"
-And I validate the Hint field is "One Hint"
-And I validate the Value field is "One Default"
-And I validate the Read Only checkbox is checked
-And I validate the Required checkbox is checked
-And I validate the 1st Row of the Option English field is "First Opt"
-And I validate the 1st Row of the Option Underlying Value field is "First"
-And I validate the 2nd Row of the Option English field is "Second Opt"
-And I validate the 2nd Row of the Option Underlying Value field is "Second"
-And I validate the 3rd Row of the Option English field is "Third Opt"
-And I validate the 3rd Row of the Option Underlying Value field is "Third"
-And I validate the 4th Row of the Option English field is "Fourth Opt"
-And I validate the 4th Row of the Option Underlying Value field is "Fourth" 
-And I click the First Select Multiple link
-And I validate the Data Name field is "Multiple" 
-And I validate the Caption Text field is "Multiple English Caption"
-And I validate the Hint field is "Multiples"
-And I validate the Value field is "Defaults"
-And I validate the Read Only checkbox is checked
-And I validate the Required checkbox is checked
-And I validate the 1st Row of the Option English field is "First Opts"
-And I validate the 1st Row of the Option Underlying Value field is "1st"
-And I validate the 2nd Row of the Option English field is "Second Opts"
-And I validate the 2nd Row of the Option Underlying Value field is "2nd"
-And I validate the 3rd Row of the Option English field is "Third Opts"
-And I validate the 3rd Row of the Option Underlying Value field is "3rd"
-And I validate the 4th Row of the Option English field is "Fourth Opts"
-And I validate the 4th Row of the Option Underlying Value field is "4th" 
-When I type "XYZ_AllFieldsTest_COPY" into the Name field
-And I type "Copy All Fields" into the Description field
-And I click the Save Bottom button
-When I validate the Success Alert text is present
-When I validate I am on the Forms Manage page
-Then I type "XYZ_AllFieldsTest_COPY" into the Search field
-And I validate the 1st Row of the Entry Base Form Id text is not "FORM_1354824643694"
-When I edit the last form
-Then I validate I am on the Forms Edit page
-And I validate the Name field is "XYZ_AllFieldsTest_COPY"
-And I validate the Description field is "Copy All Fields"
-And I validate the Group Name text is "826"
-And I validate the Trigger dropdown is "Route"
-And I validate the Trigger Product dropdown is "Oxygen"
-And I validate the Trigger Action dropdown is "pickup"
-And I validate the Status dropdown is "Inactive"
-And I click the First Text link
-And I validate the Data Name field is "TextName"
-And I validate the Caption Text field is "Text English Caption"
-And I validate the Hint field is "Text English Hint"
-And I validate the Value field is "Default Value"
-And I validate the Read Only checkbox is checked
-And I validate the Required checkbox is checked
-And I validate the Length Enable checkbox is checked
-And I validate the Minimum Text Length field is "1"
-And I validate the Minimum Text Inclusive checkbox is checked
-And I validate the Maximum Text Length field is "35"
-And I validate the Maximum Text Inclusive checkbox is checked
-And I validate the Invalid Text field is "One to Thirty-five alpha characters"
-And I click the First Numeric link
-And I validate the Data Name field is "NumericName"
-And I validate the Caption Text field is "Numeric English Caption"
-And I validate the Hint field is "Numeric English Hint"
-And I validate the Value field is "Numeric Default"
-And I validate the Read Only checkbox is checked
+And I validate the Minimum Date Range textfield is "2012-07-31"
+And I validate the Maximum Date Range textfield is "2012-09-01"
+And I validate the Invalid Text textfield is "Date must be within 2012-08-01 and 2012-08-31"
+And I click the 2nd Row of the Control Flow Arrow link
+And I validate the Data Name textfield is "integer"
+And I validate the Caption Text textfield is "Please enter a integer"
+And I validate the Hint textfield is "Integer must be between 1 and 100"
 And I validate the Required checkbox is checked
 And I validate the Range Enable Numeric checkbox is checked
-And I validate the Minimum Numeric Range field is "11"
+And I validate the Minimum Numeric Range textfield is "1"
+And I validate the Maximum Numeric Range textfield is "100"
 And I validate the Minimum Numeric Inclusive checkbox is checked
-And I validate the Maximum Numeric Range field is "37"
 And I validate the Maximum Numeric Inclusive checkbox is checked
-And I validate the Invalid Text field is "Numeric Invalid English"
-And I validate the Kind dropdown is "Decimal"
-And I click First Date link
-And I validate the Data Name field is "DateName"
-And I validate the Caption Text field is "Date English Caption"
-And I validate the Hint field is "Date English Hint"
-And I validate the Value field is "Date Default"
-And I validate the Read Only checkbox is checked
+And I validate the Invalid Text textfield is "Integer must be between 1 and 100"
+And I click the 3rd Row of the Control Flow Arrow link
+And I validate the Data Name textfield is "decimal"
+And I validate the Caption Text textfield is "Please enter a decimal"
+And I validate the Hint textfield is "Decimal must be between 1 and 100"
 And I validate the Required checkbox is checked
-And I validate the Range Enable Date checkbox is checked
-And I validate the Minimum Date Range field is "2014-07-31" 
-And I validate the Maximum Date Range field is "2014-09-01" 
-And I validate the Minimum Date Inclusive checkbox is checked
-And I validate the Maximum Date Inclusive checkbox is checked
-And I validate the Invalid Text field is "Date Invalid"
-And I click the First Select One link
-And I validate the Data Name field is "ChooseOne"
-And I validate the Caption Text field is "One Caption"
-And I validate the Hint field is "One Hint"
-And I validate the Value field is "One Default"
-And I validate the Read Only checkbox is checked
+And I validate the Range Enable Numeric checkbox is checked
+And I validate the Minimum Numeric Range textfield is "1"
+And I validate the Maximum Numeric Range textfield is "100"
+And I validate the Minimum Numeric Inclusive checkbox is checked
+And I validate the Maximum Numeric Inclusive checkbox is checked
+And I validate the Invalid Text textfield is "Decimal must be between 1 and 100"
+And I click the 4th Row of the Control Flow Arrow link
+And I validate the Data Name textfield is "text"
+And I validate the Caption Text textfield is "Text Caption"
+And I validate the Hint textfield is "Text Hint"
 And I validate the Required checkbox is checked
-And I validate the 1st Row of the Option English field is "First Opt"
-And I validate the 1st Row of the Option Underlying Value field is "First"
-And I validate the 2nd Row of the Option English field is "Second Opt"
-And I validate the 2nd Row of the Option Underlying Value field is "Second"
-And I validate the 3rd Row of the Option English field is "Third Opt"
-And I validate the 3rd Row of the Option Underlying Value field is "Third"
-And I validate the 4th Row of the Option English field is "Fourth Opt"
-And I validate the 4th Row of the Option Underlying Value field is "Fourth" 
-And I click the First Select Multiple link
-And I validate the Data Name field is "Multiple" 
-And I validate the Caption Text field is "Multiple English Caption"
-And I validate the Hint field is "Multiples"
-And I validate the Value field is "Defaults"
-And I validate the Read Only checkbox is checked
+And I validate the Length Enable checkbox is checked
+And I validate the Minimum Text Length textfield is "1"
+And I validate the Maximum Text Length textfield is "10"
+And I validate the Minimum Text Inclusive checkbox is checked
+And I validate the Maximum Text Inclusive checkbox is checked
+And I validate the Invalid Text textfield is "Must be less than 10 characters"
+And I click the 5th Row of the Control Flow Arrow link
+And I validate the Data Name textfield is "chooseOne"
+And I validate the Caption Text textfield is "Choose One Caption"
+And I validate the Hint textfield is "Choose One Hint"
 And I validate the Required checkbox is checked
-And I validate the 1st Row of the Option English field is "First Opts"
-And I validate the 1st Row of the Option Underlying Value field is "1st"
-And I validate the 2nd Row of the Option English field is "Second Opts"
-And I validate the 2nd Row of the Option Underlying Value field is "2nd"
-And I validate the 3rd Row of the Option English field is "Third Opts"
-And I validate the 3rd Row of the Option Underlying Value field is "3rd"
-And I validate the 4th Row of the Option English field is "Fourth Opts"
-And I validate the 4th Row of the Option Underlying Value field is "4th" 
+And I validate the 1st Row of the Option English textfield is "Option 1"
+And I validate the 1st Row of the Option Underlying Value textfield is "optionone"
+And I validate the 2nd Row of the Option English textfield is "Option 2"
+And I validate the 2nd Row of the Option Underlying Value textfield is "optiontwo"
+And I validate the 3rd Row of the Option English textfield is "Option 3"
+And I validate the 3rd Row of the Option Underlying Value textfield is "optionthree"
+And I validate the 4th Row of the Option English textfield is "Option 4"
+And I validate the 4th Row of the Option Underlying Value textfield is "optionfour" 
