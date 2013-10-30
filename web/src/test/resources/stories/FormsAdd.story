@@ -1668,8 +1668,8 @@ Given I am logged in
 When I click the Forms link
 And I click the New Form button
 And I check the 1st Row of the Groups checkbox
-And I type "Form TCXXXX Pre Trip Required" in the Name textfield
-And I type "Form TCXXXX Pre Trip Required Description" in the Description textfield
+And I type "Form TCXXXX Pre-Trip Required" in the Name textfield
+And I type "Form TCXXXX Pre-Trip Required Description" in the Description textfield
 And I select the option containing "Pre-Trip" from the Trigger dropdown
 And I select the option containing "Inactive" from the Status dropdown
 And I click the Date link
@@ -1750,12 +1750,12 @@ And I click the Add Option link
 And I type "Option 4" into the 4th Row of the Option English textfield
 And I type "optionfour" into the 4th Row of the Option Underlying Value textfield
 And I click the Save Top button
-And I type "Form TCXXXX Pre Trip Required" into the Search field
-Then I validate the 1st Row of the Entry Name text is "Form TCXXXX Pre Trip Required"
+And I type "Form TCXXXX Pre-Trip Required" into the Search field
+Then I validate the 1st Row of the Entry Name text is "Form TCXXXX Pre-Trip Required"
 When I click the 1st Row of the Gear button
 When I click the 1st Row of the Edit link
-Then I validate the Name textfield is "Form TCXXXX Pre Trip Required"
-And I validate the Description textfield is "Form TCXXXX Pre Trip Required Description"
+Then I validate the Name textfield is "Form TCXXXX Pre-Trip Required"
+And I validate the Description textfield is "Form TCXXXX Pre-Trip Required Description"
 And I validate the Trigger dropdown is "Pre-Trip"
 And I validate the Version text is "1"
 And I validate the Status dropdown is "Inactive"
@@ -1832,8 +1832,8 @@ Given I am logged in
 When I click the Forms link
 And I click the New Form button
 And I check the 1st Row of the Groups checkbox
-And I type "Form TCXXXX Pre Trip No Required" in the Name textfield
-And I type "Form TCXXXX Pre Trip No Required Description" in the Description textfield
+And I type "Form TCXXXX Pre-Trip No Required" in the Name textfield
+And I type "Form TCXXXX Pre-Trip No Required Description" in the Description textfield
 And I select the option containing "Pre-Trip" from the Trigger dropdown
 And I select the option containing "Active" from the Status dropdown
 And I click the Date link
@@ -1908,12 +1908,12 @@ And I click the Add Option link
 And I type "Option 4" into the 4th Row of the Option English textfield
 And I type "optionfour" into the 4th Row of the Option Underlying Value textfield
 And I click the Save Top button
-And I type "Form TCXXXX Pre Trip No Required" into the Search field
-Then I validate the 1st Row of the Entry Name text is "Form TCXXXX Pre Trip No Required"
+And I type "Form TCXXXX Pre-Trip No Required" into the Search field
+Then I validate the 1st Row of the Entry Name text is "Form TCXXXX Pre-Trip No Required"
 And I click the 1st Row of the Gear button
 And I click the 1st Row of the Edit link
-And I validate the Name textfield is "Form TCXXXX Pre Trip No Required"
-And I validate the Description textfield is "Form TCXXXX Pre Trip No Required Description"
+And I validate the Name textfield is "Form TCXXXX Pre-Trip No Required"
+And I validate the Description textfield is "Form TCXXXX Pre-Trip No Required Description"
 And I validate the Trigger dropdown is "Pre-Trip"
 And I validate the Version text is "1"
 And I validate the Status dropdown is "Active"

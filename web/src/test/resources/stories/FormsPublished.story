@@ -81,21 +81,21 @@ And I validate the 1st Row of the Entry Description text contains "Required"
 And I validate the 2nd Row of the Entry Description text contains "Required"
 And I validate the 3rd Row of the Entry Description text contains "Required"
 And I validate the 4th Row of the Entry Description text contains "Required"
-And I type "Pre Trip" into the Search textfield
-And I validate the 1st Row of the Entry Trigger text contains "Pre Trip"
-And I validate the 2nd Row of the Entry Trigger text contains "Pre Trip"
-And I validate the 3rd Row of the Entry Trigger text contains "Pre Trip"
-And I validate the 4th Row of the Entry Trigger text contains "Pre Trip"
-And I type "Post Trip" into the Search textfield
-And I validate the 1st Row of the Entry Trigger text contains "Post Trip"
-And I validate the 2nd Row of the Entry Trigger text contains "Post Trip"
-And I validate the 3rd Row of the Entry Trigger text contains "Post Trip"
-And I validate the 4th Row of the Entry Trigger text contains "Post Trip"
+And I type "Pre-Trip" into the Search textfield
+And I validate the 1st Row of the Entry Trigger text contains "Pre-Trip"
+And I validate the 2nd Row of the Entry Trigger text contains "Pre-Trip"
+And I validate the 3rd Row of the Entry Trigger text contains "Pre-Trip"
+And I validate the 4th Row of the Entry Trigger text contains "Pre-Trip"
+And I type "Post-Trip" into the Search textfield
+And I validate the 1st Row of the Entry Trigger text contains "Post-Trip"
+And I validate the 2nd Row of the Entry Trigger text contains "Post-Trip"
+And I validate the 3rd Row of the Entry Trigger text contains "Post-Trip"
+And I validate the 4th Row of the Entry Trigger text contains "Post-Trip"
 
 Scenario: TCXXXX: Search - Published tab stays blank
 Given I am logged in
 When I click the Forms link
-And I type "Pre Trip" into the Search textfield
+And I type "Pre-Trip" into the Search textfield
 And I click the Published link
 Then I validate the Search textfield is ""
 And I click the Manage link

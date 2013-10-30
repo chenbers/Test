@@ -206,7 +206,7 @@ Scenario: TCXXXX: Forms Submissions Page - Inline Edit - Forms link disappears
 Given I am logged in
 When I click the Forms link
 And I click the Submissions link
-And I select "Form TCXXXX Pre Trip Required (1)" from the Form dropdown
+And I select "Form TCXXXX Pre-Trip Required (1)" from the Form dropdown
 And I double click the 1st Row of the Form Entry text
 Then I validate the 1st Row of the Form Entry text is not present
 
@@ -224,7 +224,7 @@ Scenario: TCXXXX: Forms Submissions Page - Inline Edit - Cancel Changes
 Given I am logged in
 When I click the Forms link
 And I click the Submissions link
-And I select "Form TCXXXX Pre Trip Required (1)" from the Form dropdown
+And I select "Form TCXXXX Pre-Trip Required (1)" from the Form dropdown
 And I click the Refresh button
 And I click the Sort By Edited link
 Then I validate the 1st Row of the Edited Entry text is "no"
@@ -253,7 +253,7 @@ Scenario: TCXXXX: Forms Submissions Page - Inline Edit - Save Changes
 Given I am logged in
 When I click the Forms link
 And I click the Submissions link
-And I select "Form TCXXXX Pre Trip Required (1)" from the Form dropdown
+And I select "Form TCXXXX Pre-Trip Required (1)" from the Form dropdown
 And I click the Refresh button
 And I click the Sort By Edited link
 Then I validate the 1st Row of the Edited Entry text is "no"
@@ -280,7 +280,7 @@ Scenario: TCXXXX: Forms Submissions Page - Inline Edit - Generate error messages
 Given I am logged in
 When I click the Forms link
 And I click the Submissions link
-And I select "Form TCXXXX Pre Trip Required (1)" from the Form dropdown
+And I select "Form TCXXXX Pre-Trip Required (1)" from the Form dropdown
 And I click the Refresh button
 And I double click the 1st Row of the Date Time Entry text
 And I type "" into the 1st Row of the Text Entry textfield
@@ -301,7 +301,7 @@ Scenario: TCXXXX: Forms Submissions Page - Inline Edit - Generate error messages
 Given I am logged in
 When I click the Forms link
 And I click the Submissions link
-And I select "Form TCXXXX Pre Trip Required (1)" from the Form dropdown
+And I select "Form TCXXXX Pre-Trip Required (1)" from the Form dropdown
 And I click the Refresh button
 And I double click the 1st Row of the Date Time Entry text
 And I type "x" into the 1st Row of the Text Entry textfield
@@ -315,7 +315,7 @@ Scenario: TCXXXX: Forms Submissions Page - Inline Edit - Generate error messages
 Given I am logged in
 When I click the Forms link
 And I click the Submissions link
-And I select "Form TCXXXX Pre Trip Required (1)" from the Form dropdown
+And I select "Form TCXXXX Pre-Trip Required (1)" from the Form dropdown
 And I click the Refresh button
 And I double click the 1st Row of the Date Time Entry text
 And I type "1" into the 1st Row of the Numeric Entry textfield
@@ -329,7 +329,7 @@ Scenario: TCXXXX: Forms Submissions Page - Inline Edit - Generate error messages
 Given I am logged in
 When I click the Forms link
 And I click the Submissions link
-And I select "Form TCXXXX Pre Trip Required (1)" from the Form dropdown
+And I select "Form TCXXXX Pre-Trip Required (1)" from the Form dropdown
 And I click the Refresh button
 And I double click the 1st Row of the Date Time Entry text
 And I type "-0.9" into the 1st Row of the Decimal Entry textfield
@@ -343,7 +343,7 @@ Scenario: TCXXXX: Forms Submissions Page - Inline Edit - Generate error messages
 Given I am logged in
 When I click the Forms link
 And I click the Submissions link
-And I select "Form TCXXXX Pre Trip Required (1)" from the Form dropdown
+And I select "Form TCXXXX Pre-Trip Required (1)" from the Form dropdown
 And I click the Refresh button
 And I double click the 1st Row of the Date Time Entry text
 And I select 32 days in the future from the 1st Row of the Date Entry dropdown
