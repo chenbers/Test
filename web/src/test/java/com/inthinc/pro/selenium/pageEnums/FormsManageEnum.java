@@ -31,7 +31,7 @@ public enum FormsManageEnum implements SeleniumEnums {
     COPY_ENTRY_LINK("Copy", "//table[@id='staging-forms-table']/tbody/tr[###]/td[7]/div/ul/li[3]"),
     PUBLISH_DISABLED_LINK(null,"//table[@id='staging-forms-table']/tbody/tr[###]/td[7]/div/ul/li[@class='disabled']/a[@class='publish']"),
 
-    NO_RECORDS_FOUND_ERROR("No matching records found", "//table[@id='staging-forms-table']/tbody/tr/td[@class='dataTables_empty']"),
+    NO_RECORDS_FOUND_ERROR("No matching records found", "//tr/td[@class='dataTables_empty']"),
     SUCCESS_ALERT(null,"//div[@id='#success-alert']"),
     
     ENTRIES_TEXT(null, "//div[@id='staging-forms-table_info']"),
