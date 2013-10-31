@@ -15,10 +15,9 @@ import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 import com.inthinc.pro.selenium.pageEnums.HOSDriverLogsEnum;
 
 public class PageHOSDriverLogs extends HOSBar {
-
+    
     private final static String page = "hosTable";
     
-
     public PageHOSDriverLogs() {
         url = HOSDriverLogsEnum.DEFAULT_URL;
         
@@ -47,7 +46,7 @@ public class PageHOSDriverLogs extends HOSBar {
         }
         
         public TextLinkTableHeader sortByTrailer() {
-        	return new TextLinkTableHeader(HOSDriverLogsEnum.ENTRY_TRAILER);
+            return new TextLinkTableHeader(HOSDriverLogsEnum.ENTRY_TRAILER);
         }
         
         public TextLinkTableHeader sortByLocation() {
@@ -62,7 +61,7 @@ public class PageHOSDriverLogs extends HOSBar {
             return new TextLinkTableHeader(HOSDriverLogsEnum.ENTRY_EDITED);
         }
     }
-
+    
     public class HOSDriverLogsTexts extends HOSBarTexts {
         
         public TextTable entryDateTime() {
@@ -112,19 +111,18 @@ public class PageHOSDriverLogs extends HOSBar {
         public Text title() {
             return new Text(HOSDriverLogsEnum.TITLE);
         }
-
-		public TextTable entryLocation() {
-			return new TextTable(HOSDriverLogsEnum.ENTRY_LOCATION);
-		}
+        
+        public TextTable entryLocation() {
+            return new TextTable(HOSDriverLogsEnum.ENTRY_LOCATION);
+        }
     }
-
+    
     public class HOSDriverLogsTextFields extends HOSBarTextFields {
         
         public TextFieldSuggestions driver() {
             return new TextFieldSuggestions(HOSDriverLogsEnum.DRIVER_FIELD, HOSDriverLogsEnum.DRIVER_SUGGESTION);
         }
     }
-    
     
     public class HOSDriverLogsButtons extends HOSBarButtons {
         
@@ -148,7 +146,7 @@ public class PageHOSDriverLogs extends HOSBar {
             return new Button(HOSDriverLogsEnum.SEND_LOGS);
         }
     }
-
+    
     public class HOSDriverLogsDropDowns extends HOSBarDropDowns {
         public DropDown startDate() {
             return new CalendarObject(HOSDriverLogsEnum.START_FIELD);
@@ -160,26 +158,26 @@ public class PageHOSDriverLogs extends HOSBar {
     }
     
     public class HOSDriverLogsCheckBoxes {
-    	public CheckBox selectAll() {
-    		return new CheckBox(HOSDriverLogsEnum.CHECK_ALL);
-    	}
-    	
-    	public CheckBoxTable select() {
-    		return new CheckBoxTable(HOSDriverLogsEnum.ENTRY_CHECK_BOX);
-    	}
+        public CheckBox selectAll() {
+            return new CheckBox(HOSDriverLogsEnum.CHECK_ALL);
+        }
+        
+        public CheckBoxTable select() {
+            return new CheckBoxTable(HOSDriverLogsEnum.ENTRY_CHECK_BOX);
+        }
     }
-
+    
     public class HOSDriverLogsPopUps extends MastheadPopUps {
         
-        public HOSDriverLogsPopUps(){
+        public HOSDriverLogsPopUps() {
             super(page);
         }
         
-        public EditColumns editColumns(){
+        public EditColumns editColumns() {
             return new EditColumns();
         }
     }
-
+    
     public class HOSDriverLogsPager {
         public Paging pageIndex() {
             return new Paging();
@@ -187,45 +185,45 @@ public class PageHOSDriverLogs extends HOSBar {
     }
     
     public HOSDriverLogsCheckBoxes _checkBox() {
-    	return new HOSDriverLogsCheckBoxes();
+        return new HOSDriverLogsCheckBoxes();
     }
-
+    
     public HOSDriverLogsPager _page() {
         return new HOSDriverLogsPager();
     }
-
+    
     public HOSDriverLogsLinks _link() {
         return new HOSDriverLogsLinks();
     }
-
+    
     public HOSDriverLogsTexts _text() {
         return new HOSDriverLogsTexts();
     }
-
+    
     public HOSDriverLogsButtons _button() {
         return new HOSDriverLogsButtons();
     }
-
+    
     public HOSDriverLogsTextFields _textField() {
         return new HOSDriverLogsTextFields();
     }
-
+    
     public HOSDriverLogsDropDowns _dropDown() {
         return new HOSDriverLogsDropDowns();
     }
-
+    
     public HOSDriverLogsPopUps _popUp() {
         return new HOSDriverLogsPopUps();
     }
-
+    
     @Override
     public SeleniumEnums setUrl() {
         return HOSDriverLogsEnum.DEFAULT_URL;
     }
-
+    
     @Override
     protected boolean checkIsOnPage() {
         return _button().add().isPresent() && _textField().driver().isPresent();
     }
-
+    
 }
