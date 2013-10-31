@@ -13,10 +13,22 @@ import com.inthinc.pro.automation.elements.TextLink;
 import com.inthinc.pro.automation.elements.TextTable;
 import com.inthinc.pro.automation.elements.TextTableLink;
 import com.inthinc.pro.automation.interfaces.SeleniumEnums;
+import com.inthinc.pro.selenium.pageEnums.HOSDriverLogsEnum;
 import com.inthinc.pro.selenium.pageEnums.HOSFuelStopsEnum;
 
 public class PageHOSFuelStops extends HOSBar {
+    
+    private static final String page = "fuelStopsTable";
 
+    public PageHOSFuelStops() {
+        url = HOSFuelStopsEnum.DEFAULT_URL;
+        
+        checkMe.add(HOSFuelStopsEnum.TITLE);
+        checkMe.add(HOSFuelStopsEnum.REFRESH);
+        checkMe.add(HOSFuelStopsEnum.ADD);
+        checkMe.add(HOSFuelStopsEnum.DELETE_BUTTON);
+    }
+    
     public class FuelStopsButtons extends HOSBarButtons {
 
         public TextButton add() {
@@ -192,8 +204,6 @@ public class PageHOSFuelStops extends HOSBar {
             return new TextTable(HOSFuelStopsEnum.ENTRY_VEHICLE_FUEL);
         }
     }
-
-    private static final String page = "fuelStopsTable";
 
     public FuelStopsButtons _button() {
         return new FuelStopsButtons();
