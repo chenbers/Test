@@ -97,10 +97,11 @@ public class AutoPageRunner {
             location = start + end;
         }
         // dbean 2013/01/25 -- added following check for short-circuiting multiple pageObject validations and speed tests
-        if(formerLocation.equalsIgnoreCase(location)) {
-        	return;
-        }
-        formerLocation=location;
+        // mweiss 2013/10/31 The problem with this is it breaks popups, they can't find what pageobject they are in, taking out for now
+//        if(formerLocation.equalsIgnoreCase(location)) {
+//        	return;
+//        }
+//        formerLocation=location;
         
         if (pageMap.containsKey(location) && pageMap.get(location).isOnPage()){
             currentPage = pageMap.get(location);    
