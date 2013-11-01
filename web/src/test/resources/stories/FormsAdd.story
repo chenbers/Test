@@ -170,7 +170,6 @@ And I type "Form TCXXXXAdd1" into the Search field
 And I click the 1st Row of the Gear button
 And I click the 1st Row of the Publish link
 And I validate I am on the Forms Published page
-
 And I click the Manage link
 And I type "Form TCXXXXAdd1" into the Search field
 And I validate the 1st Row of the Entry Version text is "2"
