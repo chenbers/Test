@@ -73,7 +73,7 @@ And I validate the Group textfield is present
 And I validate the Driver textfield is present
 And I validate the Vehicle textfield is present
 And I validate the Category dropdown is present
-And I validate the Status Filter dropdown is present
+And I validate the Status dropdown is present
 
 Scenario: TC1384: Notifications - Diagnostics - Vehicle Link
 Given I am logged in
@@ -113,7 +113,7 @@ And I validate the Group textfield is present
 And I validate the Driver textfield is present
 And I validate the Vehicle textfield is present
 And I validate the Category dropdown is present
-And I validate the Status Filter dropdown is present
+And I validate the Status dropdown is present
 
 Scenario: TC1387: Notifications - Diagnostics - Edit Columns - Cancel Button (No Changes)
 Given I am logged in
@@ -134,7 +134,7 @@ And I validate the Group textfield is present
 And I validate the Driver textfield is present
 And I validate the Vehicle textfield is present
 And I validate the Category dropdown is present
-And I validate the Status Filter dropdown is present
+And I validate the Status dropdown is present
 
 Scenario: TC1388: Notifications - Diagnostics - Edit Columns - Check Box Selection via Mouse
 Given I am logged in
