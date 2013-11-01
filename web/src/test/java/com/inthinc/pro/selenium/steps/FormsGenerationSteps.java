@@ -83,6 +83,7 @@ public class FormsGenerationSteps extends LoginSteps {
         	manage._dropDown().recordsPerPage().select("100");
     		manage._button().gear().row(h).click();
         	manage._link().publish().row(h).click();
+        	manage._link().manage().click();
         	i++; h++;
     	}
     	
@@ -96,6 +97,7 @@ public class FormsGenerationSteps extends LoginSteps {
         	manage._dropDown().recordsPerPage().select("100");
     		manage._button().gear().row(h).click();
         	manage._link().publish().row(h).click();
+            manage._link().manage().click();
         	j++; h++;
     	}
     	
@@ -109,6 +111,7 @@ public class FormsGenerationSteps extends LoginSteps {
         	manage._dropDown().recordsPerPage().select("100");
     		manage._button().gear().row(h).click();
         	manage._link().publish().row(h).click();
+            manage._link().manage().click();
         	k++; h++;
     	}
     	
@@ -122,6 +125,7 @@ public class FormsGenerationSteps extends LoginSteps {
 	    	manage._dropDown().recordsPerPage().select("100");
 			manage._button().gear().row(h).click();
 	    	manage._link().publish().row(h).click();
+	        manage._link().manage().click();
 	    	l++; h++;
     	}
     	
