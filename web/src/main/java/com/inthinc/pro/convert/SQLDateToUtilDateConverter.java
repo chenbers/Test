@@ -31,7 +31,7 @@ public class SQLDateToUtilDateConverter extends BaseConverter {
 			if (timeZone != null) {
 				return getDateTimeZone(uiComponent, value, timeZone);
 			} else {
-				final TimeZone timeZoneUTC = (TimeZone) uiComponent.getAttributes().get("timeZone");
+				final TimeZone timeZoneUTC = TimeZone.getTimeZone("UTC");
 				return getDateTimeZone(uiComponent, value, timeZoneUTC);
 			}
 		}
