@@ -30,9 +30,9 @@ public enum MastheadEnum implements SeleniumEnums {
 
     /* Footer Elements */
     COPYRIGHT("&#169;" + String.valueOf(Calendar.getInstance().get(Calendar.YEAR)) + " inthinc", "//li[@class='first']", "//form[@id='footerForm']/ul/li[1]", "//div[2]/div/span"),
-    LEGAL("Legal Notice", "footerForm:legal", "//form[@id='footerForm']/ul/li[5]/a", "link=Legal Notice"),
-    PRIVACY("Privacy Policy", "footerForm:privacy", "//form[@id='footerForm']/ul/li[3]/a", "//div/div[2]/div[1]/span[3]/a"),
-    SUPPORT("Support", "footerForm:customerSupport", "//form[@id='footerForm']/ul/li[7]"),
+    LEGAL("Legal Notice", "footerForm:legal", "//form[@id='footerForm']/ul/li[5]/a", "link=Legal Notice", "//a[@href='https://s3.amazonaws.com/resources.inthinc.com/html/inthincCustomerTermsOfService.html']"),
+    PRIVACY("Privacy Policy", "footerForm:privacy", "//form[@id='footerForm']/ul/li[3]/a", "//div/div[2]/div[1]/span[3]/a", "//a[@href='https://s3.amazonaws.com/resources.inthinc.com/html/inthincPrivacyPolicy.html']"),
+    SUPPORT("Support", "footerForm:customerSupport", "//form[@id='footerForm']/ul/li[7]", "//a[@href='https://s3.amazonaws.com/resources.inthinc.com/html/inthincCustomerSupport.html']"),
     VERSION(null, "footerForm:version", "//form[@id='footerForm']/ul/li[2]", "//li[@class='last']"),
 
     /* HTML Pages */
