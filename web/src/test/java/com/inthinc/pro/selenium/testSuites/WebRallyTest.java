@@ -18,7 +18,7 @@ import com.inthinc.pro.selenium.pageEnums.MastheadEnum;
 public class WebRallyTest extends BrowserRallyTest {
 
     public WebRallyTest() {
-        super(MastheadEnum.VERSION);
+        super(MastheadEnum.COPYRIGHT);
     }
 
     @Before

@@ -29,7 +29,7 @@ public enum MastheadEnum implements SeleniumEnums {
     LOGOUT_IFRAME("Log Out", "//a[@id='template-settings-logout']"),
 
     /* Footer Elements */
-    COPYRIGHT("&#169;" + String.valueOf(Calendar.getInstance().get(Calendar.YEAR)) + " inthinc", "//li[@class='first']", "//form[@id='footerForm']/ul/li[1]"),
+    COPYRIGHT("&#169;" + String.valueOf(Calendar.getInstance().get(Calendar.YEAR)) + " inthinc", "//li[@class='first']", "//form[@id='footerForm']/ul/li[1]", "//div[2]/div/span"),
     LEGAL("Legal Notice", "footerForm:legal", "//form[@id='footerForm']/ul/li[5]/a", "link=Legal Notice"),
     PRIVACY("Privacy Policy", "footerForm:privacy", "//form[@id='footerForm']/ul/li[3]/a", "//div/div[2]/div[1]/span[3]/a"),
     SUPPORT("Support", "footerForm:customerSupport", "//form[@id='footerForm']/ul/li[7]"),
