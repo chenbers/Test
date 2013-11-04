@@ -74,7 +74,7 @@ public class FormsGenerationSteps extends LoginSteps {
     	int l = 1;
     			
     	
-    	while (i < 96) {
+    	while (i < 82) {
         	manage._button().newForm().click();
         	add._textField().name().type("FormGeneric"+i);
         	add._checkBox().groups().click();
