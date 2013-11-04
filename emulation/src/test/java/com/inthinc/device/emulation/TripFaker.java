@@ -9,11 +9,11 @@ import com.inthinc.pro.automation.enums.AutoSilos;
 import com.inthinc.pro.automation.objects.AutomationCalendar;
 
 public class TripFaker {
-	
-	
-	public static void main(String args[]) {
-		
-//		TiwiProDevice tiwi = new TiwiProDevice("151566615156661", AutoSilos.DEV);  //WeissTiwiPro
+    
+    
+    public static void main(String args[]) {
+        
+//      TiwiProDevice tiwi = new TiwiProDevice("151566615156661", AutoSilos.DEV);  //WeissTiwiPro
         //TiwiProDevice tiwi = new TiwiProDevice("120275615159901", AutoSilos.DEV);
         //TiwiProDevice tiwi = new TiwiProDevice("999999000109751", AutoSilos.QA);
         //NewNoteTest noteTest = new NewNoteTest(AutoSilos.QA);
@@ -35,7 +35,7 @@ public class TripFaker {
         //AutomationDeviceEvents.seatbelt(tiwi);
         tiwi.update_location(new GeoPoint(33.0104, -117.111), 15);
         tiwi.update_location(new GeoPoint(33.0104, -117.113), 15);
-        AutomationDeviceEvents.panic(tiwi);  								//NECESSARY FOR AUTOMATION TESTS, WS ONLY
+        AutomationDeviceEvents.panic(tiwi);                                 //NECESSARY FOR AUTOMATION TESTS, WS ONLY
         
         //state.setSeatbeltViolationDistanceX100(500);
         
@@ -100,18 +100,18 @@ public class TripFaker {
         
         AutomationDeviceEvents.requestSettings(tiwi);
  
-//      tiwi.setEmployeeID("123234345");										 //THESE THREE LINES ARE FOR SENDING IN HOS
-//      state.setHosState(HOSState.TIMESTAMP);							 //TIMESTAMP NOTE, THIS SHOULD NOT SHOW UP
+//      tiwi.setEmployeeID("123234345");                                         //THESE THREE LINES ARE FOR SENDING IN HOS
+//      state.setHosState(HOSState.TIMESTAMP);                           //TIMESTAMP NOTE, THIS SHOULD NOT SHOW UP
 //      AutomationDeviceEvents.hosChangeNoGPSLock(tiwi, "SALT LAKE CITY, UT"); //IN THE HOS LOGS ANYMORE, BUT IT WILL SHOW UP IN THE DATABASE AND UTIL
         
-//        tiwi.setEmployeeID("DASTARDLY1");										 //THESE THREE LINES ARE FOR SENDING IN HOS
-//        state.setHosState(HOSState.OCCUPANT_ON_DUTY);							 //DRIVER ON DUTY AS AN OCCUPANT IN A 
-//        AutomationDeviceEvents.hosChangeNoGPSLock(tiwi, "SALT LAKE CITY, UT");	 //VEHICLE
+//        tiwi.setEmployeeID("DASTARDLY1");                                      //THESE THREE LINES ARE FOR SENDING IN HOS
+//        state.setHosState(HOSState.OCCUPANT_ON_DUTY);                          //DRIVER ON DUTY AS AN OCCUPANT IN A 
+//        AutomationDeviceEvents.hosChangeNoGPSLock(tiwi, "SALT LAKE CITY, UT");     //VEHICLE
         //note.addAttr(EventAttr.SEATBELT_TOP_SPEED, state.getSeatbeltTopSpeed());
-    	//note.addAttr(EventAttr.SEATBELT_OUT_DISTANCE, state.getSeatbeltDistanceX100());
+        //note.addAttr(EventAttr.SEATBELT_OUT_DISTANCE, state.getSeatbeltDistanceX100());
         
-    	//tiwi.getState().setSeatBeltTopSpeed(75).setSeatbeltDistanceX100(58);
-    	
+        //tiwi.getState().setSeatBeltTopSpeed(75).setSeatbeltDistanceX100(58);
+        
         tiwi.turn_key_off(30);
         AutomationDeviceEvents.lowBattery(tiwi);
         tiwi.power_off_device(900);
