@@ -34,6 +34,7 @@ public class BasePerformanceUnitTest extends BaseUnitTest {
     protected static final Integer GROUP_ID = Integer.valueOf(1);
     protected static final Integer TEAM_GROUP_ID = Integer.valueOf(2);
     protected static final String GROUP_NAME = "TEST GROUP";
+    protected static final String LONG_GROUP_NAME = "LongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongTEST GROUP";
     
     protected static Integer ACCOUNT_ID = new Integer(1);
     protected static Integer DRIVER_ID = new Integer(1);
@@ -61,6 +62,18 @@ public class BasePerformanceUnitTest extends BaseUnitTest {
         return groupHierarchy;
     }
     
+    protected GroupHierarchy getMockLongNameGroupHierarchy() {
+        List<Group> groupList = new ArrayList<Group>();
+        Group group = new Group(GROUP_ID, Integer.valueOf(0), LONG_GROUP_NAME, Integer.valueOf(0));
+        group.setType(GroupType.FLEET);
+        Group teamGroup = new Group(TEAM_GROUP_ID, Integer.valueOf(0), LONG_GROUP_NAME + " TEAM", GROUP_ID);
+        teamGroup.setType(GroupType.TEAM);
+        groupList.add(group);
+        groupList.add(teamGroup);
+        GroupHierarchy groupHierarchy = new GroupHierarchy();
+        groupHierarchy.setGroupList(groupList);
+        return groupHierarchy;
+    }
     class MockDriverDAO implements DriverDAO {
 
         @Override
