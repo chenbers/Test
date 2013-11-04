@@ -192,6 +192,7 @@
 									**/selenium/**/Mass**.java,
 									**/selenium/**/NotificationTest.java,
 									**/selenium/**/PasswordChangeTest.java,
+									**/selenium/**/RouteGetEndpointTest.java,
 									**/selenium/**/ScheduledReportsTest.java,
 									**/selenium/**/SearchCrashesStory.java,
 									**/selenium/**/Stress**.java,
