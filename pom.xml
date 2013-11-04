@@ -188,6 +188,7 @@
 									**/selenium/**/CurrentStoryTest.java,
 									**/selenium/**/DeviceTests.java,
 									**/selenium/**/DriverStatisticsTest.java,
+									**/selenium/**/FormsSubmissionsTest.java,
 									**/selenium/**/GainReportsTest.java,
 									**/selenium/**/Mass**.java,
 									**/selenium/**/NotificationTest.java,
