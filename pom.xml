@@ -205,7 +205,7 @@
 								</exclude>
 							</excludes>
 							<includes>
-								<include>**/selenium/**/**Test.java</include>
+								<include>**/selenium/**/FormsAddTest.java</include>
 							</includes>
 							<systemProperties>
 								<property>
