@@ -66,9 +66,9 @@ public abstract class AbstractPage extends MasterTest implements Page {
     	// DAB: adjusted 'waitForPageToLoad()' to 2 seconds, rather than the default 30 seconds, in a try/catch block
     	//      in case 2 seconds isn't long enough
     	try {
-    		getSelenium().waitForPageToLoad(2000); 
+    		getSelenium().waitForPageToLoad(5000); 
     	} catch(Exception n) {
-    		getSelenium().waitForPageToLoad(7000);
+    		getSelenium().waitForPageToLoad(15000);
     	}
         return checkIsOnPage(); 
     }
