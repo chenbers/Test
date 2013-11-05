@@ -138,6 +138,7 @@
 					<skip>${skipUT}</skip>
 					<excludes>
 						<exclude>**/it/*Test.java</exclude>
+						<exclude>**/selenium/**</exclude>
 					</excludes>
 					<systemProperties>
 						<property>
@@ -204,7 +205,7 @@
 								</exclude>
 							</excludes>
 							<includes>
-								<include>**/selenium/**/FormsAddTest.java</include>
+								<include>**/selenium/**/CurrentStoryTest.java</include>
 							</includes>
 							<systemProperties>
 								<property>
