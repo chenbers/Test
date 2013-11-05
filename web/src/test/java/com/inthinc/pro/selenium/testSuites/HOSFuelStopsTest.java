@@ -22,7 +22,7 @@ import com.inthinc.pro.selenium.steps.LoginSteps;
 
 @UsingSteps(instances={LoginSteps.class})
 @PageObjects(list={PageLogin.class, PageExecutiveDashboard.class, PageAdminUsers.class, PageHOSDriverLogs.class, PageHOSFuelStops.class, 
-        PageHOSAddEditFuelStops.class, PageMyAccount.class, PageHOSAddEditDriverLogs.class, PageHOSReports.class, PageMyAccount.class,
+        PageHOSAddEditFuelStops.class, PageMyAccount.class, PageHOSAddEditDriverLogs.class, PageHOSReports.class,
         PageExecutiveOverallExpansion.class, PageReportsDrivers.class, PageTeamDriverStatistics.class})
 @StoryPath(path="HOSFuelStops.story")
 public class HOSFuelStopsTest extends WebStories {
