@@ -185,7 +185,6 @@
 								<exclude>**/selenium/**/AddEditUser.java,
 									**/selenium/**/Admin**.java,
 									**/selenium/**/ChangePasswordTest.java,
-									**/selenium/**/CurrentStoryTest.java,
 									**/selenium/**/DeviceTests.java,
 									**/selenium/**/DriverStatisticsTest.java,
 									**/selenium/**/FormsSubmissionsTest.java,
