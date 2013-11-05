@@ -2,6 +2,7 @@ package com.inthinc.pro.scheduler.data;
 
 import com.amazonaws.util.json.JSONArray;
 import com.amazonaws.util.json.JSONObject;
+import org.codehaus.jackson.map.ObjectMapper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,6 +29,7 @@ public class JSONReportLogData extends ReportLogData {
 
     /**
      * Transform an exception in a json object with details for message and stack trace elements.
+     *
      * @param t exception
      * @return json object with details
      */
@@ -42,7 +44,7 @@ public class JSONReportLogData extends ReportLogData {
 
             objExc.put("stackTrace", listStTr);
         } catch (Exception e) {
-        } finally{
+        } finally {
             return objExc;
         }
     }
@@ -54,6 +56,7 @@ public class JSONReportLogData extends ReportLogData {
 
         // base object
         JSONObject obj = new JSONObject();
+        String prettyJson = "";
         try {
             try {
                 // report log
@@ -64,7 +67,7 @@ public class JSONReportLogData extends ReportLogData {
                 reportLog.put("accountName", getAccountName());
                 reportLog.put("idUserRequestingReport", getIdUserRequestingReport());
                 reportLog.put("scheduledTime", getScheduledTime());
-                reportLog.put("actualTimeSent", formatDate(getActualTimeSent(),dateFormat));
+                reportLog.put("actualTimeSent", formatDate(getActualTimeSent(), dateFormat));
                 reportLog.put("processMilis", getProcessMilis());
                 reportLog.put("success", getSuccess());
                 reportLog.put("recipientUserIds", listToJsonArray(getRecipientUserIds()));
@@ -72,18 +75,26 @@ public class JSONReportLogData extends ReportLogData {
 
                 // special case for exceptions
                 List<JSONObject> jsonObjErrorList = new ArrayList<JSONObject>();
-                for (Throwable t: getErrors()){
+                for (Throwable t : getErrors()) {
                     jsonObjErrorList.add(exceptionToJsonObject(t));
                 }
 
                 reportLog.put("errors", jsonObjErrorList);
 
                 obj.put("reportLog", reportLog);
+
             } catch (Exception e) {
                 obj.put("reportLogError", exceptionToJsonObject(e));
             }
+
+            ObjectMapper mapper = new ObjectMapper();
+            Object json = mapper.readValue(obj.toString(), Object.class);
+            prettyJson = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(json);
         } finally {
-            return obj.toString();
+            if (prettyJson.isEmpty())
+                return obj.toString();
+
+            return prettyJson;
         }
     }
 }
