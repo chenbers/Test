@@ -86,15 +86,8 @@ public class JSONReportLogData extends ReportLogData {
             } catch (Exception e) {
                 obj.put("reportLogError", exceptionToJsonObject(e));
             }
-
-            ObjectMapper mapper = new ObjectMapper();
-            Object json = mapper.readValue(obj.toString(), Object.class);
-            prettyJson = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(json);
         } finally {
-            if (prettyJson.isEmpty())
-                return obj.toString();
-
-            return prettyJson;
+            return obj.toString();
         }
     }
 }
