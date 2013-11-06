@@ -1,5 +1,7 @@
     package it.com.inthinc.pro.dao.jdbc;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import it.com.inthinc.pro.dao.model.ITData;
 import it.config.ITDataSource;
@@ -8,6 +10,7 @@ import it.config.IntegrationConfig;
 import java.sql.SQLException;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -254,4 +257,95 @@ public class AdminHazardTest extends BaseJDBCTest {
             System.out.println("WARNING:");
         System.out.println("findVehiclesByAccountWithinDistance found "+vehicles.size()+" vehicles.");
     }
+
+    @Test
+    public void createHazard_createdDateShouldExist() {
+        // test for one location only, the test is focused on the created date
+        Iterator<String> it = locations.keySet().iterator();
+        assertTrue(it.hasNext());
+        String locationName = it.next();
+        LatLng locationObj = locations.get(locationName);
+
+        // create hazard object
+        AdminHazardJDBCDAO hazardJDBCDAO = new AdminHazardJDBCDAO();
+        hazardJDBCDAO.setDataSource(new ITDataSource().getRealDataSource());
+        Hazard hazard = new Hazard();
+        hazard.setAcctID(1);
+        hazard.setDescription("IT created: " + locationName);
+        hazard.setDeviceID(5780);
+        hazard.setDriverID(2262);
+        hazard.setEndTime(new DateTime().plus(Period.hours(50)).toDate());
+        hazard.setLatitude(locationObj.getLat());
+        hazard.setLongitude(locationObj.getLng());
+        hazard.setLocation("IT created for " + locationName + " at " + new DateTime().toString("yyyyMMddkkmmss"));
+        System.out.println("radius: " + HazardType.ROADRESTRICTIONS_BAN.getRadius());
+        hazard.setRadiusMeters(HazardType.ROADRESTRICTIONS_BAN.getRadius());
+        hazard.setStartTime(new Date());
+        hazard.setStateID(45);
+        hazard.setStatus(HazardStatus.ACTIVE);
+        hazard.setType(HazardType.ROADRESTRICTIONS_BAN);
+        hazard.setUserID(1655);
+        hazard.setVehicleID(6956);
+
+        // save to db
+        Integer hazardID = hazardJDBCDAO.create(hazard.getAccountID(), hazard);
+        assertNotNull(hazardID);
+        System.out.println("inserted " + locationName);
+
+        // retrieve from db
+        Hazard retrievedHazard = hazardJDBCDAO.findByID(hazardID);
+        assertNotNull(retrievedHazard);
+        Date created = retrievedHazard.getCreated();
+        assertNotNull(created);
+        System.out.println("created date found " + created);
+    }
+
+    @Test
+    public void updateHazard_idShouldNotChange() {
+        // test for one location only, the test is focused on the id
+        Iterator<String> it = locations.keySet().iterator();
+        assertTrue(it.hasNext());
+        String locationName = it.next();
+        LatLng locationObj = locations.get(locationName);
+
+        // create hazard object
+        AdminHazardJDBCDAO hazardJDBCDAO = new AdminHazardJDBCDAO();
+        hazardJDBCDAO.setDataSource(new ITDataSource().getRealDataSource());
+        Hazard initialHazard = new Hazard();
+        initialHazard.setAcctID(1);
+        initialHazard.setDescription("IT created: " + locationName);
+        initialHazard.setDeviceID(5780);
+        initialHazard.setDriverID(2262);
+        initialHazard.setEndTime(new DateTime().plus(Period.hours(50)).toDate());
+        initialHazard.setLatitude(locationObj.getLat());
+        initialHazard.setLongitude(locationObj.getLng());
+        initialHazard.setLocation("IT created for " + locationName + " at " + new DateTime().toString("yyyyMMddkkmmss"));
+        System.out.println("radius: " + HazardType.ROADRESTRICTIONS_BAN.getRadius());
+        initialHazard.setRadiusMeters(HazardType.ROADRESTRICTIONS_BAN.getRadius());
+        initialHazard.setStartTime(new Date());
+        initialHazard.setStateID(45);
+        initialHazard.setStatus(HazardStatus.ACTIVE);
+        initialHazard.setType(HazardType.ROADRESTRICTIONS_BAN);
+        initialHazard.setUserID(1655);
+        initialHazard.setVehicleID(6956);
+
+        // save to db and get id
+        Integer createHazardId = hazardJDBCDAO.create(initialHazard.getAccountID(), initialHazard);
+        assertNotNull(createHazardId);
+        System.out.println("inserted " + locationName);
+
+        // retrieve from db
+        Hazard retrievedHazard = hazardJDBCDAO.findByID(createHazardId);
+        assertNotNull(retrievedHazard);
+
+        // update a few times
+        double[] updateData = new double[]{1000,2000,500,3000};
+        for (double radius : updateData) {
+            System.out.println("update radius: " + radius);
+            retrievedHazard.setRadiusMeters(radius);
+            Integer updatedHazardId = hazardJDBCDAO.update(retrievedHazard);
+            assertEquals(updatedHazardId, retrievedHazard.getHazardID());
+        }
+    }
+
 }
