@@ -16,32 +16,26 @@ import com.inthinc.pro.selenium.pageEnums.FormsManageEnum;
 public class PageFormsAdd extends FormsTables {
     
     public PageFormsAdd() {
-        // checkMe.add(FormsAddEnum.TITLE);
-        // checkMe.add(FormsAddEnum.SAVE_TOP);
-        // checkMe.add(FormsAddEnum.CANCEL_TOP);
-        // checkMe.add(FormsAddEnum.SAVE_BOTTOM);
-        // checkMe.add(FormsAddEnum.CANCEL_BOTTOM);
-        // checkMe.add(FormsAddEnum.NAME_FIELD);
-        // checkMe.add(FormsAddEnum.DESCRIPTION_FIELD);
-        // checkMe.add(FormsAddEnum.ROUTE_TRIGGER_EXPRESSION_FIELD);
-        // checkMe.add(FormsAddEnum.VEHICLE_TAGS_DROPDOWN);
-        // checkMe.add(FormsAddEnum.FILTER_GROUPS_FIELD);
-        // checkMe.add(FormsAddEnum.DATANAME_FIELD);
-        // checkMe.add(FormsAddEnum.NAME_LABEL);
-        // checkMe.add(FormsAddEnum.DESCRIPTION_LABEL);
-        // checkMe.add(FormsAddEnum.TRIGGER_LABEL);
-        // checkMe.add(FormsAddEnum.ROUTE_LABEL);
-        // checkMe.add(FormsAddEnum.VERSION_LABEL);
-        // checkMe.add(FormsAddEnum.HOS_LABEL);
-        // checkMe.add(FormsAddEnum.VEHICLE_TAGS_LABEL);
-        // checkMe.add(FormsAddEnum.FILTER_GROUPS_LABEL);
-        // checkMe.add(FormsAddEnum.PROPERTIES_LABEL);
-        // checkMe.add(FormsAddEnum.VIEW_PROPERTIES_LABEL);
-        // checkMe.add(FormsAddEnum.CAPTION_FIELD);
-        // checkMe.add(FormsAddEnum.TRIGGER_DROPDOWN);
-        // checkMe.add(FormsAddEnum.HOS_DROPDOWN);
-        // checkMe.add(FormsAddEnum.RANGE_NUMERIC_CHECKBOX);
-        // checkMe.add(FormsAddEnum.PREVIEW_AREA);
+         checkMe.add(FormsAddEnum.TITLE);
+         checkMe.add(FormsAddEnum.SAVE_TOP);
+         checkMe.add(FormsAddEnum.CANCEL_TOP);
+         checkMe.add(FormsAddEnum.SAVE_BOTTOM);
+         checkMe.add(FormsAddEnum.CANCEL_BOTTOM);
+         checkMe.add(FormsAddEnum.NAME_FIELD);
+         checkMe.add(FormsAddEnum.DESCRIPTION_FIELD);
+         checkMe.add(FormsAddEnum.ROUTE_TRIGGER_EXPRESSION_FIELD);
+         checkMe.add(FormsAddEnum.FILTER_GROUPS_FIELD);
+         checkMe.add(FormsAddEnum.DATANAME_FIELD);
+         checkMe.add(FormsAddEnum.NAME_LABEL);
+         checkMe.add(FormsAddEnum.DESCRIPTION_LABEL);
+         checkMe.add(FormsAddEnum.TRIGGER_LABEL);
+         checkMe.add(FormsAddEnum.VERSION_LABEL);
+         checkMe.add(FormsAddEnum.PROPERTIES_LABEL);
+         checkMe.add(FormsAddEnum.VIEW_PROPERTIES_LABEL);
+         checkMe.add(FormsAddEnum.CAPTION_FIELD);
+         checkMe.add(FormsAddEnum.TRIGGER_DROPDOWN);
+         checkMe.add(FormsAddEnum.RANGE_NUMERIC_CHECKBOX);
+         checkMe.add(FormsAddEnum.PREVIEW_AREA);
     }
     
     public class FormsAddButtons {

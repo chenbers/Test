@@ -14,25 +14,25 @@ import com.inthinc.pro.selenium.pageEnums.FormsPublishedEnum;
 public class PageFormsPublished extends FormsBar {
     
     public PageFormsPublished() {
-        // checkMe.add(FormsPublishedEnum.DELETE);
-        // checkMe.add(FormsPublishedEnum.APPROVED);
-        // checkMe.add(FormsPublishedEnum.SEARCH_TEXTFIELD);
-        // checkMe.add(FormsPublishedEnum.SEARCH_BUTTON);
-        // checkMe.add(FormsPublishedEnum.EDIT_COLUMNS);
-        // checkMe.add(FormsPublishedEnum.PUBLISH);
-        // checkMe.add(FormsPublishedEnum.FORMS_HEADER);
-        // checkMe.add(FormsPublishedEnum.DESCRIPTION_HEADER);
-        // checkMe.add(FormsPublishedEnum.APPROVED_HEADER);
-        // checkMe.add(FormsPublishedEnum.STATUS_HEADER);
-        // checkMe.add(FormsPublishedEnum.OWNER_HEADER);
-        // checkMe.add(FormsPublishedEnum.EDIT_HEADER);
-        // checkMe.add(FormsPublishedEnum.CHECKBOX);
-        // checkMe.add(FormsPublishedEnum.FORMS_ENTRY);
-        // checkMe.add(FormsPublishedEnum.DESCRIPTION_ENTRY);
-        // checkMe.add(FormsPublishedEnum.APPROVED_ENTRY);
-        // checkMe.add(FormsPublishedEnum.STATUS_ENTRY);
-        // checkMe.add(FormsPublishedEnum.OWNER_ENTRY);
-        // checkMe.add(FormsPublishedEnum.EDIT_ENTRY);
+//         checkMe.add(FormsPublishedEnum.DELETE);
+//         checkMe.add(FormsPublishedEnum.APPROVED);
+         checkMe.add(FormsPublishedEnum.SEARCH_TEXTFIELD);
+//         checkMe.add(FormsPublishedEnum.SEARCH_BUTTON);
+//         checkMe.add(FormsPublishedEnum.EDIT_COLUMNS);
+//         checkMe.add(FormsPublishedEnum.PUBLISH);
+//         checkMe.add(FormsPublishedEnum.FORMS_HEADER);
+//         checkMe.add(FormsPublishedEnum.DESCRIPTION_HEADER);
+//         checkMe.add(FormsPublishedEnum.APPROVED_HEADER);
+//         checkMe.add(FormsPublishedEnum.STATUS_HEADER);
+//         checkMe.add(FormsPublishedEnum.OWNER_HEADER);
+//         checkMe.add(FormsPublishedEnum.EDIT_HEADER);
+//         checkMe.add(FormsPublishedEnum.CHECKBOX);
+//         checkMe.add(FormsPublishedEnum.FORMS_ENTRY);
+         checkMe.add(FormsPublishedEnum.DESCRIPTION_ENTRY);
+//         checkMe.add(FormsPublishedEnum.APPROVED_ENTRY);
+//         checkMe.add(FormsPublishedEnum.STATUS_ENTRY);
+//         checkMe.add(FormsPublishedEnum.OWNER_ENTRY);
+//         checkMe.add(FormsPublishedEnum.EDIT_ENTRY);
         
     }
     

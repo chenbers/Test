@@ -15,25 +15,9 @@ import com.inthinc.pro.selenium.pageEnums.FormsManageEnum;
 public class PageFormsManage extends FormsBar {
     
     public PageFormsManage() {
-        // checkMe.add(FormsManageEnum.DELETE);
-        // checkMe.add(FormsManageEnum.APPROVED);
-        // checkMe.add(FormsManageEnum.SEARCH_TEXTFIELD);
-        // checkMe.add(FormsManageEnum.SEARCH_BUTTON);
-        // checkMe.add(FormsManageEnum.EDIT_COLUMNS);
-        // checkMe.add(FormsManageEnum.PUBLISH);
-        // checkMe.add(FormsManageEnum.FORMS_HEADER);
-        // checkMe.add(FormsManageEnum.DESCRIPTION_HEADER);
-        // checkMe.add(FormsManageEnum.APPROVED_HEADER);
-        // checkMe.add(FormsManageEnum.STATUS_HEADER);
-        // checkMe.add(FormsManageEnum.OWNER_HEADER);
-        // checkMe.add(FormsManageEnum.EDIT_HEADER);
-        // checkMe.add(FormsManageEnum.CHECKBOX);
-        // checkMe.add(FormsManageEnum.FORMS_ENTRY);
-        // checkMe.add(FormsManageEnum.DESCRIPTION_ENTRY);
-        // checkMe.add(FormsManageEnum.APPROVED_ENTRY);
-        // checkMe.add(FormsManageEnum.STATUS_ENTRY);
-        // checkMe.add(FormsManageEnum.OWNER_ENTRY);
-        // checkMe.add(FormsManageEnum.EDIT_ENTRY);
+         checkMe.add(FormsManageEnum.SEARCH_TEXTFIELD);
+         checkMe.add(FormsManageEnum.DESCRIPTION_ENTRY);
+         checkMe.add(FormsManageEnum.STATUS_ENTRY);
     }
     
     public class FormsManageButtons {
