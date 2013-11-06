@@ -139,7 +139,6 @@
 					<skip>${skipUT}</skip>
 					<excludes>
 						<exclude>**/it/*Test.java</exclude>
-						<exclude>**/selenium/**</exclude>
 					</excludes>
 					<systemProperties>
 						<property>
@@ -151,7 +150,7 @@
 				<executions>
 					<execution>
 						<id>integration-tests</id>
-						<phase>test</phase>
+						<phase>integration-test</phase>
 						<goals>
 							<goal>test</goal>
 						</goals>
