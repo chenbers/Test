@@ -86,4 +86,21 @@ public class BaseDataSet {
         
     }
 
+    
+    public GroupHierarchy getLongNameGroupHierarchy()
+    {
+        List<Group> hierarchyGroupList = new ArrayList<Group>();
+        Group longNameTopGroup = new Group(topGroup.getGroupID(), topGroup.getAccountID(), 
+                    "LongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLong" + topGroup.getName(),
+                    topGroup.getParentID());
+        hierarchyGroupList.add(longNameTopGroup);
+        for (Group group : groupList) {
+            Group longNameGroup = new Group(group.getGroupID(), group.getAccountID(), 
+                    "LongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLong" + group.getName(),
+                    group.getParentID());
+            hierarchyGroupList.add(longNameGroup);
+        }
+        return new GroupHierarchy(hierarchyGroupList);
+        
+    }
 }

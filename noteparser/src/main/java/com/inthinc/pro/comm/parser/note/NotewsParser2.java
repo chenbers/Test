@@ -36,8 +36,10 @@ public class NotewsParser2 implements NoteParser{
     				{
     					AttribParser parser = AttribParserFactory.getParserForParserType(attribs[i].getAttribParserType());
     					offset = parser.parseAttrib(data, offset, attribs[i].getFieldName(), attribMap);
+                        if (attribs[i] == Attrib.DISTANCE) {
+                            Attrib.adjustWaysmartDistance(attribMap); 
+                        }
     				}
-    				
     				parseExtraData(data, offset, noteType, attribMap);
     			}
     		}

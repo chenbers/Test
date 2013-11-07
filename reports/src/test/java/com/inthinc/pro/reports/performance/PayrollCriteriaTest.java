@@ -673,4 +673,42 @@ public class PayrollCriteriaTest extends BaseUnitTest {
       
       
   }
+
+
+  @Test
+  public void testLongGroupNameDE9097() {
+      HosRecordDataSet testData = initTestData(10, tzRecs, "11/10/2011 00:00:00", "11/11/2011 23:59:59");
+      Integer driverGroupID = null;
+      for (Driver driver : testData.driverHOSRecordMap.keySet()) {
+          driverGroupID = driver.getGroupID();
+      }
+
+      PayrollReportCompensatedHoursCriteria criteria = new PayrollReportCompensatedHoursCriteria(Locale.US);
+      criteria.initDataSet(testData.interval, testData.account, testData.getLongNameGroupHierarchy(), testData.driverHOSRecordMap);
+      String expectedLongGroupName = escapeXMLChars(criteria.getFullGroupName(testData.getLongNameGroupHierarchy(), driverGroupID));
+      runDE9097Test(criteria, expectedLongGroupName);
+      
+      PayrollDetailReportCriteria criteria2 = new PayrollDetailReportCriteria(Locale.US);
+      criteria2.initDataSet(testData.interval, testData.account, testData.getLongNameGroupHierarchy(), testData.driverHOSRecordMap);
+      runDE9097Test(criteria2, expectedLongGroupName);
+
+      PayrollSignoffReportCriteria criteria3 = new PayrollSignoffReportCriteria(Locale.US);
+      criteria3.setIncludeInactiveDrivers(ReportCriteria.DEFAULT_INCLUDE_INACTIVE_DRIVERS);
+      criteria3.setIncludeZeroMilesDrivers(ReportCriteria.DEFAULT_INCLUDE_ZERO_MILES_DRIVERS);
+
+      criteria3.initDataSet(testData.interval, testData.account, testData.getLongNameGroupHierarchy(), testData.driverHOSRecordMap);
+      runDE9097Test(criteria3, expectedLongGroupName);
+
+      PayrollSummaryReportCriteria criteria4 = new PayrollSummaryReportCriteria(Locale.US);
+      criteria4.initDataSet(testData.interval, testData.account, testData.getLongNameGroupHierarchy(), testData.driverHOSRecordMap);
+      runDE9097Test(criteria4, expectedLongGroupName);
+  }
+
+  private void runDE9097Test(PayrollReportCriteria criteria, String expectedLongGroupName) {
+      String reportOutput = genReportToString(criteria, FormatType.HTML);
+//      System.out.println("####" + expectedLongGroupName);
+//      System.out.println("####" + reportOutput);
+      
+      assertTrue("Expected Long group name in HTML report ", reportOutput.contains(expectedLongGroupName));
+  }
 }
