@@ -23,7 +23,7 @@
 				<rectangle>
 					<reportElement key="rectangle-2" mode="Opaque" x="1" y="0" width="752" height="22" forecolor="#000000" backcolor="#000000"/>
 				</rectangle>
-				<textField pattern="" isBlankWhenNull="true">
+				<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true">
 					<reportElement key="textField" mode="Opaque" x="1" y="0" width="752" height="22" forecolor="#FFFFFF" backcolor="#000000"/>
 					<box>
 						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>

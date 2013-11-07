@@ -735,6 +735,7 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
         criteria.setDriverDAO(driverDAO);
         criteria.setGroupDAO(groupDAO);
         criteria.setHosDAO(hosDAO);
+        criteria.setAddressDAO(addressDAO);
         criteria.setIncludeInactiveDrivers(includeInactiveDrivers);
         criteria.setIncludeZeroMilesDrivers(includeZeroMilesDrivers);
 
@@ -754,6 +755,7 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
         criteria.setDriverDAO(driverDAO);
         criteria.setGroupDAO(groupDAO);
         criteria.setHosDAO(hosDAO);
+        criteria.setAddressDAO(addressDAO);
         criteria.setIncludeInactiveDrivers(includeInactiveDrivers);
         criteria.setIncludeZeroMilesDrivers(includeZeroMilesDrivers);
 
@@ -773,6 +775,7 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
         criteria.setDriverDAO(driverDAO);
         criteria.setGroupDAO(groupDAO);
         criteria.setHosDAO(hosDAO);
+        criteria.setAddressDAO(addressDAO);
         criteria.setIncludeInactiveDrivers(includeInactiveDrivers);
         criteria.setIncludeZeroMilesDrivers(includeZeroMilesDrivers);
         
@@ -793,6 +796,7 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
         criteria.setDriverDAO(driverDAO);
         criteria.setGroupDAO(groupDAO);
         criteria.setHosDAO(hosDAO);
+        criteria.setAddressDAO(addressDAO);
         criteria.setIncludeInactiveDrivers(includeInactiveDrivers);
         criteria.init(accountGroupHierarchy, groupIDList, interval);
         return criteria;
@@ -810,6 +814,7 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
         criteria.setDriverDAO(driverDAO);
         criteria.setGroupDAO(groupDAO);
         criteria.setHosDAO(hosDAO);
+        criteria.setAddressDAO(addressDAO);
         criteria.setIncludeInactiveDrivers(includeInactiveDrivers);
 
         criteria.init(accountGroupHierarchy, groupIDList, interval);
