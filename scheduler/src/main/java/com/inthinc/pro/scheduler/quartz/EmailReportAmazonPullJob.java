@@ -240,7 +240,7 @@ public class EmailReportAmazonPullJob extends QuartzJobBean {
                             reportLogData.setSuccess(false);
                             reportLogData.getErrors().add(t);
                             logger.error("Unable to dispatch ReportSchedule " + reportSchedule.getName() + " ID: " + reportSchedule.getReportScheduleID());
-                            t.printStackTrace();
+                            logger.error("Report error: " + t);
                         }
 
                         logger.info("Deleting ReportSchedule " + reportSchedule.getName() + " ID: " + reportSchedule.getReportScheduleID() + " message from the Amazon Queue.");
@@ -253,7 +253,7 @@ public class EmailReportAmazonPullJob extends QuartzJobBean {
                     } catch (Throwable t) {
                         reportLogData.setSuccess(false);
                         reportLogData.getErrors().add(t);
-                        t.printStackTrace();
+                        logger.error("Report error: " + t);
                     } finally {
                         reportLogData.setProcessMilis(System.currentTimeMillis() - startMilis);
                         if (reportLogData.getSuccess()) {
