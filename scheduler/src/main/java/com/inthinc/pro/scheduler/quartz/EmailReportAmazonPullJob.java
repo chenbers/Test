@@ -30,6 +30,7 @@ import com.inthinc.pro.reports.ReportGroup;
 import com.inthinc.pro.reports.ReportType;
 import com.inthinc.pro.reports.service.ReportCriteriaService;
 import com.inthinc.pro.scheduler.amazonaws.sqs.AmazonQueue;
+import com.inthinc.pro.scheduler.data.JSONReportLogData;
 import com.inthinc.pro.scheduler.data.ReportLogData;
 import com.inthinc.pro.scheduler.i18n.LocalizedMessage;
 import org.apache.log4j.Logger;
@@ -75,7 +76,7 @@ public class EmailReportAmazonPullJob extends QuartzJobBean {
     private StandardPBEStringEncryptor textEncryptor = new StandardPBEStringEncryptor();
     private Map<Integer, User> userMap;
     private Map<Integer, GroupHierarchy> accountGroupHierarchyMap;
-    private ReportLogData reportLogData;
+    private ReportLogData reportLogData = new JSONReportLogData();
     private Long startMilis;
 
     public AmazonQueue getAmazonQueue() {
@@ -239,6 +240,7 @@ public class EmailReportAmazonPullJob extends QuartzJobBean {
                             reportLogData.setSuccess(false);
                             reportLogData.getErrors().add(t);
                             logger.error("Unable to dispatch ReportSchedule " + reportSchedule.getName() + " ID: " + reportSchedule.getReportScheduleID());
+                            t.printStackTrace();
                         }
 
                         logger.info("Deleting ReportSchedule " + reportSchedule.getName() + " ID: " + reportSchedule.getReportScheduleID() + " message from the Amazon Queue.");
@@ -251,6 +253,7 @@ public class EmailReportAmazonPullJob extends QuartzJobBean {
                     } catch (Throwable t) {
                         reportLogData.setSuccess(false);
                         reportLogData.getErrors().add(t);
+                        t.printStackTrace();
                     } finally {
                         reportLogData.setProcessMilis(System.currentTimeMillis() - startMilis);
                         if (reportLogData.getSuccess()) {

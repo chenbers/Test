@@ -101,7 +101,6 @@
                 <entry key="encryptPassword" value="j$2yptt3xt3ncrypt0r23cr3tp422w0rd" />
                 <entry key="personDAO" value-ref="personDAO" />
                 <entry key="amazonQueue"  value-ref="amazonQueue" />
-                <entry key="reportLogData"  value-ref="jsonReportLogData" />
             </map>
         </property>
     </bean>
@@ -246,10 +245,4 @@
         </property>
     </bean>
 
-
-    <!-- Report log -->
-    <!--
-        Used to log information about a report and how it was executed.
-    -->
-    <bean id="jsonReportLogData" class="com.inthinc.pro.scheduler.data.JSONReportLogData"></bean>
 </beans>
