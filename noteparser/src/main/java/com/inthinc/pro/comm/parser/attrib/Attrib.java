@@ -422,10 +422,16 @@ public enum Attrib {
         String strVal = "";
         Object val = null;
         for ( int i=1; i+2 <= split.length; i+=2 ){
+            val = null;
             strCode = split[i];
             strVal = split[i+1];
 
-            val = Attrib.parseStringValue(strCode, strVal);
+            try {
+                val = Attrib.parseStringValue(strCode, strVal);
+            } catch (Exception e){
+                logger.error("Exception: " + e);
+                e.printStackTrace();
+            }    
             
             if (val != null)
                 map.put(strCode,  val);
@@ -489,5 +495,14 @@ public enum Attrib {
         
         return attribParser;
     }
-
+    
+    public static void adjustWaysmartDistance(Map<String, Object> attribMap){
+        //We are multiplying distance by 10 for waysmarts to match tiwi.
+        String name = Attrib.DISTANCE.getFieldName();
+        Integer distance = (Integer)attribMap.get(name);
+        if (distance != null) {
+            distance *= 10;
+            attribMap.put(name, distance);
+        }
+    }
 };
