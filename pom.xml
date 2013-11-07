@@ -179,14 +179,25 @@
                             <threadCount>${AT.threadCount}</threadCount>
                             <perCoreThreadCount>${AT.isThreadCountPerCore}</perCoreThreadCount>
                             <excludes>
-                                <exclude>**/selenium/testSuites/**/AAFormsGenerationForManageTest.java</exclude>
-                                <exclude>**/selenium/testSuites/**/AAFormsGenerationForPublishTest.java</exclude>
-								<exclude>**/selenium/testSuites/**/AdminVehicle850Test.java</exclude>
-								<exclude>**/selenium/testSuites/**/AssetsDevicesTest.java</exclude>
-								<exclude>**/selenium/testSuites/**/CurrentStoryTest.java</exclude>
-								<exclude>**/selenium/testSuites/**/RouteGetEndpointTest.java</exclude>
-								<exclude>**/selenium/testSuites/**/StressTest**.java</exclude>
-								<exclude>**/selenium/testSuites/**/WebTest.java</exclude>
+                                <exclude>**/selenium/**/AddEditUser.java</exclude>
+                                <exclude>**/selenium/**/Admin**.java</exclude>
+                                <exclude>**/selenium/**/ChangePasswordTest.java</exclude>
+                                <exclude>**/selenium/**/DeviceTests.java</exclude>
+                                <exclude>**/selenium/**/DriverStatisticsTest.java</exclude>
+                                <exclude>**/selenium/**/FormsSubmissionsTest.java</exclude>
+                                <exclude>**/selenium/**/GainReportsTest.java</exclude>
+                                <exclude>**/selenium/**/Mass**.java</exclude>
+                                <exclude>**/selenium/**/NotificationTest.java</exclude>
+                                <exclude>**/selenium/**/PasswordChangeTest.java</exclude>
+                                <exclude>**/selenium/**/RouteGetEndpointTest.java</exclude>
+                                <exclude>**/selenium/**/ScheduledReportsTest.java</exclude>
+                                <exclude>**/selenium/**/SearchCrashesStory.java</exclude>
+                                <exclude>**/selenium/**/Stress**.java</exclude>
+                                <exclude>**/selenium/**/Verify**.java</exclude>
+                                <exclude>**/selenium/**/WaysmartAggregationTest.java</exclude>
+                                <exclude>**/selenium/**/WebDevice**.java</exclude>
+                                <exclude>**/selenium/**/WebRallyTest.java</exclude>
+                                <exclude>**/selenium/**/WebTest.java</exclude>
                             </excludes>
                             <includes>
 								<include>**/selenium/testSuites/**/**Test.java</include>
