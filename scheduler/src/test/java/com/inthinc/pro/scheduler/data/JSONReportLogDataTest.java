@@ -66,7 +66,7 @@ public class JSONReportLogDataTest {
             assertEquals(reportLog.getString("idUserRequestingReport"), "34525");
             assertEquals(reportLog.getString("processMilis"), "14124124");
             assertEquals(reportLog.getString("success"), "false");
-            assertEquals(reportLog.getString("scheduledTime"), "500");
+            assertEquals(reportLog.getString("scheduledTime"), "08:20");
 
         } catch (JSONException e) {
             fail(e.getMessage());

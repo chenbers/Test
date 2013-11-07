@@ -66,7 +66,7 @@ public class JSONReportLogData extends ReportLogData {
                 reportLog.put("accountId", getAccountId());
                 reportLog.put("accountName", getAccountName());
                 reportLog.put("idUserRequestingReport", getIdUserRequestingReport());
-                reportLog.put("scheduledTime", getScheduledTime());
+                reportLog.put("scheduledTime", minutesToHourMinute(getScheduledTime()));
                 reportLog.put("actualTimeSent", formatDate(getActualTimeSent(), dateFormat));
                 reportLog.put("processMilis", getProcessMilis());
                 reportLog.put("success", getSuccess());
@@ -89,5 +89,21 @@ public class JSONReportLogData extends ReportLogData {
         } finally {
             return obj.toString();
         }
+    }
+
+    /**
+     * Transforms number of minutes to a hh:mm format.
+     *
+     * @param minutes number of minutes
+     * @return hh:mm
+     */
+    private String minutesToHourMinute(Integer minutes){
+        if (minutes==null)
+            return "";
+
+        String hh = String.valueOf(String.format("%02d", minutes / 60));
+        String mm = String.valueOf(String.format("%02d", minutes % 60));
+
+        return hh+":"+mm;
     }
 }
