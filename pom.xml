@@ -599,14 +599,14 @@ mi2KFq<Nc4zYl8ZVexWN8GNR2KNYvC5rn293xhqnaa8hMH QROnTXrOnpnpNqQpRomwtNpNmPMPpMnrp
 			<dependency>
 				<groupId>org.apache.httpcomponents</groupId>
 				<artifactId>httpclient</artifactId>
-				<version>4.2.1</version>
+				<version>4.3.1</version>
 				<type>jar</type>
 				<scope>compile</scope>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.httpcomponents</groupId>
 				<artifactId>httpcomponents-core</artifactId>
-				<version>4.2.1</version>
+				<version>4.3</version>
 				<type>pom</type>
 				<scope>compile</scope>
 			</dependency>
