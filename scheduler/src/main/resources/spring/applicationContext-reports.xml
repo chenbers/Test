@@ -27,6 +27,7 @@
     <property name="deviceDAO" ref="deviceDAO" />
     <property name="groupReportDAO" ref="groupReportDAO" />
     <property name="reportDAO" ref="reportDAO" />
+    <property name="reportIdlingDAO" ref="reportIdlingDAO" />
     <property name="eventAggregationDAO" ref="eventAggregationDAO" />
     <property name="formsDAO" ref="formsDAO"/>
     <property name="dvirViolationReportDAO" ref="dvirViolationReportDAO" />
