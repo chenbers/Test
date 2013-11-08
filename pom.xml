@@ -185,6 +185,7 @@
 								<exclude>**/selenium/**/AddEditUser.java</exclude>
 								<exclude>**/selenium/**/Admin**.java</exclude>
 								<exclude>**/selenium/**/ChangePasswordTest.java</exclude>
+								<exclude>**/selenium/**/CurrentStoryTest.java</exclude>
 								<exclude>**/selenium/**/DeviceTests.java</exclude>
 								<exclude>**/selenium/**/DriverStatisticsTest.java</exclude>
 								<exclude>**/selenium/**/FormsSubmissionsTest.java</exclude>
@@ -203,7 +204,7 @@
 								<exclude>**/selenium/**/WebTest.java</exclude>
 							</excludes>
 							<includes>
-								<include>**/selenium/**/CurrentStoryTest.java</include>
+								<include>**/selenium/**/**Test.java</include>
 							</includes>
 							<systemProperties>
 								<property>
@@ -606,14 +607,14 @@ WWUUnm]]>
 			<dependency>
 				<groupId>org.apache.httpcomponents</groupId>
 				<artifactId>httpclient</artifactId>
-				<version>4.2.1</version>
+				<version>4.3.1</version>
 				<type>jar</type>
 				<scope>compile</scope>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.httpcomponents</groupId>
 				<artifactId>httpcomponents-core</artifactId>
-				<version>4.2.1</version>
+				<version>4.3</version>
 				<type>pom</type>
 				<scope>compile</scope>
 			</dependency>
