@@ -22,6 +22,8 @@ import java.util.EnumSet;
 import java.util.List;
 import java.util.Locale;
 
+import org.joda.time.DateTime;
+
 import com.inthinc.pro.dao.hessian.AccountHessianDAO;
 import com.inthinc.pro.dao.hessian.AddressHessianDAO;
 import com.inthinc.pro.dao.hessian.DeviceHessianDAO;
@@ -953,8 +955,13 @@ public class DataGenForStressTesting extends DataGenForTesting {
 		            	{
 		                    int dateInSec = DateUtil.getDaysBackDate(todayInSec, day, ReportTestConst.TIMEZONE_STR) + 60;
 		                    // startDate should be one minute after midnight in the selected time zone (TIMEZONE_STR) 
-		                    Date startDate = new Date((long)dateInSec * 1000l);
-		            		testData.generateDayData(startDate, device, driver.getPerson().getEmpid(), testData.zoneID);
+		                    
+		                    DateTime startDateTime = new DateTime((long)dateInSec * 1000l);
+		                    for (int trip = 0; trip < 5; trip++) {
+		                        testData.generateDayData(startDateTime.plusHours(trip).toDate(), device, driver.getPerson().getEmpid(), testData.zoneID);
+		                    }
+		            		
+		            		
 		            	}
 		            	cnt++;
 		            }
@@ -978,19 +985,31 @@ public class DataGenForStressTesting extends DataGenForTesting {
                 
                 DeviceHessianDAO deviceDAO = new DeviceHessianDAO();
                 deviceDAO.setSiloService(siloService);
+                VehicleHessianDAO vehicleDAO = new VehicleHessianDAO();
+                vehicleDAO.setSiloService(siloService);
+                DriverHessianDAO driverDAO = new DriverHessianDAO();
+                driverDAO.setSiloService(siloService);
 
-                int cnt = 0;
                 for (String imei : testData.imeiList) {
-                    // TODO: we aren't currently using this stress test account, but if we do the empID should
-                    // be set to the employee assigned to the device
                     String empID = "";
     	        	for (int day = 0; day < testData.numDays; day++)
     	        	{
     	                int dateInSec = testData.startDateInSec + (day * DateUtil.SECONDS_IN_DAY) + 60;
     	                Date startDate = new Date((long)dateInSec * 1000l + DateUtil.MILLISECONDS_IN_MINUTE*120);
     	                Device device = deviceDAO.findByIMEI(imei);
-    	                if (device != null)
-    	                    testData.generateDayData(startDate, device, empID, testData.zoneID);
+    	                empID = "";
+    	                if (device != null) {
+    	                    Integer vehicleID = device.getVehicleID();
+    	                    Vehicle vehicle = vehicleDAO.findByID(vehicleID);
+    	                    if (vehicle != null && vehicle.getDriverID() != null) {
+    	                        Driver driver = driverDAO.findByID(vehicle.getDriverID());
+    	                        empID = driver == null || driver.getPerson() == null || driver.getPerson().getEmpid() == null ? "" : driver.getPerson().getEmpid(); 
+    	                    }
+                            DateTime startDateTime = new DateTime(startDate);
+                            for (int trip = 0; trip < 5; trip++) {
+                                testData.generateDayData(startDateTime.plusHours(trip).toDate(), device, empID, testData.zoneID);
+                            }
+    	                }
     	                else System.out.println("Device Not Found IMEI=" + imei);
     	        	}
                 }
