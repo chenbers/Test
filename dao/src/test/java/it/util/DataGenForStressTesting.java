@@ -39,6 +39,7 @@ import com.inthinc.pro.dao.hessian.ZoneHessianDAO;
 import com.inthinc.pro.dao.hessian.exceptions.DuplicateEmailException;
 import com.inthinc.pro.dao.hessian.exceptions.DuplicateEmpIDException;
 import com.inthinc.pro.dao.hessian.exceptions.DuplicateIMEIException;
+import com.inthinc.pro.dao.hessian.exceptions.HessianException;
 import com.inthinc.pro.dao.util.DateUtil;
 import com.inthinc.pro.model.Account;
 import com.inthinc.pro.model.Address;
@@ -798,16 +799,27 @@ public class DataGenForStressTesting extends DataGenForTesting {
 			}
 		}
 	}
-	private void generateDayData(Date date, Device device, String empId, Integer zoneID) throws Exception 
+	private void generateDayData(Date date, Device device, String empId, Integer zoneID)// throws Exception 
 	{
 		EventGenerator eventGenerator = new EventGenerator();
 		EventGeneratorData data = getEventGeneratorData(zoneID);
 		data.setEmpId(empId);
 		
         List<Event> eventList = eventGenerator.generateTripEvents(date, data);
-        noteGenerator.genTrip(eventList, device);
-
-
+        int retryCnt = 0;
+        for (; retryCnt < 2; retryCnt++) {
+            try {
+                noteGenerator.genTrip(eventList, device);
+                break;
+            }
+            catch (Throwable t) {
+                System.out.println("Exception inserting notes: " + t.getMessage() + " waiting 30 seconds...");
+                try {
+                    Thread.sleep(30000l);
+                } catch (InterruptedException e) {
+                }
+            }
+        }
 	}
     private EventGeneratorData getEventGeneratorData(Integer zoneID) {
     	EventGeneratorData data = null;
@@ -1017,8 +1029,8 @@ public class DataGenForStressTesting extends DataGenForTesting {
             }
             catch (Exception e)
             {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
+                System.exit(1);
             }
         	
         }
