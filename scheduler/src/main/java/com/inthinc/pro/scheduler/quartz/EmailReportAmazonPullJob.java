@@ -76,7 +76,7 @@ public class EmailReportAmazonPullJob extends QuartzJobBean {
     private StandardPBEStringEncryptor textEncryptor = new StandardPBEStringEncryptor();
     private Map<Integer, User> userMap;
     private Map<Integer, GroupHierarchy> accountGroupHierarchyMap;
-    private ReportLogData reportLogData = new JSONReportLogData();
+    private ReportLogData reportLogData;
     private Long startMilis;
 
     public AmazonQueue getAmazonQueue() {
