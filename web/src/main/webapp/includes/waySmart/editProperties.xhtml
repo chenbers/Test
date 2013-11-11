@@ -26,7 +26,7 @@
          <ui:fragment rendered="#{vehiclesBean.accountIsHOS}">
             <tr>
               <td width="100" valign="top">
-                <h:selectBooleanCheckbox rendered="#{vehiclesBean.batchEdit}" id="update_editVehicle-DOT" value="#{vehiclesBean.updateField['dot']}" disabled="#{vehiclesBean.vehicleInfoDisabled}"/>
+                <h:selectBooleanCheckbox rendered="#{vehiclesBean.batchEdit}" id="update_editVehicle-DOT" value="#{vehiclesBean.updateField['editableVehicleSettings.dotVehicleType']}" disabled="#{vehiclesBean.vehicleInfoDisabled}"/>
                 <h:outputText value="#{messages.editVehicle_DOT}"/>
               </td>
               
