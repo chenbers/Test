@@ -37,6 +37,7 @@ public class JSONReportLogData extends ReportLogData {
         JSONObject objExc = new JSONObject();
         try {
             objExc.put("message", t.getMessage() != null ? t.getMessage() : "");
+            objExc.put("type", t.getClass().getName());
 
             List<String> listStTr = new ArrayList<String>();
             for (StackTraceElement ste : t.getStackTrace())
