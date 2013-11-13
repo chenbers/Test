@@ -400,22 +400,22 @@ And I select "tiwi 00" from the Driver dropdown
 And I click the Save Top button
 Then I validate Error Master text is "3 error(s) occurred. Please verify all the data entered is correct."
 And I validate Error Both Vehicle And Trailer Fuel text is "Vehicle or Trailer fuel required."
-And I validate Error Vehicle Fuel text is "Must be a number greater than zero"
-And I validate Error Trailer Fuel text is "Must be a number greater than zero"
+And I validate Error Vehicle Fuel text is "Must be a number greater or equal to zero"
+And I validate Error Trailer Fuel text is "Must be a number greater or equal to zero"
 And I type "&$#!" into the Vehicle Fuel textfield
 And I type "&$#!" into the Trailer Fuel textfield
 And I click the Save Top button
 And I validate Error Master text is "3 error(s) occurred. Please verify all the data entered is correct."
 And I validate Error Both Vehicle And Trailer Fuel text is "Vehicle or Trailer fuel required."
-And I validate Error Vehicle Fuel text is "Must be a number greater than zero"
-And I validate Error Trailer Fuel text is "Must be a number greater than zero"
+And I validate Error Vehicle Fuel text is "Must be a number greater or equal to zero"
+And I validate Error Trailer Fuel text is "Must be a number greater or equal to zero"
 And I type "-1" into the Vehicle Fuel textfield
 And I type "-1" into the Trailer Fuel textfield
 And I click the Save Top button
 And I validate Error Master text is "3 error(s) occurred. Please verify all the data entered is correct."
 And I validate Error Both Vehicle And Trailer Fuel text is "Vehicle or Trailer fuel required."
-And I validate Error Vehicle Fuel text is "Must be a number greater than zero"
-And I validate Error Trailer Fuel text is "Must be a number greater than zero"
+And I validate Error Vehicle Fuel text is "Must be a number greater or equal to zero"
+And I validate Error Trailer Fuel text is "Must be a number greater or equal to zero"
 And I type "55.55" into the Vehicle Fuel textfield
 And I type "55.55" into the Trailer Fuel textfield
 And I click the Save Top button
