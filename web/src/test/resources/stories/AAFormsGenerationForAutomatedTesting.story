@@ -1,6 +1,6 @@
 In order to view a list of Forms
 As Administrator
-I need a UI on the Administrator page that lists the Forms
+I need to generate the needed forms for testing
 
 Scenario: Forms Manage Page - Generate needed forms
 Given I am logged in

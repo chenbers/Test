@@ -14,9 +14,10 @@ import com.inthinc.pro.selenium.pageObjects.PageFormsPublished;
 import com.inthinc.pro.selenium.pageObjects.PageFormsSubmissions;
 import com.inthinc.pro.selenium.pageObjects.PageLogin;
 import com.inthinc.pro.selenium.pageObjects.PageTeamDriverStatistics;
+import com.inthinc.pro.selenium.steps.FormsGenerationSteps;
 import com.inthinc.pro.selenium.steps.LoginSteps;
 
-@UsingSteps(instances={LoginSteps.class})
+@UsingSteps(instances={LoginSteps.class, FormsGenerationSteps.class})
 @PageObjects(list={PageLogin.class, 
 		PageExecutiveDashboard.class, PageExecutiveOverallExpansion.class, 
         PageTeamDriverStatistics.class, PageFormsSubmissions.class,
