@@ -71,6 +71,20 @@ public class FormsGenerationSteps extends LoginSteps {
     	int j = 1;
     	int k = 1;
     	int l = 1;
+    	
+        while (l < 6) {
+            manage._button().newForm().click();
+            add._textField().name().type("FormPublish"+l);
+            add._textField().description().type("Required");
+            add._checkBox().groups().click();
+            add._link().text().click();
+            add._button().saveTop().click();
+            manage._textField().search().type("FormPublish"+l);
+            manage._button().gear().row(1).click();
+            manage._link().publish().row(1).click();
+            manage._link().manage().click();
+            l++;
+        }
     			
         while (j < 6) {
             manage._button().newForm().click();
@@ -98,20 +112,6 @@ public class FormsGenerationSteps extends LoginSteps {
             manage._link().publish().row(1).click();
             manage._link().manage().click();
             k++;
-        }
-        
-        while (l < 6) {
-            manage._button().newForm().click();
-            add._textField().name().type("FormPublish"+l);
-            add._textField().description().type("Required");
-            add._checkBox().groups().click();
-            add._link().text().click();
-            add._button().saveTop().click();
-            manage._textField().search().type("FormPublish"+l);
-            manage._button().gear().row(1).click();
-            manage._link().publish().row(1).click();
-            manage._link().manage().click();
-            l++;
         }
     	
     	while (i < 82) {
