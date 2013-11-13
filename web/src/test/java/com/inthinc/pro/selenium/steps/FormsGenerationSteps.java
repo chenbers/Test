@@ -15,7 +15,7 @@ public class FormsGenerationSteps extends LoginSteps {
 
     @Given("I clean the forms database")
     public void cleanup() {
-    	//TODO: Add code to clear out the forms database before running all tests
+    	//TODO: Call the DeleteAllAccountsFormsClass
     }
     
     @Then("I generate 100 forms for the manage page test")
@@ -80,11 +80,11 @@ public class FormsGenerationSteps extends LoginSteps {
         	add._checkBox().groups().click();
         	add._link().text().click();
         	add._button().saveTop().click();
-        	manage._dropDown().recordsPerPage().select("100");
-    		manage._button().gear().row(h).click();
-        	manage._link().publish().row(h).click();
+        	manage._textField().search().type("FormGeneric"+i);
+    		manage._button().gear().row(1).click();
+        	manage._link().publish().row(1).click();
         	manage._link().manage().click();
-        	i++; h++;
+        	i++;
     	}
     	
     	while (j < 6) {
@@ -94,11 +94,11 @@ public class FormsGenerationSteps extends LoginSteps {
         	add._checkBox().groups().click();
         	add._link().text().click();
         	add._button().saveTop().click();
-        	manage._dropDown().recordsPerPage().select("100");
-    		manage._button().gear().row(h).click();
-        	manage._link().publish().row(h).click();
+            manage._textField().search().type("FormPostTrip"+j);
+    		manage._button().gear().row(1).click();
+        	manage._link().publish().row(1).click();
             manage._link().manage().click();
-        	j++; h++;
+        	j++;
     	}
     	
     	while (k < 6) {
@@ -108,11 +108,11 @@ public class FormsGenerationSteps extends LoginSteps {
         	add._checkBox().groups().click();
         	add._link().text().click();
         	add._button().saveTop().click();
-        	manage._dropDown().recordsPerPage().select("100");
-    		manage._button().gear().row(h).click();
-        	manage._link().publish().row(h).click();
+            manage._textField().search().type("FormPreTrip"+k);
+    		manage._button().gear().row(1).click();
+        	manage._link().publish().row(1).click();
             manage._link().manage().click();
-        	k++; h++;
+        	k++;
     	}
     	
     	while (l < 6) {
@@ -122,11 +122,11 @@ public class FormsGenerationSteps extends LoginSteps {
 	    	add._checkBox().groups().click();
 	    	add._link().text().click();
 	    	add._button().saveTop().click();
-	    	manage._dropDown().recordsPerPage().select("100");
-			manage._button().gear().row(h).click();
-	    	manage._link().publish().row(h).click();
+            manage._textField().search().type("FormPublish"+l);
+			manage._button().gear().row(1).click();
+	    	manage._link().publish().row(1).click();
 	        manage._link().manage().click();
-	    	l++; h++;
+	    	l++;
     	}
     	
     	System.out.println("SUCCESS!");
