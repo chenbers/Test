@@ -33,6 +33,10 @@
 	var customDateRangeFields = jQuery("#dateRangeTable");
 	customDateRangeFields.hide();
 
+	timeframeSelector.ready(function(){
+        if(timeframeSelector.children('option:selected').text() == '<h:outputText value="#{messages.timeFrame_CUSTOM_RANGE}"/>')
+			customDateRangeFields.show();
+	});
 	timeframeSelector.bind('change',function(){
         if(timeframeSelector.children('option:selected').text() == '<h:outputText value="#{messages.timeFrame_CUSTOM_RANGE}"/>')
 			customDateRangeFields.show();
