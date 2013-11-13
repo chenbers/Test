@@ -68,11 +68,51 @@ public class FormsGenerationSteps extends LoginSteps {
     @Then("I generate 100 forms for the publish page test")
     public void thenIGenerateOneHundredFormsForThePublishPageTest() {
     	int i = 10;
-    	int h = 1;
     	int j = 1;
     	int k = 1;
     	int l = 1;
     			
+        while (j < 6) {
+            manage._button().newForm().click();
+            add._textField().name().type("FormPostTrip"+j);
+            add._dropDown().trigger().selectTheOptionContaining("Post-Trip", 1);
+            add._checkBox().groups().click();
+            add._link().text().click();
+            add._button().saveTop().click();
+            manage._textField().search().type("FormPostTrip"+j);
+            manage._button().gear().row(1).click();
+            manage._link().publish().row(1).click();
+            manage._link().manage().click();
+            j++;
+        }
+        
+        while (k < 6) {
+            manage._button().newForm().click();
+            add._textField().name().type("FormPreTrip"+k);
+            add._dropDown().trigger().selectTheOptionContaining("Pre-Trip", 1);
+            add._checkBox().groups().click();
+            add._link().text().click();
+            add._button().saveTop().click();
+            manage._textField().search().type("FormPreTrip"+k);
+            manage._button().gear().row(1).click();
+            manage._link().publish().row(1).click();
+            manage._link().manage().click();
+            k++;
+        }
+        
+        while (l < 6) {
+            manage._button().newForm().click();
+            add._textField().name().type("FormPublish"+l);
+            add._textField().description().type("Required");
+            add._checkBox().groups().click();
+            add._link().text().click();
+            add._button().saveTop().click();
+            manage._textField().search().type("FormPublish"+l);
+            manage._button().gear().row(1).click();
+            manage._link().publish().row(1).click();
+            manage._link().manage().click();
+            l++;
+        }
     	
     	while (i < 82) {
         	manage._button().newForm().click();
@@ -85,48 +125,6 @@ public class FormsGenerationSteps extends LoginSteps {
         	manage._link().publish().row(1).click();
         	manage._link().manage().click();
         	i++;
-    	}
-    	
-    	while (j < 6) {
-        	manage._button().newForm().click();
-        	add._textField().name().type("FormPostTrip"+j);
-        	add._dropDown().trigger().selectTheOptionContaining("Post-Trip", 1);
-        	add._checkBox().groups().click();
-        	add._link().text().click();
-        	add._button().saveTop().click();
-            manage._textField().search().type("FormPostTrip"+j);
-    		manage._button().gear().row(1).click();
-        	manage._link().publish().row(1).click();
-            manage._link().manage().click();
-        	j++;
-    	}
-    	
-    	while (k < 6) {
-    		manage._button().newForm().click();
-        	add._textField().name().type("FormPreTrip"+k);
-        	add._dropDown().trigger().selectTheOptionContaining("Pre-Trip", 1);
-        	add._checkBox().groups().click();
-        	add._link().text().click();
-        	add._button().saveTop().click();
-            manage._textField().search().type("FormPreTrip"+k);
-    		manage._button().gear().row(1).click();
-        	manage._link().publish().row(1).click();
-            manage._link().manage().click();
-        	k++;
-    	}
-    	
-    	while (l < 6) {
-    		manage._button().newForm().click();
-	    	add._textField().name().type("FormPublish"+l);
-	    	add._textField().description().type("Required");
-	    	add._checkBox().groups().click();
-	    	add._link().text().click();
-	    	add._button().saveTop().click();
-            manage._textField().search().type("FormPublish"+l);
-			manage._button().gear().row(1).click();
-	    	manage._link().publish().row(1).click();
-	        manage._link().manage().click();
-	    	l++;
     	}
     	
     	System.out.println("SUCCESS!");
