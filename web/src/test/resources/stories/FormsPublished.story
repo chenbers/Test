@@ -2,11 +2,6 @@ In order to view a list of Forms
 As Administrator
 I need a UI on the Administrator page that lists the Forms
 
-Scenario: Forms Published Page - Generate needed forms
-Given I am logged in
-When I click the Forms link
-Then I generate 100 forms for the publish page test
-
 Scenario: TCXXXX: Forms Published Page - Table View - UI
 Given I am logged in
 When I click the Forms link
