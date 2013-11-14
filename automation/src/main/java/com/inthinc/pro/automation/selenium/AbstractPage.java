@@ -62,15 +62,13 @@ public abstract class AbstractPage extends MasterTest implements Page {
      */
     public Boolean isOnPage() {
         // added 'waitForPageToLoad()' pause because sometimes elements on the page weren't loaded before a test was running
-        // Mweiss: adjusted 'waitForPageToLoad()' to 2 seconds, then 5, then 15, then 30, this way we can guarantee items have loaded
+        // Mweiss: adjusted 'waitForPageToLoad()' to 2 seconds, then 5, then 30, this way we can guarantee items have loaded
         // so we don't fail on a test just because an item took a while to load on a page
         try {
             getSelenium().waitForPageToLoad(2000);
             try {
                 getSelenium().waitForPageToLoad(5000);
-            } finally {
-                getSelenium().waitForPageToLoad(15000);
-            }
+            } finally {}
         } catch (Exception n) {
             getSelenium().waitForPageToLoad(30000);
         }
