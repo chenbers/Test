@@ -565,7 +565,7 @@ And I uncheck the 1st Row of the Map Layers checkbox
 And I select "English (United States)" from the Locale dropdown
 And I select "English" from the Measurement dropdown
 And I select "Miles Per Gallon (US)" from the Fuel Efficiency Ratio dropdown
-And I type "t@t.com" into the Email One textfield
+And I type "t@editablefakeemail.com" into the Email One textfield
 And I type "" into the Email Two textfield
 And I type "" into the Phone One textfield
 And I type "" into the Phone Two textfield
@@ -587,7 +587,7 @@ And I save the Phone Two text as ORIGINALphoneTwo
 And I save the Text Message One text as ORIGINALtextOne
 And I save the Text Message Two text as ORIGINALtextTwo
 And I click the Edit button
-And I select the option containing "E-mail 1" from the Information dropdown
+And I select the option containing "E-mail 1: t@editablefakeemail.com" from the Information dropdown
 And I select the option containing "Text Message 1" from the Warning dropdown
 And I select the option containing "Phone 1" from the Critical dropdown
 And I select "Hyb (Hybrid)" from the Map Type dropdown
