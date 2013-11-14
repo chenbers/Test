@@ -4,7 +4,6 @@ import com.amazonaws.util.json.JSONArray;
 import com.amazonaws.util.json.JSONException;
 import com.amazonaws.util.json.JSONObject;
 import org.joda.time.DateTime;
-import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -68,6 +67,36 @@ public class JSONReportLogDataTest {
             assertEquals(reportLog.getString("success"), "false");
             assertEquals(reportLog.getString("scheduledTime"), "08:20");
 
+            //test recipientUserIds
+            JSONArray recIdArr = reportLog.getJSONArray("recipientUserIds");
+            assertEquals(recIdArr.getInt(0), 123);
+            assertEquals(recIdArr.getInt(1), 234);
+            assertEquals(recIdArr.getInt(2), 345);
+
+            //test recipientEmailAddresses
+            JSONArray recEmailList = reportLog.getJSONArray("recipientEmailAddresses");
+            assertEquals(recEmailList.getString(0), "abc@inthinc.com");
+            assertEquals(recEmailList.getString(1), "cde@inthinc.com");
+            assertEquals(recEmailList.getString(2), "efg@inthinc.com");
+
+            //test errors
+            JSONArray errorsArr = reportLog.getJSONArray("errors");
+            for (int i = 0; i <= 5; i++) {
+                JSONObject err = errorsArr.getJSONObject(i);
+                assertNotNull(err);
+
+                assertTrue(err.has("message"));
+                assertTrue(err.has("type"));
+                assertTrue(err.has("stackTrace"));
+
+                assertEquals(err.getString("message"), "exception: " + i);
+                assertEquals(err.getString("type"), "java.lang.Exception");
+
+                JSONArray stackTrace = err.getJSONArray("stackTrace");
+                assertNotNull(stackTrace);
+                assertFalse(stackTrace.length() == 0);
+            }
+
         } catch (JSONException e) {
             fail(e.getMessage());
         }
@@ -94,8 +123,8 @@ public class JSONReportLogDataTest {
         data.setIdUserRequestingReport(34525);
 
         // add list data
-        data.setRecipientUserIds(Arrays.asList(new Integer[]{123, 234, 456}));
-        data.setRecipientEmailAddresses(Arrays.asList(new String[]{"abc@inthinc.com", "cde@inthinc.com", "efg@inthinc.com"}));
+        data.setRecipientUserIds(Arrays.asList(123, 234, 345));
+        data.setRecipientEmailAddresses(Arrays.asList("abc@inthinc.com", "cde@inthinc.com", "efg@inthinc.com"));
 
         // create fake exceptions and add them
         List<Throwable> thList = new ArrayList<Throwable>();
