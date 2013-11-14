@@ -139,10 +139,10 @@ When I click the Forms link
 And I click the Submissions link
 And I validate I am on the Forms Submissions page
 And I bookmark the page
-And I click the Logout link
+And I click the Log Out link
 And I click the bookmark I just added
-And I validate I am on the Login page
-Given I am logged in
+Then I validate I am on the Login page
+When I am logged in
 Then I validate I am on the Submissions page
 
 Scenario: TCXXXX: Forms Submissions Page - Bookmark Entry to Different Account
@@ -151,10 +151,10 @@ When I click the Forms link
 And I click the Submissions link
 And I validate I am on the Forms Submissions page
 And I bookmark the page
-And I click the Logout link
+And I click the Log Out link
 And I click the bookmark I just added
-And I validate I am on the Login page
-Given I am logged in an account that can be edited
+Then I validate I am on the Login page
+When I log back in under the editable account
 Then I validate I am on the Forms Submissions page
 
 Scenario: TCXXXX: Forms Submissions Page - Edit Approved check (No change to Edited column)

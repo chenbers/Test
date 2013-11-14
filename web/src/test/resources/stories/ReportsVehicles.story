@@ -31,7 +31,7 @@ And I save the 1st Row of the Vehicle Value link as SAVEDVEHICLE
 When I bookmark the page
 And I click the Log Out link
 And I click the bookmark I just added
-Given I am logged in
+When I log back in
 Then I validate I am on the Reports Vehicles page
 And I validate the Master Search textfield is ""
 And I validate that the 1st Row of the Vehicle Value link is SAVEDVEHICLE

@@ -30,10 +30,10 @@ Given I am logged in
 When I click the Notifications link
 And I click the Crash History link
 And I bookmark the page
-And I click the Logout link
+And I click the Log Out link
 And I click the bookmark I just added
 Then I validate I am on the Login page
-Given I am logged in
+When I log back in
 Then I validate I am on the Notifications Crash History page
 
 Scenario: TC1337: Notifications - Crash History - Bookmark Entry to Different Account
@@ -41,10 +41,10 @@ Given I am logged in
 When I click the Notifications link
 And I click the Crash History link
 And I bookmark the page
-And I click the Logout link
+And I click the Log Out link
 And I click the bookmark I just added
 Then I validate I am on the Login page
-Given I am logged in an account that can be edited
+When I log back in under the editable account
 Then I validate I am on the Notifications Crash History page
 
 Scenario: TC1339: Notifications - Crash History - Bookmark Entry with Search

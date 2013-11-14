@@ -37,7 +37,7 @@ Given I am logged in
 When I click the My Account link
 And I click the Edit button
 And I bookmark the page
-And I click the Logout link
+And I click the Log Out link
 And I click the bookmark I just added
 And I log back in
 Then I validate I am on the My Account Edit page
@@ -47,7 +47,7 @@ Given I am logged in
 When I click the My Account link
 And I click the Edit button
 And I bookmark the page
-And I click the Logout link
+And I click the Log Out link
 And I click the bookmark I just added
 And I log back in under the editable account
 Then I validate I am on the My Account Edit page
