@@ -193,6 +193,7 @@
 								<exclude>**/selenium/**/Mass**.java</exclude>
 								<exclude>**/selenium/**/NotificationTest.java</exclude>
 								<exclude>**/selenium/**/PasswordChangeTest.java</exclude>
+								<exclude>**/selenium/**/RoadHazardEndpointTest.java</exclude>
 								<exclude>**/selenium/**/RouteGetEndpointTest.java</exclude>
 								<exclude>**/selenium/**/ScheduledReportsTest.java</exclude>
 								<exclude>**/selenium/**/SearchCrashesStory.java</exclude>
