@@ -287,6 +287,9 @@ Scenario: TC1396: Notifications > Diagnostics > Exclude Link - Event Interaction
 Given I am logged in
 When I click the Notifications link
 And I click the Diagnostics link
+And I select "Top" from the Team dropdown
+And I select "Past 30 Days" from the Time Frame dropdown
+And I click the Refresh button
 And I save the Counter text as RECORDS
 And I click the 1st Row of the Entry Status link
 And the Exclude Event popup opens
@@ -294,6 +297,9 @@ And I click the Yes button
 And the Exclude Event popup closes
 Then I validate the Counter text is RECORDS
 And I validate the 1st Row of the Entry Status link is "include"
+And I click the 1st Row of the Entry Status link
+And I validate the Counter text is RECORDS
+And I validate the 1st Row of the Entry Status link is "exclude"
 
 Scenario: TC1399: Notifications - Diagnostics - Exclude Link - UI
 Given I am logged in
