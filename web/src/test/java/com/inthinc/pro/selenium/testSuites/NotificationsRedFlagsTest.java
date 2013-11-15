@@ -16,7 +16,7 @@ import com.inthinc.pro.selenium.pageObjects.PageVehiclePerformance;
 import com.inthinc.pro.selenium.steps.LoginSteps;
 
 @UsingSteps(instances={LoginSteps.class})
-@PageObjects(list={PageLogin.class, PageExecutiveDashboard.class, PageAdminUsers.class, 
+@PageObjects(list={PageLogin.class, PageExecutiveDashboard.class,
 		PageNotificationsRedFlags.class, PageDriverPerformance.class, PageVehiclePerformance.class,
 		PageReportsDrivers.class, PageTeamDriverStatistics.class})
 @StoryPath(path="NotificationsRedFlags.story")
