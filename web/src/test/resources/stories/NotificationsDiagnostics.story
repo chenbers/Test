@@ -290,7 +290,7 @@ And I click the Diagnostics link
 And I save the Counter text as RECORDS
 And I click the 1st Row of the Entry Status link
 And the Exclude Event popup opens
-And I press the Enter key
+And I click the Yes button
 And the Exclude Event popup closes
 Then I validate the Counter text is RECORDS
 And I validate the 1st Row of the Entry Status link is "include"
