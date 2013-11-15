@@ -21,11 +21,11 @@ import com.inthinc.pro.selenium.steps.LoginSteps;
 
 @UsingSteps(instances={LoginSteps.class})
 @PageObjects(list={PageLogin.class, 
-		PageExecutiveDashboard.class, PageExecutiveOverallExpansion.class, 
-        PageTeamDriverStatistics.class, PageDriverPerformance.class,
-        PageVehiclePerformance.class, PageFormsSubmissions.class,
+        PageExecutiveDashboard.class, PageExecutiveOverallExpansion.class, 
         PageFormsAdd.class, PageFormsPublished.class, 
-        PageFormsManage.class, PageFormsEdit.class})
+        PageFormsManage.class, PageFormsEdit.class,
+        PageTeamDriverStatistics.class, PageDriverPerformance.class,
+        PageVehiclePerformance.class})
 @StoryPath(path="FormsAdd.story")
 public class FormsAddTest extends WebStories  {
 
