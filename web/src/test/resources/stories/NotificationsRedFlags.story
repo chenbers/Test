@@ -437,9 +437,9 @@ Then I validate the Message text contains SAVEDDATETIME
 And I validate the Message text contains SAVEDDETAIL
 And I click the Yes button
 And the Exclude Event popup closes
-And I validate the 1st Row of the Entry Status link is "include"
-And I click the 1st Row of the Entry Status link
-And I validate the 1st Row of the Entry Status link is "exclude"
+And I validate the 2nd Row of the Entry Status link is "include"
+And I click the 2nd Row of the Entry Status link
+And I validate the 2nd Row of the Entry Status link is "exclude"
 
 Scenario: TC5744: Notifications - Red Flags - Time Frame (requires entries from today and yesterday)
 Given I am logged in
