@@ -284,7 +284,7 @@ public abstract class BaseITData {
         PersonHessianDAO personDAO = new PersonHessianDAO();
         personDAO.setSiloService(siloService);
 
-        int retryCount = 10;
+        int retryCount = 200;
         Person person = null;
         // create a person
         while (retryCount > 0)
