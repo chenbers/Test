@@ -16,8 +16,8 @@ And I bookmark the page
 And I click the Log Out link
 And I click the bookmark I just added
 Then I validate I am on the Login page
-And I log back in
-And I validate I am on the Notifications Safety page
+When I log back in
+Then I validate I am on the Notifications Safety page
 
 Scenario: TC1437: Notifications - Safety - Driver Link
 Given I am logged in
