@@ -188,6 +188,7 @@
 								<exclude>**/selenium/**/CurrentStoryTest.java</exclude>
 								<exclude>**/selenium/**/DeviceTests.java</exclude>
 								<exclude>**/selenium/**/DriverStatisticsTest.java</exclude>
+								<exclude>**/selenium/**/NotificationsEmergencyTest.java</exclude>
 								<exclude>**/selenium/**/FormsSubmissionsTest.java</exclude>
 								<exclude>**/selenium/**/GainReportsTest.java</exclude>
 								<exclude>**/selenium/**/Mass**.java</exclude>
