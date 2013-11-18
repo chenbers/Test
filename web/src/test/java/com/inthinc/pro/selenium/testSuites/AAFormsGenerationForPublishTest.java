@@ -23,8 +23,8 @@ import com.inthinc.pro.selenium.steps.LoginSteps;
         PageTeamDriverStatistics.class, PageFormsSubmissions.class,
         PageFormsAdd.class, PageFormsPublished.class, 
         PageFormsManage.class, PageFormsEdit.class})
-@StoryPath(path="AAFormsGenerationForAutomatedTesting.story")
-public class AAFormsGenerationForAutomatedTestingTest extends WebStories  {
+@StoryPath(path="AAFormsGenerationForPublishTest.story")
+public class AAFormsGenerationForPublishTest extends WebStories  {
 
     @Test
     public void test(){}
