@@ -15,13 +15,10 @@ import com.inthinc.pro.selenium.pageObjects.PageVehiclePerformance;
 import com.inthinc.pro.selenium.steps.LoginSteps;
 
 @UsingSteps(instances={LoginSteps.class})
-@PageObjects(list={PageLogin.class, 
-		PageExecutiveDashboard.class, 
-		PageReportsDevices.class, 
-		PageReportsDrivers.class, 
-		PageExecutiveOverallExpansion.class,
-        PageNotificationsRedFlags.class,
-        PageVehiclePerformance.class})
+@PageObjects(list={PageLogin.class, PageReportsDrivers.class,
+                PageExecutiveDashboard.class, PageReportsDevices.class, 
+                PageExecutiveOverallExpansion.class, PageNotificationsRedFlags.class,
+                PageVehiclePerformance.class})
 @StoryPath(path="ReportsDevices.story")
 public class ReportsDevicesTest extends WebStories {
     
