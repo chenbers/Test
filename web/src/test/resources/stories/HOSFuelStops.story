@@ -469,7 +469,7 @@ Scenario: TC5701: HOS - Fuel Stops - Date Range (IFTA Aggregation)
 Given I am logged in
 When I click the HOS link
 And I click the HOS Fuel Stops link
-And I type "TEST VEHICLE 1" into the Vehicle textfield
+And I type "waysmart01" into the Vehicle textfield
 And I click the suggested row 1 from the Vehicle textfield
 And I click the Refresh button
 And I check the Check All checkbox
