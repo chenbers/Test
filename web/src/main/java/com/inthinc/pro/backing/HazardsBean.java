@@ -180,6 +180,7 @@ public class HazardsBean extends BaseBean {
      */
     public String edit() {
         editing = true;
+        onUnitChange();
         defaultRadius = (item.getRadiusMeters() == item.getType().getRadius());
         DateTime startTime = new DateTime(item.getStartTime().getTime());
         DateTime defaultEndTime = startTime.plus(item.getType().getDefaultDuration());
@@ -280,6 +281,7 @@ public class HazardsBean extends BaseBean {
         }
         item.setLocation(location);
         item.setModified(new Date());
+        item.setRadiusInUnits((Integer) item.getRadiusUnits().convertFromMeters(item.getRadiusMeters()).intValue());
         if (add) {
             item.setAccountID(getUser().getPerson().getAccountID());
             item.setHazardID(adminHazardJDBCDAO.create(item.getAccountID(),item));
