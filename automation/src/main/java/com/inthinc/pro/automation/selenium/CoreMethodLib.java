@@ -98,7 +98,10 @@ public class CoreMethodLib extends WebDriverBackedSelenium implements CoreMethod
         }
         String element = getClickable(getLocator(myEnum));
         click(element);
-//        AutomationThread.pause(20, "click(" + myEnum + ")");
+        //Adding in this method for the time duration links on the team pages, they need a longer wait time for the page to load, otherwise an error gets thrown
+        if (element.contains("timeFrameForm:")) {
+            AutomationThread.pause(20, "click(" + myEnum + ")");
+        }
         AutomationThread.pause(5, "click(" + myEnum + ")");
         loadPause();
         return this;
