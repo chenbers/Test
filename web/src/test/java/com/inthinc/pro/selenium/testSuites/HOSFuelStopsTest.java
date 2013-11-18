@@ -5,7 +5,6 @@ import org.junit.Test;
 
 import com.inthinc.pro.automation.annotations.AutomationAnnotations.PageObjects;
 import com.inthinc.pro.automation.annotations.AutomationAnnotations.StoryPath;
-import com.inthinc.pro.selenium.pageObjects.PageAdminUsers;
 import com.inthinc.pro.selenium.pageObjects.PageExecutiveDashboard;
 import com.inthinc.pro.selenium.pageObjects.PageExecutiveOverallExpansion;
 import com.inthinc.pro.selenium.pageObjects.PageHOSAddEditDriverLogs;
@@ -22,7 +21,7 @@ import com.inthinc.pro.selenium.steps.LoginSteps;
 
 
 @UsingSteps(instances={LoginSteps.class})
-@PageObjects(list={PageLogin.class, PageExecutiveDashboard.class, PageAdminUsers.class, PageHOSDriverLogs.class, PageHOSFuelStops.class, 
+@PageObjects(list={PageLogin.class, PageExecutiveDashboard.class, PageHOSFuelStops.class, PageHOSDriverLogs.class,
         PageHOSAddEditFuelStops.class, PageMyAccount.class, PageMyAccountEdit.class, PageHOSAddEditDriverLogs.class, PageHOSReports.class,
         PageExecutiveOverallExpansion.class, PageReportsDrivers.class, PageTeamDriverStatistics.class})
 @StoryPath(path="HOSFuelStops.story")
