@@ -25,6 +25,7 @@ And I validate the Form dropdown is "All Forms"
 And I validate the Date dropdown is present
 And I validate the Refresh button is present
 And I validate the Records Per Page dropdown is present
+And I validate the Records Per Page dropdown is "10"
 And I validate the Sort By Date Time link is present
 And I validate the Sort By Group link is present
 And I validate the Sort By Driver link is present
@@ -38,12 +39,6 @@ And I validate the Vehicle textfield is present
 And I validate the Edited dropdown is present
 And I validate the Approved dropdown is present
 And I validate the Entries text is present
-
-Scenario: TCXXXX Forms Submissions Page - Default Records Per Page dropdown set to 10
-Given I am logged in
-When I click the Forms link
-And I click the Submissions link
-Then I validate the Records Per Page dropdown is "10"
 
 Scenario: TCXXXX Forms Submissions Page - Forms No Records Found Table Message
 Given I am logged in
