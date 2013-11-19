@@ -98,6 +98,10 @@ public class CoreMethodLib extends WebDriverBackedSelenium implements CoreMethod
         }
         String element = getClickable(getLocator(myEnum));
         click(element);
+        //The publish page takes a while to load after publishing a form so I'm adding in a wait.
+        if (myEnum.toString().contains("PUBLISH_ENTRY_LINK")) {
+            AutomationThread.pause(7);
+        }
         //Adding in this method for the time duration links on the team pages, they need a longer wait time for the page to load, otherwise an error gets thrown
         if (element.contains("timeFrameForm:")) {
             AutomationThread.pause(20, "click(" + myEnum + ")");
@@ -669,7 +673,7 @@ public class CoreMethodLib extends WebDriverBackedSelenium implements CoreMethod
         fireEvent(element, "keyup");
         fireEvent(element, "blur");
 //        AutomationThread.pause(20, "Give the page a second to catch up if it has some refreshing to do");
-        AutomationThread.pause(7, "Give the page a second to catch up if it has some refreshing to do");
+        AutomationThread.pause(2, "Give the page a second to catch up if it has some refreshing to do");
         loadPause();
         return this;
     }
