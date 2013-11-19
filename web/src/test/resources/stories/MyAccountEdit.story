@@ -69,7 +69,7 @@ And I validate the 1st Row of the Distance Driven Value text contains "km"
 And I click the year Duration link
 And I click the Sort By Driver link
 And I click the Sort By Driver link
-And I click the 3rd Row of the Driver Value link
+And I click the 6th Row of the Driver Value link
 And I verify "Crashes per million kilometers" is on the page
 And I click the Maximize Speed button
 And I click the twelve months Duration link
@@ -171,7 +171,7 @@ And I validate the 1st Row of the Distance Driven Value text contains "mi"
 And I click the year Duration link
 And I click the Sort By Driver link
 And I click the Sort By Driver link
-And I click the 3rd Row of the Driver Value link
+And I click the 6th Row of the Driver Value link
 And I verify "Crashes per million miles" is on the page 
 And I click the Maximize Speed button
 And I click the twelve months Duration link
