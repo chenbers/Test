@@ -133,7 +133,7 @@ And I click the Log Out link
 And I click the bookmark I just added
 Then I validate I am on the Login page
 When I log back in
-Then I validate I am on the Submissions page
+Then I validate I am on the Forms Submissions page
 
 Scenario: TCXXXX: Forms Submissions Page - Bookmark Entry to Different Account
 Given I am logged in
