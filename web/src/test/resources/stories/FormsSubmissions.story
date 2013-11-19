@@ -6,7 +6,7 @@ Scenario: TCXXXX Forms Submissions Page - Forms No Data Available In Table Messa
 Given I am logged in
 When I click the Forms link
 And I click the Submissions link
-And I select "Form TCXXXX (1)" from the Form dropdown
+And I select "Form TCXXXXAdd1 (1)" from the Form dropdown
 And I click the Refresh button
 Then I validate the 1st Row of the Form Entry text is not present
 And I validate the No Records Found Error text is present
