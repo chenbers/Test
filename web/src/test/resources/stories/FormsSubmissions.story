@@ -186,7 +186,7 @@ When I uncheck the 1st Row of the Approved Entry checkbox
 Then I validate the 1st Row of the Approved Entry checkbox is not checked
 And I validate the 1st Row of the Edited Entry text is "no"
 When I click the Refresh button
-Then I validate the 1st Row of the Approved Entry checkbox is not present
+Then I validate the 1st Row of the Approved Entry checkbox is not checked
 When I select "no" from the Approved dropdown
 And I click the Refresh button
 Then I validate the 1st Row of the Approved Entry checkbox is not checked
