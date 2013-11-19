@@ -2,12 +2,36 @@ package com.inthinc.pro.scheduler.quartz;
 
 import com.amazonaws.AmazonClientException;
 import com.amazonaws.services.sqs.model.Message;
-import com.inthinc.pro.dao.*;
-import com.inthinc.pro.model.*;
+import com.inthinc.pro.dao.AccountDAO;
+import com.inthinc.pro.dao.DriverDAO;
+import com.inthinc.pro.dao.GroupDAO;
+import com.inthinc.pro.dao.PersonDAO;
+import com.inthinc.pro.dao.ReportScheduleDAO;
+import com.inthinc.pro.dao.UserDAO;
+import com.inthinc.pro.model.Account;
+import com.inthinc.pro.model.Driver;
+import com.inthinc.pro.model.EntityType;
+import com.inthinc.pro.model.Group;
+import com.inthinc.pro.model.GroupHierarchy;
+import com.inthinc.pro.model.GroupType;
+import com.inthinc.pro.model.MeasurementType;
+import com.inthinc.pro.model.Person;
+import com.inthinc.pro.model.ReportManagerDeliveryType;
+import com.inthinc.pro.model.ReportSchedule;
+import com.inthinc.pro.model.Status;
+import com.inthinc.pro.model.TimeFrame;
+import com.inthinc.pro.model.User;
 import com.inthinc.pro.model.aggregation.DriverPerformance;
-import com.inthinc.pro.reports.*;
+import com.inthinc.pro.reports.FormatType;
+import com.inthinc.pro.reports.Report;
+import com.inthinc.pro.reports.ReportCreator;
+import com.inthinc.pro.reports.ReportCriteria;
+import com.inthinc.pro.reports.ReportGroup;
+import com.inthinc.pro.reports.ReportType;
 import com.inthinc.pro.reports.service.ReportCriteriaService;
 import com.inthinc.pro.scheduler.amazonaws.sqs.AmazonQueue;
+import com.inthinc.pro.scheduler.data.JSONReportLogData;
+import com.inthinc.pro.scheduler.data.ReportLogData;
 import com.inthinc.pro.scheduler.i18n.LocalizedMessage;
 import org.apache.log4j.Logger;
 import org.jasypt.encryption.pbe.StandardPBEStringEncryptor;
@@ -18,7 +42,13 @@ import org.quartz.JobExecutionException;
 import org.springframework.beans.BeanUtils;
 import org.springframework.scheduling.quartz.QuartzJobBean;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * Created with IntelliJ IDEA.
@@ -46,6 +76,8 @@ public class EmailReportAmazonPullJob extends QuartzJobBean {
     private StandardPBEStringEncryptor textEncryptor = new StandardPBEStringEncryptor();
     private Map<Integer, User> userMap;
     private Map<Integer, GroupHierarchy> accountGroupHierarchyMap;
+    private ReportLogData reportLogData;
+    private Long startMilis;
 
     public AmazonQueue getAmazonQueue() {
         return amazonQueue;
@@ -77,6 +109,14 @@ public class EmailReportAmazonPullJob extends QuartzJobBean {
 
     public void setAccountDAO(AccountDAO accountDAO) {
         this.accountDAO = accountDAO;
+    }
+
+    public ReportLogData getReportLogData() {
+        return reportLogData;
+    }
+
+    public void setReportLogData(ReportLogData reportLogData) {
+        this.reportLogData = reportLogData;
     }
 
     public DriverDAO getDriverDAO() {
@@ -163,115 +203,135 @@ public class EmailReportAmazonPullJob extends QuartzJobBean {
 
     @Override
     protected void executeInternal(JobExecutionContext jobExecutionContext) throws JobExecutionException {
-
         initTextEncryptor();
 
-        try{
+        try {
+            List<Message> messageList = (List<Message>) this.amazonQueue.popFromQueue();
+            boolean hasMessages = messageList != null && messageList.size() > 0;
 
-            boolean hasMessages = true;
+            while (hasMessages) {
+                reportLogData.clear();
+                for (Message message : messageList) {
+                    startMilis = System.currentTimeMillis();
+                    try {
+                        logger.info("Pulled message " + message.getBody() + " from the Amazon Queue.");
+                        ReportSchedule reportSchedule = getReportScheduleFromMessage(message);
 
-            while (hasMessages ) {
-                List<Message> messageList  = (List<Message>)this.amazonQueue.popFromQueue();
+                        // save all information to log data
+                        reportLogData.setSuccess(true);
+                        if (reportSchedule.getAccountID() != null) {
+                            Account account = accountDAO.findByID(reportSchedule.getAccountID());
+                            reportLogData.setAccountId(reportSchedule.getAccountID());
+                            reportLogData.setAccountName(account.getAcctName());
+                        }
+                        reportLogData.setReportID(reportSchedule.getReportID());
+                        reportLogData.setReportType(reportSchedule.getParamType().toString());
+                        reportLogData.setIdUserRequestingReport(reportSchedule.getUserID());
+                        reportLogData.setRecipientUserIds(reportSchedule.getDriverIDList());
+                        reportLogData.setRecipientEmailAddresses(reportSchedule.getEmailTo());
+                        reportLogData.setScheduledTime(reportSchedule.getTimeOfDay());
 
-                hasMessages = messageList != null && messageList.size() > 0;
+                        logger.info("Dispatching reportSchedlue " + reportSchedule.getName() + " ID: " + reportSchedule.getReportScheduleID());
+                        try {
+                            dispatchReport(reportSchedule);
+                            logger.info("Successfully dispatched reportSchedule " + reportSchedule.getName() + " ID: " + reportSchedule.getReportScheduleID());
+                            reportLogData.setActualTimeSent(new DateTime());
+                        } catch (Throwable t) {
+                            reportLogData.setSuccess(false);
+                            reportLogData.getErrors().add(t);
+                            logger.error("Unable to dispatch ReportSchedule " + reportSchedule.getName() + " ID: " + reportSchedule.getReportScheduleID());
+                            logger.error("Report error: " + t);
+                            t.printStackTrace();
+                        }
 
-                for(Message message : messageList) {
-
-                    logger.info("Pulled message " + message.getBody() + " from the Amazon Queue.");
-
-                    ReportSchedule reportSchedule = getReportScheduleFromMessage(message);
-
-                    logger.info("Dispatching reportSchedlue " + reportSchedule.getName() + " ID: " + reportSchedule.getReportScheduleID());
-                    if(dispatchReport(reportSchedule)){
-                        logger.info("Successfully dispatched reportSchedule " + reportSchedule.getName() + " ID: " + reportSchedule.getReportScheduleID());
+                        logger.info("Deleting ReportSchedule " + reportSchedule.getName() + " ID: " + reportSchedule.getReportScheduleID() + " message from the Amazon Queue.");
+                        if (!this.amazonQueue.deleteMessageFromQueue(message.getReceiptHandle())) {
+                            String failToDelete = "Failed to delete Message " + message.getReceiptHandle() + " from the queue.";
+                            reportLogData.getErrors().add(new Exception(failToDelete));
+                            logger.error(failToDelete);
+                        }
+                        logger.info("Completed processing reportSchedule " + reportSchedule.getName() + " ID: " + reportSchedule.getReportScheduleID() + " from the Amazon queue.");
+                    } catch (Throwable t) {
+                        reportLogData.setSuccess(false);
+                        reportLogData.getErrors().add(t);
+                        logger.error("Report error: " + t);
+                        t.printStackTrace();
+                    } finally {
+                        reportLogData.setProcessMilis(System.currentTimeMillis() - startMilis);
+                        if (reportLogData.getSuccess()) {
+                            logger.info(reportLogData.formatForStash());
+                        }else{
+                            logger.error(reportLogData.formatForStash());
+                        }
                     }
-                    else {
-                        logger.error("Unable to dispatch ReportSchedule " + reportSchedule.getName() + " ID: " + reportSchedule.getReportScheduleID());
-                    }
-
-                    logger.info("Deleting ReportSchedule " + reportSchedule.getName() + " ID: " + reportSchedule.getReportScheduleID() + " message from the Amazon Queue.");
-
-                    if(!this.amazonQueue.deleteMessageFromQueue(message.getReceiptHandle())){
-                        logger.error("Failed to delete Message " + message.getReceiptHandle() + " from the queue.");
-                    }
-
-                    logger.info("Completed processing reportSchedule " + reportSchedule.getName() + " ID: " + reportSchedule.getReportScheduleID() + " from the Amazon queue.");
                 }
-            }
 
+                messageList = (List<Message>) this.amazonQueue.popFromQueue();
+                hasMessages = messageList != null && messageList.size() > 0;
+            }
         } catch (AmazonClientException e) {
-           logger.error("Could not pull from the Amazon queue. " + e);
+            logger.error("Could not pull from the Amazon queue. " + e);
         }
     }
 
     protected void initTextEncryptor() {
-
         textEncryptor.setPassword(encryptPassword);
         textEncryptor.setStringOutputType("hexadecimal");
-
     }
 
     private ReportSchedule getReportScheduleFromMessage(Message message) {
         return reportScheduleDAO.findByID(Integer.valueOf(message.getBody()));
     }
 
-    protected Boolean dispatchReport(ReportSchedule reportSchedule) {
-        userMap = new HashMap<Integer,User>();
+    protected void dispatchReport(ReportSchedule reportSchedule) throws Throwable {
+        userMap = new HashMap<Integer, User>();
 
-        try {
-            User user = getUser(reportSchedule.getUserID());
-            ReportGroup reportGroup = ReportGroup.valueOf(reportSchedule.getReportID());
+        User user = getUser(reportSchedule.getUserID());
+        ReportGroup reportGroup = ReportGroup.valueOf(reportSchedule.getReportID());
 
-            if (reportGroup == null) {
-                logger.error("null reportGroup for schedule ID " + reportSchedule.getReportID());
-                return false;
-            }
+        if (reportGroup == null) {
+            String err = "null reportGroup for schedule ID " + reportSchedule.getReportID();
+            logger.error(err);
+            throw new Exception(err);
+        }
 
-            if (reportGroup.getEntityType() == EntityType.ENTITY_INDIVIDUAL_DRIVER) {
+        if (reportGroup.getEntityType() == EntityType.ENTITY_INDIVIDUAL_DRIVER) {
 
-                Date lastSuccessDate = reportSchedule.getLastDate();
-                reportSchedule.setLastDate(new DateTime(DateTimeZone.forID(user.getPerson().getTimeZone().getID())).toDate());
-                reportScheduleDAO.update(reportSchedule);
+            Date lastSuccessDate = reportSchedule.getLastDate();
+            reportSchedule.setLastDate(new DateTime(DateTimeZone.forID(user.getPerson().getTimeZone().getID())).toDate());
+            reportScheduleDAO.update(reportSchedule);
 
-                if (!processIndividualDriverReportSchedule(reportSchedule, user.getPerson())) {
-                    reportSchedule.setLastDate(lastSuccessDate);
-                    reportScheduleDAO.update(reportSchedule);
-                }
-
-            }else if (reportSchedule.getDeliverToManagers() != null && reportSchedule.getDeliverToManagers().equals(Boolean.TRUE)){
-                deliverReportToGroupManagers(reportSchedule,user);
-            }else{
-                List<ReportCriteria> reportCriteriaList = reportCriteriaService.getReportCriteria(reportSchedule, getAccountGroupHierarchy(reportSchedule.getAccountID()),  user.getPerson());
-                emailReport(reportSchedule, user.getPerson(), reportCriteriaList, null);
-                reportSchedule.setLastDate(new DateTime(DateTimeZone.forID(user.getPerson().getTimeZone().getID())).toDate());
+            if (!processIndividualDriverReportSchedule(reportSchedule, user.getPerson())) {
+                reportSchedule.setLastDate(lastSuccessDate);
                 reportScheduleDAO.update(reportSchedule);
             }
+
+        } else if (reportSchedule.getDeliverToManagers() != null && reportSchedule.getDeliverToManagers().equals(Boolean.TRUE)) {
+            deliverReportToGroupManagers(reportSchedule, user);
+        } else {
+            List<ReportCriteria> reportCriteriaList = reportCriteriaService.getReportCriteria(reportSchedule, getAccountGroupHierarchy(reportSchedule.getAccountID()), user.getPerson());
+            emailReport(reportSchedule, user.getPerson(), reportCriteriaList, null);
+            reportSchedule.setLastDate(new DateTime(DateTimeZone.forID(user.getPerson().getTimeZone().getID())).toDate());
+            reportScheduleDAO.update(reportSchedule);
         }
-        catch (Throwable t) {
-            // log the exception, but keep processing the rest of the the reports
-            logger.error(String.format("Error occurred while attempting to email from report schedule %d , %s, ID: %d",reportSchedule.getReportID(), reportSchedule.getName(), reportSchedule.getReportScheduleID()),t);
-            return false;
-        }
-    return true;
     }
 
     private void emailReport(ReportSchedule reportSchedule, Person person, List<ReportCriteria> reportCriteriaList, Person owner) {
         emailReport(reportSchedule, person, reportCriteriaList, owner, true);
     }
+
     private void emailReport(ReportSchedule reportSchedule, Person person, List<ReportCriteria> reportCriteriaList, Person owner, boolean allowUnsubscribe) {
         // Set the current date of the reports
         FormatType formatType = FormatType.PDF;
-        if(reportSchedule == null) {
+        if (reportSchedule == null) {
             logger.error("Email reportSchedule is null");
         }
 
-        if(person == null)
-        {
+        if (person == null) {
             logger.error("Email person is null for reportSchedule " + reportSchedule.getName() + " ID: " + reportSchedule.getReportScheduleID());
         }
 
-        if(reportCriteriaList == null || reportCriteriaList.size() < 1)
-        {
+        if (reportCriteriaList == null || reportCriteriaList.size() < 1) {
             logger.error("Email reportCriteria is not available for reportSchedule " + reportSchedule.getName() + " ID: " + reportSchedule.getReportScheduleID());
         }
 
@@ -290,7 +350,7 @@ public class EmailReportAmazonPullJob extends QuartzJobBean {
 
         //Create the subject/message for emails sent to group managers.
 
-        if(reportSchedule.getDeliverToManagers() != null && reportSchedule.getDeliverToManagers().equals(Boolean.TRUE)){
+        if (reportSchedule.getDeliverToManagers() != null && reportSchedule.getDeliverToManagers().equals(Boolean.TRUE)) {
             Person groupManager = person;
             String subject = LocalizedMessage.getString("reportSchedule.emailSubject", person.getLocale()) + reportSchedule.getName();
             String message = LocalizedMessage.getStringWithValues("reportSchedule.emailMessage.groupManager", person.getLocale(),
@@ -301,13 +361,13 @@ public class EmailReportAmazonPullJob extends QuartzJobBean {
             // Change noreplyemail address based on account
             String noReplyEmailAddress = DEFAULT_NO_REPLY_EMAIL_ADDRESS;
             Account acct = accountDAO.findByID(reportSchedule.getAccountID());
-            if (    (acct.getProps() != null) &&
+            if ((acct.getProps() != null) &&
                     (acct.getProps().getNoReplyEmail() != null) &&
-                    (acct.getProps().getNoReplyEmail().trim().length() > 0) ) {
+                    (acct.getProps().getNoReplyEmail().trim().length() > 0)) {
                 noReplyEmailAddress = acct.getProps().getNoReplyEmail();
             }
             report.exportReportToEmail(groupManager.getPriEmail(), formatType, message, subject, noReplyEmailAddress);
-        }else{
+        } else {
             for (String address : reportSchedule.getEmailTo()) {
                 String subject = LocalizedMessage.getString("reportSchedule.emailSubject", person.getLocale()) + reportSchedule.getName();
                 String message = null;
@@ -317,8 +377,7 @@ public class EmailReportAmazonPullJob extends QuartzJobBean {
                             (owner == null) ? person.getFullName() : owner.getFullName(),
                             (owner == null) ? person.getPriEmail() : owner.getPriEmail(),
                             unsubscribeURL);
-                }
-                else {
+                } else {
                     message = LocalizedMessage.getStringWithValues("reportSchedule.emailMessage.groupManager", person.getLocale(),
                             (owner == null) ? person.getFullName() : owner.getFullName(),
                             (owner == null) ? person.getPriEmail() : owner.getPriEmail());
@@ -327,14 +386,14 @@ public class EmailReportAmazonPullJob extends QuartzJobBean {
                 // Change noreplyemail address based on account
                 String noReplyEmailAddress = DEFAULT_NO_REPLY_EMAIL_ADDRESS;
                 Account acct = accountDAO.findByID(reportSchedule.getAccountID());
-                if (    (acct.getProps() != null) &&
+                if ((acct.getProps() != null) &&
                         (acct.getProps().getNoReplyEmail() != null) &&
-                        (acct.getProps().getNoReplyEmail().trim().length() > 0) ) {
+                        (acct.getProps().getNoReplyEmail().trim().length() > 0)) {
                     noReplyEmailAddress = acct.getProps().getNoReplyEmail();
                 }
 
 
-                logger.info("report.exportReportToEmail("+address+", "+formatType+", "+message+", "+subject+", "+noReplyEmailAddress+");");
+                logger.info("report.exportReportToEmail(" + address + ", " + formatType + ", " + message + ", " + subject + ", " + noReplyEmailAddress + ");");
                 report.exportReportToEmail(address, formatType, message, subject, noReplyEmailAddress);
             }
         }
@@ -349,38 +408,38 @@ public class EmailReportAmazonPullJob extends QuartzJobBean {
         return unsubscribeURLBuilder.toString();
     }
 
-    private void deliverReportToGroupManagers(ReportSchedule source,User user){
+    private void deliverReportToGroupManagers(ReportSchedule source, User user) {
         //For each group, we're going to build a ReportSchedule if there is a group manager.
         List<Integer> groupIds = getAccountGroupHierarchy(source.getAccountID()).getGroupIDList(source.getGroupID());
 
         //The groupIds can contain duplicates so we're going to put them in a set. This takes time and needs
         //to be refactored TODO
         Set<Integer> groupIdSet = new HashSet<Integer>();
-        for(Integer groupID:groupIds){
+        for (Integer groupID : groupIds) {
             groupIdSet.add(groupID);
         }
 
         ReportManagerDeliveryType managerDeliveryType = source.getManagerDeliveryType() == null ? ReportManagerDeliveryType.ALL : source.getManagerDeliveryType();
 
-        for(Integer groupID:groupIdSet){
+        for (Integer groupID : groupIdSet) {
             Group group = getAccountGroupHierarchy(source.getAccountID()).getGroup(groupID);
             if (managerDeliveryType == ReportManagerDeliveryType.EXCLUDE_DIVISIONS && group.getType() == GroupType.DIVISION ||
                     managerDeliveryType == ReportManagerDeliveryType.EXCLUDE_TEAMS && group.getType() == GroupType.TEAM) {
-                if(logger.isDebugEnabled()){
+                if (logger.isDebugEnabled()) {
                     logger.debug(String.format("Skipping group [%d] due to manager delivery time of [%s].", group.getGroupID(), managerDeliveryType.name()));
                 }
                 continue;
             }
-            if(group.getManagerID() != null && group.getManagerID() > 0){
+            if (group.getManagerID() != null && group.getManagerID() > 0) {
                 Person manager = personDAO.findByID(group.getManagerID());
-                if(manager.getStatus().equals(Status.ACTIVE)){
+                if (manager.getStatus().equals(Status.ACTIVE)) {
                     ReportSchedule reportSchedule = new ReportSchedule();
                     BeanUtils.copyProperties(source, reportSchedule);
                     reportSchedule.setGroupID(groupID);
-                    if(logger.isDebugEnabled()){
-                        logger.debug(String.format("Creating report [%d] for group [%d] to be sent to manager [%d]", source.getReportID(),group.getGroupID(),manager.getPersonID()));
+                    if (logger.isDebugEnabled()) {
+                        logger.debug(String.format("Creating report [%d] for group [%d] to be sent to manager [%d]", source.getReportID(), group.getGroupID(), manager.getPersonID()));
                     }
-                    List<ReportCriteria> reportCriteriaList = reportCriteriaService.getReportCriteria(reportSchedule, getAccountGroupHierarchy(reportSchedule.getAccountID()),  user.getPerson());
+                    List<ReportCriteria> reportCriteriaList = reportCriteriaService.getReportCriteria(reportSchedule, getAccountGroupHierarchy(reportSchedule.getAccountID()), user.getPerson());
                     emailReport(reportSchedule, manager, reportCriteriaList, user.getPerson());
                 }
             }
@@ -428,14 +487,13 @@ public class EmailReportAmazonPullJob extends QuartzJobBean {
                                 if (driver == null) {
                                     logger.info("Driver may have been moved off this team.  DriverID is :" + driverID);
                                     continue;
-                                }
-                                else {
+                                } else {
                                     logger.info("Sending to driver with Primary E-Mail address: " + driver.getPerson().getPriEmail());
                                     List<ReportCriteria> driverReportCriteriaList = new ArrayList<ReportCriteria>();
                                     for (ReportCriteria rc : rcList) {
                                         if (rc.getMainDataset() == null || rc.getMainDataset().isEmpty())
                                             continue;
-                                        DriverPerformance dp = (DriverPerformance)rc.getMainDataset().get(0);
+                                        DriverPerformance dp = (DriverPerformance) rc.getMainDataset().get(0);
                                         if (dp.getDriverID().equals(driverID)) {
                                             driverReportCriteriaList.add(rc);
                                             break;
@@ -464,13 +522,12 @@ public class EmailReportAmazonPullJob extends QuartzJobBean {
 
             // send all the e-mails only if we make it though without errors
             boolean allowUnsubscribe = false;
-            for (IndividualReportEmail individualReportEmail : individualReportEmailList ) {
-                logger.info("sending to driver "+individualReportEmail.driverPerson.getPriEmail());
+            for (IndividualReportEmail individualReportEmail : individualReportEmailList) {
+                logger.info("sending to driver " + individualReportEmail.driverPerson.getPriEmail());
                 emailReport(individualReportEmail.reportSchedule, individualReportEmail.driverPerson, individualReportEmail.driverReportCriteriaList, individualReportEmail.owner, allowUnsubscribe);
             }
 
-        }
-        catch (Throwable ex) {
+        } catch (Throwable ex) {
             logger.error("Exception:", ex);
             return false;
 
@@ -490,10 +547,10 @@ public class EmailReportAmazonPullJob extends QuartzJobBean {
 
     public User getUser(Integer userID) {
 
-        User user= userMap.get(userID);
-        if(user == null){
+        User user = userMap.get(userID);
+        if (user == null) {
             user = userDAO.findByID(userID);
-            if (user != null){
+            if (user != null) {
                 userMap.put(userID, user);
             }
         }
