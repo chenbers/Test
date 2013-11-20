@@ -192,13 +192,14 @@ And I click the Refresh button
 Then I validate the 1st Row of the Approved Entry checkbox is not checked
 And I validate the 1st Row of the Edited Entry text is "no"
 
-Scenario: TCXXXX: Forms Submissions Page - Inline Edit - Forms link disappears
+Scenario: TCXXXX: Forms Submissions Page - Inline Edit - Forms link disappears (Requires there be form data)
 Given I am logged in
 When I click the Forms link
 And I click the Submissions link
-And I select "Form TCXXXX Pre-Trip Required (1)" from the Form dropdown
-And I double click the 1st Row of the Form Entry text
-Then I validate the 1st Row of the Form Entry text is not present
+Then I validate the 1st Row of the Form Entry text is present
+And I select "FormGeneric10 (1)" from the Form dropdown
+And I click the Refresh button
+And I validate the 1st Row of the Form Entry text is not present
 
 Scenario: TCXXXX: Forms Submissions Page - Inline Edit - All Forms (make sure you cannot do)
 Given I am logged in
