@@ -211,7 +211,7 @@ And I validate the 1st Row of the Numeric Entry textfield is not present
 And I validate the 1st Row of the Decimal Entry textfield is not present
 And I validate the 1st Row of the Date Entry dropdown is not present
 
-Scenario: TCXXXX: Forms Submissions Page - Inline Edit - Cancel Changes
+Scenario: TCXXXX: Forms Submissions Page - Inline Edit - Cancel Changes (Requires Form TCXXX Pre-Trip Required (1) is published and submitted)
 Given I am logged in
 When I click the Forms link
 And I click the Submissions link
@@ -225,13 +225,13 @@ And I save the 1st Row of the Decimal Entry text as SAVEDDECIMAL
 And I save the 1st Row of the Date Entry text as SAVEDDATE
 And I save the 1st Row of the Chooseone Entry text as SAVEDCHOOSEONE
 And I save the 1st Row of the Choosemany Entry text as SAVEDCHOOSEMANY
-And I double click the 1st Row of the Date Time Entry text
+And I double click the 1st Row of the Edited Entry text
 And I type "" into the 1st Row of the Text Entry textfield
 And I type "" into the 1st Row of the Numeric Entry textfield
 And I type "" into the 1st Row of the Decimal Entry textfield
 And I select 2 days in the past from the 1st Row of the Date Entry dropdown
-And I select row 1 from the Chooseone Entry dropdown
-And I check the 1st Row of the Choosemany Entry checkbox
+And I select row 2 from the Chooseone Entry dropdown
+And I click the 1st Row of the Choosemany Entry checkbox
 And I click the 1st Row of the Cancel button
 Then I validate the 1st Row of the Text Entry text is SAVEDTEXT
 And I validate the 1st Row of the Numeric Entry text is SAVEDNUMERIC
@@ -239,6 +239,7 @@ And I validate the 1st Row of the Decimal Entry text is SAVEDDECIMAL
 And I validate the 1st Row of the Date Entry text is SAVEDDATE
 And I validate the 1st Row of the Chooseone Entry text is SAVEDCHOOSEONE
 And I validate the 1st Row of the Choosemany Entry text is SAVEDCHOOSEMANY
+And I validate the 1st Row of the Edited Entry text is "no"
 
 Scenario: TCXXXX: Forms Submissions Page - Inline Edit - Save Changes
 Given I am logged in
