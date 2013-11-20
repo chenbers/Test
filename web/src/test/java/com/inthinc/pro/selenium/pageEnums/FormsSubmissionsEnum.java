@@ -31,14 +31,15 @@ public enum FormsSubmissionsEnum implements SeleniumEnums {
     DRIVER_FIELD(null, "column-filter-submission-driver"),
     VEHICLE_FIELD(null, "column-filter-submission-vehicle"),
     
-    LOCATION_ENTRY(null, "//table[@id='submissions-table']/tbody/tr[###]/td[1]"),
-    DATE_TIME_TEXT_ENTRY(null, "//table[@id='submissions-table']/tbody/tr[###]/td[2]"),
-    GROUP_LINK_ENTRY(null, "//table[@id='submissions-table']/tbody/tr[###]/td[3]"),
-    DRIVER_LINK_ENTRY(null, "//table[@id='submissions-table']/tbody/tr[###]/td[4]"),
-    VEHICLE_LINK_ENTRY(null, "//table[@id='submissions-table']/tbody/tr[###]/td[5]"),
-    FORM_TEXT_ENTRY(null, "//table[@id='submissions-table']/tbody/tr[###]/td[6]"),
+    LOCATION_ENTRY(null, "//tr[###]/td[contains(@class,'location')]"),
+    DATE_TIME_TEXT_ENTRY(null, "//tr[###]/td[contains(@class,'submissionDate sorting_1')]"),
+    GROUP_LINK_ENTRY(null, "//tr[###]/td[contains(@class,'groupName')]"),
+    DRIVER_LINK_ENTRY(null, "//tr[###]/td[contains(@class,'driverName')]"),
+    VEHICLE_LINK_ENTRY(null, "//tr[###]/td[contains(@class,'vehicleName')]"),
+    FORM_TEXT_ENTRY(null, "//tr[###]/td[contains(@class,'formName')]"),
     EDITED_TEXT_ENTRY(null, "//tr[###]/td[contains(@class,'edited')]"),
     APPROVED_CHECKBOX_ENTRY(null, "//tr[###]/td[contains(@class,'status')]/input[@type='checkbox']"),
+    EDIT_ROW_BUTTON(null, "//tr[###]/td[contains(@class,'trigger')]"),
 
     //INLINE EDIT ELEMENTS
     TEXT_ENTRY(null, "//tr[###]/td[@class='editable string']"),
