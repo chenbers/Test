@@ -63,10 +63,10 @@ public enum FormsSubmissionsEnum implements SeleniumEnums {
     
     NO_RECORDS_ERROR("No matching records found", "//td[@class='dataTables_empty']"),
     
-    INVALID_TEXT_ERROR("Invalid", "//td[8]/div[@class='label label-important']"),
-    INVALID_NUMERIC_ERROR("Invalid", "//td[9]/div[@class='label label-important']"),
-    INVALID_DECIMAL_ERROR("Invalid", "//td[10]/div[@class='label label-important']"),
-    INVALID_DATE_ERROR("Invalid", "//td[11]/div[@class='label label-important']"),
+    INVALID_TEXT_ERROR("Invalid", "//td[@class='editable string']/div[@class='label label-important']"),
+    INVALID_NUMERIC_ERROR("Invalid", "//td[@class='editable integer']/div[@class='label label-important']"),
+    INVALID_DECIMAL_ERROR("Invalid", "//td[@class='editable decimal']/div[@class='label label-important']"),
+    INVALID_DATE_ERROR("Invalid", "//td[@class='editable date']/div[@class='label label-important']"),
     
     ENTRIES_TEXT("Showing #### to #### of #### entries", "//div[@id='submissions-table_info']"),
     
