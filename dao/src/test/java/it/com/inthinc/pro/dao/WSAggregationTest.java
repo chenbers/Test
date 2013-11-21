@@ -61,7 +61,7 @@ import com.inthinc.pro.notegen.WSNoteSender;
 import it.com.inthinc.pro.dao.model.ITDataOneTeamExt;
 
 public class WSAggregationTest extends BaseJDBCTest{
-    private static final Logger logger = Logger.getLogger(DriverLogoffTest.class);
+    private static final Logger logger = Logger.getLogger(WSAggregationTest.class);
     private static SiloService siloService;
     private static final String XML_DATA_FILE = "OneTeamData.xml";
     private static EventHessianDAO eventDAO;
@@ -395,7 +395,7 @@ public class WSAggregationTest extends BaseJDBCTest{
     private void pollForEvent(Event event, Device device) {
         List<NoteType> noteTypes = new ArrayList<NoteType>();
         noteTypes.add(event.getType());
-        int secondsToWait = 30;
+        int secondsToWait = 5;
         for (int i = 0; i < secondsToWait; i++) {
             
             List<Event> events = eventDAO.getEventsForVehicle(device.getVehicleID(), new Date(event.getTime().getTime() - 5000l), new Date(event.getTime().getTime() + 5000l), noteTypes, 0);

@@ -105,6 +105,7 @@ public class AccountOptionsBean extends BaseBean {
                                 " , RHA is " + (account.hasRHAEnabled() ? "Enabled" : "Disabled") + 
                                 " , Forms is " + (account.hasFormsEnabled() ? "Enabled" : "Disabled") + 
                                 " , Drive Time Violations Report is " + (account.hasDriveTimeViolationsReportEnabled() ? "Enabled" : "Disabled") +
+                                " , Event Queue is " + (account.hasEventsQueueEnabled() ? "Enabled" : "Disabled") + 
                                 " , Login Expire is " +(account.getProps().getLoginExpire()) + 
                                 " , Password Expire is "+(account.getProps().getPasswordExpire()) +
                                 " , Password Strength is "+(account.getProps().getPasswordStrength()) +

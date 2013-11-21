@@ -3,7 +3,6 @@ package it.com.inthinc.pro.dao.model;
 import static org.junit.Assert.assertNotNull;
 import it.com.inthinc.pro.dao.Util;
 import it.config.ReportTestConst;
-import it.util.DataGenForFormsTesting;
 
 import java.beans.XMLDecoder;
 import java.beans.XMLEncoder;
@@ -285,7 +284,7 @@ public abstract class BaseITData {
         PersonHessianDAO personDAO = new PersonHessianDAO();
         personDAO.setSiloService(siloService);
 
-        int retryCount = 10;
+        int retryCount = 200;
         Person person = null;
         // create a person
         while (retryCount > 0)
@@ -314,7 +313,7 @@ public abstract class BaseITData {
     }
     
     private String genEmployeeID(Integer groupID, Integer acctID) {
-        String empID = "e"+groupID+acctID+Util.randomInt(1, 99999);
+        String empID = "e"+groupID+Util.randomInt(1, 99999);
         if (empID.length() > 10) 
             return empID.substring(0, 10);
         
@@ -594,6 +593,18 @@ public abstract class BaseITData {
 
         
     }
+    
+    
+    
+    public void setDriverDOTType(Driver driver, RuleSetType ruleSetType) {
+        DriverHessianDAO driverDAO = new DriverHessianDAO();
+        driverDAO.setSiloService(siloService);
+        
+        driver.setDot(ruleSetType);
+        driverDAO.update(driver);
+        
+    }
+
 
 
 }

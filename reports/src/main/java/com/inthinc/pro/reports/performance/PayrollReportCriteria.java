@@ -22,6 +22,7 @@ import org.joda.time.format.DateTimeFormatter;
 import com.inthinc.hos.model.HOSStatus;
 import com.inthinc.hos.model.RuleSetType;
 import com.inthinc.pro.dao.AccountDAO;
+import com.inthinc.pro.dao.AddressDAO;
 import com.inthinc.pro.dao.GroupDAO;
 import com.inthinc.pro.dao.HOSDAO;
 import com.inthinc.pro.model.Account;
@@ -47,6 +48,8 @@ public class PayrollReportCriteria extends GroupListReportCriteria implements Ta
     protected AccountDAO accountDAO;
     protected GroupDAO groupDAO;
     protected HOSDAO hosDAO;
+    protected AddressDAO addressDAO;
+
 
     
     public PayrollReportCriteria(ReportType reportType, Locale locale) 
@@ -145,7 +148,7 @@ public class PayrollReportCriteria extends GroupListReportCriteria implements Ta
         
         Group group = groupHierarchy.getGroup(driver.getGroupID());
         String groupName = getFullGroupName(groupHierarchy, group.getGroupID());
-        String groupAddress = group.getAddress() == null ? "" : group.getAddress().getDisplayString();
+        String groupAddress = getGroupAddressString(group);
 
         String driverName = driver.getPerson().getFullNameLastFirst();
         String employeeID = driver.getPerson().getEmpid();
@@ -403,4 +406,20 @@ public class PayrollReportCriteria extends GroupListReportCriteria implements Ta
     }
 
     
+    public String getGroupAddressString(Group group) {
+        
+        if (group.getAddress() == null && group.getAddressID() != null && addressDAO != null) {
+            group.setAddress(addressDAO.findByID(group.getAddressID()));
+        }
+        return group.getAddress() == null ? "" : group.getAddress().getDisplayString();
+    }
+
+    public AddressDAO getAddressDAO() {
+        return addressDAO;
+    }
+
+    public void setAddressDAO(AddressDAO addressDAO) {
+        this.addressDAO = addressDAO;
+    }
+
 }
