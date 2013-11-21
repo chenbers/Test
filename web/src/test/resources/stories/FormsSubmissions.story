@@ -300,9 +300,6 @@ And I click the Submissions link
 And I select "Form TCXXXX Pre-Trip Required (1)" from the Form dropdown
 And I click the Refresh button
 And I double click the 1st Row of the Edited Entry text
-And I type "x" into the 1st Row of the Text Entry textfield
-And I click the 1st Row of the Save button
-Then I validate the Invalid Text Error text is present
 And I type "TCXXXXTCXXXXTCXXXX" into the 1st Row of the Text Entry textfield
 And I click the 1st Row of the Save button
 And I validate the Invalid Text Error text is present
