@@ -27,10 +27,10 @@ public enum FormsSubmissionsEnum implements SeleniumEnums {
     EDITED_DROPDOWN(null, "//th[@id='column-filter-submission-edited']/span/select"),  
     APPROVED_DROPDOWN(null, "//th[@id='column-filter-submission-status']/span/select"),
 
-    GROUP_FIELD(null, "column-filter-submission-group"),
-    DRIVER_FIELD(null, "column-filter-submission-driver"),
-    VEHICLE_FIELD(null, "column-filter-submission-vehicle"),
-    
+    GROUP_FIELD(null, "//th[3]/span/input"),
+    DRIVER_FIELD(null, "//th[4]/span/input"),
+    VEHICLE_FIELD(null, "//th[5]/span/input"),
+        
     LOCATION_ENTRY(null, "//tr[###]/td[contains(@class,'location')]"),
     DATE_TIME_TEXT_ENTRY(null, "//tr[###]/td[contains(@class,'submissionDate sorting_1')]"),
     GROUP_LINK_ENTRY(null, "//tr[###]/td[contains(@class,'groupName')]"),

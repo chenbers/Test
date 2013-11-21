@@ -249,24 +249,28 @@ And I select "Form TCXXXX Pre-Trip Required (1)" from the Form dropdown
 And I click the Refresh button
 And I click the Sort By Edited link
 Then I validate the 1st Row of the Edited Entry text is "no"
+And I save the 1st Row of the Vehicle Entry link as SAVEDVEHICLE
+And I type SAVEDVEHICLE into the Vehicle textfield
 And I save the 1st Row of the Date Entry text as SAVEDDATE
+And I save the 1st Row of the Chooseone Entry text as SAVEDCHOOSEONE
 And I save the 1st Row of the Choosemany Entry text as SAVEDCHOOSEMANY
-And I double click the 1st Row of the Date Time Entry text
+And I double click the 1st Row of the Edited Entry text
 And I type "New Text" into the 1st Row of the Text Entry textfield
 And I type "2" into the 1st Row of the Numeric Entry textfield
 And I type "99.99" into the 1st Row of the Decimal Entry textfield
-And I select 50 days in the past from the 1st Row of the Date Entry dropdown
-And I select row 1 from the Chooseone Entry dropdown
-And I uncheck the 2nd Row of the Choosemany Entry checkbox
+And I select 457 days in the past from the 1st Row of the Date Entry dropdown
+And I select row 4 from the Chooseone Entry dropdown
+And I click the 2nd Row of the Choosemany Entry checkbox
 And I click the 1st Row of the Save button
+And I validate the Vehicle textfield is SAVEDVEHICLE
 And I click the Sort By Edited link
-Then I validate the 1st Row of the Edited Entry text is "Yes"
 And I validate the 1st Row of the Text Entry text is "New Text"
 And I validate the 1st Row of the Numeric Entry text is "2"
 And I validate the 1st Row of the Decimal Entry text is "99.99"
 And I validate the 1st Row of the Date Entry text is not SAVEDDATE
-And I validate the 1st Row of the Chooseone Entry text is "option1"
+And I validate the 1st Row of the Chooseone Entry text is not SAVEDCHOOSEONE
 And I validate the 1st Row of the Choosemany Entry text is not SAVEDCHOOSEMANY
+And I validate the 1st Row of the Edited Entry text is "yes"
 
 Scenario: TCXXXX: Forms Submissions Page - Inline Edit - Generate error messages - blank fields (required)
 Given I am logged in
