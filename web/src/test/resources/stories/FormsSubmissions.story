@@ -278,7 +278,7 @@ When I click the Forms link
 And I click the Submissions link
 And I select "Form TCXXXX Pre-Trip Required (1)" from the Form dropdown
 And I click the Refresh button
-And I double click the 1st Row of the Date Time Entry text
+And I double click the 1st Row of the Edited Entry text
 And I type "" into the 1st Row of the Text Entry textfield
 And I type "" into the 1st Row of the Numeric Entry textfield
 And I type "" into the 1st Row of the Decimal Entry textfield
@@ -299,7 +299,7 @@ When I click the Forms link
 And I click the Submissions link
 And I select "Form TCXXXX Pre-Trip Required (1)" from the Form dropdown
 And I click the Refresh button
-And I double click the 1st Row of the Date Time Entry text
+And I double click the 1st Row of the Edited Entry text
 And I type "x" into the 1st Row of the Text Entry textfield
 And I click the 1st Row of the Save button
 Then I validate the Invalid Text Error text is present
@@ -313,11 +313,11 @@ When I click the Forms link
 And I click the Submissions link
 And I select "Form TCXXXX Pre-Trip Required (1)" from the Form dropdown
 And I click the Refresh button
-And I double click the 1st Row of the Date Time Entry text
-And I type "1" into the 1st Row of the Numeric Entry textfield
+And I double click the 1st Row of the Edited Entry text
+And I type "0" into the 1st Row of the Numeric Entry textfield
 And I click the 1st Row of the Save button
 Then I validate the Invalid Numeric Error text is present
-And I type "10" into the 1st Row of the Numeric Entry textfield
+And I type "101" into the 1st Row of the Numeric Entry textfield
 And I click the 1st Row of the Save button
 And I validate the Invalid Numeric Error text is present
 
@@ -327,7 +327,7 @@ When I click the Forms link
 And I click the Submissions link
 And I select "Form TCXXXX Pre-Trip Required (1)" from the Form dropdown
 And I click the Refresh button
-And I double click the 1st Row of the Date Time Entry text
+And I double click the 1st Row of the Edited Entry text
 And I type "-0.9" into the 1st Row of the Decimal Entry textfield
 And I click the 1st Row of the Save button
 Then I validate the Invalid Decimal Error text is present
@@ -341,7 +341,7 @@ When I click the Forms link
 And I click the Submissions link
 And I select "Form TCXXXX Pre-Trip Required (1)" from the Form dropdown
 And I click the Refresh button
-And I double click the 1st Row of the Date Time Entry text
+And I double click the 1st Row of the Edited Entry text
 And I select 32 days in the future from the 1st Row of the Date Entry dropdown
 And I click the 1st Row of the Save button
 Then I validate the Invalid Date Error text is present
