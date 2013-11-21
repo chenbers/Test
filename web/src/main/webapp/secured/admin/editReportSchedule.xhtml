@@ -426,8 +426,11 @@
 						<table id="editReportSchedule-emailList" width="370" border="0" cellspacing="2" cellpadding="4" align="center">
 								<tr>
 									<td>
+                                        <rich:message for="reportSchedule-emailToString" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
 										<div class="instructions"><h:outputText value="#{messages.editReportSchedule_reportsByEmailInstructions}" /></div>
-										<h:inputTextarea cols ="40" rows="5" value="#{reportScheduleBean.item.emailToString}" />
+										<h:inputTextarea cols ="40" rows="5" id="reportSchedule-emailToString" value="#{reportScheduleBean.item.emailToString}"  validatorMessage="#{messages.editPerson_emailFormat}" >
+                                        <f:validator validatorId="com.inthinc.pro.validators.MultipleEmailValidator"/>
+                                        </h:inputTextarea>
 									</td>
 								</tr>
 						</table>	

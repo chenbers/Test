@@ -39,7 +39,7 @@ public class AdminHazardJDBCDAO extends SimpleJdbcDaoSupport implements RoadHaza
     private static final Logger logger = Logger.getLogger(AdminHazardJDBCDAO.class);
     private static String HAZARD_COLUMNS_STRING="";// = " acctID, driverID, userID, vehicleID, deviceID, latitude, longitude, radius, startTime, endTime, type, description, status, location, stateID, created, modified ";
     private static final String HAZARD_UPDATE_PRE = "UPDATE hazard set"; //
-    private static final String HAZARD_UPDATE_POST = " WHERE hazardID = :hazardID";
+    private static final String HAZARD_UPDATE_POST = " WHERE hazardID = ?";
     private static String HAZARD_UPDATE;
     /**
      * Ordered map of columns where <String columnNameInDB, String messageKeyForDisplayOnSite?>
@@ -65,18 +65,21 @@ public class AdminHazardJDBCDAO extends SimpleJdbcDaoSupport implements RoadHaza
         columnMap.put("stateID", "stateID");
         columnMap.put("created", "created");
         columnMap.put("modified", "modified");
-        
+
         HAZARD_UPDATE = HAZARD_UPDATE_PRE;
         for(String key: columnMap.keySet()){
             HAZARD_UPDATE += " "+key+" = ? , ";
             HAZARD_COLUMNS_STRING+=" "+key+" ,";
         }
+        HAZARD_UPDATE = HAZARD_UPDATE.trim();
+        HAZARD_COLUMNS_STRING = HAZARD_COLUMNS_STRING.trim();
+
         //remove trailing comma if necessary
-        if(HAZARD_UPDATE.endsWith(",")){ 
+        if(HAZARD_UPDATE.endsWith(",")){
             HAZARD_UPDATE = HAZARD_UPDATE.substring(0, HAZARD_UPDATE.length()-2);
         }
         //remove trailing comma if necessary
-        if(HAZARD_COLUMNS_STRING.endsWith(",")){ 
+        if(HAZARD_COLUMNS_STRING.endsWith(",")){
             HAZARD_COLUMNS_STRING = HAZARD_COLUMNS_STRING.substring(0, HAZARD_COLUMNS_STRING.length()-2);
         }
         HAZARD_UPDATE += HAZARD_UPDATE_POST;
@@ -97,7 +100,7 @@ public class AdminHazardJDBCDAO extends SimpleJdbcDaoSupport implements RoadHaza
     "INSERT INTO hazard ( " + HAZARD_COLUMNS_STRING + " ) " + //
             "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) "; //
     private static final String HAZARD_DELETE_BY_ID = //
-    "DELETE FROM hazard WHERE hazardID = ?"; // 
+    "DELETE FROM hazard WHERE hazardID = ?"; //
 
     private static ParameterizedRowMapper<Hazard> hazardRowMapper = new ParameterizedRowMapper<Hazard>() {
         @Override
@@ -113,19 +116,27 @@ public class AdminHazardJDBCDAO extends SimpleJdbcDaoSupport implements RoadHaza
             hazard.setRadiusMeters(rs.getInt("radius"));
             String strStartDate = rs.getString("startTime");
             String strEndDate = rs.getString("endTime");
-            
+            String strCreated = rs.getString("created");
+            String strModified = rs.getString("modified");
+
             SimpleDateFormat dateFormat = getDateFormat(TimeZone.getTimeZone("UTC"));
             java.util.Date startDate = null;
             java.util.Date endDate = null;
+            java.util.Date created = null;
+            java.util.Date modified = null;
             try{
                  startDate = dateFormat.parse(strStartDate);
                  endDate = dateFormat.parse(strEndDate);
+                 created = dateFormat.parse(strCreated);
+                 modified = dateFormat.parse(strModified);
             } catch (Exception e){
                 logger.error(e);
             }
-            
+
             hazard.setStartTime(startDate);
             hazard.setEndTime(endDate);
+            hazard.setCreated(created);
+            hazard.setModified(modified);
             hazard.setDescription(rs.getString("description"));
             hazard.setStatus(HazardStatus.valueOf(rs.getInt("status")));
             hazard.setLocation(rs.getString("location"));
@@ -152,7 +163,7 @@ public class AdminHazardJDBCDAO extends SimpleJdbcDaoSupport implements RoadHaza
         return theInteger;
     }
     public List<Hazard> findAllInAccount(Integer acctID) {
-        return findHazardsByUserAcct(acctID, LatLng.MIN_LAT, LatLng.MIN_LNG, LatLng.MAX_LAT, LatLng.MAX_LNG); 
+        return findHazardsByUserAcct(acctID, LatLng.MIN_LAT, LatLng.MIN_LNG, LatLng.MAX_LAT, LatLng.MAX_LNG);
     }
     public List<Hazard> findInAccount(Integer acctID, BoundingBox box){
     	return findHazardsByUserAcct(acctID, box.getSw().getLat(), box.getSw().getLng(), box.getNe().getLat(), box.getNe().getLng());
@@ -196,10 +207,10 @@ public class AdminHazardJDBCDAO extends SimpleJdbcDaoSupport implements RoadHaza
             LatLng hazardLocation = new LatLng(hazard.getLat(), hazard.getLng());
             float dist = GeoUtil.distBetween(location, hazardLocation, MeasurementType.METRIC);
             logger.debug("dist: "+dist);
-            
+
             if(dist < kilometers && hazard.getStatus().equals(HazardStatus.ACTIVE) && hazard.getEndTime().after(rightNow)) {
                 results.add(hazard);
-            } 
+            }
         }
         return results;
     }
@@ -216,11 +227,38 @@ public class AdminHazardJDBCDAO extends SimpleJdbcDaoSupport implements RoadHaza
     }
 
     @Override
-    public Integer update(Hazard hazard) {
-        deleteByID(hazard.getHazardID());
-        return create(hazard.getAccountID(), hazard);
-        //return getJdbcTemplate().update(HAZARD_UPDATE, new Object[] { hazard });  //TODO: jwimmer: this SHOULD work?
-        //throw new NotImplementedException("AdminHazardJDBCDAO update(Hazard) not yet implemented");
+    public Integer update(final Hazard hazard) {
+        JdbcTemplate jdbcTemplate = getJdbcTemplate();
+        PreparedStatementCreator psc = new PreparedStatementCreator() {
+
+            @Override
+            public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
+                PreparedStatement ps = con.prepareStatement(HAZARD_UPDATE);
+                ps.setInt(1, hazard.getAcctID());
+                ps.setObject(2, hazard.getDriverID(), Types.INTEGER);
+                ps.setObject(3, hazard.getUserID(), Types.INTEGER);
+                ps.setObject(4, hazard.getVehicleID(), Types.INTEGER);
+                ps.setObject(5, hazard.getDeviceID(), Types.INTEGER);
+                ps.setDouble(6, hazard.getLatitude());
+                ps.setDouble(7, hazard.getLongitude());
+                ps.setInt(8, hazard.getRadiusMeters());
+                ps.setTimestamp(9, hazard.getStartTime() != null ? new Timestamp(hazard.getStartTime().getTime()) : null);
+                ps.setTimestamp(10, hazard.getEndTime() != null ? new Timestamp(hazard.getEndTime().getTime()) : null);
+                ps.setInt(11, hazard.getType() != null ? hazard.getType().getCode() : null);
+                ps.setString(12, hazard.getDescription());
+                ps.setInt(13, hazard.getStatus() != null ? hazard.getStatus().getCode() : null);
+                ps.setString(14, hazard.getLocation());
+                ps.setObject(15, hazard.getStateID(), Types.INTEGER);
+                ps.setTimestamp(16, hazard.getCreated() != null ? new Timestamp(hazard.getCreated().getTime()) : new Timestamp(System.currentTimeMillis()));
+                ps.setTimestamp(17, new Timestamp(System.currentTimeMillis()));
+                ps.setInt(18, hazard.getHazardID());
+                logger.debug(ps.toString());
+                return ps;
+            }
+        };
+
+        jdbcTemplate.update(psc);
+        return hazard.getHazardID();
     }
 
     @Override
@@ -265,7 +303,7 @@ public class AdminHazardJDBCDAO extends SimpleJdbcDaoSupport implements RoadHaza
                 return ps;
             }
         };
-        
+
         jdbcTemplate.update(psc, keyHolder);
         return keyHolder.getKey().intValue();
     }

@@ -11,6 +11,7 @@ import java.util.List;
 import org.joda.time.DateTime;
 import org.joda.time.Interval;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.inthinc.pro.dao.hessian.GroupHessianDAO;
@@ -67,7 +68,7 @@ public class EventAggregationJDBCDAOTest extends BaseJDBCTest {
 
 
 
-    @Test
+    @Ignore
     public void testOldVsNew() {
         EventAggregationJDBCDAO eventAggregationJDBCDAO = new EventAggregationJDBCDAO();
         eventAggregationJDBCDAO.setDataSource(new ITDataSource().getRealDataSource());

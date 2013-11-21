@@ -20,6 +20,7 @@ import java.util.List;
 import org.joda.time.DateTime;
 
 import com.inthinc.hos.model.HOSStatus;
+import com.inthinc.hos.model.RuleSetType;
 import com.inthinc.pro.dao.HOSDAO;
 import com.inthinc.pro.dao.jdbc.HOSJDBCDAO;
 import com.inthinc.pro.dao.util.DateUtil;
@@ -236,6 +237,7 @@ public class DataGenForIntegrationTesting extends DataGenForTesting {
 	            xml = new XMLEncoder(new BufferedOutputStream(new FileOutputStream(testData.xmlPath)));
 	            System.out.println(" saving output to " + testData.xmlPath);
 	            testData.createTestData();
+	            testData.itData.setDriverDOTType(((ITData)testData.itData).teamGroupData.get(ITData.BAD).driver, RuleSetType.NON_DOT);
 
 	            // wait for imeis to hit central server
 	            // generate data for today (midnight) and 30 previous days

@@ -565,9 +565,6 @@ public class EventCassandraDAO extends AggregationCassandraDAO implements EventD
                 Event event = getMapper().convertToModelObject(fieldMap, Event.class);
                 event.setNoteID(noteId);
                 
-                //TODO: Fix this hack.  
-                fixDistance(event); 
-                
                 if (event.isValidEvent())
                     eventList.add(event);
             }
@@ -648,9 +645,6 @@ public class EventCassandraDAO extends AggregationCassandraDAO implements EventD
             Event event = getMapper().convertToModelObject(fieldMap, Event.class);
             event.setNoteID(id);
             
-            //TODO: Fix this hack.  
-            fixDistance(event); 
-            
             if (event.isValidEvent() && (includeForgiven || (!includeForgiven && forgiven == false)))
             	eventList.add(event);
         }
@@ -665,15 +659,4 @@ public class EventCassandraDAO extends AggregationCassandraDAO implements EventD
         return (Integer) map.get("count");
     }
 
-    private void fixDistance(Event event){
-        if (event instanceof SpeedingEvent) {
-            ((SpeedingEvent)event).setDistance(((SpeedingEvent) event).getDistance() * 10);
-            return;
-        }    
-        if (event instanceof SeatBeltEvent) {
-            ((SeatBeltEvent)event).setDistance(((SeatBeltEvent) event).getDistance() * 10);
-            return;
-        }    
-
-    }
 }

@@ -334,6 +334,7 @@ public enum Attrib {
     DVIR_MECHANIC_ID(24598, AttribParserType.STRING_FIXED_LENGTH10),
     DVIR_INSPECTOR_ID(24599, AttribParserType.STRING_VAR_LENGTH11),// Set this to length of 11 to allow a length of 10 and a null terminator for the 11 char
     DVIR_SIGNOFF_ID(24600, AttribParserType.STRING_VAR_LENGTH11),// Set this to a length of 11 to allow a length of 10 and a null terminator for the 11 char
+    TRAILERID_OLD(24602, AttribParserType.STRING_VAR_LENGTH),
 	
 	// BINARY 
 	DELTAVS(49152, AttribParserType.DELTAVS_AS_STRING),
@@ -422,10 +423,16 @@ public enum Attrib {
         String strVal = "";
         Object val = null;
         for ( int i=1; i+2 <= split.length; i+=2 ){
+            val = null;
             strCode = split[i];
             strVal = split[i+1];
 
-            val = Attrib.parseStringValue(strCode, strVal);
+            try {
+                val = Attrib.parseStringValue(strCode, strVal);
+            } catch (Exception e){
+                logger.error("Exception: " + e);
+                e.printStackTrace();
+            }    
             
             if (val != null)
                 map.put(strCode,  val);
@@ -489,5 +496,14 @@ public enum Attrib {
         
         return attribParser;
     }
-
+    
+    public static void adjustWaysmartDistance(Map<String, Object> attribMap){
+        //We are multiplying distance by 10 for waysmarts to match tiwi.
+        String name = Attrib.DISTANCE.getFieldName();
+        Integer distance = (Integer)attribMap.get(name);
+        if (distance != null) {
+            distance *= 10;
+            attribMap.put(name, distance);
+        }
+    }
 };
