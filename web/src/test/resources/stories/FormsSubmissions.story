@@ -13,9 +13,6 @@ And I validate the No Records Found Error text is present
 And I validate the No Records Found Error text is "No data available in table"
 And I validate the Entries text contains "Showing 0 to 0 of 0 entries"
 
-!-- Scenario: Forms Submissions Page - Generate Submissions
-!-- Given I generate submissions
-
 Scenario: TCXXXX Forms Submissions Page - UI Test
 Given I am logged in
 When I click the Forms link
