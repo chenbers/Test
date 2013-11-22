@@ -1130,7 +1130,6 @@ And I type "Choose One" in the Caption Text textfield
 And I type "Hint" in the Hint textfield
 And I type "Default Value" in the D Value Date Choose Select textfield
 And I check the Read Only checkbox
-And I click the Add Option link
 And I type "Option 1" in the 1st Row of the Option English textfield
 And I type "optionone" in the 1st Row of the Option Underlying Value textfield
 And I click the Save Top button
@@ -1155,7 +1154,6 @@ And I type "Choose One" in the Caption Text textfield
 And I type "Hint" in the Hint textfield
 And I type "Default Value" in the D Value Date Choose Select textfield
 And I check the Required checkbox
-And I click the Add Option link
 And I type "Option 1" in the 1st Row of the Option English textfield
 And I type "optionone" in the 1st Row of the Option Underlying Value textfield
 And I click the Save Top button
@@ -1181,7 +1179,6 @@ And I type "Hint" in the Hint textfield
 And I type "Default Value" in the D Value Date Choose Select textfield
 And I check the Required checkbox
 And I check the Read Only checkbox
-And I click the Add Option link
 And I type "Option 1" in the 1st Row of the Option English textfield
 And I type "optionone" in the 1st Row of the Option Underlying Value textfield
 And I click the Save Top button
@@ -1206,7 +1203,6 @@ And I type "anXMLtag" into the Data Name textfield
 And I type "Choose One" in the Caption Text textfield
 And I type "Hint" in the Hint textfield
 And I type "Default Value" in the D Value Date Choose Select textfield
-And I click the Add Option link
 And I type "Option 1" in the 1st Row of the Option English textfield
 And I type "optionone" in the 1st Row of the Option Underlying Value textfield
 And I click the Save Top button
@@ -1231,7 +1227,6 @@ And I type "anXMLtag" into the Data Name textfield
 And I type "Choose One" in the Caption Text textfield
 And I type "Hint" in the Hint textfield
 And I type "value" in the D Value Date Choose Select textfield
-And I click the Add Option link
 And I type "Option 1" in the 1st Row of the Option English textfield
 And I type "optionone" in the 1st Row of the Option Underlying Value textfield
 And I click the Add Option link
@@ -1400,7 +1395,6 @@ And I type "Select Multiple" in the Caption Text textfield
 And I type "Hint" in the Hint textfield
 And I type "Default Value" in the D Value Date Choose Select textfield
 And I check the Read Only checkbox
-And I click the Add Option link
 And I type "Option 1" in the 1st Row of the Option English textfield
 And I type "optionone" in the 1st Row of the Option Underlying Value textfield
 And I click the Save Top button
@@ -1426,7 +1420,6 @@ And I type "Select Multiple" in the Caption Text textfield
 And I type "Hint" in the Hint textfield
 And I type "Default Value" in the D Value Date Choose Select textfield
 And I check the Required checkbox
-And I click the Add Option link
 And I type "Option 1" in the 1st Row of the Option English textfield
 And I type "optionone" in the 1st Row of the Option Underlying Value textfield
 And I click the Save Top button
@@ -1452,7 +1445,6 @@ And I type "Hint" in the Hint textfield
 And I type "Default Value" in the D Value Date Choose Select textfield
 And I check the Required checkbox
 And I check the Read Only checkbox
-And I click the Add Option link
 And I type "Option 1" in the 1st Row of the Option English textfield
 And I type "optionone" in the 1st Row of the Option Underlying Value textfield
 And I click the Save Top button
@@ -1477,7 +1469,6 @@ And I type "anXMLtag" into the Data Name textfield
 And I type "Select Multiple" in the Caption Text textfield
 And I type "Hint" in the Hint textfield
 And I type "Default Value" in the D Value Date Choose Select textfield
-And I click the Add Option link
 And I type "Option 1" in the 1st Row of the Option English textfield
 And I type "optionone" in the 1st Row of the Option Underlying Value textfield
 And I click the Save Top button
@@ -1502,7 +1493,6 @@ And I type "anXMLtag" into the Data Name textfield
 And I type "Select Multiple" in the Caption Text textfield
 And I type "Hint" in the Hint textfield
 And I type "value" in the D Value Date Choose Select textfield
-And I click the Add Option link
 And I type "Option 1" in the 1st Row of the Option English textfield
 And I type "optionone" in the 1st Row of the Option Underlying Value textfield
 And I click the Add Option link
@@ -1716,7 +1706,6 @@ And I type "chooseOne" in the Data Name textfield
 And I type "Choose One Caption" in the Caption Text textfield
 And I type "Choose One Hint" in the Hint textfield
 And I check the Required checkbox
-And I click the Add Option link
 And I type "Option 1" into the 1st Row of the Option English textfield
 And I type "optionone" into the 1st Row of the Option Underlying Value textfield
 And I click the Add Option link
@@ -1733,7 +1722,6 @@ And I type "selectMultiple" in the Data Name textfield
 And I type "Select Multiple Caption" in the Caption Text textfield
 And I type "Select Multiple Hint" in the Hint textfield
 And I check the Required checkbox
-And I click the Add Option link
 And I type "Option 1" into the 1st Row of the Option English textfield
 And I type "optionone" into the 1st Row of the Option Underlying Value textfield
 And I click the Add Option link
@@ -1875,7 +1863,6 @@ And I click the Choose One link
 And I type "chooseOne" in the Data Name textfield
 And I type "Choose One Caption" in the Caption Text textfield
 And I type "Choose One Hint" in the Hint textfield
-And I click the Add Option link
 And I type "Option 1" into the 1st Row of the Option English textfield
 And I type "optionone" into the 1st Row of the Option Underlying Value textfield
 And I click the Add Option link
@@ -1891,7 +1878,6 @@ And I click the Select Multiple link
 And I type "selectMultiple" in the Data Name textfield
 And I type "Select Multiple Caption" in the Caption Text textfield
 And I type "Select Multiple Hint" in the Hint textfield
-And I click the Add Option link
 And I type "Option 1" into the 1st Row of the Option English textfield
 And I type "optionone" into the 1st Row of the Option Underlying Value textfield
 And I click the Add Option link
