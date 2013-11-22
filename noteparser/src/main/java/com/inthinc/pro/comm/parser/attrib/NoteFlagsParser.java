@@ -8,7 +8,7 @@ public class NoteFlagsParser implements AttribParser {
 
 	public int parseAttrib(byte[] data, int offset, String code, Map<String, Object> attribMap) {
 
-		assert data.length > (offset + 2);
+		assert data.length >= (offset + 2);
 		
 		short flags = (short) ReadUtil.read(data, offset, 2);
 		

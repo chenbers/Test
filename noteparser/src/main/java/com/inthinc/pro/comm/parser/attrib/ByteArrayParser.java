@@ -7,7 +7,7 @@ import java.util.Arrays;
 public class ByteArrayParser implements AttribParser {
 
 	public int parseAttrib(byte[] data, int offset, String code, Map<String, Object> attribMap) {
-		assert(data.length > offset);
+		assert(data.length >= offset);
 		
 		attribMap.put(code, Arrays.copyOfRange(data, offset, data.length));
 		
