@@ -8,7 +8,7 @@ public class LongParser implements AttribParser {
 
 	public int parseAttrib(byte[] data, int offset, String code, Map<String, Object> attribMap) {
 
-		assert data.length > (offset + 8);
+		assert data.length >= (offset + 8);
 		
 		attribMap.put(code, ReadUtil.readLong(data, offset, 8));
 
