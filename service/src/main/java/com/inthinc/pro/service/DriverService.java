@@ -91,10 +91,9 @@ public interface DriverService {
     /**
      * Service to get the trips of given driver that has been performed between a given date and today.
      * @param driverID the Driver ID
-     * @param date the startDate of the interval to seach. This date must be max 30 days before today. 
+     * @param date the startDate of the interval to search. This date must be max 30 days before today. 
      * @returnWrapped List<Trip> the driver trips performed between a given date and today
-     * @HTTP HTTP 200 - OK if trips performed between a given date and today were found
-     * @HTTP HTTP 404 - NOT FOUND if no trips found 
+     * @HTTP HTTP 200 - OK if trips performed between a given date and today were found - can be empty result
      * @HTTP HTTP 400 - BAD REQUEST if date is more than 30 days back from today 
      */
     @GET
@@ -106,8 +105,7 @@ public interface DriverService {
      * Service to get the trips of given driver that has been performed between 30 days ago and today.
      * @param driverID the Driver ID
      * @returnWrapped List<Trip> the driver trips performed between 30 days ago and today
-     * @HTTP HTTP 200 - OK if trips performed between 30 days and today were found
-     * @HTTP HTTP 404 - NOT FOUND if no trips found 
+     * @HTTP HTTP 200 - OK if trips performed between 30 days and today were found - can be empty result
      */
     @GET
     @Path("/driver/{driverID}/trips")
@@ -119,8 +117,7 @@ public interface DriverService {
      * @param fromDateTime the startDate of the interval to search. This date must be max 30 days before today. 
      * @param toDateTime the endDate of the interval to search. This date must be after the fromDateTime. 
      * @returnWrapped List<Trip> the driver trips performed between a given date and today
-     * @HTTP HTTP 200 - OK if trips performed between a given date and today were found
-     * @HTTP HTTP 404 - NOT FOUND if no trips found 
+     * @HTTP HTTP 200 - OK if trips performed between a given date and today were found - can be empty result
      * @HTTP HTTP 400 - BAD REQUEST if date is more than 30 days back from today 
      */
     @GET

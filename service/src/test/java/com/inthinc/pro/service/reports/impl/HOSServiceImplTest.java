@@ -25,7 +25,7 @@ import com.inthinc.pro.service.reports.facade.ReportsFacade;
 import com.inthinc.pro.util.DateUtil;
 
 
-public class HOSServiceImplTest {//extends BaseUnitTest {
+public class HOSServiceImplTest {
     private static final Integer GROUP_ID = 6;
     
     
@@ -84,6 +84,50 @@ public class HOSServiceImplTest {//extends BaseUnitTest {
         // check for wrong interval
         response = serviceSUT.getHOSViolationDetails(GROUP_ID, expectedEndDate, expectedStartDate, Locale.US);
         Assert.assertEquals(Status.BAD_REQUEST.getStatusCode(),response.getStatus());
+    }
+    
+    /**
+     * Test getHOSViolations with the interval when no violations are returned.
+     */
+    @SuppressWarnings("unchecked")
+    @Test
+    public void testGetHOSViolationsEmptyResponse() {
+        // create interval dates
+        DateMidnight dateMidnight = new DateMidnight();
+        final Date expectedStartDate = dateMidnight.toDate();
+        final Date expectedEndDate = dateMidnight.plusDays(1).toDate();
+
+        // set the mock facade
+        serviceSUT.setReportsFacade(facadeMock);
+
+        
+        new Expectations () {
+            {
+                Interval interval = null;
+                try {
+                    interval = DateUtil.getInterval(expectedStartDate, expectedEndDate);
+                } catch (BadDateRangeException e) {
+                    fail("bad interval exception");
+                }
+                List<ViolationsDetail> emptyViolationsList = new ArrayList<ViolationsDetail>();
+                List<Integer> groupIDList = new ArrayList<Integer>();
+                groupIDList.add(GROUP_ID);
+                facadeMock.getHosViolationsDetail(groupIDList, interval, Locale.US); returns(emptyViolationsList);
+            }
+        };
+        
+        // check the response
+        Response response = serviceSUT.getHOSViolationDetails(GROUP_ID, expectedStartDate, expectedEndDate, Locale.US);
+        
+        Assert.assertNotNull(response);
+        Assert.assertEquals(Status.OK.getStatusCode(), response.getStatus());
+        // check the content
+        GenericEntity<List<ViolationsDetail>> entity = 
+            (GenericEntity<List<ViolationsDetail>>) response.getEntity();
+        
+        Assert.assertNotNull(entity);
+        Assert.assertEquals(0, entity.getEntity().size());
+        
     }
     
 }

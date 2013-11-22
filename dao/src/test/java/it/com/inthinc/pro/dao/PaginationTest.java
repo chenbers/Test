@@ -52,11 +52,7 @@ public class PaginationTest {
     static {
     	EXPECTED_EVENT_COUNTS = new HashMap<EventCategory, Integer[]> ();
     	// events in team 0 (GOOD) are from the unknown driver
-/*
-        US6954 - Removing backing events from portal until after firmware side implements.
-        EXPECTED_EVENT_COUNTS.put(EventCategory.VIOLATION, new Integer[] {Integer.valueOf(3), Integer.valueOf(3), Integer.valueOf(16), Integer.valueOf(28)});
-*/
-    	EXPECTED_EVENT_COUNTS.put(EventCategory.VIOLATION, new Integer[] {Integer.valueOf(3), Integer.valueOf(3), Integer.valueOf(15), Integer.valueOf(27)});
+    	EXPECTED_EVENT_COUNTS.put(EventCategory.VIOLATION, new Integer[] {Integer.valueOf(3), Integer.valueOf(3), Integer.valueOf(16), Integer.valueOf(28)});
     	EXPECTED_EVENT_COUNTS.put(EventCategory.WARNING, new Integer[] {Integer.valueOf(9), Integer.valueOf(7), Integer.valueOf(11), Integer.valueOf(39)});
     	EXPECTED_EVENT_COUNTS.put(EventCategory.EMERGENCY, new Integer[] {Integer.valueOf(0), Integer.valueOf(0), Integer.valueOf(1), Integer.valueOf(10)});
     	

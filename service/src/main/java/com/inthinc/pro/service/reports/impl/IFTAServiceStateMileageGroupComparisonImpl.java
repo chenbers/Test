@@ -1,5 +1,6 @@
 package com.inthinc.pro.service.reports.impl;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -67,10 +68,10 @@ public class IFTAServiceStateMileageGroupComparisonImpl extends BaseReportServic
             return Response.status(Status.INTERNAL_SERVER_ERROR).build();
         }
 
-        if (list != null && !list.isEmpty())
-            return Response.ok(new GenericEntity<List<StateMileageCompareByGroup>>(list) {}).build();
-
-        return Response.status(Status.NOT_FOUND).build();
+        if (list == null) {
+            list = new ArrayList<StateMileageCompareByGroup>();
+        }
+        return Response.ok(new GenericEntity<List<StateMileageCompareByGroup>>(list) {}).build();
     }
 
     /**

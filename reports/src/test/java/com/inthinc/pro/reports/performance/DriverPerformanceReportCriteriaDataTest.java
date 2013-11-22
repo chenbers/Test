@@ -1,5 +1,7 @@
 package com.inthinc.pro.reports.performance;
 
+import static org.junit.Assert.assertTrue;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -137,6 +139,24 @@ public class DriverPerformanceReportCriteriaDataTest extends BasePerformanceUnit
 
     }
     
+    
+    @Test
+    public void testLongGroupNameDE9097() {
+        DriverPerformanceReportCriteria criteria = new DriverPerformanceReportCriteria(ReportType.DRIVER_PERFORMANCE_TEAM, Locale.US);
+        Interval interval = initInterval();
+
+        criteria.setDriverPerformanceDAO(new MockDriverPerformanceDAO(interval));
+        criteria.init(getMockLongNameGroupHierarchy(), GROUP_ID, initInterval(), false);
+        String expectedLongGroupName = escapeXMLChars(criteria.getFullGroupName(getMockLongNameGroupHierarchy(), GROUP_ID));
+        String reportOutput = genReportToString(criteria, FormatType.HTML);
+        System.out.println("####" + expectedLongGroupName);
+        System.out.println("####" + reportOutput);
+        dump("LongNameTest", 1, criteria, FormatType.PDF);
+        
+        assertTrue("Expected Long group name in HTML report ", reportOutput.contains(expectedLongGroupName));
+    }
+
+    
     class MockDriverPerformanceDAO implements DriverPerformanceDAO{
 
         Interval interval;
@@ -167,9 +187,9 @@ public class DriverPerformanceReportCriteriaDataTest extends BasePerformanceUnit
         public List<DriverPerformance> getDriverPerformanceListForGroup(Integer groupID, String groupName, Interval queryInterval) {
             List<DriverPerformance> list = new ArrayList<DriverPerformance>();
 
-            list.add(new DriverPerformance("Group", 100, "Driver NA", "Emp NA", -1, 0, 0,0,0,0,0));
+            list.add(new DriverPerformance(groupName, 100, "Driver NA", "Emp NA", -1, 0, 0,0,0,0,0));
             for (int i = 0; i < 5; i++) {
-                DriverPerformance driverPerformance = new DriverPerformance("Group", i, "Driver " + i, "Emp " + i, i*10+1, i*1000, i,i,i,i,i);
+                DriverPerformance driverPerformance = new DriverPerformance(groupName, i, "Driver " + i, "Emp " + i, i*10+1, i*1000, i,i,i,i,i);
                 List<VehiclePerformance> vehiclePerformanceBreakdown = new ArrayList<VehiclePerformance>();
                 for (int j = 0; j < i+1; j++) {
                     vehiclePerformanceBreakdown.add(new VehiclePerformance("Vehicle " + i + "_" + j, i*10+1, i*1000, i,i,i,i,i, 0,0,0));

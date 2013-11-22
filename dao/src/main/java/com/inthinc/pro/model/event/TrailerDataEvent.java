@@ -13,7 +13,7 @@ import com.inthinc.pro.model.MeasurementType;
 public class TrailerDataEvent extends Event implements StatusEvent {
     private static final long serialVersionUID = 1L;
     @EventAttrID(name="HAZMAT_FLAG")
-    Boolean hazmatFlag;
+    Integer hazmatFlag;
     @EventAttrID(name="SERVICE_ID")
     String serviceId;
     @EventAttrID(name="TRAILER_ID")
@@ -37,7 +37,7 @@ public class TrailerDataEvent extends Event implements StatusEvent {
         super();
     }
     public TrailerDataEvent(Long noteID, Integer vehicleID, NoteType type, Date time, Integer speed, Integer odometer, Double latitude, Double longitude, 
-            Boolean hazmatFlag, String serviceId, String trailerId)
+            Integer hazmatFlag, String serviceId, String trailerId)
     {
         super(noteID, vehicleID, type, time, speed, odometer, latitude, longitude);
         this.hazmatFlag = hazmatFlag;
@@ -58,16 +58,16 @@ public class TrailerDataEvent extends Event implements StatusEvent {
         // Trailer: ABC123  Service: 123 Hazmat Flag: 1 
         return MessageFormat.format(formatStr, new Object[] {trailerId == null || trailerId.isEmpty() ? noTrailerStr[0] : trailerId, 
                 serviceId == null || serviceId.isEmpty() ? "0" : serviceId, 
-                hazmatFlag == null || !hazmatFlag ? "0" : "1"});
+                hazmatFlag == null ? "0" : hazmatFlag.toString()});
     }
 
     
     
     
-    public Boolean getHazmatFlag() {
+    public Integer getHazmatFlag() {
         return hazmatFlag;
     }
-    public void setHazmatFlag(Boolean hazmatFlag) {
+    public void setHazmatFlag(Integer hazmatFlag) {
         this.hazmatFlag = hazmatFlag;
     }
     public String getServiceId() {

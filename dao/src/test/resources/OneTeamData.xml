@@ -1,0 +1,644 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<java version="1.6.0_38" class="java.beans.XMLDecoder"> 
+ <object class="com.inthinc.pro.model.Account"> 
+  <void property="accountID"> 
+   <int>1046</int> 
+  </void> 
+  <void property="acctName"> 
+   <string>TEST 11:43:51 MST 2013</string> 
+  </void> 
+  <void property="hos"> 
+   <object class="com.inthinc.pro.model.AccountHOSType" method="valueOf"> 
+    <string>HOS_SUPPORT</string> 
+   </object> 
+  </void> 
+  <void property="props"> 
+   <void id="StringArray0" property="supportContacts"/> 
+   <void property="supportContacts"> 
+    <object idref="StringArray0"/> 
+   </void> 
+  </void> 
+  <void property="status"> 
+   <object id="Status0" class="com.inthinc.pro.model.Status" method="valueOf"> 
+    <string>ACTIVE</string> 
+   </object> 
+  </void> 
+ </object> 
+ <object class="com.inthinc.pro.model.Address"> 
+  <void property="accountID"> 
+   <int>1046</int> 
+  </void> 
+  <void property="addr1"> 
+   <string>579 Street</string> 
+  </void> 
+  <void property="addrID"> 
+   <int>1144</int> 
+  </void> 
+  <void property="city"> 
+   <string>City 31</string> 
+  </void> 
+  <void property="state"> 
+   <object id="State0" class="com.inthinc.pro.model.State"> 
+    <void property="abbrev"> 
+     <string>UT</string> 
+    </void> 
+    <void property="name"> 
+     <string>Utah</string> 
+    </void> 
+    <void property="stateID"> 
+     <int>45</int> 
+    </void> 
+   </object> 
+  </void> 
+  <void property="zip"> 
+   <string>12345</string> 
+  </void> 
+ </object> 
+ <object class="com.inthinc.pro.model.Group"> 
+  <void property="accountID"> 
+   <int>1046</int> 
+  </void> 
+  <void property="description"> 
+   <string>Fleet Group</string> 
+  </void> 
+  <void property="groupID"> 
+   <int>4184</int> 
+  </void> 
+  <void id="LatLng0" property="mapCenter"> 
+   <void property="lat"> 
+    <double>0.0</double> 
+   </void> 
+   <void property="lng"> 
+    <double>0.0</double> 
+   </void> 
+  </void> 
+  <void property="mapCenter"> 
+   <object idref="LatLng0"/> 
+  </void> 
+  <void property="mapZoom"> 
+   <int>5</int> 
+  </void> 
+  <void property="name"> 
+   <string>Fleet</string> 
+  </void> 
+  <void property="parentID"> 
+   <int>0</int> 
+  </void> 
+  <void property="status"> 
+   <object id="GroupStatus0" class="com.inthinc.pro.model.GroupStatus" method="valueOf"> 
+    <string>GROUP_ACTIVE</string> 
+   </object> 
+  </void> 
+  <void property="type"> 
+   <object class="com.inthinc.pro.model.GroupType" method="valueOf"> 
+    <string>FLEET</string> 
+   </object> 
+  </void> 
+ </object> 
+ <object class="com.inthinc.pro.model.Group"> 
+  <void property="accountID"> 
+   <int>1046</int> 
+  </void> 
+  <void property="description"> 
+   <string>Division Group</string> 
+  </void> 
+  <void property="groupID"> 
+   <int>4185</int> 
+  </void> 
+  <void id="LatLng1" property="mapCenter"> 
+   <void property="lat"> 
+    <double>0.0</double> 
+   </void> 
+   <void property="lng"> 
+    <double>0.0</double> 
+   </void> 
+  </void> 
+  <void property="mapCenter"> 
+   <object idref="LatLng1"/> 
+  </void> 
+  <void property="mapZoom"> 
+   <int>5</int> 
+  </void> 
+  <void property="name"> 
+   <string>Division</string> 
+  </void> 
+  <void property="parentID"> 
+   <int>4184</int> 
+  </void> 
+  <void property="status"> 
+   <object idref="GroupStatus0"/> 
+  </void> 
+  <void property="type"> 
+   <object class="com.inthinc.pro.model.GroupType" method="valueOf"> 
+    <string>DIVISION</string> 
+   </object> 
+  </void> 
+ </object> 
+ <object class="com.inthinc.pro.model.Group"> 
+  <void property="accountID"> 
+   <int>1046</int> 
+  </void> 
+  <void property="description"> 
+   <string>team</string> 
+  </void> 
+  <void property="groupID"> 
+   <int>4186</int> 
+  </void> 
+  <void id="LatLng2" property="mapCenter"> 
+   <void property="lat"> 
+    <double>0.0</double> 
+   </void> 
+   <void property="lng"> 
+    <double>0.0</double> 
+   </void> 
+  </void> 
+  <void property="mapCenter"> 
+   <object idref="LatLng2"/> 
+  </void> 
+  <void property="mapZoom"> 
+   <int>5</int> 
+  </void> 
+  <void property="name"> 
+   <string>team</string> 
+  </void> 
+  <void property="parentID"> 
+   <int>4185</int> 
+  </void> 
+  <void property="status"> 
+   <object idref="GroupStatus0"/> 
+  </void> 
+  <void property="type"> 
+   <object class="com.inthinc.pro.model.GroupType" method="valueOf"> 
+    <string>TEAM</string> 
+   </object> 
+  </void> 
+ </object> 
+ <object class="com.inthinc.pro.model.Device"> 
+  <void property="accountID"> 
+   <int>1046</int> 
+  </void> 
+  <void property="activated"> 
+   <object id="Date0" class="java.util.Date"> 
+    <long>1384800230717</long> 
+   </object> 
+  </void> 
+  <void property="deviceID"> 
+   <int>8911</int> 
+  </void> 
+  <void property="emuMd5"> 
+   <string>696d6acbc199d607a5704642c67f4d86</string> 
+  </void> 
+  <void property="firmwareVersion"> 
+   <int>1375374693</int> 
+  </void> 
+  <void property="imei"> 
+   <string>30003123456AAAA</string> 
+  </void> 
+  <void property="mcmid"> 
+   <string>MCMWS8201</string> 
+  </void> 
+  <void property="name"> 
+   <string>Waysmart820 2144</string> 
+  </void> 
+  <void property="phone"> 
+   <string>9418688194</string> 
+  </void> 
+  <void property="productVer"> 
+   <int>2</int> 
+  </void> 
+  <void property="serialNum"> 
+   <string>9418610071</string> 
+  </void> 
+  <void property="sim"> 
+   <string>9418685377071417258</string> 
+  </void> 
+  <void property="status"> 
+   <object id="DeviceStatus0" class="com.inthinc.pro.model.DeviceStatus" method="valueOf"> 
+    <string>ACTIVE</string> 
+   </object> 
+  </void> 
+ </object> 
+ <object class="com.inthinc.pro.model.Vehicle"> 
+  <void property="VIN"> 
+   <string>1384800231544</string> 
+  </void> 
+  <void property="color"> 
+   <string>Red</string> 
+  </void> 
+  <void property="fullName"> 
+   <string>2000 Make Model</string> 
+  </void> 
+  <void property="groupID"> 
+   <int>4186</int> 
+  </void> 
+  <void property="license"> 
+   <string>UT 4186</string> 
+  </void> 
+  <void property="make"> 
+   <string>Make</string> 
+  </void> 
+  <void property="model"> 
+   <string>Model</string> 
+  </void> 
+  <void property="name"> 
+   <string>Waysmart820 2144</string> 
+  </void> 
+  <void property="state"> 
+   <object idref="State0"/> 
+  </void> 
+  <void property="status"> 
+   <object idref="Status0"/> 
+  </void> 
+  <void property="vehicleID"> 
+   <int>9414</int> 
+  </void> 
+  <void property="vtype"> 
+   <object id="VehicleType0" class="com.inthinc.pro.model.VehicleType" method="valueOf"> 
+    <string>LIGHT</string> 
+   </object> 
+  </void> 
+  <void property="weight"> 
+   <int>1000</int> 
+  </void> 
+  <void property="year"> 
+   <int>2000</int> 
+  </void> 
+ </object> 
+ <object class="com.inthinc.pro.model.Driver"> 
+  <void property="dot"> 
+   <object class="com.inthinc.hos.model.RuleSetType" method="valueOf"> 
+    <string>US_OIL</string> 
+   </object> 
+  </void> 
+  <void property="driverID"> 
+   <int>9326</int> 
+  </void> 
+  <void property="expiration"> 
+   <object class="java.util.Date"> 
+    <long>1351555201000</long> 
+   </object> 
+  </void> 
+  <void property="groupID"> 
+   <int>4186</int> 
+  </void> 
+  <void property="license"> 
+   <string>l15551</string> 
+  </void> 
+  <void property="licenseClass"> 
+   <string>ABCD</string> 
+  </void> 
+  <void property="person"> 
+   <object class="com.inthinc.pro.model.Person"> 
+    <void property="acctID"> 
+     <int>1046</int> 
+    </void> 
+    <void property="addressID"> 
+     <int>1144</int> 
+    </void> 
+    <void property="crit"> 
+     <int>1</int> 
+    </void> 
+    <void property="dept"> 
+     <string>dept</string> 
+    </void> 
+    <void property="dob"> 
+     <object class="java.util.Date"> 
+      <long>1384800231483</long> 
+     </object> 
+    </void> 
+    <void property="empid"> 
+     <string>empid123</string> 
+    </void> 
+    <void property="first"> 
+     <string>TestDriver</string> 
+    </void> 
+    <void property="fuelEfficiencyType"> 
+     <object class="com.inthinc.pro.model.FuelEfficiencyType$1" method="valueOf"> 
+      <string>MPG_US</string> 
+     </object> 
+    </void> 
+    <void property="gender"> 
+     <object class="com.inthinc.pro.model.Gender" method="valueOf"> 
+      <string>MALE</string> 
+     </object> 
+    </void> 
+    <void property="height"> 
+     <int>65</int> 
+    </void> 
+    <void property="info"> 
+     <int>1</int> 
+    </void> 
+    <void property="last"> 
+     <string>Driver</string> 
+    </void> 
+    <void property="measurementType"> 
+     <object class="com.inthinc.pro.model.MeasurementType" method="valueOf"> 
+      <string>ENGLISH</string> 
+     </object> 
+    </void> 
+    <void property="middle"> 
+     <string>m</string> 
+    </void> 
+    <void property="personID"> 
+     <int>15551</int> 
+    </void> 
+    <void property="priEmail"> 
+     <string>TestDriveremail418662604@example.com</string> 
+    </void> 
+    <void property="priPhone"> 
+     <string>5555555555</string> 
+    </void> 
+    <void property="secPhone"> 
+     <string>5555555555</string> 
+    </void> 
+    <void property="status"> 
+     <object idref="Status0"/> 
+    </void> 
+    <void property="suffix"> 
+     <string>jr</string> 
+    </void> 
+    <void property="timeZone"> 
+     <object class="sun.util.calendar.ZoneInfo"> 
+      <void property="ID"> 
+       <string>US/Mountain</string> 
+      </void> 
+      <void property="rawOffset"> 
+       <int>-25200000</int> 
+      </void> 
+     </object> 
+    </void> 
+    <void property="title"> 
+     <string>title</string> 
+    </void> 
+    <void property="warn"> 
+     <int>1</int> 
+    </void> 
+    <void property="weight"> 
+     <int>180</int> 
+    </void> 
+   </object> 
+  </void> 
+  <void property="state"> 
+   <object idref="State0"/> 
+  </void> 
+  <void property="status"> 
+   <object idref="Status0"/> 
+  </void> 
+ </object> 
+ <object class="com.inthinc.pro.model.Device"> 
+  <void property="accountID"> 
+   <int>1046</int> 
+  </void> 
+  <void property="activated"> 
+   <object idref="Date0"/> 
+  </void> 
+  <void property="deviceID"> 
+   <int>8912</int> 
+  </void> 
+  <void property="emuMd5"> 
+   <string>696d6acbc199d607a5704642c67f4d86</string> 
+  </void> 
+  <void property="firmwareVersion"> 
+   <int>1375370000</int> 
+  </void> 
+  <void property="imei"> 
+   <string>30003123456BBBB</string> 
+  </void> 
+  <void property="mcmid"> 
+   <string>MCMWS8202</string> 
+  </void> 
+  <void property="name"> 
+   <string>Waysmart820 339</string> 
+  </void> 
+  <void property="phone"> 
+   <string>9418651007</string> 
+  </void> 
+  <void property="productVer"> 
+   <int>2</int> 
+  </void> 
+  <void property="serialNum"> 
+   <string>9418616730</string> 
+  </void> 
+  <void property="sim"> 
+   <string>9418666284045011344</string> 
+  </void> 
+  <void property="status"> 
+   <object idref="DeviceStatus0"/> 
+  </void> 
+ </object> 
+ <object class="com.inthinc.pro.model.Vehicle"> 
+  <void property="VIN"> 
+   <string>1384800231809</string> 
+  </void> 
+  <void property="color"> 
+   <string>Red</string> 
+  </void> 
+  <void property="fullName"> 
+   <string>2000 Make Model</string> 
+  </void> 
+  <void property="groupID"> 
+   <int>4186</int> 
+  </void> 
+  <void property="license"> 
+   <string>UT 4186</string> 
+  </void> 
+  <void property="make"> 
+   <string>Make</string> 
+  </void> 
+  <void property="model"> 
+   <string>Model</string> 
+  </void> 
+  <void property="name"> 
+   <string>Waysmart820 339</string> 
+  </void> 
+  <void property="state"> 
+   <object idref="State0"/> 
+  </void> 
+  <void property="status"> 
+   <object idref="Status0"/> 
+  </void> 
+  <void property="vehicleID"> 
+   <int>9415</int> 
+  </void> 
+  <void property="vtype"> 
+   <object idref="VehicleType0"/> 
+  </void> 
+  <void property="weight"> 
+   <int>1000</int> 
+  </void> 
+  <void property="year"> 
+   <int>2000</int> 
+  </void> 
+ </object> 
+ <object class="com.inthinc.pro.model.Device"> 
+  <void property="accountID"> 
+   <int>1046</int> 
+  </void> 
+  <void property="activated"> 
+   <object idref="Date0"/> 
+  </void> 
+  <void property="deviceID"> 
+   <int>8913</int> 
+  </void> 
+  <void property="emuMd5"> 
+   <string>696d6acbc199d607a5704642c67f4d86</string> 
+  </void> 
+  <void property="firmwareVersion"> 
+   <int>1375370000</int> 
+  </void> 
+  <void property="imei"> 
+   <string>30003123456CCCC</string> 
+  </void> 
+  <void property="mcmid"> 
+   <string>MCMWS850</string> 
+  </void> 
+  <void property="name"> 
+   <string>Waysmart850</string> 
+  </void> 
+  <void property="phone"> 
+   <string>9418690642</string> 
+  </void> 
+  <void property="productVer"> 
+   <int>12</int> 
+  </void> 
+  <void property="serialNum"> 
+   <string>9418687107</string> 
+  </void> 
+  <void property="sim"> 
+   <string>9418643310549012170</string> 
+  </void> 
+  <void property="status"> 
+   <object idref="DeviceStatus0"/> 
+  </void> 
+ </object> 
+ <object class="com.inthinc.pro.model.Vehicle"> 
+  <void property="VIN"> 
+   <string>1384800232028</string> 
+  </void> 
+  <void property="color"> 
+   <string>Red</string> 
+  </void> 
+  <void property="fullName"> 
+   <string>2000 Make Model</string> 
+  </void> 
+  <void property="groupID"> 
+   <int>4186</int> 
+  </void> 
+  <void property="license"> 
+   <string>UT 4186</string> 
+  </void> 
+  <void property="make"> 
+   <string>Make</string> 
+  </void> 
+  <void property="model"> 
+   <string>Model</string> 
+  </void> 
+  <void property="name"> 
+   <string>Waysmart850</string> 
+  </void> 
+  <void property="state"> 
+   <object idref="State0"/> 
+  </void> 
+  <void property="status"> 
+   <object idref="Status0"/> 
+  </void> 
+  <void property="vehicleID"> 
+   <int>9416</int> 
+  </void> 
+  <void property="vtype"> 
+   <object idref="VehicleType0"/> 
+  </void> 
+  <void property="weight"> 
+   <int>1000</int> 
+  </void> 
+  <void property="year"> 
+   <int>2000</int> 
+  </void> 
+ </object> 
+ <object class="com.inthinc.pro.model.Device"> 
+  <void property="accountID"> 
+   <int>1046</int> 
+  </void> 
+  <void property="activated"> 
+   <object idref="Date0"/> 
+  </void> 
+  <void property="deviceID"> 
+   <int>8914</int> 
+  </void> 
+  <void property="emuMd5"> 
+   <string>696d6acbc199d607a5704642c67f4d86</string> 
+  </void> 
+  <void property="firmwareVersion"> 
+   <int>1375370000</int> 
+  </void> 
+  <void property="imei"> 
+   <string>123456789876543</string> 
+  </void> 
+  <void property="mcmid"> 
+   <string>123456789876543</string> 
+  </void> 
+  <void property="name"> 
+   <string>Tiwipro</string> 
+  </void> 
+  <void property="phone"> 
+   <string>9418628663</string> 
+  </void> 
+  <void property="productVer"> 
+   <int>3</int> 
+  </void> 
+  <void property="serialNum"> 
+   <string>9418685136</string> 
+  </void> 
+  <void property="sim"> 
+   <string>9418673185509404431</string> 
+  </void> 
+  <void property="status"> 
+   <object idref="DeviceStatus0"/> 
+  </void> 
+ </object> 
+ <object class="com.inthinc.pro.model.Vehicle"> 
+  <void property="VIN"> 
+   <string>1384800232243</string> 
+  </void> 
+  <void property="color"> 
+   <string>Red</string> 
+  </void> 
+  <void property="fullName"> 
+   <string>2000 Make Model</string> 
+  </void> 
+  <void property="groupID"> 
+   <int>4186</int> 
+  </void> 
+  <void property="license"> 
+   <string>UT 4186</string> 
+  </void> 
+  <void property="make"> 
+   <string>Make</string> 
+  </void> 
+  <void property="model"> 
+   <string>Model</string> 
+  </void> 
+  <void property="name"> 
+   <string>Tiwipro</string> 
+  </void> 
+  <void property="state"> 
+   <object idref="State0"/> 
+  </void> 
+  <void property="status"> 
+   <object idref="Status0"/> 
+  </void> 
+  <void property="vehicleID"> 
+   <int>9417</int> 
+  </void> 
+  <void property="vtype"> 
+   <object idref="VehicleType0"/> 
+  </void> 
+  <void property="weight"> 
+   <int>1000</int> 
+  </void> 
+  <void property="year"> 
+   <int>2000</int> 
+  </void> 
+ </object> 
+ <int>1384800232</int> 
+</java> 

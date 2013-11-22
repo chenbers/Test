@@ -91,7 +91,7 @@ public class IFTAServiceStateMileageGroupComparisonImplTest extends BaseUnitTest
                 expectedGroupID, expectedStartDate, expectedEndDate, locale, measureType);
 
         Assert.assertNotNull(response);
-        Assert.assertEquals(Response.Status.NOT_FOUND.getStatusCode(), response.getStatus());
+        Assert.assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
     }
 
     @SuppressWarnings("unchecked")
@@ -110,7 +110,7 @@ public class IFTAServiceStateMileageGroupComparisonImplTest extends BaseUnitTest
                 expectedGroupID, expectedStartDate, expectedEndDate, locale, measureType);
 
         Assert.assertNotNull(response);
-        Assert.assertEquals(Response.Status.NOT_FOUND.getStatusCode(), response.getStatus());
+        Assert.assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
     }
     
     // Positive tests 

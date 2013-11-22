@@ -29,6 +29,7 @@ import com.inthinc.pro.dao.HOSDAO;
 import com.inthinc.pro.dao.MpgDAO;
 import com.inthinc.pro.dao.RedFlagDAO;
 import com.inthinc.pro.dao.ReportDAO;
+import com.inthinc.pro.dao.ReportIdlingDAO;
 import com.inthinc.pro.dao.ScoreDAO;
 import com.inthinc.pro.dao.StateMileageDAO;
 import com.inthinc.pro.dao.UserDAO;
@@ -119,6 +120,8 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
 
     private DeviceDAO deviceDAO;
     private ReportDAO reportDAO;
+
+    private ReportIdlingDAO reportIdlingDAO;
     private GroupReportDAO groupReportDAO;
     private DriverDAO driverDAO;
     private AccountDAO accountDAO;
@@ -133,6 +136,14 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
     private DVIRViolationReportDAO dvirViolationReportDAO;
     private DVIRInspectionRepairReportDAO dvirInspectionRepairReportDAO;
     private TrailerReportDAO trailerReportDAO;
+    
+    public ReportIdlingDAO getReportIdlingDAO() {
+        return reportIdlingDAO;
+    }
+
+    public void setReportIdlingDAO(ReportIdlingDAO reportIdlingDAO) {
+        this.reportIdlingDAO = reportIdlingDAO;
+    }
     
     public TrailerReportDAO getTrailerReportDAO() {
         return trailerReportDAO;
@@ -404,9 +415,10 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
         reportCriteria.addParameter("END_DATE", fmt.print(interval.getEnd()));
 
         if (initDataSet) {
-            Integer rowCount = reportDAO.getIdlingReportCount(groupID, interval, null);
-            PageParams pageParams = new PageParams(0, rowCount, null, null);
-            reportCriteria.setMainDataset(reportDAO.getIdlingReportPage(groupID, interval, pageParams));
+//            Integer rowCount = reportDAO.getIdlingReportCount(groupID, interval, null);
+//            PageParams pageParams = new PageParams(0, rowCount, null, null);
+//            reportCriteria.setMainDataset(reportDAO.getIdlingReportPage(groupID, interval, pageParams));
+            reportCriteria.setMainDataset(reportIdlingDAO.getIdlingReportData(groupID, interval));
         }
 
         return reportCriteria;
@@ -764,6 +776,7 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
         criteria.setDriverDAO(driverDAO);
         criteria.setGroupDAO(groupDAO);
         criteria.setHosDAO(hosDAO);
+        criteria.setAddressDAO(addressDAO);
         criteria.setIncludeInactiveDrivers(includeInactiveDrivers);
         criteria.setIncludeZeroMilesDrivers(includeZeroMilesDrivers);
 
@@ -783,6 +796,7 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
         criteria.setDriverDAO(driverDAO);
         criteria.setGroupDAO(groupDAO);
         criteria.setHosDAO(hosDAO);
+        criteria.setAddressDAO(addressDAO);
         criteria.setIncludeInactiveDrivers(includeInactiveDrivers);
         criteria.setIncludeZeroMilesDrivers(includeZeroMilesDrivers);
 
@@ -802,6 +816,7 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
         criteria.setDriverDAO(driverDAO);
         criteria.setGroupDAO(groupDAO);
         criteria.setHosDAO(hosDAO);
+        criteria.setAddressDAO(addressDAO);
         criteria.setIncludeInactiveDrivers(includeInactiveDrivers);
         criteria.setIncludeZeroMilesDrivers(includeZeroMilesDrivers);
         
@@ -822,6 +837,7 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
         criteria.setDriverDAO(driverDAO);
         criteria.setGroupDAO(groupDAO);
         criteria.setHosDAO(hosDAO);
+        criteria.setAddressDAO(addressDAO);
         criteria.setIncludeInactiveDrivers(includeInactiveDrivers);
         criteria.init(accountGroupHierarchy, groupIDList, interval);
         return criteria;
@@ -839,6 +855,7 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
         criteria.setDriverDAO(driverDAO);
         criteria.setGroupDAO(groupDAO);
         criteria.setHosDAO(hosDAO);
+        criteria.setAddressDAO(addressDAO);
         criteria.setIncludeInactiveDrivers(includeInactiveDrivers);
 
         criteria.init(accountGroupHierarchy, groupIDList, interval);

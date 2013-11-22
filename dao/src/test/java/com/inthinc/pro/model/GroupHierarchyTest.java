@@ -1,11 +1,14 @@
 package com.inthinc.pro.model;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.text.MessageFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.junit.After;
@@ -216,4 +219,15 @@ public class GroupHierarchyTest{
         shortGroupName =  groupHierarchy.getShortGroupName(0, groupHierarchy.GROUP_SEPERATOR);
         assertTrue(shortGroupName.isEmpty());
     }
+	
+	@Test
+	public void testGetChildrenNoParent() throws Exception {
+		final Map<Integer, Group> groupMap = new HashMap<Integer, Group>();
+		final Group group = new Group();
+		group.setAccountID(1);
+		group.setAddressID(2);
+		groupMap.put(1, group);
+		final List<Group> children = groupHierarchy.getChildren(null);
+		assertNull(children);
+	}
  }

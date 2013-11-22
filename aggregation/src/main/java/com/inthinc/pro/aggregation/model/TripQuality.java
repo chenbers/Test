@@ -9,7 +9,7 @@ public enum TripQuality {
 	BAD(0),
     GOOD(1),
     UNKNOWN(2),
-    WAYSMART(3); // temporary until waysmarts support trip gps quality
+    UNSUPPORTED(3); // temporary until waysmarts support trip gps quality
 
 	Integer code;
 	

@@ -81,15 +81,12 @@ public class IFTAServiceStateMileageFuelByVehicleImpl extends BaseReportServiceI
         } catch (Exception e) {
             return Response.status(Status.INTERNAL_SERVER_ERROR).build();
         }
+        
+        if (list == null) {
+            list = new ArrayList<StateMileageFuelByVehicle>();
+        }
 
-        // Some data found
-        if (list != null && !list.isEmpty()) {
-            return Response.ok(new GenericEntity<List<StateMileageFuelByVehicle>>(list) {}).build();
-        }
-        // No data found
-        else {
-            return Response.status(Status.NOT_FOUND).build();
-        }
+        return Response.ok(new GenericEntity<List<StateMileageFuelByVehicle>>(list) {}).build();
 
     }
 

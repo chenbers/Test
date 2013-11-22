@@ -2,6 +2,7 @@ package it.util;
 
 import it.com.inthinc.pro.dao.model.GroupData;
 import it.com.inthinc.pro.dao.model.ITData;
+import it.config.ITDataSource;
 import it.config.ReportTestConst;
 
 import java.beans.XMLEncoder;
@@ -16,8 +17,15 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+import org.joda.time.DateTime;
+
+import com.inthinc.hos.model.HOSStatus;
+import com.inthinc.hos.model.RuleSetType;
+import com.inthinc.pro.dao.HOSDAO;
+import com.inthinc.pro.dao.jdbc.HOSJDBCDAO;
 import com.inthinc.pro.dao.util.DateUtil;
 import com.inthinc.pro.model.event.Event;
+import com.inthinc.pro.model.hos.HOSRecord;
 import com.inthinc.pro.notegen.MCMSimulator;
 
 public class DataGenForIntegrationTesting extends DataGenForTesting {
@@ -164,7 +172,50 @@ public class DataGenForIntegrationTesting extends DataGenForTesting {
         noteGenerator.genTrip(eventList, itData.noDriverDevice);
 	}
 	
+    private void generateHOSDayData(GroupData groupData, Date startDate) {
+        DateTime startDateTime = new DateTime(startDate.getTime());
+        HOSStatus driverStatus[] = {
+                HOSStatus.ON_DUTY,
+                HOSStatus.DRIVING,
+                HOSStatus.SLEEPER,
+                HOSStatus.OFF_DUTY  // logs the driver out
+        };
+        HOSDAO hosDAO = new HOSJDBCDAO();
+        ((HOSJDBCDAO)hosDAO).setDataSource(new ITDataSource().getRealDataSource());
+
+
+        for (int i = 0; i < driverStatus.length; i++) {
+            
+            HOSRecord rec = constructHosRecord(groupData, driverStatus[i], startDateTime.plusMinutes(i*60).toDate());
+            
+            hosDAO.create(0l, rec);
+        }
+
+    }
 	
+    private HOSRecord constructHosRecord(GroupData groupData, HOSStatus hosStatus, Date logTime) {
+        HOSRecord rec = new HOSRecord();
+        rec.setDeviceID(groupData.device.getDeviceID());
+        rec.setLat(0f);
+        rec.setLng(0f);
+        rec.setLocation("GENERATED - " + hosStatus.getName());
+        rec.setLogTime(logTime);
+        rec.setTimeZone(groupData.driver.getPerson().getTimeZone());
+        rec.setDriverDotType(groupData.driver.getDot());
+        rec.setDriverID(groupData.driver.getDriverID());
+        rec.setServiceID("SERVICE - " + groupData.driver.getDriverID());
+        rec.setStatus(hosStatus);
+        rec.setTrailerGallons(0f);
+        rec.setTrailerID("TRAILER - " + groupData.driver.getDriverID());
+        rec.setTruckGallons(0f);
+        rec.setVehicleID(groupData.vehicle.getVehicleID());
+        rec.setVehicleOdometer(100l);
+        rec.setEmployeeID(groupData.driver.getPerson().getEmpid());
+        rec.setEditUserID(groupData.user.getUserID());
+        rec.setStateID(5);
+        return rec;
+    }
+
     public static void main(String[] args)
     {
         
@@ -186,6 +237,7 @@ public class DataGenForIntegrationTesting extends DataGenForTesting {
 	            xml = new XMLEncoder(new BufferedOutputStream(new FileOutputStream(testData.xmlPath)));
 	            System.out.println(" saving output to " + testData.xmlPath);
 	            testData.createTestData();
+	            testData.itData.setDriverDOTType(((ITData)testData.itData).teamGroupData.get(ITData.BAD).driver, RuleSetType.NON_DOT);
 
 	            // wait for imeis to hit central server
 	            // generate data for today (midnight) and 30 previous days
@@ -205,6 +257,9 @@ public class DataGenForIntegrationTesting extends DataGenForTesting {
 	            		if (teamType == ITData.INTERMEDIATE) {
 	            			 testData.generateUnknownDriverDayData(mcmSim, startDate);
 	            		}
+                        if (teamType == ITData.WS_GROUP) {
+                            testData.generateHOSDayData(((ITData)testData.itData).teamGroupData.get(teamType), startDate);
+                       }
 	            	}
 	            }
 	            // save date of 1st event
@@ -236,10 +291,13 @@ public class DataGenForIntegrationTesting extends DataGenForTesting {
     	        	{
     	                int dateInSec = testData.startDateInSec + (day * DateUtil.SECONDS_IN_DAY) + 60;
     	                Date startDate = new Date((long)dateInSec * 1000l);
-        	        		testData.generateDayData(startDate, teamType, ((ITData)testData.itData).teamGroupData);
+     	        		testData.generateDayData(startDate, teamType, ((ITData)testData.itData).teamGroupData);
 	            		if (teamType == ITData.INTERMEDIATE) {
 	            			 testData.generateUnknownDriverDayData(mcmSim, startDate);
 	            		}
+                        if (teamType == ITData.WS_GROUP) {
+                            testData.generateHOSDayData(((ITData)testData.itData).teamGroupData.get(teamType), startDate);
+                       }
     	        	}
                 }
              
@@ -254,6 +312,8 @@ public class DataGenForIntegrationTesting extends DataGenForTesting {
 
         System.exit(0);
     }
+
+
 
 
 }

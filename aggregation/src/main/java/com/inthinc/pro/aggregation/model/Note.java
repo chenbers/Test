@@ -25,6 +25,7 @@ public class Note
 	public final static int TYPE_IDLING = 140;
 	public final static int TYPE_IDLING2 = 208;
 	public final static int TYPE_RFKILL = 219;
+	public final static int TYPE_TIMESTAMP = 42;
 	
     private Long noteID;
     private Long driverID;
