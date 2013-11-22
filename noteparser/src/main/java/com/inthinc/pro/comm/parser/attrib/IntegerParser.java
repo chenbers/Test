@@ -9,7 +9,7 @@ public class IntegerParser implements AttribParser {
 
 	public int parseAttrib(byte[] data, int offset, String code, Map<String, Object> attribMap) {
 
-		assert data.length > (offset + 4);
+		assert data.length >= (offset + 4);
 		
 		attribMap.put(code, ReadUtil.read(data, offset, 4));
 

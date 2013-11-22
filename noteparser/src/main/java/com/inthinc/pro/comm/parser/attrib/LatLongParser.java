@@ -20,7 +20,7 @@ public class LatLongParser implements AttribParser {
 	public int parseAttrib(byte[] data, int offset, String code, Map<String, Object> attribMap, int dataLen) {
 
 		
-		assert data.length > (offset + 6);
+		assert data.length >= (offset + 6);
 
 		Double latitude = 0.0;
 		Double longitude = 0.0;
