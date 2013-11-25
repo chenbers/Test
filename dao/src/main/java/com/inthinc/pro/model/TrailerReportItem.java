@@ -10,35 +10,23 @@ public class TrailerReportItem extends BaseEntity implements Comparable<TrailerR
     private String groupName;
     private Integer groupID;
     private String driverName;
-    private String trailerYMM;
     private Integer driverID;
     private String vehicleName;
     private Integer vehicleID;
     private String trailerName;
     private Integer trailerID;
-    private String vehicleYMM;
-    private Number milesDriven;
-    private Number odometer;
-    private Integer overallScore;
-    private Integer speedScore;
-    private Integer styleScore;
+    private Boolean entryMethod;
+
+    public Boolean getEntryMethod() {
+        return entryMethod;
+    }
+    public void setEntryMethod(Boolean entryMethod) {
+        this.entryMethod = entryMethod;
+    }
+    public boolean getAssignedStatus(){
+       return driverID!=null ||vehicleID!=null;
+    }
     
-    public Number getOdometer() {
-        return odometer;
-    }
-
-    public void setOdometer(Number odometer) {
-        this.odometer = odometer;
-    }
-
-    public String getTrailerYMM() {
-        return trailerYMM;
-    }
-
-    public void setTrailerYMM(String trailerYMM) {
-        this.trailerYMM = trailerYMM;
-    }
-
     public String getGroupName() {
         return groupName;
     }
@@ -101,46 +89,6 @@ public class TrailerReportItem extends BaseEntity implements Comparable<TrailerR
 
     public void setTrailerID(Integer trailerID) {
         this.trailerID = trailerID;
-    }
-
-    public String getVehicleYMM() {
-        return vehicleYMM;
-    }
-
-    public void setVehicleYMM(String vehicleYMM) {
-        this.vehicleYMM = vehicleYMM;
-    }
-
-    public Number getMilesDriven() {
-        return milesDriven;
-    }
-
-    public void setMilesDriven(Number milesDriven) {
-        this.milesDriven = milesDriven;
-    }
-
-    public Integer getOverallScore() {
-        return overallScore;
-    }
-
-    public void setOverallScore(Integer overallScore) {
-        this.overallScore = overallScore;
-    }
-
-    public Integer getSpeedScore() {
-        return speedScore;
-    }
-
-    public void setSpeedScore(Integer speedScore) {
-        this.speedScore = speedScore;
-    }
-
-    public Integer getStyleScore() {
-        return styleScore;
-    }
-
-    public void setStyleScore(Integer styleScore) {
-        this.styleScore = styleScore;
     }
 
     @Override

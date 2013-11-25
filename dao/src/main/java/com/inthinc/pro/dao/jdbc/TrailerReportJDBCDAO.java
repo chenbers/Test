@@ -20,9 +20,22 @@ import com.inthinc.pro.model.pagination.TableFilterField;
 public class TrailerReportJDBCDAO extends SimpleJdbcDaoSupport implements TrailerReportDAO{
     private static final Logger logger = Logger.getLogger(TrailerReportJDBCDAO.class);
     
-    private static final String SELECT_ALL_FROM_TRAILER_PERFORMANCE = "select * from  trailerPerformance";
+    private static final String SELECT_ALL_FROM_TRAILER_PERFORMANCE = 
+                    " select trailer.trailerID " +
+                    " , trailer.name as trailerName" +
+                    " , trailer.vehicleID" +
+                    " , vehicle.name as vehicleName" +
+                    " , trailer.driverID" +
+                    " , person.first||' '||person.middle||' '||person.last||' '||person.suffix as driverName  " +
+                    " , trailer.groupID " +
+                    " , groups.name as groupName " +
+                    " from trailer " +
+                    " left outer join vehicle on trailer.vehicleID = vehicle.vehicleID " +
+                    " left outer join driver on trailer.driverID = driver.driverID " +
+                    " left outer join person on driver.personID = person.personID " +
+                    " join groups on trailer.groupID = groups.groupID ";
     
-    private static final String SELECT_COUNT_FROM_TRAILER_PERFORMANCE = "select COUNT(*) from  trailerPerformance";
+    private static final String SELECT_COUNT_FROM_TRAILER_PERFORMANCE = "select COUNT(*) from  trailer ";
     
     private static ParameterizedRowMapper<TrailerReportItem> trailerReportItemRowMapper = new ParameterizedRowMapper<TrailerReportItem>() {
         @Override
@@ -30,18 +43,12 @@ public class TrailerReportJDBCDAO extends SimpleJdbcDaoSupport implements Traile
             TrailerReportItem trailerReportItem = new TrailerReportItem();
             trailerReportItem.setTrailerID(rs.getInt("trailerID"));
             trailerReportItem.setTrailerName(rs.getString("trailerName"));
-            trailerReportItem.setTrailerYMM(rs.getString("trailerYMM"));
             trailerReportItem.setVehicleID(rs.getInt("vehicleID"));
             trailerReportItem.setVehicleName(rs.getString("vehicleName"));
             trailerReportItem.setDriverID(rs.getInt("driverID"));
             trailerReportItem.setDriverName(rs.getString("driverName"));
             trailerReportItem.setGroupID(rs.getInt("groupID"));
             trailerReportItem.setGroupName(rs.getString("groupName"));
-            trailerReportItem.setMilesDriven(rs.getInt("milesDriven"));
-            trailerReportItem.setOdometer(rs.getInt("odometer"));
-            trailerReportItem.setOverallScore(rs.getInt("overallScore"));
-            trailerReportItem.setSpeedScore(rs.getInt("speedScore"));
-            trailerReportItem.setStyleScore(rs.getInt("styleScore"));
             return trailerReportItem;
         }
     };
@@ -51,8 +58,8 @@ public class TrailerReportJDBCDAO extends SimpleJdbcDaoSupport implements Traile
         
         StringBuilder sqlQuery = new StringBuilder(SELECT_ALL_FROM_TRAILER_PERFORMANCE);
         
-        String paramName = "filter_"+groupID+"_groupID";
-        sqlQuery.append(" where groupID = :" + paramName);
+        String paramName = "filter_"+groupID+"_groupID"; //TODO: I think ryry did this becasue he didn't know how to use an IN here ... so he was anticipating having to have multiple group id params (one for each)
+        sqlQuery.append(" where trailer.groupID = :" + paramName); //TODO: to match vehicle this would need to be an IN??? from, AdminVehicleJDBCDAO "WHERE v.groupID in (:group_list) and v.status != 3"; 
         args.put(paramName, groupID);
         
         /***FILTERING***/
@@ -127,7 +134,8 @@ public class TrailerReportJDBCDAO extends SimpleJdbcDaoSupport implements Traile
         
         logger.debug("getTrailerReportCount: " + sqlQuery.toString() );
         
-        return getSimpleJdbcTemplate().queryForInt(sqlQuery.toString(), args);
+        int result = getSimpleJdbcTemplate().queryForInt(sqlQuery.toString(), args);
+        return result;
     }
     
 }

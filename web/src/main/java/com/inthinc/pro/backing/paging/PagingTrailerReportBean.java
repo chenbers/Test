@@ -14,7 +14,7 @@ public class PagingTrailerReportBean extends BasePagingReportBean<TrailerReportI
 
     @Override
     public TableSortField getDefaultSort() {
-        return new TableSortField(SortOrder.ASCENDING, "trailerName");
+        return new TableSortField(SortOrder.ASCENDING, "name");
     }
 
     @Override

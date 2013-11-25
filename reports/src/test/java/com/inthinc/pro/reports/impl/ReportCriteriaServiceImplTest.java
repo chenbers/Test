@@ -257,11 +257,6 @@ public class ReportCriteriaServiceImplTest extends BaseUnitTest {
                item.setDriverName("dName_"+i);
                item.setGroupID(groupID);
                item.setGroupName(groupName);
-               item.setMilesDriven(i + 5);
-               item.setOdometer(i + 100);
-               item.setOverallScore(30);
-               item.setSpeedScore(25);
-               item.setStyleScore(20);
                retVal.add(item);
            }
            

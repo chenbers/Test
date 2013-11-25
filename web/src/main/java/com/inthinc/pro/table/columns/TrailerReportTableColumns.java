@@ -17,13 +17,9 @@ public class TrailerReportTableColumns extends BaseTableColumns {
         AVAILABLE_COLUMNS.add("group");
         AVAILABLE_COLUMNS.add("trailer_name");
         AVAILABLE_COLUMNS.add("vehicle_name");
-        AVAILABLE_COLUMNS.add("makeModelYear");
         AVAILABLE_COLUMNS.add("driver_person_fullName");
-        AVAILABLE_COLUMNS.add("distanceDriven");
-        AVAILABLE_COLUMNS.add("overallScore");
-        AVAILABLE_COLUMNS.add("speedScore");
-        AVAILABLE_COLUMNS.add("styleScore");
-        AVAILABLE_COLUMNS.add("odometer");
+        AVAILABLE_COLUMNS.add("assigned_status");
+        AVAILABLE_COLUMNS.add("entry_method");
     }
 
     @Override
