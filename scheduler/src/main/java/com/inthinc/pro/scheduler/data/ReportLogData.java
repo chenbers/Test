@@ -17,7 +17,7 @@ public abstract class ReportLogData {
     private Integer idUserRequestingReport;
     private List<Integer> recipientUserIds = new ArrayList<Integer>();
     private List<String> recipientEmailAddresses = new ArrayList<String>();
-    private List<Throwable> errors  = new ArrayList<Throwable>();
+    private List<Throwable> errors = new ArrayList<Throwable>();
     private Integer scheduledTime;
     private DateTime actualTimeSent;
     private Long processMilis;
@@ -34,12 +34,13 @@ public abstract class ReportLogData {
     /**
      * Formats date by specific
      *
-     * @param dateTime
-     * @return
+     * @param dateTime the date and time to format
+     * @param format   the format to use
+     * @return a formatted string for dateTime
      */
-    protected String formatDate(DateTime dateTime, String format){
+    protected String formatDate(DateTime dateTime, String format) {
         SimpleDateFormat sdf = new SimpleDateFormat(format);
-        if (dateTime==null)
+        if (dateTime == null)
             return "";
 
         return sdf.format(dateTime.toDate());
@@ -48,7 +49,7 @@ public abstract class ReportLogData {
     /**
      * Resets all.
      */
-    public void clear(){
+    public void clear() {
         reportID = null;
         reportType = null;
         accountId = null;
@@ -59,7 +60,7 @@ public abstract class ReportLogData {
         scheduledTime = null;
         actualTimeSent = null;
         processMilis = null;
-        errors  = new ArrayList<Throwable>();
+        errors = new ArrayList<Throwable>();
         success = null;
     }
 
