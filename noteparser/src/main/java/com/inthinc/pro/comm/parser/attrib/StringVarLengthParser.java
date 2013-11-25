@@ -33,7 +33,7 @@ public class StringVarLengthParser implements AttribParser {
         int length = 0;
 		for (length = 0; data[offset + length] != 0 && length < maxLength; length++);
 		
-		assert(data.length > offset + length);
+		assert(data.length >= (offset + length));
 		
 		attribMap.put(code, new String(data, offset, length));
 
