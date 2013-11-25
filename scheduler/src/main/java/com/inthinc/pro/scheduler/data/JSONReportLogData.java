@@ -1,8 +1,8 @@
 package com.inthinc.pro.scheduler.data;
 
 import com.amazonaws.util.json.JSONArray;
+import com.amazonaws.util.json.JSONException;
 import com.amazonaws.util.json.JSONObject;
-import org.codehaus.jackson.map.ObjectMapper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,8 +16,8 @@ public class JSONReportLogData extends ReportLogData {
      * Transforms a list to a json array.
      *
      * @param list list
+     * @param <T>  type of list element
      * @return json array version
-     * @tparam T type of list element
      */
     private <T> JSONArray listToJsonArray(List<T> list) {
         JSONArray jsonArray = new JSONArray();
@@ -32,64 +32,58 @@ public class JSONReportLogData extends ReportLogData {
      *
      * @param t exception
      * @return json object with details
+     * @throws JSONException the json API may throw an exception
      */
-    private JSONObject exceptionToJsonObject(Throwable t) {
+    private JSONObject exceptionToJsonObject(Throwable t) throws JSONException {
         JSONObject objExc = new JSONObject();
-        try {
-            objExc.put("message", t.getMessage() != null ? t.getMessage() : "");
-            objExc.put("type", t.getClass().getName());
+        objExc.put("message", t.getMessage() != null ? t.getMessage() : "");
+        objExc.put("type", t.getClass().getName());
 
-            List<String> listStTr = new ArrayList<String>();
-            for (StackTraceElement ste : t.getStackTrace())
-                listStTr.add(ste.toString());
+        List<String> listStTr = new ArrayList<String>();
+        for (StackTraceElement ste : t.getStackTrace())
+            listStTr.add(ste.toString());
 
-            objExc.put("stackTrace", listStTr);
-        } catch (Exception e) {
-        } finally {
-            return objExc;
-        }
+        objExc.put("stackTrace", listStTr);
+
+        return objExc;
     }
 
     @Override
     public String formatForStash() {
-
+        String ret;
         String dateFormat = "yyyy/MM/dd kk:mm:ss";
 
-        // base object
-        JSONObject obj = new JSONObject();
-        String prettyJson = "";
         try {
-            try {
-                // report log
-                JSONObject reportLog = new JSONObject();
-                reportLog.put("reportID", getReportID());
-                reportLog.put("reportType", getReportType());
-                reportLog.put("accountId", getAccountId());
-                reportLog.put("accountName", getAccountName());
-                reportLog.put("idUserRequestingReport", getIdUserRequestingReport());
-                reportLog.put("scheduledTime", minutesToHourMinute(getScheduledTime()));
-                reportLog.put("actualTimeSent", formatDate(getActualTimeSent(), dateFormat));
-                reportLog.put("processMilis", getProcessMilis());
-                reportLog.put("success", getSuccess());
-                reportLog.put("recipientUserIds", listToJsonArray(getRecipientUserIds()));
-                reportLog.put("recipientEmailAddresses", listToJsonArray(getRecipientEmailAddresses()));
+            // report log
+            JSONObject obj = new JSONObject();
+            JSONObject reportLog = new JSONObject();
+            reportLog.put("reportID", getReportID());
+            reportLog.put("reportType", getReportType());
+            reportLog.put("accountId", getAccountId());
+            reportLog.put("accountName", getAccountName());
+            reportLog.put("idUserRequestingReport", getIdUserRequestingReport());
+            reportLog.put("scheduledTime", minutesToHourMinute(getScheduledTime()));
+            reportLog.put("actualTimeSent", formatDate(getActualTimeSent(), dateFormat));
+            reportLog.put("processMilis", getProcessMilis());
+            reportLog.put("success", getSuccess());
+            reportLog.put("recipientUserIds", listToJsonArray(getRecipientUserIds()));
+            reportLog.put("recipientEmailAddresses", listToJsonArray(getRecipientEmailAddresses()));
 
-                // special case for exceptions
-                List<JSONObject> jsonObjErrorList = new ArrayList<JSONObject>();
-                for (Throwable t : getErrors()) {
-                    jsonObjErrorList.add(exceptionToJsonObject(t));
-                }
-
-                reportLog.put("errors", jsonObjErrorList);
-
-                obj.put("reportLog", reportLog);
-
-            } catch (Exception e) {
-                obj.put("reportLogError", exceptionToJsonObject(e));
+            // special case for exceptions
+            List<JSONObject> jsonObjErrorList = new ArrayList<JSONObject>();
+            for (Throwable t : getErrors()) {
+                jsonObjErrorList.add(exceptionToJsonObject(t));
             }
-        } finally {
-            return obj.toString();
+
+            reportLog.put("errors", jsonObjErrorList);
+
+            obj.put("reportLog", reportLog);
+            ret = obj.toString();
+        } catch (JSONException e) {
+            // json API exception, save a manual String json with the exception
+            ret = "{\"reportLog\": {\"jsonException\":\"" + e.getMessage() + "\"}}";
         }
+        return ret;
     }
 
     /**
@@ -98,13 +92,13 @@ public class JSONReportLogData extends ReportLogData {
      * @param minutes number of minutes
      * @return hh:mm
      */
-    private String minutesToHourMinute(Integer minutes){
-        if (minutes==null)
+    private String minutesToHourMinute(Integer minutes) {
+        if (minutes == null)
             return "";
 
         String hh = String.valueOf(String.format("%02d", minutes / 60));
         String mm = String.valueOf(String.format("%02d", minutes % 60));
 
-        return hh+":"+mm;
+        return hh + ":" + mm;
     }
 }
