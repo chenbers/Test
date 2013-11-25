@@ -109,7 +109,7 @@
                                             	</pretty:link>                                                                                
                                         	</rich:column>
                                         	<rich:column id="name" rendered="#{tableColumns['trailer_name'].visible}" 
-                                            		sortBy="#{item.trailerName}" filterBy="#{item.trailerName}">
+                                            		sortBy="#{item.trailerName}" filterBy="#{item.trailerName}" filterValue="#{pagingTrailerReportBean.searchFor}">
                                             	<f:facet name="header">
 	                                            	<h:panelGroup>
 	                                                	<h:outputText value="#{messages.reports_trailerID}" />

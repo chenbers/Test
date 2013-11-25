@@ -3,6 +3,7 @@ package com.inthinc.pro.dao.jdbc;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -52,6 +53,11 @@ public class TrailerReportJDBCDAO extends SimpleJdbcDaoSupport implements Traile
             return trailerReportItem;
         }
     };
+    private static final LinkedHashMap<String, String> replaceColumnNameMap = new LinkedHashMap<String, String>();
+
+    static {
+        replaceColumnNameMap.put("trailerName", "trailer.name");
+    };
     
     public List<TrailerReportItem> getTrailerReportItemByGroupPaging(Integer groupID, PageParams pageParams) {
         Map<String, Object> args = new HashMap<String, Object>();
@@ -66,6 +72,9 @@ public class TrailerReportJDBCDAO extends SimpleJdbcDaoSupport implements Traile
         List<TableFilterField> filters = pageParams.getFilterList();
         if(filters != null && !filters.isEmpty()) {
             for(TableFilterField filter : filters) {
+                if(replaceColumnNameMap.containsKey(filter.getField())){
+                    filter.setField(replaceColumnNameMap.get(filter.getField()));
+                }
                 if(filter.getField() != null && filter.getFilter() != null ) {
                     if(filter.getFilter() instanceof String){
                         paramName = "filter_"+filter.getField();
@@ -112,6 +121,9 @@ public class TrailerReportJDBCDAO extends SimpleJdbcDaoSupport implements Traile
         /***FILTERING***/
         if(tableFilterFieldList != null && !tableFilterFieldList.isEmpty()) {
             for(TableFilterField filter : tableFilterFieldList) {
+                if(replaceColumnNameMap.containsKey(filter.getField())){
+                    filter.setField(replaceColumnNameMap.get(filter.getField()));
+                }
                 if(filter.getField() != null && filter.getFilter() != null ) {
                     if(filter.getFilter() instanceof String){
                         paramName = "filter_"+filter.getField();
