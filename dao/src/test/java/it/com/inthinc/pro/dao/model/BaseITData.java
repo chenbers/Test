@@ -284,7 +284,7 @@ public abstract class BaseITData {
         PersonHessianDAO personDAO = new PersonHessianDAO();
         personDAO.setSiloService(siloService);
 
-        int retryCount = 10;
+        int retryCount = 200;
         Person person = null;
         // create a person
         while (retryCount > 0)
@@ -313,7 +313,7 @@ public abstract class BaseITData {
     }
     
     private String genEmployeeID(Integer groupID, Integer acctID) {
-        String empID = "e"+groupID+acctID+Util.randomInt(1, 99999);
+        String empID = "e"+groupID+Util.randomInt(1, 99999);
         if (empID.length() > 10) 
             return empID.substring(0, 10);
         

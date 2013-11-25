@@ -119,8 +119,6 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
 
     private DeviceDAO deviceDAO;
     private ReportDAO reportDAO;
-
-
     private ReportIdlingDAO reportIdlingDAO;
     private GroupReportDAO groupReportDAO;
     private DriverDAO driverDAO;

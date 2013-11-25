@@ -2,6 +2,7 @@ package it.com.inthinc.pro.dao;
 
 // The tests in this file  can fail sporadically when the scheduler is running on the same
 // server that is is hitting (usually dev).  If this becomes a problem, we can mark them as Ignore.  
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 import it.com.inthinc.pro.dao.jdbc.BaseJDBCTest;
@@ -13,6 +14,7 @@ import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -160,32 +162,38 @@ public class DriverLogoffTest extends BaseJDBCTest{
         updateDeviceFirmwareVer(deviceWS2144.getDeviceID(), 1375374693);
         Vehicle vehicleWS2144 = getVehicleByName("Waysmart820 2144");
         deviceWS2144.setVehicleID(vehicleWS2144.getVehicleID());
+        clearCommands(deviceTiwipro.getDeviceID());
         genNewDriverEvent(deviceWS2144, EMPID);
 
         //Check to see if 2144 logoff sent to deviceTiwipro
         List<ForwardCommandSpool>  fcsList = httpSpoolDAO.getForDevice(deviceTiwipro.getDeviceID(), cmd2144List);
-        assertTrue("Tiwipro 2144 Logoff command sent", commandExists(fcsList, startTime));
+//        assertTrue("Tiwipro 2144 Logoff command sent", commandExists(fcsList, startTime));
+        assertEquals("Tiwipro 2144 Logoff command sent", fcsList.size(), 1);
         
         //Logon empID on deviceWS339   
         Device deviceWS339 = getDeviceByName("Waysmart820 339");
         deviceWS339.setProductVersion(ProductType.WAYSMART);
         Vehicle vehicleWS339 = getVehicleByName("Waysmart820 339");
         deviceWS339.setVehicleID(vehicleWS339.getVehicleID());
+        clearCommands(deviceWS2144.getDeviceID());
         genNewDriverEvent(deviceWS339, EMPID);
         
         //Check to see if 2144 logoff sent to deviceWS2144
         fcsList = iridiumSpoolDAO.getForDevice(deviceWS2144.getDeviceID(), cmd2144List);
-        assertTrue("WS 2144 Logoff command sent", commandExists(fcsList, startTime));
-
+//        assertTrue("WS 2144 Logoff command sent", commandExists(fcsList, startTime));
+        assertEquals("WS 2144 Logoff command sent", fcsList.size(), 1);
+        
         //Set deviceWS2144 to unknown, then login to using deviceWS339 empID
         setUnknowndriverForVehicle(vehicleWS2144.getVehicleID());
         startTime = new Date();
+        clearCommands(deviceWS339.getDeviceID());
         genNewDriverEvent(deviceWS2144, EMPID);
         
         //Check to see if 339 logoff sent to deviceWS339
         fcsList = iridiumSpoolDAO.getForDevice(deviceWS339.getDeviceID(), cmd339List);
-        assertTrue("339 Logoff command sent", commandExists(fcsList, startTime));
-        
+//        assertTrue("339 Logoff command sent", commandExists(fcsList, startTime));
+        assertEquals("339 Logoff command sent", fcsList.size(), 1);
+
 
         setUnknowndriverForVehicles();
         
@@ -197,12 +205,14 @@ public class DriverLogoffTest extends BaseJDBCTest{
         
         //Logon empID on deviceWS850   
         startTime = new Date();
+        clearCommands(deviceWS850.getDeviceID());
         genNewDriverEvent(deviceWS850, EMPID);
         //Logon empID on deviceTiwipro   
         genNewDriverEvent(deviceWS339, EMPID);
         //Check to see if 339 logoff sent to deviceWS850
         fcsList = iridiumSpoolDAO.getForDevice(deviceWS850.getDeviceID(), cmd339List);
-        assertTrue("WS850 339 Logoff command sent", commandExists(fcsList, startTime));
+//        assertTrue("WS850 339 Logoff command sent", commandExists(fcsList, startTime));
+        assertEquals("339 Logoff command sent", fcsList.size(), 1);
     }
 
     
@@ -283,15 +293,11 @@ public class DriverLogoffTest extends BaseJDBCTest{
     private void pollForEvent(Event event, Device device) {
         List<NoteType> noteTypes = new ArrayList<NoteType>();
         noteTypes.add(event.getType());
-        int secondsToWait = 30;
+        int secondsToWait = 5;
         for (int i = 0; i < secondsToWait; i++) {
             
             List<Event> events = eventDAO.getEventsForVehicle(device.getVehicleID(), new Date(event.getTime().getTime() - 5000l), new Date(event.getTime().getTime() + 5000l), noteTypes, 0);
             if (events == null || events.size() == 0) {
-                if (i == (secondsToWait-1)) {
-                    System.out.println();
-                    logger.error(" pollForEvent failed even after waiting " + secondsToWait + " sec -- most likely queue is backed up");
-                }
                 try {
                     Thread.sleep(1000l);
                 }
@@ -367,4 +373,43 @@ public class DriverLogoffTest extends BaseJDBCTest{
         }
     }
 
+    private static final String CLEAR_COMMANDS_FOR_DEVICE = "DELETE FROM Fwd_WSiridium WHERE deviceID = ?";
+    private static final String CLEAR_SATCOMMANDS_FOR_DEVICE = "DELETE FROM fwd WHERE deviceID = ?";
+    private static void clearCommands(Integer deviceId)
+    {
+        Connection conn = null;
+        PreparedStatement statement = null;
+        
+        try
+        {
+            conn = new ITDataSource().getRealDataSource().getConnection();
+            statement = conn.prepareStatement(CLEAR_COMMANDS_FOR_DEVICE);
+            statement.setInt(1, deviceId);
+            logger.debug(statement.toString());
+            statement.executeUpdate();
+            statement.close();
+            
+            statement = conn.prepareStatement(CLEAR_SATCOMMANDS_FOR_DEVICE);
+            statement.setInt(1, deviceId);
+            logger.debug(statement.toString());
+            statement.executeUpdate();
+        }   // end try
+        catch (SQLException e)
+        { // handle database hosLogs in the usual manner
+            
+            logger.error("Exception: " + e);
+        }   // end catch
+        finally
+        { // clean up and release the connection
+            try {
+                if (conn != null)
+                    conn.close();
+                if (statement != null)
+                    statement.close();
+            } catch (Exception e){
+                logger.error("Exception: " + e);
+            }    
+        } // end finally 
+    }
+    
 }
