@@ -30,13 +30,19 @@ public class TrailerReportJDBCDAO extends SimpleJdbcDaoSupport implements Traile
                     " , person.first||' '||person.middle||' '||person.last||' '||person.suffix as driverName  " +
                     " , trailer.groupID " +
                     " , groups.name as groupName " +
+                    " , trailer.pairingDate as pairingDate " +
                     " from trailer " +
                     " left outer join vehicle on trailer.vehicleID = vehicle.vehicleID " +
                     " left outer join driver on trailer.driverID = driver.driverID " +
                     " left outer join person on driver.personID = person.personID " +
                     " join groups on trailer.groupID = groups.groupID ";
     
-    private static final String SELECT_COUNT_FROM_TRAILER_PERFORMANCE = "select COUNT(*) from  trailer ";
+    private static final String SELECT_COUNT_FROM_TRAILER_PERFORMANCE = "select COUNT(*) from  trailer " +
+                    " left outer join vehicle on trailer.vehicleID = vehicle.vehicleID " +
+                    " left outer join driver on trailer.driverID = driver.driverID " +
+                    " left outer join person on driver.personID = person.personID " +
+                    " join groups on trailer.groupID = groups.groupID ";
+    
     
     private static ParameterizedRowMapper<TrailerReportItem> trailerReportItemRowMapper = new ParameterizedRowMapper<TrailerReportItem>() {
         @Override
@@ -50,6 +56,7 @@ public class TrailerReportJDBCDAO extends SimpleJdbcDaoSupport implements Traile
             trailerReportItem.setDriverName(rs.getString("driverName"));
             trailerReportItem.setGroupID(rs.getInt("groupID"));
             trailerReportItem.setGroupName(rs.getString("groupName"));
+            trailerReportItem.setEntryMethod(null != rs.getDate("pairingDate"));
             return trailerReportItem;
         }
     };
@@ -57,10 +64,46 @@ public class TrailerReportJDBCDAO extends SimpleJdbcDaoSupport implements Traile
 
     static {
         replaceColumnNameMap.put("trailerName", "trailer.name");
+        replaceColumnNameMap.put("groupName", "groups.name");
+        replaceColumnNameMap.put("vehicleName", "vehicle.name");
+        replaceColumnNameMap.put("driverName", "person.first||' '||person.middle||' '||person.last||' '||person.suffix");
+        replaceColumnNameMap.put("entryMethod", "trailer.pairingDate");
     };
-    
+    private String buildFilteringString(List<TableFilterField> filters){
+        String paramName = "";
+        StringBuilder filteringString = new StringBuilder();
+        if(filters != null && !filters.isEmpty()) {
+            for(TableFilterField filter : filters) {
+                String tempFieldIdentifier = "";
+                if(replaceColumnNameMap.containsKey(filter.getField())){
+                    tempFieldIdentifier = replaceColumnNameMap.get(filter.getField());
+                } else {
+                    tempFieldIdentifier = filter.getField();
+                }
+                if(filter.getField() != null && filter.getFilter() != null && !filter.getFilter().equals("") ) {
+                    if(filter.getFilter() instanceof String){
+                        paramName = "filter_"+filter.getField();
+                        filteringString.append(" AND " + tempFieldIdentifier + " LIKE :" + paramName);
+                        args.put(paramName, "%"+filter.getFilter()+"%");
+                    }
+                    else if(filter.getFilter() instanceof Range) {
+                        Range range = (Range)filter.getFilter();
+                        paramName = "filter_"+filter.getField()+"_min";
+                        filteringString.append(" AND " + filter.getField() + " >= :" + paramName);
+                        args.put(paramName, range.getMin());
+                        
+                        paramName = "filter_"+filter.getField()+"_max";
+                        filteringString.append(" AND " + filter.getField() + " < :" + paramName);
+                        args.put(paramName, range.getMax());
+                    }
+                }
+            }
+        }
+        return filteringString.toString();
+    }
+    private Map<String, Object> args = new HashMap<String, Object>();
     public List<TrailerReportItem> getTrailerReportItemByGroupPaging(Integer groupID, PageParams pageParams) {
-        Map<String, Object> args = new HashMap<String, Object>();
+        
         
         StringBuilder sqlQuery = new StringBuilder(SELECT_ALL_FROM_TRAILER_PERFORMANCE);
         
@@ -70,30 +113,7 @@ public class TrailerReportJDBCDAO extends SimpleJdbcDaoSupport implements Traile
         
         /***FILTERING***/
         List<TableFilterField> filters = pageParams.getFilterList();
-        if(filters != null && !filters.isEmpty()) {
-            for(TableFilterField filter : filters) {
-                if(replaceColumnNameMap.containsKey(filter.getField())){
-                    filter.setField(replaceColumnNameMap.get(filter.getField()));
-                }
-                if(filter.getField() != null && filter.getFilter() != null ) {
-                    if(filter.getFilter() instanceof String){
-                        paramName = "filter_"+filter.getField();
-                        sqlQuery.append(" AND " + filter.getField() + " LIKE :" + paramName);
-                        args.put(paramName, "%"+filter.getFilter()+"%");
-                    }
-                    else if(filter.getFilter() instanceof Range) {
-                        Range range = (Range)filter.getFilter();
-                        paramName = "filter_"+filter.getField()+"_min";
-                        sqlQuery.append(" AND " + filter.getField() + " >= :" + paramName);
-                        args.put(paramName, range.getMin());
-                        
-                        paramName = "filter_"+filter.getField()+"_max";
-                        sqlQuery.append(" AND " + filter.getField() + " < :" + paramName);
-                        args.put(paramName, range.getMax());
-                    }
-                }
-            }
-        }
+        sqlQuery.append(buildFilteringString(filters));
         
         /***SORTING***/
         if(pageParams.getSort() != null && !pageParams.getSort().getField().isEmpty()) {
@@ -110,39 +130,16 @@ public class TrailerReportJDBCDAO extends SimpleJdbcDaoSupport implements Traile
 
     @Override
     public Integer getTrailerReportCount(Integer groupID, List<TableFilterField> tableFilterFieldList) {
-        Map<String, Object> args = new HashMap<String, Object>();
+        args = new HashMap<String, Object>();
         
         StringBuilder sqlQuery = new StringBuilder(SELECT_COUNT_FROM_TRAILER_PERFORMANCE);
         
         String paramName = "filter_"+groupID+"_groupID";
-        sqlQuery.append(" where groupID = :" + paramName);
+        sqlQuery.append(" where trailer.groupID = :" + paramName);
         args.put(paramName, groupID);
 
         /***FILTERING***/
-        if(tableFilterFieldList != null && !tableFilterFieldList.isEmpty()) {
-            for(TableFilterField filter : tableFilterFieldList) {
-                if(replaceColumnNameMap.containsKey(filter.getField())){
-                    filter.setField(replaceColumnNameMap.get(filter.getField()));
-                }
-                if(filter.getField() != null && filter.getFilter() != null ) {
-                    if(filter.getFilter() instanceof String){
-                        paramName = "filter_"+filter.getField();
-                        sqlQuery.append(" AND " + filter.getField() + " LIKE :" + paramName);
-                        args.put(paramName, "%"+filter.getFilter()+"%");
-                    }
-                    else if(filter.getFilter() instanceof Range) {
-                        Range range = (Range)filter.getFilter();
-                        paramName = "filter_"+filter.getField()+"_min";
-                        sqlQuery.append(" AND " + filter.getField() + " >= :" + paramName);
-                        args.put(paramName, range.getMin());
-                        
-                        paramName = "filter_"+filter.getField()+"_max";
-                        sqlQuery.append(" AND " + filter.getField() + " < :" + paramName);
-                        args.put(paramName, range.getMax());
-                    }
-                }
-            }
-        }
+        sqlQuery.append(buildFilteringString(tableFilterFieldList));
         
         logger.debug("getTrailerReportCount: " + sqlQuery.toString() );
         

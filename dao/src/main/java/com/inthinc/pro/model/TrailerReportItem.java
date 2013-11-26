@@ -15,12 +15,17 @@ public class TrailerReportItem extends BaseEntity implements Comparable<TrailerR
     private Integer vehicleID;
     private String trailerName;
     private Integer trailerID;
-    private Boolean entryMethod;
+    private TrailerEntryMethod entryMethod;
 
-    public Boolean getEntryMethod() {
+    public TrailerEntryMethod getEntryMethod() {
         return entryMethod;
     }
-    public void setEntryMethod(Boolean entryMethod) {
+    
+    public void setEntryMethod(boolean detected){
+        this.entryMethod = detected?TrailerEntryMethod.DETECTED:TrailerEntryMethod.ENTERED;
+    }
+
+    public void setEntryMethod(TrailerEntryMethod entryMethod) {
         this.entryMethod = entryMethod;
     }
     public boolean getAssignedStatus(){
