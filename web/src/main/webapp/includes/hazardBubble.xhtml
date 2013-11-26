@@ -17,8 +17,8 @@
 			<h:outputText value="#{messages[hazard.type]}"/>
 			<h:outputText value="#{messages.hazard_radius}:"/>
 			<h:panelGroup>               
-            	<h:outputText value="#{hazard.radiusInUnits} "/>
-            	<h:outputText value="miles" converter="MeasurementTextConverter"></h:outputText>
+            	<h:outputText value="#{unitValue} "/>
+            	<h:outputText value="#{unitName}" ></h:outputText>
             </h:panelGroup>
 			<h:outputText value="#{messages.hazard_endTime}:"/>
             <h:outputText value="#{hazard.endTime}"><f:convertDateTime pattern="#{messages.dateTimeFormat}" timeZone="#{timeZone}" /></h:outputText>
