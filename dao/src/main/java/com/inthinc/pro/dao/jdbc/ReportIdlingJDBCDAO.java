@@ -16,7 +16,7 @@ import com.inthinc.pro.model.IdlingReportItem;
 import com.inthinc.pro.model.Status;
 
 public class ReportIdlingJDBCDAO extends SimpleJdbcDaoSupport implements ReportIdlingDAO {
-
+//Instead of the hessian ReportDAO for idling 
     private static final String IDLING_REPORT_DATA = "SELECT di.driverID as driverID, di.driverName as driverName, di.groupID as groupID, di.groupName as groupName, sum(agg.driveTime) as driveTime,"
             + "sum(agg.idleLo) as lowIdleTime, sum(agg.idleHi) as highIdleTime, (BIT_OR(agg.emuFeatureMask) & 4 != 0) as hasRPM, driver.status " + "FROM driverInfo di "
             + "LEFT JOIN driver ON (driver.driverID = di.driverID) "
