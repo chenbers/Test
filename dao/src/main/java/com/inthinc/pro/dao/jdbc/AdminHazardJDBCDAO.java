@@ -8,6 +8,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.sql.Types;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -18,6 +19,9 @@ import java.util.Map;
 import java.util.TimeZone;
 
 import org.apache.log4j.Logger;
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
+import org.joda.time.LocalDateTime;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
@@ -234,8 +238,22 @@ public class AdminHazardJDBCDAO extends SimpleJdbcDaoSupport implements RoadHaza
                 ps.setDouble(6, hazard.getLatitude());
                 ps.setDouble(7, hazard.getLongitude());
                 ps.setInt(8, hazard.getRadiusMeters());
-                ps.setTimestamp(9, hazard.getStartTime() != null ? new Timestamp(hazard.getStartTime().getTime()) : null);
-                ps.setTimestamp(10, hazard.getEndTime() != null ? new Timestamp(hazard.getEndTime().getTime()) : null);
+
+                DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                df.setTimeZone(TimeZone.getTimeZone("UTC"));
+                String strStart = null;
+                String strEnd = null;
+
+                if (hazard.getStartTime()!=null){
+                    strStart = df.format(toUTC(hazard.getStartTime()));
+                }
+
+                if (hazard.getEndTime()!=null){
+                    strEnd = df.format(toUTC(hazard.getEndTime()));
+                }
+
+                ps.setString(9, strStart);
+                ps.setString(10, strEnd);
                 ps.setInt(11, hazard.getType() != null ? hazard.getType().getCode() : null);
                 ps.setString(12, hazard.getDescription());
                 ps.setInt(13, hazard.getStatus() != null ? hazard.getStatus().getCode() : null);
@@ -282,8 +300,13 @@ public class AdminHazardJDBCDAO extends SimpleJdbcDaoSupport implements RoadHaza
                 ps.setDouble(6, hazard.getLatitude());
                 ps.setDouble(7, hazard.getLongitude());
                 ps.setInt(8, hazard.getRadiusMeters());
-                ps.setTimestamp(9, new Timestamp(hazard.getStartTime().getTime()));
-                ps.setTimestamp(10, new Timestamp(hazard.getEndTime().getTime()));
+
+                DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                df.setTimeZone(TimeZone.getTimeZone("UTC"));
+                String strStart = df.format(toUTC(hazard.getStartTime()));
+                String strEnd = df.format(toUTC(hazard.getEndTime()));
+                ps.setString(9, strStart);
+                ps.setString(10, strEnd);
                 ps.setInt(11, hazard.getType().getCode());
                 ps.setString(12, hazard.getDescription());
                 ps.setInt(13, hazard.getStatus().getCode());
@@ -298,5 +321,10 @@ public class AdminHazardJDBCDAO extends SimpleJdbcDaoSupport implements RoadHaza
 
         jdbcTemplate.update(psc, keyHolder);
         return keyHolder.getKey().intValue();
+    }
+
+    private Date toUTC(Date date){
+        DateTime dt = new DateTime(date.getTime()).toDateTime(DateTimeZone.UTC);
+        return dt.toDate();
     }
 }

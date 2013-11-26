@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import javax.faces.application.FacesMessage;
@@ -502,5 +503,19 @@ public class HazardsBean extends BaseBean {
     }
     public void setSelectedHazardID(Integer selectedHazardID) {
         this.selectedHazardID = selectedHazardID;
+    }
+    public String getUnitName(){
+        Hazard targetHazard = hazards.get(selectedHazardID);
+        String radiusUnits = targetHazard.getRadiusUnits().toString();
+        Locale locale = getLocale();
+        String convertedMsg =  MessageUtil.getMessageString(radiusUnits, locale);
+        return convertedMsg;
+    }
+
+    public Integer getUnitValue(){
+        Hazard targetHazard = hazards.get(selectedHazardID);
+        MeasurementLengthType radiusUnits = targetHazard.getRadiusUnits();
+        Integer unitValue = radiusUnits.convertFromMeters(targetHazard.getRadiusMeters()).intValue();
+        return unitValue;
     }
 }
