@@ -13,10 +13,13 @@ import java.util.Map;
 import org.apache.log4j.Logger;
 import org.springframework.jdbc.core.simple.ParameterizedRowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
+import org.springframework.security.context.SecurityContextHolder;
 
 import com.inthinc.pro.dao.report.TrailerReportDAO;
+import com.inthinc.pro.model.GroupHierarchy;
 import com.inthinc.pro.model.Status;
 import com.inthinc.pro.model.TrailerReportItem;
+import com.inthinc.pro.model.User;
 import com.inthinc.pro.model.pagination.PageParams;
 import com.inthinc.pro.model.pagination.Range;
 import com.inthinc.pro.model.pagination.SortOrder;
@@ -70,6 +73,7 @@ public class TrailerReportJDBCDAO extends SimpleJdbcDaoSupport implements Traile
     private static final LinkedHashMap<String, String> replaceColumnNameMap = new LinkedHashMap<String, String>();
 
     static {
+        replaceColumnNameMap.put("name", "trailer.name");
         replaceColumnNameMap.put("trailerName", "trailer.name");
         replaceColumnNameMap.put("groupName", "groups.name");
         replaceColumnNameMap.put("vehicleName", "vehicle.name");
@@ -117,14 +121,20 @@ public class TrailerReportJDBCDAO extends SimpleJdbcDaoSupport implements Traile
         return filteringString.toString();
     }
     private Map<String, Object> args = new HashMap<String, Object>();
-    public List<TrailerReportItem> getTrailerReportItemByGroupPaging(Integer groupID, PageParams pageParams) {
+    @Override
+    public List<TrailerReportItem> getTrailerReportItemByGroupPaging(List<Integer> groupIDList, PageParams pageParams) {
         
         
         StringBuilder sqlQuery = new StringBuilder(SELECT_ALL_FROM_TRAILER_PERFORMANCE);
         
-        String paramName = "filter_"+groupID+"_groupID"; //TODO: I think ryry did this becasue he didn't know how to use an IN here ... so he was anticipating having to have multiple group id params (one for each)
-        sqlQuery.append(" where trailer.groupID = :" + paramName); //TODO: to match vehicle this would need to be an IN??? from, AdminVehicleJDBCDAO "WHERE v.groupID in (:group_list) and v.status != 3"; 
-        args.put(paramName, groupID);
+        //TODO: remove before deploy... for dev debugging only
+        for(Integer groupID: groupIDList){
+            logger.debug("will search groupid: "+groupID);
+        }
+        String paramName = "filter_groupIDs"; //TODO: I think ryry did this becasue he didn't know how to use an IN here ... so he was anticipating having to have multiple group id params (one for each)
+        sqlQuery.append(" where trailer.groupID in ( :" + paramName + " ) "); //TODO: to match vehicle this would need to be an IN??? from, AdminVehicleJDBCDAO "WHERE v.groupID in (:group_list) and v.status != 3";
+        
+        args.put(paramName, groupIDList);
         
         /***FILTERING***/
         List<TableFilterField> filters = pageParams.getFilterList();
@@ -144,14 +154,18 @@ public class TrailerReportJDBCDAO extends SimpleJdbcDaoSupport implements Traile
     }
 
     @Override
-    public Integer getTrailerReportCount(Integer groupID, List<TableFilterField> tableFilterFieldList) {
+    public Integer getTrailerReportCount(List<Integer> groupIDList, List<TableFilterField> tableFilterFieldList) {
         args = new HashMap<String, Object>();
         
         StringBuilder sqlQuery = new StringBuilder(SELECT_COUNT_FROM_TRAILER_PERFORMANCE);
         
-        String paramName = "filter_"+groupID+"_groupID";
-        sqlQuery.append(" where trailer.groupID = :" + paramName);
-        args.put(paramName, groupID);
+        //TODO: remove before deploy... for dev debugging only
+        for(Integer groupID: groupIDList){
+            logger.debug("will search groupid: "+groupID);
+        }
+        String paramName = "filter_groupIDs";
+        sqlQuery.append(" where trailer.groupID in ( :" + paramName + " ) ");
+        args.put(paramName, groupIDList);
 
         /***FILTERING***/
         sqlQuery.append(buildFilteringString(tableFilterFieldList));
@@ -162,4 +176,5 @@ public class TrailerReportJDBCDAO extends SimpleJdbcDaoSupport implements Traile
         return result;
     }
     
+
 }

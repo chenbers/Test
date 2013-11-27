@@ -11,6 +11,7 @@ import com.inthinc.pro.model.pagination.SortOrder;
 import com.inthinc.pro.model.pagination.TableFilterField;
 import com.inthinc.pro.model.pagination.TableSortField;
 import com.inthinc.pro.reports.ReportCriteria;
+import com.inthinc.pro.table.model.provider.TrailerReportPaginationTableDataProvider;
 import com.inthinc.pro.util.SelectItemUtil;
 
 public class PagingTrailerReportBean extends BasePagingReportBean<TrailerReportItem>{
@@ -18,15 +19,20 @@ public class PagingTrailerReportBean extends BasePagingReportBean<TrailerReportI
     private TrailerEntryMethod entryMethodFilter;
     private Integer entryMethodFilterID;
     
-
+    @Override
+    public void init() {
+        super.init();
+        ((TrailerReportPaginationTableDataProvider)getTableDataProvider()).setGroupIDList(getProUser().getGroupHierarchy().getGroupIDList(getUser().getGroupID()));
+    }
     @Override
     public TableSortField getDefaultSort() {
         return new TableSortField(SortOrder.ASCENDING, "name");
     }
 
     @Override
-    protected ReportCriteria getReportCriteria() {
-        ReportCriteria reportCriteria =  getReportCriteriaService().getTrailerReportCriteria(getUser().getGroupID(), Duration.TWELVE, getLocale(), false);
+    protected ReportCriteria getReportCriteria() { 
+        Integer groupID = getUser().getGroupID();
+        ReportCriteria reportCriteria =  getReportCriteriaService().getTrailerReportCriteria(groupID, getProUser().getGroupHierarchy().getGroupIDList(groupID), Duration.TWELVE, getLocale(), false);
       
       TableSortField originalSort = getTableDataProvider().getSort();
       List<TableFilterField> originalFilterList = getTableDataProvider().getFilters();

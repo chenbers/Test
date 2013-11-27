@@ -70,7 +70,9 @@ public class TrailerReportJDBCDAOTest extends SimpleJdbcDaoSupport {
         filterMap.put("speedScore", "");
         filterMap.put("styleScore", "");
         PageParams params = new PageParams(PAGE_1_START, PAGE_1_END, this.getTableSortField(SortOrder.ASCENDING, "trailerName"), this.getFilters(filterMap));
-        List<TrailerReportItem> trailerReportItems = dao.getTrailerReportItemByGroupPaging(lastGroupID, params);
+        List<Integer> groupIDs = new ArrayList<Integer>();
+        groupIDs.add(lastGroupID);
+        List<TrailerReportItem> trailerReportItems = dao.getTrailerReportItemByGroupPaging(groupIDs, params);
         int expected = NUM_OF_VEHICLE_PERFORMANCE_INSERTS - ((PAGE_1_END - PAGE_1_START) + 1) <= 0 ? NUM_OF_VEHICLE_PERFORMANCE_INSERTS : NUM_OF_VEHICLE_PERFORMANCE_INSERTS - ((PAGE_1_END - PAGE_1_START) + 1);
         int pageCount = (PAGE_1_END - PAGE_1_START) + 1;
         int numOfResults = NUM_OF_VEHICLE_PERFORMANCE_INSERTS  > (PAGE_1_END + 1) ? pageCount : expected;
@@ -84,7 +86,7 @@ public class TrailerReportJDBCDAOTest extends SimpleJdbcDaoSupport {
         filterMap.put("speedScore", "");
         filterMap.put("styleScore", "");
         params = new PageParams(PAGE_2_START, PAGE_2_END, this.getTableSortField(SortOrder.ASCENDING, "trailerName"), this.getFilters(filterMap));
-        trailerReportItems = dao.getTrailerReportItemByGroupPaging(lastGroupID, params);
+        trailerReportItems = dao.getTrailerReportItemByGroupPaging(groupIDs, params);
         expected = NUM_OF_VEHICLE_PERFORMANCE_INSERTS - ((PAGE_2_END - PAGE_2_START) + 1) <= 0 ? 0 : NUM_OF_VEHICLE_PERFORMANCE_INSERTS - ((PAGE_2_END - PAGE_2_START) + 1);
         pageCount = (PAGE_2_END - PAGE_2_START) + 1;
         numOfResults = NUM_OF_VEHICLE_PERFORMANCE_INSERTS  > (PAGE_2_END + 1) ? pageCount : expected;
@@ -105,7 +107,7 @@ public class TrailerReportJDBCDAOTest extends SimpleJdbcDaoSupport {
         filterMap.put("speedScore", "");
         filterMap.put("styleScore", "");
         params = new PageParams(PAGE_1_START, PAGE_1_END, this.getTableSortField(SortOrder.ASCENDING, "trailerName"), this.getFilters(filterMap));
-        trailerReportItems = dao.getTrailerReportItemByGroupPaging(lastGroupID, params);
+        trailerReportItems = dao.getTrailerReportItemByGroupPaging(groupIDs, params);
         assertEquals(NUM_OF_VEHICLE_PERFORMANCE_INSERTS_WITH_OVERALL_RANGE, trailerReportItems.size());
         
         // Test Paging with trailerName desc
@@ -115,7 +117,7 @@ public class TrailerReportJDBCDAOTest extends SimpleJdbcDaoSupport {
         filterMap.put("speedScore", "");
         filterMap.put("styleScore", "");
         params = new PageParams(PAGE_1_START, PAGE_1_END, this.getTableSortField(SortOrder.DESCENDING, "trailerName"), this.getFilters(filterMap));
-        trailerReportItems = dao.getTrailerReportItemByGroupPaging(lastGroupID, params);
+        trailerReportItems = dao.getTrailerReportItemByGroupPaging(groupIDs, params);
         expected = NUM_OF_VEHICLE_PERFORMANCE_INSERTS - ((PAGE_1_END - PAGE_1_START) + 1) <= 0 ? NUM_OF_VEHICLE_PERFORMANCE_INSERTS : NUM_OF_VEHICLE_PERFORMANCE_INSERTS - ((PAGE_1_END - PAGE_1_START) + 1);
         pageCount = (PAGE_1_END - PAGE_1_START) + 1;
         numOfResults = NUM_OF_VEHICLE_PERFORMANCE_INSERTS  > (PAGE_1_END + 1) ? pageCount : expected;
@@ -135,7 +137,9 @@ public class TrailerReportJDBCDAOTest extends SimpleJdbcDaoSupport {
         filterMap.put("speedScore", "");
         filterMap.put("styleScore", "");
         
-        int count = dao.getTrailerReportCount(lastGroupID, this.getFilters(filterMap));
+        List<Integer> groupIDs = new ArrayList<Integer>();
+        groupIDs.add(lastGroupID);
+        int count = dao.getTrailerReportCount(groupIDs, this.getFilters(filterMap));
         assertEquals(NUM_OF_VEHICLE_PERFORMANCE_INSERTS, count);
     }
     
