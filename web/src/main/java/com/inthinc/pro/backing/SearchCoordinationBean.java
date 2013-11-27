@@ -59,6 +59,8 @@ public class SearchCoordinationBean {
 			return "pretty:idlingReportWithCriteria";
 		case 4: 
 			return "pretty:devicesReportWithCriteria";
+		case 6: 
+            return "pretty:trailersReportWithCriteria";
 		}
 		return "pretty:driversReportWithCriteria";
 	}

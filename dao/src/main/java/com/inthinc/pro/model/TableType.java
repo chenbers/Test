@@ -34,7 +34,8 @@ public enum TableType implements BaseEnum
     ZONE_EVENTS(21, "ZONE_EVENTS"),
     HOS_EVENTS(22, "HOS_EVENTS"),
     FUEL_STOPS(23, "FUEL_STOPS"),
-    DRIVER_LOGINS(24, "DRIVER_LOGINS");
+    DRIVER_LOGINS(24, "DRIVER_LOGINS"),
+    TRAILER_REPORT(25, "TRAILER_REPORT");
     
     private String description;
     private int    code;

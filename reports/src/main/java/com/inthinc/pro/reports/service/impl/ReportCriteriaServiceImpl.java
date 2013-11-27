@@ -38,6 +38,7 @@ import com.inthinc.pro.dao.report.DVIRInspectionRepairReportDAO;
 import com.inthinc.pro.dao.report.DVIRViolationReportDAO;
 import com.inthinc.pro.dao.report.DriverPerformanceDAO;
 import com.inthinc.pro.dao.report.GroupReportDAO;
+import com.inthinc.pro.dao.report.TrailerReportDAO;
 import com.inthinc.pro.dao.util.DateUtil;
 import com.inthinc.pro.map.ReportAddressLookupBean;
 import com.inthinc.pro.model.DriverStopReport;
@@ -133,6 +134,7 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
     private FormsDAO formsDAO;
     private DVIRViolationReportDAO dvirViolationReportDAO;
     private DVIRInspectionRepairReportDAO dvirInspectionRepairReportDAO;
+    private TrailerReportDAO trailerReportDAO;
     
     public ReportIdlingDAO getReportIdlingDAO() {
         return reportIdlingDAO;
@@ -140,6 +142,14 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
 
     public void setReportIdlingDAO(ReportIdlingDAO reportIdlingDAO) {
         this.reportIdlingDAO = reportIdlingDAO;
+    }
+    
+    public TrailerReportDAO getTrailerReportDAO() {
+        return trailerReportDAO;
+    }
+
+    public void setTrailerReportDAO(TrailerReportDAO trailerReportDAO) {
+        this.trailerReportDAO = trailerReportDAO;
     }
 
     public FormsDAO getFormsDAO() {
@@ -337,6 +347,25 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
                 reportCriteria.setMainDataset(scoreDAO.getVehicleReportData(groupID, duration, getGroupMap(group)));
             }
             reportCriteria.setDuration(duration);
+        }
+
+        return reportCriteria;
+    }
+    
+    @Override
+    public ReportCriteria getTrailerReportCriteria(Integer groupID, Duration duration, Locale locale, Boolean initDataSet) {
+        this.locale = locale;
+        Group group = groupDAO.findByID(groupID);
+        ReportCriteria reportCriteria = new ReportCriteria(ReportType.TRAILER_REPORT, group.getName(), locale);
+
+        if (initDataSet) {
+            if (duration.equals(Duration.TWELVE)) {
+                Integer rowCount = trailerReportDAO.getTrailerReportCount(groupID, null);
+                PageParams pageParams = new PageParams(0, rowCount, null, null);
+                reportCriteria.setMainDataset(trailerReportDAO.getTrailerReportItemByGroupPaging(groupID, pageParams));
+            
+                reportCriteria.setDuration(duration);
+            }
         }
 
         return reportCriteria;

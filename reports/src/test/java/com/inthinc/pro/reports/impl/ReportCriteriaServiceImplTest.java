@@ -1,5 +1,7 @@
 package com.inthinc.pro.reports.impl;
 
+import static org.junit.Assert.assertEquals;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -21,16 +23,19 @@ import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.dao.GroupDAO;
 import com.inthinc.pro.dao.HOSDAO;
 import com.inthinc.pro.dao.StateMileageDAO;
+import com.inthinc.pro.dao.report.TrailerReportDAO;
 import com.inthinc.pro.model.Account;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.DriverLocation;
 import com.inthinc.pro.model.DriverName;
 import com.inthinc.pro.model.DriverStops;
+import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.GroupHierarchy;
 import com.inthinc.pro.model.LastLocation;
 import com.inthinc.pro.model.LatLng;
 import com.inthinc.pro.model.MeasurementType;
+import com.inthinc.pro.model.TrailerReportItem;
 import com.inthinc.pro.model.Trip;
 import com.inthinc.pro.model.hos.HOSDriverLogin;
 import com.inthinc.pro.model.hos.HOSGroupMileage;
@@ -38,7 +43,11 @@ import com.inthinc.pro.model.hos.HOSOccupantHistory;
 import com.inthinc.pro.model.hos.HOSOccupantInfo;
 import com.inthinc.pro.model.hos.HOSRecord;
 import com.inthinc.pro.model.hos.HOSVehicleMileage;
+import com.inthinc.pro.model.pagination.PageParams;
+import com.inthinc.pro.model.pagination.TableFilterField;
 import com.inthinc.pro.reports.BaseUnitTest;
+import com.inthinc.pro.reports.ReportCriteria;
+import com.inthinc.pro.reports.ReportType;
 import com.inthinc.pro.reports.dao.mock.MockWaysmartDAO;
 import com.inthinc.pro.reports.hos.testData.MockData;
 import com.inthinc.pro.reports.ifta.StateMileageByMonthReportCriteria;
@@ -194,8 +203,78 @@ public class ReportCriteriaServiceImplTest extends BaseUnitTest {
             }
         };
     }
+    
+    @Test
+    public void testGetTrailerReportCriteria() {
+        String mockGroupName = "TrailerGroupName";
+        
+        ReportCriteria reportCriteria = new ReportCriteria(ReportType.TRAILER_REPORT, mockGroupName, Locale.US);
+        Duration duration = Duration.TWELVE;
+        
+        assertEquals(ReportType.TRAILER_REPORT, reportCriteria.getReport());
+        
+        MockTrailerReportDAO dao = new MockTrailerReportDAO();
+        Integer rowCount = dao.getTrailerReportCount(dao.getGroupID(), null);
+        
+        assertEquals(dao.numOfResults, rowCount.intValue());
+        
+        PageParams pageParams = new PageParams(0, rowCount, null, null);
+        reportCriteria.setMainDataset(dao.getTrailerReportItemByGroupPaging(dao.getGroupID(), pageParams));
+        reportCriteria.setDuration(duration);
+        
+        assertEquals(dao.numOfResults, reportCriteria.getMainDataset().size());
+        assertEquals(duration, reportCriteria.getDuration());
+    }
 
     // TODO Move these classes to mock package
+    class MockTrailerReportDAO implements TrailerReportDAO {
+        private int groupID = 1;
+        private String groupName = "MockGroupName";
+        private int numOfResults = 10;
+        
+        public int getGroupID() {
+            return groupID;
+        }
+
+        public String getGroupName() {
+            return groupName;
+        }
+
+        public int getNumOfResults() {
+            return numOfResults;
+        }
+
+        @Override
+        public List<TrailerReportItem> getTrailerReportItemByGroupPaging(Integer groupID, PageParams pageParams) {
+           List<TrailerReportItem> retVal = new ArrayList<TrailerReportItem>();
+           for(int i = 0; i < numOfResults; i++){
+               TrailerReportItem item = new TrailerReportItem();
+               item.setTrailerID(i);
+               item.setTrailerName("tName_" + i);
+               item.setVehicleID(i);
+               item.setVehicleName("vName_" + i);
+               item.setDriverID(i);
+               item.setDriverName("dName_"+i);
+               item.setGroupID(groupID);
+               item.setGroupName(groupName);
+               item.setMilesDriven(i + 5);
+               item.setOdometer(i + 100);
+               item.setOverallScore(30);
+               item.setSpeedScore(25);
+               item.setStyleScore(20);
+               retVal.add(item);
+           }
+           
+           return retVal;
+        }
+
+        @Override
+        public Integer getTrailerReportCount(Integer groupID, List<TableFilterField> tableFilterFieldList) {
+            return numOfResults;
+        }
+        
+    }
+    
     class MockDriverDAO implements DriverDAO {
         Driver driver;
 
