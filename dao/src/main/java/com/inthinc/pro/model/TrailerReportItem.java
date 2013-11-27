@@ -1,5 +1,7 @@
 package com.inthinc.pro.model;
 
+import java.util.Date;
+
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
@@ -16,13 +18,28 @@ public class TrailerReportItem extends BaseEntity implements Comparable<TrailerR
     private String trailerName;
     private Integer trailerID;
     private TrailerEntryMethod entryMethod;
+    private Status status;
 
     public TrailerEntryMethod getEntryMethod() {
         return entryMethod;
     }
     
-    public void setEntryMethod(boolean detected){
-        this.entryMethod = detected?TrailerEntryMethod.DETECTED:TrailerEntryMethod.ENTERED;
+    public void setEntryMethod(Date detected, Date entered){
+        if(detected == null){
+            if(entered == null){
+                //both are null
+                this.entryMethod = null;
+            } else {
+                this.entryMethod = TrailerEntryMethod.ENTERED;
+            }
+        } else {
+            if(entered == null){
+                this.entryMethod = TrailerEntryMethod.DETECTED;
+            } else {
+                //neither is null... must check to see which is more recent
+                this.entryMethod = (detected.after(entered))?TrailerEntryMethod.DETECTED:TrailerEntryMethod.ENTERED;
+            }
+        }
     }
 
     public void setEntryMethod(TrailerEntryMethod entryMethod) {
@@ -101,6 +118,14 @@ public class TrailerReportItem extends BaseEntity implements Comparable<TrailerR
         if (trailerName != null && item.getTrailerName() != null)
             return trailerName.toLowerCase().compareTo(item.getTrailerName().toLowerCase());
         return 0;
+    }
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
     }
     
 }

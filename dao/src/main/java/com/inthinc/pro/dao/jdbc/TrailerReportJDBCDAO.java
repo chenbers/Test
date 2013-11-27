@@ -1,7 +1,10 @@
 package com.inthinc.pro.dao.jdbc;
 
+import static com.inthinc.pro.dao.util.NumberUtil.objectToInteger;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -12,6 +15,7 @@ import org.springframework.jdbc.core.simple.ParameterizedRowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
 
 import com.inthinc.pro.dao.report.TrailerReportDAO;
+import com.inthinc.pro.model.Status;
 import com.inthinc.pro.model.TrailerReportItem;
 import com.inthinc.pro.model.pagination.PageParams;
 import com.inthinc.pro.model.pagination.Range;
@@ -23,6 +27,7 @@ public class TrailerReportJDBCDAO extends SimpleJdbcDaoSupport implements Traile
     
     private static final String SELECT_ALL_FROM_TRAILER_PERFORMANCE = 
                     " select trailer.trailerID " +
+                    " , trailer.status as trailerStatus" +
                     " , trailer.name as trailerName" +
                     " , trailer.vehicleID" +
                     " , vehicle.name as vehicleName" +
@@ -31,6 +36,7 @@ public class TrailerReportJDBCDAO extends SimpleJdbcDaoSupport implements Traile
                     " , trailer.groupID " +
                     " , groups.name as groupName " +
                     " , trailer.pairingDate as pairingDate " +
+                    " , trailer.entryDate as entryDate " +
                     " from trailer " +
                     " left outer join vehicle on trailer.vehicleID = vehicle.vehicleID " +
                     " left outer join driver on trailer.driverID = driver.driverID " +
@@ -48,15 +54,16 @@ public class TrailerReportJDBCDAO extends SimpleJdbcDaoSupport implements Traile
         @Override
         public TrailerReportItem mapRow(ResultSet rs, int rowNum) throws SQLException {
             TrailerReportItem trailerReportItem = new TrailerReportItem();
-            trailerReportItem.setTrailerID(rs.getInt("trailerID"));
+            trailerReportItem.setTrailerID(objectToInteger(rs.getObject("trailerID")));
             trailerReportItem.setTrailerName(rs.getString("trailerName"));
-            trailerReportItem.setVehicleID(rs.getInt("vehicleID"));
+            trailerReportItem.setVehicleID(objectToInteger(rs.getObject("vehicleID")));
             trailerReportItem.setVehicleName(rs.getString("vehicleName"));
-            trailerReportItem.setDriverID(rs.getInt("driverID"));
+            trailerReportItem.setDriverID(objectToInteger(rs.getObject("driverID")));
             trailerReportItem.setDriverName(rs.getString("driverName"));
-            trailerReportItem.setGroupID(rs.getInt("groupID"));
+            trailerReportItem.setGroupID(objectToInteger(rs.getObject("groupID")));
             trailerReportItem.setGroupName(rs.getString("groupName"));
-            trailerReportItem.setEntryMethod(null != rs.getDate("pairingDate"));
+            trailerReportItem.setEntryMethod((Date)rs.getDate("pairingDate"), (Date)rs.getDate("entryDate"));
+            trailerReportItem.setStatus(Status.valueOf(objectToInteger(rs.getObject("trailerStatus"))));
             return trailerReportItem;
         }
     };
@@ -68,18 +75,25 @@ public class TrailerReportJDBCDAO extends SimpleJdbcDaoSupport implements Traile
         replaceColumnNameMap.put("vehicleName", "vehicle.name");
         replaceColumnNameMap.put("driverName", "person.first||' '||person.middle||' '||person.last||' '||person.suffix");
         replaceColumnNameMap.put("entryMethod", "trailer.pairingDate");
+        replaceColumnNameMap.put("trailerStatus", "trailer.status");
+        replaceColumnNameMap.put("entryMethod", "trailer.pairingDate>trailer.entryDate");
     };
+    private String replaceColumnName(String paramColName){
+        String tempFieldIdentifier = "";
+        if(replaceColumnNameMap.containsKey(paramColName)){
+            tempFieldIdentifier = replaceColumnNameMap.get(paramColName);
+        } else {
+            tempFieldIdentifier = paramColName;
+        }
+        return tempFieldIdentifier;
+    }
+    
     private String buildFilteringString(List<TableFilterField> filters){
         String paramName = "";
         StringBuilder filteringString = new StringBuilder();
         if(filters != null && !filters.isEmpty()) {
             for(TableFilterField filter : filters) {
-                String tempFieldIdentifier = "";
-                if(replaceColumnNameMap.containsKey(filter.getField())){
-                    tempFieldIdentifier = replaceColumnNameMap.get(filter.getField());
-                } else {
-                    tempFieldIdentifier = filter.getField();
-                }
+                String tempFieldIdentifier = replaceColumnName(filter.getField());
                 if(filter.getField() != null && filter.getFilter() != null && !filter.getFilter().equals("") ) {
                     if(filter.getFilter() instanceof String){
                         paramName = "filter_"+filter.getField();
@@ -117,7 +131,7 @@ public class TrailerReportJDBCDAO extends SimpleJdbcDaoSupport implements Traile
         
         /***SORTING***/
         if(pageParams.getSort() != null && !pageParams.getSort().getField().isEmpty()) {
-            sqlQuery.append(" ORDER BY " + pageParams.getSort().getField() + " " + (pageParams.getSort().getOrder() == SortOrder.ASCENDING ? "ASC" : "DESC"));
+            sqlQuery.append(" ORDER BY " + replaceColumnName(pageParams.getSort().getField()) + " " + (pageParams.getSort().getOrder() == SortOrder.ASCENDING ? "ASC" : "DESC"));
         }
         
         /***PAGING***/

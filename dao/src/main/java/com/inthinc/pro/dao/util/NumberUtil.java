@@ -78,4 +78,15 @@ public class NumberUtil
         return number.intValue();
     }
     
+    public static Integer objectToInteger(Object theObj){
+        Integer theInteger;
+        if(theObj == null){
+            theInteger = null;
+        } else if(theObj instanceof Long) {
+            theInteger = ((Long)theObj).intValue();
+        } else {
+            theInteger = null;
+        }
+        return theInteger;
+    }
 }
