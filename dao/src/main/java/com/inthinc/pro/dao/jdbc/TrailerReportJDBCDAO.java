@@ -32,7 +32,7 @@ public class TrailerReportJDBCDAO extends SimpleJdbcDaoSupport implements Traile
                     " , trailer.vehicleID" +
                     " , vehicle.name as vehicleName" +
                     " , trailer.driverID" +
-                    " , person.first||' '||person.middle||' '||person.last||' '||person.suffix as driverName  " +
+                    " , concat(person.first,' ',person.middle,' ',person.last,' ',person.suffix) as driverName  " +
                     " , trailer.groupID " +
                     " , groups.name as groupName " +
                     " , trailer.pairingDate as pairingDate " +
@@ -73,10 +73,11 @@ public class TrailerReportJDBCDAO extends SimpleJdbcDaoSupport implements Traile
         replaceColumnNameMap.put("trailerName", "trailer.name");
         replaceColumnNameMap.put("groupName", "groups.name");
         replaceColumnNameMap.put("vehicleName", "vehicle.name");
-        replaceColumnNameMap.put("driverName", "person.first||' '||person.middle||' '||person.last||' '||person.suffix");
+        replaceColumnNameMap.put("driverName", "concat(person.first,' ',person.middle,' ',person.last,' ',person.suffix)");
         replaceColumnNameMap.put("entryMethod", "trailer.pairingDate");
         replaceColumnNameMap.put("status", "trailer.status");
         replaceColumnNameMap.put("entryMethod", "if(trailer.pairingDate>coalesce(trailer.entryDate,FROM_UNIXTIME(0)), 1, if(trailer.entryDate>coalesce(trailer.pairingDate,FROM_UNIXTIME(0)),2, 0)) ");
+        replaceColumnNameMap.put("assignedStatus", "trailer.driverID is not null || trailer.vehicleID is not null");
     };
     private String replaceColumnName(String paramColName){
         String tempFieldIdentifier = "";
