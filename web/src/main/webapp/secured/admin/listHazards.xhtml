@@ -199,7 +199,7 @@
                     <h:outputText value="#{messages.hazard_startTime}" />
                 </f:facet>
                 <h:outputText value="#{item.startTime}">
-                    <f:convertDateTime pattern="#{messages.dateTimeFormat}" timeZone="#{item.user.person.timeZone}" />
+                    <f:convertDateTime pattern="#{messages.dateTimeFormat}" timeZone="#{hazardsBean.user.person.timeZone}" />
                 </h:outputText>
             </rich:column>
             
@@ -208,7 +208,7 @@
                     <h:outputText value="#{messages.hazard_endTime}" />
                 </f:facet>
                 <h:outputText value="#{item.endTime}">
-                    <f:convertDateTime pattern="#{messages.dateTimeFormat}" timeZone="#{item.user.person.timeZone}" />
+                    <f:convertDateTime pattern="#{messages.dateTimeFormat}" timeZone="#{hazardsBean.user.person.timeZone}" />
                 </h:outputText>
             </rich:column>
             
@@ -330,7 +330,9 @@
 		<ui:include src="/includes/hazardBubble.xhtml">
 			<ui:param name="hazard" value="#{hazard}" />
 			<ui:param name="timeZone" value="#{hazardsBean.user.person.timeZone}"/>
-		</ui:include>
+            <ui:param name="unitName" value="#{hazardsBean.unitName}"/>
+            <ui:param name="unitValue" value="#{hazardsBean.unitValue}"/>
+        </ui:include>
 	</rich:panel>
 	<a4j:region id="jsFormRegion">
     	<a4j:form id="jsForm">
