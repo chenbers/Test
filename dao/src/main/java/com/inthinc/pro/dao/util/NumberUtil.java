@@ -84,6 +84,8 @@ public class NumberUtil
             theInteger = null;
         } else if(theObj instanceof Long) {
             theInteger = ((Long)theObj).intValue();
+        } else if(theObj instanceof Integer){
+            theInteger = (Integer)theObj;
         } else {
             theInteger = null;
         }
