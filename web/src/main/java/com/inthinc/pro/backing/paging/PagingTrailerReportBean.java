@@ -5,6 +5,7 @@ import java.util.List;
 import javax.faces.model.SelectItem;
 
 import com.inthinc.pro.model.Duration;
+import com.inthinc.pro.model.TrailerAssignedStatus;
 import com.inthinc.pro.model.TrailerEntryMethod;
 import com.inthinc.pro.model.TrailerReportItem;
 import com.inthinc.pro.model.pagination.SortOrder;
@@ -17,7 +18,9 @@ import com.inthinc.pro.util.SelectItemUtil;
 public class PagingTrailerReportBean extends BasePagingReportBean<TrailerReportItem>{
     private static final long serialVersionUID = 1L;
     private TrailerEntryMethod entryMethodFilter;
+    private TrailerAssignedStatus assignedStatusFilter;
     private Integer entryMethodFilterID;
+    private Integer assignedStatusFilterID;
     
     @Override
     public void init() {
@@ -47,6 +50,10 @@ public class PagingTrailerReportBean extends BasePagingReportBean<TrailerReportI
       
       return reportCriteria;
     }
+    public List<SelectItem> getAssignedStatuses() {
+        List<SelectItem> result = SelectItemUtil.toList(TrailerAssignedStatus.class, true);
+        return result;
+    }
     public List<SelectItem> getEntryMethods(){
         List<SelectItem> result = SelectItemUtil.toList(TrailerEntryMethod.class, true);
         return result;
@@ -64,5 +71,17 @@ public class PagingTrailerReportBean extends BasePagingReportBean<TrailerReportI
     }
     public void setEntryMethodFilterID(Integer entryMethodFilterID){
         this.entryMethodFilter = TrailerEntryMethod.valueOf(entryMethodFilterID);
+    }
+    public TrailerAssignedStatus getAssignedStatusFilter() {
+        return assignedStatusFilter;
+    }
+    public void setAssignedStatusFilter(TrailerAssignedStatus assignedStatusFilter) {
+        this.assignedStatusFilter = assignedStatusFilter;
+    }
+    public Integer getAssignedStatusFilterID(){
+        return (assignedStatusFilter!=null)?assignedStatusFilter.getCode():null;
+    }
+    public void setAssignedStatusFilterID(Integer assignedStatusFilterID){
+        this.assignedStatusFilter = TrailerAssignedStatus.valueOf(assignedStatusFilterID);
     }
 }

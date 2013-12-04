@@ -120,12 +120,27 @@
                                                 <h:outputText rendered="#{item.driverID eq null}" value="#{messages.reports_none_assigned}" />
                                                 <h:outputText rendered="#{item.driverID eq pagingTrailerReportBean.unknownDriverID}" value="#{item.driverName}" />
                                             </rich:column>
-                                            <rich:column id="assignedStatus" rendered="#{tableColumns['assigned_status'].visible}" sortBy="#{item.assignedStatus}">
+                                            <rich:column id="assignedStatus" rendered="#{tableColumns['assigned_status'].visible}" sortBy="#{item.assignedStatus}"
+                                                custFilterBy="#{item.assignedStatus}" filterValue="#{pagingTrailerReportBean.assignedStatusFilterID}">
                                                 <f:facet name="header">
-                                                    <h:outputText value="#{messages.reports_assignedStatus}" />
+                                                    <h:panelGroup >
+                                                        <h:outputText value="#{messages.reports_assignedStatus}" />
+                                                        <h:panelGroup style="float:right;">
+                                                            <rich:spacer style="display:block" height="2" />
+                                                            <h:selectOneMenu id="assignedStatusFilter" value="#{pagingTrailerReportBean.assignedStatusFilter}" label="#{messages[msgId]}"
+                                                                style="width:80px;size:auto;margin-top:3px;" converter="SimpleBeanConverter">
+                                                                <f:selectItems value="#{pagingTrailerReportBean.assignedStatuses}" />
+                                                                <a4j:support event="onchange" reRender="#{context},#{context}-form:header,#{context}-form:#{context}-bottomScroller" />
+                                                            </h:selectOneMenu>
+                                                            <ui:include src="/includes/dhtmlSelectBox.xhtml">
+                                                                <ui:param name="selectBoxID" value="#{context}-form:#{context}:assignedStatusFilter" />
+                                                            </ui:include>
+                                                        </h:panelGroup>
+                                                    </h:panelGroup>
                                                 </f:facet>
                                                 <h:outputText rendered="#{item.assignedStatus eq false}" value="#{messages.reports_not_assigned}" />
                                                 <h:outputText rendered="#{item.assignedStatus eq true}" value="#{messages.reports_assigned}" />
+                                                
                                             </rich:column>
                                             <rich:column id="entryMethod" rendered="#{tableColumns['entry_method'].visible}" sortBy="#{item.entryMethod}" 
                                                 custFilterBy="#{item.entryMethod}" filterValue="#{pagingTrailerReportBean.entryMethodFilterID}" >

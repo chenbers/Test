@@ -1,6 +1,9 @@
 package it.com.inthinc.pro.dao.jdbc;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotSame;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertFalse;
 import it.com.inthinc.pro.dao.model.ITData;
 import it.config.ITDataSource;
 import it.config.IntegrationConfig;
@@ -14,23 +17,20 @@ import java.util.Map;
 
 import javax.sql.DataSource;
 
-import junit.framework.Assert;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
 import org.springframework.jdbc.core.simple.SimpleJdbcTemplate;
+import org.springframework.test.AssertThrows;
 
 import com.inthinc.pro.dao.hessian.proserver.SiloService;
 import com.inthinc.pro.dao.hessian.proserver.SiloServiceCreator;
 import com.inthinc.pro.dao.jdbc.TrailerReportJDBCDAO;
-import com.inthinc.pro.model.State;
 import com.inthinc.pro.model.Status;
 import com.inthinc.pro.model.TrailerReportItem;
 import com.inthinc.pro.model.pagination.FilterOp;
 import com.inthinc.pro.model.pagination.PageParams;
-import com.inthinc.pro.model.pagination.Range;
 import com.inthinc.pro.model.pagination.SortOrder;
 import com.inthinc.pro.model.pagination.TableFilterField;
 import com.inthinc.pro.model.pagination.TableSortField;
@@ -38,14 +38,11 @@ import com.inthinc.pro.model.pagination.TableSortField;
 public class TrailerReportJDBCDAOTest extends SimpleJdbcDaoSupport {
     
     private static int NUM_OF_VEHICLE_PERFORMANCE_INSERTS = 2;
-    private static int NUM_OF_VEHICLE_PERFORMANCE_INSERTS_WITH_OVERALL_RANGE = NUM_OF_VEHICLE_PERFORMANCE_INSERTS % 2;
-    private static int OVERALL_RANGE_HIT = 14;
     private static int PAGE_1_START = 0;
     private static int PAGE_1_END = 9;
     private static int PAGE_2_START = 10;
     private static int PAGE_2_END = 19;
     
-    private static String GROUP_NAME = "JDBCDAOTestGroupName";
     private static String TRAILER_TABLE = "trailer";
     
     private static String TEST_TRAILER_NAME = "testTrailer_";
@@ -148,6 +145,30 @@ public class TrailerReportJDBCDAOTest extends SimpleJdbcDaoSupport {
         assertEquals(NUM_OF_VEHICLE_PERFORMANCE_INSERTS, count);
     }
     
+    @Test
+    public void getTrailerReportItem_filteredByAssignedStatus_filtered(){
+        TrailerReportJDBCDAO dao = new TrailerReportJDBCDAO();
+        DataSource dataSource = new ITDataSource().getRealDataSource();
+        dao.setDataSource(dataSource);
+        List<Integer> groupIDs = new ArrayList<Integer>();
+        groupIDs.add(itData.teamGroupData.get(ITData.GOOD).group.getGroupID());
+        Map<String, Object> filterMapAssigned = new HashMap<String, Object>();
+        filterMapAssigned.put("assignedStatus", "1");
+        PageParams params = new PageParams(PAGE_1_START, PAGE_1_END, this.getTableSortField(SortOrder.DESCENDING, "trailerName"), this.getFilters(filterMapAssigned));
+        List<TrailerReportItem> results = dao.getTrailerReportItemByGroupPaging(groupIDs, params);
+        for(TrailerReportItem item: results){
+            assertTrue(item.getAssignedStatus());
+        }
+        
+        Map<String, Object> filterMapNotAssigned = new HashMap<String, Object>();
+        filterMapNotAssigned.put("assignedStatus", "0");
+        params = new PageParams(PAGE_1_START, PAGE_1_END, this.getTableSortField(SortOrder.DESCENDING, "trailerName"), this.getFilters(filterMapNotAssigned));
+        results = dao.getTrailerReportItemByGroupPaging(groupIDs, params);
+        for(TrailerReportItem item: results){
+            assertFalse(item.getAssignedStatus());
+        }
+        //assertTrue("NOT IMPLEMENTED YET", false); //TODO: add a test here
+    }
     
     private List<TableFilterField> getFilters(Map<String, Object> filterMap) {
         List<TableFilterField> retVal = new ArrayList<TableFilterField>();
@@ -162,23 +183,7 @@ public class TrailerReportJDBCDAOTest extends SimpleJdbcDaoSupport {
     private TableSortField getTableSortField(SortOrder sortOrder, String fieldName) {
         return new TableSortField(sortOrder, fieldName);
     }
-    
-    private int getLastVehiclePerformanceID() {
-        DataSource dataSource = new ITDataSource().getRealDataSource();
-        this.setDataSource(dataSource);
-        SimpleJdbcTemplate template = getSimpleJdbcTemplate();
-        String sql = "select max(trailerID) from trailerPerformance";
-        return template.queryForObject(sql, Integer.class);
-    }
-    
-    private int getLastGroupID() {
-        DataSource dataSource = new ITDataSource().getRealDataSource();
-        this.setDataSource(dataSource);
-        SimpleJdbcTemplate template = getSimpleJdbcTemplate();
-        String sql = "select max(groupID) from groups";
-        return template.queryForObject(sql, Integer.class);
-    }
-    
+
     private void updateTrailerReportItem() {
         String sql = "insert into " + TRAILER_TABLE + " " 
                         +" ( groupID, acctID, status, groupPath, odometer, absOdometer, weight, year, name, make, model, color, vin, license, stateID, warrantyStart, warrantyStop, aggDate, newAggDate, deviceID, driverID, vehicleID, pairingDate, entryDate, modified ) "

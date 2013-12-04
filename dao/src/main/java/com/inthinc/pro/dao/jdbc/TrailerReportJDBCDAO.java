@@ -81,7 +81,7 @@ public class TrailerReportJDBCDAO extends SimpleJdbcDaoSupport implements Traile
         replaceColumnNameMap.put("entryMethod", "trailer.pairingDate");
         replaceColumnNameMap.put("status", "trailer.status");
         replaceColumnNameMap.put("entryMethod", "if(trailer.pairingDate>coalesce(trailer.entryDate,FROM_UNIXTIME(0)), 1, if(trailer.entryDate>coalesce(trailer.pairingDate,FROM_UNIXTIME(0)),2, 0)) ");
-        replaceColumnNameMap.put("assignedStatus", "trailer.driverID is not null || trailer.vehicleID is not null");
+        replaceColumnNameMap.put("assignedStatus", "(trailer.driverID is not null || trailer.vehicleID is not null)");
     };
     private String replaceColumnName(String paramColName){
         String tempFieldIdentifier = "";
