@@ -1,9 +1,9 @@
 package it.com.inthinc.pro.dao.jdbc;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.assertFalse;
 import it.com.inthinc.pro.dao.model.ITData;
 import it.config.ITDataSource;
 import it.config.IntegrationConfig;
@@ -22,7 +22,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
 import org.springframework.jdbc.core.simple.SimpleJdbcTemplate;
-import org.springframework.test.AssertThrows;
 
 import com.inthinc.pro.dao.hessian.proserver.SiloService;
 import com.inthinc.pro.dao.hessian.proserver.SiloServiceCreator;
@@ -167,7 +166,6 @@ public class TrailerReportJDBCDAOTest extends SimpleJdbcDaoSupport {
         for(TrailerReportItem item: results){
             assertFalse(item.getAssignedStatus());
         }
-        //assertTrue("NOT IMPLEMENTED YET", false); //TODO: add a test here
     }
     
     private List<TableFilterField> getFilters(Map<String, Object> filterMap) {
@@ -208,12 +206,6 @@ public class TrailerReportJDBCDAOTest extends SimpleJdbcDaoSupport {
         List<Object[]> retVal = new ArrayList<Object[]>();
         
         for (int i = 0; i < NUM_OF_VEHICLE_PERFORMANCE_INSERTS; i++) {
-            System.out.println("1: "+itData);
-            System.out.println("2: "+itData.teamGroupData);
-            System.out.println("3: "+itData.teamGroupData.get(ITData.GOOD));
-            System.out.println("4: "+itData.teamGroupData.get(ITData.GOOD).driver);
-            System.out.println("5: "+itData.teamGroupData.get(ITData.GOOD).driver.getDriverID());
-            System.out.println("6: "+itData.teamGroupData.get(ITData.GOOD).driver.getDriverID());    
             retVal.add(new Object[] { itData.teamGroupData.get(ITData.GOOD).group.getGroupID(), itData.account.getAccountID(), Status.ACTIVE.getCode(), "/"+FAKEGROUPPATH+"/"+itData.teamGroupData.get(ITData.GOOD).group.getGroupID()
                             , TEST_ODO,TEST_ODO,TEST_WEIGHT,TEST_YEAR,TEST_TRAILER_NAME + i,"testMake","testmodel","testcolor","testvin","testlicnse"
                             ,TEST_STATEID_UTAH,new Date(),new Date(),new Date(),new Date()
