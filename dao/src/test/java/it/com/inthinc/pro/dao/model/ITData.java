@@ -188,7 +188,7 @@ public class ITData extends BaseITData{
 	    return parseTestData(stream, siloService, includeUnknown, includeZonesAndAlerts, false);
 	}
     public boolean parseTestData(InputStream stream, SiloService siloService, boolean includeUnknown, boolean includeZonesAndAlerts, boolean includeWaysmartData) {
-        return parseTestData(stream, siloService, includeUnknown, includeZonesAndAlerts, false, false);
+        return parseTestData(stream, siloService, includeUnknown, includeZonesAndAlerts, includeWaysmartData, false);
     }
 	public boolean parseTestData(InputStream stream, SiloService siloService, boolean includeUnknown, boolean includeZonesAndAlerts, boolean includeWaysmartData, boolean includeTrailers) {
         try {
