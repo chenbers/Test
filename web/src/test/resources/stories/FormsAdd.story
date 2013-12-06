@@ -265,7 +265,6 @@ And I validate the Filter Groups field is ""
 And I validate the 1st Row of the Groups checkbox is not checked
 And I validate the View Properties Label text is present
 
-!-- removed attempts to select from dropdowns for now *******************************************************
 Scenario: TCXXXX: Forms Add Page - Add Form link top (cancel - changes)
 Given I am logged in
 When I click the Forms link
