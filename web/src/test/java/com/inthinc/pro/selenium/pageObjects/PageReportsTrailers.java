@@ -61,28 +61,28 @@ public class PageReportsTrailers extends ReportsBar {
             return new TextLink(PopUpEnum.EDIT_COLUMNS, page);
         }
         
-        public TextLink sortByTrailer() {
-            return new TextLink(ReportsTrailersEnum.TRAILERID_SORT);
-        }
-        
-        public TextLink sortByDistanceDriven() {
-            return new TextLink(ReportsTrailersEnum.DISTANCE_DRIVEN_SORT);
-        }
-        
-        public TextLink sortByDriver() {
-            return new TextLink(ReportsTrailersEnum.DRIVER_SORT);
-        }
-        
-        public TextLink driverValue() {
-            return new TextLink(ReportsTrailersEnum.DRIVER_VALUE);
-        }
-        
         public TextLink sortByGroup() {
             return new TextLink(ReportsTrailersEnum.GROUP_SORT);
         }
         
-        public TextTableLink groupValue() {
-            return new TextTableLink(ReportsTrailersEnum.GROUP_VALUE);
+        public TextLink sortByTrailerID() {
+            return new TextLink(ReportsTrailersEnum.TRAILERID_SORT);
+        }
+
+        public TextLink sortByVehicleID() {
+            return new TextLink(ReportsTrailersEnum.VEHICLE_SORT);
+        }        
+        
+        public TextLink sortByYearMakeModel() {
+            return new TextLink(ReportsTrailersEnum.YEAR_MAKE_MODEL);
+        }
+
+        public TextLink sortByDriver() {
+            return new TextLink(ReportsTrailersEnum.DRIVER_SORT);
+        }
+        
+        public TextLink sortByDistanceDriven() {
+            return new TextLink(ReportsTrailersEnum.DISTANCE_DRIVEN_SORT);
         }
         
         public TextLink sortByOdometer() {
@@ -91,38 +91,38 @@ public class PageReportsTrailers extends ReportsBar {
         
         public TextLink sortByOverall() {
             return new TextLink(ReportsTrailersEnum.OVERALL_SCORE_SORT);
-        }
-        
-        public TextLinkScoreTable overallValue() {
-            return new TextLinkScoreTable(ReportsTrailersEnum.OVERALL_SCORE_VALUE);
-        }
+        }   
         
         public TextLink sortBySpeed() {
             return new TextLink(ReportsTrailersEnum.SPEED_SCORE_SORT);
         }
         
-        public TextLinkScoreTable speedValue() {
-            return new TextLinkScoreTable(ReportsTrailersEnum.SPEED_SCORE_VALUE);
-        }
-        
         public TextLink sortByStyle() {
             return new TextLink(ReportsTrailersEnum.STYLE_SCORE_SORT);
+        }
+ 
+        public TextTableLink groupValue() {
+            return new TextTableLink(ReportsTrailersEnum.GROUP_VALUE);
+        }
+
+        public TextLink driverValue() {
+            return new TextLink(ReportsTrailersEnum.DRIVER_VALUE);
+        }        
+        
+        public TextLinkScoreTable overallValue() {
+            return new TextLinkScoreTable(ReportsTrailersEnum.OVERALL_SCORE_VALUE);
+        }      
+        
+        public TextLinkScoreTable speedValue() {
+            return new TextLinkScoreTable(ReportsTrailersEnum.SPEED_SCORE_VALUE);
         }
         
         public TextLinkScoreTable styleValue() {
             return new TextLinkScoreTable(ReportsTrailersEnum.STYLE_SCORE_VALUE);
         }
         
-        public TextLink sortByVehicleID() {
-            return new TextLink(ReportsTrailersEnum.VEHICLE_SORT);
-        }
-        
         public TextTableLink vehicleValue() {
             return new TextTableLink(ReportsTrailersEnum.VEHICLE_VALUE);
-        }
-        
-        public TextLink sortByYearMakeModel() {
-            return new TextLink(ReportsTrailersEnum.YEAR_MAKE_MODEL);
         }
         
     }
