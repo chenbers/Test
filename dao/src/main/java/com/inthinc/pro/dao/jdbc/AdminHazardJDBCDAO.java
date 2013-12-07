@@ -1,5 +1,7 @@
 package com.inthinc.pro.dao.jdbc;
 
+import static com.inthinc.pro.dao.util.NumberUtil.objectToInteger;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -110,12 +112,12 @@ public class AdminHazardJDBCDAO extends SimpleJdbcDaoSupport implements RoadHaza
         @Override
         public Hazard mapRow(ResultSet rs, int rowNum) throws SQLException {
             Hazard hazard = new Hazard();
-            hazard.setHazardID(ObjectToInteger(rs.getObject("hazardID")));
-            hazard.setAcctID(ObjectToInteger(rs.getObject("acctID")));
-            hazard.setDriverID(ObjectToInteger(rs.getObject("driverID")));
-            hazard.setUserID(ObjectToInteger(rs.getObject("userID")));
-            hazard.setVehicleID(ObjectToInteger(rs.getObject("vehicleID")));
-            hazard.setDeviceID(ObjectToInteger(rs.getObject("deviceID")));
+            hazard.setHazardID(objectToInteger(rs.getObject("hazardID")));
+            hazard.setAcctID(objectToInteger(rs.getObject("acctID")));
+            hazard.setDriverID(objectToInteger(rs.getObject("driverID")));
+            hazard.setUserID(objectToInteger(rs.getObject("userID")));
+            hazard.setVehicleID(objectToInteger(rs.getObject("vehicleID")));
+            hazard.setDeviceID(objectToInteger(rs.getObject("deviceID")));
             hazard.setType(HazardType.valueOf((Integer)rs.getObject("type")));
             hazard.setRadiusMeters(rs.getInt("radius"));
             String strStartDate = rs.getString("startTime");
@@ -144,7 +146,7 @@ public class AdminHazardJDBCDAO extends SimpleJdbcDaoSupport implements RoadHaza
             hazard.setDescription(rs.getString("description"));
             hazard.setStatus(HazardStatus.valueOf(rs.getInt("status")));
             hazard.setLocation(rs.getString("location"));
-            hazard.setStateID(ObjectToInteger(rs.getObject("stateID")));
+            hazard.setStateID(objectToInteger(rs.getObject("stateID")));
             hazard.setLatitude(rs.getDouble("latitude"));
             hazard.setLongitude(rs.getDouble("longitude"));
             return hazard;
@@ -155,17 +157,7 @@ public class AdminHazardJDBCDAO extends SimpleJdbcDaoSupport implements RoadHaza
         dateFormat.setTimeZone(timeZone);
         return dateFormat;
     };
-    private static Integer ObjectToInteger(Object theObj){
-        Integer theInteger;
-        if(theObj == null){
-            theInteger = null;
-        } else if(theObj instanceof Long) {
-            theInteger = ((Long)theObj).intValue();
-        } else {
-            theInteger = null;
-        }
-        return theInteger;
-    }
+
     public List<Hazard> findAllInAccount(Integer acctID) {
         return findHazardsByUserAcct(acctID, LatLng.MIN_LAT, LatLng.MIN_LNG, LatLng.MAX_LAT, LatLng.MAX_LNG);
     }

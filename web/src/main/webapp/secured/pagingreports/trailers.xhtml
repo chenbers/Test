@@ -1,231 +1,199 @@
-<ui:composition template="/layout/layout.xhtml" 
-			xmlns="http://www.w3.org/1999/xhtml" 
-			xmlns:ui="http://java.sun.com/jsf/facelets"
-  			xmlns:h="http://java.sun.com/jsf/html" 
-            xmlns:rich="http://richfaces.org/rich"
-            xmlns:a4j="http://richfaces.org/a4j"  			
-  			xmlns:f="http://java.sun.com/jsf/core"
-            xmlns:tiwi="http://pro.tiwi.com/jsf"
-            xmlns:pretty="http://ocpsoft.com/prettyfaces">
-			
-
-	<ui:param name="reportsSelected" value="current" />
-	<ui:param name="trailersSelected" value="current" />
+<ui:composition template="/layout/layout.xhtml" xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich" xmlns:a4j="http://richfaces.org/a4j" xmlns:f="http://java.sun.com/jsf/core" xmlns:tiwi="http://pro.tiwi.com/jsf"
+    xmlns:pretty="http://ocpsoft.com/prettyfaces">
+    <ui:param name="reportsSelected" value="current" />
+    <ui:param name="trailersSelected" value="current" />
     <ui:param name="context" value="trailers" />
 
-	<ui:define name="subnavigation">
-		<ui:include src="/includes/reports/subNavigation.xhtml" >
-			<ui:param name="context" value="#{context}" />
-		</ui:include>
-	</ui:define>
-	
-	<ui:param name="title" value="#{messages.navigation_reports} - #{messages.report_trailers}"/>
-	<ui:define name="content">
-			<a4j:loadStyle src="/css/jquery.scorebox.css"/>
-		 	<ui:param name="tableColumns" value="#{trailerReportTableColumns.tableColumns}" />
-			<table width="940" border="0" cellspacing="0" cellpadding="0" align="center" style="margin: 0 auto 0 auto;">
-				<tr>
-					<td valign="top">
-							<div class="">
-								<div class="panel_nw">
-									<div class="panel_title">
-										<span class="trailer">#{messages.reports_trailerreporttitle}</span>
-										<span class="panel_links">#{messages.reports_trailerreport_note}</span>
-									</div>
-								</div>
-								<div class="panel_w">
-									<div class="panel_content">		
-										<h:form id="#{context}-form">
-											<ui:include src="/includes/redFlagsCount.xhtml" >
-												<ui:param name="context" value="trailers" />
-											</ui:include>																
-											<ul id="grid_nav" style="margin: 0;">            							
-            								<li class="l text">
-            									<a4j:commandLink 
-            										id="#{context}EditColumns" 
-            										reRender="editColumnsForm:editColumnGrid"
-            										action="#"
-            									 	styleClass="ls_tab_edit_columns"
-            										onclick="Richfaces.showModalPanel('#{context}_editColumns');">            									
-            										<h:outputText value="#{messages.button_editColumns}" />
-            									</a4j:commandLink>            									
-            								</li>  
-            								<li class="r grid_icon">
-            									<h:panelGroup id="#{context}_reportToolImageId">
-													<h:graphicImage title="#{messages.contextMenu_tools_menu}" style="cursor: pointer;" value="/images/ico_tools.png"/>
-												</h:panelGroup>
-											</li>
-											<li class="r divider"><img src="#{facesContext.externalContext.request.contextPath}/images/grid_nav_divider.png" />
-											</li>          							
-										</ul>
-										<ui:include src="/includes/table/statsHeader.xhtml">	
-   											<ui:param name="title" value="#{messages.notes_safety_recordCountHeader}" />
-   											<ui:param name="pageData" value="#{pagingTrailerReportBean.table.pageData}" />
-										</ui:include>
-          								<ui:include src="/includes/reportsContextMenu.xhtml">	
-											<ui:param  name="emailModalPanelID" value="#{context}_reportEmailModal" />
-											<ui:param  name="reportBean" value="#{pagingTrailerReportBean}"/>
-											<ui:param  name="attachTo" value="#{context}_reportToolImageId"/>
-											<ui:param  name="exportExcel" value="TRUE"/>
-											<ui:param name="context" value="#{context}" />
-										</ui:include>
-		                                <div class="spacer"></div> 
-										<div class="datagrid_panel" style="width: 925px;"> 
-	                                    <rich:dataTable id="#{context}" value="#{pagingTrailerReportBean.table.model}" var="item" 
-    	                                     styleClass="datagrid filterabledatagrid" 
-								        	 reRender="#{context}-form:header,#{context}-form:#{context}-bottomScroller"
-            	                             rowClasses="tableOdd,tableEven" 
- 											 cellspacing="1" rows="#{pagingTrailerReportBean.table.pageData.rowsPerPage}" width="100%">
- 											<rich:column/>
-	                                        <rich:column id="group" rendered="#{tableColumns['group'].visible}" 
-                                            		sortBy="#{item.groupName}" filterBy="#{item.groupName}" >
-                                            	<f:facet name="header">
-	                                            	<h:panelGroup>
-	                                                	<h:outputText value="#{messages.reports_group}" />
-											 		</h:panelGroup>
-                                            	</f:facet>          
-                                            	<pretty:link id="vehiclesDashboard" mappingId="dashboard">
-                                                	<h:outputText value="#{item.groupName}"/>
-                                                	<f:param value="#{item.groupID}"/>
-                                            	</pretty:link>                                                                                
-                                        	</rich:column>
-                                        	<rich:column id="name" rendered="#{tableColumns['trailer_name'].visible}" 
-                                            		sortBy="#{item.trailerName}" filterBy="#{item.trailerName}" filterValue="#{pagingTrailerReportBean.searchFor}">
-                                            	<f:facet name="header">
-	                                            	<h:panelGroup>
-	                                                	<h:outputText value="#{messages.reports_trailerID}" />
-											 		</h:panelGroup>
-                                            	</f:facet>  
-                                            	<h:outputText value="#{item.trailerName}" />                                                                              
-                                        	</rich:column>
-                                        	<rich:column id="vehicle_name" rendered="#{tableColumns['vehicle_name'].visible}" 
-                                            			sortBy="#{item.vehicleName}" sortOrder="ASCENDING" filterBy="#{item.vehicleName}" >
-                                            	<f:facet name="header">
-                                                	<h:outputText value="#{messages.reports_vehicleID}" />
-                                            	</f:facet>
-                                            	<pretty:link id="vehiclesVehiclePerformance" mappingId="vehiclePerformance">
-                                                	<h:outputText value="#{item.vehicleName}"/>
-                                                	<f:param value="#{item.vehicleID}"/>
-                                            	</pretty:link>                        
-                                        	</rich:column>
-                                        	<rich:column id="makeModelYear" rendered="#{tableColumns['makeModelYear'].visible}" 
-                                            			sortBy="#{item.trailerYMM}" filterBy="#{item.trailerYMM}">
-                                            	<f:facet name="header">
-                                                	<h:outputText value="#{messages.reports_makemodelyear}" />
-                                            	</f:facet>
-                                            	<h:outputText value="#{item.trailerYMM}" />     
-                                        	</rich:column>
-                                        	<rich:column id="fullName" rendered="#{tableColumns['driver_person_fullName'].visible}" 
-                                            		sortBy="#{item.driverName}" filterBy="#{item.driverName}">
-                                            	<f:facet name="header">
-                                                	<h:outputText value="#{messages.reports_driver}" />
-                                            	</f:facet>                                            	
-                                            	<pretty:link id="vehiclesDriverPerformance" mappingId="driverPerformance" rendered="#{item.driverID ne null and item.driverID ne pagingTrailerReportBean.unknownDriverID}">
-                                                	<h:outputText value="#{item.driverName}"/>
-                                                	<f:param value="#{item.driverID}"/>
-                                            	</pretty:link>
-	                                            <h:outputText rendered="#{item.driverID eq null}" value="#{messages.reports_none_assigned}" />    
-	                                            <h:outputText rendered="#{item.driverID eq pagingTrailerReportBean.unknownDriverID}" value="#{item.driverName}" />                                            
-                                        	</rich:column>
-                                        	<rich:column id="distance" rendered="#{tableColumns['distanceDriven'].visible}" 
-                                            			sortBy="#{item.milesDriven}">
-                                            	<f:facet name="header">
-                                                	<h:outputText value="#{messages.reports_distanceDriven}"/>
-                                            	</f:facet>
-                                            	<h:outputFormat value="#{messages.reports_distanceDrivenInUnits}" >
-                                                	<a4j:actionparam value="#{item.milesDriven}" converter="HundrethMilesToKilometersConverter"/>
-                                                	<a4j:actionparam value="mi" converter="MeasurementTextConverter"/>
-                                            	</h:outputFormat>
-                                        	</rich:column>
-            								<rich:column id="odometer" rendered="#{tableColumns['odometer'].visible}" 
-                                            	sortBy="#{item.odometer}">
-                                            	<f:facet name="header">
-                                                	<h:outputText value="#{messages.reports_vehiclereport_odometer}"/>
-                                            	</f:facet>
-                                            	<h:outputFormat value="#{messages.reports_distanceDrivenInUnits}" >
-                                                	<a4j:actionparam value="#{item.odometer}" converter="HundrethMilesToKilometersConverter"/>
-                                                	<a4j:actionparam value="mi" converter="MeasurementTextConverter"/>
-                                            	</h:outputFormat>
-                                        	</rich:column>                                        
-                                        	<rich:column id="overallScore" rendered="#{tableColumns['overallScore'].visible}"
-                                            		sortBy="#{item.overallScore}" width="10%" 
-                                            		custFilterBy="#{item.overallScore}" custFilterValue="#{pagingTrailerReportBean.overallScoreFilter}">
-	                                            <ui:include src="/includes/table/scoreColumnHeader.xhtml">
-													<ui:param name="context" value="#{context}" />
-													<ui:param name="bean" value="#{pagingTrailerReportBean}" />
-													<ui:param name="type" value="overall" />
-												</ui:include>
-											    <tiwi:scoreBoxComponent value="#{item.overallScore}" size="0">
-													<pretty:link mappingId="vehiclePerformance">
-													   <h:outputText value="#{item.overallScore}" converter="ScoreConverter"  />
-													   <h:outputText value="#{messages.NotApplicable}" rendered="#{item.overallScore == null}"  />
-										               <f:param value="#{item.vehicleID}" />
-										        	</pretty:link>
-										        </tiwi:scoreBoxComponent>
-		                                	</rich:column>
-	                                        <rich:column id="speedScore" rendered="#{tableColumns['speedScore'].visible}"
-    	                                        sortBy="#{item.speedScore}"  width="10%"
-    	                                        custFilterBy="#{item.speedScore}" custFilterValue="#{pagingTrailerReportBean.speedScoreFilter}">
-	                                            <ui:include src="/includes/table/scoreColumnHeader.xhtml">
-													<ui:param name="context" value="#{context}" />
-													<ui:param name="bean" value="#{pagingTrailerReportBean}" />
-													<ui:param name="type" value="speed" />
-												</ui:include>
-											    <tiwi:scoreBoxComponent value="#{item.speedScore}" size="0">
-													<pretty:link mappingId="vehiclePerformanceSpeed">
-													   <h:outputText value="#{item.speedScore}" converter="ScoreConverter"  />
-													   <h:outputText value="#{messages.NotApplicable}" rendered="#{item.speedScore == null}"  />
-										            	<f:param value="#{item.vehicleID}" />
-										        	</pretty:link>
-										        </tiwi:scoreBoxComponent>
-	                                        </rich:column>
-	                                        <rich:column id="styleScore" rendered="#{tableColumns['styleScore'].visible}"
-    	                                        sortBy="#{item.styleScore}"  width="10%"
-    	                                        custFilterBy="#{item.styleScore}" custFilterValue="#{pagingTrailerReportBean.styleScoreFilter}">
-	                                            <ui:include src="/includes/table/scoreColumnHeader.xhtml">
-													<ui:param name="context" value="#{context}" />
-													<ui:param name="bean" value="#{pagingTrailerReportBean}" />
-													<ui:param name="type" value="style" />
-												</ui:include>
-												<tiwi:scoreBoxComponent value="#{item.styleScore}" size="0">
-													<pretty:link mappingId="vehiclePerformanceStyle">
-													   <h:outputText value="#{item.styleScore}" converter="ScoreConverter"  />
-													   <h:outputText value="#{messages.NotApplicable}" rendered="#{item.styleScore == null}"  />
-										           		<f:param value="#{item.vehicleID}" />
-										        	</pretty:link>
-										        </tiwi:scoreBoxComponent>
-	                                        </rich:column>
-    	                                </rich:dataTable>                     		
-    								</div>	           
-    								<div class="spacer"></div>
-                	                <rich:datascroller id="#{context}-bottomScroller" 
-                                          for="#{context}" immediate="true" 
-                                          scrollerListener="#{pagingTrailerReportBean.table.scrollerListener}" 
-                                          reRender="#{context},#{context}-form:header"
-                                          requestDelay="200" eventsQueue="pagerQueue" 
-                                          page="#{pagingTrailerReportBean.table.pageData.currentPage}" renderIfSinglePage="false"/>
-	                   			            
-	                   			</h:form>
-								<ui:include src="/includes/columnSelectionPopup.xhtml">
-									<ui:param name="bean" value="#{trailerReportTableColumns}"/>	
-									<ui:param name="reRender" value="#{context}-form:#{context}" />
-    	 							<ui:param name="context" value="#{context}" />
-								</ui:include>
-							</div>
-						</div>	
-						<div class="panel_sw">
-							<div class="panel_statusbar"></div>
-						</div>
-					</div>
-				</td>
-			</tr>
-		</table>
-		<h:outputText id="trailer_email_modalPanel">
-			<ui:include src="/includes/emailReportPopup.xhtml">	
-				<ui:param  name="id" value="#{context}_reportEmailModal" />
-				<ui:param  name="reportBean" value="#{pagingTrailerReportBean}"/>
-				<ui:param name="context" value="#{context}" />
-			</ui:include>
-		</h:outputText>
-	</ui:define>
+    <ui:define name="subnavigation">
+        <ui:include src="/includes/reports/subNavigation.xhtml">
+            <ui:param name="context" value="#{context}" />
+        </ui:include>
+    </ui:define>
+
+    <ui:param name="title" value="#{messages.navigation_reports} - #{messages.report_trailers}" />
+    <ui:define name="content">
+        <a4j:loadStyle src="/css/jquery.scorebox.css" />
+        <ui:param name="tableColumns" value="#{trailerReportTableColumns.tableColumns}" />
+        <table width="940" border="0" cellspacing="0" cellpadding="0" align="center" style="margin: 0 auto 0 auto;">
+            <tr>
+                <td valign="top">
+                    <div class="">
+                        <div class="panel_nw">
+                            <div class="panel_title">
+                                <span class="trailer">#{messages.reports_trailerreporttitle}</span> <span class="panel_links">#{messages.reports_trailerreport_note}</span>
+                            </div>
+                        </div>
+                        <div class="panel_w">
+                            <div class="panel_content">
+                                <h:form id="#{context}-form">
+                                    <ui:include src="/includes/redFlagsCount.xhtml">
+                                        <ui:param name="context" value="trailers" />
+                                    </ui:include>
+                                    <ul id="grid_nav" style="margin: 0;">
+                                        <li class="l text"><a4j:commandLink id="#{context}EditColumns" reRender="editColumnsForm:editColumnGrid" action="#" styleClass="ls_tab_edit_columns"
+                                                onclick="Richfaces.showModalPanel('#{context}_editColumns');">
+                                                <h:outputText value="#{messages.button_editColumns}" />
+                                            </a4j:commandLink></li>
+                                        <li class="r grid_icon"><h:panelGroup id="#{context}_reportToolImageId">
+                                                <h:graphicImage title="#{messages.contextMenu_tools_menu}" style="cursor: pointer;" value="/images/ico_tools.png" />
+                                            </h:panelGroup></li>
+                                        <li class="r divider"><img src="#{facesContext.externalContext.request.contextPath}/images/grid_nav_divider.png" /></li>
+                                    </ul>
+                                    <ui:include src="/includes/table/statsHeader.xhtml">
+                                        <ui:param name="title" value="#{messages.notes_safety_recordCountHeader}" />
+                                        <ui:param name="pageData" value="#{pagingTrailerReportBean.table.pageData}" />
+                                    </ui:include>
+                                    <ui:include src="/includes/reportsContextMenu.xhtml">
+                                        <ui:param name="emailModalPanelID" value="#{context}_reportEmailModal" />
+                                        <ui:param name="reportBean" value="#{pagingTrailerReportBean}" />
+                                        <ui:param name="attachTo" value="#{context}_reportToolImageId" />
+                                        <ui:param name="exportExcel" value="TRUE" />
+                                        <ui:param name="context" value="#{context}" />
+                                    </ui:include>
+                                    <div class="spacer"></div>
+                                    <div class="datagrid_panel" style="width: 925px;">
+                                        <rich:dataTable id="#{context}" value="#{pagingTrailerReportBean.table.model}" var="item" styleClass="datagrid filterabledatagrid"
+                                            reRender="#{context}-form:header,#{context}-form:#{context}-bottomScroller" rowClasses="tableOdd,tableEven" cellspacing="1"
+                                            rows="#{pagingTrailerReportBean.table.pageData.rowsPerPage}" width="100%">
+                                            <rich:column />
+                                            <rich:column id="status" rendered="#{tableColumns['status'].visible}" sortBy="#{item.status}" custFilterBy="#{item.status}"
+                                                filterValue="#{pagingTrailerReportBean.statusFilterID}">
+                                                <f:facet name="header">
+                                                    <h:panelGroup>
+                                                        <h:outputText value="#{messages.reports_status}" />
+                                                        <h:panelGroup style="float:right;">
+                                                            <rich:spacer style="display:block" height="2" />
+                                                            <h:selectOneMenu id="statusFilter" value="#{pagingTrailerReportBean.statusFilter}" label="#{messages[msgId]}"
+                                                                style="width:80px;size:auto;margin-top:3px;" converter="SimpleBeanConverter">
+                                                                <f:selectItems value="#{pagingTrailerReportBean.statuses}" />
+                                                                <a4j:support event="onchange" reRender="#{context},#{context}-form:header,#{context}-form:#{context}-bottomScroller" />
+                                                            </h:selectOneMenu>
+                                                            <ui:include src="/includes/dhtmlSelectBox.xhtml">
+                                                                <ui:param name="selectBoxID" value="#{context}-form:#{context}:statusFilter" />
+                                                            </ui:include>
+                                                        </h:panelGroup>
+                                                    </h:panelGroup>
+                                                </f:facet>
+                                                <h:outputText value="#{messages[item.status]}" />
+                                            </rich:column>
+                                            <rich:column id="group" rendered="#{tableColumns['group'].visible}" sortBy="#{item.groupName}" filterBy="#{item.groupName}">
+                                                <f:facet name="header">
+                                                    <h:panelGroup>
+                                                        <h:outputText value="#{messages.reports_group}" />
+                                                    </h:panelGroup>
+                                                </f:facet>
+                                                <pretty:link id="vehiclesDashboard" mappingId="dashboard">
+                                                    <h:outputText value="#{item.groupName}" />
+                                                    <f:param value="#{item.groupID}" />
+                                                </pretty:link>
+                                            </rich:column>
+                                            <rich:column id="name" rendered="#{tableColumns['trailer_name'].visible}" sortBy="#{item.trailerName}" filterBy="#{item.trailerName}"
+                                                filterValue="#{pagingTrailerReportBean.searchFor}">
+                                                <f:facet name="header">
+                                                    <h:panelGroup>
+                                                        <h:outputText value="#{messages.reports_trailerID}" />
+                                                    </h:panelGroup>
+                                                </f:facet>
+                                                <h:outputText value="#{item.trailerName}" />
+                                            </rich:column>
+                                            <rich:column id="vehicle_name" rendered="#{tableColumns['vehicle_name'].visible}" sortBy="#{item.vehicleName}" sortOrder="ASCENDING"
+                                                filterBy="#{item.vehicleName}">
+                                                <f:facet name="header">
+                                                    <h:outputText value="#{messages.reports_vehicleID}" />
+                                                </f:facet>
+                                                <h:outputText rendered="#{item.vehicleID eq null}" value="#{messages.reports_none_assigned}" />
+                                                <pretty:link id="vehiclesVehiclePerformance" mappingId="vehiclePerformance" rendered="#{item.vehicleID ne null}">
+                                                    <h:outputText value="#{item.vehicleName}" />
+                                                    <f:param value="#{item.vehicleID}" />
+                                                </pretty:link>
+                                            </rich:column>
+                                            <rich:column id="fullName" rendered="#{tableColumns['driver_person_fullName'].visible}" sortBy="#{item.driverName}" filterBy="#{item.driverName}">
+                                                <f:facet name="header">
+                                                    <h:outputText value="#{messages.reports_driver}" />
+                                                </f:facet>
+                                                <pretty:link id="vehiclesDriverPerformance" mappingId="driverPerformance"
+                                                    rendered="#{item.driverID ne null and item.driverID ne pagingTrailerReportBean.unknownDriverID}">
+                                                    <h:outputText value="#{item.driverName}" />
+                                                    <f:param value="#{item.driverID}" />
+                                                </pretty:link>
+                                                <h:outputText rendered="#{item.driverID eq null}" value="#{messages.reports_none_assigned}" />
+                                                <h:outputText rendered="#{item.driverID eq pagingTrailerReportBean.unknownDriverID}" value="#{item.driverName}" />
+                                            </rich:column>
+                                            <rich:column id="assignedStatus" rendered="#{tableColumns['assigned_status'].visible}" sortBy="#{item.assignedStatus}"
+                                                custFilterBy="#{item.assignedStatus}" filterValue="#{pagingTrailerReportBean.assignedStatusFilterID}">
+                                                <f:facet name="header">
+                                                    <h:panelGroup >
+                                                        <h:outputText value="#{messages.reports_assignedStatus}" />
+                                                        <h:panelGroup style="float:right;">
+                                                            <rich:spacer style="display:block" height="2" />
+                                                            <h:selectOneMenu id="assignedStatusFilter" value="#{pagingTrailerReportBean.assignedStatusFilter}" label="#{messages[msgId]}"
+                                                                style="width:80px;size:auto;margin-top:3px;" converter="SimpleBeanConverter">
+                                                                <f:selectItems value="#{pagingTrailerReportBean.assignedStatuses}" />
+                                                                <a4j:support event="onchange" reRender="#{context},#{context}-form:header,#{context}-form:#{context}-bottomScroller" />
+                                                            </h:selectOneMenu>
+                                                            <ui:include src="/includes/dhtmlSelectBox.xhtml">
+                                                                <ui:param name="selectBoxID" value="#{context}-form:#{context}:assignedStatusFilter" />
+                                                            </ui:include>
+                                                        </h:panelGroup>
+                                                    </h:panelGroup>
+                                                </f:facet>
+                                                <h:outputText rendered="#{item.assignedStatus eq false}" value="#{messages.reports_not_assigned}" />
+                                                <h:outputText rendered="#{item.assignedStatus eq true}" value="#{messages.reports_assigned}" />
+                                                
+                                            </rich:column>
+                                            <rich:column id="entryMethod" rendered="#{tableColumns['entry_method'].visible}" sortBy="#{item.entryMethod}" 
+                                                custFilterBy="#{item.entryMethod}" filterValue="#{pagingTrailerReportBean.entryMethodFilterID}" >
+                                                <f:facet name="header">
+                                                    <h:panelGroup>
+                                                        <h:outputText value="#{messages.reports_entryMethod}" />
+                                                        <h:panelGroup style="float:right;">
+                                                            <rich:spacer style="display:block" height="2" />
+                                                            <h:selectOneMenu id="entryMethodFilter" value="#{pagingTrailerReportBean.entryMethodFilter}" label="#{messages[msgId]}"
+                                                                style="width:80px;size:auto;margin-top:3px;" converter="SimpleBeanConverter">
+                                                                <f:selectItems value="#{pagingTrailerReportBean.entryMethods}" />
+                                                                <a4j:support event="onchange" reRender="#{context},#{context}-form:header,#{context}-form:#{context}-bottomScroller" />
+                                                            </h:selectOneMenu>
+                                                            <ui:include src="/includes/dhtmlSelectBox.xhtml">
+                                                                <ui:param name="selectBoxID" value="#{context}-form:#{context}:entryMethodFilter" />
+                                                            </ui:include>
+                                                        </h:panelGroup>
+                                                    </h:panelGroup>
+                                                </f:facet>
+                                                <h:outputText value="#{messages[item.entryMethod]}" />
+                                            </rich:column>
+
+
+
+
+                                        </rich:dataTable>
+                                    </div>
+                                    <div class="spacer"></div>
+                                    <rich:datascroller id="#{context}-bottomScroller" for="#{context}" immediate="true" scrollerListener="#{pagingTrailerReportBean.table.scrollerListener}"
+                                        reRender="#{context},#{context}-form:header" requestDelay="200" eventsQueue="pagerQueue" page="#{pagingTrailerReportBean.table.pageData.currentPage}"
+                                        renderIfSinglePage="false" />
+
+                                </h:form>
+                                <ui:include src="/includes/columnSelectionPopup.xhtml">
+                                    <ui:param name="bean" value="#{trailerReportTableColumns}" />
+                                    <ui:param name="reRender" value="#{context}-form:#{context}" />
+                                    <ui:param name="context" value="#{context}" />
+                                </ui:include>
+                            </div>
+                        </div>
+                        <div class="panel_sw">
+                            <div class="panel_statusbar"></div>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        </table>
+        <h:outputText id="trailer_email_modalPanel">
+            <ui:include src="/includes/emailReportPopup.xhtml">
+                <ui:param name="id" value="#{context}_reportEmailModal" />
+                <ui:param name="reportBean" value="#{pagingTrailerReportBean}" />
+                <ui:param name="context" value="#{context}" />
+            </ui:include>
+        </h:outputText>
+    </ui:define>
 </ui:composition>

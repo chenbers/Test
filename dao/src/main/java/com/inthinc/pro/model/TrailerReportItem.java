@@ -1,5 +1,7 @@
 package com.inthinc.pro.model;
 
+import java.util.Date;
+
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
@@ -10,35 +12,43 @@ public class TrailerReportItem extends BaseEntity implements Comparable<TrailerR
     private String groupName;
     private Integer groupID;
     private String driverName;
-    private String trailerYMM;
     private Integer driverID;
     private String vehicleName;
     private Integer vehicleID;
     private String trailerName;
     private Integer trailerID;
-    private String vehicleYMM;
-    private Number milesDriven;
-    private Number odometer;
-    private Integer overallScore;
-    private Integer speedScore;
-    private Integer styleScore;
+    private TrailerEntryMethod entryMethod;
+    private Status status;
+
+    public TrailerEntryMethod getEntryMethod() {
+        return entryMethod;
+    }
     
-    public Number getOdometer() {
-        return odometer;
+    public void setEntryMethod(Date detected, Date entered){
+        if(detected == null){
+            if(entered == null){
+                //both are null
+                this.entryMethod = null;
+            } else {
+                this.entryMethod = TrailerEntryMethod.ENTERED;
+            }
+        } else {
+            if(entered == null){
+                this.entryMethod = TrailerEntryMethod.DETECTED;
+            } else {
+                //neither is null... must check to see which is more recent
+                this.entryMethod = (detected.after(entered))?TrailerEntryMethod.DETECTED:TrailerEntryMethod.ENTERED;
+            }
+        }
     }
 
-    public void setOdometer(Number odometer) {
-        this.odometer = odometer;
+    public void setEntryMethod(TrailerEntryMethod entryMethod) {
+        this.entryMethod = entryMethod;
     }
-
-    public String getTrailerYMM() {
-        return trailerYMM;
+    public boolean getAssignedStatus(){
+       return driverID!=null ||vehicleID!=null;
     }
-
-    public void setTrailerYMM(String trailerYMM) {
-        this.trailerYMM = trailerYMM;
-    }
-
+    
     public String getGroupName() {
         return groupName;
     }
@@ -103,51 +113,19 @@ public class TrailerReportItem extends BaseEntity implements Comparable<TrailerR
         this.trailerID = trailerID;
     }
 
-    public String getVehicleYMM() {
-        return vehicleYMM;
-    }
-
-    public void setVehicleYMM(String vehicleYMM) {
-        this.vehicleYMM = vehicleYMM;
-    }
-
-    public Number getMilesDriven() {
-        return milesDriven;
-    }
-
-    public void setMilesDriven(Number milesDriven) {
-        this.milesDriven = milesDriven;
-    }
-
-    public Integer getOverallScore() {
-        return overallScore;
-    }
-
-    public void setOverallScore(Integer overallScore) {
-        this.overallScore = overallScore;
-    }
-
-    public Integer getSpeedScore() {
-        return speedScore;
-    }
-
-    public void setSpeedScore(Integer speedScore) {
-        this.speedScore = speedScore;
-    }
-
-    public Integer getStyleScore() {
-        return styleScore;
-    }
-
-    public void setStyleScore(Integer styleScore) {
-        this.styleScore = styleScore;
-    }
-
     @Override
     public int compareTo(TrailerReportItem item) {
         if (trailerName != null && item.getTrailerName() != null)
             return trailerName.toLowerCase().compareTo(item.getTrailerName().toLowerCase());
         return 0;
+    }
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
     }
     
 }

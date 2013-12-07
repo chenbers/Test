@@ -354,15 +354,35 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
     
     @Override
     public ReportCriteria getTrailerReportCriteria(Integer groupID, Duration duration, Locale locale, Boolean initDataSet) {
+        logger.warn("ReportCriteria getTrailerReportCriteria(Integer "+groupID+", Duration "+duration+", Locale "+locale+", Boolean "+initDataSet+")");
+        this.locale = locale;
+        Group group = groupDAO.findByID(groupID);
+        ReportCriteria reportCriteria = new ReportCriteria(ReportType.TRAILER_REPORT, group.getName(), locale);
+        List<Integer> groupIDList = new ArrayList<Integer>();
+        groupIDList.add(groupID);
+        if (initDataSet) {
+            if (duration.equals(Duration.TWELVE)) {
+                Integer rowCount = trailerReportDAO.getTrailerReportCount(groupIDList, null);
+                PageParams pageParams = new PageParams(0, rowCount, null, null);
+                reportCriteria.setMainDataset(trailerReportDAO.getTrailerReportItemByGroupPaging(groupIDList, pageParams));
+            
+                reportCriteria.setDuration(duration);
+            }
+        }
+
+        return reportCriteria;
+    }
+    @Override
+    public ReportCriteria getTrailerReportCriteria(Integer groupID, List<Integer> groupIDList, Duration duration, Locale locale, Boolean initDataSet) {
         this.locale = locale;
         Group group = groupDAO.findByID(groupID);
         ReportCriteria reportCriteria = new ReportCriteria(ReportType.TRAILER_REPORT, group.getName(), locale);
 
         if (initDataSet) {
             if (duration.equals(Duration.TWELVE)) {
-                Integer rowCount = trailerReportDAO.getTrailerReportCount(groupID, null);
+                Integer rowCount = trailerReportDAO.getTrailerReportCount(groupIDList, null);
                 PageParams pageParams = new PageParams(0, rowCount, null, null);
-                reportCriteria.setMainDataset(trailerReportDAO.getTrailerReportItemByGroupPaging(groupID, pageParams));
+                reportCriteria.setMainDataset(trailerReportDAO.getTrailerReportItemByGroupPaging(groupIDList, pageParams));
             
                 reportCriteria.setDuration(duration);
             }

@@ -19,6 +19,17 @@ public class TrailerReportPaginationTableDataProvider extends ReportPaginationTa
     public void setTrailerReportDAO(TrailerReportDAO trailerReportDAO) {
         this.trailerReportDAO = trailerReportDAO;
     }
+    
+    private List<Integer> groupIDList;
+    
+
+    public List<Integer> getGroupIDList() {
+        return groupIDList;
+    }
+
+    public void setGroupIDList(List<Integer> groupIDList) {
+        this.groupIDList = groupIDList;
+    }
 
     @Override
     public List<TrailerReportItem> getItemsByRange(int firstRow, int endRow) {
@@ -26,7 +37,7 @@ public class TrailerReportPaginationTableDataProvider extends ReportPaginationTa
             return new ArrayList<TrailerReportItem>();
         }
         PageParams pageParams = new PageParams(firstRow, endRow, getSort(), getFilters());
-        List<TrailerReportItem> retVal = getTrailerReportDAO().getTrailerReportItemByGroupPaging(getGroupID(), pageParams);
+        List<TrailerReportItem> retVal = getTrailerReportDAO().getTrailerReportItemByGroupPaging(getGroupIDList(), pageParams);
         return retVal;
     }
 
@@ -34,7 +45,7 @@ public class TrailerReportPaginationTableDataProvider extends ReportPaginationTa
     public int getRowCount() {
         if (getGroupID() == null)
             return 0;
-        int rowCount = getTrailerReportDAO().getTrailerReportCount(getGroupID(), getFilters());
+        int rowCount = getTrailerReportDAO().getTrailerReportCount(getGroupIDList(), getFilters());
         return rowCount;
     }
     

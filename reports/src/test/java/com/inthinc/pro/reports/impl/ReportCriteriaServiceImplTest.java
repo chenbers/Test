@@ -214,12 +214,14 @@ public class ReportCriteriaServiceImplTest extends BaseUnitTest {
         assertEquals(ReportType.TRAILER_REPORT, reportCriteria.getReport());
         
         MockTrailerReportDAO dao = new MockTrailerReportDAO();
-        Integer rowCount = dao.getTrailerReportCount(dao.getGroupID(), null);
+        List<Integer> groupIDs = new ArrayList<Integer>();
+        groupIDs.add(dao.getGroupID());
+        Integer rowCount = dao.getTrailerReportCount(groupIDs, null);
         
         assertEquals(dao.numOfResults, rowCount.intValue());
         
         PageParams pageParams = new PageParams(0, rowCount, null, null);
-        reportCriteria.setMainDataset(dao.getTrailerReportItemByGroupPaging(dao.getGroupID(), pageParams));
+        reportCriteria.setMainDataset(dao.getTrailerReportItemByGroupPaging(groupIDs, pageParams));
         reportCriteria.setDuration(duration);
         
         assertEquals(dao.numOfResults, reportCriteria.getMainDataset().size());
@@ -245,7 +247,7 @@ public class ReportCriteriaServiceImplTest extends BaseUnitTest {
         }
 
         @Override
-        public List<TrailerReportItem> getTrailerReportItemByGroupPaging(Integer groupID, PageParams pageParams) {
+        public List<TrailerReportItem> getTrailerReportItemByGroupPaging(List<Integer> groupIDs, PageParams pageParams) {
            List<TrailerReportItem> retVal = new ArrayList<TrailerReportItem>();
            for(int i = 0; i < numOfResults; i++){
                TrailerReportItem item = new TrailerReportItem();
@@ -257,11 +259,6 @@ public class ReportCriteriaServiceImplTest extends BaseUnitTest {
                item.setDriverName("dName_"+i);
                item.setGroupID(groupID);
                item.setGroupName(groupName);
-               item.setMilesDriven(i + 5);
-               item.setOdometer(i + 100);
-               item.setOverallScore(30);
-               item.setSpeedScore(25);
-               item.setStyleScore(20);
                retVal.add(item);
            }
            
@@ -269,7 +266,7 @@ public class ReportCriteriaServiceImplTest extends BaseUnitTest {
         }
 
         @Override
-        public Integer getTrailerReportCount(Integer groupID, List<TableFilterField> tableFilterFieldList) {
+        public Integer getTrailerReportCount(List<Integer> groupIDs, List<TableFilterField> tableFilterFieldList) {
             return numOfResults;
         }
         

@@ -7,6 +7,6 @@ import com.inthinc.pro.model.pagination.PageParams;
 import com.inthinc.pro.model.pagination.TableFilterField;
 
 public interface TrailerReportDAO {
-    public List<TrailerReportItem> getTrailerReportItemByGroupPaging(Integer groupID, PageParams pageParams);
-    public Integer getTrailerReportCount(Integer groupID, List<TableFilterField> tableFilterFieldList);
+    public List<TrailerReportItem> getTrailerReportItemByGroupPaging(List<Integer> groupIDList, PageParams pageParams);
+    public Integer getTrailerReportCount(List<Integer> groupIDList, List<TableFilterField> tableFilterFieldList);
 }
