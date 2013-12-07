@@ -322,6 +322,7 @@ public enum EventAttr implements IndexEnum{
     RHA_TYPE(8293),
     RHA_CONFIRM(8294),
     ROUTE_STOP_TYPE(8299), //(0=new, 1=started, 2=completed, 3=abandoned)
+    TRAILER_DETECTED(8300),
 
     // two byte value Attributes 16384 [0x4000] to 24575 [0x5FFF]	
     
@@ -435,6 +436,7 @@ public enum EventAttr implements IndexEnum{
     ATTR_DVIR_INSPECTOR_ID_STR(24599, 11, true), // string 10 max, variable length,              \0 terminated
     ATTR_DVIR_SIGNOFF_ID_STR(24600, 11, true),   // string 10 max, variable length,              \0 terminated
     ATTR_DVIR_COMMENTS(24601, 61, true),         // string 10 max, variable length,              \0 terminated
+    TRAILER_ID_OLD(24602, 20, true),            // string 20 max, variable length,              \0 terminated
     
     
 ////////////////////////////////////////////////////////////////////////////////////

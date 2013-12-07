@@ -10,10 +10,7 @@ public class MapperFactory {
     static {
         mapperFactory.put("Account", new AccountMapper());
         mapperFactory.put("Device", new DeviceMapper());
-        mapperFactory.put("Driver", new DriverMapper());
-        mapperFactory.put("Group", new GroupMapper());
         mapperFactory.put("Trailer", new TrailerMapper());
-        mapperFactory.put("Vehicle", new VehicleMapper());
     }
     
     private MapperFactory() {}

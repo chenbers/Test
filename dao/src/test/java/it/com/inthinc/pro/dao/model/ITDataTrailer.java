@@ -71,9 +71,6 @@ public class ITDataTrailer extends ITData {
         trailer.setAccount(account);
         trailer.setColor("TrailerColor");
         trailer.setDevice(team.device);
-        trailer.setDriver(team.driver);
-        trailer.setGroup(team.group);
-        trailer.setGroupPath(team.group.getPath());
         trailer.setMake("TrailerMake");
         trailer.setModel("TrailerModel");
         trailer.setName("TRAILER"+ team.group.getGroupID());
@@ -81,7 +78,6 @@ public class ITDataTrailer extends ITData {
         trailer.setPairingDate(assignmentDate);
         trailer.setStateID(10);
         trailer.setStatus(Status.ACTIVE);
-        trailer.setVehicle(team.vehicle);
         trailer.setVin(team.vehicle.getVIN());
         trailer.setWeight(2000);
         trailer.setYear(2013);

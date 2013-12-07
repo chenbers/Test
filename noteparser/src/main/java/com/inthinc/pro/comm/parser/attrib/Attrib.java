@@ -145,6 +145,7 @@ public enum Attrib {
 	VEHICLESAFETOOPERATE(8292, AttribParserType.BYTE),
     RHA_TYPE(8293, AttribParserType.BYTE),
     ROUTE_STOP_TYPE(8299, AttribParserType.BYTE, "routestoptype"),//(0=new, 1=started, 2=completed, 3=abandoned, 4=workdayStart, 5=workdayEnd)
+    TRAILER_DETECTED(8300, AttribParserType.BYTE),//(0=manually entered, 1=detected)
         	
 	// SHORT 
 	ACCELERATION(16384, AttribParserType.SHORT),

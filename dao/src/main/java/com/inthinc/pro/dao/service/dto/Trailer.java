@@ -3,12 +3,16 @@ package com.inthinc.pro.dao.service.dto;
 import java.util.Date;
 
 import com.inthinc.pro.model.Status;
+import com.inthinc.pro.model.TrailerPairingType;
 
 public class Trailer {
     private Integer trailerID;
-    private Group group;
     private Account account;
     private Status status;
+    private Date pairingDate;
+    private Device device;
+    private TrailerPairingType pairingType;
+    
     private String name;
     private String make;
     private String model;
@@ -18,18 +22,15 @@ public class Trailer {
     private Integer weight;
     private String license;
     private Integer stateID;
+    private Date modified;
+    
+    // TODO: these might be going away
     private Integer odometer;
     private Integer absOdometer;
-    private String groupPath;
-    private Date modified;
     private Date warrantyStart;
     private Date warrantyStop;
     private Date aggDate;
     private Date newAggDate;
-    private Date pairingDate;
-    private Device device;
-    private Vehicle vehicle;
-    private Driver driver;
 
     public Trailer() {}
 
@@ -39,14 +40,6 @@ public class Trailer {
 
     public void setTrailerID(Integer trailerID) {
         this.trailerID = trailerID;
-    }
-
-    public Group getGroup() {
-        return group;
-    }
-
-    public void setGroup(Group group) {
-        this.group = group;
     }
 
     public Account getAccount() {
@@ -153,14 +146,6 @@ public class Trailer {
         this.absOdometer = absOdometer;
     }
 
-    public String getGroupPath() {
-        return groupPath;
-    }
-
-    public void setGroupPath(String groupPath) {
-        this.groupPath = groupPath;
-    }
-
     public Date getModified() {
         return modified;
     }
@@ -217,20 +202,12 @@ public class Trailer {
         this.device = device;
     }
 
-    public Vehicle getVehicle() {
-        return vehicle;
+    public TrailerPairingType getPairingType() {
+        return pairingType;
     }
 
-    public void setVehicle(Vehicle vehicle) {
-        this.vehicle = vehicle;
-    }
-
-    public Driver getDriver() {
-        return driver;
-    }
-
-    public void setDriver(Driver driver) {
-        this.driver = driver;
+    public void setPairingType(TrailerPairingType pairingType) {
+        this.pairingType = pairingType;
     }
 
 }

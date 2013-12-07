@@ -12,11 +12,14 @@ public class Trailer extends BaseEntity {
 
     private Integer trailerID;
     @Column(updateable = false)
-    private Group group;
-    @Column(updateable = false)
     private Account account;
     private Status status;
     private String name;
+    private Date pairingDate;
+    @Column(updateable = false)
+    private Device device;
+    private TrailerPairingType pairingType;
+    
     private String make;
     private String model;
     private Integer year;
@@ -25,20 +28,14 @@ public class Trailer extends BaseEntity {
     private Integer weight;
     private String license;
     private Integer stateID;
+    
+    // TODO: NOT SURE IF THESE WILL BE REMOVED 
     private Integer odometer;
     private Integer absOdometer;
-    private String groupPath;
     private Date warrantyStart;
     private Date warrantyStop;
     private Date aggDate;
     private Date newAggDate;
-    private Date pairingDate;
-    @Column(updateable = false)
-    private Device device;
-    @Column(updateable = false)
-    private Vehicle vehicle;
-    @Column(updateable = false)
-    private Driver driver;
 
     public Trailer() {}
 
@@ -48,14 +45,6 @@ public class Trailer extends BaseEntity {
 
     public void setTrailerID(Integer trailerID) {
         this.trailerID = trailerID;
-    }
-
-    public Group getGroup() {
-        return group;
-    }
-
-    public void setGroup(Group group) {
-        this.group = group;
     }
 
     public Account getAccount() {
@@ -162,14 +151,6 @@ public class Trailer extends BaseEntity {
         this.absOdometer = absOdometer;
     }
 
-    public String getGroupPath() {
-        return groupPath;
-    }
-
-    public void setGroupPath(String groupPath) {
-        this.groupPath = groupPath;
-    }
-
     public Date getWarrantyStart() {
         return warrantyStart;
     }
@@ -218,20 +199,12 @@ public class Trailer extends BaseEntity {
         this.device = device;
     }
 
-    public Vehicle getVehicle() {
-        return vehicle;
+    public TrailerPairingType getPairingType() {
+        return pairingType;
     }
 
-    public void setVehicle(Vehicle vehicle) {
-        this.vehicle = vehicle;
-    }
-
-    public Driver getDriver() {
-        return driver;
-    }
-
-    public void setDriver(Driver driver) {
-        this.driver = driver;
+    public void setPairingType(TrailerPairingType pairingType) {
+        this.pairingType = pairingType;
     }
 
 }
