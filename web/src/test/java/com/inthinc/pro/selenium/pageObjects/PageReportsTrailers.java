@@ -20,7 +20,7 @@ public class PageReportsTrailers extends ReportsBar {
         checkMe.add(ReportsTrailersEnum.TITLE);
     }
     
-    public class VehicleReportButtons extends ReportsBarButtons {
+    public class TrailerReportButtons extends ReportsBarButtons {
         
         public TextButton emailReport() {
             return new TextButton(ReportsBarEnum.TOOL_EMAIL, page);
@@ -39,7 +39,7 @@ public class PageReportsTrailers extends ReportsBar {
         }
     }
     
-    public class VehicleReportDropDowns extends ReportsBarDropDowns {
+    public class TrailerReportDropDowns extends ReportsBarDropDowns {
         
         public DHXDropDown overallFilter() {
             return new ReportsBarDropDowns().score(ReportsBarEnum.OVERALL_SCORE_DHX, page);
@@ -55,7 +55,7 @@ public class PageReportsTrailers extends ReportsBar {
         
     }
     
-    public class VehicleReportLinks extends ReportsBarLinks {
+    public class TrailerReportLinks extends ReportsBarLinks {
         
         public TextLink editColumns() {
             return new TextLink(PopUpEnum.EDIT_COLUMNS, page);
@@ -127,7 +127,7 @@ public class PageReportsTrailers extends ReportsBar {
         
     }
     
-    public class VehicleReportTextFields extends ReportsBarTextFields {
+    public class TrailerReportTextFields extends ReportsBarTextFields {
         
         public TextField groupFilter() {
             return new TextField(ReportsTrailersEnum.GROUP_FILTER);
@@ -150,7 +150,7 @@ public class PageReportsTrailers extends ReportsBar {
         }
     }
     
-    public class VehicleReportTexts extends ReportsBarTexts {
+    public class TrailerReportTexts extends ReportsBarTexts {
         
         public Text title() {
             return new Text(ReportsTrailersEnum.TITLE);
@@ -180,20 +180,20 @@ public class PageReportsTrailers extends ReportsBar {
     
     private final String page = "vehicles";
     
-    public VehicleReportButtons _button() {
-        return new VehicleReportButtons();
+    public TrailerReportButtons _button() {
+        return new TrailerReportButtons();
     }
     
-    public VehicleReportDropDowns _dropDown() {
-        return new VehicleReportDropDowns();
+    public TrailerReportDropDowns _dropDown() {
+        return new TrailerReportDropDowns();
     }
     
-    public VehicleReportLinks _link() {
-        return new VehicleReportLinks();
+    public TrailerReportLinks _link() {
+        return new TrailerReportLinks();
     }
     
-    public class VehicleReportPopUps extends MastheadPopUps {
-        public VehicleReportPopUps() {
+    public class TrailerReportPopUps extends MastheadPopUps {
+        public TrailerReportPopUps() {
             super(page, Types.REPORT, 3);
         }
         
@@ -206,23 +206,23 @@ public class PageReportsTrailers extends ReportsBar {
         }
     }
     
-    public VehicleReportPopUps _popUp() {
-        return new VehicleReportPopUps();
+    public TrailerReportPopUps _popUp() {
+        return new TrailerReportPopUps();
     }
     
-    public VehicleReportTexts _text() {
-        return new VehicleReportTexts();
+    public TrailerReportTexts _text() {
+        return new TrailerReportTexts();
     }
     
-    public VehicleReportTextFields _textField() {
-        return new VehicleReportTextFields();
+    public TrailerReportTextFields _textField() {
+        return new TrailerReportTextFields();
     }
     
-    public VehicleReportPager _page() {
-        return new VehicleReportPager();
+    public TrailerReportPager _page() {
+        return new TrailerReportPager();
     }
     
-    public class VehicleReportPager {
+    public class TrailerReportPager {
         public Paging pageIndex() {
             return new Paging();
         }
