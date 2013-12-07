@@ -6,6 +6,7 @@ public enum ReportsBarEnum implements SeleniumEnums {
 
     DRIVERS("Drivers", "subNavForm:drivers-driversReport"),
     VEHICLES("Vehicles", "subNavForm:drivers-vehiclesReport"),
+    TRAILERS("Trailers", "subNavForm:trailers-trailersReport"),
     IDLING_DRIVERS("Idling Drivers", "subNavForm:drivers-idlingReport"),
     IDLING_VEHICLES("Idling Vehicles","subNavForm:drivers-idlingVehicleReport"),
     DEVICES("Devices", "subNavForm:drivers-devicesReport"),
