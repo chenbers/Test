@@ -15,6 +15,8 @@ import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
 
 import com.inthinc.pro.dao.report.TrailerReportDAO;
 import com.inthinc.pro.model.Status;
+import com.inthinc.pro.model.TrailerAssignedStatus;
+import com.inthinc.pro.model.TrailerEntryMethod;
 import com.inthinc.pro.model.TrailerPairingType;
 import com.inthinc.pro.model.TrailerReportItem;
 import com.inthinc.pro.model.pagination.PageParams;
@@ -42,14 +44,14 @@ public class TrailerReportJDBCDAO extends SimpleJdbcDaoSupport implements Traile
                     " left outer join vehicle on vdd.vehicleID = vehicle.vehicleID " +
                     " left outer join driver on vdd.driverID = driver.driverID " +
                     " left outer join person on driver.personID = person.personID " +
-                    " join groups on vehicle.groupID = groups.groupID ";
+                    " left outer join groups on vehicle.groupID = groups.groupID ";
     
     private static final String SELECT_COUNT_FROM_TRAILER_PERFORMANCE = "select COUNT(*) from  trailer " +
                     " left outer join vddlog vdd ON (trailer.deviceID = vdd.deviceID and vdd.stop is null) "+
                     " left outer join vehicle on vdd.vehicleID = vehicle.vehicleID " +
                     " left outer join driver on vdd.driverID = driver.driverID " +
                     " left outer join person on driver.personID = person.personID " +
-                    " join groups on vehicle.groupID = groups.groupID ";
+                    " left outer join groups on vehicle.groupID = groups.groupID ";
     
     
     private static ParameterizedRowMapper<TrailerReportItem> trailerReportItemRowMapper = new ParameterizedRowMapper<TrailerReportItem>() {
@@ -79,12 +81,9 @@ public class TrailerReportJDBCDAO extends SimpleJdbcDaoSupport implements Traile
         replaceColumnNameMap.put("groupName", "groups.name");
         replaceColumnNameMap.put("vehicleName", "vehicle.name");
         replaceColumnNameMap.put("driverName", "concat(person.first,' ',person.middle,' ',person.last,' ',person.suffix)");
-//        replaceColumnNameMap.put("entryMethod", "trailer.pairingDate");
         replaceColumnNameMap.put("status", "trailer.status");
-//        replaceColumnNameMap.put("entryMethod", "if(trailer.pairingDate>coalesce(trailer.entryDate,FROM_UNIXTIME(0)), 1, if(trailer.entryDate>coalesce(trailer.pairingDate,FROM_UNIXTIME(0)),2, 0)) ");
         replaceColumnNameMap.put("entryMethod", "trailer.pairingType");
-//        replaceColumnNameMap.put("assignedStatus", "(trailer.driverID is not null || trailer.vehicleID is not null)");
-        replaceColumnNameMap.put("assignedStatus", "trailer.pairingType");  //??
+        replaceColumnNameMap.put("assignedStatus", "trailer.pairingType"); 
     };
     private String replaceColumnName(String paramColName){
         String tempFieldIdentifier = "";
@@ -103,7 +102,16 @@ public class TrailerReportJDBCDAO extends SimpleJdbcDaoSupport implements Traile
             for(TableFilterField filter : filters) {
                 String tempFieldIdentifier = replaceColumnName(filter.getField());
                 if(filter.getField() != null && filter.getFilter() != null && !filter.getFilter().equals("") ) {
-                    if(filter.getFilter() instanceof String){
+                    if (filter.getField().equals("entryMethod")) {
+                        TrailerEntryMethod trailerEntryMethod = TrailerEntryMethod.valueOf(Integer.valueOf(filter.getFilter().toString()));
+                        filteringString.append(" AND " + tempFieldIdentifier + " IN (" + (trailerEntryMethod == TrailerEntryMethod.DETECTED ? "1)" : "2, 3)"));
+                    }
+                    else if (filter.getField().equals("assignedStatus")) {
+                        TrailerAssignedStatus trailerAssignedStatus = TrailerAssignedStatus.valueOf(Integer.valueOf(filter.getFilter().toString()));
+                        filteringString.append(" AND (" + tempFieldIdentifier + " IN (" + (trailerAssignedStatus == TrailerAssignedStatus.ASSIGNED ? "1, 2, 3))" : "0) OR " + tempFieldIdentifier + " is null)"));
+                        
+                    }
+                    else if(filter.getFilter() instanceof String){
                         paramName = "filter_"+filter.getField();
                         filteringString.append(" AND " + tempFieldIdentifier + " LIKE :" + paramName);
                         args.put(paramName, "%"+filter.getFilter()+"%");
@@ -125,7 +133,7 @@ public class TrailerReportJDBCDAO extends SimpleJdbcDaoSupport implements Traile
     }
     private Map<String, Object> args = new HashMap<String, Object>();
     @Override
-    public List<TrailerReportItem> getTrailerReportItemByGroupPaging(List<Integer> groupIDList, PageParams pageParams) {
+    public List<TrailerReportItem> getTrailerReportItemByGroupPaging(Integer acctID, List<Integer> groupIDList, PageParams pageParams) {
         
         
         StringBuilder sqlQuery = new StringBuilder(SELECT_ALL_FROM_TRAILER_PERFORMANCE);
@@ -135,7 +143,7 @@ public class TrailerReportJDBCDAO extends SimpleJdbcDaoSupport implements Traile
             logger.debug("will search groupid: "+groupID);
         }
         String paramName = "filter_groupIDs"; //TODO: I think ryry did this becasue he didn't know how to use an IN here ... so he was anticipating having to have multiple group id params (one for each)
-        sqlQuery.append(" where vehicle.groupID in ( :" + paramName + " ) "); //TODO: to match vehicle this would need to be an IN??? from, AdminVehicleJDBCDAO "WHERE v.groupID in (:group_list) and v.status != 3";
+        sqlQuery.append(" where ((trailer.deviceID is null and trailer.acctID = " + acctID + ") or vehicle.groupID in ( :" + paramName + " )) "); //TODO: to match vehicle this would need to be an IN??? from, AdminVehicleJDBCDAO "WHERE v.groupID in (:group_list) and v.status != 3";
         
         args.put(paramName, groupIDList);
         
@@ -158,7 +166,7 @@ public class TrailerReportJDBCDAO extends SimpleJdbcDaoSupport implements Traile
     }
 
     @Override
-    public Integer getTrailerReportCount(List<Integer> groupIDList, List<TableFilterField> tableFilterFieldList) {
+    public Integer getTrailerReportCount(Integer acctID, List<Integer> groupIDList, List<TableFilterField> tableFilterFieldList) {
         args = new HashMap<String, Object>();
         
         StringBuilder sqlQuery = new StringBuilder(SELECT_COUNT_FROM_TRAILER_PERFORMANCE);
@@ -168,7 +176,7 @@ public class TrailerReportJDBCDAO extends SimpleJdbcDaoSupport implements Traile
             logger.debug("will search groupid: "+groupID);
         }
         String paramName = "filter_groupIDs";
-        sqlQuery.append(" where vehicle.groupID in ( :" + paramName + " ) ");
+        sqlQuery.append(" where ((trailer.deviceID is null and trailer.acctID = " + acctID + ") or vehicle.groupID in ( :" + paramName + " )) ");
         args.put(paramName, groupIDList);
 
         /***FILTERING***/

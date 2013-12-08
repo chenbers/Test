@@ -216,12 +216,12 @@ public class ReportCriteriaServiceImplTest extends BaseUnitTest {
         MockTrailerReportDAO dao = new MockTrailerReportDAO();
         List<Integer> groupIDs = new ArrayList<Integer>();
         groupIDs.add(dao.getGroupID());
-        Integer rowCount = dao.getTrailerReportCount(groupIDs, null);
+        Integer rowCount = dao.getTrailerReportCount(dao.getAcctID(), groupIDs, null);
         
         assertEquals(dao.numOfResults, rowCount.intValue());
         
         PageParams pageParams = new PageParams(0, rowCount, null, null);
-        reportCriteria.setMainDataset(dao.getTrailerReportItemByGroupPaging(groupIDs, pageParams));
+        reportCriteria.setMainDataset(dao.getTrailerReportItemByGroupPaging(dao.getAcctID(), groupIDs, pageParams));
         reportCriteria.setDuration(duration);
         
         assertEquals(dao.numOfResults, reportCriteria.getMainDataset().size());
@@ -231,9 +231,14 @@ public class ReportCriteriaServiceImplTest extends BaseUnitTest {
     // TODO Move these classes to mock package
     class MockTrailerReportDAO implements TrailerReportDAO {
         private int groupID = 1;
+        private int acctID = 1;
         private String groupName = "MockGroupName";
         private int numOfResults = 10;
         
+        public int getAcctID() {
+            return acctID;
+        }
+
         public int getGroupID() {
             return groupID;
         }
@@ -247,7 +252,7 @@ public class ReportCriteriaServiceImplTest extends BaseUnitTest {
         }
 
         @Override
-        public List<TrailerReportItem> getTrailerReportItemByGroupPaging(List<Integer> groupIDs, PageParams pageParams) {
+        public List<TrailerReportItem> getTrailerReportItemByGroupPaging(Integer acctID, List<Integer> groupIDs, PageParams pageParams) {
            List<TrailerReportItem> retVal = new ArrayList<TrailerReportItem>();
            for(int i = 0; i < numOfResults; i++){
                TrailerReportItem item = new TrailerReportItem();
@@ -266,7 +271,7 @@ public class ReportCriteriaServiceImplTest extends BaseUnitTest {
         }
 
         @Override
-        public Integer getTrailerReportCount(List<Integer> groupIDs, List<TableFilterField> tableFilterFieldList) {
+        public Integer getTrailerReportCount(Integer acctID, List<Integer> groupIDs, List<TableFilterField> tableFilterFieldList) {
             return numOfResults;
         }
         

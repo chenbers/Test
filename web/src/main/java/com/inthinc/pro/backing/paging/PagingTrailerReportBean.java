@@ -24,6 +24,7 @@ public class PagingTrailerReportBean extends BasePagingReportBean<TrailerReportI
     public void init() {
         super.init();
         ((TrailerReportPaginationTableDataProvider) getTableDataProvider()).setGroupIDList(getProUser().getGroupHierarchy().getGroupIDList(getUser().getGroupID()));
+        ((TrailerReportPaginationTableDataProvider) getTableDataProvider()).setAcctID(getProUser().getUser().getPerson().getAccountID());
     }
 
     @Override

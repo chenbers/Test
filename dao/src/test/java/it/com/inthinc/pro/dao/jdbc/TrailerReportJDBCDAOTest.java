@@ -53,6 +53,7 @@ public class TrailerReportJDBCDAOTest extends SimpleJdbcDaoSupport {
     private static SiloService siloService;
     private static final String BASE_DATA_XML = "TeamStops.xml";
     private static ITData itData = new ITData();
+    private Integer acctID;
 
     @Before
     public void setUpBeforeTest() throws Exception {
@@ -70,6 +71,7 @@ public class TrailerReportJDBCDAOTest extends SimpleJdbcDaoSupport {
             throw new Exception("Error parsing Test data xml file");
         }
 
+        acctID = itData.account.getAccountID();
         this.updateTrailerReportItem();
 
     }
@@ -92,7 +94,7 @@ public class TrailerReportJDBCDAOTest extends SimpleJdbcDaoSupport {
         List<Integer> groupIDs = new ArrayList<Integer>();
         groupIDs.add(itData.teamGroupData.get(ITData.GOOD).group.getGroupID());
         groupIDs.add(itData.teamGroupData.get(ITData.INTERMEDIATE).group.getGroupID());
-        List<TrailerReportItem> trailerReportItems = dao.getTrailerReportItemByGroupPaging(groupIDs, params);
+        List<TrailerReportItem> trailerReportItems = dao.getTrailerReportItemByGroupPaging(acctID, groupIDs, params);
         int expected = NUM_OF_VEHICLE_PERFORMANCE_INSERTS - ((PAGE_1_END - PAGE_1_START) + 1) <= 0 ? NUM_OF_VEHICLE_PERFORMANCE_INSERTS : NUM_OF_VEHICLE_PERFORMANCE_INSERTS
                 - ((PAGE_1_END - PAGE_1_START) + 1);
         int pageCount = (PAGE_1_END - PAGE_1_START) + 1;
@@ -104,7 +106,7 @@ public class TrailerReportJDBCDAOTest extends SimpleJdbcDaoSupport {
         filterMap = new HashMap<String, Object>();
         filterMap.put("trailerName", "");
         params = new PageParams(PAGE_2_START, PAGE_2_END, this.getTableSortField(SortOrder.ASCENDING, "trailerName"), this.getFilters(filterMap));
-        trailerReportItems = dao.getTrailerReportItemByGroupPaging(groupIDs, params);
+        trailerReportItems = dao.getTrailerReportItemByGroupPaging(acctID, groupIDs, params);
         expected = NUM_OF_VEHICLE_PERFORMANCE_INSERTS - ((PAGE_2_END - PAGE_2_START) + 1) <= 0 ? 0 : NUM_OF_VEHICLE_PERFORMANCE_INSERTS - ((PAGE_2_END - PAGE_2_START) + 1);
         pageCount = (PAGE_2_END - PAGE_2_START) + 1;
         numOfResults = NUM_OF_VEHICLE_PERFORMANCE_INSERTS > (PAGE_2_END + 1) ? pageCount : expected;
@@ -123,7 +125,7 @@ public class TrailerReportJDBCDAOTest extends SimpleJdbcDaoSupport {
         String trailerNameFilter = "testTrailer_1";
         filterMap.put("trailerName", trailerNameFilter);
         params = new PageParams(PAGE_1_START, PAGE_1_END, this.getTableSortField(SortOrder.DESCENDING, "trailerName"), this.getFilters(filterMap));
-        trailerReportItems = dao.getTrailerReportItemByGroupPaging(groupIDs, params);
+        trailerReportItems = dao.getTrailerReportItemByGroupPaging(acctID, groupIDs, params);
         assertEquals(1, trailerReportItems.size());
         assertEquals(trailerNameFilter, trailerReportItems.get(0).getTrailerName());
     }
@@ -140,7 +142,7 @@ public class TrailerReportJDBCDAOTest extends SimpleJdbcDaoSupport {
         List<Integer> groupIDs = new ArrayList<Integer>();
         groupIDs.add(itData.teamGroupData.get(ITData.GOOD).group.getGroupID());
         groupIDs.add(itData.teamGroupData.get(ITData.INTERMEDIATE).group.getGroupID());
-        int count = dao.getTrailerReportCount(groupIDs, this.getFilters(filterMap));
+        int count = dao.getTrailerReportCount(acctID, groupIDs, this.getFilters(filterMap));
         assertEquals(NUM_OF_VEHICLE_PERFORMANCE_INSERTS, count);
     }
 
@@ -155,7 +157,7 @@ public class TrailerReportJDBCDAOTest extends SimpleJdbcDaoSupport {
         Map<String, Object> filterMapAssigned = new HashMap<String, Object>();
         filterMapAssigned.put("assignedStatus", "1");
         PageParams params = new PageParams(PAGE_1_START, PAGE_1_END, this.getTableSortField(SortOrder.DESCENDING, "trailerName"), this.getFilters(filterMapAssigned));
-        List<TrailerReportItem> results = dao.getTrailerReportItemByGroupPaging(groupIDs, params);
+        List<TrailerReportItem> results = dao.getTrailerReportItemByGroupPaging(acctID, groupIDs, params);
         for (TrailerReportItem item : results) {
             assertEquals(TrailerAssignedStatus.ASSIGNED, item.getAssignedStatus());
         }
@@ -163,7 +165,7 @@ public class TrailerReportJDBCDAOTest extends SimpleJdbcDaoSupport {
         Map<String, Object> filterMapNotAssigned = new HashMap<String, Object>();
         filterMapNotAssigned.put("assignedStatus", "0");
         params = new PageParams(PAGE_1_START, PAGE_1_END, this.getTableSortField(SortOrder.DESCENDING, "trailerName"), this.getFilters(filterMapNotAssigned));
-        results = dao.getTrailerReportItemByGroupPaging(groupIDs, params);
+        results = dao.getTrailerReportItemByGroupPaging(acctID, groupIDs, params);
         for (TrailerReportItem item : results) {
             assertEquals(TrailerAssignedStatus.NOT_ASSIGNED, item.getAssignedStatus());
         }

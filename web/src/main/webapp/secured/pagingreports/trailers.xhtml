@@ -83,10 +83,11 @@
                                                         <h:outputText value="#{messages.reports_group}" />
                                                     </h:panelGroup>
                                                 </f:facet>
-                                                <pretty:link id="vehiclesDashboard" mappingId="dashboard">
+                                                <pretty:link id="vehiclesDashboard" mappingId="dashboard" rendered="#{item.groupID != null}">
                                                     <h:outputText value="#{item.groupName}" />
                                                     <f:param value="#{item.groupID}" />
                                                 </pretty:link>
+                                                <h:outputText rendered="#{item.groupID eq null}" value="#{messages.reports_none_assigned}" />
                                             </rich:column>
                                             <rich:column id="name" rendered="#{tableColumns['trailer_name'].visible}" sortBy="#{item.trailerName}" filterBy="#{item.trailerName}"
                                                 filterValue="#{pagingTrailerReportBean.searchFor}">
