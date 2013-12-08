@@ -1,7 +1,5 @@
 package com.inthinc.pro.model;
 
-import java.util.Date;
-
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
@@ -18,35 +16,33 @@ public class TrailerReportItem extends BaseEntity implements Comparable<TrailerR
     private String trailerName;
     private Integer trailerID;
     private TrailerEntryMethod entryMethod;
+    private TrailerAssignedStatus assignedStatus;
     private Status status;
 
     public TrailerEntryMethod getEntryMethod() {
         return entryMethod;
     }
     
-    public void setEntryMethod(Date detected, Date entered){
-        if(detected == null){
-            if(entered == null){
-                //both are null
+    public void setEntryMethod(TrailerPairingType trailerPairingType){
+        if(trailerPairingType == null || trailerPairingType == TrailerPairingType.NONE){
                 this.entryMethod = null;
-            } else {
-                this.entryMethod = TrailerEntryMethod.ENTERED;
-            }
-        } else {
-            if(entered == null){
-                this.entryMethod = TrailerEntryMethod.DETECTED;
-            } else {
-                //neither is null... must check to see which is more recent
-                this.entryMethod = (detected.after(entered))?TrailerEntryMethod.DETECTED:TrailerEntryMethod.ENTERED;
-            }
+        }
+        else if (trailerPairingType == TrailerPairingType.DEVICE_DETECTED) {
+            this.entryMethod = TrailerEntryMethod.DETECTED;
+        }
+        else {
+            this.entryMethod = TrailerEntryMethod.ENTERED;
         }
     }
 
     public void setEntryMethod(TrailerEntryMethod entryMethod) {
         this.entryMethod = entryMethod;
     }
-    public boolean getAssignedStatus(){
-       return driverID!=null ||vehicleID!=null;
+    public void setAssignedStatus(TrailerPairingType trailerPairingType){
+        this.assignedStatus = trailerPairingType == null || trailerPairingType == TrailerPairingType.NONE ? TrailerAssignedStatus.NOT_ASSIGNED : TrailerAssignedStatus.ASSIGNED;
+    }
+    public TrailerAssignedStatus getAssignedStatus(){
+       return assignedStatus;
     }
     
     public String getGroupName() {
