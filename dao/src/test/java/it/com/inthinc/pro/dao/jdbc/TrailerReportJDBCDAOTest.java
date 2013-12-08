@@ -187,8 +187,8 @@ public class TrailerReportJDBCDAOTest extends SimpleJdbcDaoSupport {
         String sql = "insert into "
                 + TRAILER_TABLE
                 + " "
-                + " ( acctID, status, odometer, absOdometer, weight, year, name, make, model, color, vin, license, stateID, warrantyStart, warrantyStop, aggDate, newAggDate, deviceID, pairingDate, entryDate, modified ) "
-                + " values( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                + " ( acctID, status, odometer, absOdometer, weight, year, name, make, model, color, vin, license, stateID, deviceID, pairingDate, entryDate, modified ) "
+                + " values( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         try {
 
@@ -209,8 +209,9 @@ public class TrailerReportJDBCDAOTest extends SimpleJdbcDaoSupport {
         List<Object[]> retVal = new ArrayList<Object[]>();
 
         for (int i = 0; i < NUM_OF_VEHICLE_PERFORMANCE_INSERTS; i++) {
-            retVal.add(new Object[] { itData.account.getAccountID(), Status.ACTIVE.getCode(), TEST_ODO, TEST_ODO, TEST_WEIGHT, TEST_YEAR, TEST_TRAILER_NAME + i, "testMake", "testmodel", "testcolor",
-                    "testvin", "testlicnse", TEST_STATEID_UTAH, new Date(), new Date(), new Date(), new Date(), itData.teamGroupData.get(i).device.getDeviceID(), new Date(), new Date(), new Date() });
+            retVal.add(new Object[] {
+                    itData.account.getAccountID(), Status.ACTIVE.getCode(), TEST_ODO, TEST_ODO, TEST_WEIGHT, TEST_YEAR, TEST_TRAILER_NAME + i, "testMake", "testmodel", "testcolor",
+                    "testvin", "testlicnse", TEST_STATEID_UTAH, itData.teamGroupData.get(i).device.getDeviceID(), new Date(), new Date(), new Date() });
         }
 
         return retVal;
