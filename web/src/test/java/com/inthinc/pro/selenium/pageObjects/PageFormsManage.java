@@ -86,7 +86,7 @@ public class PageFormsManage extends FormsBar {
         }
         
         public TextLink next() {
-            return new TextLink(FormsManageEnum.NEXT_MANAGE);
+            return new TextLink(FormsManageEnum.NEXT);
         }
     }
     

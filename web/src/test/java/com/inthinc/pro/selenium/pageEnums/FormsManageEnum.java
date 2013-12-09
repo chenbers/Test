@@ -38,7 +38,7 @@ public enum FormsManageEnum implements SeleniumEnums {
     
     PREVIOUS("Previous", "//li[@class='prev']"), 
     PAGE_NUMBER(null, "//form/div/div[2]div[2]/div/ul/li[###]/a"),
-    NEXT_MANAGE("Next", "//li[@class='next']"),
+    NEXT("Next", "//li[@class='next']"),
     
     ;
 
