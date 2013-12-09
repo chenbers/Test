@@ -274,6 +274,12 @@ public class ReportCriteriaServiceImplTest extends BaseUnitTest {
         public Integer getTrailerReportCount(Integer acctID, List<Integer> groupIDs, List<TableFilterField> tableFilterFieldList) {
             return numOfResults;
         }
+
+        @Override
+        public Boolean isValidTrailer(Integer acctID, String trailerName) {
+            // TODO Auto-generated method stub
+            return null;
+        }
         
     }
     
