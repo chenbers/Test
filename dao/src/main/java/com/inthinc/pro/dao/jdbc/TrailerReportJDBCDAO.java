@@ -187,6 +187,13 @@ public class TrailerReportJDBCDAO extends SimpleJdbcDaoSupport implements Traile
         int result = getSimpleJdbcTemplate().queryForInt(sqlQuery.toString(), args);
         return result;
     }
+
+    @Override
+    public Boolean isValidTrailer(Integer acctID, String trailerName) {
+        String sqlQuery = "select COUNT(*) from  trailer where acctID = " + acctID + " and name = '" + trailerName +"'";
+        int result = getSimpleJdbcTemplate().queryForInt(sqlQuery);
+        return result > 0;
+    }
     
 
 }

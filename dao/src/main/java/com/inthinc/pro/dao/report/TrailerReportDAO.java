@@ -9,4 +9,5 @@ import com.inthinc.pro.model.pagination.TableFilterField;
 public interface TrailerReportDAO {
     public List<TrailerReportItem> getTrailerReportItemByGroupPaging(Integer acctID, List<Integer> groupIDList, PageParams pageParams);
     public Integer getTrailerReportCount(Integer acctID, List<Integer> groupIDList, List<TableFilterField> tableFilterFieldList);
+    public Boolean isValidTrailer(Integer acctID, String trailerName);
 }

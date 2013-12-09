@@ -2,6 +2,7 @@ package it.com.inthinc.pro.dao.jdbc;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotSame;
+import static org.junit.Assert.assertTrue;
 import it.com.inthinc.pro.dao.model.ITData;
 import it.config.ITDataSource;
 import it.config.IntegrationConfig;
@@ -169,6 +170,19 @@ public class TrailerReportJDBCDAOTest extends SimpleJdbcDaoSupport {
         for (TrailerReportItem item : results) {
             assertEquals(TrailerAssignedStatus.NOT_ASSIGNED, item.getAssignedStatus());
         }
+    }
+
+    @Test
+    public void validTrailer() {
+        TrailerReportJDBCDAO dao = new TrailerReportJDBCDAO();
+        DataSource dataSource = new ITDataSource().getRealDataSource();
+        dao.setDataSource(dataSource);
+
+        Boolean isValidTrailer = dao.isValidTrailer(acctID, "INVALID_TRAILER_NAME");
+        assertTrue("Expected an Invalid Trailer", !isValidTrailer);
+        
+        isValidTrailer = dao.isValidTrailer(acctID, TEST_TRAILER_NAME+"0");
+        assertTrue("Expected a Valid Trailer", isValidTrailer);
     }
 
     private List<TableFilterField> getFilters(Map<String, Object> filterMap) {
