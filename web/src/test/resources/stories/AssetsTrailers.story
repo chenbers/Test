@@ -220,3 +220,45 @@ And I click the Show Hide Columns link
 And I check the Trailer ID checkbox
 And I click the Show Hide Columns link
 And I validate the Sort By Trailer ID link is present
+
+Scenario: Assets - Trailers - New Trailer (cancel button)
+Given I navigate to the assets trailers page
+When I click the New button
+And I type "FAKEVINNUMBER" into the VIN textfield
+And I type "Ford" into the Make textfield
+And I type "2013" into the Year textfield
+And I type "Race Red" into the Color textfield
+And I type "21000" into the Weight textfield
+And I type "INTHINC" into the License Number textfield
+And I type "Active" into the Status textfield
+And I click the Save button
+Then I validate the 1st Row of the Trailer ID Entry is ""
+And I validate the 1st Row of the Team Entry is ""
+And I validate the 1st Row of the Status Entry is ""
+And I validate the 1st Row of the VIN Entry is ""
+And I validate the 1st Row of the License Entry is ""
+And I validate the 1st Row of the State Entry is ""
+And I validate the 1st Row of the Year Entry is ""
+And I validate the 1st Row of the Make Entry is ""
+And I validate the 1st Row of the Model Entry is ""
+And I validate the 1st Row of the Color Entry is ""
+And I validate the 1st Row of the Weight Entry is ""
+And I validate the 1st Row of the Odometer Entry is ""
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
