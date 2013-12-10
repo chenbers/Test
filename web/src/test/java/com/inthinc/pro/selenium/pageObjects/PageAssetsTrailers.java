@@ -488,7 +488,7 @@ public class PageAssetsTrailers extends Masthead {
     
     @Override
     public SeleniumEnums setUrl() {
-        return ReportsTrailersEnum.DEFAULT_URL;
+        return AssetsTrailersEnum.DEFAULT_URL;
     }
     
     @Override
