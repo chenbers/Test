@@ -54,9 +54,9 @@ public class LoginSteps extends WebSteps {
     
     @Given("I navigate to the assets trailers page")
     public void givenINavigateToTheAssetsTrailersPage() {
-        loginPage.open("https://dev.inthinc.com/assets/trailers");
-        loginPage._textField().username().type("TEST_13698");
-        loginPage._textField().password().type("password");
+        loginPage.open("https://qa.inthinc.com/assets/trailers");
+        loginPage._textField().username().type("secondPrime");
+        loginPage._textField().password().type("2ut2CFmnH$f!");
         loginPage._button().logIn().click();
     }
 
