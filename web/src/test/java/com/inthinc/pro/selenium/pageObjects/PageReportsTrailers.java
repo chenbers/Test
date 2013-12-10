@@ -13,6 +13,7 @@ import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 import com.inthinc.pro.selenium.pageEnums.PopUpEnum;
 import com.inthinc.pro.selenium.pageEnums.ReportsBarEnum;
 import com.inthinc.pro.selenium.pageEnums.ReportsTrailersEnum;
+import com.inthinc.pro.selenium.pageObjects.ReportsBar.ReportsBarDropDowns;
 
 public class PageReportsTrailers extends ReportsBar {
     
@@ -41,16 +42,17 @@ public class PageReportsTrailers extends ReportsBar {
     
     public class TrailerReportDropDowns extends ReportsBarDropDowns {
         
-        public DHXDropDown overallFilter() {
-            return new ReportsBarDropDowns().score(ReportsBarEnum.OVERALL_SCORE_DHX, page);
+        public DHXDropDown status() {
+            return new ReportsBarDropDowns().score(ReportsBarEnum.STATUS_SCORE_DHX, page);
         }
         
-        public DHXDropDown speedFilter() {
-            return new ReportsBarDropDowns().score(ReportsBarEnum.SPEED_SCORE_DHX, page);
+        
+        public DHXDropDown assignedStatus() {
+            return new ReportsBarDropDowns().score(ReportsBarEnum.ASSIGNED_STATUS_DHX, page);
         }
         
-        public DHXDropDown styleFilter() {
-            return new ReportsBarDropDowns().score(ReportsBarEnum.STYLE_SCORE_DHX, page);
+        public DHXDropDown entryMethod() {
+            return new ReportsBarDropDowns().score(ReportsBarEnum.ENTRY_METHOD_DHX, page);
         }
         
     }
@@ -59,6 +61,10 @@ public class PageReportsTrailers extends ReportsBar {
         
         public TextLink editColumns() {
             return new TextLink(PopUpEnum.EDIT_COLUMNS, page);
+        }
+        
+        public TextLink sortByStatus() {
+            return new TextLink(ReportsTrailersEnum.STATUS_SORT);
         }
         
         public TextLink sortByGroup() {
@@ -72,35 +78,19 @@ public class PageReportsTrailers extends ReportsBar {
         public TextLink sortByVehicleID() {
             return new TextLink(ReportsTrailersEnum.VEHICLE_SORT);
         }        
-        
-        public TextLink sortByYearMakeModel() {
-            return new TextLink(ReportsTrailersEnum.YEAR_MAKE_MODEL);
-        }
 
         public TextLink sortByDriver() {
             return new TextLink(ReportsTrailersEnum.DRIVER_SORT);
         }
         
-        public TextLink sortByDistanceDriven() {
-            return new TextLink(ReportsTrailersEnum.DISTANCE_DRIVEN_SORT);
+        public TextLink sortByAssignedStatus() {
+            return new TextLink(ReportsTrailersEnum.ASSIGNED_STATUS_SORT);
         }
         
-        public TextLink sortByOdometer() {
-            return new TextLink(ReportsTrailersEnum.ODOMETER_SORT);
+        public TextLink sortByEntryMethod() {
+            return new TextLink(ReportsTrailersEnum.ENTRY_METHOD_SORT);
         }
-        
-        public TextLink sortByOverall() {
-            return new TextLink(ReportsTrailersEnum.OVERALL_SCORE_SORT);
-        }   
-        
-        public TextLink sortBySpeed() {
-            return new TextLink(ReportsTrailersEnum.SPEED_SCORE_SORT);
-        }
-        
-        public TextLink sortByStyle() {
-            return new TextLink(ReportsTrailersEnum.STYLE_SCORE_SORT);
-        }
- 
+
         public TextTableLink groupValue() {
             return new TextTableLink(ReportsTrailersEnum.GROUP_VALUE);
         }
@@ -235,6 +225,6 @@ public class PageReportsTrailers extends ReportsBar {
     
     @Override
     protected boolean checkIsOnPage() {
-        return _link().editColumns().isPresent();
+        return _link().editColumns().isPresent()  && _link().sortByStatus();
     }
 }
