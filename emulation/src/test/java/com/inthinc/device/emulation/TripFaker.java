@@ -18,11 +18,11 @@ public class TripFaker {
         //TiwiProDevice tiwi = new TiwiProDevice("999999000109751", AutoSilos.QA);
         //NewNoteTest noteTest = new NewNoteTest(AutoSilos.QA);
         //noteTest.testDVIRNote("MCM821853", "300034012559130");
-        WaysmartDevice tiwi = new WaysmartDevice("555550209999999", "555550201", AutoSilos.DEV, Direction.gprs);
+        WaysmartDevice tiwi = new WaysmartDevice("AUTOMATION850", "AUTOMATION850", AutoSilos.QA, Direction.gprs);
         tiwi.dump_settings();
         DeviceState state = tiwi.getState();
         AutomationCalendar initialTime = new AutomationCalendar();
-        tiwi.set_time(initialTime.setDate(1367445641));
+        tiwi.set_time(initialTime.setDate(1386303026));
 //        tiwi.increment_time(20);
         tiwi.getState().setWMP(17116);
         tiwi.firstLocation(new GeoPoint(33.0104, -117.111));
