@@ -52,9 +52,12 @@ public class LoginSteps extends WebSteps {
     	loginPage._button().logIn().click();
     }
     
-    @When("I navigate to the assets trailers page")
-    public void whenINavigateToTheAssetsTrailersPage() {
-        loginPage.open("http://dev.inthinc.com/assets/trailers");
+    @Given("I navigate to the assets trailers page")
+    public void givenINavigateToTheAssetsTrailersPage() {
+        loginPage.open("https://dev.inthinc.com/assets/trailers");
+        loginPage._textField().username().type("TEST_13698");
+        loginPage._textField().password().type("password");
+        loginPage._button().logIn().click();
     }
 
 //    @When("I enter non valid email text into the email address field")
