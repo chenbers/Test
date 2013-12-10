@@ -411,7 +411,8 @@ public enum EventAttr {
     VEHICLE_ID_STR(24592, 20, true),        // string 20 max, variable length,              \0 terminated
     IMEI(24593, 15, true),                  // string 15 max, variable length,              \0 terminated
     MCM_ID_STR(24594, 9, true),             // string  9 max, variable length,              \0 terminated
-    
+    TRAILERID_OLD(24602, 20, true),         // string 20 max, variable length,              \0 terminated
+
     SKIP_INT(32000),
     
     //DVIR Repair note string attributes
