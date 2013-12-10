@@ -178,7 +178,7 @@ public class PageReportsTrailers extends ReportsBar {
         
     }
     
-    private final String page = "vehicles";
+    private final String page = "trailers";
     
     public TrailerReportButtons _button() {
         return new TrailerReportButtons();
