@@ -8,33 +8,27 @@ public enum ReportsTrailersEnum implements SeleniumEnums {
 	
 	TITLE("Trailer Report", "//span[@class='trailer']"),
 	
-    GROUP_FILTER(null,"trailers-form:trailers:groupfsp"),
+	GROUP_FILTER(null,"trailers-form:trailers:groupfsp"),
     TRAILER_FILTER(null, "trailers-form:trailers:namefsp"),
     VEHICLE_FILTER(null,"trailers-form:trailers:vehicle_namefsp"),
-    YEAR_MAKE_MODEL_FILTER(null,"trailers-form:trailers:makeModelYearfsp"),
-    DRIVER_FILTER(null,"trailers-form:trailers:fullNamefsp"), 
+    DRIVER_FILTER(null,"trailers-form:trailers:fullNamefsp"),
 
+    STATUS_VALUE(null, "trailers-form:trailers:###:status"),
     GROUP_VALUE(null,"trailers-form:trailers:###:group"),
     TRAILERID_VALUE(null, "trailers-form:trailers:###:name"),
     VEHICLE_VALUE(null,"trailers-form:trailers:###:vehicle_name"),
-    YEAR_MAKE_MODEL_VALUE(null, "trailers-form:trailers:###:makeModelYear"),
     DRIVER_VALUE(null,"trailers-form:trailers:###:fullName"),
-    DISTANCE_DRIVEN_VALUE(null, "trailers-form:trailers:###:distance"),
-    ODOMETER_VALUE(null, "trailers-form:trailers:###:odometer"),
-    OVERALL_SCORE_VALUE(null,"trailers-form:trailers:###:overallScore"),
-    SPEED_SCORE_VALUE(null,"trailers-form:trailers:###:speedScore"),
-    STYLE_SCORE_VALUE(null,"trailers-form:trailers:###:styleScore"),
+    ASSIGNED_STATUS_VALUE(null,"trailers-form:trailers:###:assignedStatus"),
+    ENTRY_METHOD_VALUE(null,"trailers-form:trailers:###:entryMethod"),
     
+    STATUS_SORT(null, "trailers-form:trailers:statusheader:sortDiv"),
     GROUP_SORT(null,"trailers-form:trailers:groupheader:sortDiv"),
     TRAILERID_SORT(null, "trailers-form:trailers:nameheader:sortDiv"),
     VEHICLE_SORT(null,"trailers-form:trailers:vehicle_nameheader:sortDiv"),
-    YEAR_MAKE_MODEL(null, "trailers-form:trailers:makeModelYearheader:sortDiv"),
     DRIVER_SORT(null,"trailers-form:trailers:fullNameheader:sortDiv"),
-    DISTANCE_DRIVEN_SORT(null, "trailers-form:trailers:distanceheader:sortDiv"),
-    ODOMETER_SORT(null, "trailers-form:trailers:odometerheader:sortDiv"),
+    ASSIGNED_STATUS_SORT(null, "trailers-form:trailers:assignedStatusheader:sortDiv"),
     OVERALL_SCORE_SORT(null,"trailers-form:trailers:overallScoreheader:sortDiv"),
-    SPEED_SCORE_SORT(null,"trailers-form:trailers:speedScoreheader:sortDiv"),
-    STYLE_SCORE_SORT(null,"trailers-form:trailers:styleScoreheader:sortDiv"),
+    ENTRY_METHOD_SORT(null,"trailers-form:trailers:entryMethodheader:sortDiv"),
     ;
     
     private String text, url;

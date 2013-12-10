@@ -99,18 +99,6 @@ public class PageReportsTrailers extends ReportsBar {
             return new TextLink(ReportsTrailersEnum.DRIVER_VALUE);
         }        
         
-        public TextLinkScoreTable overallValue() {
-            return new TextLinkScoreTable(ReportsTrailersEnum.OVERALL_SCORE_VALUE);
-        }      
-        
-        public TextLinkScoreTable speedValue() {
-            return new TextLinkScoreTable(ReportsTrailersEnum.SPEED_SCORE_VALUE);
-        }
-        
-        public TextLinkScoreTable styleValue() {
-            return new TextLinkScoreTable(ReportsTrailersEnum.STYLE_SCORE_VALUE);
-        }
-        
         public TextTableLink vehicleValue() {
             return new TextTableLink(ReportsTrailersEnum.VEHICLE_VALUE);
         }
@@ -131,10 +119,6 @@ public class PageReportsTrailers extends ReportsBar {
             return new TextField(ReportsTrailersEnum.VEHICLE_FILTER);
         }
         
-        public TextField yearMakeModelFilter() {
-            return new TextField(ReportsTrailersEnum.YEAR_MAKE_MODEL_FILTER);
-        }
-        
         public TextField driverFilter() {
             return new TextField(ReportsTrailersEnum.DRIVER_FILTER);
         }
@@ -152,18 +136,6 @@ public class PageReportsTrailers extends ReportsBar {
         
         public TextTable trailerValue() {
             return new TextTable(ReportsTrailersEnum.TRAILERID_VALUE);
-        }
-        
-        public TextTable distanceDrivenValue() {
-            return new TextTable(ReportsTrailersEnum.DISTANCE_DRIVEN_VALUE);
-        }
-        
-        public TextTable odometerValue() {
-            return new TextTable(ReportsTrailersEnum.ODOMETER_VALUE);
-        }
-        
-        public TextTable yearMakeModelValue() {
-            return new TextTable(ReportsTrailersEnum.YEAR_MAKE_MODEL_VALUE);
         }
         
     }
@@ -225,6 +197,6 @@ public class PageReportsTrailers extends ReportsBar {
     
     @Override
     protected boolean checkIsOnPage() {
-        return _link().editColumns().isPresent()  && _link().sortByStatus();
+        return _link().editColumns().isPresent() && _link().sortByStatus().isPresent();
     }
 }
