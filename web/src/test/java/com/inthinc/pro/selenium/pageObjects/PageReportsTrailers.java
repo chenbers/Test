@@ -42,16 +42,16 @@ public class PageReportsTrailers extends ReportsBar {
     
     public class TrailerReportDropDowns extends ReportsBarDropDowns {
         
-        public DHXDropDown status() {
+        public DHXDropDown statusFilter() {
             return new ReportsBarDropDowns().score(ReportsBarEnum.STATUS_SCORE_DHX, page);
         }
         
         
-        public DHXDropDown assignedStatus() {
+        public DHXDropDown assignedStatusFilter() {
             return new ReportsBarDropDowns().score(ReportsBarEnum.ASSIGNED_STATUS_DHX, page);
         }
         
-        public DHXDropDown entryMethod() {
+        public DHXDropDown entryMethodFilter() {
             return new ReportsBarDropDowns().score(ReportsBarEnum.ENTRY_METHOD_DHX, page);
         }
         

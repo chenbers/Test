@@ -49,17 +49,13 @@ And I validate the Vehicle Filter textfield is present
 And I validate the Driver Filter textfield is present
 And I validate the Assigned Status Filter dropdown is present
 And I validate the Entry Method Filter dropdown is present
-And I validate the 1st Row of the Status Entry text table text is present
-And I validate the 1st Row of the Group Value text table link is present
-And I validate the 1st Row of the Trailer Value text table text is present
-And I validate the 1st Row of the Vehicle Value text table link is present
-And I validate the 1st Row of the Year Make Model Value text table text is present
-And I validate the 1st Row of the Driver Value text table link is present
-And I validate the 1st Row of the Distance Driven Value text table text is present
-And I validate the 1st Row of the Odometer Value text table text is present
-And I validate the 1st Row of the Overall Value text table link is present
-And I validate the 1st Row of the Speed Value text table link is present
-And I validate the 1st Row of the Style Value text table link is present
+And I validate the 1st Row of the Status Value text is present
+And I validate the 1st Row of the Group Value link is present
+And I validate the 1st Row of the Trailer Value text is present
+And I validate the 1st Row of the Vehicle Value link is present
+And I validate the 1st Row of the Driver Value link is present
+And I validate the 1st Row of the Assigned Status Value text is present
+And I validate the 1st Row of the Entry Method Value text is present
 And I click the Tools button
 And I validate the Email Report button is present
 And I validate the Export Excel button is present
@@ -78,6 +74,20 @@ And I validate the 4th Row of the Column checkbox is present
 And I validate the 5th Row of the Column checkbox is present
 And I validate the 6th Row of the Column checkbox is present
 And I validate the 7th Row of the Column checkbox is present
+And I uncheck the 1st Row of the Column checkbox
+And I uncheck the 2nd Row of the Column checkbox
+And I uncheck the 3rd Row of the Column checkbox
+And I uncheck the 4th Row of the Column checkbox
+And I uncheck the 5th Row of the Column checkbox
+And I uncheck the 6th Row of the Column checkbox
+And I uncheck the 7th Row of the Column checkbox
+And I validate the 1st Row of the Column checkbox is unchecked
+And I validate the 2nd Row of the Column checkbox is unchecked
+And I validate the 3rd Row of the Column checkbox is unchecked
+And I validate the 4th Row of the Column checkbox is unchecked
+And I validate the 5th Row of the Column checkbox is unchecked
+And I validate the 6th Row of the Column checkbox is unchecked
+And I validate the 7th Row of the Column checkbox is unchecked
 And I check the 1st Row of the Column checkbox
 And I check the 2nd Row of the Column checkbox
 And I check the 3rd Row of the Column checkbox
@@ -100,14 +110,14 @@ Scenario: Reports - Trailers - Bookmark Entry
 Given I am logged in
 And I select "Trailers" from the Master Search dropdown
 And I click the Master Search button
-And I save the 1st Row of the Trailer Value link as SAVEDVEHICLE
+And I save the 1st Row of the Trailer Value text as SAVEDTRAILER
 When I bookmark the page
 And I click the Log Out link
 And I click the bookmark I just added
 When I log back in
 Then I validate I am on the Reports Trailers page
 And I validate the Master Search textfield is ""
-And I validate that the 1st Row of the Trailer Value link is SAVEDVEHICLE
+And I validate that the 1st Row of the Trailer Value text is SAVEDTRAILER
 
 Scenario: Reports - Trailers - Group Link
 Given I am logged in
@@ -121,16 +131,13 @@ Scenario: Reports - Trailers - Table Properties NEED TO IMPLEMENT CHECKING ALPHA
 Given I am logged in
 When I click the Reports link
 And I click the Trailers link
+And I click the Sort By Status link
+And I click the Sort By Group link
 And I click the Sort By Trailer ID link
 And I click the Sort By Vehicle ID link
-And I click the Sort By Group link
-And I click the Sort By Year Make Model link
 And I click the Sort By Driver link
-And I click the Sort By Distance Driven link
-And I click the Sort By Odometer link
-And I click the Sort By Overall link
-And I click the Sort By Speed link
-And I click the Sort By Style link
+And I click the Sort By Assigned Status link
+And I click the Sort By Entry Method link
 
 Scenario: Reports - Trailers - Vehicle ID Link
 Given I am logged in
@@ -285,24 +292,6 @@ And I click the Save button
 And the Edit Columns popup closes
 And I validate the 1st Row of the Group Value link is present
 And I validate the 1st Row of the Trailer Value link is present
-
-!-- Scenario: Reports - Trailers - Edit Columns - Default Command Button (THERE CURRENTLY IS NO DEFAULT KEY, REMOVING THIS TEST)
-!-- Given I am logged in
-!-- When I click the Reports link
-!-- And I click the Trailers link
-!-- And I click the Edit Columns link
-!-- And the Edit Columns popup opens
-!-- And I uncheck the 1st Row of the Column checkbox
-!-- And I press the Enter Key
-!-- And the Edit Columns popup closes
-!-- Then I validate the 1st Row of the Group Value link is not present
-!-- And I click the Edit Columns link
-!-- And the Edit Columns popup opens
-!-- And I validate the 1st Row of the Column checkbox is not checked
-!-- And I check the 1st Row of the Column checkbox
-!-- And I press the Enter Key
-!-- And the Edit Columns popup closes
-!-- And I validate the 1st Row of the Group Value link is present
 
 Scenario: Reports - Trailers - Edit Columns - Save Button
 Given I am logged in
