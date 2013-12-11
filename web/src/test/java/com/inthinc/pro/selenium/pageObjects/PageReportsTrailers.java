@@ -95,8 +95,8 @@ public class PageReportsTrailers extends ReportsBar {
             return new TextTableLink(ReportsTrailersEnum.GROUP_VALUE);
         }
 
-        public TextLink driverValue() {
-            return new TextLink(ReportsTrailersEnum.DRIVER_VALUE);
+        public TextTableLink driverValue() {
+            return new TextTableLink(ReportsTrailersEnum.DRIVER_VALUE);
         }        
         
         public TextTableLink vehicleValue() {
@@ -136,6 +136,18 @@ public class PageReportsTrailers extends ReportsBar {
         
         public TextTable trailerValue() {
             return new TextTable(ReportsTrailersEnum.TRAILERID_VALUE);
+        }
+        
+        public TextTable statusValue() {
+            return new TextTable(ReportsTrailersEnum.STATUS_VALUE);
+        }
+        
+        public TextTable assignedStatusValue() {
+            return new TextTable(ReportsTrailersEnum.ASSIGNED_STATUS_VALUE);
+        }
+        
+        public TextTable entryMethodValue() {
+            return new TextTable(ReportsTrailersEnum.ENTRY_METHOD_VALUE);
         }
         
     }
