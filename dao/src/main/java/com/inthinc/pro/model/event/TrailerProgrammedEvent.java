@@ -13,13 +13,13 @@ public class TrailerProgrammedEvent extends Event implements StatusEvent {
     private static final long serialVersionUID = 1L;
     @EventAttrID(name="TRAILERID_OLD")
     String trailerIdOld;
+
     @EventAttrID(name="TRAILER_ID")
     String trailerId;
     
     private static EventAttr[] eventAttrList = {
-//        EventAttr.DATA_LENGTH,
-        EventAttr.TRAILERID_OLD,
         EventAttr.TRAILER_ID,
+        EventAttr.TRAILERID_OLD,
     };
     
     @Override
