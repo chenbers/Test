@@ -19,7 +19,9 @@
                          <pretty:link id="#{context}-vehiclesReport" mappingId="vehiclesReport"><span>#{messages.subNavigation_vehicles}</span></pretty:link>
                    </li>
                    <li class="#{trailersSelected}">
+						<h:panelGroup rendered="#{treeNavigationBean.accountIsTrailersEnabled}">
                          <pretty:link id="#{context}-trailersReport" mappingId="trailersReport"><span>#{messages.subNavigation_trailers}</span></pretty:link>
+						</h:panelGroup>
                    </li>
                    <li class="#{idlingSelected}">
                         <pretty:link id="#{context}-idlingReport" mappingId="idlingReport"><span>#{messages.subNavigation_idling}</span></pretty:link>
