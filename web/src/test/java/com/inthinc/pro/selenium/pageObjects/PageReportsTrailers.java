@@ -209,6 +209,6 @@ public class PageReportsTrailers extends ReportsBar {
     
     @Override
     protected boolean checkIsOnPage() {
-        return _link().editColumns().isPresent() && _link().sortByStatus().isPresent();
+        return _link().editColumns().isPresent() && _text().title().isPresent();
     }
 }

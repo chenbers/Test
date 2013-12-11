@@ -81,13 +81,13 @@ And I uncheck the 4th Row of the Column checkbox
 And I uncheck the 5th Row of the Column checkbox
 And I uncheck the 6th Row of the Column checkbox
 And I uncheck the 7th Row of the Column checkbox
-And I validate the 1st Row of the Column checkbox is unchecked
-And I validate the 2nd Row of the Column checkbox is unchecked
-And I validate the 3rd Row of the Column checkbox is unchecked
-And I validate the 4th Row of the Column checkbox is unchecked
-And I validate the 5th Row of the Column checkbox is unchecked
-And I validate the 6th Row of the Column checkbox is unchecked
-And I validate the 7th Row of the Column checkbox is unchecked
+And I validate the 1st Row of the Column checkbox is not checked
+And I validate the 2nd Row of the Column checkbox is not checked
+And I validate the 3rd Row of the Column checkbox is not checked
+And I validate the 4th Row of the Column checkbox is not checked
+And I validate the 5th Row of the Column checkbox is not checked
+And I validate the 6th Row of the Column checkbox is not checked
+And I validate the 7th Row of the Column checkbox is not checked
 And I check the 1st Row of the Column checkbox
 And I check the 2nd Row of the Column checkbox
 And I check the 3rd Row of the Column checkbox
@@ -152,16 +152,13 @@ Scenario: Reports - Trailers - Edit Columns - Cancel Button (Changes)
 Given I am logged in
 When I click the Reports link
 And I click the Trailers link
-Then I validate the Sort By Group link is present
-And I validate the Sort By Vehicle ID link is present
+Then I validate the Sort By Status link is present
+And I validate the Sort By Group link is present
 And I validate the Sort By Trailer ID link is present
-And I validate the Sort By Year Make Model link is present
+And I validate the Sort By Vehicle ID link is present
 And I validate the Sort By Driver link is present
-And I validate the Sort By Distance Driven link is present
-And I validate the Sort By Odometer link is present
-And I validate the Sort By Overall link is present
-And I validate the Sort By Speed link is present
-And I validate the Sort By Style link is present
+And I validate the Sort By Assigned Status link is present
+And I validate the Sort By Entry Method link is present
 And I click the Edit Columns link
 And the Edit Columns popup opens
 And I uncheck 1st Row of the Column checkbox
@@ -171,50 +168,38 @@ And I uncheck 4th Row of the Column checkbox
 And I uncheck 5th Row of the Column checkbox
 And I uncheck 6th Row of the Column checkbox
 And I uncheck 7th Row of the Column checkbox
-And I uncheck 8th Row of the Column checkbox
-And I uncheck 9th Row of the Column checkbox
-And I uncheck 10th Row of the Column checkbox
 And I click the Cancel button
 And the Edit Columns popup closes
+And I validate the Sort By Status link is present
 And I validate the Sort By Group link is present
-And I validate the Sort By Vehicle ID link is present
 And I validate the Sort By Trailer ID link is present
-And I validate the Sort By Year Make Model link is present
+And I validate the Sort By Vehicle ID link is present
 And I validate the Sort By Driver link is present
-And I validate the Sort By Distance Driven link is present
-And I validate the Sort By Odometer link is present
-And I validate the Sort By Overall link is present
-And I validate the Sort By Speed link is present
-And I validate the Sort By Style link is present
+And I validate the Sort By Assigned Status link is present
+And I validate the Sort By Entry Method link is present
 
 Scenario: Reports - Trailers - Edit Columns - Cancel Button (No Changes)
 Given I am logged in
 When I click the Reports link
 And I click the Trailers link
-Then I validate the Sort By Group link is present
+Then I validate the Sort By Status link is present
+And I validate the Sort By Group link is present
 And I validate the Sort By Trailer ID link is present
 And I validate the Sort By Vehicle ID link is present
-And I validate the Sort By Year Make Model link is present
 And I validate the Sort By Driver link is present
-And I validate the Sort By Distance Driven link is present
-And I validate the Sort By Odometer link is present
-And I validate the Sort By Overall link is present
-And I validate the Sort By Speed link is present
-And I validate the Sort By Style link is present
+And I validate the Sort By Assigned Status link is present
+And I validate the Sort By Entry Method link is present
 And I click the Edit Columns link
 And the Edit Columns popup opens
 And I click the Cancel button
 And the Edit Columns popup closes
+And I validate the Sort By Status link is present
 And I validate the Sort By Group link is present
 And I validate the Sort By Trailer ID link is present
 And I validate the Sort By Vehicle ID link is present
-And I validate the Sort By Year Make Model link is present
 And I validate the Sort By Driver link is present
-And I validate the Sort By Distance Driven link is present
-And I validate the Sort By Odometer link is present
-And I validate the Sort By Overall link is present
-And I validate the Sort By Speed link is present
-And I validate the Sort By Style link is present
+And I validate the Sort By Assigned Status link is present
+And I validate the Sort By Entry Method link is present
 
 Scenario: Reports - Trailers - Edit Columns - Check Box Selection via Mouse
 Given I am logged in
@@ -236,12 +221,6 @@ And I uncheck 6th Row of the Column checkbox
 And I validate the 6th Row of the Column checkbox is not checked
 And I uncheck 7th Row of the Column checkbox
 And I validate the 7th Row of the Column checkbox is not checked
-And I uncheck 8th Row of the Column checkbox
-And I validate the 8th Row of the Column checkbox is not checked
-And I uncheck 9th Row of the Column checkbox
-And I validate the 9th Row of the Column checkbox is not checked
-And I uncheck 10th Row of the Column checkbox
-And I validate the 10th Row of the Column checkbox is not checked
 And I check 1st Row of the Column checkbox
 And I validate the 1st Row of the Column checkbox is checked
 And I check 2nd Row of the Column checkbox
@@ -256,12 +235,6 @@ And I check 6th Row of the Column checkbox
 And I validate the 6th Row of the Column checkbox is checked
 And I check 7th Row of the Column checkbox
 And I validate the 7th Row of the Column checkbox is checked
-And I check 8th Row of the Column checkbox
-And I validate the 8th Row of the Column checkbox is checked
-And I check 9th Row of the Column checkbox
-And I validate the 9th Row of the Column checkbox is checked
-And I check 10th Row of the Column checkbox
-And I validate the 10th Row of the Column checkbox is checked
 And I click the Cancel button
 
 Scenario: Reports - Trailers - Edit Columns - Current Session Retention
@@ -274,24 +247,21 @@ And I uncheck 1st Row of the Column checkbox
 And I uncheck 2nd Row of the Column checkbox
 And I click the Save button
 And the Edit Columns popup closes
-Then I validate the 1st Row of the Group Value link is not present
-And I validate the 1st Row of the Trailer Value link is not present
-And I validate the 1st Row of the Vehicle Value link is present
-And I validate the 1st Row of the Sort By Year Make Model link is present
+Then I validate the the Sort By Status link is not present
+And I validate the the Sort By Group link is not present
+And I validate the the Sort By Trailer ID link is present
+And I validate the the Sort By Vehicle ID link is present
 And I validate the Sort By Driver link is present
-And I validate the Sort By Distance Driven link is present
-And I validate the Sort By Odometer link is present
-And I validate the Sort By Overall link is present
-And I validate the Sort By Speed link is present
-And I validate the Sort By Style link is present
+And I validate the Sort By Assigned Status link is present
+And I validate the Sort By Entry Method link is present
 And I click the Edit Columns link
 And the Edit Columns popup opens
 And I check 1st Row of the Column checkbox
 And I check 2nd Row of the Column checkbox
 And I click the Save button
 And the Edit Columns popup closes
-And I validate the 1st Row of the Group Value link is present
-And I validate the 1st Row of the Trailer Value link is present
+And I validate the the Sort By Status link is present
+And I validate the the Sort By Group link is present
 
 Scenario: Reports - Trailers - Edit Columns - Save Button
 Given I am logged in
@@ -302,14 +272,14 @@ And the Edit Columns popup opens
 And I uncheck the 1st Row of the Column checkbox
 And I click the Save button
 And the Edit Columns popup closes
-Then I validate the 1st Row of the Group Value link is not present
+Then I validate the Sort By Group link is not present
 And I click the Edit Columns link
 And the Edit Columns popup opens
 And I validate the 1st Row of the Column checkbox is not checked
 And I check the 1st Row of the Column checkbox
 And I click the Save button
 And the Edit Columns popup closes
-And I validate the 1st Row of the Group Value link is present
+Then I validate the Sort By Group link is present
 
 Scenario: Reports - Trailers - Edit Columns - Subsequent Session Retention
 Given I am logged in
@@ -320,18 +290,20 @@ And the Edit Columns popup opens
 And I uncheck the 1st Row of the Column checkbox
 And I click the Save button
 And the Edit Columns popup closes
+Then I validate the Sort By Group link is not present
 And I click the Logout link
-Given I am logged in
-When I click the Reports link
+When I log back in
+And I click the Reports link
 And I click the Trailers link
-Then I validate the 1st Row of the Group Value link is not present
+Then I validate the Sort By Group link is not present
 When I click the Edit Columns link
-And the EditColumns popup opens
+And the Edit Columns popup opens
 And I check the 1st Row of the Column checkbox
 And I click the Save button
 And the Edit Columns popup closes
+Then I validate the Sort By Group link is present
 And I click the Logout link
-Given I am logged in
+When I log back in
 And I click the Reports link
 And I click the Trailers link
-Then I validate the 1st Row of the Group Value link is present
+Then I validate the Sort By Group link is present
