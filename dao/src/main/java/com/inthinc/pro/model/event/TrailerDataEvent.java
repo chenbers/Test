@@ -12,6 +12,8 @@ import com.inthinc.pro.model.MeasurementType;
 @XmlRootElement
 public class TrailerDataEvent extends Event implements StatusEvent {
     private static final long serialVersionUID = 1L;
+    @EventAttrID(name="DATA_LENGTH")
+    Integer dataLength;
     @EventAttrID(name="HAZMAT_FLAG")
     Integer hazmatFlag;
     @EventAttrID(name="SERVICE_ID")
@@ -21,8 +23,8 @@ public class TrailerDataEvent extends Event implements StatusEvent {
     
     private static EventAttr[] eventAttrList = {
         EventAttr.DATA_LENGTH,
-        EventAttr.SERVICE_ID,
         EventAttr.TRAILER_ID,
+        EventAttr.SERVICE_ID,
         EventAttr.HAZMAT_FLAG,
     };
     
@@ -89,4 +91,13 @@ public class TrailerDataEvent extends Event implements StatusEvent {
     }
     
     
+    public Integer getDataLength() {
+        return (serviceId == null ? 0 : serviceId.length()) + (trailerId == null ? 0 : trailerId.length());
+    }
+
+
+    public void setDataLength(Integer dataLength) {
+        this.dataLength = dataLength;
+    }
+
 }
