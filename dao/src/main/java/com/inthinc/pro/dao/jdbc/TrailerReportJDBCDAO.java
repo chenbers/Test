@@ -143,7 +143,7 @@ public class TrailerReportJDBCDAO extends SimpleJdbcDaoSupport implements Traile
             logger.debug("will search groupid: "+groupID);
         }
         String paramName = "filter_groupIDs"; //TODO: I think ryry did this becasue he didn't know how to use an IN here ... so he was anticipating having to have multiple group id params (one for each)
-        sqlQuery.append(" where ((trailer.deviceID is null and trailer.acctID = " + acctID + ") or vehicle.groupID in ( :" + paramName + " )) and v.status != 3"); 
+        sqlQuery.append(" where ((trailer.deviceID is null and trailer.acctID = " + acctID + ") or vehicle.groupID in ( :" + paramName + " )) and trailer.status != 3"); 
         
         args.put(paramName, groupIDList);
         
@@ -176,7 +176,7 @@ public class TrailerReportJDBCDAO extends SimpleJdbcDaoSupport implements Traile
             logger.debug("will search groupid: "+groupID);
         }
         String paramName = "filter_groupIDs";
-        sqlQuery.append(" where ((trailer.deviceID is null and trailer.acctID = " + acctID + ") or vehicle.groupID in ( :" + paramName + " ))  and v.status != 3");
+        sqlQuery.append(" where ((trailer.deviceID is null and trailer.acctID = " + acctID + ") or vehicle.groupID in ( :" + paramName + " ))  and trailer.status != 3");
         args.put(paramName, groupIDList);
 
         /***FILTERING***/
