@@ -5,13 +5,10 @@ import com.inthinc.pro.automation.elements.DropDown;
 import com.inthinc.pro.automation.elements.Text;
 import com.inthinc.pro.automation.elements.TextButton;
 import com.inthinc.pro.automation.elements.TextField;
-import com.inthinc.pro.automation.elements.TextLabel;
 import com.inthinc.pro.automation.elements.TextLink;
-import com.inthinc.pro.automation.elements.TextTable;
 import com.inthinc.pro.automation.elements.TextTableLink;
 import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 import com.inthinc.pro.selenium.pageEnums.AssetsTrailersEnum;
-import com.inthinc.pro.selenium.pageEnums.ReportsTrailersEnum;
 
 public class PageAssetsTrailers extends Masthead {
     
@@ -63,6 +60,18 @@ public class PageAssetsTrailers extends Masthead {
             return new TextLink(AssetsTrailersEnum.SORT_BY_TEAM_LINK);
         }
         
+        public TextLink sortByDevice() {
+            return new TextLink(AssetsTrailersEnum.SORT_BY_DEVICE_LINK);
+        }
+        
+        public TextLink sortByVehicle() {
+            return new TextLink(AssetsTrailersEnum.SORT_BY_VEHICLE_LINK);
+        }
+        
+        public TextLink sortByDriver() {
+            return new TextLink(AssetsTrailersEnum.SORT_BY_DRIVER_LINK);
+        }
+        
         public TextLink sortByStatus() {
             return new TextLink(AssetsTrailersEnum.SORT_BY_STATUS);
         }
@@ -103,16 +112,80 @@ public class PageAssetsTrailers extends Masthead {
             return new TextLink(AssetsTrailersEnum.SORT_BY_ODOMETER);
         }
         
+        public TextTableLink trailerIdEntry() {
+            return new TextTableLink(AssetsTrailersEnum.TRAILER_ID_ENTRY);
+        }
+        
         public TextTableLink teamEntry() {
             return new TextTableLink(AssetsTrailersEnum.TEAM_ENTRY);
+        }
+        
+        public TextTableLink deviceEntry() {
+            return new TextTableLink(AssetsTrailersEnum.DEVICE_ENTRY);
+        }
+        
+        public TextTableLink vehicleEntry() {
+            return new TextTableLink(AssetsTrailersEnum.VEHICLE_ENTRY);
+        }
+        
+        public TextTableLink driverEntry() {
+            return new TextTableLink(AssetsTrailersEnum.DRIVER_ENTRY);
+        }
+        
+        public TextTableLink statusEntry() {
+            return new TextTableLink(AssetsTrailersEnum.STATUS_ENTRY);
+        }
+        
+        public TextTableLink vinEntry() {
+            return new TextTableLink(AssetsTrailersEnum.VIN_ENTRY);
+        }
+        
+        public TextTableLink licenseEntry() {
+            return new TextTableLink(AssetsTrailersEnum.LICENSE_ENTRY);
+        }
+        
+        public TextTableLink stateEntry() {
+            return new TextTableLink(AssetsTrailersEnum.STATE_ENTRY);
+        }
+        
+        public TextTableLink yearEntry() {
+            return new TextTableLink(AssetsTrailersEnum.YEAR_ENTRY);
+        }
+        
+        public TextTableLink makeEntry() {
+            return new TextTableLink(AssetsTrailersEnum.MAKE_ENTRY);
+        }
+        
+        public TextTableLink modelEntry() {
+            return new TextTableLink(AssetsTrailersEnum.MODEL_ENTRY);
+        }
+        
+        public TextTableLink colorEntry() {
+            return new TextTableLink(AssetsTrailersEnum.COLOR_ENTRY);
+        }
+        
+        public TextTableLink weightEntry() {
+            return new TextTableLink(AssetsTrailersEnum.WEIGHT_ENTRY);
+        }
+        
+        public TextTableLink odometerEntry() {
+            return new TextTableLink(AssetsTrailersEnum.ODOMETER_ENTRY);
         }
         
         public TextLink previous() {
             return new TextLink(AssetsTrailersEnum.PREVIOUS);
         }
         
+        public TextLink previousDisabled() {
+            return new TextLink(AssetsTrailersEnum.PREVIOUS_DISABLED);
+        }
+        
         public TextLink next() {
             return new TextLink(AssetsTrailersEnum.NEXT);
+        }
+        
+        public TextLink nextDisabled() {
+            return new TextLink(AssetsTrailersEnum.NEXT_DISABLED);
         }
         
     }
@@ -143,8 +216,12 @@ public class PageAssetsTrailers extends Masthead {
             return new TextField(AssetsTrailersEnum.WEIGHT_TRAILER_INFORMATION_TEXTFIELD);
         }
         
-        public TextField license() {
+        public TextField licenseNumber() {
             return new TextField(AssetsTrailersEnum.LICENSE_TRAILER_INFORMATION_TEXTFIELD);
+        }
+        
+        public TextField trailerID() {
+            return new TextField(AssetsTrailersEnum.TRAILER_ID_TEXTFIELD);
         }
         
         public TextField status() {
@@ -158,142 +235,154 @@ public class PageAssetsTrailers extends Masthead {
             return new Text(AssetsTrailersEnum.TITLE);
         }
         
-        public TextLabel recordsPerPageLabel() {
-            return new TextLabel(AssetsTrailersEnum.ENTRIES_LABEL);
+        public Text recordsPerPageLabel() {
+            return new Text(AssetsTrailersEnum.ENTRIES_LABEL);
         }
         
-        public TextLabel searchLabel() {
-            return new TextLabel(AssetsTrailersEnum.SEARCH_LABEL);
+        public Text searchLabel() {
+            return new Text(AssetsTrailersEnum.SEARCH_LABEL);
         }
         
         //SHOW/HIDE COLUMNS LABELS
-        public TextLabel trailerIDCheckboxLabel() {
-            return new TextLabel(AssetsTrailersEnum.TRAILER_ID_CHECKBOX_LABEL);
+        public Text trailerIDCheckboxLabel() {
+            return new Text(AssetsTrailersEnum.TRAILER_ID_CHECKBOX_LABEL);
         }
                 
-        public TextLabel teamCheckboxLabel() {
-            return new TextLabel(AssetsTrailersEnum.TEAM_CHECKBOX_LABEL);
+        public Text teamCheckboxLabel() {
+            return new Text(AssetsTrailersEnum.TEAM_CHECKBOX_LABEL);
         }
         
-        public TextLabel statusCheckboxLabel() {
-            return new TextLabel(AssetsTrailersEnum.STATUS_CHECKBOX_LABEL);
-        }
-                
-        public TextLabel vinCheckboxLabel() {
-            return new TextLabel(AssetsTrailersEnum.VIN_CHECKBOX_LABEL);
+        public Text deviceCheckboxLabel() {
+            return new Text(AssetsTrailersEnum.DEVICE_CHECKBOX_LABEL);
         }
         
-        public TextLabel licenseNumberCheckboxLabel() {
-            return new TextLabel(AssetsTrailersEnum.LICENSE_CHECKBOX_LABEL);
-        }
-                
-        public TextLabel stateCheckboxLabel() {
-            return new TextLabel(AssetsTrailersEnum.STATE_CHECKBOX_LABEL);
+        public Text vehicleCheckboxLabel() {
+            return new Text(AssetsTrailersEnum.VEHICLE_CHECKBOX_LABEL);
         }
         
-        public TextLabel yearCheckboxLabel() {
-            return new TextLabel(AssetsTrailersEnum.YEAR_CHECKBOX_LABEL);
-        }
-                
-        public TextLabel makeCheckboxLabel() {
-            return new TextLabel(AssetsTrailersEnum.MAKE_CHECKBOX_LABEL);
+        public Text driverCheckboxLabel() {
+            return new Text(AssetsTrailersEnum.DRIVER_CHECKBOX_LABEL);
         }
         
-        public TextLabel modelCheckboxLabel() {
-            return new TextLabel(AssetsTrailersEnum.MODEL_CHECKBOX_LABEL);
+        public Text statusCheckboxLabel() {
+            return new Text(AssetsTrailersEnum.STATUS_CHECKBOX_LABEL);
         }
                 
-        public TextLabel colorCheckboxLabel() {
-            return new TextLabel(AssetsTrailersEnum.COLOR_CHECKBOX_LABEL);
+        public Text vinCheckboxLabel() {
+            return new Text(AssetsTrailersEnum.VIN_CHECKBOX_LABEL);
         }
         
-        public TextLabel weightCheckboxLabel() {
-            return new TextLabel(AssetsTrailersEnum.WEIGHT_CHECKBOX_LABEL);
+        public Text licenseNumberCheckboxLabel() {
+            return new Text(AssetsTrailersEnum.LICENSE_CHECKBOX_LABEL);
         }
                 
-        public TextLabel odometerCheckboxLabel() {
-            return new TextLabel(AssetsTrailersEnum.ODOMETER_CHECKBOX_LABEL);
+        public Text stateCheckboxLabel() {
+            return new Text(AssetsTrailersEnum.STATE_CHECKBOX_LABEL);
+        }
+        
+        public Text yearCheckboxLabel() {
+            return new Text(AssetsTrailersEnum.YEAR_CHECKBOX_LABEL);
+        }
+                
+        public Text makeCheckboxLabel() {
+            return new Text(AssetsTrailersEnum.MAKE_CHECKBOX_LABEL);
+        }
+        
+        public Text modelCheckboxLabel() {
+            return new Text(AssetsTrailersEnum.MODEL_CHECKBOX_LABEL);
+        }
+                
+        public Text colorCheckboxLabel() {
+            return new Text(AssetsTrailersEnum.COLOR_CHECKBOX_LABEL);
+        }
+        
+        public Text weightCheckboxLabel() {
+            return new Text(AssetsTrailersEnum.WEIGHT_CHECKBOX_LABEL);
+        }
+                
+        public Text odometerCheckboxLabel() {
+            return new Text(AssetsTrailersEnum.ODOMETER_CHECKBOX_LABEL);
         }
         //
         
-        public TextLabel selectARowLabel() {
-            return new TextLabel(AssetsTrailersEnum.SELECT_A_ROW_LABEL);
+        public Text selectARowLabel() {
+            return new Text(AssetsTrailersEnum.SELECT_A_ROW_LABEL);
         }
         
-        public TextLabel trailerInformationLabel() {
-            return new TextLabel(AssetsTrailersEnum.TRAILER_INFORMATION_HEADER);
+        public Text trailerInformationLabel() {
+            return new Text(AssetsTrailersEnum.TRAILER_INFORMATION_HEADER);
         }
         
-        public TextLabel vinLabel() {
-            return new TextLabel(AssetsTrailersEnum.VIN_TRAILER_INFORMATION_LABEL);
+        public Text vinLabel() {
+            return new Text(AssetsTrailersEnum.VIN_TRAILER_INFORMATION_LABEL);
         }
         
-        public TextLabel makeLabel() {
-            return new TextLabel(AssetsTrailersEnum.MAKE_TRAILER_INFORMATION_LABEL);
+        public Text makeLabel() {
+            return new Text(AssetsTrailersEnum.MAKE_TRAILER_INFORMATION_LABEL);
         }
         
-        public TextLabel yearLabel() {
-            return new TextLabel(AssetsTrailersEnum.YEAR_TRAILER_INFORMATION_LABEL);
+        public Text yearLabel() {
+            return new Text(AssetsTrailersEnum.YEAR_TRAILER_INFORMATION_LABEL);
         }
         
-        public TextLabel colorLabel() {
-            return new TextLabel(AssetsTrailersEnum.COLOR_TRAILER_INFORMATION_LABEL);
+        public Text colorLabel() {
+            return new Text(AssetsTrailersEnum.COLOR_TRAILER_INFORMATION_LABEL);
         }
         
-        public TextLabel weightLabel() {
-            return new TextLabel(AssetsTrailersEnum.WEIGHT_TRAILER_INFORMATION_LABEL);
+        public Text weightLabel() {
+            return new Text(AssetsTrailersEnum.WEIGHT_TRAILER_INFORMATION_LABEL);
         }
         
-        public TextLabel licenseNumberLabel() {
-            return new TextLabel(AssetsTrailersEnum.LICENSE_TRAILER_INFORMATION_LABEL);
+        public Text licenseNumberLabel() {
+            return new Text(AssetsTrailersEnum.LICENSE_TRAILER_INFORMATION_LABEL);
         }
         
-        public TextLabel stateLabel() {
-            return new TextLabel(AssetsTrailersEnum.STATE_TRAILER_INFORMATION_LABEL);
+        public Text stateLabel() {
+            return new Text(AssetsTrailersEnum.STATE_TRAILER_INFORMATION_LABEL);
         }
         
-        public TextLabel trailerProfileLabel() {
-            return new TextLabel(AssetsTrailersEnum.TRAILER_PROFILE_HEADER);
+        public Text trailerProfileLabel() {
+            return new Text(AssetsTrailersEnum.TRAILER_PROFILE_HEADER);
         }
         
-        public TextLabel trailerIDLabel() {
-            return new TextLabel(AssetsTrailersEnum.TRAILER_ID_LABEL);
+        public Text trailerIDLabel() {
+            return new Text(AssetsTrailersEnum.TRAILER_ID_LABEL);
         }
         
-        public TextLabel statusLabel() {
-            return new TextLabel(AssetsTrailersEnum.STATUS_LABEL);
+        public Text statusLabel() {
+            return new Text(AssetsTrailersEnum.STATUS_LABEL);
         }
         
-        public TextLabel trailerAssignmentLabel() {
-            return new TextLabel(AssetsTrailersEnum.TRAILER_ASSIGNMENT_HEADER);
+        public Text trailerAssignmentLabel() {
+            return new Text(AssetsTrailersEnum.TRAILER_ASSIGNMENT_HEADER);
         }
         
-        public TextLabel teamLabel() {
-            return new TextLabel(AssetsTrailersEnum.TEAM_TRAILER_ASSIGNMENT_LABEL);
+        public Text teamLabel() {
+            return new Text(AssetsTrailersEnum.TEAM_TRAILER_ASSIGNMENT_LABEL);
         }
         
-        public TextLabel deviceAssignmentLabel() {
-            return new TextLabel(AssetsTrailersEnum.DEVICE_ASSIGNMENT_HEADER);
+        public Text deviceAssignmentLabel() {
+            return new Text(AssetsTrailersEnum.DEVICE_ASSIGNMENT_HEADER);
         }
         
-        public TextLabel assignedDeviceLabel() {
-            return new TextLabel(AssetsTrailersEnum.ASSIGNED_DEVICE_LABEL);
+        public Text assignedDeviceLabel() {
+            return new Text(AssetsTrailersEnum.ASSIGNED_DEVICE_LABEL);
         }
         
-        public TextLabel vehicleAssignmentLabel() {
-            return new TextLabel(AssetsTrailersEnum.VEHICLE_ASSIGNMENT_HEADER);
+        public Text vehicleAssignmentLabel() {
+            return new Text(AssetsTrailersEnum.VEHICLE_ASSIGNMENT_HEADER);
         }
         
-        public TextLabel assignedVehicleLabel() {
-            return new TextLabel(AssetsTrailersEnum.ASSIGNED_VEHICLE_LABEL);
+        public Text assignedVehicleLabel() {
+            return new Text(AssetsTrailersEnum.ASSIGNED_VEHICLE_LABEL);
         }
         
-        public TextLabel driverAssignmentLabel() {
-            return new TextLabel(AssetsTrailersEnum.DRIVER_ASSIGNMENT_HEADER);
+        public Text driverAssignmentLabel() {
+            return new Text(AssetsTrailersEnum.DRIVER_ASSIGNMENT_HEADER);
         }
         
-        public TextLabel assignedDriverLabel() {
-            return new TextLabel(AssetsTrailersEnum.ASSIGNED_DRIVER_LABEL);
+        public Text assignedDriverLabel() {
+            return new Text(AssetsTrailersEnum.ASSIGNED_DRIVER_LABEL);
         }
         
         public Text vin() {
@@ -337,65 +426,25 @@ public class PageAssetsTrailers extends Masthead {
         }
         
         public Text assignedDevice() {
-            return new Text(AssetsTrailersEnum.ASSIGNED_DEVICE_TEXT);
+            return new Text(AssetsTrailersEnum.DEVICE_TEXT);
         }
         
         public Text assignedVehicle() {
-            return new Text(AssetsTrailersEnum.ASSIGNED_VEHICLE_TEXT);
+            return new Text(AssetsTrailersEnum.VEHICLE_TEXT);
         }
         
         public Text assignedDriver() {
-            return new Text(AssetsTrailersEnum.ASSIGNED_DRIVER_TEXT);
+            return new Text(AssetsTrailersEnum.DRIVER_TEXT);
         }
         
-        public TextTable trailerIdEntry() {
-            return new TextTable(AssetsTrailersEnum.TRAILER_ID_ENTRY);
+        public Text noMatchingRecords() {
+            return new Text(AssetsTrailersEnum.NO_MATCHING_RECORDS_ERROR);
         }
         
-        public TextTable teamEntry() {
-            return new TextTable(AssetsTrailersEnum.TEAM_ENTRY);
+        public Text entries() {
+            return new Text(AssetsTrailersEnum.ENTRIES_TEXT);
         }
-        
-        public TextTable statusEntry() {
-            return new TextTable(AssetsTrailersEnum.STATUS_ENTRY);
-        }
-        
-        public TextTable vinEntry() {
-            return new TextTable(AssetsTrailersEnum.VIN_ENTRY);
-        }
-        
-        public TextTable licenseEntry() {
-            return new TextTable(AssetsTrailersEnum.LICENSE_ENTRY);
-        }
-        
-        public TextTable stateEntry() {
-            return new TextTable(AssetsTrailersEnum.STATE_ENTRY);
-        }
-        
-        public TextTable yearEntry() {
-            return new TextTable(AssetsTrailersEnum.YEAR_ENTRY);
-        }
-        
-        public TextTable makeEntry() {
-            return new TextTable(AssetsTrailersEnum.MAKE_ENTRY);
-        }
-        
-        public TextTable modelEntry() {
-            return new TextTable(AssetsTrailersEnum.MODEL_ENTRY);
-        }
-        
-        public TextTable colorEntry() {
-            return new TextTable(AssetsTrailersEnum.COLOR_ENTRY);
-        }
-        
-        public TextTable weightEntry() {
-            return new TextTable(AssetsTrailersEnum.WEIGHT_ENTRY);
-        }
-        
-        public TextTable odometerEntry() {
-            return new TextTable(AssetsTrailersEnum.ODOMETER_ENTRY);
-        }
-        
+
     }
     
     public class AssetsTrailersCheckboxes {
@@ -406,6 +455,18 @@ public class PageAssetsTrailers extends Masthead {
                 
         public CheckBox team() {
             return new CheckBox(AssetsTrailersEnum.TEAM_CHECKBOX);
+        }
+        
+        public CheckBox device() {
+            return new CheckBox(AssetsTrailersEnum.DEVICE_CHECKBOX);
+        }
+        
+        public CheckBox vehicle() {
+            return new CheckBox(AssetsTrailersEnum.VEHICLE_CHECKBOX);
+        }
+        
+        public CheckBox driver() {
+            return new CheckBox(AssetsTrailersEnum.DRIVER_CHECKBOX);
         }
         
         public CheckBox status() {

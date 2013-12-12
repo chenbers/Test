@@ -28,8 +28,7 @@ import com.inthinc.pro.selenium.steps.LoginSteps;
 @PageObjects(list={PageLogin.class,
         PageAssetsTrailers.class,
 		PageExecutiveDashboard.class,
-        PageExecutiveOverallExpansion.class,
-        PageTeamDriverStatistics.class})
+        PageExecutiveOverallExpansion.class})
 @StoryPath(path="AssetsTrailers.story")
 public class AssetsTrailersTest extends WebStories {
     
