@@ -11,7 +11,7 @@ public enum AssetsTrailersEnum implements SeleniumEnums {
 	ENTRIES_DROPDOWN("10", "//select[@name='trailerTable_length']"),
 	ENTRIES_LABEL("Show ### entries", "//div[4]/label"),
 	SEARCH_LABEL("Search:", "//div[5]/label"),
-	SEARCH_TEXTFIELD(null, "trailerTable_filter"),
+	SEARCH_TEXTFIELD(null, "//div/label/input[@type='text']"),
 	//SHOW/HIDE COLUMNS SECTION
 	SHOW_HIDE_COLUMNS_LINK("Show / Hide Columns", "//button[@class='ColVis_Button TableTools_Button ColVis_MasterButton']"),
 	TRAILER_ID_CHECKBOX(null, "//button[1]/span/span[1]/input"),
@@ -145,7 +145,7 @@ public enum AssetsTrailersEnum implements SeleniumEnums {
     NEXT("Next", "//li[@class='next']"),
     NEXT_DISABLED("Next", "//li[@class='next disabled']"),
     
-    NO_MATCHING_RECORDS_ERROR("No matching records found", "dataTables_empty")
+    NO_MATCHING_RECORDS_ERROR("No matching records found", "//tbody[@role='alert']")
     ;
     
     private String text, url;

@@ -127,7 +127,7 @@ Scenario: Assets - Trailers - Default Records dropdowns are set to 10
 Given I navigate to the assets trailers page
 Then I validate the Records Per Page dropdown is "10"
 
-Scenario: TCXXXX: Forms Manage Page - Records per page test
+Scenario: Assets - Trailers - Records per page test
 Given I navigate to the assets trailers page
 When I select "10" from the Records Per Page dropdown 
 Then I validate the 11th Row of the Trailer ID Entry link is not present
@@ -141,6 +141,16 @@ And I validate the Entries text contains "Showing 1 to 50 of"
 And I select "100" from the Records Per Page dropdown 
 And I validate the 101st Row of the Trailer ID Entry link is not present
 And I validate the Entries text contains "Showing 1 to 100 of"
+
+Scenario: Assets - Trailers -  Empty Search
+Given I navigate to the assets trailers page
+When I type "randomstringthatwillnotcomeup" into the Search textfield
+Then I validate the No Matching Records text is "No matching records found"
+And I validate the Entries text contains "Showing 0 to 0 of 0 entries"
+And I validate the Previous link is not present
+And I validate the Next link is not present
+And I validate the Previous Disabled link is present
+And I validate the Next Disabled link is present
 
 Scenario: Assets - Trailers - Show Hide Columns UI Interaction
 Given I navigate to the assets trailers page
