@@ -102,7 +102,7 @@ public class ITDataOneTeamExt extends BaseITData {
             team.deviceList.add(device);
             team.vehicleList.add(vehicle);
             
-            device = createDevice(team.group, assignmentDate, "Waysmart850", "MCMWS850", "30003123456CCCC", 12, 1375370000);
+            device = createDevice(team.group, assignmentDate, "Waysmart850", "MCMWS850P", "30003123456CCCC", 12, 1375370000);
             vehicle = createVehicle(team.group, device.getDeviceID(), account.getUnkDriverID(), "Waysmart850");
             writeObject(device);
             writeObject(vehicle);
