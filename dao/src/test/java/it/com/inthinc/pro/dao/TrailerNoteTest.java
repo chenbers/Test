@@ -66,7 +66,7 @@ public class TrailerNoteTest extends SimpleJdbcDaoSupport {
     private static TrailerReportJDBCDAO trailerReportDAO;
     private static FwdCmdSpoolWSHttpJDBCDAO fwdCmdSpoolDAO; 
     
-    private static final String INTEGRATION_TEST_XML = "TrailerIntegrationTest.xml";
+    private static final String INTEGRATION_TEST_XML = "IntegrationTest.xml";
 //    private static final String INTEGRATION_TEST_XML = "QAIntegrationTest.xml";
 
     @BeforeClass
