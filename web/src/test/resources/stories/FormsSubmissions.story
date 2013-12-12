@@ -126,7 +126,7 @@ When I click the Forms link
 And I click the Submissions link
 And I validate I am on the Forms Submissions page
 And I bookmark the page
-And I click the Log Out link
+And I click the Logout link
 And I click the bookmark I just added
 Then I validate I am on the Login page
 When I log back in
@@ -138,7 +138,7 @@ When I click the Forms link
 And I click the Submissions link
 And I validate I am on the Forms Submissions page
 And I bookmark the page
-And I click the Log Out link
+And I click the Logout link
 And I click the bookmark I just added
 Then I validate I am on the Login page
 When I log back in under the editable account

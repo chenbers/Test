@@ -13,7 +13,7 @@ Given I am logged in
 When I click the Reports link
 And I click the Devices link
 And I bookmark the page
-And I click the Log Out link
+And I click the Logout link
 And I click the bookmark I just added
 Then I validate I am on the Login page
 When I log back in

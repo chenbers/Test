@@ -30,7 +30,7 @@ Given I am logged in
 When I click the Notifications link
 And I click the Crash History link
 And I bookmark the page
-And I click the Log Out link
+And I click the Logout link
 And I click the bookmark I just added
 Then I validate I am on the Login page
 When I log back in
@@ -41,7 +41,7 @@ Given I am logged in
 When I click the Notifications link
 And I click the Crash History link
 And I bookmark the page
-And I click the Log Out link
+And I click the Logout link
 And I click the bookmark I just added
 Then I validate I am on the Login page
 When I log back in under the editable account

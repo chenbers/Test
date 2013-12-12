@@ -13,7 +13,7 @@ Given I am logged in
 When I click the Notifications link
 And I click the Emergency link
 And I bookmark the page
-And I click the Log Out link
+And I click the Logout link
 And I click the bookmark I just added
 And I log back in
 Then I validate I am on the Notifications Emergency page
@@ -23,7 +23,7 @@ Given I am logged in
 When I click the Notifications link
 And I click the Emergency link
 And I bookmark the page
-And I click the Log Out link
+And I click the Logout link
 And I click the bookmark I just added
 And I log back in under the editable account
 Then I validate I am on the Notifications Emergency page

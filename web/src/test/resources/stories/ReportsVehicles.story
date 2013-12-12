@@ -29,7 +29,7 @@ And I select "Vehicles" from the Master Search dropdown
 And I click the Master Search button
 And I save the 1st Row of the Vehicle Value link as SAVEDVEHICLE
 When I bookmark the page
-And I click the Log Out link
+And I click the Logout link
 And I click the bookmark I just added
 When I log back in
 Then I validate I am on the Reports Vehicles page
