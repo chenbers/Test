@@ -140,6 +140,10 @@ public abstract class Masthead extends AbstractPage {
             return new TextLink(MastheadEnum.FORMS_IFRAME);
         }
         
+        public TextLink topTrailers() {
+            return new TextLink(MastheadEnum.TOP_TRAILERS_IFRAME);
+        }
+        
         public TextLink myMessages() {
             return new TextLink(MastheadEnum.MY_MESSAGES_IFRAME);
         }

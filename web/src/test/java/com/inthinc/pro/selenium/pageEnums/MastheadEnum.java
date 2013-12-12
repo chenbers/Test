@@ -24,6 +24,7 @@ public enum MastheadEnum implements SeleniumEnums {
     /* Header Elements */
     FLEET_IFRAME("Fleet", "//a[@id='headerInitDashboard']"),
     FORMS_IFRAME("Forms", "//a[@href='https://qa.inthinc.com/forms']"),
+    TOP_TRAILERS_IFRAME("Trailers", "//a[@href='https://qa.inthinc.com/assets/trailers']"),
     MY_MESSAGES_IFRAME("My Messages", "//a[@id='headerMyMessages']"),
     MY_ACCOUNT_IFRAME("My Account", "//a[@id='headerMyAccount']"),
     LOGOUT_IFRAME("Log Out", "//a[@id='template-settings-logout']"),

@@ -14,7 +14,7 @@ public class PageAssetsTrailers extends Masthead {
     
     public PageAssetsTrailers() {}
     
-    public class AssetsTrailersButtons {
+    public class AssetsTrailersButtons extends MastheadButtons {
         
         public TextButton new_() {
             return new TextButton(AssetsTrailersEnum.NEW_BUTTON);
@@ -34,7 +34,7 @@ public class PageAssetsTrailers extends Masthead {
         
     }
     
-    public class AssetsTrailersDropDowns {
+    public class AssetsTrailersDropDowns extends MastheadDropDowns {
         
         public DropDown recordsPerPage() {
             return new DropDown(AssetsTrailersEnum.ENTRIES_DROPDOWN);
@@ -54,7 +54,7 @@ public class PageAssetsTrailers extends Masthead {
         
     }
     
-    public class AssetsTrailersLinks {
+    public class AssetsTrailersLinks extends MastheadLinks {
         
         public TextLink showHideColumns() {
             return new TextLink(AssetsTrailersEnum.SHOW_HIDE_COLUMNS_LINK);
@@ -202,7 +202,7 @@ public class PageAssetsTrailers extends Masthead {
         
     }
     
-    public class AssetsTrailersTextFields {
+    public class AssetsTrailersTextFields extends MastheadTextFields {
         
         public TextField search() {
             return new TextField(AssetsTrailersEnum.SEARCH_TEXTFIELD);
@@ -237,7 +237,7 @@ public class PageAssetsTrailers extends Masthead {
         }
     }
     
-    public class AssetsTrailersTexts {
+    public class AssetsTrailersTexts extends MastheadTexts {
         
         public Text title() {
             return new Text(AssetsTrailersEnum.TITLE);
@@ -562,6 +562,6 @@ public class PageAssetsTrailers extends Masthead {
     
     @Override
     protected boolean checkIsOnPage() {
-        return _link().showHideColumns().isPresent();
+        return _text().recordsPerPageLabel().isPresent();
     }
 }
