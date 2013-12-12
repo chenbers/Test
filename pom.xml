@@ -4,7 +4,7 @@
     <groupId>com.inthinc.pro</groupId>
     <artifactId>root</artifactId>
     <packaging>pom</packaging>
-    <version>2.0.40-SNAPSHOT</version>
+    <version>2.0.41-SNAPSHOT</version>
     <name>TIWI Pro Application</name>
     <url>http://www.iwiglobal.com</url>
     <organization>
@@ -207,8 +207,7 @@
                     <includesTestSourceRoots>false</includesTestSourceRoots>
                     <license>
                     <![CDATA[PNrotgFDPwHIFXwBMAIebCtePntllluADfELoVReVQcPSS
-mi2KFq<Nc4zYl8ZVexWN8GNR2KNYvC5rn293xhqnaa8hMH QROnTXrOnpnpNqQpRomwtNpNmPMPpMnrpNtWTWVXutwqMU VrRnmnmUUnoovmmmqmmmmmUUnoovmmmqmmmmmUU9kqefkZ
-WWUUnm]]>
+mi2KFq<Nc4zYl8ZVexWN8GNR2KNYvC5rn293xhqnaa8hMH QROnTXrOnpnpNqQpRomwtNpNmPMPpMnrpNtWTWVXutwqMU VrRnmnmUUnoovmmmqmmmmmUUnoovmmmqmmmmmUU9kqefkZ WWUUnm]]>
                     </license>
                 </configuration>
             </plugin>
