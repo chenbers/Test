@@ -390,7 +390,7 @@ public class SiloServiceTest {
         assertTrue(vehiclesSettings != null);
     }
     @Test
-    //@Ignore
+    @Ignore
     public void rfidsFromBarcode(){
     	
     	DriverHessianDAO driverDAO = new DriverHessianDAO();

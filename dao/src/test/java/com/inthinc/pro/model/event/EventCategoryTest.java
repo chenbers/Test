@@ -13,15 +13,15 @@ public class EventCategoryTest {
 
     Integer[] expectedNoteInCatCounts = {
             11,
-            19,
+            21,
             0,
             11,
             2,
-            3,
+            2,
             4,
             4,
             5,
-            24
+            26
     };
     
     @Test
@@ -55,11 +55,11 @@ public class EventCategoryTest {
             4,  //  DRIVER
             5,  //  DVIR
     		4,	//  EMERGENCY
-    		3,	//  HOS
+    		2,	//  HOS
     		2,	//  NONE
     		1,	//  TEXT
     		10,	//  VIOLATION
-    		18,	//  WARNING
+    		20,	//  WARNING
     		2	//  ZONE
     };
     

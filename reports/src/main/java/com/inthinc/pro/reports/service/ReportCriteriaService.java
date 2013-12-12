@@ -22,6 +22,8 @@ public interface ReportCriteriaService
     ReportCriteria getMpgReportCriteria(Integer groupID,Duration duration, Locale locale, GroupHierarchy gh);
     ReportCriteria getDriverReportCriteria(Integer groupID, Duration duration, Locale locale, Boolean initDataSet);
     ReportCriteria getVehicleReportCriteria(Integer groupID,Duration duration, Locale locale, Boolean initDataSet);
+    ReportCriteria getTrailerReportCriteria(Integer groupID,Duration duration, Locale locale, Boolean initDataSet);
+    ReportCriteria getTrailerReportCriteria(Integer groupID, List<Integer> groupIDList, Duration duration, Locale locale, Boolean initDataSet);
     ReportCriteria getIdlingReportCriteria(Integer groupID, Interval interval, Locale locale, Boolean initDataSet);
 	ReportCriteria getIdlingVehicleReportCriteria(Integer groupID, Interval interval, Locale locale,Boolean initDataSet);
     ReportCriteria getDevicesReportCriteria(Integer groupID, Locale locale, Boolean initDataSet);

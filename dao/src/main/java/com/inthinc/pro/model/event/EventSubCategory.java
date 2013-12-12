@@ -53,7 +53,7 @@ public enum EventSubCategory implements BaseEnum
             EnumSet.of(AlertMessageType.ALERT_TYPE_ENTER_ZONE,AlertMessageType.ALERT_TYPE_EXIT_ZONE)),
             
     HOS(10, 
-            EnumSet.of(EventType.DOT_STOPPED, EventType.HOS_NO_HOURS, EventType.TRAILER_DATA),
+            EnumSet.of(EventType.DOT_STOPPED, EventType.HOS_NO_HOURS),
             EnumSet.of(AlertMessageType.ALERT_TYPE_HOS_DOT_STOPPED, AlertMessageType.ALERT_TYPE_HOS_NO_HOURS_REMAINING)),
             
     TEXTMESSAGE(11,
@@ -68,7 +68,8 @@ public enum EventSubCategory implements BaseEnum
                     AlertMessageType.ALERT_TYPE_DVIR_POST_TRIP_FAIL, AlertMessageType.ALERT_TYPE_DVIR_POST_TRIP_PASS,
                     AlertMessageType.ALERT_TYPE_DVIR_DRIVEN_INSPECTED_UNSAFE,AlertMessageType.ALERT_TYPE_DVIR_DRIVEN_WITHOUT_INSPECTION,
                     AlertMessageType.ALERT_TYPE_DVIR_NO_POST_TRIP_INSPECTION, AlertMessageType.ALERT_TYPE_DVIR_REPAIR)),
-    REVERSE(15,EnumSet.of(EventType.BACKING), null);
+    REVERSE(15,EnumSet.of(EventType.BACKING), null),
+    TRAILER(16, EnumSet.of(EventType.TRAILER_DATA, EventType.TRAILER_PROGRAMMED), null);
     
     private int code;
     private Set<EventType> eventTypeSet;

@@ -237,4 +237,17 @@ public class Account extends BaseEntity implements Comparable<Account>, HasAccou
         
     }
 
+    public Boolean hasTrailersEnabled() {
+        AccountAttributes options = getProps();
+        if (options == null)
+            return false;
+        
+        String trailersEnabled = options.getTrailersEnabled();
+        if (trailersEnabled == null)
+            return false;
+        
+        return Boolean.valueOf(trailersEnabled);
+        
+    }
+
 }

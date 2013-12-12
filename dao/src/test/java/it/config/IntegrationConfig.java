@@ -39,6 +39,9 @@ public class IntegrationConfig extends Properties
 
     public final static String MINA_HOST = "minaHost";
     public final static String MINA_PORT = "minaPort";
+    
+    public final static String ASSET_API_URL = "assetAPIURL";
+    
 
     public IntegrationConfig()
     {
