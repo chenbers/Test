@@ -48,7 +48,7 @@ public enum AssetsTrailersEnum implements SeleniumEnums {
 	//TABLE ITEMS
 	SORT_BY_TRAILERID_LINK("Trailer ID", "//th[@aria-label='Trailer ID: activate to sort column ascending']"),
 	SORT_BY_TEAM_LINK("Team", "//th[@aria-label='Team: activate to sort column ascending']"),
-	SORT_BY_DEVICE_LINK("Device", "//th[@aria-label='Assigned Device: activate to sort column ascending']"),
+	SORT_BY_DEVICE_LINK("Device", "//th[@aria-label='Device: activate to sort column ascending']"),
 	SORT_BY_VEHICLE_LINK("Vehicle", "//th[@aria-label='Vehicle: activate to sort column ascending']"),
 	SORT_BY_DRIVER_LINK("Driver", "//th[@aria-label='Driver: activate to sort column ascending']"),
 	SORT_BY_STATUS("Status", "//th[@aria-label='Status: activate to sort column ascending']"),
@@ -89,6 +89,7 @@ public enum AssetsTrailersEnum implements SeleniumEnums {
 	LICENSE_TRAILER_INFORMATION_TEXTFIELD(null, "licenseInput"),
 	STATE_TRAILER_INFORMATION_LABEL("State", "//form/div[9]/div[1]/div"),
 	STATE_TRAILER_INFORMATION_TEXT(null, "stateValue"),
+	STATE_TRAILER_INFORMATION_DROPDOWN(null, "stateInput"),
 	//TRAILER PROFILE SECTION
 	TRAILER_PROFILE_HEADER("Trailer Profile", "//div[10]/div/h4"),
 	TRAILER_ID_LABEL("Trailer ID", "//form/div[11]/div[1]/div"),
@@ -96,7 +97,7 @@ public enum AssetsTrailersEnum implements SeleniumEnums {
 	TRAILER_ID_TEXTFIELD(null, "trailerNameInput"),
 	STATUS_LABEL("Status", "//form/div[12]/div[1]/div"),
 	STATUS_TEXT(null, "statusValue"),
-	STATUS_TEXTFIELD(null, "statusInput"),
+	STATUS_DROPDOWN(null, "statusInput"),
 	//TRAILER ASSIGNMENT SECTION
 	TRAILER_ASSIGNMENT_HEADER("Trailer Assignment", "//div[13]/div/h4"),
 	TEAM_TRAILER_ASSIGNMENT_LABEL("Team", "//form/div[14]/div[1]/div"),
@@ -105,6 +106,7 @@ public enum AssetsTrailersEnum implements SeleniumEnums {
 	DEVICE_ASSIGNMENT_HEADER("Device Assignment", "//div[15]/div/h4"),
 	ASSIGNED_DEVICE_LABEL("Device", "//form/div[16]/div[1]/div"),
 	DEVICE_TEXT(null, "assignedDeviceValue"),
+	ASSIGNED_DEVICE_DROPDOWN(null, "assignedDeviceInput"),
     //VEHICLE ASSIGNMENT SECTION
     VEHICLE_ASSIGNMENT_HEADER("Vehicle Assignment", "//div[17]/div/h4"),
     ASSIGNED_VEHICLE_LABEL("Vehicle", "//form/div[18]/div[1]/div"),

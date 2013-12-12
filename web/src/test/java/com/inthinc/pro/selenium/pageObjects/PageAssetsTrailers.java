@@ -39,6 +39,18 @@ public class PageAssetsTrailers extends Masthead {
         public DropDown recordsPerPage() {
             return new DropDown(AssetsTrailersEnum.ENTRIES_DROPDOWN);
         }
+                
+        public DropDown state() {
+            return new DropDown(AssetsTrailersEnum.STATE_TRAILER_INFORMATION_DROPDOWN);
+        }
+        
+        public DropDown status() {
+            return new DropDown(AssetsTrailersEnum.STATUS_DROPDOWN);
+        }
+        
+        public DropDown assignedDevice() {
+            return new DropDown(AssetsTrailersEnum.ASSIGNED_DEVICE_DROPDOWN);
+        }
         
     }
     
@@ -222,10 +234,6 @@ public class PageAssetsTrailers extends Masthead {
         
         public TextField trailerID() {
             return new TextField(AssetsTrailersEnum.TRAILER_ID_TEXTFIELD);
-        }
-        
-        public TextField status() {
-            return new TextField(AssetsTrailersEnum.STATUS_TEXTFIELD);
         }
     }
     

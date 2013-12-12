@@ -52,6 +52,16 @@ And I validate the Vehicle Assignment Label text is present
 And I validate the Assigned Vehicle Label text is present
 And I validate the Driver Assignment Label text is present
 And I validate the Assigned Driver Label text is present
+And I validate the VIN textfield is not visible
+And I validate the Make textfield is not visible
+And I validate the Year textfield is not visible
+And I validate the Color textfield is not visible
+And I validate the Weight textfield is not visible
+And I validate the License Number textfield is not visible
+And I validate the State dropdown is not visible
+And I validate the Trailer ID textfield is not visible
+And I validate the Status dropdown is not visible
+And I validate the Assigned Device dropdown is not visible
 And I validate the VIN text is ""
 And I validate the Make text is ""
 And I validate the Year text is ""
@@ -70,27 +80,31 @@ And I validate the Cancel button is visible
 And I validate the Save button is visible
 And I validate the New_ button is visible
 And I validate the Edit button is not visible
-And I validate the VIN textfield is present
-And I validate the Make textfield is present
-And I validate the Year textfield is present
-And I validate the Color textfield is present
-And I validate the Weight textfield is present
-And I validate the License Number textfield is present
-And I validate the Trailer ID textfield is present
-And I validate the Status textfield is present
+And I validate the VIN textfield is visible
+And I validate the Make textfield is visible
+And I validate the Year textfield is visible
+And I validate the Color textfield is visible
+And I validate the Weight textfield is visible
+And I validate the License Number textfield is visible
+And I validate the State dropdown is visible
+And I validate the Trailer ID textfield is visible
+And I validate the Status dropdown is visible
+And I validate the Assigned Device dropdown is visible
 And I click the Cancel button
 And I validate the Cancel button is not visible
 And I validate the Save button is not visible
 And I validate the New_ button is visible
 And I validate the Edit button is not visible
-And I validate the VIN textfield is not present
-And I validate the Make textfield is not present
-And I validate the Year textfield is not present
-And I validate the Color textfield is not present
-And I validate the Weight textfield is not present
-And I validate the License Number textfield is not present
-And I validate the Trailer ID textfield is not present
-And I validate the Status textfield is not present
+And I validate the VIN textfield is not visible
+And I validate the Make textfield is not visible
+And I validate the Year textfield is not visible
+And I validate the Color textfield is not visible
+And I validate the Weight textfield is not visible
+And I validate the License Number textfield is not visible
+And I validate the State dropdown is not visible
+And I validate the Trailer ID textfield is not visible
+And I validate the Status dropdown is not visible
+And I validate the Assigned Device dropdown is not visible
 And I click the Show Hide Columns link
 And I validate the Trailer ID Checkbox Label text is present
 And I validate the Team Checkbox Label text is present
@@ -283,12 +297,6 @@ And I click the bookmark I just added
 And I log back in
 Then I validate I am on the Assets Trailers page
 
-Scenario: Assets - Trailers - Group Link
-Given I navigate to the assets trailers page
-When I save the 1st Row of the Team Entry link as SAVEDGROUP
-And I click the 1st Row of the Team Entry link
-Then I validate the Driver Team Value text is SAVEDGROUP
-
 Scenario: Assets - Trailers - Table Properties NEED TO IMPLEMENT CHECKING ALPHABETICAL ORDER
 Given I navigate to the assets trailers page
 When I click the Sort By Trailer ID link
@@ -330,10 +338,38 @@ And I type "2013" into the Year textfield
 And I type "Race Red" into the Color textfield
 And I type "21000" into the Weight textfield
 And I type "INTHINC" into the License Number textfield
-And I type "Active" into the Status textfield
+And I select "Alabama" from the State dropdown
+And I type "FAKETRAILERNAME" into the Trailer ID textfield
+And I select "ACTIVE" from the Status dropdown
+And I select "MCM990000" from the Assigned Device dropdown
 And I click the Cancel button
-And I type "FAKEVINNUMBER" into the Search textfield
+And I type "FAKETRAILERNAME" into the Search textfield
 Then I validate the No Matching Records text is present
+And I validate the Entries text contains "Showing 0 to 0 of 0 entries"
+And I validate the VIN text is ""
+And I validate the Make text is ""
+And I validate the Year text is ""
+And I validate the Color text is ""
+And I validate the Weight text is ""
+And I validate the License Number text is ""
+And I validate the State text is ""
+And I validate the Trailer ID text is ""
+And I validate the Status text is ""
+And I validate the Team text is ""
+And I validate the Assigned Device text is ""
+And I validate the Assigned Vehicle text is ""
+And I validate the Assigned Driver text is ""
+And I click the New_ button
+And I validate the VIN textfield is ""
+And I validate the Make textfield is ""
+And I validate the Year textfield is ""
+And I validate the Color textfield is ""
+And I validate the Weight textfield is ""
+And I validate the License Number textfield is ""
+And I validate the State dropdown contains "--- Select ---"
+And I validate the Trailer ID textfield is ""
+And I validate the Status dropdown is "ACTIVE"
+And I validate the Assigned Device dropdown is ""
 
 Scenario: Assets - Trailers - New Trailer (cancel button - no changes)
 Given I navigate to the assets trailers page
@@ -344,8 +380,10 @@ And I validate the Year textfield is ""
 And I validate the Color textfield is ""
 And I validate the Weight textfield is ""
 And I validate the License Number textfield is ""
+And I validate the State dropdown contains "--- Select ---"
 And I validate the Trailer ID textfield is ""
-And I validate the Status textfield is ""
+And I validate the Status dropdown is "ACTIVE"
+And I validate the Assigned Device dropdown is ""
 And I click the Cancel button
 And I click the New_ button
 And I validate the VIN textfield is ""
@@ -354,10 +392,12 @@ And I validate the Year textfield is ""
 And I validate the Color textfield is ""
 And I validate the Weight textfield is ""
 And I validate the License Number textfield is ""
+And I validate the State dropdown contains "--- Select ---"
 And I validate the Trailer ID textfield is ""
-And I validate the Status textfield is ""
+And I validate the Status dropdown is "ACTIVE"
+And I validate the Assigned Device dropdown is ""
 
-Scenario: Assets - Trailers - New Trailer (edit button - no changes) TEST WILL FAIL TILL SOME THINGS ARE FIXED ON THE PAGE
+Scenario: Assets - Trailers - Edit Trailer (edit button - no changes)
 Given I navigate to the assets trailers page
 When I click the 1st Row of the Trailer Id Entry link
 And I save the 1st Row of the Trailer ID Entry link as SAVEDTRAILER
@@ -395,11 +435,11 @@ And I validate the Year textfield is SAVEDYEAR
 And I validate the Color textfield is SAVEDCOLOR
 And I validate the Weight textfield is SAVEDWEIGHT
 And I validate the License Number textfield is SAVEDLICENSE
-And I validate the State text is SAVEDSTATE
+And I validate the State dropdown is SAVEDSTATE
 And I validate the Trailer ID textfield is SAVEDTRAILER
-And I validate the Status textfield is SAVEDSTATUS
+And I validate the Status dropdown is SAVEDSTATUS
 And I validate the Team text is SAVEDTEAM
-And I validate the Assigned Device text is SAVEDDEVICE
+And I validate the Assigned Device dropdown is SAVEDDEVICE
 And I validate the Assigned Vehicle text is SAVEDVEHICLE
 And I validate the Assigned Driver text is SAVEDDRIVER
 And I click the Cancel button
@@ -417,7 +457,7 @@ And I validate the Assigned Device text is SAVEDDEVICE
 And I validate the Assigned Vehicle text is SAVEDVEHICLE
 And I validate the Assigned Driver text is SAVEDDRIVER
 
-Scenario: Assets - Trailers - New Trailer (edit button - changes) TEST WILL FAIL TILL SOME THINGS ARE FIXED ON THE PAGE
+Scenario: Assets - Trailers - New Trailer (edit button - save changes)
 Given I navigate to the assets trailers page
 When I click the 1st Row of the Trailer Id Entry link
 And I save the 1st Row of the Trailer ID Entry link as SAVEDTRAILER
@@ -455,30 +495,31 @@ And I validate the Year textfield is SAVEDYEAR
 And I validate the Color textfield is SAVEDCOLOR
 And I validate the Weight textfield is SAVEDWEIGHT
 And I validate the License Number textfield is SAVEDLICENSE
-And I validate the State text is SAVEDSTATE
+And I validate the State dropdown is SAVEDSTATE
 And I validate the Trailer ID textfield is SAVEDTRAILER
-And I validate the Status textfield is SAVEDSTATUS
+And I validate the Status dropdown is SAVEDSTATUS
 And I validate the Team text is SAVEDTEAM
-And I validate the Assigned Device text is SAVEDDEVICE
+And I validate the Assigned Device dropdown is SAVEDDEVICE
 And I validate the Assigned Vehicle text is SAVEDVEHICLE
 And I validate the Assigned Driver text is SAVEDDRIVER
 And I type "ANEWVINNUMBER" into the VIN textfield
 And I type "ANEWMAKE" into the Make textfield
-And I type "ANEWYEAR" into the Year textfield
+And I type "2000" into the Year textfield
 And I type "ANEWCOLOR" into the Color textfield
-And I type "ANEWWEIGHT" into the Weight textfield
+And I type "55" into the Weight textfield
 And I type "ANEWLICENSE" into the License Number textfield
 And I type "ANEWTRAILER" into the Trailer ID textfield
-And I type "ANEWSTATUS" into the Status textfield
+And I select "INACTIVE" from the Status dropdown
 And I click the Save button
 And I validate the VIN text is "ANEWVINNUMBER"
 And I validate the Make text is "ANEWMAKE"
-And I validate the Year text is "ANEWYEAR"
+And I validate the Year text is "2000"
 And I validate the Color text is "ANEWCOLOR"
-And I validate the Weight text is "ANEWWEIGHT"
+And I validate the Weight text is "55"
 And I validate the License Number text is "ANEWLICENSE"
 And I validate the Trailer ID text is "ANEWTRAILER"
-And I validate the Status text is "ANEWSTATUS"
+And I validate the Status text is "INACTIVE"
+And I type "ANEWMAKE" into the Search textfield
 And I validate the 1st Row of the Trailer ID Entry link is "ANEWTRAILER"
 And I validate the 1st Row of the Team Entry link is SAVEDTEAM
 And I validate the 1st Row of the Device Entry link is SAVEDDEVICE
@@ -488,32 +529,34 @@ And I validate the 1st Row of the Status Entry link is SAVEDSTATUS
 And I validate the 1st Row of the VIN Entry link is "ANEWVINNUMBER"
 And I validate the 1st Row of the License Entry link is "ANEWLICENSE"
 And I validate the 1st Row of the State Entry link is SAVEDSTATE
-And I validate the 1st Row of the Year Entry link is "ANEWYEAR"
+And I validate the 1st Row of the Year Entry link is "2000"
 And I validate the 1st Row of the Make Entry link is "ANEWMAKE"
 And I validate the 1st Row of the Model Entry link is SAVEDMODEL
 And I validate the 1st Row of the Color Entry link is "ANEWCOLOR"
-And I validate the 1st Row of the Weight Entry link is "ANEWWEIGHT"
+And I validate the 1st Row of the Weight Entry link is "55"
 And I validate the 1st Row of the Odometer Entry link is SAVEDODOMETER
 
 Scenario: Assets - Trailers - New Trailer (save button - changes)
 Given I navigate to the assets trailers page
 When I click the New_ button
-And I type "FAKEVINNUMBER" into the VIN textfield
+And I type "FAKEVINNUMBER2" into the VIN textfield
 And I type "Ford" into the Make textfield
 And I type "2013" into the Year textfield
 And I type "Race Red" into the Color textfield
 And I type "21000" into the Weight textfield
 And I type "INTHINC" into the License Number textfield
-And I type "Active" into the Status textfield
+And I select "Alaska" from the State dropdown
+And I type "SAVEDFAKETRAILER" into the Trailer ID textfield
+And I select "ACTIVE" from the Status dropdown
 And I click the Save button
-And I type "FAKEVINNUMBER" into the Search textfield
-Then I validate the 1st Row of the VIN textfield is "FAKEVINNUMBER"
+And I type "FAKEVINNUMBER2" into the Search textfield
+Then I validate the 1st Row of the VIN textfield is "FAKEVINNUMBER2"
 And I validate the 1st Row of the Make textfield is "Ford"
 And I validate the 1st Row of the Year textfield is "2013"
 And I validate the 1st Row of the Color textfield is "Race Red"
 And I validate the 1st Row of the Weight textfield is "21000"
 And I validate the 1st Row of the License Number textfield is "INTHINC"
-And I validate the 1st Row of the Status textfield is "Active"
+And I validate the 1st Row of the Status dropdown is "ACTIVE"
 
 Scenario: Assets - Trailers - New Trailer (save button - error message)
 Given I navigate to the assets trailers page
@@ -527,4 +570,4 @@ And I validate the Year textfield is ""
 And I validate the Color textfield is ""
 And I validate the Weight textfield is ""
 And I validate the License Number textfield is ""
-And I validate the Status textfield is ""
+And I validate the Status dropdown is "ACTIVE"
