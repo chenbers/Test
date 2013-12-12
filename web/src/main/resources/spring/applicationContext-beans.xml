@@ -646,6 +646,14 @@
   </bean>
 
   <bean id="vehicleReportPaginationTableDataProvider" class="com.inthinc.pro.table.model.provider.VehicleReportPaginationTableDataProvider" scope="request" parent="reportPaginationTableDataProvider" />
+  
+  <bean id="pagingTrailerReportBean" class="com.inthinc.pro.backing.paging.PagingTrailerReportBean" scope="request" init-method="init" parent="basePagingReportBean">
+    <property name="tableDataProvider" ref="trailerReportPaginationTableDataProvider"></property>
+  </bean>
+  
+  <bean id="trailerReportPaginationTableDataProvider" class="com.inthinc.pro.table.model.provider.TrailerReportPaginationTableDataProvider" scope="request" parent="reportPaginationTableDataProvider" >
+  	<property name="trailerReportDAO" ref="trailerReportDAO"></property>
+  </bean>
 
   <bean id="pagingDeviceReportBean" class="com.inthinc.pro.backing.paging.PagingDeviceReportBean" scope="request" init-method="init" parent="basePagingReportBean">
     <property name="tableDataProvider" ref="deviceReportPaginationTableDataProvider"></property>
@@ -683,6 +691,7 @@
   <bean id="hosEventsTableColumns" class="com.inthinc.pro.table.columns.HOSEventsTableColumns" scope="request" parent="eventsTableColumns" />
   <bean id="fuelStopsTableColumns" class="com.inthinc.pro.table.columns.FuelStopsTableColumns" scope="request" parent="baseTableColumns" />
   <bean id="driverLoginsTableColumns" class="com.inthinc.pro.table.columns.DriverLoginsTableColumns" scope="request" parent="eventsTableColumns" />
+  <bean id="trailerReportTableColumns" class="com.inthinc.pro.table.columns.TrailerReportTableColumns" scope="request" parent="baseTableColumns" />
   
 <!--    
   <bean id="phoneBean" class="com.inthinc.pro.backing.PhoneBean" parent="baseBean">
@@ -762,6 +771,7 @@
   
   <bean id="navigationBarBean" class="com.inthinc.pro.backing.NavigationBarBean" scope="session" parent="baseBean">
   	<property name="formUrl" value="${navbar.forms.url}"/>
+  	<property name="trailerUrl" value="${navbar.trailers.url}"/>
   </bean>
   
     <!-- Address Lookup -->

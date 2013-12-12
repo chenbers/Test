@@ -31,6 +31,7 @@ public class AccountAttributes extends BaseEntity {
     private String passwordChange;
     private String rhaEnabled;
     private String formsEnabled;
+    private String trailersEnabled;
     private String phoneControlProvider1;
     private String phoneControlProvider2;
     private String phoneControlProvider3;
@@ -188,6 +189,16 @@ public class AccountAttributes extends BaseEntity {
     public void setFormsEnabled(String formsEnabled) {
         this.formsEnabled = formsEnabled;
     }
+    
+    public String getTrailersEnabled() {
+        return (trailersEnabled == null) ? "false" : trailersEnabled;
+    }
+
+    public void setTrailersEnabled(String trailersEnabled) {
+        this.trailersEnabled = trailersEnabled;
+    }
+
+
 
     public String getDriveTimeViolationsReportEnabled() {
         if (driveTimeViolationsReportEnabled == null)

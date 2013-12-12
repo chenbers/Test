@@ -52,7 +52,7 @@ public enum EventType implements BaseEnum {
     TEXT_MESSAGE(36, EnumSet.of(EventAccountFilter.WAYSMART)),
     OFF_HOURS(37, EnumSet.of(EventAccountFilter.WAYSMART)),
     IGNITION_OFF(38),
-    TRAILER_DATA(39, EnumSet.of(EventAccountFilter.HOS)),
+    TRAILER_DATA(39),
     NEW_DRIVER(40, EnumSet.of(EventAccountFilter.WAYSMART)),
     NEW_OCCUPANT(41, EnumSet.of(EventAccountFilter.WAYSMART)),
     INVALID_DRIVER(42, EnumSet.of(EventAccountFilter.WAYSMART)),
@@ -64,7 +64,8 @@ public enum EventType implements BaseEnum {
     DVIR_DRIVEN_NOPREINSPEC(48),
     DVIR_DRIVEN_NOPOSTINSPEC(49),
     DVIR_REPAIR(50),
-    BACKING(51);
+    BACKING(51),
+    TRAILER_PROGRAMMED(52);
 
 
     private int code;

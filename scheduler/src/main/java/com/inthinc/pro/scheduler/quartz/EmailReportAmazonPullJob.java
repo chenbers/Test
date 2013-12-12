@@ -77,7 +77,6 @@ public class EmailReportAmazonPullJob extends QuartzJobBean {
     private Map<Integer, User> userMap;
     private Map<Integer, GroupHierarchy> accountGroupHierarchyMap;
     private ReportLogData reportLogData;
-    private Long startMilis;
 
     public AmazonQueue getAmazonQueue() {
         return amazonQueue;
@@ -212,7 +211,7 @@ public class EmailReportAmazonPullJob extends QuartzJobBean {
             while (hasMessages) {
                 reportLogData.clear();
                 for (Message message : messageList) {
-                    startMilis = System.currentTimeMillis();
+                    Long startMilis = System.currentTimeMillis();
                     try {
                         logger.info("Pulled message " + message.getBody() + " from the Amazon Queue.");
                         ReportSchedule reportSchedule = getReportScheduleFromMessage(message);

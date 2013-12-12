@@ -488,6 +488,10 @@ public enum DeviceNoteTypes implements BaseEnum  {
      * Attributes [ TRIP_DURATION ] backing time in seconds
      */
     BACKING(235, EventAttr.TRIP_DURATION),
+    
+    
+    SAT_EVENT_TRAILER_PROGRAMMED(237, EventAttr.TRAILER_ID, EventAttr.TRAILER_ID_OLD),
+
 
     /**
      * Sent on a forward command acknowledgement

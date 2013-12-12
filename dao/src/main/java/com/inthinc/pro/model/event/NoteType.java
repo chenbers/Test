@@ -459,6 +459,8 @@ public enum NoteType implements BaseEnum {
     //TODO: BACKUP TYPE
     BACKING(235, BackingEvent.class),
 
+    TRAILER_PROGRAMMED(237, TrailerProgrammedEvent.class),
+
     // new notifications without header information - not really a real notification.
     // used primarily for background communication
     STRIPPED_LOWER_LIMIT(243),

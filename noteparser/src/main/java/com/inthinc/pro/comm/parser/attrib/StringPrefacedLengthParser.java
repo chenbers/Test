@@ -13,7 +13,7 @@ public class StringPrefacedLengthParser implements AttribParser {
 	        length = ReadUtil.read(data, offset, 2);
 	        offset += 2;
 	    }    
-	    assert(data.length > offset + length);
+	    assert(data.length >= (offset + length));
 		
 		attribMap.put(code, new String(data, offset, length));
 

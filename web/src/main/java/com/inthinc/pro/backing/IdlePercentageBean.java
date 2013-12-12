@@ -11,12 +11,15 @@ import javax.faces.event.ActionEvent;
 
 import org.ajax4jsf.model.KeepAlive;
 import org.apache.log4j.Logger;
+import org.joda.time.DateTime;
+import org.joda.time.Interval;
 import org.richfaces.json.JSONArray;
 import org.richfaces.json.JSONException;
 
 import com.inthinc.pro.charts.Bar2DMultiAxisChart;
 import com.inthinc.pro.charts.ChartColor;
 import com.inthinc.pro.charts.DateLabels;
+import com.inthinc.pro.dao.ReportDAO;
 import com.inthinc.pro.dao.ScoreDAO;
 import com.inthinc.pro.dao.util.DateUtil;
 import com.inthinc.pro.dao.util.MathUtil;
@@ -46,10 +49,13 @@ public class IdlePercentageBean extends BaseBean {
 	
 	private Integer totalEMUVehicles;
 	private Integer totalVehicles;
-	
+	private ReportDAO                reportDAO;
+
 	private static final String DRIVING_BAR_COLOR = ChartColor.GRAY.toString();
 	private static final String IDLE_BAR_COLOR = ChartColor.GREEN.toString(); 
-	private static final String IDLE_LINE_COLOR = ChartColor.DARK_GREEN.toString(); 
+	private static final String IDLE_LINE_COLOR = ChartColor.DARK_GREEN.toString();
+	
+	
 
 	public void init(){
 		
@@ -82,8 +88,15 @@ public class IdlePercentageBean extends BaseBean {
 
 		Long totalDriving = 0l;
 		Long totalIdling = 0l;
-        setTotalEMUVehicles(0);
-        setTotalVehicles(0);
+        DateTime now = new DateTime();
+        Interval interval = new Interval(now.minusDays(getDurationBean().getDuration().getNumberOfDays()), now);
+        int emuVehicleCnt =  getReportDAO().getIdlingVehicleReportSupportsIdleStatsCount(getGroupID(), interval, null);
+        int vehicleCnt =  getReportDAO().getIdlingVehicleReportCount(getGroupID(), interval, null);
+
+        setTotalEMUVehicles(emuVehicleCnt);
+        setTotalVehicles(vehicleCnt);
+
+        
 		for (IdlePercentItem item : idlePercentItemList) {
 			Float driveTime = getHours(item.getDrivingTime());
 			Float idleTime = getHours(item.getIdlingTime());
@@ -96,12 +109,7 @@ public class IdlePercentageBean extends BaseBean {
 			dateValues.add(item.getDate());
 			totalDriving += item.getDrivingTime();
 			totalIdling += item.getIdlingTime();
-			
-			// this ends up being the last count in the list that is > 0(i.e. last item)
-			if (item.getNumVehicles() != null && item.getNumVehicles() > 0) {
-			    setTotalEMUVehicles(item.getNumEMUVehicles());
-			    setTotalVehicles(item.getNumVehicles());
-			}
+
 			String dateLabel = (getDurationBean().getDuration().equals(Duration.DAYS)) ? dateLabels.getDayLabel(item.getDate()) : dateLabels.getMonthLabel(item.getDate()); 
 
 			toolTipText.add(MessageFormat.format(toolTipTextTemplate, dateLabel, 
@@ -313,4 +321,14 @@ public class IdlePercentageBean extends BaseBean {
 	        
 		return chartDef;
 	}
+
+    
+    public ReportDAO getReportDAO() {
+        return reportDAO;
+    }
+
+    public void setReportDAO(ReportDAO reportDAO) {
+        this.reportDAO = reportDAO;
+    }
+
 }
