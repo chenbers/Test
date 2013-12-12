@@ -508,33 +508,38 @@ And I type "2000" into the Year textfield
 And I type "ANEWCOLOR" into the Color textfield
 And I type "55" into the Weight textfield
 And I type "ANEWLICENSE" into the License Number textfield
+And I select "Alaska" from the State dropdown
 And I type "ANEWTRAILER" into the Trailer ID textfield
 And I select "INACTIVE" from the Status dropdown
 And I click the Save button
-And I validate the VIN text is "ANEWVINNUMBER"
-And I validate the Make text is "ANEWMAKE"
-And I validate the Year text is "2000"
-And I validate the Color text is "ANEWCOLOR"
-And I validate the Weight text is "55"
-And I validate the License Number text is "ANEWLICENSE"
-And I validate the Trailer ID text is "ANEWTRAILER"
-And I validate the Status text is "INACTIVE"
+And I validate the VIN text is ""
+And I validate the Make text is ""
+And I validate the Year text is ""
+And I validate the Color text is ""
+And I validate the Weight text is ""
+And I validate the License Number text is ""
+And I validate the State text is ""
+And I validate the Trailer ID text is ""
+And I validate the Status text is ""
+And I validate the Team text is ""
+And I validate the Assigned Device text is ""
+And I validate the Assigned Vehicle text is ""
+And I validate the Assigned Driver text is ""
 And I type "ANEWMAKE" into the Search textfield
 And I validate the 1st Row of the Trailer ID Entry link is "ANEWTRAILER"
 And I validate the 1st Row of the Team Entry link is SAVEDTEAM
 And I validate the 1st Row of the Device Entry link is SAVEDDEVICE
 And I validate the 1st Row of the Vehicle Entry link is SAVEDVEHICLE
 And I validate the 1st Row of the Driver Entry link is SAVEDDRIVER
-And I validate the 1st Row of the Status Entry link is SAVEDSTATUS
+And I validate the 1st Row of the Status Entry link is "INACTIVE"
 And I validate the 1st Row of the VIN Entry link is "ANEWVINNUMBER"
 And I validate the 1st Row of the License Entry link is "ANEWLICENSE"
-And I validate the 1st Row of the State Entry link is SAVEDSTATE
+And I validate the 1st Row of the State Entry link is "Alaska"
 And I validate the 1st Row of the Year Entry link is "2000"
 And I validate the 1st Row of the Make Entry link is "ANEWMAKE"
 And I validate the 1st Row of the Model Entry link is SAVEDMODEL
 And I validate the 1st Row of the Color Entry link is "ANEWCOLOR"
 And I validate the 1st Row of the Weight Entry link is "55"
-And I validate the 1st Row of the Odometer Entry link is SAVEDODOMETER
 
 Scenario: Assets - Trailers - New Trailer (save button - changes)
 Given I navigate to the assets trailers page
@@ -558,16 +563,16 @@ And I validate the 1st Row of the Weight textfield is "21000"
 And I validate the 1st Row of the License Number textfield is "INTHINC"
 And I validate the 1st Row of the Status dropdown is "ACTIVE"
 
-Scenario: Assets - Trailers - New Trailer (save button - error message)
-Given I navigate to the assets trailers page
-When I click the New_ button
-And I click the Save button
-Then I verify "Please include all required fields" is on the page
-And I press the Enter key
-And I validate the VIN textfield is ""
-And I validate the Make textfield is ""
-And I validate the Year textfield is ""
-And I validate the Color textfield is ""
-And I validate the Weight textfield is ""
-And I validate the License Number textfield is ""
-And I validate the Status dropdown is "ACTIVE"
+!-- Scenario: Assets - Trailers - New Trailer (save button - error message)
+!-- Given I navigate to the assets trailers page
+!-- When I click the New_ button
+!-- And I click the Save button
+!-- Then I verify "Please include all required fields" is on the page
+!-- And I press the Enter Key
+!-- And I validate the VIN textfield is ""
+!-- And I validate the Make textfield is ""
+!-- And I validate the Year textfield is ""
+!-- And I validate the Color textfield is ""
+!-- And I validate the Weight textfield is ""
+!-- And I validate the License Number textfield is ""
+!-- And I validate the Status dropdown is "ACTIVE"
