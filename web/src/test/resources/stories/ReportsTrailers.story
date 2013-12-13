@@ -124,6 +124,8 @@ Given I am logged in
 When I click the Reports link
 And I click the Trailers link
 And I save the 1st Row of the Group Value link as SAVEDGROUP
+And I click the Sort By Group link
+And I click the Sort By Group link
 And I click the the 1st Row of the Group Value link
 Then I validate the Driver Team Value text is SAVEDGROUP
 
