@@ -203,10 +203,10 @@
 								<exclude>**/selenium/**/WebDevice**.java</exclude>
 								<exclude>**/selenium/**/WebRallyTest.java</exclude>
 								<exclude>**/selenium/**/WebTest.java</exclude>
+								<exclude>**/selenium/**/AssetsTrailersTest.java</exclude>
 							</excludes>
 							<includes>
 								<include>**/selenium/**/ReportsTrailersTest.java</include>
-								<include>**/selenium/**/AssetsTrailersTest.java</include>
 							</includes>
 							<systemProperties>
 								<property>
