@@ -94,7 +94,7 @@
 		<jmockit.version>0.999.4</jmockit.version>
 		<hos.version>0.0.22</hos.version>
 		<selenium.version>2.35.0</selenium.version>
-		<jbehave.core.version>3.9</jbehave.core.version>
+		<jbehave.core.version>3.8</jbehave.core.version>
 		<jacksonVersion>2.0.2</jacksonVersion>
 		<codehausjacksonVersion>1.9.9</codehausjacksonVersion>
 		<jacksonVersion>2.0.2</jacksonVersion>
