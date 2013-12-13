@@ -145,6 +145,7 @@ Scenario: Reports - Trailers - Vehicle ID Link
 Given I am logged in
 When I click the Reports link
 And I click the Trailers link
+And I click the Sort By Vehicle ID link
 And I save the 1st Row of the Vehicle Value link as SAVEDVEHICLE
 And I click the 1st Row of the Vehicle Value link
 Then I validate I am on the Vehicle Performance page
