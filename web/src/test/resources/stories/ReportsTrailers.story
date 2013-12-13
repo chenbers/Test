@@ -123,9 +123,9 @@ Scenario: Reports - Trailers - Group Link
 Given I am logged in
 When I click the Reports link
 And I click the Trailers link
+And I click the Sort By Group link
+And I click the Sort By Group link
 And I save the 1st Row of the Group Value link as SAVEDGROUP
-And I click the Sort By Group link
-And I click the Sort By Group link
 And I click the the 1st Row of the Group Value link
 Then I validate the Driver Team Value text is SAVEDGROUP
 
@@ -150,6 +150,16 @@ And I save the 1st Row of the Vehicle Value link as SAVEDVEHICLE
 And I click the 1st Row of the Vehicle Value link
 Then I validate I am on the Vehicle Performance page
 And I validate the Vehicle Name link contains SAVEDVEHICLE
+
+Scenario: Reports - Trailers - Driver Link
+Given I am logged in
+When I click the Reports link
+And I click the Trailers link
+And I click the Sort By Driver link
+And I save the 1st Row of the Driver Value link as SAVEDDRIVER
+And I click the 1st Row of the Driver Value link
+Then I validate I am on the Driver Performance page
+And I validate the Driver Name link contains SAVEDDRIVER
 
 Scenario: Reports - Trailers - Edit Columns - Cancel Button (Changes)
 Given I am logged in
