@@ -1,14 +1,13 @@
 package com.inthinc.pro.comm.parser.note;
 
-import com.inthinc.pro.comm.parser.attrib.Attrib;
-import com.inthinc.pro.comm.parser.attrib.AttribParserType;
-
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.inthinc.pro.comm.parser.attrib.Attrib;
 
 
 public enum NoteType {
@@ -70,7 +69,7 @@ public enum NoteType {
 //	FIRMWARE_REBOOT(61, new Attrib[]{}),
 //	KEYPAD_REBOOT(62, new Attrib[]{}),
 //	CMD_REBOOT(63, new Attrib[]{}),
-	TRAILER_DATA(64, new Attrib[]{Attrib.DATALENGTH, Attrib.TRAILERID, Attrib.SERVICEID, Attrib.HAZMATFLAG}),
+	TRAILER_DATA(64, new Attrib[]{Attrib.DATALENGTH, Attrib.TRAILERID, Attrib.SERVICEID, Attrib.HAZMATFLAG, Attrib.TRAILER_DETECTED}),
 	CLEAR_DRIVER(66, new Attrib[]{}),
 	HOS_NO_HOURS(67, new Attrib[]{Attrib.REASONCODEHOS}),
 	TEXT_MSG(72, new Attrib[]{Attrib.TEXTMESSAGE}),
@@ -226,6 +225,7 @@ public enum NoteType {
     ROUTE_STOP(234, new Attrib[]{Attrib.ROUTE_STOP_TYPE, Attrib.ROUTESTOPID, Attrib.ATTR_ROUTE_ID}),	
     BACKING(235, new Attrib[]{Attrib.TRIP_DURATION}),
     DEVICE_MODEM_PAIRING(236, new Attrib[]{Attrib.IMEI, Attrib.MCMID}),
+    SAT_EVENT_TRAILER_PROGRAMMED(237, new Attrib[]{Attrib.TRAILERID, Attrib.TRAILERID_OLD}),
 
 	//Stripped
 	STRIPPED_ACKNOWLEDGE_ID_WITH_DATA(246, new Attrib[]{Attrib.TYPE_FWDCMD, Attrib.ACKDATA, Attrib.TYPE_FWDCMD_ID}),

@@ -1,11 +1,14 @@
 package com.inthinc.pro.dao.jdbc;
 
+import static com.inthinc.pro.dao.util.NumberUtil.objectToInteger;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.sql.Types;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -16,6 +19,9 @@ import java.util.Map;
 import java.util.TimeZone;
 
 import org.apache.log4j.Logger;
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
+import org.joda.time.LocalDateTime;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
@@ -106,12 +112,12 @@ public class AdminHazardJDBCDAO extends SimpleJdbcDaoSupport implements RoadHaza
         @Override
         public Hazard mapRow(ResultSet rs, int rowNum) throws SQLException {
             Hazard hazard = new Hazard();
-            hazard.setHazardID(ObjectToInteger(rs.getObject("hazardID")));
-            hazard.setAcctID(ObjectToInteger(rs.getObject("acctID")));
-            hazard.setDriverID(ObjectToInteger(rs.getObject("driverID")));
-            hazard.setUserID(ObjectToInteger(rs.getObject("userID")));
-            hazard.setVehicleID(ObjectToInteger(rs.getObject("vehicleID")));
-            hazard.setDeviceID(ObjectToInteger(rs.getObject("deviceID")));
+            hazard.setHazardID(objectToInteger(rs.getObject("hazardID")));
+            hazard.setAcctID(objectToInteger(rs.getObject("acctID")));
+            hazard.setDriverID(objectToInteger(rs.getObject("driverID")));
+            hazard.setUserID(objectToInteger(rs.getObject("userID")));
+            hazard.setVehicleID(objectToInteger(rs.getObject("vehicleID")));
+            hazard.setDeviceID(objectToInteger(rs.getObject("deviceID")));
             hazard.setType(HazardType.valueOf((Integer)rs.getObject("type")));
             hazard.setRadiusMeters(rs.getInt("radius"));
             String strStartDate = rs.getString("startTime");
@@ -140,7 +146,7 @@ public class AdminHazardJDBCDAO extends SimpleJdbcDaoSupport implements RoadHaza
             hazard.setDescription(rs.getString("description"));
             hazard.setStatus(HazardStatus.valueOf(rs.getInt("status")));
             hazard.setLocation(rs.getString("location"));
-            hazard.setStateID(ObjectToInteger(rs.getObject("stateID")));
+            hazard.setStateID(objectToInteger(rs.getObject("stateID")));
             hazard.setLatitude(rs.getDouble("latitude"));
             hazard.setLongitude(rs.getDouble("longitude"));
             return hazard;
@@ -151,17 +157,7 @@ public class AdminHazardJDBCDAO extends SimpleJdbcDaoSupport implements RoadHaza
         dateFormat.setTimeZone(timeZone);
         return dateFormat;
     };
-    private static Integer ObjectToInteger(Object theObj){
-        Integer theInteger;
-        if(theObj == null){
-            theInteger = null;
-        } else if(theObj instanceof Long) {
-            theInteger = ((Long)theObj).intValue();
-        } else {
-            theInteger = null;
-        }
-        return theInteger;
-    }
+
     public List<Hazard> findAllInAccount(Integer acctID) {
         return findHazardsByUserAcct(acctID, LatLng.MIN_LAT, LatLng.MIN_LNG, LatLng.MAX_LAT, LatLng.MAX_LNG);
     }
@@ -242,8 +238,22 @@ public class AdminHazardJDBCDAO extends SimpleJdbcDaoSupport implements RoadHaza
                 ps.setDouble(6, hazard.getLatitude());
                 ps.setDouble(7, hazard.getLongitude());
                 ps.setInt(8, hazard.getRadiusMeters());
-                ps.setTimestamp(9, hazard.getStartTime() != null ? new Timestamp(hazard.getStartTime().getTime()) : null);
-                ps.setTimestamp(10, hazard.getEndTime() != null ? new Timestamp(hazard.getEndTime().getTime()) : null);
+
+                DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                df.setTimeZone(TimeZone.getTimeZone("UTC"));
+                String strStart = null;
+                String strEnd = null;
+
+                if (hazard.getStartTime()!=null){
+                    strStart = df.format(toUTC(hazard.getStartTime()));
+                }
+
+                if (hazard.getEndTime()!=null){
+                    strEnd = df.format(toUTC(hazard.getEndTime()));
+                }
+
+                ps.setString(9, strStart);
+                ps.setString(10, strEnd);
                 ps.setInt(11, hazard.getType() != null ? hazard.getType().getCode() : null);
                 ps.setString(12, hazard.getDescription());
                 ps.setInt(13, hazard.getStatus() != null ? hazard.getStatus().getCode() : null);
@@ -290,8 +300,13 @@ public class AdminHazardJDBCDAO extends SimpleJdbcDaoSupport implements RoadHaza
                 ps.setDouble(6, hazard.getLatitude());
                 ps.setDouble(7, hazard.getLongitude());
                 ps.setInt(8, hazard.getRadiusMeters());
-                ps.setTimestamp(9, new Timestamp(hazard.getStartTime().getTime()));
-                ps.setTimestamp(10, new Timestamp(hazard.getEndTime().getTime()));
+
+                DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                df.setTimeZone(TimeZone.getTimeZone("UTC"));
+                String strStart = df.format(toUTC(hazard.getStartTime()));
+                String strEnd = df.format(toUTC(hazard.getEndTime()));
+                ps.setString(9, strStart);
+                ps.setString(10, strEnd);
                 ps.setInt(11, hazard.getType().getCode());
                 ps.setString(12, hazard.getDescription());
                 ps.setInt(13, hazard.getStatus().getCode());
@@ -306,5 +321,10 @@ public class AdminHazardJDBCDAO extends SimpleJdbcDaoSupport implements RoadHaza
 
         jdbcTemplate.update(psc, keyHolder);
         return keyHolder.getKey().intValue();
+    }
+
+    private Date toUTC(Date date){
+        DateTime dt = new DateTime(date.getTime()).toDateTime(DateTimeZone.UTC);
+        return dt.toDate();
     }
 }

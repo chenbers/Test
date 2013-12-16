@@ -25,6 +25,7 @@ import com.inthinc.pro.model.LatLng;
 import com.inthinc.pro.model.Person;
 import com.inthinc.pro.model.RedFlagAlert;
 import com.inthinc.pro.model.Status;
+import com.inthinc.pro.model.Trailer;
 import com.inthinc.pro.model.User;
 import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.model.Zone;
@@ -48,7 +49,7 @@ public class ITData extends BaseITData{
         this.hardCodedAccountName = hardCodedAccountName;
         createTestData(siloService, xml, assignmentDate, includeUnknown, includeZonesAndAlerts, includeWSGroup);
     }
-    private void removeAccount(SiloService siloService, String accountName) {
+    protected void removeAccount(SiloService siloService, String accountName) {
         AccountHessianDAO accountDAO = new AccountHessianDAO();
         accountDAO.setSiloService(siloService);
         
@@ -186,7 +187,10 @@ public class ITData extends BaseITData{
 	public boolean parseTestData(InputStream stream, SiloService siloService, boolean includeUnknown, boolean includeZonesAndAlerts) {
 	    return parseTestData(stream, siloService, includeUnknown, includeZonesAndAlerts, false);
 	}
-	public boolean parseTestData(InputStream stream, SiloService siloService, boolean includeUnknown, boolean includeZonesAndAlerts, boolean includeWaysmartData) {
+    public boolean parseTestData(InputStream stream, SiloService siloService, boolean includeUnknown, boolean includeZonesAndAlerts, boolean includeWaysmartData) {
+        return parseTestData(stream, siloService, includeUnknown, includeZonesAndAlerts, includeWaysmartData, false);
+    }
+	public boolean parseTestData(InputStream stream, SiloService siloService, boolean includeUnknown, boolean includeZonesAndAlerts, boolean includeWaysmartData, boolean includeTrailers) {
         try {
             XMLDecoder xmlDecoder = new XMLDecoder(new BufferedInputStream(stream));
             account = getNext(xmlDecoder, Account.class);
@@ -211,6 +215,9 @@ public class ITData extends BaseITData{
                 groupData.driver = getNext(xmlDecoder, Driver.class);
                 groupData.driver.setPerson(getNext(xmlDecoder, Person.class));
                 groupData.vehicle = getNext(xmlDecoder, Vehicle.class);
+                if (includeTrailers) {
+                    groupData.trailer = getNext(xmlDecoder, Trailer.class);
+                }
             }
             if (includeUnknown) {
 	            noDriverDevice = getNext(xmlDecoder, Device.class);

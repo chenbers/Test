@@ -11,7 +11,7 @@ public class DeltaVsAsStringParser implements AttribParser {
 
 		int length = 0;
 		
-		assert data.length > (offset + 4);
+		assert data.length >= (offset + 4);
 
 //		double DELTA_V_RESOLUTION = .1;
 		double DELTA_V_RESOLUTION = 1.0;

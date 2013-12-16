@@ -29,6 +29,7 @@ import com.inthinc.pro.dao.HOSDAO;
 import com.inthinc.pro.dao.MpgDAO;
 import com.inthinc.pro.dao.RedFlagDAO;
 import com.inthinc.pro.dao.ReportDAO;
+import com.inthinc.pro.dao.ReportIdlingDAO;
 import com.inthinc.pro.dao.ScoreDAO;
 import com.inthinc.pro.dao.StateMileageDAO;
 import com.inthinc.pro.dao.UserDAO;
@@ -37,6 +38,7 @@ import com.inthinc.pro.dao.report.DVIRInspectionRepairReportDAO;
 import com.inthinc.pro.dao.report.DVIRViolationReportDAO;
 import com.inthinc.pro.dao.report.DriverPerformanceDAO;
 import com.inthinc.pro.dao.report.GroupReportDAO;
+import com.inthinc.pro.dao.report.TrailerReportDAO;
 import com.inthinc.pro.dao.util.DateUtil;
 import com.inthinc.pro.map.ReportAddressLookupBean;
 import com.inthinc.pro.model.DriverStopReport;
@@ -118,6 +120,7 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
 
     private DeviceDAO deviceDAO;
     private ReportDAO reportDAO;
+    private ReportIdlingDAO reportIdlingDAO;
     private GroupReportDAO groupReportDAO;
     private DriverDAO driverDAO;
     private AccountDAO accountDAO;
@@ -131,7 +134,24 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
     private FormsDAO formsDAO;
     private DVIRViolationReportDAO dvirViolationReportDAO;
     private DVIRInspectionRepairReportDAO dvirInspectionRepairReportDAO;
+    private TrailerReportDAO trailerReportDAO;
     
+    public ReportIdlingDAO getReportIdlingDAO() {
+        return reportIdlingDAO;
+    }
+
+    public void setReportIdlingDAO(ReportIdlingDAO reportIdlingDAO) {
+        this.reportIdlingDAO = reportIdlingDAO;
+    }
+    
+    public TrailerReportDAO getTrailerReportDAO() {
+        return trailerReportDAO;
+    }
+
+    public void setTrailerReportDAO(TrailerReportDAO trailerReportDAO) {
+        this.trailerReportDAO = trailerReportDAO;
+    }
+
     public FormsDAO getFormsDAO() {
         return formsDAO;
     }
@@ -331,6 +351,48 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
 
         return reportCriteria;
     }
+    
+    @Override
+    public ReportCriteria getTrailerReportCriteria(Integer groupID, Duration duration, Locale locale, Boolean initDataSet) {
+        logger.warn("ReportCriteria getTrailerReportCriteria(Integer "+groupID+", Duration "+duration+", Locale "+locale+", Boolean "+initDataSet+")");
+        this.locale = locale;
+        Group group = groupDAO.findByID(groupID);
+        ReportCriteria reportCriteria = new ReportCriteria(ReportType.TRAILER_REPORT, group.getName(), locale);
+        List<Integer> groupIDList = new ArrayList<Integer>();
+        groupIDList.add(groupID);
+        Integer accountID = (group == null) ? 0 : group.getAccountID();
+        if (initDataSet) {
+            if (duration.equals(Duration.TWELVE)) {
+                Integer rowCount = trailerReportDAO.getTrailerReportCount(accountID, groupIDList, null);
+                PageParams pageParams = new PageParams(0, rowCount, null, null);
+                reportCriteria.setMainDataset(trailerReportDAO.getTrailerReportItemByGroupPaging(accountID, groupIDList, pageParams));
+            
+                reportCriteria.setDuration(duration);
+            }
+        }
+
+        return reportCriteria;
+    }
+    @Override
+    public ReportCriteria getTrailerReportCriteria(Integer groupID, List<Integer> groupIDList, Duration duration, Locale locale, Boolean initDataSet) {
+        this.locale = locale;
+        Group group = groupDAO.findByID(groupID);
+        Integer accountID = (group == null) ? 0 : group.getAccountID();
+
+        ReportCriteria reportCriteria = new ReportCriteria(ReportType.TRAILER_REPORT, group.getName(), locale);
+
+        if (initDataSet) {
+            if (duration.equals(Duration.TWELVE)) {
+                Integer rowCount = trailerReportDAO.getTrailerReportCount(accountID, groupIDList, null);
+                PageParams pageParams = new PageParams(0, rowCount, null, null);
+                reportCriteria.setMainDataset(trailerReportDAO.getTrailerReportItemByGroupPaging(accountID, groupIDList, pageParams));
+            
+                reportCriteria.setDuration(duration);
+            }
+        }
+
+        return reportCriteria;
+    }
 
     private Map<Integer, Group> getGroupMap(Group group) {
 
@@ -375,9 +437,10 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
         reportCriteria.addParameter("END_DATE", fmt.print(interval.getEnd()));
 
         if (initDataSet) {
-            Integer rowCount = reportDAO.getIdlingReportCount(groupID, interval, null);
-            PageParams pageParams = new PageParams(0, rowCount, null, null);
-            reportCriteria.setMainDataset(reportDAO.getIdlingReportPage(groupID, interval, pageParams));
+//            Integer rowCount = reportDAO.getIdlingReportCount(groupID, interval, null);
+//            PageParams pageParams = new PageParams(0, rowCount, null, null);
+//            reportCriteria.setMainDataset(reportDAO.getIdlingReportPage(groupID, interval, pageParams));
+            reportCriteria.setMainDataset(reportIdlingDAO.getIdlingReportData(groupID, interval));
         }
 
         return reportCriteria;

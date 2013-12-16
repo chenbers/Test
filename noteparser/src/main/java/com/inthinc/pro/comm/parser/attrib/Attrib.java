@@ -145,6 +145,7 @@ public enum Attrib {
 	VEHICLESAFETOOPERATE(8292, AttribParserType.BYTE),
     RHA_TYPE(8293, AttribParserType.BYTE),
     ROUTE_STOP_TYPE(8299, AttribParserType.BYTE, "routestoptype"),//(0=new, 1=started, 2=completed, 3=abandoned, 4=workdayStart, 5=workdayEnd)
+    TRAILER_DETECTED(8300, AttribParserType.BYTE),//(0=manually entered, 1=detected)
         	
 	// SHORT 
 	ACCELERATION(16384, AttribParserType.SHORT),
@@ -334,6 +335,7 @@ public enum Attrib {
     DVIR_MECHANIC_ID(24598, AttribParserType.STRING_FIXED_LENGTH10),
     DVIR_INSPECTOR_ID(24599, AttribParserType.STRING_VAR_LENGTH11),// Set this to length of 11 to allow a length of 10 and a null terminator for the 11 char
     DVIR_SIGNOFF_ID(24600, AttribParserType.STRING_VAR_LENGTH11),// Set this to a length of 11 to allow a length of 10 and a null terminator for the 11 char
+    TRAILERID_OLD(24602, AttribParserType.STRING_VAR_LENGTH),
 	
 	// BINARY 
 	DELTAVS(49152, AttribParserType.DELTAVS_AS_STRING),
