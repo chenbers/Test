@@ -293,7 +293,7 @@ And I validate the 1st Row of the Column checkbox is not checked
 And I check the 1st Row of the Column checkbox
 And I click the Save button
 And the Edit Columns popup closes
-Then I validate the Sort By Group link is present
+And I validate the Sort By Group link is present
 
 Scenario: Reports - Trailers - Edit Columns - Subsequent Session Retention
 Given I am logged in
