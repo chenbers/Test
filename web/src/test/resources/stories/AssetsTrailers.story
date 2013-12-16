@@ -1,7 +1,7 @@
 Meta:
 @page login
 
-Narrative:Test the functionality of the Reports Trailers page
+Narrative:Test the functionality of the Assets Trailers page
 
 Scenario: Assets - Trailers - UI
 Given I navigate to the assets trailers page
@@ -563,16 +563,5 @@ And I validate the 1st Row of the Weight textfield is "21000"
 And I validate the 1st Row of the License Number textfield is "INTHINC"
 And I validate the 1st Row of the Status dropdown is "ACTIVE"
 
-!-- Scenario: Assets - Trailers - New Trailer (save button - error message)
-!-- Given I navigate to the assets trailers page
-!-- When I click the New_ button
-!-- And I click the Save button
-!-- Then I verify "Please include all required fields" is on the page
-!-- And I press the Enter Key
-!-- And I validate the VIN textfield is ""
-!-- And I validate the Make textfield is ""
-!-- And I validate the Year textfield is ""
-!-- And I validate the Color textfield is ""
-!-- And I validate the Weight textfield is ""
-!-- And I validate the License Number textfield is ""
-!-- And I validate the Status dropdown is "ACTIVE"
+
+
