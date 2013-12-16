@@ -156,6 +156,7 @@ Given I am logged in
 When I click the Reports link
 And I click the Trailers link
 And I click the Sort By Driver link
+And I click the Sort By Driver link
 And I save the 1st Row of the Driver Value link as SAVEDDRIVER
 And I click the 1st Row of the Driver Value link
 Then I validate I am on the Driver Performance page
@@ -320,3 +321,5 @@ When I log back in
 And I click the Reports link
 And I click the Trailers link
 Then I validate the Sort By Group link is present
+
+
