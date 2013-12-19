@@ -63,7 +63,7 @@
 		<module>scheduler</module>
 		<module>service</module>
 		<module>reports</module>
-		<!-- <module>webfulfillment</module> -->
+		<!-- 		<module>webfulfillment</module> -->
 		<module>hoskiosk</module>
 		<module>dao</module>
 		<module>i18nutil</module>
@@ -92,7 +92,7 @@
 		<log4j.version>1.2.12</log4j.version>
 		<jmockit.version>0.999.4</jmockit.version>
 		<hos.version>0.0.22</hos.version>
-		<selenium.version>2.37.0</selenium.version>
+		<selenium.version>2.36.0</selenium.version>
 		<jbehave.core.version>3.8</jbehave.core.version>
 		<jacksonVersion>2.0.2</jacksonVersion>
 		<codehausjacksonVersion>1.9.9</codehausjacksonVersion>
@@ -204,7 +204,7 @@
 								<exclude>**/selenium/**/WebTest.java</exclude>
 							</excludes>
 							<includes>
-							    <include>**/selenium/**/**Test.java</include>
+							    <include>**/selenium/**/AssetsTrailersTest.java.java</include>
 							</includes>
 							<systemProperties>
 								<property>
@@ -635,7 +635,7 @@ mi2KFq<Nc4zYl8ZVexWN8GNR2KNYvC5rn293xhqnaa8hMH QROnTXrOnpnpNqQpRomwtNpNmPMPpMnrp
 				<artifactId>selenium-chrome-driver</artifactId>
 				<version>${selenium.version}</version>
 			</dependency>
-			<dependency>
+ 			<dependency>
 				<groupId>com.inthinc.hos</groupId>
 				<artifactId>hosRules</artifactId>
 				<version>${hos.version}</version>
