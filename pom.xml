@@ -630,7 +630,7 @@ mi2KFq<Nc4zYl8ZVexWN8GNR2KNYvC5rn293xhqnaa8hMH QROnTXrOnpnpNqQpRomwtNpNmPMPpMnrp
 				<artifactId>selenium-chrome-driver</artifactId>
 				<version>${selenium.version}</version>
 			</dependency>
-			<dependency>
+ 			<dependency>
 				<groupId>com.inthinc.hos</groupId>
 				<artifactId>hosRules</artifactId>
 				<version>${hos.version}</version>
