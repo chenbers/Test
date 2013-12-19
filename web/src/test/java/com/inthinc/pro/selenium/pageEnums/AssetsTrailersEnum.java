@@ -65,8 +65,8 @@ public enum AssetsTrailersEnum implements SeleniumEnums {
 	SELECT_A_ROW_LABEL("Select a row to see a detailed view.", "noneSelected"),
 	NEW_BUTTON("New", "//button[@class='btn btn-small pull-right btnDetailNew']"),
 	EDIT_BUTTON("Edit", "//button[@class='btn btn-small pull-right btnDetailEdit']"),
-	SAVE_BUTTON("Save", "//button[@class='btn btn-small pull-right btnDetailSave']"),
-	CANCEL_BUTTON("Cancel", "//button[@class='btn btn-small pull-right btnDetailCancel']"),
+	SAVE_BUTTON("Save", "//button[@class='btn btn-small pull-right detailFormInput btnDetailSave']"),
+	CANCEL_BUTTON("Cancel", "//button[@class='btn btn-small pull-right detailFormInput btnDetailCancel']"),
 	//TRAILER INFORMATION SECTION
 	TRAILER_INFORMATION_HEADER("Trailer Information", "//div[2]/div/h4"),
 	VIN_TRAILER_INFORMATION_LABEL("VIN", "//form/div[3]/div[1]/div"),
