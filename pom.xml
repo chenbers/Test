@@ -204,7 +204,7 @@
 								<exclude>**/selenium/**/WebTest.java</exclude>
 							</excludes>
 							<includes>
-							    <include>**/selenium/**/AssetsTrailersTest.java.java</include>
+							    <include>**/selenium/**/AssetsTrailersTest.java</include>
 							</includes>
 							<systemProperties>
 								<property>
