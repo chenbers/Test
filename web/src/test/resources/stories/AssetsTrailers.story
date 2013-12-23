@@ -78,7 +78,7 @@ And I validate the Assigned Driver text is ""
 And I click the New_ button
 And I validate the Cancel button is visible
 And I validate the Save button is visible
-And I validate the New_ button is visible
+And I validate the New_ button is not visible
 And I validate the Edit button is not visible
 And I validate the VIN textfield is visible
 And I validate the Make textfield is visible
