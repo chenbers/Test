@@ -86,7 +86,8 @@ var firstLoad = new Boolean(true);
 		//turn on X and Y axis labels, legend and names.
         
         <ui:param name="MilesMsgKey" value="#{driverSpeedBean.person.measurementType}_Miles"/>
-		var data = chartVar.variables.dataXML;
+		//var data = chartVar.variables.dataXML; // commented for html-based charts
+		var data = chartVar.getXMLData();
 	    data = data.replace("showLabels=\'0\'", "showLabels=\'1\'");
 	    data = data.replace("showYAxisValues=\'0\'", "showYAxisValues=\'1\'");
 	    data = data.replace("anchorSides=\'0\'", "anchorSides=\'4\'");
