@@ -7,6 +7,34 @@
   <component-type>conditionalCSS</component-type>
   <component-class>com.inthinc.pro.backing.ui.UIConditionalCSS</component-class>
  </component>
+ <component>
+  <description>Renders an HTML "button" element.
+			&amp;lt;br /&amp;gt;
+			During Decoding: Obtains the Map from the
+			"requestParameterMap" property of the ExternalContext. If
+			the value in the Map for the value of the "clientId"
+			property of the component is not null, create a
+			javax.faces.event.ActionEvent around the component, and pass
+			it to the queueEvent() method of the component. If the
+			request is Ajax-performed, add its target IDs of the
+			reRender property to the rendered areas list of the nesting
+			AjaxContainer.
+			&amp;lt;br /&amp;gt;
+			During Encoding: Builds an AJAX.Submit JavaScript call for
+			the "onclick" event. Renders the clientId of the component
+			as the value of the "name" attribute. Renders the current
+			value of the component as the value of the "value"
+			attribute. If the "styleClass" attribute is specified,
+			render its value as the value of the "class" attribute.
+			Renders child components inside the HTML "button" element.</description>
+  <display-name>Ajax commandButton</display-name>
+  <component-type>org.ajax4jsf.CommandButton</component-type>
+  <component-class>com.inthinc.pro.backing.ui.AjaxCommandButton</component-class>
+  <component-extension>
+   <component-family>javax.faces.Command</component-family>
+   <renderer-type>com.inthinc.pro.backing.ui.AjaxCommandButtonRenderer</renderer-type>
+  </component-extension>
+ </component>
   <component>
   <component-type>javax.faces.HtmlCommandButton</component-type>
   <component-class>com.inthinc.pro.backing.ui.CommandButton</component-class>
