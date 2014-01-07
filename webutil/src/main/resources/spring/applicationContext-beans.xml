@@ -66,6 +66,7 @@
 	<bean id="zoneAlertIDValidator" class="com.inthinc.pro.backing.dao.validator.ZoneAlertIDValidator" parent="baseValidator"/>
 	<bean id="zoneIDValidator" class="com.inthinc.pro.backing.dao.validator.ZoneIDValidator" parent="baseValidator"/>
 	<bean id="validatorFactory" class="com.inthinc.pro.backing.dao.validator.ValidatorFactory" init-method="init"/>
+	<bean id="deviceandVehicleAccountIDValidator" class="com.inthinc.pro.backing.dao.validator.DeviceandVehicleAccountIDValidator" parent="baseValidator"/>
 
 
 	<!--  bulk importer beans (application scope) -->
