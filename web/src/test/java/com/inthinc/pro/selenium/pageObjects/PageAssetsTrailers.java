@@ -68,21 +68,21 @@ public class PageAssetsTrailers extends Masthead {
             return new TextLink(AssetsTrailersEnum.SORT_BY_TRAILERID_LINK);
         }
         
-        public TextLink sortByTeam() {
-            return new TextLink(AssetsTrailersEnum.SORT_BY_TEAM_LINK);
-        }
-        
-        public TextLink sortByDevice() {
-            return new TextLink(AssetsTrailersEnum.SORT_BY_DEVICE_LINK);
-        }
-        
-        public TextLink sortByVehicle() {
-            return new TextLink(AssetsTrailersEnum.SORT_BY_VEHICLE_LINK);
-        }
-        
-        public TextLink sortByDriver() {
-            return new TextLink(AssetsTrailersEnum.SORT_BY_DRIVER_LINK);
-        }
+//        public TextLink sortByTeam() {
+//            return new TextLink(AssetsTrailersEnum.SORT_BY_TEAM_LINK);
+//        }
+//        
+//        public TextLink sortByDevice() {
+//            return new TextLink(AssetsTrailersEnum.SORT_BY_DEVICE_LINK);
+//        }
+//        
+//        public TextLink sortByVehicle() {
+//            return new TextLink(AssetsTrailersEnum.SORT_BY_VEHICLE_LINK);
+//        }
+//        
+//        public TextLink sortByDriver() {
+//            return new TextLink(AssetsTrailersEnum.SORT_BY_DRIVER_LINK);
+//        }
         
         public TextLink sortByStatus() {
             return new TextLink(AssetsTrailersEnum.SORT_BY_STATUS);
@@ -96,9 +96,9 @@ public class PageAssetsTrailers extends Masthead {
             return new TextLink(AssetsTrailersEnum.SORT_BY_LICENSE_NUMBER);
         }
         
-        public TextLink sortByState() {
-            return new TextLink(AssetsTrailersEnum.SORT_BY_STATE);
-        }
+//        public TextLink sortByState() {
+//            return new TextLink(AssetsTrailersEnum.SORT_BY_STATE);
+//        }
         
         public TextLink sortByYear() {
             return new TextLink(AssetsTrailersEnum.SORT_BY_YEAR);
@@ -313,12 +313,8 @@ public class PageAssetsTrailers extends Masthead {
         }
         //
         
-        public Text selectARowLabel() {
-            return new Text(AssetsTrailersEnum.SELECT_A_ROW_LABEL);
-        }
-        
-        public Text trailerInformationLabel() {
-            return new Text(AssetsTrailersEnum.TRAILER_INFORMATION_HEADER);
+        public Text detailsHeader() {
+            return new Text(AssetsTrailersEnum.DETAILS_HEADER);
         }
         
         public Text vinLabel() {
@@ -348,11 +344,7 @@ public class PageAssetsTrailers extends Masthead {
         public Text stateLabel() {
             return new Text(AssetsTrailersEnum.STATE_TRAILER_INFORMATION_LABEL);
         }
-        
-        public Text trailerProfileLabel() {
-            return new Text(AssetsTrailersEnum.TRAILER_PROFILE_HEADER);
-        }
-        
+
         public Text trailerIDLabel() {
             return new Text(AssetsTrailersEnum.TRAILER_ID_LABEL);
         }
@@ -361,32 +353,20 @@ public class PageAssetsTrailers extends Masthead {
             return new Text(AssetsTrailersEnum.STATUS_LABEL);
         }
         
-        public Text trailerAssignmentLabel() {
-            return new Text(AssetsTrailersEnum.TRAILER_ASSIGNMENT_HEADER);
+        public Text assignmentLabel() {
+            return new Text(AssetsTrailersEnum.ASSIGNMENT_HEADER);
         }
         
         public Text teamLabel() {
             return new Text(AssetsTrailersEnum.TEAM_TRAILER_ASSIGNMENT_LABEL);
         }
         
-        public Text deviceAssignmentLabel() {
-            return new Text(AssetsTrailersEnum.DEVICE_ASSIGNMENT_HEADER);
-        }
-        
         public Text assignedDeviceLabel() {
             return new Text(AssetsTrailersEnum.ASSIGNED_DEVICE_LABEL);
         }
         
-        public Text vehicleAssignmentLabel() {
-            return new Text(AssetsTrailersEnum.VEHICLE_ASSIGNMENT_HEADER);
-        }
-        
         public Text assignedVehicleLabel() {
             return new Text(AssetsTrailersEnum.ASSIGNED_VEHICLE_LABEL);
-        }
-        
-        public Text driverAssignmentLabel() {
-            return new Text(AssetsTrailersEnum.DRIVER_ASSIGNMENT_HEADER);
         }
         
         public Text assignedDriverLabel() {
