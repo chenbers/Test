@@ -47,6 +47,9 @@ public class DeviceandVehicleAccountIDValidator extends DefaultValidator {
 					vehicleDeviceAccountIDMatch = false;
 					return false;
 				}
+			}else {
+				vehicleDeviceAccountIDMatch = false;
+				return false;
 			}
 			
 			return true;
