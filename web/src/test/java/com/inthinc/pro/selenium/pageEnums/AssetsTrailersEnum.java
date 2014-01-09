@@ -13,7 +13,7 @@ public enum AssetsTrailersEnum implements SeleniumEnums {
 	SEARCH_LABEL("Search:", "//div[5]/label"),
 	SEARCH_TEXTFIELD(null, "//div/label/input[@type='text']"),
 	//SHOW/HIDE COLUMNS SECTION
-	SHOW_HIDE_COLUMNS_LINK("Show / Hide Columns", "//button[@class='ColVis_Button TableTools_Button ColVis_MasterButton']"),
+	SHOW_HIDE_COLUMNS_LINK("Show / Hide Columns", "//button[@class='ColVis_Button TableTools_Button ColVis_MasterButton btn']"),
 	TRAILER_ID_CHECKBOX(null, "//button[1]/span/span[1]/input"),
     TRAILER_ID_CHECKBOX_LABEL("Trailer ID", "//button[1]/span/span[2]"),
 	TEAM_CHECKBOX(null, "//button[2]/span/span[1]/input"),

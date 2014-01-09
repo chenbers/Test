@@ -12,14 +12,14 @@ And I validate the Search Label text is present
 And I validate the Search textfield is present
 And I validate the Show Hide Columns link is present
 And I validate the Sort By Trailer ID link is present
-!-- And I validate the Sort By Team link is present
-!-- And I validate the Sort By Device link is present
-!-- And I validate the Sort By Vehicle link is present
-!-- And I validate the Sort By Driver link is present
+And I validate the Sort By Team text is present
+And I validate the Sort By Device text is present
+And I validate the Sort By Vehicle text is present
+And I validate the Sort By Driver text is present
 And I validate the Sort By Status link is present
 And I validate the Sort By VIN link is present
 And I validate the Sort By License Number link is present
-!-- And I validate the Sort By State link is present
+And I validate the Sort By State text is present
 And I validate the Sort By Year link is present
 And I validate the Sort By Make link is present
 And I validate the Sort By Model link is present
@@ -175,35 +175,35 @@ And I validate the Sort By Trailer ID link is present
 When I click the Show Hide Columns link
 And I uncheck the Team checkbox
 And I click the Show Hide Columns link
-Then I validate the Sort By Team link is not present
+Then I validate the Sort By Team text is not present
 And I click the Show Hide Columns link
 And I check the Team checkbox
 And I click the Show Hide Columns link
-!-- And I validate the Sort By Team link is present
+!-- And I validate the Sort By Team text is present
 When I click the Show Hide Columns link
 And I uncheck the Device checkbox
 And I click the Show Hide Columns link
-Then I validate the Sort By Device link is not present
+Then I validate the Sort By Device text is not present
 And I click the Show Hide Columns link
 And I check the Device checkbox
 And I click the Show Hide Columns link
-!-- And I validate the Sort By Device link is present
+!-- And I validate the Sort By Device text is present
 When I click the Show Hide Columns link
 And I uncheck the Vehicle checkbox
 And I click the Show Hide Columns link
-Then I validate the Sort By Vehicle link is not present
+Then I validate the Sort By Vehicle text is not present
 And I click the Show Hide Columns link
 And I check the Vehicle checkbox
 And I click the Show Hide Columns link
-!-- And I validate the Sort By Vehicle link is present
+!-- And I validate the Sort By Vehicle text is present
 When I click the Show Hide Columns link
 And I uncheck the Driver checkbox
 And I click the Show Hide Columns link
-Then I validate the Sort By Driver link is not present
+Then I validate the Sort By Driver text is not present
 And I click the Show Hide Columns link
 And I check the Driver checkbox
 And I click the Show Hide Columns link
-!-- And I validate the Sort By Driver link is present
+!-- And I validate the Sort By Driver text is present
 When I click the Show Hide Columns link
 And I uncheck the Status checkbox
 And I click the Show Hide Columns link
@@ -231,11 +231,11 @@ And I validate the Sort By License Number link is present
 When I click the Show Hide Columns link
 And I uncheck the State checkbox
 And I click the Show Hide Columns link
-Then I validate the Sort By State link is not present
+Then I validate the Sort By State text is not present
 And I click the Show Hide Columns link
 And I check the State checkbox
 And I click the Show Hide Columns link
-!-- And I validate the Sort By State link is present
+!-- And I validate the Sort By State text is present
 When I click the Show Hide Columns link
 And I uncheck the Year checkbox
 And I click the Show Hide Columns link
@@ -284,6 +284,37 @@ And I click the Show Hide Columns link
 And I check the Odometer checkbox
 And I click the Show Hide Columns link
 And I validate the Sort By Odometer link is present
+And I uncheck the Trailer ID checkbox
+And I uncheck the Team checkbox
+And I uncheck the Device checkbox
+And I uncheck the Vehicle checkbox
+And I uncheck the Driver checkbox
+And I uncheck the Status checkbox
+And I uncheck the VIN checkbox
+And I uncheck the License Number checkbox
+And I uncheck the State checkbox
+And I uncheck the Year checkbox
+And I uncheck the Make checkbox
+And I uncheck the Model checkbox
+And I uncheck the Color checkbox
+And I uncheck the Weight checkbox
+And I uncheck the Odometer checkbox
+And I click the Restore Original link
+And I validate the Sort By Trailer ID link is present
+!-- And I validate the Sort By Team text is present
+!-- And I validate the Sort By Device text is present
+!-- And I validate the Sort By Vehicle text is present
+!-- And I validate the Sort By Driver text is present
+And I validate the Sort By Status link is present
+And I validate the Sort By VIN link is present
+And I validate the Sort By License Number link is present
+!-- And I validate the Sort By State text is present
+And I validate the Sort By Year link is present
+And I validate the Sort By Make link is present
+And I validate the Sort By Model link is present
+And I validate the Sort By Color link is present
+And I validate the Sort By Weight link is present
+And I validate the Sort By Odometer link is present
 
 Scenario: Assets - Trailers - Bookmark Entry 
 Given I navigate to the assets trailers page
@@ -296,14 +327,14 @@ Then I validate I am on the Assets Trailers page
 Scenario: Assets - Trailers - Table Properties NEED TO IMPLEMENT CHECKING ALPHABETICAL ORDER
 Given I navigate to the assets trailers page
 When I click the Sort By Trailer ID link
-And I click the Sort By Team link
-And I click the Sort By Device link
-And I click the Sort By Vehicle link
-And I click the Sort By Driver link
+!-- And I click the Sort By Team link
+!-- And I click the Sort By Device text
+!-- And I click the Sort By Vehicle text
+!-- And I click the Sort By Driver text
 And I click the Sort By Status link
 And I click the Sort By VIN link
 And I click the Sort By License Number link
-And I click the Sort By State link
+!-- And I click the Sort By State text
 And I click the Sort By Year link
 And I click the Sort By Make link
 And I click the Sort By Model link
@@ -508,7 +539,7 @@ And I validate the Year text is SAVEDYEAR
 And I validate the Color text is SAVEDCOLOR
 And I validate the Weight text is SAVEDWEIGHT
 And I validate the License Number text is SAVEDLICENSE
-And I validate the State text is SAVEDSTATE
+!-- And I validate the State text is SAVEDSTATE
 And I validate the Trailer ID text is SAVEDTRAILER
 And I validate the Status text is SAVEDSTATUS
 And I validate the Team text is SAVEDTEAM
@@ -522,7 +553,7 @@ And I validate the Year textfield is SAVEDYEAR
 And I validate the Color textfield is SAVEDCOLOR
 And I validate the Weight textfield is SAVEDWEIGHT
 And I validate the License Number textfield is SAVEDLICENSE
-And I validate the State dropdown is SAVEDSTATE
+!-- And I validate the State dropdown is SAVEDSTATE
 And I validate the Trailer ID textfield is SAVEDTRAILER
 And I validate the Status dropdown is SAVEDSTATUS
 And I validate the Team text is SAVEDTEAM
@@ -536,7 +567,7 @@ And I validate the Year text is SAVEDYEAR
 And I validate the Color text is SAVEDCOLOR
 And I validate the Weight text is SAVEDWEIGHT
 And I validate the License Number text is SAVEDLICENSE
-And I validate the State text is SAVEDSTATE
+!-- And I validate the State text is SAVEDSTATE
 And I validate the Trailer ID text is SAVEDTRAILER
 And I validate the Status text is SAVEDSTATUS
 And I validate the Team text is SAVEDTEAM
@@ -568,7 +599,7 @@ And I validate the Year text is SAVEDYEAR
 And I validate the Color text is SAVEDCOLOR
 And I validate the Weight text is SAVEDWEIGHT
 And I validate the License Number text is SAVEDLICENSE
-And I validate the State text is SAVEDSTATE
+!-- And I validate the State text is SAVEDSTATE
 And I validate the Trailer ID text is SAVEDTRAILER
 And I validate the Status text is SAVEDSTATUS
 And I validate the Team text is SAVEDTEAM
@@ -582,7 +613,7 @@ And I validate the Year textfield is SAVEDYEAR
 And I validate the Color textfield is SAVEDCOLOR
 And I validate the Weight textfield is SAVEDWEIGHT
 And I validate the License Number textfield is SAVEDLICENSE
-And I validate the State dropdown is SAVEDSTATE
+!-- And I validate the State dropdown is SAVEDSTATE
 And I validate the Trailer ID textfield is SAVEDTRAILER
 And I validate the Status dropdown is SAVEDSTATUS
 And I validate the Team text is SAVEDTEAM
@@ -599,15 +630,15 @@ And I select "Alaska" from the State dropdown
 And I type "ANEWTRAILER" into the Trailer ID textfield
 And I select "INACTIVE" from the Status dropdown
 And I click the Save button
-And I validate the VIN text is ""
-And I validate the Make text is ""
-And I validate the Year text is ""
-And I validate the Color text is ""
-And I validate the Weight text is ""
-And I validate the License Number text is ""
-And I validate the State text is ""
-And I validate the Trailer ID text is ""
-And I validate the Status text is ""
+And I validate the VIN text is "ANEWVINNUMBER"
+And I validate the Make text is "ANEWMAKE"
+And I validate the Year text is "2000"
+And I validate the Color text is "ANEWCOLOR"
+And I validate the Weight text is "55"
+And I validate the License Number text is "ANEWLICENSE"
+And I validate the State text is "Alaska"
+And I validate the Trailer ID text is "ANEWTRAILER"
+And I validate the Status text is "INACTIVE"
 And I validate the Team text is ""
 And I validate the Assigned Device text is ""
 And I validate the Assigned Vehicle text is ""
@@ -621,7 +652,7 @@ And I validate the 1st Row of the Driver Entry link is SAVEDDRIVER
 And I validate the 1st Row of the Status Entry link is "INACTIVE"
 And I validate the 1st Row of the VIN Entry link is "ANEWVINNUMBER"
 And I validate the 1st Row of the License Entry link is "ANEWLICENSE"
-And I validate the 1st Row of the State Entry link is "Alaska"
+And I validate the 1st Row of the State Entry link is "AK"
 And I validate the 1st Row of the Year Entry link is "2000"
 And I validate the 1st Row of the Make Entry link is "ANEWMAKE"
 And I validate the 1st Row of the Model Entry link is SAVEDMODEL
