@@ -68,22 +68,6 @@ public class PageAssetsTrailers extends Masthead {
             return new TextLink(AssetsTrailersEnum.SORT_BY_TRAILERID_LINK);
         }
         
-//        public TextLink sortByTeam() {
-//            return new TextLink(AssetsTrailersEnum.SORT_BY_TEAM_LINK);
-//        }
-//        
-//        public TextLink sortByDevice() {
-//            return new TextLink(AssetsTrailersEnum.SORT_BY_DEVICE_LINK);
-//        }
-//        
-//        public TextLink sortByVehicle() {
-//            return new TextLink(AssetsTrailersEnum.SORT_BY_VEHICLE_LINK);
-//        }
-//        
-//        public TextLink sortByDriver() {
-//            return new TextLink(AssetsTrailersEnum.SORT_BY_DRIVER_LINK);
-//        }
-        
         public TextLink sortByStatus() {
             return new TextLink(AssetsTrailersEnum.SORT_BY_STATUS);
         }
@@ -95,10 +79,6 @@ public class PageAssetsTrailers extends Masthead {
         public TextLink sortByLicenseNumber() {
             return new TextLink(AssetsTrailersEnum.SORT_BY_LICENSE_NUMBER);
         }
-        
-//        public TextLink sortByState() {
-//            return new TextLink(AssetsTrailersEnum.SORT_BY_STATE);
-//        }
         
         public TextLink sortByYear() {
             return new TextLink(AssetsTrailersEnum.SORT_BY_YEAR);
@@ -249,6 +229,26 @@ public class PageAssetsTrailers extends Masthead {
         
         public Text searchLabel() {
             return new Text(AssetsTrailersEnum.SEARCH_LABEL);
+        }
+        
+        public Text sortByTeam() {
+            return new Text(AssetsTrailersEnum.SORT_BY_TEAM_TEXT);
+        }
+        
+        public Text sortByDevice() {
+            return new Text(AssetsTrailersEnum.SORT_BY_DEVICE_TEXT);
+        }
+        
+        public Text sortByVehicle() {
+            return new Text(AssetsTrailersEnum.SORT_BY_VEHICLE_TEXT);
+        }
+        
+        public Text sortByDriver() {
+            return new Text(AssetsTrailersEnum.SORT_BY_DRIVER_TEXT);
+        }
+        
+        public Text sortByState() {
+            return new Text(AssetsTrailersEnum.SORT_BY_STATE_TEXT);
         }
         
         //SHOW/HIDE COLUMNS LABELS
