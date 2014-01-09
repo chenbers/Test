@@ -1,44 +1,12 @@
 package com.inthinc.pro.dao.cassandra;
 
 import java.nio.ByteBuffer;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.TimeZone;
-
-import org.apache.commons.beanutils.PropertyUtils;
-import org.apache.log4j.Logger;
-
-/////Used for Main test only///////////////
-import com.inthinc.pro.dao.hessian.VehicleHessianDAO;
-import com.inthinc.pro.dao.hessian.proserver.SiloService;
-import com.inthinc.pro.dao.hessian.proserver.SiloServiceCreator;
-///////////////////////////////////////
-
-import com.inthinc.pro.ProDAOException;
-import com.inthinc.pro.dao.DriverDAO;
-import com.inthinc.pro.dao.EventDAO;
-import com.inthinc.pro.dao.VehicleDAO;
-import com.inthinc.pro.dao.hessian.exceptions.EmptyResultSetException;
-import com.inthinc.pro.dao.hessian.mapper.EventHessianMapper;
-import com.inthinc.pro.dao.hessian.mapper.Mapper;
-import com.inthinc.pro.dao.util.DateUtil;
-import com.inthinc.pro.model.event.Event;
-import com.inthinc.pro.model.event.EventCategory;
-import com.inthinc.pro.model.event.NoteType;
-import com.inthinc.pro.model.event.SeatBeltEvent;
-import com.inthinc.pro.model.event.SpeedingEvent;
-import com.inthinc.pro.model.Driver;
-import com.inthinc.pro.model.Vehicle;
-import com.inthinc.pro.model.pagination.PageParams;
-import com.inthinc.pro.model.pagination.TableFilterField;
-
-import com.inthinc.pro.comm.parser.note.NoteParser;
-import com.inthinc.pro.comm.parser.note.NoteParserFactory;
 
 import me.prettyprint.hector.api.beans.ColumnSlice;
 import me.prettyprint.hector.api.beans.Composite;
@@ -49,6 +17,29 @@ import me.prettyprint.hector.api.factory.HFactory;
 import me.prettyprint.hector.api.query.MultigetSliceQuery;
 import me.prettyprint.hector.api.query.QueryResult;
 import me.prettyprint.hector.api.query.SliceQuery;
+
+import org.apache.log4j.Logger;
+
+import com.inthinc.pro.comm.parser.note.NoteParser;
+import com.inthinc.pro.comm.parser.note.NoteParserFactory;
+import com.inthinc.pro.dao.DriverDAO;
+import com.inthinc.pro.dao.EventDAO;
+import com.inthinc.pro.dao.VehicleDAO;
+import com.inthinc.pro.dao.hessian.VehicleHessianDAO;
+import com.inthinc.pro.dao.hessian.exceptions.EmptyResultSetException;
+import com.inthinc.pro.dao.hessian.mapper.EventHessianMapper;
+import com.inthinc.pro.dao.hessian.mapper.Mapper;
+import com.inthinc.pro.dao.hessian.proserver.SiloService;
+import com.inthinc.pro.dao.hessian.proserver.SiloServiceCreator;
+import com.inthinc.pro.dao.util.DateUtil;
+import com.inthinc.pro.model.Vehicle;
+import com.inthinc.pro.model.event.Event;
+import com.inthinc.pro.model.event.EventCategory;
+import com.inthinc.pro.model.event.NoteType;
+import com.inthinc.pro.model.pagination.PageParams;
+import com.inthinc.pro.model.pagination.TableFilterField;
+/////Used for Main test only///////////////
+///////////////////////////////////////
 
 
 @SuppressWarnings("serial")
@@ -462,7 +453,7 @@ public class EventCassandraDAO extends AggregationCassandraDAO implements EventD
     		
     		Composite endRange = new Composite();
     		endRange.add(0, eventType);
-    		endRange.add(1, (int)DateUtil.convertDateToSeconds(new Date()));
+    		endRange.add(1, (int)DateUtil.convertDateToSeconds(new Date())+1);
 
 //FIX    		
 //    		keyList.addAll(fetchRowKeysFromIndex(driverGroupNoteTypeTimeIndex30_CF, groupID.intValue(), startRange, endRange, eventCount));
@@ -475,9 +466,10 @@ public class EventCassandraDAO extends AggregationCassandraDAO implements EventD
     	keyList = keyList.subList(0, max);
     	return fetchNotes(keyList, includeForgiven);
     }
-
+    
     private List<Event> fetchEventsForAsset(boolean isDriver, Integer ID, Date startDate, Date endDate, Integer[] eventTypes, Integer includeForgiven)
     {
+        
         List<Event> eventList = new ArrayList<Event>();
         for(Integer eventType : eventTypes)
         {
@@ -489,8 +481,8 @@ public class EventCassandraDAO extends AggregationCassandraDAO implements EventD
             
             Composite endRange = new Composite();
             endRange.add(0, eventType);
-            endRange.add(1, (int)DateUtil.convertDateToSeconds(endDate));
-
+            endRange.add(1, (int)DateUtil.convertDateToSeconds(endDate)+1);
+            
             eventList.addAll(fetchNotesFromIndex(isDriver, ID, startRange, endRange, MAX_EVENTS, (includeForgiven == 1)));
         }
         return eventList;
@@ -509,7 +501,7 @@ public class EventCassandraDAO extends AggregationCassandraDAO implements EventD
     		
     		Composite endRange = new Composite();
     		endRange.add(0, eventType);
-    		endRange.add(1, (int)DateUtil.convertDateToSeconds(endDate));
+    		endRange.add(1, (int)DateUtil.convertDateToSeconds(endDate)+1);
 
     		keyList.addAll(fetchRowKeysFromIndex(isDriver, ID.intValue(), startRange, endRange, MAX_EVENTS));
     	}
