@@ -50,6 +50,7 @@ import com.inthinc.pro.reports.util.DateTimeUtil;
 import com.inthinc.pro.table.PageData;
 import com.inthinc.pro.util.BeanUtil;
 import com.inthinc.pro.util.MessageUtil;
+import com.inthinc.pro.util.TimePickerUtil;
 
 public class HosBean extends BaseBean {
     
@@ -417,8 +418,9 @@ public class HosBean extends BaseBean {
         public void setTimeInSec(Integer timeInSec) {
             try
             {
-            DateTime dateTime = new DateMidnight(getLogTime(), DateTimeZone.forID(getTimeZone().getID())).toDateTime().plusSeconds(timeInSec);
-            setLogTime(dateTime.toDate());
+                DateTime dateTime = new DateMidnight(getLogTime(), DateTimeZone.forID(getTimeZone().getID())).toDateTime();
+                dateTime = TimePickerUtil.addTimePickerSecondsToDateTime(timeInSec, dateTime);
+                setLogTime(dateTime.toDate());
             }
             catch (java.lang.NullPointerException e) {
                 e.printStackTrace();
