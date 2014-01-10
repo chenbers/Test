@@ -179,7 +179,7 @@ Then I validate the Sort By Team text is not present
 And I click the Show Hide Columns link
 And I check the Team checkbox
 And I click the Show Hide Columns link
-!-- And I validate the Sort By Team text is present
+And I validate the Sort By Team text is present
 When I click the Show Hide Columns link
 And I uncheck the Device checkbox
 And I click the Show Hide Columns link
@@ -187,7 +187,7 @@ Then I validate the Sort By Device text is not present
 And I click the Show Hide Columns link
 And I check the Device checkbox
 And I click the Show Hide Columns link
-!-- And I validate the Sort By Device text is present
+And I validate the Sort By Device text is present
 When I click the Show Hide Columns link
 And I uncheck the Vehicle checkbox
 And I click the Show Hide Columns link
@@ -195,7 +195,7 @@ Then I validate the Sort By Vehicle text is not present
 And I click the Show Hide Columns link
 And I check the Vehicle checkbox
 And I click the Show Hide Columns link
-!-- And I validate the Sort By Vehicle text is present
+And I validate the Sort By Vehicle text is present
 When I click the Show Hide Columns link
 And I uncheck the Driver checkbox
 And I click the Show Hide Columns link
@@ -203,7 +203,7 @@ Then I validate the Sort By Driver text is not present
 And I click the Show Hide Columns link
 And I check the Driver checkbox
 And I click the Show Hide Columns link
-!-- And I validate the Sort By Driver text is present
+And I validate the Sort By Driver text is present
 When I click the Show Hide Columns link
 And I uncheck the Status checkbox
 And I click the Show Hide Columns link
@@ -235,7 +235,7 @@ Then I validate the Sort By State text is not present
 And I click the Show Hide Columns link
 And I check the State checkbox
 And I click the Show Hide Columns link
-!-- And I validate the Sort By State text is present
+And I validate the Sort By State text is present
 When I click the Show Hide Columns link
 And I uncheck the Year checkbox
 And I click the Show Hide Columns link
@@ -300,15 +300,16 @@ And I uncheck the Color checkbox
 And I uncheck the Weight checkbox
 And I uncheck the Odometer checkbox
 And I click the Restore Original link
+And I click the Show Hide Columns link
 And I validate the Sort By Trailer ID link is present
-!-- And I validate the Sort By Team text is present
-!-- And I validate the Sort By Device text is present
-!-- And I validate the Sort By Vehicle text is present
-!-- And I validate the Sort By Driver text is present
+And I validate the Sort By Team text is present
+And I validate the Sort By Device text is present
+And I validate the Sort By Vehicle text is present
+And I validate the Sort By Driver text is present
 And I validate the Sort By Status link is present
 And I validate the Sort By VIN link is present
 And I validate the Sort By License Number link is present
-!-- And I validate the Sort By State text is present
+And I validate the Sort By State text is present
 And I validate the Sort By Year link is present
 And I validate the Sort By Make link is present
 And I validate the Sort By Model link is present
@@ -575,7 +576,7 @@ And I validate the Assigned Device text is SAVEDDEVICE
 And I validate the Assigned Vehicle text is SAVEDVEHICLE
 And I validate the Assigned Driver text is SAVEDDRIVER
 
-Scenario: Assets - Trailers - New Trailer (edit button - save changes)
+Scenario: Assets - Trailers - Edit Trailer (edit button - save changes)
 Given I navigate to the assets trailers page
 When I click the 1st Row of the Trailer Id Entry link
 And I save the 1st Row of the Trailer ID Entry link as SAVEDTRAILER
@@ -744,4 +745,28 @@ And I validate the 1st Row of the Model Entry link is SAVEDMODEL
 And I validate the 1st Row of the Color Entry link is "ANEWERCOLOR"
 And I validate the 1st Row of the Weight Entry link is "60"
 
-
+Scenario: Assets - Trailers - Clear Device Association link
+Given I navigate to the assets trailers page
+When I click the New_ button
+And I type "CLEARDEVICEVIN" into the VIN textfield
+And I type "CLEARDEVICEMAKE" into the Make textfield
+And I type "2003" into the Year textfield
+And I type "CLEARDEVICECOLOR" into the Color textfield
+And I type "15003" into the Weight textfield
+And I type "CLEARDEVICELICNUM" into the License Number textfield
+And I select "Virginia" from the State dropdown
+And I type "CLEARDEVICETEST" into the Trailer ID textfield
+And I select "ACTIVE" from the Status dropdown
+And I select "MCM990098" from the Assigned Device dropdown
+And I click the Save button
+And I type "CLEARDEVICETEST" into the Search textfield
+And I click the Edit button
+And I select "Remove Device Assignment" from the Assigned Device dropdown
+And I click the Save button
+Then I validate the Assigned Device text is "none assigned"
+And I validate the 1st Row of the Device Entry link is "none assigned"
+And I click the Edit button
+And I select "DELETED" from the Status dropdown
+And I click the Save button
+And I type "CLEARDEVICETEST" into the Search textfield
+And I validate the Entries text contains "Showing 0 to 0 of"

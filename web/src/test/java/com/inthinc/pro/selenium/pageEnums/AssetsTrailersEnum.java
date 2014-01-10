@@ -44,7 +44,7 @@ public enum AssetsTrailersEnum implements SeleniumEnums {
 	WEIGHT_CHECKBOX_LABEL("Weight", "//button[14]/span/span[2]"),
 	ODOMETER_CHECKBOX(null, "//button[15]/span/span[1]/input"),
 	ODOMETER_CHECKBOX_LABEL("Odometer", "//button[15]/span/span[2]"),
-	RESTORE_ORIGINAL_LINK("Restore original", "ColVis_Button TableTools_Button ColVis_Restore"),
+	RESTORE_ORIGINAL_LINK("Restore original", "//button[@class='ColVis_Button TableTools_Button ColVis_Restore']"),
 	//TABLE ITEMS
 	SORT_BY_TRAILERID_LINK("Trailer ID", "//th[@aria-label='Trailer ID: activate to sort column ascending']"),
 	SORT_BY_TEAM_TEXT("Team", "//th[@aria-label='Team']"),
