@@ -367,8 +367,8 @@ public class DotHoursRemainingReportCriteriaTest extends BaseUnitTest {
             String newYearReport = genReportToString(dotHoursRemainingReportCriteriaNewYear, FormatType.HTML);
             String oldYearReport = genReportToString(dotHoursRemainingReportCriteriaOldYear, FormatType.HTML);
             
-//            dump("dotHoursRemainingNewYear", testCaseCnt, dotHoursRemainingReportCriteriaNewYear, FormatType.PDF);
-//            dump("dotHoursRemainingOldYear", testCaseCnt, dotHoursRemainingReportCriteriaOldYear, FormatType.PDF);
+            //dump("dotHoursRemainingNewYear", testCaseCnt, dotHoursRemainingReportCriteriaNewYear, FormatType.PDF);
+            //dump("dotHoursRemainingOldYear", testCaseCnt, dotHoursRemainingReportCriteriaOldYear, FormatType.PDF);
             
             String oldYearReportWithDatesReplaced = replaceDates(oldYearReport);
             assertEquals("data identical except for date", newYearReport, oldYearReportWithDatesReplaced);
@@ -396,7 +396,8 @@ public class DotHoursRemainingReportCriteriaTest extends BaseUnitTest {
                 .replace("07/26/13", "12/26/13")
                 .replace("07/25/13", "12/25/13")
                 .replace("07/24/13", "12/24/13")
-                .replace("07/23/13", "12/23/13");
+                .replace("07/23/13", "12/23/13")
+                .replace("07/22/13", "12/22/13");
     }
 
     private Map<Driver, List<HOSRecord>> offsetDatesToNewYear(Map<Driver, List<HOSRecord>> driverHOSRecordMap, DateTime newYearDate) {
