@@ -143,14 +143,17 @@ public class DotHoursRemainingReportCriteria extends GroupListReportCriteria imp
                    onDutyIncrements += log.getTotalIncrements();
                }
            }
+           
+           String dayStr = dayFormatter.print(day);
+           DateTime utcDay = dayFormatter.withZone(DateTimeZone.UTC).parseDateTime(dayStr);
            dataList.add(new DotHoursRemaining(groupName, 
                    driver.getDriverID(), driver.getPerson().getFullNameLastFirst(),  driver.getDot(),
                    minutesRemaining, cumulativeMinutesRemaining,
-                   dayFormatter.print(day), day.toDate(), HOSStatus.DRIVING, drivingIncrements*15l));
+                   dayStr, utcDay.toDate(), HOSStatus.DRIVING, drivingIncrements*15l));
            dataList.add(new DotHoursRemaining(groupName, 
                    driver.getDriverID(), driver.getPerson().getFullNameLastFirst(),  driver.getDot(),
                    minutesRemaining,cumulativeMinutesRemaining, 
-                   dayFormatter.print(day), day.toDate(), HOSStatus.ON_DUTY, onDutyIncrements*15l));
+                   dayStr, utcDay.toDate(), HOSStatus.ON_DUTY, onDutyIncrements*15l));
        }
     }
     
