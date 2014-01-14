@@ -966,8 +966,43 @@ And I validate the Entries text contains "Showing 0 to 0 of"
 Scenario: Assets - Trailers - VIN exceeds 17 characters (new button)
 Given I navigate to the assets trailers page
 When I click the New_ button
+And I type "1" into the VIN textfield
+Then I validate the VIN Error text is not present
+And I type "12" into the VIN textfield
+And I validate the VIN Error text is not present
+And I type "123" into the VIN textfield
+And I validate the VIN Error text is not present
+And I type "1234" into the VIN textfield
+And I validate the VIN Error text is not present
+And I type "12345" into the VIN textfield
+And I validate the VIN Error text is not present
+And I type "123456" into the VIN textfield
+And I validate the VIN Error text is not present
+And I type "1234567" into the VIN textfield
+And I validate the VIN Error text is not present
+And I type "12345678" into the VIN textfield
+And I validate the VIN Error text is not present
+And I type "123456789" into the VIN textfield
+And I validate the VIN Error text is not present
+And I type "0123456789" into the VIN textfield
+And I validate the VIN Error text is not present
+And I type "00123456789" into the VIN textfield
+And I validate the VIN Error text is not present
+And I type "000123456789" into the VIN textfield
+And I validate the VIN Error text is not present
+And I type "0000123456789" into the VIN textfield
+And I validate the VIN Error text is not present
+And I type "00000123456789" into the VIN textfield
+And I validate the VIN Error text is not present
+And I type "000000123456789" into the VIN textfield
+And I validate the VIN Error text is not present
+And I type "0000000123456789" into the VIN textfield
+And I validate the VIN Error text is not present
+And I type "00000000123456789" into the VIN textfield
+And I validate the VIN Error text is not present
 And I type "000000000123456789" into the VIN textfield
-Then I validate the VIN Error text is present
+And I validate the VIN Error text is present
+And I validate the VIN Error text is "The trailer vin exceeds 17 characters."
 And I click the Cancel button
 And I click the New_ button
 And I validate the VIN Error text is not present
@@ -976,8 +1011,43 @@ Scenario: Assets - Trailers - VIN exceeds 17 characters (edit button)
 Given I navigate to the assets trailers page
 When I click the 1st Row of the Trailer ID Entry link
 And I click the Edit button
+And I type "1" into the VIN textfield
+Then I validate the VIN Error text is not present
+And I type "12" into the VIN textfield
+And I validate the VIN Error text is not present
+And I type "123" into the VIN textfield
+And I validate the VIN Error text is not present
+And I type "1234" into the VIN textfield
+And I validate the VIN Error text is not present
+And I type "12345" into the VIN textfield
+And I validate the VIN Error text is not present
+And I type "123456" into the VIN textfield
+And I validate the VIN Error text is not present
+And I type "1234567" into the VIN textfield
+And I validate the VIN Error text is not present
+And I type "12345678" into the VIN textfield
+And I validate the VIN Error text is not present
+And I type "123456789" into the VIN textfield
+And I validate the VIN Error text is not present
+And I type "0123456789" into the VIN textfield
+And I validate the VIN Error text is not present
+And I type "00123456789" into the VIN textfield
+And I validate the VIN Error text is not present
+And I type "000123456789" into the VIN textfield
+And I validate the VIN Error text is not present
+And I type "0000123456789" into the VIN textfield
+And I validate the VIN Error text is not present
+And I type "00000123456789" into the VIN textfield
+And I validate the VIN Error text is not present
+And I type "000000123456789" into the VIN textfield
+And I validate the VIN Error text is not present
+And I type "0000000123456789" into the VIN textfield
+And I validate the VIN Error text is not present
+And I type "00000000123456789" into the VIN textfield
+And I validate the VIN Error text is not present
 And I type "000000000123456789" into the VIN textfield
-Then I validate the VIN Error text is present
+And I validate the VIN Error text is present
+And I validate the VIN Error text is "The trailer vin exceeds 17 characters."
 And I click the Cancel button
 And I click the Edit button
 And I validate the VIN Error text is not present
@@ -987,6 +1057,15 @@ Given I navigate to the assets trailers page
 When I click the New_ button
 And I type "0" into the Year textfield
 Then I validate the Year Error text is present
+And I validate the Year Error text is "The trailer year can be empty or contain 4 numbers."
+And I type "01" into the Year textfield
+And I validate the Year Error text is present
+And I type "012" into the Year textfield
+And I validate the Year Error text is present
+And I type "0123" into the Year textfield
+And I validate the Year Error text is not present
+And I type "01234" into the Year textfield
+And I validate the Year Error text is present
 And I click the Cancel button
 And I click the New_ button
 And I validate the Year Error text is not present
@@ -997,6 +1076,36 @@ When I click the 1st Row of the Trailer ID Entry link
 And I click the Edit button
 And I type "0" into the Year textfield
 Then I validate the Year Error text is present
+And I validate the Year Error text is "The trailer year can be empty or contain 4 numbers."
+And I type "01" into the Year textfield
+And I validate the Year Error text is present
+And I type "012" into the Year textfield
+And I validate the Year Error text is present
+And I type "0123" into the Year textfield
+And I validate the Year Error text is not present
+And I type "01234" into the Year textfield
+And I validate the Year Error text is present
+And I click the Cancel button
+And I click the Edit button
+And I validate the Year Error text is not present
+
+Scenario: Assets - Trailers - Year is alpha characters (new button)
+Given I navigate to the assets trailers page
+When I click the New_ button
+And I type "a" into the Year textfield
+Then I validate the Year Error text is present
+And I validate the Year Error text is "The trailer year can be empty or contain 4 numbers."
+And I click the Cancel button
+And I click the New_ button
+And I validate the Year Error text is not present
+
+Scenario: Assets - Trailers - Year is alpha characters (edit button)
+Given I navigate to the assets trailers page
+When I click the 1st Row of the Trailer ID Entry link
+And I click the Edit button
+And I type "a" into the Year textfield
+Then I validate the Year Error text is present
+And I validate the Year Error text is "The trailer year can be empty or contain 4 numbers."
 And I click the Cancel button
 And I click the Edit button
 And I validate the Year Error text is not present
@@ -1004,8 +1113,9 @@ And I validate the Year Error text is not present
 Scenario: Assets - Trailers - Weight is not numerical (new button)
 Given I navigate to the assets trailers page
 When I click the New_ button
-And I type "a" into the Year textfield
+And I type "a" into the Weight textfield
 Then I validate the Weight Error text is present
+And I validate the Weight Error text is "The trailer weight can be empty or contain only numbers."
 And I click the Cancel button
 And I click the New_ button
 And I validate the Weight Error text is not present
@@ -1014,8 +1124,9 @@ Scenario: Assets - Trailers - Weight is not numerical (edit button)
 Given I navigate to the assets trailers page
 When I click the 1st Row of the Trailer ID Entry link
 And I click the Edit button
-And I type "a" into the Year textfield
+And I type "a" into the Weight textfield
 Then I validate the Weight Error text is present
+And I validate the Weight Error text is "The trailer weight can be empty or contain only numbers."
 And I click the Cancel button
 And I click the Edit button
 And I validate the Weight Error text is not present
