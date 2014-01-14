@@ -650,6 +650,14 @@ public class HosBean extends BaseBean {
             context.addMessage("edit-form:editHosLog_dateTime", message);
             
         }
+        // duplicate date not allowed
+        if (!isBatchEdit() && hosDAO.otherHosRecordExistsForDriverTimestamp(log.getDriverID(), log.getLogTime(), log.getHosLogID())) {
+            valid = false;
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessageString("hosLog_duplicate_date_not_allowed"), null);
+            context.addMessage("edit-form:editHosLog_dateTime", message);
+            
+        }
+
         HOSRules rules = RuleSetFactory.getRulesForRuleSetType(log.getDriverDotType());
         if (rules == null || !rules.isValidStatusForRuleSet(log.getStatus())) {
             valid = false;
