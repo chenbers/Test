@@ -1,6 +1,7 @@
 package it.com.inthinc.pro.dao.jdbc;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import it.com.inthinc.pro.dao.Util;
 import it.com.inthinc.pro.dao.model.GroupData;
@@ -22,7 +23,6 @@ import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.Interval;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import com.inthinc.hos.ddl.HOSOccupantLog;
@@ -37,7 +37,6 @@ import com.inthinc.pro.dao.jdbc.HOSJDBCDAO;
 import com.inthinc.pro.dao.util.HOSUtil;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Vehicle;
-import com.inthinc.pro.model.VehicleDOTType;
 import com.inthinc.pro.model.hos.HOSDriverLogin;
 import com.inthinc.pro.model.hos.HOSGroupMileage;
 import com.inthinc.pro.model.hos.HOSRecord;
@@ -62,7 +61,7 @@ public class HOSJDBCDAOTest extends BaseJDBCTest{
         itData = new ITData();
 
         InputStream stream = Thread.currentThread().getContextClassLoader().getResourceAsStream(XML_DATA_FILE);
-        if (!itData.parseTestData(stream, siloService, false, false)) {
+        if (!itData.parseTestData(stream, siloService, false, false, true)) {
             throw new Exception("Error parsing Test data xml file");
         }
     }
@@ -131,11 +130,11 @@ public class HOSJDBCDAOTest extends BaseJDBCTest{
 
         HOSRecord expectedHosRecord = constructExpectedHosRecord(hosRecord, testDriver, testVehicle);
         expectedHosRecord.setDeleted(true);
+        expectedHosRecord.setChangedCnt(expectedHosRecord.getChangedCnt()+1);
 
         String ignoreFields[] = { "originalLogTime", "vehicleIsDOT"};
 
         Util.compareObjects(expectedHosRecord, foundHosRecord, ignoreFields);
-        
     }
 
     @Test
@@ -571,4 +570,36 @@ public class HOSJDBCDAOTest extends BaseJDBCTest{
         Util.compareObjects(expectedHosRecord, foundHosRecord, ignoreFields);
     }
   
+    @Test
+    public void existsTestLogDateSecondsGranularity() {
+        
+        HOSDAO hosDAO = new HOSJDBCDAO();
+        ((HOSJDBCDAO)hosDAO).setDataSource(new ITDataSource().getRealDataSource());
+
+        GroupData testGroupData = itData.teamGroupData.get(ITData.GOOD);
+        Driver testDriver = fetchDriver(testGroupData.driver.getDriverID());
+        Vehicle testVehicle = testGroupData.vehicle;
+        
+        Date hosRecordDate = new Date();
+        HOSRecord hosRecord = createMinimalHosRecord(hosDAO, testDriver, hosRecordDate, testVehicle.getVehicleID(), 34.0f,45.0f);
+        HOSRecord foundHosRecord = hosDAO.findByID(hosRecord.getHosLogID());
+        DateTime dateTime = new DateTime(foundHosRecord.getLogTime());
+        Long hosLogID = foundHosRecord.getHosLogID();
+        
+        boolean exists = hosDAO.otherHosRecordExistsForDriverTimestamp(testDriver.getDriverID(), dateTime.toDate(), -1L);
+        assertTrue("Expected a record to exist for driver/timestamp", exists);
+
+        exists = hosDAO.otherHosRecordExistsForDriverTimestamp(testDriver.getDriverID(), dateTime.toDate(), hosLogID);
+        assertFalse("Expected no other record to exist for driver/timestamp and logID", exists);
+
+        exists = hosDAO.otherHosRecordExistsForDriverTimestamp(testDriver.getDriverID(), dateTime.plusMillis(999).toDate(), -1L);
+        assertTrue("Expected a record to exist for driver/timestamp within same second", exists);
+        
+        exists = hosDAO.otherHosRecordExistsForDriverTimestamp(testDriver.getDriverID(), dateTime.minusMillis(1).toDate(), -1L);
+        assertFalse("Expected a record not to exist for driver/timestamp", exists);
+        
+        exists = hosDAO.otherHosRecordExistsForDriverTimestamp(testDriver.getDriverID(), dateTime.plusSeconds(1).toDate(), -1L);
+        assertFalse("Expected a record not to exist for driver/timestamp", exists);
+        
+    }
 }

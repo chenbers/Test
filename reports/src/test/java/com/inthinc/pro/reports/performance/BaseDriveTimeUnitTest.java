@@ -1,6 +1,7 @@
 package com.inthinc.pro.reports.performance;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -250,6 +251,24 @@ public class BaseDriveTimeUnitTest extends BasePerformanceUnitTest {
 
         @Override
         public LatLng getVehicleHomeOfficeLocation(Integer vehicleID) {
+            // TODO Auto-generated method stub
+            return null;
+        }
+
+        @Override
+        public List<HOSRecord> getHOSDeltaRecords(Integer driverID, Integer deviceID, Date deltaTime) {
+            // TODO Auto-generated method stub
+            return null;
+        }
+
+        @Override
+        public boolean otherHosRecordExistsForDriverTimestamp(Integer driverID, Date dateTime, Long hosLogID) {
+            // TODO Auto-generated method stub
+            return false;
+        }
+
+        @Override
+        public List<HOSRecord> getHOSRecordAtSummaryTime(Integer driverID, Date summaryTime, Date startTime, Date endTime) {
             // TODO Auto-generated method stub
             return null;
         }

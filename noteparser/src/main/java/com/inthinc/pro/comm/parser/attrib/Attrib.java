@@ -146,6 +146,7 @@ public enum Attrib {
     RHA_TYPE(8293, AttribParserType.BYTE),
     ROUTE_STOP_TYPE(8299, AttribParserType.BYTE, "routestoptype"),//(0=new, 1=started, 2=completed, 3=abandoned, 4=workdayStart, 5=workdayEnd)
     TRAILER_DETECTED(8300, AttribParserType.BYTE),//(0=manually entered, 1=detected)
+    SUMMARY_CHECKSUM(8302, AttribParserType.BYTE,"summarychecksum"),
         	
 	// SHORT 
 	ACCELERATION(16384, AttribParserType.SHORT),
@@ -211,6 +212,7 @@ public enum Attrib {
 	MILESOVER64(16446, AttribParserType.SHORT),
 	
     RHA_RADIUS_METERS(16451, AttribParserType.SHORT),
+    SUMMARY_RECORDS(16470, AttribParserType.SHORT, "summaryrecords"),
 	
 	// INT 
 	SKIPINT(32000, AttribParserType.INTEGER_SKIP),
@@ -286,6 +288,10 @@ public enum Attrib {
     
     ATTR_DVIR_FORM_ID(32863,AttribParserType.INTEGER),
     ATTR_DVIR_SUBMISSION_TIME(32864,AttribParserType.INTEGER),
+    SUMMARY_CHANGES_TIME(32865,AttribParserType.INTEGER, "summarydate"),
+    SUMMARY_START_TIME(32866,AttribParserType.INTEGER, "summarystart"),
+    SUMMARY_STOP_TIME(32867,AttribParserType.INTEGER, "summarystop"),
+    
     
 	DEVICEID(32900, AttribParserType.INTEGER, "deviceid"),
 	VEHICLEID(32901, AttribParserType.INTEGER, "vehicleid"),
@@ -336,7 +342,6 @@ public enum Attrib {
     DVIR_INSPECTOR_ID(24599, AttribParserType.STRING_VAR_LENGTH11),// Set this to length of 11 to allow a length of 10 and a null terminator for the 11 char
     DVIR_SIGNOFF_ID(24600, AttribParserType.STRING_VAR_LENGTH11),// Set this to a length of 11 to allow a length of 10 and a null terminator for the 11 char
     TRAILERID_OLD(24602, AttribParserType.STRING_VAR_LENGTH),
-	
 	// BINARY 
 	DELTAVS(49152, AttribParserType.DELTAVS_AS_STRING),
 	DENOMINATOR(49153, AttribParserType.THREE_SHORTS_AS_STRING),

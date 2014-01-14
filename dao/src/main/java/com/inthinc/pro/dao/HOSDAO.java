@@ -1,5 +1,6 @@
 package com.inthinc.pro.dao;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -41,5 +42,10 @@ public interface HOSDAO extends GenericDAO<HOSRecord, Long> {
     Long createFromNote(HOSRecord hosRecord);
     
     LatLng getVehicleHomeOfficeLocation(Integer vehicleID);
+    
+    List<HOSRecord> getHOSDeltaRecords(Integer driverID, Integer deviceID, Date deltaTime);
+    boolean otherHosRecordExistsForDriverTimestamp(Integer driverID, Date dateTime, Long hosLogID);
+    List<HOSRecord> getHOSRecordAtSummaryTime(Integer driverID, Date summaryTime, Date startTime, Date endTime);
+
 
 }

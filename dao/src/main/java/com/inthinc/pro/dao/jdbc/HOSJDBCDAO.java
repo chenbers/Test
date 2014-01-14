@@ -5,9 +5,11 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
@@ -48,6 +50,10 @@ public class HOSJDBCDAO extends GenericJDBCDAO implements HOSDAO {
      */
     private static final long serialVersionUID = 1L;
     private static final Logger logger = Logger.getLogger(HOSJDBCDAO.class);
+    private static final SimpleDateFormat dbdateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    static {
+        dbdateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+    }
     
     /**
      * 
@@ -626,16 +632,18 @@ public class HOSJDBCDAO extends GenericJDBCDAO implements HOSDAO {
         
         return id;
     }
+    
+    private final static String DELETE_HOS_LOG = "UPDATE hoslog set deletedFlag = 1, editedFlag=1, editCount=editCount+1, timeLastUpdated=UTC_TIMESTAMP() WHERE hosLogId = ?"; 
 
     @Override
     public Integer deleteByID(Long id) {
         Connection conn = null;
-        CallableStatement statement = null;
+        PreparedStatement statement = null;
         
         try
         {
             conn = getConnection();
-            statement = conn.prepareCall("{call hos_delete(?)}");
+            statement = conn.prepareStatement(DELETE_HOS_LOG);
             statement.setLong(1, id);
 			
             if(logger.isDebugEnabled())
@@ -1107,9 +1115,6 @@ public class HOSJDBCDAO extends GenericJDBCDAO implements HOSDAO {
         ResultSet resultSet = null;
         String imei = "";
         
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
-
         try
         {
             conn = getConnection();
@@ -1118,7 +1123,7 @@ public class HOSJDBCDAO extends GenericJDBCDAO implements HOSDAO {
 
 
             statement.setInt(1, driverID);
-            statement.setString(2, dateFormat.format(startTime));
+            statement.setString(2, dbdateFormat.format(startTime));
             
             if(logger.isDebugEnabled())
                 logger.debug(statement.toString());
@@ -1191,5 +1196,197 @@ public class HOSJDBCDAO extends GenericJDBCDAO implements HOSDAO {
 
         return homeLocation;
         
+    }
+    
+    private final static String FETCH_HOS_DELTA_RECORDS = "SELECT h.hosLogID, h.logTime, cl.logTime as originalLogTime, " + 
+                    "h.status, cl.status as originalStatus, h.driverDOTType, h.origin, h.deletedFlag, h.editedFlag, h.vehicleID, coalesce(v.deviceID, 0) as deviceID " +
+                    "FROM hoslog h " + 
+                    "left JOIN vddlog v on (h.vehicleID != 0 and h.vehicleID = v.vehicleID and h.logTime BETWEEN v.start AND coalesce(v.stop, UTC_TIMESTAMP())) " + 
+                    "LEFT JOIN hoslog_changelog cl ON  (h.hosLogID = cl.hosLogID) " +
+                    "WHERE h.driverID = ? AND (h.origin IN (2,3) OR h.editedFlag = true OR deviceID != ?) AND (h.timeLastUpdated > ?) AND h.status NOT IN (31,39,47,48) ORDER BY h.logTime DESC";
+    @Override
+    public List<HOSRecord> getHOSDeltaRecords(Integer driverID, Integer deviceID, Date deltaTime)  {
+
+        String deltaTimeStr = dbdateFormat.format(deltaTime);
+        
+        Connection conn = null;
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+
+        ArrayList<HOSRecord> recordList = new ArrayList<HOSRecord>();
+        
+        try
+        {
+            conn = getConnection();
+            statement = conn.prepareCall(FETCH_HOS_DELTA_RECORDS);
+            statement.setInt(1, driverID);
+            statement.setInt(2, deviceID);
+            statement.setString(3, deltaTimeStr);
+            if(logger.isDebugEnabled())
+                logger.debug(statement.toString());
+            resultSet = statement.executeQuery();
+
+            while (resultSet.next())
+            {
+                HOSRecord hosRecord = new HOSRecord();
+                
+                hosRecord.setHosLogID(resultSet.getLong(1));
+                hosRecord.setLogTime(getResultSetDate(resultSet, 2));
+                hosRecord.setOriginalLogTime(getResultSetDate(resultSet, 3));
+                hosRecord.setStatus(HOSStatus.valueOf(resultSet.getInt(4)));
+                hosRecord.setOriginalStatus(resultSet.getObject(5) == null? null : HOSStatus.valueOf(resultSet.getInt(5)));
+                hosRecord.setDriverDotType(RuleSetType.valueOf(resultSet.getInt(6)));
+                hosRecord.setOrigin(HOSOrigin.valueOf(resultSet.getInt(7)));
+                hosRecord.setDeleted(resultSet.getBoolean(8));
+                hosRecord.setEdited(resultSet.getBoolean(9));
+                hosRecord.setVehicleID(resultSet.getInt(10));
+                hosRecord.setDeviceID(resultSet.getInt(11));
+                     
+                
+                recordList.add(hosRecord);
+            }
+        }   // end try
+        catch (SQLException e)
+        { // handle database hosLogs in the usual manner
+            throw new ProDAOException((statement != null) ? statement.toString() : "", e);
+        }   // end catch
+        finally
+        { // clean up and release the connection
+            close(resultSet);
+            close(statement);
+            close(conn);
+        } // end finally
+
+        return recordList;
+    }
+    
+    
+    private final static String COUNT_HOS_RECORDS_AT_TIMESTAMP = "select count(*) from hoslog where deletedFlag = false and driverID = ? and logTime = ? and hosLogID != ?";
+    @Override
+    public boolean otherHosRecordExistsForDriverTimestamp(Integer driverID, Date dateTime, Long hosLogID)  {
+        boolean recordExists = false;
+        String dateTimeStr = dbdateFormat.format(dateTime);
+        
+        Connection conn = null;
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+
+        try
+        {
+            conn = getConnection();
+            statement = conn.prepareCall(COUNT_HOS_RECORDS_AT_TIMESTAMP);
+            statement.setInt(1, driverID);
+            statement.setString(2, dateTimeStr);
+            statement.setLong(3, (hosLogID == null ? -1l : hosLogID));
+            if(logger.isDebugEnabled())
+                logger.debug(statement.toString());
+            
+            resultSet = statement.executeQuery();
+
+            if (resultSet.next())
+            {
+                Integer count = resultSet.getInt(1);
+                recordExists = (count > 0);
+            }
+        }   // end try
+        catch (SQLException e)
+        { // handle database hosLogs in the usual manner
+            throw new ProDAOException((statement != null) ? statement.toString() : "", e);
+        }   // end catch
+        finally
+        { // clean up and release the connection
+            close(resultSet);
+            close(statement);
+            close(conn);
+        } // end finally
+
+        return recordExists;
+    }
+    
+    private final static String FETCH_HOS_RECORDS_AT_SUMMARY_TIME = "SELECT h.hosLogID, h.timeLastUpdated, h.timeAdded, h.logTime, cl.logTime as originalLogTime, " + 
+            "h.status, cl.status as originalStatus, h.driverDOTType " +
+            "FROM hoslog h " + 
+            "LEFT JOIN hoslog_changelog cl ON  (h.hosLogID = cl.hosLogID) " +
+            "WHERE h.driverID = ? AND h.status NOT IN (31,39,47,48) " +
+            "AND (h.logTime between ? and ? or cl.logTime between ? and ?)";
+    @Override
+    public List<HOSRecord> getHOSRecordAtSummaryTime(Integer driverID, Date summaryTime, Date startTime, Date endTime)  {
+
+        String startTimeStr = dbdateFormat.format(startTime);
+        String endTimeStr = dbdateFormat.format(endTime);
+
+        Connection conn = null;
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+        
+        ArrayList<HOSRecord> recordList = new ArrayList<HOSRecord>();
+        
+        try
+        {
+            conn = getConnection();
+            statement = conn.prepareCall(FETCH_HOS_RECORDS_AT_SUMMARY_TIME);
+            statement.setInt(1, driverID);
+            statement.setString(2, startTimeStr);
+            statement.setString(3, endTimeStr);
+            statement.setString(4, startTimeStr);
+            statement.setString(5, endTimeStr);
+            if(logger.isDebugEnabled())
+                logger.debug(statement.toString());
+            
+            resultSet = statement.executeQuery();
+        
+            while (resultSet.next())
+            {
+                HOSRecord hosRecord = new HOSRecord();
+                
+                hosRecord.setHosLogID(resultSet.getLong(1));
+                Date lastUpdateTime = getResultSetDate(resultSet, 2);
+                Date addedTime = getResultSetDate(resultSet, 3);
+                if (addedTime.after(summaryTime)) {
+                    continue;
+                }
+                Date logTime = getResultSetDate(resultSet, 4);
+                Date originalLogTime = getResultSetDate(resultSet, 5);
+                HOSStatus status = HOSStatus.valueOf(resultSet.getInt(6));
+                HOSStatus originalStatus = resultSet.getObject(7) == null ? null : HOSStatus.valueOf(resultSet.getInt(7));
+                hosRecord.setDriverDotType(RuleSetType.valueOf(resultSet.getInt(8)));
+                
+                if (lastUpdateTime.after(summaryTime)) {
+                    hosRecord.setLogTime(originalLogTime == null ? logTime : originalLogTime);
+                    hosRecord.setStatus(originalStatus== null ? status : originalStatus);
+                }
+                else {
+                    hosRecord.setLogTime(logTime);
+                    hosRecord.setStatus(status);
+                }
+
+                     
+                
+                recordList.add(hosRecord);
+            }
+        }   // end try
+        catch (SQLException e)
+        { // handle database hosLogs in the usual manner
+            throw new ProDAOException((statement != null) ? statement.toString() : "", e);
+        }   // end catch
+        finally
+        { // clean up and release the connection
+            close(resultSet);
+            close(statement);
+            close(conn);
+        } // end finally
+    
+        Collections.sort(recordList);
+        return recordList;
+    }
+
+    private Date getResultSetDate(ResultSet resultSet, Integer index) throws SQLException {
+        String dateStr = resultSet.getString(index);
+        Date date = null;
+        try {
+            date = dateStr == null ? null : dbdateFormat.parse(dateStr);
+        } catch (ParseException e) {
+        }
+        return date;
     }
 }
