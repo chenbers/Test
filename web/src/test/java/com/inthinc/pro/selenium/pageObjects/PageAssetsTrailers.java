@@ -432,6 +432,18 @@ public class PageAssetsTrailers extends Masthead {
         public Text entries() {
             return new Text(AssetsTrailersEnum.ENTRIES_TEXT);
         }
+        
+        public Text vinError() {
+            return new Text(AssetsTrailersEnum.VIN_ERROR_TEXT);
+        }
+        
+        public Text yearError() {
+            return new Text(AssetsTrailersEnum.YEAR_ERROR_TEXT);
+        }
+        
+        public Text weightError() {
+            return new Text(AssetsTrailersEnum.WEIGHT_ERROR_TEXT);
+        }
 
     }
     

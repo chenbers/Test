@@ -95,6 +95,9 @@ public enum AssetsTrailersEnum implements SeleniumEnums {
 	STATE_TRAILER_INFORMATION_LABEL("State", "//div[10]/label"),
 	STATE_TRAILER_INFORMATION_TEXT(null, "stateValue"),
 	STATE_TRAILER_INFORMATION_DROPDOWN(null, "stateInput"),
+	VIN_ERROR_TEXT("The trailer vin exceeds 17 characters.", "//form/div[4]/div/div[2]/label"),
+	YEAR_ERROR_TEXT("The trailer year can be empty or contain 4 numbers.", "//form/div[6]/div/div[2]/label"),
+	WEIGHT_ERROR_TEXT("The trailer weight can be empty or contain only numbers.", "//form/div[8]/div/div[2]/label"),
 	//ASSIGNMENT SECTION
 	ASSIGNMENT_HEADER("Assignment", "//div/h4"),
 	TEAM_TRAILER_ASSIGNMENT_LABEL("Team", "//div[12]/label"),
