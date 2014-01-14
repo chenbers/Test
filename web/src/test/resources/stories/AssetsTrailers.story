@@ -166,7 +166,7 @@ And I validate the Next Disabled link is present
 Scenario: Assets - Trailers - Search Filter (clear or not clear test depending on how we change things, at the moment the test checks for not cleared text)
 Given I navigate to the assets trailers page
 When I type "SEARCHTEXT" into the Search textfield
-And I navigate to the assets trailers page
+And I click the Top Trailers link
 Then I validate the Search textfield is "SEARCHTEXT"
 
 Scenario: Assets - Trailers - Show Hide Columns UI Interaction
