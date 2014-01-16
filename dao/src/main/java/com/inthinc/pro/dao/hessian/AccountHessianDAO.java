@@ -4,6 +4,8 @@ package com.inthinc.pro.dao.hessian;
 import java.util.Collections;
 import java.util.List;
 
+import org.apache.commons.lang.NotImplementedException;
+
 import com.inthinc.pro.dao.AccountDAO;
 import com.inthinc.pro.dao.hessian.exceptions.EmptyResultSetException;
 import com.inthinc.pro.model.Account;
@@ -34,5 +36,10 @@ public class AccountHessianDAO extends GenericHessianDAO<Account, Integer> imple
             return Collections.emptyList();
         }
         
+    }
+
+    @Override
+    public List<Long> getAllValidAcctIDs() {
+        throw new NotImplementedException();
     }
 }
