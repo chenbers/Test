@@ -74,19 +74,6 @@ public class DriveTimeJDBCDAOTest extends BaseJDBCTest {
   }
 
     private static void initApp() throws Exception {
-        StateHessianDAO stateDAO = new StateHessianDAO();
-        stateDAO.setSiloService(siloService);
-
-        States states = new States();
-        states.setStateDAO(stateDAO);
-        states.init();
-
-        RoleHessianDAO roleDAO = new RoleHessianDAO();
-        roleDAO.setSiloService(siloService);
-
-        DeviceHessianDAO deviceDAO = new DeviceHessianDAO();
-        deviceDAO.setSiloService(siloService);
-
     }
 
     @Test
@@ -104,7 +91,6 @@ public class DriveTimeJDBCDAOTest extends BaseJDBCTest {
         DateTime end = new DateMidnight(((long)todayInSec * 1000l), dateTimeZone).toDateTime();
         DateMidnight start = new DateMidnight(new DateTime(end, dateTimeZone).minusDays(numDays), dateTimeZone);
         Interval interval  = new Interval(start, end);
-System.out.println(interval);        
         
         DriveTimeDAO driveTimeDAO = new DriveTimeJDBCDAO();
         ((DriveTimeJDBCDAO)driveTimeDAO).setDataSource(new ITDataSource().getRealDataSource());
@@ -118,8 +104,6 @@ System.out.println(interval);
             assertEquals("record count", numDays, driveTimeRecordList.size());
 
             long expectedDriveTime = 1410;
-            if (testGroupData.group.getName().contains("BAD"))
-                expectedDriveTime = 1395; 
             
             DateTime startDate = start.toDateTime();
             for (DriveTimeRecord rec : driveTimeRecordList) {
@@ -163,8 +147,6 @@ System.out.println(interval);
             assertEquals("record count", numDays, driveTimeRecordList.size());
 
             long expectedDriveTime = 1410;
-            if (testGroupData.group.getName().contains("BAD"))
-                expectedDriveTime = 1395; 
             
             DateTime startDate = start.toDateTime();
             for (DriveTimeRecord rec : driveTimeRecordList) {
