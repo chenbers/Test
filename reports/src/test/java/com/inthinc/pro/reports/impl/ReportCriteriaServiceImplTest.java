@@ -553,6 +553,24 @@ public class ReportCriteriaServiceImplTest extends BaseUnitTest {
             // TODO Auto-generated method stub
             return null;
         }
+
+        @Override
+        public List<HOSRecord> getHOSDeltaRecords(Integer driverID, Integer deviceID, Date deltaTime) {
+            // TODO Auto-generated method stub
+            return null;
+        }
+
+        @Override
+        public boolean otherHosRecordExistsForDriverTimestamp(Integer driverID, Date dateTime, Long hosLogID) {
+            // TODO Auto-generated method stub
+            return false;
+        }
+
+        @Override
+        public List<HOSRecord> getHOSRecordAtSummaryTime(Integer driverID, Date summaryTime, Date startTime, Date endTime) {
+            // TODO Auto-generated method stub
+            return null;
+        }
         
     }
     

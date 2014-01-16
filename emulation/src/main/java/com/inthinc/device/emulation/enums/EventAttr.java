@@ -323,6 +323,7 @@ public enum EventAttr implements IndexEnum{
     RHA_CONFIRM(8294),
     ROUTE_STOP_TYPE(8299), //(0=new, 1=started, 2=completed, 3=abandoned)
     TRAILER_DETECTED(8300),
+    SUMMARY_CHECKSUM(8302),
 
     // two byte value Attributes 16384 [0x4000] to 24575 [0x5FFF]	
     
@@ -402,7 +403,7 @@ public enum EventAttr implements IndexEnum{
     GPS_SPD_DIST(16449),
     GPS_GAP_DIST(16450),
     RHA_RADIUS_METERS(16451),    
-
+    SUMMARY_RECORDS(16470),
 	
 ////////////////////////////////////////////////////////////////////////////////////
 //		string Attributes 24576 [0x6000] to 32767 [0x7FFF],
@@ -544,7 +545,10 @@ public enum EventAttr implements IndexEnum{
     ROUTE_STOP_ID(32860), 
     ATTR_DVIR_FORM_ID(32863),
     ATTR_DVIR_SUBMISSION_TIME(32864),
-    
+    SUMMARY_CHANGES_TIME(32865),
+    SUMMARY_START_TIME(32866),
+    SUMMARY_STOP_TIME(32867),
+
 		    
 ////////////////////////////////////////////////////////////////////////////////////
 //		double value Attributes 40960 [0xA000] to 49151 [0xBFFF]

@@ -24,11 +24,11 @@
                 	<h:outputText value="#{messages.hosLog_status}" />
 				</td>
                 <td>
-                       <a4j:commandButton id="hosAddLogLogOnDuty" action="#{hosDriverKioskBean.setStatusOnDuty}" styleClass="left" reRender="#{reRenderList}">
+                       <a4j:commandButton id="hosAddLogLogOnDuty" action="#{hosDriverKioskBean.setStatusOnDuty}" requestDelay="500" eventsQueue="statusQueue" styleClass="left" reRender="#{reRenderList}">
                        	<span class="onDuty"><h:outputText value="#{messages.hosLog_statusOnDutyNotDriving}" /></span>
                        </a4j:commandButton>
                        <h:outputText value=" " />
-                       <a4j:commandButton id="hosAddLogLogOff" action="#{hosDriverKioskBean.setStatusOffDuty}" styleClass="left" reRender="#{reRenderList}">
+                       <a4j:commandButton id="hosAddLogLogOff" action="#{hosDriverKioskBean.setStatusOffDuty}" requestDelay="500" eventsQueue="statusQueue" styleClass="left" reRender="#{reRenderList}">
                        	<span class="offDuty"><h:outputText value="#{messages.hosLog_statusOffDuty}" /></span>
                        </a4j:commandButton>
                 </td>
