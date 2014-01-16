@@ -54,23 +54,6 @@ public class LocationCassandraDAO extends GenericCassandraDAO implements Locatio
     private DeviceDAO deviceDAO;
     private EventDAO eventDAO;
 
-    private final static String VEHICLEID = "vehicleId";
-    private final static String DEVICEID = "deviceId";
-    private final static String DRIVERID = "driverId";
-    private final static String START_NOTE_TYPE = "startNoteType";
-    private final static String END_NOTE_TYPE = "endNoteType";
-    private final static String START_TIME = "startTime";
-    private final static String END_TIME = "endTime";
-    private final static String START_ODOMETER = "startOdometer";
-    private final static String END_ODOMETER = "endOdometer";
-    private final static String MILEAGE = "mileage";
-    private final static String MILEAGE1 = "mileage1";
-    private final static String MILEAGE2 = "mileage2";
-    private final static String MILEAGE3 = "mileage3";
-    private final static String MILEAGE4 = "mileage4";
-    private final static String MILEAGE5 = "mileage5";
-    private final static String HIGH_IDLE = "highIdle";
-    private final static String LOW_IDLE = "lowIdle";
     private final static String START_LAT = "startLat";
     private final static String START_LNG = "startLng";
     private final static String END_LAT = "endLat";
@@ -79,67 +62,6 @@ public class LocationCassandraDAO extends GenericCassandraDAO implements Locatio
     @SuppressWarnings("unused")
     private static final Logger logger = Logger.getLogger(LocationCassandraDAO.class);
 
-    public static void main(String[] args) {
-//        SiloService siloService = new SiloServiceCreator("localhost", 8092).getService();
-        SiloService siloService = new SiloServiceCreator("tp-web10.tiwii.com", 8099).getService();
-        VehicleHessianDAO vehicleDAO = new VehicleHessianDAO();
-        vehicleDAO.setSiloService(siloService);
-        DriverHessianDAO driverDAO = new DriverHessianDAO();
-        driverDAO.setSiloService(siloService);
-//        CassandraDB cassandraDB = new CassandraDB(true, "Inthinc Production", "note_prod", "cache_prod","tp-node9.tiwipro.com:9160", 10, false, false);
-//        CassandraDB cassandraDB = new CassandraDB(true, "Inthinc Production", "note_qa", "cache_qa","tp-node9.tiwipro.com:9160", 10, false, false);
-        CassandraDB cassandraDB = new CassandraDB(true, "Inthinc Production", "note_dev", "cache_dev","tp-node9.tiwipro.com:9160", 10, false, false);
-        
-        LocationCassandraDAO dao = new LocationCassandraDAO();
-        dao.setCassandraDB(cassandraDB);
-        dao.setVehicleDAO(vehicleDAO);
-        dao.setDriverDAO(driverDAO);
-
-/*        LastLocation ll = dao.getLastLocationForVehicle(19417);
-        System.out.println("Location: " + ll);
-        ll = dao.getLastLocationForDriver(37505);
-        System.out.println("Location: " + ll);
-*/
-//        List<Trip> trips = dao.getTripsForDriver(14372, new Date(1362355200000L), new Date()); // List<DriverLocation> driverLocations = getDriverLocations(Integer groupID)
-
-        List<Trip> trips = dao.getTripsForVehicle(3897, new Date(0), new Date()); 
-        dao.logTrips(trips);
-        for(Trip dTrip : trips)
-        {
-            System.out.println("Trip: " + dTrip);
-        }
-
-//        List<LatLng> route = dao.fetchRouteForTrip(20079, 0,1363957581, false);        
-//        System.out.println("route: " + route.size());
-//            Trip dTrip = dao.getLastTripForVehicle(21130);
-//        System.out.println("Trip: " + dTrip);
-
-        /*
-        Trip trip = dao.getLastTripForDriver(37505); 
-        System.out.println("Trip: " + trip);
-         * 53422 Trip trip = dao.getLastTripForDriver(20821); System.out.println("Trip: " + trip);
-         * 
-         * LastLocation ll = dao.getLastLocationForDriver(20821); System.out.println("Location: " + ll);
-         * 
-         * 
-         * ll = dao.getLastLocationForDriver(66462); System.out.println("Location: " + ll);
-         * 
-         * Trip trip = dao.getLastTripForVehicle(52721); System.out.println("Trip: " + trip);
-         * 
-         * List<Trip> trips = dao.getTripsForVehicle(52721, new Date(0), new Date()); dao.logTrips(trips);
-         * 
-         */
-
-        dao.shutdown();
-    }
-
-    private void logTrips(List<Trip> trips) {
-        for (Trip t : trips) {
-            logger.info("Trip: " + t);
-            System.out.println("Trip: " + t);
-        }
-        System.out.println("**************************************************");
-    }
 
     public LocationCassandraDAO() {
         mapper = new SimpleMapper();
@@ -270,7 +192,6 @@ public class LocationCassandraDAO extends GenericCassandraDAO implements Locatio
         List<Trip> tripList = fetchTripsForAsset(driverID, (int) DateUtil.convertDateToSeconds(start), (int) DateUtil.convertDateToSeconds(end), true, false);
         Collections.reverse(tripList);
 
-        boolean beginStop = true;
         DriverStops stop = null;
         Map<Integer, String> vehicleNameMap = new HashMap<Integer, String>();
         for (Trip trip : tripList) {
@@ -298,7 +219,6 @@ public class LocationCassandraDAO extends GenericCassandraDAO implements Locatio
                     stop.setLng(trip.getStartLng());
                     stopsList.add(stop);
 
-                    beginStop = false;
                     stop = createStop(driverName, vehicleName, trip, true);
                 } else {
                     if (trip.getVehicleID().intValue() == stop.getVehicleID().intValue()) {
@@ -346,9 +266,7 @@ public class LocationCassandraDAO extends GenericCassandraDAO implements Locatio
                 boolean idleIsStop = true;
                 for (DriverStops s : stopsList) {
                     if (s.getArriveTime() != null) {
-                        
-                        
-                        if (DateUtil.convertDateToSeconds(event.getTime()) < s.getArriveTime() && (s.getArriveTime() - DateUtil.convertDateToSeconds(event.getTime())) < TIME_BUFFER_SECONDS
+                        if (DateUtil.convertDateToSeconds(event.getTime()) < s.getArriveTime() && (s.getArriveTime() - DateUtil.convertDateToSeconds(event.getTime())) <= TIME_BUFFER_SECONDS
                                 && isSamePosition(event.getLatitude(), event.getLongitude(), s.getLat(), s.getLng())) {
                             idleIsStop = false;
                             // We have an idle event right before a start trip. Make it the some stop
@@ -359,8 +277,7 @@ public class LocationCassandraDAO extends GenericCassandraDAO implements Locatio
                             s.setArriveTime(DateUtil.convertDateToSeconds(event.getTime()) - (s.getIdleHi() + s.getIdleLo()));
                             break;
                         } else if (s.getDepartTime() != null && DateUtil.convertDateToSeconds(event.getTime()) > s.getDepartTime()
-//                                && (DateUtil.convertDateToSeconds(event.getTime()) - ((((IdleEvent) event).getHighIdle() + ((IdleEvent) event).getLowIdle())) - s.getDepartTime() < TIME_BUFFER_SECONDS)
-                                && (DateUtil.convertDateToSeconds(event.getTime()) - ((idleHi + idleLo)) - s.getDepartTime() < TIME_BUFFER_SECONDS)
+                                && (DateUtil.convertDateToSeconds(event.getTime()) - ((idleHi + idleLo)) - s.getDepartTime() <= TIME_BUFFER_SECONDS)
                                 && isSamePosition(event.getLatitude(), event.getLongitude(), s.getLat(), s.getLng())) {
                             idleIsStop = false;
                             // We have an idle event right after the stop. make it the same stop,
@@ -369,8 +286,7 @@ public class LocationCassandraDAO extends GenericCassandraDAO implements Locatio
                             s.setDepartTime(DateUtil.convertDateToSeconds(event.getTime()));
                             break;
                         }
-                    }
-                    // Math.abs(event.getLatitude() - trip.getEndLat());
+                    }    
                 }
 
                 //We have idles that don't back up against a stop.
@@ -418,6 +334,7 @@ public class LocationCassandraDAO extends GenericCassandraDAO implements Locatio
 
     private DriverStops createStop(String driverName, String vehicleName, Trip trip, boolean setDriveTime) {
         DriverStops stop = new DriverStops();
+        stop.setDriveTime(0L);
         stop.setDriverID(trip.getDriverID());
         stop.setDriverName(driverName);
         stop.setVehicleName(vehicleName);
@@ -427,8 +344,11 @@ public class LocationCassandraDAO extends GenericCassandraDAO implements Locatio
         stop.setArriveTime(DateUtil.convertDateToSeconds(trip.getEndTime()));
         stop.setIdleHi(0);
         stop.setIdleLo(0);
-        if (setDriveTime)
-            stop.setDriveTime(DateUtil.convertDateToSeconds(trip.getEndTime())-DateUtil.convertDateToSeconds(trip.getStartTime()));
+        if (setDriveTime) {
+            long driveTime = DateUtil.convertDateToSeconds(trip.getEndTime())-DateUtil.convertDateToSeconds(trip.getStartTime());
+            if (driveTime > 0)
+                stop.setDriveTime(driveTime);
+        }
         return stop;
     }
     
@@ -438,7 +358,8 @@ public class LocationCassandraDAO extends GenericCassandraDAO implements Locatio
         Long departTime = null;
         for (DriverStops stop : stopsList) {
             if (departTime != null) {
-                stop.setDriveTime(stop.getArriveTime() - departTime);
+                long driveTime = stop.getArriveTime() - departTime;
+                stop.setDriveTime(driveTime > 0 ? driveTime : 0L);
             } 
                 
             departTime = stop.getDepartTime();
@@ -540,7 +461,6 @@ public class LocationCassandraDAO extends GenericCassandraDAO implements Locatio
             List<HColumn<String, Integer>> columnList = columnSlice.getColumns();
 
             Map<String, Object> fieldMap = new HashMap<String, Object>();
-            int mileage = 0;
             if (columnList.size() > 0) {
                 for (HColumn<String, Integer> column : columnList) {
   //                  if (column.getName().startsWith(MILEAGE))
@@ -716,8 +636,6 @@ public class LocationCassandraDAO extends GenericCassandraDAO implements Locatio
         Integer latestLocationTimestamp = 0;
         Integer latestNoteTypeCode = 0;
         Long noteId = null;
-        Integer assetId = null;
-
         // First grab the last note for the asset that has a valid lat/lng (not stripped)
         Map<Composite, Long> noteMap = fetchLastLocationNoteFromIndex(index_cf, id);
 
