@@ -11,5 +11,7 @@ public interface ReportScheduleDAO extends GenericDAO<ReportSchedule, Integer>
     public List<ReportSchedule> getReportSchedulesByAccountID(Integer accountID);
 
     public List<ReportSchedule> getReportSchedulesByUserIDDeep(Integer userID);
+    
+    public List<ReportSchedule> getActiveReportSchedulesByAccountID(Integer accountID);
 
 }

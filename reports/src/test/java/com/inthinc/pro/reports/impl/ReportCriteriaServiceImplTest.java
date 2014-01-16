@@ -581,6 +581,11 @@ public class ReportCriteriaServiceImplTest extends BaseUnitTest {
         }
         
         @Override
+        public List<Long> getAllValidAcctIDs() {
+            return null;
+        }
+
+        @Override
         public Account findByID(Integer id) {
             return null;
         }

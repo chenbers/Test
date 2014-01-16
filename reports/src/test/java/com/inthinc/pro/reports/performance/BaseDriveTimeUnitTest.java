@@ -99,6 +99,12 @@ public class BaseDriveTimeUnitTest extends BasePerformanceUnitTest {
             return null;
         }
         
+        @Override
+        public List<Long> getAllValidAcctIDs() {
+            // TODO Auto-generated method stub
+            return null;
+        }
+
     }
     
     class MockHOSDAO implements HOSDAO {
