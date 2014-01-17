@@ -62,6 +62,7 @@ public class HOSDriverKioskBean extends BaseBean {
         hosRecord.setLocation(location);
         hosDAO.create(0l, hosRecord);
         setHosCurrentStatus(null);
+        logger.info("Added status record: " + status);
         
     }
     
@@ -74,6 +75,7 @@ public class HOSDriverKioskBean extends BaseBean {
     }
     
     public HOSCurrentStatus getHosCurrentStatus() {
+        logger.info("getHosCurrentStatus");
         if (hosCurrentStatus == null)
             initHOSCurrentStatus();
         return hosCurrentStatus;
@@ -85,6 +87,7 @@ public class HOSDriverKioskBean extends BaseBean {
     }
 
     private void initHOSCurrentStatus() {
+        logger.info("initHosCurrentStatus");
         hosCurrentStatus = new HOSCurrentStatus(hosDAO);
         hosCurrentStatus.init(getDriver());
     }
