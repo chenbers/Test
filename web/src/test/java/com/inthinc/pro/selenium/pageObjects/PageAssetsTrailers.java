@@ -196,6 +196,14 @@ public class PageAssetsTrailers extends Masthead {
             return new TextField(AssetsTrailersEnum.MAKE_TRAILER_INFORMATION_TEXTFIELD);
         }
         
+        public TextField model() {
+            return new TextField(AssetsTrailersEnum.MODEL_TRAILER_INFORMATION_TEXTFIELD);
+        }
+        
+        public TextField odometer() {
+            return new TextField(AssetsTrailersEnum.ODOMETER_TRAILER_INFORMATION_TEXTFIELD);
+        }
+        
         public TextField year() {
             return new TextField(AssetsTrailersEnum.YEAR_TRAILER_INFORMATION_TEXTFIELD);
         }
@@ -312,9 +320,17 @@ public class PageAssetsTrailers extends Masthead {
             return new Text(AssetsTrailersEnum.ODOMETER_CHECKBOX_LABEL);
         }
         //
-        
+        //DETAILS SECTION
         public Text detailsHeader() {
             return new Text(AssetsTrailersEnum.DETAILS_HEADER);
+        }
+        
+        public Text trailerIDLabel() {
+            return new Text(AssetsTrailersEnum.TRAILER_ID_LABEL);
+        }
+        
+        public Text statusLabel() {
+            return new Text(AssetsTrailersEnum.STATUS_LABEL);
         }
         
         public Text vinLabel() {
@@ -323,6 +339,14 @@ public class PageAssetsTrailers extends Masthead {
         
         public Text makeLabel() {
             return new Text(AssetsTrailersEnum.MAKE_TRAILER_INFORMATION_LABEL);
+        }
+        
+        public Text modelLabel() {
+            return new Text(AssetsTrailersEnum.MODEL_TRAILER_INFORMATION_LABEL);
+        }
+        
+        public Text odometerLabel() {
+            return new Text(AssetsTrailersEnum.ODOMETER_TRAILER_INFORMATION_LABEL);
         }
         
         public Text yearLabel() {
@@ -344,21 +368,13 @@ public class PageAssetsTrailers extends Masthead {
         public Text stateLabel() {
             return new Text(AssetsTrailersEnum.STATE_TRAILER_INFORMATION_LABEL);
         }
-
-        public Text trailerIDLabel() {
-            return new Text(AssetsTrailersEnum.TRAILER_ID_LABEL);
-        }
-        
-        public Text statusLabel() {
-            return new Text(AssetsTrailersEnum.STATUS_LABEL);
-        }
         
         public Text assignmentLabel() {
             return new Text(AssetsTrailersEnum.ASSIGNMENT_HEADER);
         }
         
-        public Text teamLabel() {
-            return new Text(AssetsTrailersEnum.TEAM_TRAILER_ASSIGNMENT_LABEL);
+        public Text assignedTeamLabel() {
+            return new Text(AssetsTrailersEnum.ASSIGNED_TEAM_LABEL);
         }
         
         public Text assignedDeviceLabel() {
@@ -373,12 +389,28 @@ public class PageAssetsTrailers extends Masthead {
             return new Text(AssetsTrailersEnum.ASSIGNED_DRIVER_LABEL);
         }
         
+        public Text trailerID() {
+            return new Text(AssetsTrailersEnum.TRAILER_ID_TEXT);
+        }
+        
+        public Text status() {
+            return new Text(AssetsTrailersEnum.STATUS_TEXT);
+        }
+        
         public Text vin() {
             return new Text(AssetsTrailersEnum.VIN_TRAILER_INFORMATION_TEXT);
         }
         
         public Text make() {
             return new Text(AssetsTrailersEnum.MAKE_TRAILER_INFORMATION_TEXT);
+        }
+        
+        public Text model() {
+            return new Text(AssetsTrailersEnum.MODEL_TRAILER_INFORMATION_TEXT);
+        }
+        
+        public Text odometer() {
+            return new Text(AssetsTrailersEnum.ODOMETER_TRAILER_INFORMATION_TEXT);
         }
         
         public Text year() {
@@ -400,16 +432,8 @@ public class PageAssetsTrailers extends Masthead {
         public Text state() {
             return new Text(AssetsTrailersEnum.STATE_TRAILER_INFORMATION_TEXT);
         }
-        
-        public Text trailerID() {
-            return new Text(AssetsTrailersEnum.TRAILER_ID_TEXT);
-        }
-        
-        public Text status() {
-            return new Text(AssetsTrailersEnum.STATUS_TEXT);
-        }
-        
-        public Text team() {
+      
+        public Text assignedTeam() {
             return new Text(AssetsTrailersEnum.TEAM_TRAILER_ASSIGNMENT_TEXT);
         }
         
@@ -431,6 +455,10 @@ public class PageAssetsTrailers extends Masthead {
         
         public Text entries() {
             return new Text(AssetsTrailersEnum.ENTRIES_TEXT);
+        }
+        
+        public Text trailerIDError() {
+            return new Text(AssetsTrailersEnum.TRAILER_ID_ERROR_TEXT);
         }
         
         public Text vinError() {
