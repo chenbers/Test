@@ -785,7 +785,7 @@ And I validate the Year text is SAVEDYEAR
 And I validate the Color text is SAVEDCOLOR
 And I validate the Weight text is SAVEDWEIGHT
 And I validate the License Number text is SAVEDLICENSE
-And I validate the State text is "Alabama"
+!-- And I validate the State text is "Alabama"
 And I validate the Trailer ID text is SAVEDTRAILER
 And I validate the Status text is SAVEDSTATUS
 And I validate the Assigned Team text is SAVEDTEAM
@@ -799,7 +799,7 @@ And I validate the Year textfield is SAVEDYEAR
 And I validate the Color textfield is SAVEDCOLOR
 And I validate the Weight textfield is SAVEDWEIGHT
 And I validate the License Number textfield is SAVEDLICENSE
-And I validate the State dropdown is "Alabama"
+!-- And I validate the State dropdown is "Alabama"
 And I validate the Trailer ID textfield is SAVEDTRAILER
 And I validate the Status dropdown is SAVEDSTATUS
 And I validate the Assigned Device dropdown is SAVEDDEVICE
@@ -975,6 +975,48 @@ And I click the Cancel button
 And I click the Edit button
 And I validate the VIN Error text is not present
 
+Scenario: Assets - Trailers - Make is more than 22 characters (new button)
+Given I navigate to the assets trailers page
+When I click the New_ button
+And I type "abcdefghijklmn123456789" into the Make textfield
+Then I validate the Make Error text is present
+And I validate the Make Error text is "The trailer make exceeds 22 characters."
+And I click the Cancel button
+And I click the New_ button
+And I validate the Make Error text is not present
+
+Scenario: Assets - Trailers - Make is more than 22 characters (edit button)
+Given I navigate to the assets trailers page
+When I click the 1st Row of the Trailer ID Entry link
+And I click the Edit button
+And I type "abcdefghijklmn123456789" into the Make textfield
+Then I validate the Make Error text is present
+And I validate the Make Error text is "The trailer make exceeds 22 characters."
+And I click the Cancel button
+And I click the Edit button
+And I validate the Make Error text is not present
+
+Scenario: Assets - Trailers - Model is more than 22 characters (new button)
+Given I navigate to the assets trailers page
+When I click the New_ button
+And I type "abcdefghijklmn123456789" into the Model textfield
+Then I validate the Model Error text is present
+And I validate the Model Error text is "The trailer model exceeds 22 characters."
+And I click the Cancel button
+And I click the New_ button
+And I validate the Model Error text is not present
+
+Scenario: Assets - Trailers - Model is more than 22 characters (edit button)
+Given I navigate to the assets trailers page
+When I click the 1st Row of the Trailer ID Entry link
+And I click the Edit button
+And I type "abcdefghijklmn123456789" into the Model textfield
+Then I validate the Model Error text is present
+And I validate the Model Error text is "The trailer model exceeds 22 characters."
+And I click the Cancel button
+And I click the Edit button
+And I validate the Model Error text is not present
+
 Scenario: Assets - Trailers - Year is not 4 characters (new button)
 Given I navigate to the assets trailers page
 When I click the New_ button
@@ -1033,6 +1075,27 @@ And I click the Cancel button
 And I click the Edit button
 And I validate the Year Error text is not present
 
+Scenario: Assets - Trailers - Color exceeds 14 characters (new button)
+Given I navigate to the assets trailers page
+When I click the New_ button
+And I type "abcdef123456789" into the Color textfield
+Then I validate the Color Error text is present
+And I validate the Color Error text is "The trailer color exceeds 14 characters."
+And I click the Cancel button
+And I click the New_ button
+And I validate the Color Error text is not present
+
+Scenario: Assets - Trailers - Color exceeds 14 characters (edit button)
+Given I navigate to the assets trailers page
+When I click the 1st Row of the Trailer ID Entry link
+And I click the Edit button
+And I type "abcdef123456789" into the Color textfield
+Then I validate the Color Error text is present
+And I validate the Color Error text is "The trailer color exceeds 14 characters."
+And I click the Cancel button
+And I click the Edit button
+And I validate the Color Error text is not present
+
 Scenario: Assets - Trailers - Weight is not numerical (new button)
 Given I navigate to the assets trailers page
 When I click the New_ button
@@ -1053,5 +1116,3 @@ And I validate the Weight Error text is "The trailer weight can be empty or cont
 And I click the Cancel button
 And I click the Edit button
 And I validate the Weight Error text is not present
-
-
