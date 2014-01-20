@@ -59,7 +59,7 @@ public class HOSCurrentStatus extends HOSBase {
 
 
     public void init(Driver driver) {
-        DateTime currentDate = new DateTime();
+        DateTime currentDate = new DateTime().plusSeconds(15);
         List<HOSRecord> hosRecordList = fetchHosRecordList(currentDate, driver);
         if (hosRecordList == null)
             return;

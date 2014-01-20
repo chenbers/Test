@@ -46,7 +46,7 @@ public class HOSBase {
         LocalDate localDate = new LocalDate(new DateMidnight(endDateTime, dateTimeZone));
         DateTime startDate = localDate.toDateTimeAtStartOfDay(dateTimeZone).minusDays(daysBack);
 
-        return new Interval(startDate, endDateTime.plusSeconds(15));
+        return new Interval(startDate, endDateTime);
 
     }
 
