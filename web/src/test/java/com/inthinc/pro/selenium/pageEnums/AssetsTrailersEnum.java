@@ -101,7 +101,7 @@ public enum AssetsTrailersEnum implements SeleniumEnums {
 	STATE_TRAILER_INFORMATION_LABEL("State", "//div[11]/label"),
 	STATE_TRAILER_INFORMATION_TEXT(null, "stateValue"),
 	STATE_TRAILER_INFORMATION_DROPDOWN(null, "stateInput"),
-	TRAILER_ID_ERROR_TEXT("The trailer id cannot be left blank.", "//div[3]/div/div[2]/label[@class='error']"),
+	TRAILER_ID_ERROR_TEXT("The trailer id cannot be left blank.", "//div[1]/div/div[2]/label[@class='error']"),
 	VIN_ERROR_TEXT("The trailer vin exceeds 17 characters.", "//div[3]/div/div[2]/label[@class='error']"),
     MAKE_ERROR_TEXT("The trailer make exceeds 22 characters.", "//div[4]/div/div[2]/label[@class='error']"),	
     MODEL_ERROR_TEXT("The trailer model exceeds 22 characters.", "//div[5]/div/div[2]/label[@class='error']"),	
