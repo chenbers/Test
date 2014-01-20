@@ -525,7 +525,7 @@ And I type "Ford" into the Make textfield
 And I type "2013" into the Year textfield
 And I type "Race Red" into the Color textfield
 And I type "21000" into the Weight textfield
-And I type "INTHINC" into the License Number textfield
+And I type "INTHINCLIC" into the License Number textfield
 And I select "Alabama" from the State dropdown
 And I type "FAKETRAILERNAME" into the Trailer ID textfield
 And I select "ACTIVE" from the Status dropdown
@@ -569,7 +569,7 @@ And I type "1010" into the Odometer textfield
 And I type "2008" into the Year textfield
 And I type "Purple" into the Color textfield
 And I type "15000" into the Weight textfield
-And I type "INTHINC1" into the License Number textfield
+And I type "INTHINCLI1" into the License Number textfield
 And I select "Vermont" from the State dropdown
 And I type "SAVECHANGESNAME" into the Trailer ID textfield
 And I select "ACTIVE" from the Status dropdown
@@ -815,7 +815,7 @@ And I type "102385" into the Odometer textfield
 And I type "1910" into the Year textfield
 And I type "ANEWERCOLOR" into the Color textfield
 And I type "60" into the Weight textfield
-And I type "ANEWLICENSE2" into the License Number textfield
+And I type "NEWLICENS2" into the License Number textfield
 And I select "Texas" from the State dropdown
 And I click the Save button
 And I validate the Trailer ID text is ""
@@ -837,7 +837,7 @@ And I type "ANEWMAKE2" into the Search textfield
 And I validate the 1st Row of the Trailer ID Entry link is "ANEWTRAILER2"
 And I validate the 1st Row of the Status Entry link is "INACTIVE"
 And I validate the 1st Row of the VIN Entry link is "ANEWVINNUMBER2"
-And I validate the 1st Row of the License Entry link is "ANEWLICENSE2"
+And I validate the 1st Row of the License Entry link is "NEWLICENS2"
 And I validate the 1st Row of the State Entry link is "Texas"
 And I validate the 1st Row of the Year Entry link is "1910"
 And I validate the 1st Row of the Make Entry link is "ANEWMAKE2"
@@ -860,9 +860,9 @@ And I type "CLEARDEVICEMAKE" into the Make textfield
 And I type "CLEARDEVICEMODEL" into the Model textfield
 And I type "159702" into the Odometer textfield
 And I type "2003" into the Year textfield
-And I type "CLEARDEVICECOLOR" into the Color textfield
+And I type "CLEARDEVICECOL" into the Color textfield
 And I type "15003" into the Weight textfield
-And I type "CLEARDEVICELICNUM" into the License Number textfield
+And I type "CLEARDEVIC" into the License Number textfield
 And I select "Virginia" from the State dropdown
 And I select "MCM990098" from the Assigned Device dropdown
 And I click the Save button
