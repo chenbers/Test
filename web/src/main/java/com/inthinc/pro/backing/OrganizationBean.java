@@ -491,6 +491,7 @@ public class OrganizationBean extends BaseBean {
         group.setDescription(copyFromGroup.getDescription());
         group.setCreated(copyFromGroup.getCreated());
         group.setType(copyFromGroup.getType());
+        group.setGlCode(copyFromGroup.getGlCode());
         if (copyFromGroup.getMapCenter() != null) {
             group.setMapCenter(new LatLng(copyFromGroup.getMapCenter().getLat(), copyFromGroup.getMapCenter().getLng()));
         }
