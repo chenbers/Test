@@ -187,6 +187,7 @@
                                 <exclude>**/selenium/**/DriverStatisticsTest.java</exclude>
                                 <exclude>**/selenium/**/FormsSubmissionsTest.java</exclude>
                                 <exclude>**/selenium/**/GainReportsTest.java</exclude>
+                                <exclude>**/selenium/**/FormsOptionsEditorTest.java</exclude>
                                 <exclude>**/selenium/**/Mass**.java</exclude>
                                 <exclude>**/selenium/**/NotificationTest.java</exclude>
                                 <exclude>**/selenium/**/PasswordChangeTest.java</exclude>
