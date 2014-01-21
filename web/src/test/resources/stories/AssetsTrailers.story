@@ -719,6 +719,82 @@ And I validate the License Number textfield is ""
 And I validate the State dropdown contains "--- Select ---"
 And I validate the Assigned Device dropdown is ""
 
+Scenario: Assets - Trailers - Edit Trailer (save button - no changes)
+Given I navigate to the assets trailers page
+When I click the 1st Row of the Trailer ID Entry link
+And I save the 1st Row of the Trailer ID Entry link as SAVEDTRAILER
+And I save the 1st Row of the Team Entry link as SAVEDTEAM
+And I save the 1st Row of the Device Entry link as SAVEDDEVICE
+And I save the 1st Row of the Vehicle Entry link as SAVEDVEHICLE
+And I save the 1st Row of the Driver Entry link as SAVEDDRIVER
+And I save the 1st Row of the Status Entry link as SAVEDSTATUS
+And I save the 1st Row of the VIN Entry link as SAVEDVIN
+And I save the 1st Row of the License Entry link as SAVEDLICENSE
+And I save the 1st Row of the State Entry link as SAVEDSTATE
+And I save the 1st Row of the Year Entry link as SAVEDYEAR
+And I save the 1st Row of the Make Entry link as SAVEDMAKE
+And I save the 1st Row of the Model Entry link as SAVEDMODEL
+And I save the 1st Row of the Color Entry link as SAVEDCOLOR
+And I save the 1st Row of the Weight Entry link as SAVEDWEIGHT
+And I save the 1st Row of the Odometer Entry link as SAVEDODOMETER
+And I click the Edit button
+And I click the Save button
+And I validate the Edit button is not visible
+And I validate the Save button is not visible
+And I validate the Cancel button is not visible
+And I validate the Trailer ID text is ""
+And I validate the Status text is ""
+And I validate the VIN text is ""
+And I validate the Make text is ""
+And I validate the Model text is ""
+And I validate the Odometer text is ""
+And I validate the Year text is ""
+And I validate the Color text is ""
+And I validate the Weight text is ""
+And I validate the License Number text is ""
+And I validate the State text is ""
+And I validate the Assigned Team text is ""
+And I validate the Assigned Device text is ""
+And I validate the Assigned Vehicle text is ""
+And I validate the Assigned Driver text is ""
+
+Scenario: Assets - Trailers - Edit Trailer (save button - blank trailer id error message)
+Given I navigate to the assets trailers page
+When I click the 1st Row of the Trailer Id Entry link
+And I save the 1st Row of the Trailer ID Entry link as SAVEDTRAILER
+And I save the 1st Row of the Team Entry link as SAVEDTEAM
+And I save the 1st Row of the Device Entry link as SAVEDDEVICE
+And I save the 1st Row of the Vehicle Entry link as SAVEDVEHICLE
+And I save the 1st Row of the Driver Entry link as SAVEDDRIVER
+And I save the 1st Row of the Status Entry link as SAVEDSTATUS
+And I save the 1st Row of the VIN Entry link as SAVEDVIN
+And I save the 1st Row of the License Entry link as SAVEDLICENSE
+And I save the 1st Row of the State Entry link as SAVEDSTATE
+And I save the 1st Row of the Year Entry link as SAVEDYEAR
+And I save the 1st Row of the Make Entry link as SAVEDMAKE
+And I save the 1st Row of the Model Entry link as SAVEDMODEL
+And I save the 1st Row of the Color Entry link as SAVEDCOLOR
+And I save the 1st Row of the Weight Entry link as SAVEDWEIGHT
+And I save the 1st Row of the Odometer Entry link as SAVEDODOMETER
+And I click the Edit button
+And I type "" into the Trailer ID textfield
+And I click the Save button
+Then I validate the Trailer ID textfield is ""
+And I validate the VIN textfield is SAVEDVIN
+And I validate the Make textfield is SAVEDMAKE
+And I validate the Model textfield is SAVEDMODEL
+And I validate the Odometer textfield is SAVEDODOMETER
+And I validate the Year textfield is SAVEDYEAR
+And I validate the Color textfield is SAVEDCOLOR
+And I validate the Weight textfield is SAVEDWEIGHT
+And I validate the License Number textfield is SAVEDLICENSE
+!-- And I validate the State dropdown is SAVEDSTATE
+And I validate the Status dropdown is SAVEDSTATUS
+And I validate the Assigned Team text is SAVEDTEAM
+And I validate the Assigned Device dropdown is SAVEDDEVICE
+And I validate the Assigned Vehicle text is SAVEDVEHICLE
+And I validate the Assigned Driver text is SAVEDDRIVER
+
 Scenario: Assets - Trailers - Edit Trailer (edit button - save changes)
 Given I navigate to the assets trailers page
 When I click the New_ button
