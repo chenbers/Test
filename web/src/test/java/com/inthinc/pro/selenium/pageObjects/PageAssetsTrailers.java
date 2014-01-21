@@ -80,6 +80,10 @@ public class PageAssetsTrailers extends Masthead {
             return new TextLink(AssetsTrailersEnum.SORT_BY_LICENSE_NUMBER);
         }
         
+        public TextLink sortByState() {
+            return new TextLink(AssetsTrailersEnum.SORT_BY_STATE_LINK);
+        }
+        
         public TextLink sortByYear() {
             return new TextLink(AssetsTrailersEnum.SORT_BY_YEAR);
         }
@@ -254,11 +258,7 @@ public class PageAssetsTrailers extends Masthead {
         public Text sortByDriver() {
             return new Text(AssetsTrailersEnum.SORT_BY_DRIVER_TEXT);
         }
-        
-        public Text sortByState() {
-            return new Text(AssetsTrailersEnum.SORT_BY_STATE_TEXT);
-        }
-        
+
         //SHOW/HIDE COLUMNS LABELS
         public Text trailerIDCheckboxLabel() {
             return new Text(AssetsTrailersEnum.TRAILER_ID_CHECKBOX_LABEL);
@@ -484,6 +484,12 @@ public class PageAssetsTrailers extends Masthead {
         public Text weightError() {
             return new Text(AssetsTrailersEnum.WEIGHT_ERROR_TEXT);
         }
+        
+        public Text licenseNumberError() {
+            return new Text(AssetsTrailersEnum.LICENSE_NUMBER_ERROR_TEXT);
+        }
+        
+        
 
     }
     

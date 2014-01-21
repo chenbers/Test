@@ -54,7 +54,7 @@ public enum AssetsTrailersEnum implements SeleniumEnums {
 	SORT_BY_STATUS("Status", "//th[@aria-label='Status: activate to sort column ascending']"),
 	SORT_BY_VIN("VIN", "//th[@aria-label='VIN: activate to sort column ascending']"),
 	SORT_BY_LICENSE_NUMBER("License #", "//th[@aria-label='License #: activate to sort column ascending']"),
-	SORT_BY_STATE_TEXT("State", "//th[@aria-label='State']"),
+	SORT_BY_STATE_LINK("State", "//th[@aria-label='State: activate to sort column ascending']"),
 	SORT_BY_YEAR("Year", "//th[@aria-label='Year: activate to sort column ascending']"),
 	SORT_BY_MAKE("Make", "//th[@aria-label='Make: activate to sort column ascending']"),
 	SORT_BY_MODEL("Model", "//th[@aria-label='Model: activate to sort column ascending']"),
@@ -108,6 +108,7 @@ public enum AssetsTrailersEnum implements SeleniumEnums {
 	YEAR_ERROR_TEXT("The trailer year can be empty or contain 4 numbers.", "//div[7]/div/div[2]/label[@class='error']"),
 	COLOR_ERROR_TEXT("The trailer color exceeds 14 characters.", "//div[8]/div/div[2]/label[@class='error']"),
 	WEIGHT_ERROR_TEXT("The trailer weight can be empty or contain only numbers.", "//div[9]/div/div[2]/label[@class='error']"),
+	LICENSE_NUMBER_ERROR_TEXT("The trailer license exceeds 10 characters.", "//div[10]/div/div[2]/label[@class='error']"),
 	//ASSIGNMENT SECTION
 	ASSIGNMENT_HEADER("Assignment", "//div/h4[@class='detailHeader']"),
 	ASSIGNED_DEVICE_LABEL("Device", "//div[13]/label"),
