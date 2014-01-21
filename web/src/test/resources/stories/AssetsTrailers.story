@@ -23,8 +23,12 @@ And I validate the Sort By Model link is present
 And I validate the Sort By Color link is present
 And I validate the Sort By Weight link is present
 And I validate the Sort By Odometer link is present
-And I validate the Previous Disabled link is  present
+And I validate the Previous Disabled link is present
 And I validate the Next link is present
+And I validate the Entries text is present
+And I validate the Entries text contains "Showing 1 to 10 of"
+And I validate the Entries text contains "entries"
+And I validate the Entries text does not contain "filtered"
 And I validate the New_ button is present
 And I validate the New_ button is visible
 And I validate the Edit button is not visible
@@ -173,8 +177,9 @@ And I validate the Next Disabled link is present
 Scenario: Assets - Trailers - Filtered Entries Text Functions Correctly
 Given I navigate to the assets trailers page
 When I type "FilteredEntry" into the Search textfield
-Then I validate the Entries text contains "Showing 1 to 3 of 3 entries (filtered from "
-And I validate the Entries text contains " total entries)"
+Then I validate the Entries text contains "Showing 1 to 3 of 3 entries"
+And I validate the Entries text contains "filtered from"
+And I validate the Entries text contains "total entries"
 
 Scenario: Assets - Trailers - Search Filter (clear or not clear test depending on how we change things, at the moment the test checks for not cleared text)
 Given I navigate to the assets trailers page
@@ -1109,6 +1114,27 @@ And I validate the Model Error text is "The trailer model exceeds 22 characters.
 And I click the Cancel button
 And I click the Edit button
 And I validate the Model Error text is not visible
+
+!-- Scenario: Assets - Trailers - Odometer is non-numeric characters (new button)
+!-- Given I navigate to the assets trailers page
+!-- When I click the New_ button
+!-- And I type "a" into the Odometer textfield
+!-- Then I validate the Odometer Error text is present
+!-- And I validate the Odometer Error text is "The trailer odometer can only be numeric characters."
+!-- And I click the Cancel button
+!-- And I click the New_ button
+!-- And I validate the Odometer Error text is not visible
+
+!-- Scenario: Assets - Trailers - Odometer is non-numeric characters (edit button)
+!-- Given I navigate to the assets trailers page
+!-- When I click the 1st Row of the Trailer ID Entry link
+!-- And I click the Edit button
+!-- And I type "a" into the Odometer textfield
+!-- Then I validate the Odometer Error text is present
+!-- And I validate the Odometer Error text is "The trailer odometer can only be numeric characters."
+!-- And I click the Cancel button
+!-- And I click the Edit button
+!-- And I validate the Odometer Error text is not visible
 
 Scenario: Assets - Trailers - Year is not 4 characters (new button)
 Given I navigate to the assets trailers page
