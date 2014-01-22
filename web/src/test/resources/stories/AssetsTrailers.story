@@ -413,41 +413,44 @@ And I validate the Assigned Team text is SAVEDTEAM2
 And I validate the Assigned Vehicle text is SAVEDVEHICLE2
 And I validate the Assigned Driver text is SAVEDDRIVER2
 
-!-- Scenario: Assets - Trailers - Select And Deselect A Row (NEED TO GET COMMAND CLICK WORKING, TAKING TEST OUT FOR NOW)
-!-- Given I navigate to the assets trailers page
-!-- When I click the 1st Row of the Trailer ID Entry link
-!-- And I command click the 1st Row of the Trailer ID Entry link
-!-- Then I validate the VIN text is ""
-!-- And I validate the Make text is ""
-!-- And I validate the Year text is ""
-!-- And I validate the Color text is ""
-!-- And I validate the Weight text is ""
-!-- And I validate the License Number text is ""
-!-- And I validate the State text is ""
-!-- And I validate the Trailer ID text is ""
-!-- And I validate the Status text is ""
-!-- And I validate the Assigned Team text is ""
-!-- And I validate the Assigned Device text is ""
-!-- And I validate the Assigned Vehicle text is ""
-!-- And I validate the Assigned Driver text is ""
+Scenario: Assets - Trailers - Select And Deselect A Row
+Given I navigate to the assets trailers page
+When I click the 1st Row of the Trailer ID Entry link
+And I control click the 1st Row of the Trailer ID Entry link
+Then I validate the VIN text is ""
+And I validate the Make text is ""
+And I validate the Year text is ""
+And I validate the Color text is ""
+And I validate the Weight text is ""
+And I validate the License Number text is ""
+And I validate the State text is ""
+And I validate the Trailer ID text is ""
+And I validate the Status text is ""
+And I validate the Assigned Team text is ""
+And I validate the Assigned Device text is ""
+And I validate the Assigned Vehicle text is ""
+And I validate the Assigned Driver text is ""
 
-!-- Scenario: Assets - Trailers - Select And Deselect A Row Then Click The New Button (NEED TO GET COMMAND CLICK WORKING, TAKING TEST OUT FOR NOW)
-!-- Given I navigate to the assets trailers page
-!-- When I click the 1st Row of the Trailer ID Entry link
-!-- And I command click the 1st Row of the Trailer ID Entry link
-!-- And I click the New_ button
-!-- And I validate the Trailer ID textfield is ""
-!-- And I validate the Status dropdown is "ACTIVE"
-!-- Then I validate the VIN textfield is ""
-!-- And I validate the Make textfield is ""
-!-- And I validate the Model textfield is ""
-!-- And I validate the Odometer textfield is ""
-!-- And I validate the Year textfield is ""
-!-- And I validate the Color textfield is ""
-!-- And I validate the Weight textfield is ""
-!-- And I validate the License Number textfield is ""
-!-- And I validate the State dropdown contains "--- Select ---"
-!-- And I validate the Assigned Device dropdown is ""
+Scenario: Assets - Trailers - Select And Deselect A Row Then Click The New Button
+Given I navigate to the assets trailers page
+When I click the 1st Row of the Trailer ID Entry link
+And I control click the 1st Row of the Trailer ID Entry link
+And I click the New_ button
+And I validate the Trailer ID textfield is ""
+And I validate the Status dropdown is "ACTIVE"
+Then I validate the VIN textfield is ""
+And I validate the Make textfield is ""
+And I validate the Model textfield is ""
+And I validate the Odometer textfield is ""
+And I validate the Year textfield is ""
+And I validate the Color textfield is ""
+And I validate the Weight textfield is ""
+And I validate the License Number textfield is ""
+And I validate the State dropdown contains "--- Select ---"
+And I validate the Assigned Device dropdown is ""
+And I validate the Assigned Team text is ""
+And I validate the Assigned Vehicle text is ""
+And I validate the Assigned Driver text is ""
 
 Scenario: Assets - Trailers - Select A Row, Select Edit, Then Cancel
 Given I navigate to the assets trailers page
@@ -485,28 +488,30 @@ And I validate the Assigned Device text is SAVEDDEVICE
 And I validate the Assigned Vehicle text is SAVEDVEHICLE
 And I validate the Assigned Driver text is SAVEDDRIVER
 
-!-- Scenario: Assets - Trailers - Select A Row, Select Edit, Deselect The Row (Removing test till command click is working)
-!-- Given I navigate to the assets trailers page
-!-- When I click the 1st Row of the Trailer ID Entry link
-!-- And I click the Edit button
-!-- And I command click the 1st Row of the Trailer ID Entry link
-!-- Then I validate the New_ button is visible
-!-- And I validate the Save button is not visible
-!-- And I validate the Edit button is not visible
-!-- And I validate the Cancel button is not visible
-!-- And I validate the VIN text is ""
-!-- And I validate the Make text is ""
-!-- And I validate the Year text is ""
-!-- And I validate the Color text is ""
-!-- And I validate the Weight text is ""
-!-- And I validate the License Number text is ""
-!-- And I validate the State text is ""
-!-- And I validate the Trailer ID text is ""
-!-- And I validate the Status text is ""
-!-- And I validate the Assigned Team text is ""
-!-- And I validate the Assigned Device text is ""
-!-- And I validate the Assigned Vehicle text is ""
-!-- And I validate the Assigned Driver text is ""
+Scenario: Assets - Trailers - Select A Row, Select Edit, Deselect The Row
+Given I navigate to the assets trailers page
+When I click the 1st Row of the Trailer ID Entry link
+And I click the Edit button
+And I control click the 1st Row of the Trailer ID Entry link
+Then I validate the New_ button is visible
+And I validate the Save button is not visible
+And I validate the Edit button is not visible
+And I validate the Cancel button is not visible
+And I validate the VIN text is ""
+And I validate the Make text is ""
+And I validate the Model text is ""
+And I validate the Odometer text is ""
+And I validate the Year text is ""
+And I validate the Color text is ""
+And I validate the Weight text is ""
+And I validate the License Number text is ""
+And I validate the State text is ""
+And I validate the Trailer ID text is ""
+And I validate the Status text is ""
+And I validate the Assigned Team text is ""
+And I validate the Assigned Device text is ""
+And I validate the Assigned Vehicle text is ""
+And I validate the Assigned Driver text is ""
 
 Scenario: Assets - Trailers - Delete Trailer Test (cancel button)
 Given I navigate to the assets trailers page
@@ -909,9 +914,203 @@ And I select "DELETED" from the Status dropdown
 And I click the Save button
 And I validate the Entries text contains "Showing 0 to 0 of 0 entries"
 
-!-- Scenario: Assets - Trailers - New Trailer (new button - save changes, but changes are invalid)
+Scenario: Assets - Trailers - New Trailer (new button - save changes, but changes are invalid)
+Given I navigate to the assets trailers page
+When I click the New_ button
+And I type "PREINVALIDID" into the Trailer ID textfield
+And I type "INVALIDVIN" into the VIN textfield
+And I type "INVALIDNMAKE" into the Make textfield
+And I type "INVALIDMODEL" into the Model textfield
+And I type "516132" into the Odometer textfield
+And I type "1772" into the Year textfield
+And I type "Gurple" into the Color textfield
+And I type "116631" into the Weight textfield
+And I type "INVALIDLN" into the License Number textfield
+And I select "Pennsylvania" from the State dropdown
+And I select "MCM990066" from the Assigned Device dropdown
+And I click the Save button
+And I type "PREINVALIDID" into the Search textfield
+And I click the 1st Row of the Trailer Id Entry link
+And I save the 1st Row of the Trailer ID Entry link as SAVEDTRAILER
+And I save the 1st Row of the Team Entry link as SAVEDTEAM
+And I save the 1st Row of the Device Entry link as SAVEDDEVICE
+And I save the 1st Row of the Vehicle Entry link as SAVEDVEHICLE
+And I save the 1st Row of the Driver Entry link as SAVEDDRIVER
+And I save the 1st Row of the Status Entry link as SAVEDSTATUS
+And I save the 1st Row of the VIN Entry link as SAVEDVIN
+And I save the 1st Row of the License Entry link as SAVEDLICENSE
+!-- And I save the 1st Row of the State Entry link as SAVEDSTATE
+And I save the 1st Row of the Year Entry link as SAVEDYEAR
+And I save the 1st Row of the Make Entry link as SAVEDMAKE
+And I save the 1st Row of the Model Entry link as SAVEDMODEL
+And I save the 1st Row of the Color Entry link as SAVEDCOLOR
+And I save the 1st Row of the Weight Entry link as SAVEDWEIGHT
+And I save the 1st Row of the Odometer Entry link as SAVEDODOMETER
+Then I validate the VIN text is SAVEDVIN
+And I validate the Make text is SAVEDMAKE
+And I validate the Model text is SAVEDMODEL
+And I validate the Odometer text is SAVEDODOMETER
+And I validate the Year text is SAVEDYEAR
+And I validate the Color text is SAVEDCOLOR
+And I validate the Weight text is SAVEDWEIGHT
+And I validate the License Number text is SAVEDLICENSE
+And I validate the State text is "Pennsylvania"
+And I validate the Trailer ID text is SAVEDTRAILER
+And I validate the Status text is SAVEDSTATUS
+And I validate the Assigned Team text is SAVEDTEAM
+And I validate the Assigned Device text is SAVEDDEVICE
+And I validate the Assigned Vehicle text is SAVEDVEHICLE
+And I validate the Assigned Driver text is SAVEDDRIVER
+And I click the Edit button
+And I type "" into the Trailer ID textfield
+And I type "ANINVALIDVINNUMBERTOOLONG" into the VIN textfield
+And I type "WAYTOOLONGMAKEFORVALIDITY" into the Make textfield
+And I type "WAYTOOLONGMODELFORVALIDITY" into the Model textfield
+And I type "a" into the Odometer textfield
+And I type "19101" into the Year textfield
+And I type "ATOOLONGCOLORNAME" into the Color textfield
+And I type "a" into the Weight textfield
+And I type "ATOOLONGLICENSENUMBER" into the License Number textfield
+And I click the Save button
+And I validate the Trailer ID textfield is ""
+And I validate the Status dropdown is "ACTIVE"
+And I validate the VIN textfield is "ANINVALIDVINNUMBERTOOLONG"
+And I validate the Make textfield is "WAYTOOLONGMAKEFORVALIDITY"
+And I validate the Model textfield is "WAYTOOLONGMODELFORVALIDITY"
+And I validate the Odometer textfield is "a"
+And I validate the Year textfield is "19101"
+And I validate the Color textfield is "ATOOLONGCOLORNAME"
+And I validate the Weight textfield is "a"
+And I validate the License Number textfield is "ATOOLONGLICENSENUMBER"
+And I validate the State dropdown is "Pennsylvania"
+And I validate the Assigned Device dropdown is SAVEDDEVICE
+And I validate the Assigned Vehicle text is SAVEDVEHICLE
+And I validate the Assigned Team text is SAVEDTEAM
+And I validate the Assigned Driver text is SAVEDDRIVER
+!-- Now I delete the entry so it will run just fine on the next run through
+And I click the 1st Row of the Trailer Id Entry link
+And I click the Edit button
+And I select "DELETED" from the Status dropdown
+And I click the Save button
+And I validate the Entries text contains "Showing 0 to 0 of 0 entries"
 
-!-- Scenario: Assets - Trailers - Edit Trailer (edit button - save changes, but changes are invalid)
+Scenario: Assets - Trailers - New Trailer (new button - save changes, but changes are invalid)
+Given I navigate to the assets trailers page
+When I click the New_ button
+And I type "ANINVALIDVINNUMBERTOOLONG" into the VIN textfield
+And I type "WAYTOOLONGMAKEFORVALIDITY" into the Make textfield
+And I type "WAYTOOLONGMODELFORVALIDITY" into the Model textfield
+And I type "a" into the Odometer textfield
+And I type "19101" into the Year textfield
+And I type "ATOOLONGCOLORNAME" into the Color textfield
+And I type "a" into the Weight textfield
+And I type "ATOOLONGLICENSENUMBER" into the License Number textfield
+And I select "MCM990011" from the Assigned Device dropdown
+And I click the Save button
+Then I validate the Trailer ID textfield is ""
+And I validate the Trailer ID Error text is visible
+And I validate the Status dropdown is "ACTIVE"
+And I validate the VIN textfield is "ANINVALIDVINNUMBERTOOLONG"
+And I validate the VIN Error text is visible
+And I validate the Make textfield is "WAYTOOLONGMAKEFORVALIDITY"
+And I validate the Make Error text is visible
+And I validate the Model textfield is "WAYTOOLONGMODELFORVALIDITY"
+And I validate the Model Error text is visible
+And I validate the Odometer textfield is "a"
+And I validate the Odometer Error text is visible
+And I validate the Year textfield is "19101"
+And I validate the Year Error text is visible
+And I validate the Color textfield is "ATOOLONGCOLORNAME"
+And I validate the Color Error text is visible
+And I validate the Weight textfield is "a"
+And I validate the Weight Error text is visible
+And I validate the License Number textfield is "ATOOLONGLICENSENUMBER"
+And I validate the License Number Error text is visible
+And I validate the State dropdown is "--- Select ---"
+And I validate the Assigned Device dropdown is "MCM990011"
+And I validate the Assigned Vehicle text is ""
+And I validate the Assigned Team text is ""
+And I validate the Assigned Driver text is ""
+
+Scenario: Assets - Trailers - Edit Trailer (edit button - save changes, but changes are invalid) (TEST WILL FAIL TILL BUG IS FIXED)
+Given I navigate to the assets trailers page
+When I click the New_ button
+And I type "PREINVALIDID" into the Trailer ID textfield
+And I type "INVALIDVIN" into the VIN textfield
+And I type "INVALIDNMAKE" into the Make textfield
+And I type "INVALIDMODEL" into the Model textfield
+And I type "516132" into the Odometer textfield
+And I type "1772" into the Year textfield
+And I type "Gurple" into the Color textfield
+And I type "116631" into the Weight textfield
+And I type "INVALIDLN" into the License Number textfield
+And I select "Pennsylvania" from the State dropdown
+And I select "MCM990066" from the Assigned Device dropdown
+And I click the Save button
+And I type "PREINVALIDID" into the Search textfield
+And I click the 1st Row of the Trailer Id Entry link
+And I save the 1st Row of the Trailer ID Entry link as SAVEDTRAILER
+And I save the 1st Row of the Team Entry link as SAVEDTEAM
+And I save the 1st Row of the Device Entry link as SAVEDDEVICE
+And I save the 1st Row of the Vehicle Entry link as SAVEDVEHICLE
+And I save the 1st Row of the Driver Entry link as SAVEDDRIVER
+And I save the 1st Row of the Status Entry link as SAVEDSTATUS
+And I save the 1st Row of the VIN Entry link as SAVEDVIN
+And I save the 1st Row of the License Entry link as SAVEDLICENSE
+!-- And I save the 1st Row of the State Entry link as SAVEDSTATE
+And I save the 1st Row of the Year Entry link as SAVEDYEAR
+And I save the 1st Row of the Make Entry link as SAVEDMAKE
+And I save the 1st Row of the Model Entry link as SAVEDMODEL
+And I save the 1st Row of the Color Entry link as SAVEDCOLOR
+And I save the 1st Row of the Weight Entry link as SAVEDWEIGHT
+And I save the 1st Row of the Odometer Entry link as SAVEDODOMETER
+Then I validate the VIN text is SAVEDVIN
+And I validate the Make text is SAVEDMAKE
+And I validate the Model text is SAVEDMODEL
+And I validate the Odometer text is SAVEDODOMETER
+And I validate the Year text is SAVEDYEAR
+And I validate the Color text is SAVEDCOLOR
+And I validate the Weight text is SAVEDWEIGHT
+And I validate the License Number text is SAVEDLICENSE
+And I validate the State text is "Pennsylvania"
+And I validate the Trailer ID text is SAVEDTRAILER
+And I validate the Status text is SAVEDSTATUS
+And I validate the Assigned Team text is SAVEDTEAM
+And I validate the Assigned Device text is SAVEDDEVICE
+And I validate the Assigned Vehicle text is SAVEDVEHICLE
+And I validate the Assigned Driver text is SAVEDDRIVER
+And I click the Edit button
+And I type "" into the Trailer ID textfield
+And I type "ANINVALIDVINNUMBERTOOLONG" into the VIN textfield
+And I type "WAYTOOLONGMAKEFORVALIDITY" into the Make textfield
+And I type "WAYTOOLONGMODELFORVALIDITY" into the Model textfield
+And I type "a" into the Odometer textfield
+And I type "19101" into the Year textfield
+And I type "ATOOLONGCOLORNAME" into the Color textfield
+And I type "a" into the Weight textfield
+And I type "ATOOLONGLICENSENUMBER" into the License Number textfield
+And I click the Save button
+And I validate the Trailer ID textfield is ""
+And I validate the Status dropdown is "ACTIVE"
+And I validate the VIN textfield is "ANINVALIDVINNUMBERTOOLONG"
+And I validate the Make textfield is "WAYTOOLONGMAKEFORVALIDITY"
+And I validate the Model textfield is "WAYTOOLONGMODELFORVALIDITY"
+And I validate the Odometer textfield is "a"
+And I validate the Year textfield is "19101"
+And I validate the Color textfield is "ATOOLONGCOLORNAME"
+And I validate the Weight textfield is "a"
+And I validate the License Number textfield is "ATOOLONGLICENSENUMBER"
+And I validate the State dropdown is "Pennsylvania"
+And I validate the Assigned Device dropdown is SAVEDDEVICE
+And I validate the Assigned Vehicle text is SAVEDVEHICLE
+And I validate the Assigned Team text is SAVEDTEAM
+And I validate the Assigned Driver text is SAVEDDRIVER
+!-- Now I delete the entry so it will run just fine on the next run through
+And I click the 1st Row of the Trailer Id Entry link
+And I click the Edit button
+And I select "DELETED" from the Status dropdown
+And I click the Save button
+And I validate the Entries text contains "Showing 0 to 0 of 0 entries"
 
 Scenario: Assets - Trailers - Edit trailer then create a new trailer
 Given I navigate to the assets trailers page
@@ -1060,6 +1259,27 @@ And I validate the Entries text contains "Showing 0 to 0 of"
 !-- Scenario: Assets - Trailers - Batch Edit Test (changes)
 
 
+Scenario: Assets - Trailers - Trailer ID is more than 30 characters (new button)
+Given I navigate to the assets trailers page
+When I click the New_ button
+And I type "1234567890123456789012345678901" into the Trailer ID textfield
+Then I validate the Trailer ID Error text is present
+And I validate the Trailer ID Error text is "The trailer id exceeds 30 characters."
+And I click the Cancel button
+And I click the New_ button
+And I validate the Trailer ID Error text is not visible
+
+Scenario: Assets - Trailers - Trailer ID is more than 30 characters (edit button)
+Given I navigate to the assets trailers page
+When I click the 1st Row of the Trailer ID Entry link
+And I click the Edit button
+And I type "1234567890123456789012345678901" into the Trailer ID textfield
+Then I validate the Trailer ID Error text is present
+And I validate the Trailer ID Error text is "The trailer id exceeds 30 characters."
+And I click the Cancel button
+And I click the Edit button
+And I validate the Trailer ID Error text is not visible
+
 Scenario: Assets - Trailers - VIN exceeds 17 characters (new button)
 Given I navigate to the assets trailers page
 When I click the New_ button
@@ -1191,26 +1411,26 @@ And I click the Cancel button
 And I click the Edit button
 And I validate the Model Error text is not visible
 
-!-- Scenario: Assets - Trailers - Odometer is non-numeric characters (new button)
-!-- Given I navigate to the assets trailers page
-!-- When I click the New_ button
-!-- And I type "a" into the Odometer textfield
-!-- Then I validate the Odometer Error text is present
-!-- And I validate the Odometer Error text is "The trailer odometer can only be numeric characters."
-!-- And I click the Cancel button
-!-- And I click the New_ button
-!-- And I validate the Odometer Error text is not visible
+Scenario: Assets - Trailers - Odometer is non-numeric characters (new button)
+Given I navigate to the assets trailers page
+When I click the New_ button
+And I type "a" into the Odometer textfield
+Then I validate the Odometer Error text is present
+And I validate the Odometer Error text is "The trailer odometer can be empty or contain only numbers."
+And I click the Cancel button
+And I click the New_ button
+And I validate the Odometer Error text is not visible
 
-!-- Scenario: Assets - Trailers - Odometer is non-numeric characters (edit button)
-!-- Given I navigate to the assets trailers page
-!-- When I click the 1st Row of the Trailer ID Entry link
-!-- And I click the Edit button
-!-- And I type "a" into the Odometer textfield
-!-- Then I validate the Odometer Error text is present
-!-- And I validate the Odometer Error text is "The trailer odometer can only be numeric characters."
-!-- And I click the Cancel button
-!-- And I click the Edit button
-!-- And I validate the Odometer Error text is not visible
+Scenario: Assets - Trailers - Odometer is non-numeric characters (edit button)
+Given I navigate to the assets trailers page
+When I click the 1st Row of the Trailer ID Entry link
+And I click the Edit button
+And I type "a" into the Odometer textfield
+Then I validate the Odometer Error text is present
+And I validate the Odometer Error text is "The trailer odometer can be empty or contain only numbers."
+And I click the Cancel button
+And I click the Edit button
+And I validate the Odometer Error text is not visible
 
 Scenario: Assets - Trailers - Year is not 4 characters (new button)
 Given I navigate to the assets trailers page
