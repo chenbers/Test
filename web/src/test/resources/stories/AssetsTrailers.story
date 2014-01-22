@@ -665,7 +665,6 @@ And I validate the 1st Row of the State Entry link is "VT"
 And I validate the 1st Row of the Year Entry link is "2008"
 And I validate the 1st Row of the Make Entry link is "Kia"
 And I validate the 1st Row of the Model Entry link is "SaveChangesModel"
-And I validate the 1st Row of the Odometer Entry link is "1010"
 And I validate the 1st Row of the Color Entry link is "Purple"
 And I validate the 1st Row of the Weight Entry link is "15000"
 And I validate the 1st Row of the Odometer Entry link is "1010"
@@ -1253,11 +1252,369 @@ And I click the Save button
 And I type "CLEARDEVICETEST" into the Search textfield
 And I validate the Entries text contains "Showing 0 to 0 of"
 
-!-- Scenario: Assets - Trailers - Batch Edit Test (no changes)
+Scenario: Assets - Trailers - Batch Edit Test (cancel button, no changes)
+Given I navigate to the assets trailers page
+When I click the 1st Row of the Trailer ID Entry link
+And I save the 1st Row of the Trailer ID Entry link as SAVEDTRAILER
+And I save the 1st Row of the Team Entry link as SAVEDTEAM
+And I save the 1st Row of the Device Entry link as SAVEDDEVICE
+And I save the 1st Row of the Vehicle Entry link as SAVEDVEHICLE
+And I save the 1st Row of the Driver Entry link as SAVEDDRIVER
+And I save the 1st Row of the Status Entry link as SAVEDSTATUS
+And I save the 1st Row of the VIN Entry link as SAVEDVIN
+And I save the 1st Row of the License Entry link as SAVEDLICENSE
+And I save the 1st Row of the State Entry link as SAVEDSTATE
+And I save the 1st Row of the Year Entry link as SAVEDYEAR
+And I save the 1st Row of the Make Entry link as SAVEDMAKE
+And I save the 1st Row of the Model Entry link as SAVEDMODEL
+And I save the 1st Row of the Color Entry link as SAVEDCOLOR
+And I save the 1st Row of the Weight Entry link as SAVEDWEIGHT
+And I save the 1st Row of the Odometer Entry link as SAVEDODOMETER
+And I control click the 2nd Row of the Trailer ID Entry link
+And I save the 2nd Row of the Trailer ID Entry link as SAVEDTRAILER2
+And I save the 2nd Row of the Team Entry link as SAVEDTEAM2
+And I save the 2nd Row of the Device Entry link as SAVEDDEVICE2
+And I save the 2nd Row of the Vehicle Entry link as SAVEDVEHICLE2
+And I save the 2nd Row of the Driver Entry link as SAVEDDRIVER2
+And I save the 2nd Row of the Status Entry link as SAVEDSTATUS2
+And I save the 2nd Row of the VIN Entry link as SAVEDVIN2
+And I save the 2nd Row of the License Entry link as SAVEDLICENSE2
+And I save the 2nd Row of the State Entry link as SAVEDSTATE2
+And I save the 2nd Row of the Year Entry link as SAVEDYEAR2
+And I save the 2nd Row of the Make Entry link as SAVEDMAKE2
+And I save the 2nd Row of the Model Entry link as SAVEDMODEL2
+And I save the 2nd Row of the Color Entry link as SAVEDCOLOR2
+And I save the 2nd Row of the Weight Entry link as SAVEDWEIGHT2
+And I save the 2nd Row of the Odometer Entry link as SAVEDODOMETER2
+Then I validate the Trailer ID text is ""
+And I validate the Status text is ""
+And I validate the VIN text is ""
+And I validate the Make text is ""
+And I validate the Model text is ""
+And I validate the Odometer text is ""
+And I validate the Year text is ""
+And I validate the Color text is ""
+And I validate the Weight text is ""
+And I validate the License Number text is ""
+And I validate the State text is ""
+And I validate the Assigned Device text is ""
+And I validate the Assigned Vehicle text is ""
+And I validate the Assigned Team text is ""
+And I validate the Assigned Driver text is ""
+When I click the Edit button
+Then I validate the Trailer ID textfield is disabled
+And I validate the Trailer ID textfield is ""
+And I validate the Status dropdown is "ACTIVE"
+And I validate the VIN textfield is disabled
+And I validate the VIN textfield is ""
+And I validate the Make textfield is ""
+And I validate the Model textfield is ""
+And I validate the Odometer textfield is ""
+And I validate the Year textfield is ""
+And I validate the Color textfield is ""
+And I validate the Weight textfield is ""
+And I validate the License Number textfield is disabled
+And I validate the License Number textfield is ""
+And I validate the State dropdown is "--- Select ---"
+And I validate the Assigned Device dropdown is disabled
+And I validate the Assigned Device dropdown is ""
+And I click the Cancel button
+And I validate the 1st Row of the Trailer ID Entry link is SAVEDTRAILER
+And I validate the 1st Row of the Team Entry link is SAVEDTEAM
+And I validate the 1st Row of the Device Entry link is SAVEDDEVICE
+And I validate the 1st Row of the Vehicle Entry link is SAVEDVEHICLE
+And I validate the 1st Row of the Driver Entry link is SAVEDDRIVER
+And I validate the 1st Row of the Status Entry link is SAVEDSTATUS
+And I validate the 1st Row of the VIN Entry link is SAVEDVIN
+And I validate the 1st Row of the License Entry link is SAVEDLICENSE
+And I validate the 1st Row of the State Entry link is SAVEDSTATE
+And I validate the 1st Row of the Year Entry link is SAVEDYEAR
+And I validate the 1st Row of the Make Entry link is SAVEDMAKE
+And I validate the 1st Row of the Model Entry link is SAVEDMODEL
+And I validate the 1st Row of the Color Entry link is SAVEDCOLOR
+And I validate the 1st Row of the Weight Entry link is SAVEDWEIGHT
+And I validate the 1st Row of the Odometer Entry link is SAVEDODOMETER
+And I validate the 2nd Row of the Trailer ID Entry link is SAVEDTRAILER2
+And I validate the 2nd Row of the Team Entry link is SAVEDTEAM2
+And I validate the 2nd Row of the Device Entry link is SAVEDDEVICE2
+And I validate the 2nd Row of the Vehicle Entry link is SAVEDVEHICLE2
+And I validate the 2nd Row of the Driver Entry link is SAVEDDRIVER2
+And I validate the 2nd Row of the Status Entry link is SAVEDSTATUS2
+And I validate the 2nd Row of the VIN Entry link is SAVEDVIN2
+And I validate the 2nd Row of the License Entry link is SAVEDLICENSE2
+And I validate the 2nd Row of the State Entry link is SAVEDSTATE2
+And I validate the 2nd Row of the Year Entry link is SAVEDYEAR2
+And I validate the 2nd Row of the Make Entry link is SAVEDMAKE2
+And I validate the 2nd Row of the Model Entry link is SAVEDMODEL2
+And I validate the 2nd Row of the Color Entry link is SAVEDCOLOR2
+And I validate the 2nd Row of the Weight Entry link is SAVEDWEIGHT2
+And I validate the 2nd Row of the Odometer Entry link is SAVEDODOMETER2
 
+Scenario: Assets - Trailers - Batch Edit Test (save button, no changes)
+Given I navigate to the assets trailers page
+When I click the 1st Row of the Trailer ID Entry link
+And I save the 1st Row of the Trailer ID Entry link as SAVEDTRAILER
+And I save the 1st Row of the Team Entry link as SAVEDTEAM
+And I save the 1st Row of the Device Entry link as SAVEDDEVICE
+And I save the 1st Row of the Vehicle Entry link as SAVEDVEHICLE
+And I save the 1st Row of the Driver Entry link as SAVEDDRIVER
+And I save the 1st Row of the Status Entry link as SAVEDSTATUS
+And I save the 1st Row of the VIN Entry link as SAVEDVIN
+And I save the 1st Row of the License Entry link as SAVEDLICENSE
+And I save the 1st Row of the State Entry link as SAVEDSTATE
+And I save the 1st Row of the Year Entry link as SAVEDYEAR
+And I save the 1st Row of the Make Entry link as SAVEDMAKE
+And I save the 1st Row of the Model Entry link as SAVEDMODEL
+And I save the 1st Row of the Color Entry link as SAVEDCOLOR
+And I save the 1st Row of the Weight Entry link as SAVEDWEIGHT
+And I save the 1st Row of the Odometer Entry link as SAVEDODOMETER
+And I control click the 2nd Row of the Trailer ID Entry link
+And I save the 2nd Row of the Trailer ID Entry link as SAVEDTRAILER2
+And I save the 2nd Row of the Team Entry link as SAVEDTEAM2
+And I save the 2nd Row of the Device Entry link as SAVEDDEVICE2
+And I save the 2nd Row of the Vehicle Entry link as SAVEDVEHICLE2
+And I save the 2nd Row of the Driver Entry link as SAVEDDRIVER2
+And I save the 2nd Row of the Status Entry link as SAVEDSTATUS2
+And I save the 2nd Row of the VIN Entry link as SAVEDVIN2
+And I save the 2nd Row of the License Entry link as SAVEDLICENSE2
+And I save the 2nd Row of the State Entry link as SAVEDSTATE2
+And I save the 2nd Row of the Year Entry link as SAVEDYEAR2
+And I save the 2nd Row of the Make Entry link as SAVEDMAKE2
+And I save the 2nd Row of the Model Entry link as SAVEDMODEL2
+And I save the 2nd Row of the Color Entry link as SAVEDCOLOR2
+And I save the 2nd Row of the Weight Entry link as SAVEDWEIGHT2
+And I save the 2nd Row of the Odometer Entry link as SAVEDODOMETER2
+Then I validate the Trailer ID text is ""
+And I validate the Status text is ""
+And I validate the VIN text is ""
+And I validate the Make text is ""
+And I validate the Model text is ""
+And I validate the Odometer text is ""
+And I validate the Year text is ""
+And I validate the Color text is ""
+And I validate the Weight text is ""
+And I validate the License Number text is ""
+And I validate the State text is ""
+And I validate the Assigned Device text is ""
+And I validate the Assigned Vehicle text is ""
+And I validate the Assigned Team text is ""
+And I validate the Assigned Driver text is ""
+When I click the Edit button
+Then I validate the Trailer ID textfield is disabled
+And I validate the Trailer ID textfield is ""
+And I validate the Status dropdown is "ACTIVE"
+And I validate the VIN textfield is disabled
+And I validate the VIN textfield is ""
+And I validate the Make textfield is ""
+And I validate the Model textfield is ""
+And I validate the Odometer textfield is ""
+And I validate the Year textfield is ""
+And I validate the Color textfield is ""
+And I validate the Weight textfield is ""
+And I validate the License Number textfield is disabled
+And I validate the License Number textfield is ""
+And I validate the State dropdown is "--- Select ---"
+And I validate the Assigned Device dropdown is disabled
+And I validate the Assigned Device dropdown is ""
+And I click the Save button
+And I validate the 1st Row of the Trailer ID Entry link is SAVEDTRAILER
+And I validate the 1st Row of the Team Entry link is SAVEDTEAM
+And I validate the 1st Row of the Device Entry link is SAVEDDEVICE
+And I validate the 1st Row of the Vehicle Entry link is SAVEDVEHICLE
+And I validate the 1st Row of the Driver Entry link is SAVEDDRIVER
+And I validate the 1st Row of the Status Entry link is SAVEDSTATUS
+And I validate the 1st Row of the VIN Entry link is SAVEDVIN
+And I validate the 1st Row of the License Entry link is SAVEDLICENSE
+And I validate the 1st Row of the State Entry link is SAVEDSTATE
+And I validate the 1st Row of the Year Entry link is SAVEDYEAR
+And I validate the 1st Row of the Make Entry link is SAVEDMAKE
+And I validate the 1st Row of the Model Entry link is SAVEDMODEL
+And I validate the 1st Row of the Color Entry link is SAVEDCOLOR
+And I validate the 1st Row of the Weight Entry link is SAVEDWEIGHT
+And I validate the 1st Row of the Odometer Entry link is SAVEDODOMETER
+And I validate the 2nd Row of the Trailer ID Entry link is SAVEDTRAILER2
+And I validate the 2nd Row of the Team Entry link is SAVEDTEAM2
+And I validate the 2nd Row of the Device Entry link is SAVEDDEVICE2
+And I validate the 2nd Row of the Vehicle Entry link is SAVEDVEHICLE2
+And I validate the 2nd Row of the Driver Entry link is SAVEDDRIVER2
+And I validate the 2nd Row of the Status Entry link is SAVEDSTATUS2
+And I validate the 2nd Row of the VIN Entry link is SAVEDVIN2
+And I validate the 2nd Row of the License Entry link is SAVEDLICENSE2
+And I validate the 2nd Row of the State Entry link is SAVEDSTATE2
+And I validate the 2nd Row of the Year Entry link is SAVEDYEAR2
+And I validate the 2nd Row of the Make Entry link is SAVEDMAKE2
+And I validate the 2nd Row of the Model Entry link is SAVEDMODEL2
+And I validate the 2nd Row of the Color Entry link is SAVEDCOLOR2
+And I validate the 2nd Row of the Weight Entry link is SAVEDWEIGHT2
+And I validate the 2nd Row of the Odometer Entry link is SAVEDODOMETER2
 
-!-- Scenario: Assets - Trailers - Batch Edit Test (changes)
+Scenario: Assets - Trailers - Batch Edit Test (cancel button, changes)
+Given I navigate to the assets trailers page
+When I click the 1st Row of the Trailer ID Entry link
+And I save the 1st Row of the Trailer ID Entry link as SAVEDTRAILER
+And I save the 1st Row of the Team Entry link as SAVEDTEAM
+And I save the 1st Row of the Device Entry link as SAVEDDEVICE
+And I save the 1st Row of the Vehicle Entry link as SAVEDVEHICLE
+And I save the 1st Row of the Driver Entry link as SAVEDDRIVER
+And I save the 1st Row of the Status Entry link as SAVEDSTATUS
+And I save the 1st Row of the VIN Entry link as SAVEDVIN
+And I save the 1st Row of the License Entry link as SAVEDLICENSE
+And I save the 1st Row of the State Entry link as SAVEDSTATE
+And I save the 1st Row of the Year Entry link as SAVEDYEAR
+And I save the 1st Row of the Make Entry link as SAVEDMAKE
+And I save the 1st Row of the Model Entry link as SAVEDMODEL
+And I save the 1st Row of the Color Entry link as SAVEDCOLOR
+And I save the 1st Row of the Weight Entry link as SAVEDWEIGHT
+And I save the 1st Row of the Odometer Entry link as SAVEDODOMETER
+And I control click the 2nd Row of the Trailer ID Entry link
+And I save the 2nd Row of the Trailer ID Entry link as SAVEDTRAILER2
+And I save the 2nd Row of the Team Entry link as SAVEDTEAM2
+And I save the 2nd Row of the Device Entry link as SAVEDDEVICE2
+And I save the 2nd Row of the Vehicle Entry link as SAVEDVEHICLE2
+And I save the 2nd Row of the Driver Entry link as SAVEDDRIVER2
+And I save the 2nd Row of the Status Entry link as SAVEDSTATUS2
+And I save the 2nd Row of the VIN Entry link as SAVEDVIN2
+And I save the 2nd Row of the License Entry link as SAVEDLICENSE2
+And I save the 2nd Row of the State Entry link as SAVEDSTATE2
+And I save the 2nd Row of the Year Entry link as SAVEDYEAR2
+And I save the 2nd Row of the Make Entry link as SAVEDMAKE2
+And I save the 2nd Row of the Model Entry link as SAVEDMODEL2
+And I save the 2nd Row of the Color Entry link as SAVEDCOLOR2
+And I save the 2nd Row of the Weight Entry link as SAVEDWEIGHT2
+And I save the 2nd Row of the Odometer Entry link as SAVEDODOMETER2
+And I click the Edit button
+And I select "INACTIVE" from the Status dropdown
+And I type "CLEARDEVICEMAKE" into the Make textfield
+And I type "CLEARDEVICEMODEL" into the Model textfield
+And I type "159702" into the Odometer textfield
+And I type "2003" into the Year textfield
+And I type "CLEARDEVICECOL" into the Color textfield
+And I type "15003" into the Weight textfield
+And I select "Idaho" from the State dropdown
+And I click the Cancel button
+Then I validate the 1st Row of the Trailer ID Entry link is SAVEDTRAILER
+And I validate the 1st Row of the Team Entry link is SAVEDTEAM
+And I validate the 1st Row of the Device Entry link is SAVEDDEVICE
+And I validate the 1st Row of the Vehicle Entry link is SAVEDVEHICLE
+And I validate the 1st Row of the Driver Entry link is SAVEDDRIVER
+And I validate the 1st Row of the Status Entry link is SAVEDSTATUS
+And I validate the 1st Row of the VIN Entry link is SAVEDVIN
+And I validate the 1st Row of the License Entry link is SAVEDLICENSE
+And I validate the 1st Row of the State Entry link is SAVEDSTATE
+And I validate the 1st Row of the Year Entry link is SAVEDYEAR
+And I validate the 1st Row of the Make Entry link is SAVEDMAKE
+And I validate the 1st Row of the Model Entry link is SAVEDMODEL
+And I validate the 1st Row of the Color Entry link is SAVEDCOLOR
+And I validate the 1st Row of the Weight Entry link is SAVEDWEIGHT
+And I validate the 1st Row of the Odometer Entry link is SAVEDODOMETER
+And I validate the 2nd Row of the Trailer ID Entry link is SAVEDTRAILER2
+And I validate the 2nd Row of the Team Entry link is SAVEDTEAM2
+And I validate the 2nd Row of the Device Entry link is SAVEDDEVICE2
+And I validate the 2nd Row of the Vehicle Entry link is SAVEDVEHICLE2
+And I validate the 2nd Row of the Driver Entry link is SAVEDDRIVER2
+And I validate the 2nd Row of the Status Entry link is SAVEDSTATUS2
+And I validate the 2nd Row of the VIN Entry link is SAVEDVIN2
+And I validate the 2nd Row of the License Entry link is SAVEDLICENSE2
+And I validate the 2nd Row of the State Entry link is SAVEDSTATE2
+And I validate the 2nd Row of the Year Entry link is SAVEDYEAR2
+And I validate the 2nd Row of the Make Entry link is SAVEDMAKE2
+And I validate the 2nd Row of the Model Entry link is SAVEDMODEL2
+And I validate the 2nd Row of the Color Entry link is SAVEDCOLOR2
+And I validate the 2nd Row of the Weight Entry link is SAVEDWEIGHT2
+And I validate the 2nd Row of the Odometer Entry link is SAVEDODOMETER2
 
+Scenario: Assets - Trailers - Batch Edit and Batch Delete Test (save button, changes)
+Given I navigate to the assets trailers page
+When I click the New_ button
+And I type "BATCHSAVE1" into the Trailer ID textfield
+And I type "BATCHVIN1" into the VIN textfield
+And I type "BATCHMAKE1" into the Make textfield
+And I type "BATCHMODEL1" into the Model textfield
+And I type "666" into the Odometer textfield
+And I type "1955" into the Year textfield
+And I type "BATCHCOLO1" into the Color textfield
+And I type "100001" into the Weight textfield
+And I type "BATCHLIC1" into the License Number textfield
+And I select "New York" from the State dropdown
+And I select "MCM990030" from the Assigned Device dropdown
+And I click the Save button
+When I click the New_ button
+And I type "BATCHSAVE2" into the Trailer ID textfield
+And I type "BATCHVIN2" into the VIN textfield
+And I type "BATCHMAKE2" into the Make textfield
+And I type "BATCHMODEL2" into the Model textfield
+And I type "777" into the Odometer textfield
+And I type "1956" into the Year textfield
+And I type "BATCHCOLO2" into the Color textfield
+And I type "100002" into the Weight textfield
+And I type "BATCHLIC2" into the License Number textfield
+And I select "New Jersey" from the State dropdown
+And I select "MCM990031" from the Assigned Device dropdown
+And I click the Save button
+And I type "BATCHSAVE" into the Search textfield
+And I click the 1st Row of the Trailer ID Entry link
+And I save the 1st Row of the Trailer ID Entry link as SAVEDTRAILER
+And I save the 1st Row of the Team Entry link as SAVEDTEAM
+And I save the 1st Row of the Device Entry link as SAVEDDEVICE
+And I save the 1st Row of the Vehicle Entry link as SAVEDVEHICLE
+And I save the 1st Row of the Driver Entry link as SAVEDDRIVER
+And I save the 1st Row of the VIN Entry link as SAVEDVIN
+And I save the 1st Row of the License Entry link as SAVEDLICENSE
+And I control click the 2nd Row of the Trailer ID Entry link
+And I save the 2nd Row of the Trailer ID Entry link as SAVEDTRAILER2
+And I save the 2nd Row of the Team Entry link as SAVEDTEAM2
+And I save the 2nd Row of the Device Entry link as SAVEDDEVICE2
+And I save the 2nd Row of the Vehicle Entry link as SAVEDVEHICLE2
+And I save the 2nd Row of the Driver Entry link as SAVEDDRIVER2
+And I save the 2nd Row of the VIN Entry link as SAVEDVIN2
+And I save the 2nd Row of the License Entry link as SAVEDLICENSE2
+And I click the Edit button
+And I select "INACTIVE" from the Status dropdown
+And I type "BATCHMAKE" into the Make textfield
+And I type "BATCHMODEL" into the Model textfield
+And I type "999999" into the Odometer textfield
+And I type "1111" into the Year textfield
+And I type "BATCHCOLOR" into the Color textfield
+And I type "1111" into the Weight textfield
+And I select "Indiana" from the State dropdown
+And I click the Save button
+Then I validate the 1st Row of the Trailer ID Entry link is SAVEDTRAILER
+And I validate the 1st Row of the Team Entry link is SAVEDTEAM
+And I validate the 1st Row of the Device Entry link is SAVEDDEVICE
+And I validate the 1st Row of the Vehicle Entry link is SAVEDVEHICLE
+And I validate the 1st Row of the Driver Entry link is SAVEDDRIVER
+And I validate the 1st Row of the Status Entry link is "INACTIVE"
+And I validate the 1st Row of the VIN Entry link is SAVEDVIN
+And I validate the 1st Row of the License Entry link is SAVEDLICENSE
+And I validate the 1st Row of the State Entry link is "IN"
+And I validate the 1st Row of the Year Entry link is "1111"
+And I validate the 1st Row of the Make Entry link is "BATCHMAKE"
+And I validate the 1st Row of the Model Entry link is "BATCHMODEL"
+And I validate the 1st Row of the Color Entry link is "BATCHCOLOR"
+And I validate the 1st Row of the Weight Entry link is "1111"
+And I validate the 1st Row of the Odometer Entry link is "999999"
+And I validate the 2nd Row of the Trailer ID Entry link is SAVEDTRAILER2
+And I validate the 2nd Row of the Team Entry link is SAVEDTEAM2
+And I validate the 2nd Row of the Device Entry link is SAVEDDEVICE2
+And I validate the 2nd Row of the Vehicle Entry link is SAVEDVEHICLE2
+And I validate the 2nd Row of the Driver Entry link is SAVEDDRIVER2
+And I validate the 2nd Row of the Status Entry link is "INACTIVE"
+And I validate the 2nd Row of the VIN Entry link is SAVEDVIN2
+And I validate the 2nd Row of the License Entry link is SAVEDLICENSE2
+And I validate the 2nd Row of the State Entry link is "IN"
+And I validate the 2nd Row of the Year Entry link is "1111"
+And I validate the 2nd Row of the Make Entry link is "BATCHMAKE"
+And I validate the 2nd Row of the Model Entry link is "BATCHMODEL"
+And I validate the 2nd Row of the Color Entry link is "BATCHCOLOR"
+And I validate the 2nd Row of the Weight Entry link is "1111"
+And I validate the 2nd Row of the Odometer Entry link is "999999"
+!-- Now I delete the entries so it will run just fine on the next run through
+And I click the 1st Row of the Trailer ID Entry link
+And I control click the 2nd Row of the Trailer ID Entry link
+And I click the Edit button
+And I select "DELETED" from the Status dropdown
+And I click the Save button
+And I validate the Entries text contains "Showing 0 to 0 of 0 entries"
 
 Scenario: Assets - Trailers - Trailer ID is more than 30 characters (new button)
 Given I navigate to the assets trailers page
