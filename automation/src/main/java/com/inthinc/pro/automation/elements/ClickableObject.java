@@ -38,5 +38,12 @@ public class ClickableObject extends ElementBase implements Clickable {
         getSelenium().waitForPageToLoad();
         return this;
 	}
+	
+    @Override
+	public Clickable controlClick() {
+	     getSelenium().controlClick(myEnum);
+	     getSelenium().waitForPageToLoad();
+	     return this;
+	}
     
 }

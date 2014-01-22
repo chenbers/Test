@@ -92,6 +92,10 @@ public interface CoreMethodInterface extends Selenium {
     
     public CoreMethodInterface hoverOver(SeleniumEnumWrapper myEnum);
 
+    public CoreMethodLib controlClick(SeleniumEnumWrapper myEnum);
+
+    public CoreMethodLib controlClickAt(SeleniumEnumWrapper myEnum, String coordString);
+
 
     
 }

@@ -17,6 +17,8 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriverBackedSelenium;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Action;
+import org.openqa.selenium.interactions.Actions;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -162,6 +164,26 @@ public class CoreMethodLib extends WebDriverBackedSelenium implements CoreMethod
 
     @Override
     public CoreMethodLib doubleClickAt(SeleniumEnumWrapper myEnum, String coordString) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+    
+    @Override
+    public CoreMethodLib controlClick(SeleniumEnumWrapper myEnum) {
+        Actions builder = new Actions(getWrappedDriver());
+        String element = getLocator(myEnum);
+        WebElement item = getWrappedDriver().findElement(getLocator(element));
+        builder.moveToElement(item);
+        builder.keyDown(Keys.CONTROL);
+        builder.click();
+        builder.keyUp(Keys.CONTROL).build().perform();
+//        AutomationThread.pause(1, "control click(" + myEnum + ")");
+//        loadPause();
+        return this;
+    }
+    
+    @Override
+    public CoreMethodLib controlClickAt(SeleniumEnumWrapper myEnum, String coordString) {
         // TODO Auto-generated method stub
         return null;
     }
