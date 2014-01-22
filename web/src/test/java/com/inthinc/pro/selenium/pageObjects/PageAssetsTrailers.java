@@ -473,6 +473,10 @@ public class PageAssetsTrailers extends Masthead {
             return new Text(AssetsTrailersEnum.MODEL_ERROR_TEXT);
         }
         
+        public Text odometerError() {
+            return new Text(AssetsTrailersEnum.ODOMETER_ERROR_TEXT);
+        }
+        
         public Text yearError() {
             return new Text(AssetsTrailersEnum.YEAR_ERROR_TEXT);
         }

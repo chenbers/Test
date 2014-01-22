@@ -105,6 +105,7 @@ public enum AssetsTrailersEnum implements SeleniumEnums {
 	VIN_ERROR_TEXT("The trailer vin exceeds 17 characters.", "//div[3]/div/div[2]/label[@class='error']"),
     MAKE_ERROR_TEXT("The trailer make exceeds 22 characters.", "//div[4]/div/div[2]/label[@class='error']"),	
     MODEL_ERROR_TEXT("The trailer model exceeds 22 characters.", "//div[5]/div/div[2]/label[@class='error']"),	
+    ODOMETER_ERROR_TEXT("The trailer odometer can be empty or contain only numbers.", "//div[6]/div/div[2]/label[@class='error']"),
 	YEAR_ERROR_TEXT("The trailer year can be empty or contain 4 numbers.", "//div[7]/div/div[2]/label[@class='error']"),
 	COLOR_ERROR_TEXT("The trailer color exceeds 14 characters.", "//div[8]/div/div[2]/label[@class='error']"),
 	WEIGHT_ERROR_TEXT("The trailer weight can be empty or contain only numbers.", "//div[9]/div/div[2]/label[@class='error']"),
