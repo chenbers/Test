@@ -187,7 +187,102 @@ When I type "SEARCHTEXT" into the Search textfield
 And I click the Top Trailers link
 Then I validate the Search textfield is "SEARCHTEXT"
 
-!-- Need to add search function tests for all columns
+Scenario: Assets - Trailers - Search All Fields
+Given I navigate to the assets trailers page
+When I click the New_ button
+And I type "SEARCHVEH1" into the Trailer ID textfield
+And I type "SEARCHVIN1" into the VIN textfield
+And I type "SEARCHMAKE1" into the Make textfield
+And I type "SEARCHMODEL1" into the Model textfield
+And I type "333555" into the Odometer textfield
+And I type "3055" into the Year textfield
+And I type "SEARCHCOLO1" into the Color textfield
+And I type "987654321" into the Weight textfield
+And I type "SEARCHLIC1" into the License Number textfield
+And I select "Federated States of Micronesia" from the State dropdown
+And I select "MCM990075" from the Assigned Device dropdown
+And I click the Save button
+And I type "SEARCHVEH1" into the Search textfield
+And I click the Sort By Trailer ID link
+Then I validate the 1st Row of the Trailer ID Entry link is "SEARCHVEH1"
+And I click the Sort By Trailer ID link
+And I validate the 1st Row of the Trailer ID Entry link is "SEARCHVEH1"
+And I type "Test Group WR" into the Search textfield
+And I click the Sort By Team link
+And I validate the 1st Row of the Team Entry link is "Test Group WR"
+And I click the Sort By Team link
+And I validate the 1st Row of the Team Entry link is "Test Group WR"
+And I type "MCM990075" into the Search textfield
+And I click the Sort By Device link
+And I validate the 1st Row of the Device Entry link is "MCM990075"
+And I click the Sort By Device link
+And I validate the 1st Row of the Device Entry link is "MCM990075"
+And I type "autogen75" into the Search textfield
+And I click the Sort By Vehicle link
+And I validate the 1st Row of the Vehicle Entry link is "autogen75"
+And I click the Sort By Vehicle link
+And I validate the 1st Row of the Vehicle Entry link is "autogen75"
+And I type "Automatically Generated75" into the Search textfield
+And I click the Sort By Driver link
+And I validate the 1st Row of the Driver Entry link is "Automatically Generated75"
+And I click the Sort By Driver link
+And I validate the 1st Row of the Driver Entry link is "Automatically Generated75"
+And I type "ACTIVE" into the Search textfield
+And I click the Sort By Status link
+And I validate the 1st Row of the Status Entry link is "ACTIVE"
+And I click the Sort By Status link
+And I validate the 1st Row of the Status Entry link is "ACTIVE"
+And I type "SEARCHVIN1" into the Search textfield
+And I click the Sort By VIN link
+And I validate the 1st Row of the VIN Entry link is "SEARCHVIN1"
+And I click the Sort By VIN link
+And I validate the 1st Row of the VIN Entry link is "SEARCHVIN1"
+And I type "SEARCHLIC1" into the Search textfield
+And I click the Sort By License link
+And I validate the 1st Row of the License Entry link is "SEARCHLIC1"
+And I click the Sort By License link
+And I validate the 1st Row of the License Entry link is "SEARCHLIC1"
+And I type "Federated States of Micronesia" into the Search textfield
+And I click the Sort By State link
+And I validate the 1st Row of the State Entry link is "Federated States of Micronesia"
+And I click the Sort By State link
+And I validate the 1st Row of the State Entry link is "Federated States of Micronesia"
+And I type "3055" into the Search textfield
+And I click the Sort By Year link
+And I validate the 1st Row of the Year Entry link is "3055"
+And I click the Sort By Year link
+And I validate the 1st Row of the Year Entry link is "3055"
+And I type "SEARCHMAKE1" into the Search textfield
+And I click the Sort By Make link
+And I validate the 1st Row of the Make Entry link is "SEARCHMAKE1"
+And I click the Sort By Make link
+And I validate the 1st Row of the Make Entry link is "SEARCHMAKE1"
+And I type "SEARCHMODEL1" into the Search textfield
+And I click the Sort By Model link
+And I validate the 1st Row of the Model Entry link is "SEARCHMODEL1"
+And I click the Sort By Model link
+And I validate the 1st Row of the Model Entry link is "SEARCHMODEL1"
+And I type "SEARCHCOLO1" into the Search textfield
+And I click the Sort By Color link
+And I validate the 1st Row of the Color Entry link is "SEARCHCOLO1"
+And I click the Sort By Color link
+And I validate the 1st Row of the Color Entry link is "SEARCHCOLO1"
+And I type "987654321" into the Search textfield
+And I click the Sort By Weight link
+And I validate the 1st Row of the Weight Entry link is "987654321"
+And I click the Sort By Weight link
+And I validate the 1st Row of the Weight Entry link is "987654321"
+And I type "333555" into the Search textfield
+And I click the Sort By Odometer link
+And I validate the 1st Row of the Odometer Entry link is "333555"
+And I click the Sort By Odometer link
+And I validate the 1st Row of the Odometer Entry link is "333555"
+!-- Now I delete the entries so it will run just fine on the next run through
+And I click the 1st Row of the Trailer ID Entry link
+And I click the Edit button
+And I select "DELETED" from the Status dropdown
+And I click the Save button
+And I validate the Entries text contains "Showing 0 to 0 of 0 entries"
 
 Scenario: Assets - Trailers - Show Hide Columns UI Interaction
 Given I navigate to the assets trailers page
@@ -549,6 +644,8 @@ Given I navigate to the assets trailers page
 When I click the New_ button
 Then I validate the VIN textfield is ""
 And I validate the Make textfield is ""
+And I validate the Model text is ""
+And I validate the Odometer text is ""
 And I validate the Year textfield is ""
 And I validate the Color textfield is ""
 And I validate the Weight textfield is ""
@@ -561,6 +658,8 @@ And I click the Cancel button
 And I click the New_ button
 And I validate the VIN textfield is ""
 And I validate the Make textfield is ""
+And I validate the Model text is ""
+And I validate the Odometer text is ""
 And I validate the Year textfield is ""
 And I validate the Color textfield is ""
 And I validate the Weight textfield is ""
@@ -607,6 +706,8 @@ And I validate the Assigned Driver text is ""
 And I click the New_ button
 And I validate the VIN textfield is ""
 And I validate the Make textfield is ""
+And I validate the Model text is ""
+And I validate the Odometer text is ""
 And I validate the Year textfield is ""
 And I validate the Color textfield is ""
 And I validate the Weight textfield is ""
@@ -849,6 +950,8 @@ And I validate the Assigned Driver text is SAVEDDRIVER
 And I click the Edit button
 And I validate the VIN textfield is SAVEDVIN
 And I validate the Make textfield is SAVEDMAKE
+And I validate the Model textfield is SAVEDMODEL
+And I validate the Odometer textfield is SAVEDODOMETER
 And I validate the Year textfield is SAVEDYEAR
 And I validate the Color textfield is SAVEDCOLOR
 And I validate the Weight textfield is SAVEDWEIGHT
@@ -1161,6 +1264,8 @@ And I validate the Assigned Driver text is SAVEDDRIVER
 And I click the Edit button
 And I validate the VIN textfield is SAVEDVIN
 And I validate the Make textfield is SAVEDMAKE
+And I validate the Model textfield is SAVEDMODEL
+And I validate the Odometer textfield is SAVEDODOMETER
 And I validate the Year textfield is SAVEDYEAR
 And I validate the Color textfield is SAVEDCOLOR
 And I validate the Weight textfield is SAVEDWEIGHT
