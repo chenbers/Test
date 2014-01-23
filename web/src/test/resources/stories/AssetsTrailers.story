@@ -87,6 +87,8 @@ And I validate the Trailer ID textfield is visible
 And I validate the Status dropdown is visible
 And I validate the VIN textfield is visible
 And I validate the Make textfield is visible
+And I validate the Model textfield is visible
+And I validate the Odometer textfield is visible
 And I validate the Year textfield is visible
 And I validate the Color textfield is visible
 And I validate the Weight textfield is visible
@@ -106,6 +108,8 @@ And I validate the Trailer ID textfield is not visible
 And I validate the Status dropdown is not visible
 And I validate the VIN textfield is not visible
 And I validate the Make textfield is not visible
+And I validate the Model textfield is not visible
+And I validate the Odometer textfield is not visible
 And I validate the Year textfield is not visible
 And I validate the Color textfield is not visible
 And I validate the Weight textfield is not visible
