@@ -34,6 +34,10 @@
     
     <ui:include src="/includes/mapv3/portalMap.xhtml"/>
     <a4j:loadScript src="/js/mapv3/zone.js" />
+
+    <!-- Enables global queue mainly to force click events on the 'save' button to wait for blur events -->
+    <a4j:queue name="org.richfaces.queue.global" disabled="false"/>
+
     <script type="text/javascript">
        var map = null;
        var hazardlat = "#{hazardsBean.item.latitude}";
