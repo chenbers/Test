@@ -9,10 +9,10 @@ And I validate the Search Label text is present
 And I validate the Search textfield is present
 And I validate the Show Hide Columns link is present
 And I validate the Sort By Trailer ID link is present
-And I validate the Sort By Team text is present
-And I validate the Sort By Device text is present
-And I validate the Sort By Vehicle text is present
-And I validate the Sort By Driver text is present
+And I validate the Sort By Team link is present
+And I validate the Sort By Device link is present
+And I validate the Sort By Vehicle link is present
+And I validate the Sort By Driver link is present
 And I validate the Sort By Status link is present
 And I validate the Sort By VIN link is present
 And I validate the Sort By License Number link is present
@@ -298,24 +298,24 @@ And I check the Trailer ID checkbox
 And I validate the Sort By Trailer ID link is present
 When I click the Show Hide Columns link
 And I uncheck the Team checkbox
-Then I validate the Sort By Team text is not present
+Then I validate the Sort By Team link is not present
 And I check the Team checkbox
-And I validate the Sort By Team text is present
+And I validate the Sort By Team link is present
 When I click the Show Hide Columns link
 And I uncheck the Device checkbox
-Then I validate the Sort By Device text is not present
+Then I validate the Sort By Device link is not present
 And I check the Device checkbox
-And I validate the Sort By Device text is present
+And I validate the Sort By Device link is present
 When I click the Show Hide Columns link
 And I uncheck the Vehicle checkbox
-Then I validate the Sort By Vehicle text is not present
+Then I validate the Sort By Vehicle link is not present
 And I check the Vehicle checkbox
-And I validate the Sort By Vehicle text is present
+And I validate the Sort By Vehicle link is present
 When I click the Show Hide Columns link
 And I uncheck the Driver checkbox
-Then I validate the Sort By Driver text is not present
+Then I validate the Sort By Driver link is not present
 And I check the Driver checkbox
-And I validate the Sort By Driver text is present
+And I validate the Sort By Driver link is present
 When I click the Show Hide Columns link
 And I uncheck the Status checkbox
 Then I validate the Sort By Status link is not present
@@ -383,10 +383,10 @@ And I uncheck the Weight checkbox
 And I uncheck the Odometer checkbox
 And I click the Restore Original link
 And I validate the Sort By Trailer ID link is present
-And I validate the Sort By Team text is present
-And I validate the Sort By Device text is present
-And I validate the Sort By Vehicle text is present
-And I validate the Sort By Driver text is present
+And I validate the Sort By Team link is present
+And I validate the Sort By Device link is present
+And I validate the Sort By Vehicle link is present
+And I validate the Sort By Driver link is present
 And I validate the Sort By Status link is present
 And I validate the Sort By VIN link is present
 And I validate the Sort By License Number link is present
@@ -410,9 +410,9 @@ Scenario: Assets - Trailers - Table Properties NEED TO IMPLEMENT CHECKING ALPHAB
 Given I navigate to the assets trailers page
 When I click the Sort By Trailer ID link
 !-- And I click the Sort By Team link
-!-- And I click the Sort By Device text
-!-- And I click the Sort By Vehicle text
-!-- And I click the Sort By Driver text
+!-- And I click the Sort By Device link
+!-- And I click the Sort By Vehicle link
+!-- And I click the Sort By Driver link
 And I click the Sort By Status link
 And I click the Sort By VIN link
 And I click the Sort By License Number link

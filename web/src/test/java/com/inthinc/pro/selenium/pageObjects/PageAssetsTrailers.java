@@ -68,6 +68,22 @@ public class PageAssetsTrailers extends Masthead {
             return new TextLink(AssetsTrailersEnum.SORT_BY_TRAILERID_LINK);
         }
         
+        public TextLink sortByTeam() {
+            return new TextLink(AssetsTrailersEnum.SORT_BY_TEAM_LINK);
+        }
+        
+        public TextLink sortByDevice() {
+            return new TextLink(AssetsTrailersEnum.SORT_BY_DEVICE_LINK);
+        }
+        
+        public Text sortByVehicle() {
+            return new Text(AssetsTrailersEnum.SORT_BY_VEHICLE_LINK);
+        }
+        
+        public Text sortByDriver() {
+            return new Text(AssetsTrailersEnum.SORT_BY_DRIVER_LINK);
+        }
+        
         public TextLink sortByStatus() {
             return new TextLink(AssetsTrailersEnum.SORT_BY_STATUS);
         }
@@ -241,22 +257,6 @@ public class PageAssetsTrailers extends Masthead {
         
         public Text searchLabel() {
             return new Text(AssetsTrailersEnum.SEARCH_LABEL);
-        }
-        
-        public Text sortByTeam() {
-            return new Text(AssetsTrailersEnum.SORT_BY_TEAM_TEXT);
-        }
-        
-        public Text sortByDevice() {
-            return new Text(AssetsTrailersEnum.SORT_BY_DEVICE_TEXT);
-        }
-        
-        public Text sortByVehicle() {
-            return new Text(AssetsTrailersEnum.SORT_BY_VEHICLE_TEXT);
-        }
-        
-        public Text sortByDriver() {
-            return new Text(AssetsTrailersEnum.SORT_BY_DRIVER_TEXT);
         }
 
         //SHOW/HIDE COLUMNS LABELS
