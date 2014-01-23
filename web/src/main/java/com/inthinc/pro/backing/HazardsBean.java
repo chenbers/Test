@@ -263,6 +263,8 @@ public class HazardsBean extends BaseBean {
      * Called when the user clicks to save changes when adding or editing.
      */
     public String save() {
+        onRadiusChange(); // run this to force updating of the radius field before the save event
+
         // validate
         if (!validate())
             return null;
