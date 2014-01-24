@@ -409,10 +409,10 @@ Then I validate I am on the Assets Trailers page
 Scenario: Assets - Trailers - Table Properties NEED TO IMPLEMENT CHECKING ALPHABETICAL ORDER
 Given I navigate to the assets trailers page
 When I click the Sort By Trailer ID link
-!-- And I click the Sort By Team link
-!-- And I click the Sort By Device link
-!-- And I click the Sort By Vehicle link
-!-- And I click the Sort By Driver link
+And I click the Sort By Team link
+And I click the Sort By Device link
+And I click the Sort By Vehicle link
+And I click the Sort By Driver link
 And I click the Sort By Status link
 And I click the Sort By VIN link
 And I click the Sort By License Number link
@@ -468,7 +468,7 @@ And I validate the Year text is SAVEDYEAR
 And I validate the Color text is SAVEDCOLOR
 And I validate the Weight text is SAVEDWEIGHT
 And I validate the License Number text is SAVEDLICENSE
-!-- And I validate the State text is SAVEDSTATE
+And I validate the State text is SAVEDSTATE
 And I validate the Trailer ID text is SAVEDTRAILER
 And I validate the Status text is SAVEDSTATUS
 And I validate the Assigned Team text is SAVEDTEAM
@@ -504,7 +504,7 @@ And I validate the Year textfield is SAVEDYEAR2
 And I validate the Color textfield is SAVEDCOLOR2
 And I validate the Weight textfield is SAVEDWEIGHT2
 And I validate the License Number textfield is SAVEDLICENSE2
-!-- And I validate the State dropdown is SAVEDSTATE2
+And I validate the State dropdown is SAVEDSTATE2
 And I validate the Trailer ID textfield is SAVEDTRAILER2
 And I validate the Status dropdown is SAVEDSTATUS2
 And I validate the Assigned Team text is SAVEDTEAM2
@@ -579,7 +579,7 @@ And I validate the Year text is SAVEDYEAR
 And I validate the Color text is SAVEDCOLOR
 And I validate the Weight text is SAVEDWEIGHT
 And I validate the License Number text is SAVEDLICENSE
-!-- And I validate the State text is SAVEDSTATE
+And I validate the State text is SAVEDSTATE
 And I validate the Trailer ID text is SAVEDTRAILER
 And I validate the Status text is SAVEDSTATUS
 And I validate the Assigned Team text is SAVEDTEAM
@@ -766,7 +766,7 @@ And I validate the 1st Row of the Driver Entry link is "Automatically Generated0
 And I validate the 1st Row of the Status Entry link is "ACTIVE"
 And I validate the 1st Row of the VIN Entry link is "SAVECHANGESVIN"
 And I validate the 1st Row of the License Entry link is "INTHINCLI1"
-And I validate the 1st Row of the State Entry link is "VT"
+And I validate the 1st Row of the State Entry link is "Vermont"
 And I validate the 1st Row of the Year Entry link is "2008"
 And I validate the 1st Row of the Make Entry link is "Kia"
 And I validate the 1st Row of the Model Entry link is "SaveChangesModel"
@@ -897,7 +897,7 @@ And I validate the Year textfield is SAVEDYEAR
 And I validate the Color textfield is SAVEDCOLOR
 And I validate the Weight textfield is SAVEDWEIGHT
 And I validate the License Number textfield is SAVEDLICENSE
-!-- And I validate the State dropdown is SAVEDSTATE
+And I validate the State dropdown is SAVEDSTATE
 And I validate the Status dropdown is SAVEDSTATUS
 And I validate the Assigned Team text is SAVEDTEAM
 And I validate the Assigned Device dropdown is SAVEDDEVICE
@@ -946,7 +946,7 @@ And I validate the Year text is SAVEDYEAR
 And I validate the Color text is SAVEDCOLOR
 And I validate the Weight text is SAVEDWEIGHT
 And I validate the License Number text is SAVEDLICENSE
-!-- And I validate the State text is SAVEDSTATE
+And I validate the State text is SAVEDSTATE
 And I validate the Assigned Team text is SAVEDTEAM
 And I validate the Assigned Device text is SAVEDDEVICE
 And I validate the Assigned Vehicle text is SAVEDVEHICLE
@@ -960,7 +960,7 @@ And I validate the Year textfield is SAVEDYEAR
 And I validate the Color textfield is SAVEDCOLOR
 And I validate the Weight textfield is SAVEDWEIGHT
 And I validate the License Number textfield is SAVEDLICENSE
-!-- And I validate the State dropdown is SAVEDSTATE
+And I validate the State dropdown is SAVEDSTATE
 And I validate the Trailer ID textfield is SAVEDTRAILER
 And I validate the Status dropdown is SAVEDSTATUS
 And I validate the Assigned Team text is SAVEDTEAM
@@ -1008,7 +1008,7 @@ And I validate the 1st Row of the Year Entry link is "1900"
 And I validate the 1st Row of the Color Entry link is "ANEWCOLOR"
 And I validate the 1st Row of the Weight Entry link is "55"
 And I validate the 1st Row of the License Entry link is "ANEWLIS"
-And I validate the 1st Row of the State Entry link is "AK"
+And I validate the 1st Row of the State Entry link is "Alaska"
 And I validate the 1st Row of the Team Entry link is SAVEDTEAM
 And I validate the 1st Row of the Device Entry link is SAVEDDEVICE
 And I validate the 1st Row of the Vehicle Entry link is SAVEDVEHICLE
@@ -1045,7 +1045,7 @@ And I save the 1st Row of the Driver Entry link as SAVEDDRIVER
 And I save the 1st Row of the Status Entry link as SAVEDSTATUS
 And I save the 1st Row of the VIN Entry link as SAVEDVIN
 And I save the 1st Row of the License Entry link as SAVEDLICENSE
-!-- And I save the 1st Row of the State Entry link as SAVEDSTATE
+And I save the 1st Row of the State Entry link as SAVEDSTATE
 And I save the 1st Row of the Year Entry link as SAVEDYEAR
 And I save the 1st Row of the Make Entry link as SAVEDMAKE
 And I save the 1st Row of the Model Entry link as SAVEDMODEL
@@ -1060,7 +1060,7 @@ And I validate the Year text is SAVEDYEAR
 And I validate the Color text is SAVEDCOLOR
 And I validate the Weight text is SAVEDWEIGHT
 And I validate the License Number text is SAVEDLICENSE
-And I validate the State text is "Pennsylvania"
+And I validate the State text is SAVEDSTATE
 And I validate the Trailer ID text is SAVEDTRAILER
 And I validate the Status text is SAVEDSTATUS
 And I validate the Assigned Team text is SAVEDTEAM
@@ -1163,7 +1163,7 @@ And I save the 1st Row of the Driver Entry link as SAVEDDRIVER
 And I save the 1st Row of the Status Entry link as SAVEDSTATUS
 And I save the 1st Row of the VIN Entry link as SAVEDVIN
 And I save the 1st Row of the License Entry link as SAVEDLICENSE
-!-- And I save the 1st Row of the State Entry link as SAVEDSTATE
+And I save the 1st Row of the State Entry link as SAVEDSTATE
 And I save the 1st Row of the Year Entry link as SAVEDYEAR
 And I save the 1st Row of the Make Entry link as SAVEDMAKE
 And I save the 1st Row of the Model Entry link as SAVEDMODEL
@@ -1178,7 +1178,7 @@ And I validate the Year text is SAVEDYEAR
 And I validate the Color text is SAVEDCOLOR
 And I validate the Weight text is SAVEDWEIGHT
 And I validate the License Number text is SAVEDLICENSE
-And I validate the State text is "Pennsylvania"
+And I validate the State text is SAVEDSTATE
 And I validate the Trailer ID text is SAVEDTRAILER
 And I validate the Status text is SAVEDSTATUS
 And I validate the Assigned Team text is SAVEDTEAM
@@ -1243,7 +1243,7 @@ And I save the 1st Row of the Driver Entry link as SAVEDDRIVER
 And I save the 1st Row of the Status Entry link as SAVEDSTATUS
 And I save the 1st Row of the VIN Entry link as SAVEDVIN
 And I save the 1st Row of the License Entry link as SAVEDLICENSE
-!-- And I save the 1st Row of the State Entry link as SAVEDSTATE
+And I save the 1st Row of the State Entry link as SAVEDSTATE
 And I save the 1st Row of the Year Entry link as SAVEDYEAR
 And I save the 1st Row of the Make Entry link as SAVEDMAKE
 And I save the 1st Row of the Model Entry link as SAVEDMODEL
@@ -1258,7 +1258,7 @@ And I validate the Year text is SAVEDYEAR
 And I validate the Color text is SAVEDCOLOR
 And I validate the Weight text is SAVEDWEIGHT
 And I validate the License Number text is SAVEDLICENSE
-!-- And I validate the State text is "Alabama"
+And I validate the State text is SAVEDSTATE
 And I validate the Trailer ID text is SAVEDTRAILER
 And I validate the Status text is SAVEDSTATUS
 And I validate the Assigned Team text is SAVEDTEAM
@@ -1274,7 +1274,7 @@ And I validate the Year textfield is SAVEDYEAR
 And I validate the Color textfield is SAVEDCOLOR
 And I validate the Weight textfield is SAVEDWEIGHT
 And I validate the License Number textfield is SAVEDLICENSE
-!-- And I validate the State dropdown is "Alabama"
+And I validate the State dropdown is SAVEDSTATE
 And I validate the Trailer ID textfield is SAVEDTRAILER
 And I validate the Status dropdown is SAVEDSTATUS
 And I validate the Assigned Device dropdown is SAVEDDEVICE
@@ -1313,7 +1313,7 @@ And I validate the 1st Row of the Trailer ID Entry link is "ANEWTRAILER2"
 And I validate the 1st Row of the Status Entry link is "INACTIVE"
 And I validate the 1st Row of the VIN Entry link is "ANEWVINNUMBER2"
 And I validate the 1st Row of the License Entry link is "NEWLICENS2"
-And I validate the 1st Row of the State Entry link is "TX"
+And I validate the 1st Row of the State Entry link is "Texas"
 And I validate the 1st Row of the Year Entry link is "1910"
 And I validate the 1st Row of the Make Entry link is "ANEWMAKE2"
 And I validate the 1st Row of the Model Entry link is "ANEWMODEL2"
@@ -1695,7 +1695,7 @@ And I validate the 1st Row of the Driver Entry link is SAVEDDRIVER
 And I validate the 1st Row of the Status Entry link is "INACTIVE"
 And I validate the 1st Row of the VIN Entry link is SAVEDVIN
 And I validate the 1st Row of the License Entry link is SAVEDLICENSE
-And I validate the 1st Row of the State Entry link is "IN"
+And I validate the 1st Row of the State Entry link is "Indiana"
 And I validate the 1st Row of the Year Entry link is "1111"
 And I validate the 1st Row of the Make Entry link is "BATCHMAKE"
 And I validate the 1st Row of the Model Entry link is "BATCHMODEL"
@@ -1710,7 +1710,7 @@ And I validate the 2nd Row of the Driver Entry link is SAVEDDRIVER2
 And I validate the 2nd Row of the Status Entry link is "INACTIVE"
 And I validate the 2nd Row of the VIN Entry link is SAVEDVIN2
 And I validate the 2nd Row of the License Entry link is SAVEDLICENSE2
-And I validate the 2nd Row of the State Entry link is "IN"
+And I validate the 2nd Row of the State Entry link is "Indiana"
 And I validate the 2nd Row of the Year Entry link is "1111"
 And I validate the 2nd Row of the Make Entry link is "BATCHMAKE"
 And I validate the 2nd Row of the Model Entry link is "BATCHMODEL"
