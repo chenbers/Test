@@ -242,7 +242,7 @@
 					</rowGroup>
 					<columnGroup name="day" height="20" headerPosition="Center">
 						<bucket order="Descending">
-							<bucketExpression class="java.lang.String"><![CDATA[$F{day}]]></bucketExpression>
+							<bucketExpression class="java.util.Date"><![CDATA[$F{dayDate}]]></bucketExpression>
 							<comparatorExpression><![CDATA[$F{dayDate}]]></comparatorExpression>
 						</bucket>
 						<crosstabColumnHeader>
@@ -258,7 +258,7 @@
 									<textElement textAlignment="Center" verticalAlignment="Middle">
 										<font fontName="SansSerif"/>
 									</textElement>
-									<textFieldExpression class="java.lang.String"><![CDATA[$V{day}]]></textFieldExpression>
+									<textFieldExpression class="java.lang.String"><![CDATA[(new SimpleDateFormat("MM/dd/yy")).format($V{day})]]></textFieldExpression>
 								</textField>
 							</cellContents>
 						</crosstabColumnHeader>

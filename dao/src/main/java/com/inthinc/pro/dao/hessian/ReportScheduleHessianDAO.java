@@ -4,9 +4,10 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang.NotImplementedException;
+
 import com.inthinc.pro.dao.ReportScheduleDAO;
 import com.inthinc.pro.dao.hessian.exceptions.EmptyResultSetException;
-import com.inthinc.pro.dao.hessian.exceptions.ProxyException;
 import com.inthinc.pro.model.ReportSchedule;
 
 public class ReportScheduleHessianDAO extends GenericHessianDAO<ReportSchedule, Integer> implements ReportScheduleDAO
@@ -47,5 +48,10 @@ public class ReportScheduleHessianDAO extends GenericHessianDAO<ReportSchedule, 
             return Collections.emptyList();
         }
 	}
+
+    @Override
+    public List<ReportSchedule> getActiveReportSchedulesByAccountID(Integer accountID) {
+        throw new NotImplementedException();
+    }
 
 }

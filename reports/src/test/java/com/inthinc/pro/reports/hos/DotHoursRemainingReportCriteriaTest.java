@@ -6,14 +6,19 @@ import static org.junit.Assert.assertTrue;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.TimeZone;
 
 import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 import org.junit.Test;
 
 import com.inthinc.hos.model.HOSStatus;
 import com.inthinc.hos.model.RuleSetType;
 import com.inthinc.pro.model.Driver;
+import com.inthinc.pro.model.hos.HOSRecord;
 import com.inthinc.pro.reports.BaseUnitTest;
 import com.inthinc.pro.reports.FormatType;
 import com.inthinc.pro.reports.hos.model.DotHoursRemaining;
@@ -330,5 +335,80 @@ public class DotHoursRemainingReportCriteriaTest extends BaseUnitTest {
             }
 
         }
+    }
+
+
+
+
+    private static final String DISPLAY_DATE_FORMAT = "MM/dd/yyyy";
+    private static final DateTimeFormatter dateTimeFormatter = DateTimeFormat.forPattern(DISPLAY_DATE_FORMAT).withZone(DateTimeZone.forID("US/Mountain"));
+
+    @Test
+    public void newYearIssue() {
+        // for defect DE8281
+      DateTime newYearDate = dateTimeFormatter.parseDateTime("01/06/2014").plusHours(1);
+      DateTime oldYearDate = dateTimeFormatter.parseDateTime("08/06/2013").plusHours(1);
+      for (int testCaseCnt = 0; testCaseCnt < testCaseName.length; testCaseCnt++) {
+            HosRecordDataSet testDataNewYear = new HosRecordDataSet(DATA_PATH, testCaseName[testCaseCnt], false);
+            offsetDatesToNewYear(testDataNewYear.driverHOSRecordMap, newYearDate);
+            
+            DotHoursRemainingReportCriteria dotHoursRemainingReportCriteriaNewYear = new DotHoursRemainingReportCriteria(Locale.US);
+            dotHoursRemainingReportCriteriaNewYear.setReportDate(new Date(), TimeZone.getTimeZone("UTC"));
+            dotHoursRemainingReportCriteriaNewYear.initDataSet(testDataNewYear.getGroupHierarchy(), testDataNewYear.driverHOSRecordMap, newYearDate);
+            
+            HosRecordDataSet testDataOldYear = new HosRecordDataSet(DATA_PATH, testCaseName[testCaseCnt], false);
+            offsetDatesToNewYear(testDataOldYear.driverHOSRecordMap, oldYearDate);
+            
+            DotHoursRemainingReportCriteria dotHoursRemainingReportCriteriaOldYear = new DotHoursRemainingReportCriteria(Locale.US);
+            dotHoursRemainingReportCriteriaOldYear.setReportDate(new Date(), TimeZone.getTimeZone("UTC"));
+            dotHoursRemainingReportCriteriaOldYear.initDataSet(testDataNewYear.getGroupHierarchy(), testDataOldYear.driverHOSRecordMap, oldYearDate);
+            
+            
+            String newYearReport = genReportToString(dotHoursRemainingReportCriteriaNewYear, FormatType.HTML);
+            String oldYearReport = genReportToString(dotHoursRemainingReportCriteriaOldYear, FormatType.HTML);
+            
+            //dump("dotHoursRemainingNewYear", testCaseCnt, dotHoursRemainingReportCriteriaNewYear, FormatType.PDF);
+            //dump("dotHoursRemainingOldYear", testCaseCnt, dotHoursRemainingReportCriteriaOldYear, FormatType.PDF);
+            
+            String oldYearReportWithDatesReplaced = replaceDates(oldYearReport);
+            assertEquals("data identical except for date", newYearReport, oldYearReportWithDatesReplaced);
+            
+            
+            
+            
+        }
+    }
+    
+
+    
+    private String replaceDates(String oldYearReport) {
+        return oldYearReport.replace("08/06/13", "01/06/14")
+                .replace("08/05/13", "01/05/14")
+                .replace("08/04/13", "01/04/14")
+                .replace("08/03/13", "01/03/14")
+                .replace("08/02/13", "01/02/14")
+                .replace("08/01/13", "01/01/14")
+                .replace("07/31/13", "12/31/13")
+                .replace("07/30/13", "12/30/13")
+                .replace("07/29/13", "12/29/13")
+                .replace("07/28/13", "12/28/13")
+                .replace("07/27/13", "12/27/13")
+                .replace("07/26/13", "12/26/13")
+                .replace("07/25/13", "12/25/13")
+                .replace("07/24/13", "12/24/13")
+                .replace("07/23/13", "12/23/13")
+                .replace("07/22/13", "12/22/13");
+    }
+
+    private Map<Driver, List<HOSRecord>> offsetDatesToNewYear(Map<Driver, List<HOSRecord>> driverHOSRecordMap, DateTime newYearDate) {
+        for (Driver driver : driverHOSRecordMap.keySet()) {
+            List<HOSRecord> recList = driverHOSRecordMap.get(driver);
+            long timeOffset = newYearDate.toDate().getTime() - recList.get(0).getLogTime().getTime();
+            
+            for (HOSRecord rec : recList) {
+                rec.setLogTime(new Date(rec.getLogTime().getTime()+timeOffset));
+            }
+        }
+        return null;
     }
 }

@@ -473,7 +473,7 @@ public class SiloServiceImpl implements SiloService {
 
     @Override
     @MethodDescription(description = "Assign a device to a vehicle.", crudType=CrudType.UPDATE)
-    public Map<String, Object> setVehicleDevice(@DaoParam(name = "vehicleID") Integer vehicleID, @DaoParam(name = "deviceID") Integer deviceID) throws ProDAOException {
+    public Map<String, Object> setVehicleDevice(@DaoParam(name = "vehicleID", validator=ValidatorType.VEHICLE) Integer vehicleID, @DaoParam(name = "deviceID", validator=ValidatorType.DEVICE_VEHICLE_ACCOUNTID) Integer deviceID) throws ProDAOException {
         return null;
     }
     

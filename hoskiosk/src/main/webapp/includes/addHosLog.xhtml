@@ -7,23 +7,30 @@
   xmlns:a4j="http://richfaces.org/a4j"
   xmlns:rich="http://richfaces.org/rich">
 
-	<div class="add_section_title"><h:outputText value="#{messages.hosStatus_change}" /></div>
+<a4j:region id = "statusRegion">
+	<div class="add_section_title"><h:outputText value="#{messages.hosStatus_change}" />
+	<a4j:status	for="statusRegion">
+		<f:facet name="start">
+			<h:outputText>
+			<img src="#{facesContext.externalContext.request.contextPath}/images/progress2.gif" align="top" />&#160;</h:outputText>
+		</f:facet>
+	</a4j:status>
+	</div>
 	<div class="spacer"></div>
-	<a4j:form>
+	<h:form>
     	<table width="100%" border="0" cellspacing="2" cellpadding="0">
 			<tr>
             	<td width="120">
                 	<h:outputText value="#{messages.hosLog_status}" />
 				</td>
                 <td>
-                       <h:commandButton id="hosAddLogLogOnDuty" action="#{hosDriverKioskBean.setStatusOnDuty}" styleClass="left" >
+                       <a4j:commandButton id="hosAddLogLogOnDuty" action="#{hosDriverKioskBean.setStatusOnDuty}" requestDelay="500" eventsQueue="statusQueue" styleClass="left" reRender="#{reRenderList}">
                        	<span class="onDuty"><h:outputText value="#{messages.hosLog_statusOnDutyNotDriving}" /></span>
-                       	<a4j:support event="onclick" reRender="#{reRenderList}"/>
-                       </h:commandButton>
-                       <h:commandButton id="hosAddLogLogOff" action="#{hosDriverKioskBean.setStatusOffDuty}" styleClass="left">
+                       </a4j:commandButton>
+                       <h:outputText value=" " />
+                       <a4j:commandButton id="hosAddLogLogOff" action="#{hosDriverKioskBean.setStatusOffDuty}" requestDelay="500" eventsQueue="statusQueue" styleClass="left" reRender="#{reRenderList}">
                        	<span class="offDuty"><h:outputText value="#{messages.hosLog_statusOffDuty}" /></span>
-                       	<a4j:support event="onclick" reRender="#{reRenderList}"/>
-                       </h:commandButton>
+                       </a4j:commandButton>
                 </td>
 			</tr>
 			<tr>
@@ -49,8 +56,7 @@
 				</td>
 			</tr>							                      
 		</table>
-	</a4j:form>
-    					
-
+	</h:form>
+</a4j:region>	
 </ui:composition>
 

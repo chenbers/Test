@@ -21,6 +21,7 @@ public class ValidatorFactory {
 	private ReportPrefIDValidator reportPrefIDValidator;
 	private CrashReportIDValidator crashReportIDValidator;
 	private DriverorVehicleIDValidator driverorVehicleIDValidator;
+	private DeviceandVehicleAccountIDValidator deviceandVehicleAccountIDValidator;
 	
 	private static Map<ValidatorType, GenericValidator> validatorMap;
 	
@@ -44,6 +45,7 @@ public class ValidatorFactory {
 		validatorMap.put(ValidatorType.REPORT_PREF, reportPrefIDValidator);
 		validatorMap.put(ValidatorType.CRASH_REPORT, crashReportIDValidator);
 		validatorMap.put(ValidatorType.DRIVER_OR_VEHICLE, driverorVehicleIDValidator);
+		validatorMap.put(ValidatorType.DEVICE_VEHICLE_ACCOUNTID, deviceandVehicleAccountIDValidator);
 	}
 
 	public static GenericValidator getValidator(ValidatorType validatorType) {
@@ -188,6 +190,14 @@ public class ValidatorFactory {
 	public void setDriverorVehicleIDValidator(
 			DriverorVehicleIDValidator driverorVehicleIDValidator) {
 		this.driverorVehicleIDValidator = driverorVehicleIDValidator;
+	}
+	
+	public DeviceandVehicleAccountIDValidator getDeviceandVehicleAccountIDValidator() {
+		return deviceandVehicleAccountIDValidator;
+	}
+
+	public void setDeviceandVehicleAccountIDValidator(DeviceandVehicleAccountIDValidator deviceandVehicleAccountIDValidator) {
+		this.deviceandVehicleAccountIDValidator = deviceandVehicleAccountIDValidator;
 	}
 
 

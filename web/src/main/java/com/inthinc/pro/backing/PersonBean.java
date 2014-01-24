@@ -19,6 +19,7 @@ import java.util.TreeMap;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.SelectItem;
 
 import org.apache.commons.lang.StringUtils;
@@ -36,6 +37,7 @@ import com.inthinc.pro.dao.RoleDAO;
 import com.inthinc.pro.dao.UserDAO;
 import com.inthinc.pro.dao.annotations.Column;
 import com.inthinc.pro.dao.hessian.exceptions.EmptyResultSetException;
+import com.inthinc.pro.dao.jdbc.AdminPersonJDBCDAO;
 import com.inthinc.pro.dao.util.DateUtil;
 import com.inthinc.pro.model.Account;
 import com.inthinc.pro.model.Address;
@@ -81,6 +83,8 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
     private static final int MAX_FOB_ID_LENGTH = 24;
     private static final int TRANSITION_PREVIOUS_EMP_ID_LENGTH = 20;
     private static final int TRANSITION_CURRENT_EMP_ID_LENGTH = 10;
+    private AdminPersonJDBCDAO adminPersonJDBCDAO;
+    Boolean fobChanged = false;
     static {
         // available columns
         AVAILABLE_COLUMNS = new ArrayList<String>();
@@ -1160,11 +1164,28 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
                     getTimeZonesBean().initBean();
                 }
             }
+
+          //Now that driver entity is updated, if fob is set for this driver then clear this fob on other drivers
+                 if (fobChanged){
+                      String fobID = person.getDriver().getFobID();
+                      Integer driverId = person.getDriver().getDriverID();
+                      
+                  	  if (fobID != null && fobID!="" && driverId!=null)
+                  		adminPersonJDBCDAO.clearFOBonOtherDrivers(fobID, driverId);
+                  	  
+                  	  fobChanged = false;
+                 } 	  
+                 
             // add a message
             final String summary = MessageUtil.formatMessageString(create ? "person_added" : "person_updated", person.getFirst(), person.getLast());
             final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, summary, null);
             context.addMessage(null, message);
         }
+    }
+    
+    public void fobChanged(ValueChangeEvent event) {
+    	this.fobChanged = true;
+       	
     }
 
     private void batchSave(List<PersonView> saveItems) {
@@ -1834,5 +1855,14 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
         else
             return TRANSITION_PREVIOUS_EMP_ID_LENGTH;
     }
+    
+    public AdminPersonJDBCDAO getAdminPersonJDBCDAO() {
+        return adminPersonJDBCDAO;
+    }
+
+    public void setAdminPersonJDBCDAO(AdminPersonJDBCDAO adminPersonJDBCDAO) {
+        this.adminPersonJDBCDAO = adminPersonJDBCDAO;
+    }
+
 
 }

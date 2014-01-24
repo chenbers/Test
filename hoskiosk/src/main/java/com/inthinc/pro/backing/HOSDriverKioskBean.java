@@ -46,12 +46,16 @@ public class HOSDriverKioskBean extends BaseBean {
         addHosLog(HOSStatus.OFF_DUTY);
     }
 
-    private void addHosLog(HOSStatus status) {
+    private synchronized void addHosLog(HOSStatus status) {
+        Date date = new Date();
+        if (hosDAO.otherHosRecordExistsForDriverTimestamp(getDriver().getDriverID(), date, -1l)) {
+            return;
+        }
         
         HOSRecord hosRecord = new HOSRecord();
         hosRecord.setStatus(status);
         hosRecord.setTimeZone(getPerson().getTimeZone());
-        hosRecord.setLogTime(new Date());
+        hosRecord.setLogTime(date);
         hosRecord.setDriverID(getDriver().getDriverID());
         hosRecord.setDriverDotType(getDriver().getDot() == null ? RuleSetType.NON_DOT : getDriver().getDot());
         hosRecord.setEditUserID(0);

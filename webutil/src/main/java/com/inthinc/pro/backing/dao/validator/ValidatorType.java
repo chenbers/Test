@@ -18,7 +18,8 @@ public enum ValidatorType {
 	VEHICLE(13),
 	ZONE_ALERT(14),
 	ZONE(15),
-	DRIVER_OR_VEHICLE(16);
+	DRIVER_OR_VEHICLE(16),
+	DEVICE_VEHICLE_ACCOUNTID(17);
 	
 	Integer code;
 	
