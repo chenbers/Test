@@ -76,12 +76,12 @@ public class PageAssetsTrailers extends Masthead {
             return new TextLink(AssetsTrailersEnum.SORT_BY_DEVICE_LINK);
         }
         
-        public Text sortByVehicle() {
-            return new Text(AssetsTrailersEnum.SORT_BY_VEHICLE_LINK);
+        public TextLink sortByVehicle() {
+            return new TextLink(AssetsTrailersEnum.SORT_BY_VEHICLE_LINK);
         }
         
-        public Text sortByDriver() {
-            return new Text(AssetsTrailersEnum.SORT_BY_DRIVER_LINK);
+        public TextLink sortByDriver() {
+            return new TextLink(AssetsTrailersEnum.SORT_BY_DRIVER_LINK);
         }
         
         public TextLink sortByStatus() {
