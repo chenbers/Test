@@ -9,7 +9,7 @@ public enum AssetsTrailersEnum implements SeleniumEnums {
 	TITLE(null, null), //does not have a title yet
 	
 	ENTRIES_DROPDOWN("10", "//select[@name='trailerTable_length']"),
-	ENTRIES_LABEL("Show *** entries", "//div[2]/div/label"),
+	ENTRIES_LABEL("Show *** entries", "//div[2]/div/div/div/div/div/div/label"),
 	SEARCH_LABEL("Search:", "//div[3]/div/label"),
 	SEARCH_TEXTFIELD(null, "//div/label/input[@type='text']"),
 	//SHOW/HIDE COLUMNS SECTION

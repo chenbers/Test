@@ -604,6 +604,6 @@ public class PageAssetsTrailers extends Masthead {
     
     @Override
     protected boolean checkIsOnPage() {
-        return _text().recordsPerPageLabel().isPresent();
+        return _button().new_().isPresent();
     }
 }
