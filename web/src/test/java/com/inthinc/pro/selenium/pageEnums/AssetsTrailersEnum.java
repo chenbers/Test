@@ -53,7 +53,7 @@ public enum AssetsTrailersEnum implements SeleniumEnums {
 	SORT_BY_DRIVER_LINK("Driver", "//th[@aria-label='Driver: activate to sort column ascending']"),
 	SORT_BY_STATUS("Status", "//th[@aria-label='Status: activate to sort column ascending']"),
 	SORT_BY_VIN("VIN", "//th[@aria-label='VIN: activate to sort column ascending']"),
-	SORT_BY_LICENSE_NUMBER("License #", "//th[@aria-label='License #: activate to sort column ascending']"),
+	SORT_BY_LICENSE_NUMBER("License #", "//th[@aria-label='License: activate to sort column ascending']"),
 	SORT_BY_STATE_LINK("State", "//th[@aria-label='State: activate to sort column ascending']"),
 	SORT_BY_YEAR("Year", "//th[@aria-label='Year: activate to sort column ascending']"),
 	SORT_BY_MAKE("Make", "//th[@aria-label='Make: activate to sort column ascending']"),
