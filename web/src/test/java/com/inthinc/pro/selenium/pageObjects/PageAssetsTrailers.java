@@ -320,11 +320,7 @@ public class PageAssetsTrailers extends Masthead {
             return new Text(AssetsTrailersEnum.ODOMETER_CHECKBOX_LABEL);
         }
         //
-        //DETAILS SECTION
-        public Text detailsHeader() {
-            return new Text(AssetsTrailersEnum.DETAILS_HEADER);
-        }
-        
+        //DETAILS SECTION        
         public Text trailerIDLabel() {
             return new Text(AssetsTrailersEnum.TRAILER_ID_LABEL);
         }

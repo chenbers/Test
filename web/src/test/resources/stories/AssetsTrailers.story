@@ -35,7 +35,6 @@ And I validate the New_ button is visible
 And I validate the Edit button is not visible
 And I validate the Cancel button is not visible
 And I validate the Save button is not visible
-And I validate the Details Header text is present
 And I validate the Trailer ID Label text is present
 And I validate the Status Label text is present
 And I validate the Vin Label text is present
