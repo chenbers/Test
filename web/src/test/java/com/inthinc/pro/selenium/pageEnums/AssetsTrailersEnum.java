@@ -110,7 +110,7 @@ public enum AssetsTrailersEnum implements SeleniumEnums {
 	WEIGHT_ERROR_TEXT("The trailer weight can be empty or contain only numbers.", "//div[9]/div/div[2]/label[@class='error']"),
 	LICENSE_NUMBER_ERROR_TEXT("The trailer license exceeds 10 characters.", "//div[10]/div/div[2]/label[@class='error']"),
 	//ASSIGNMENT SECTION
-	ASSIGNMENT_HEADER("Assignment", "//div/h4[@class='detailHeader']"),
+	ASSIGNMENT_HEADER("Assignment", "//form/div[12]/h4"),
 	ASSIGNED_DEVICE_LABEL("Device", "//div[13]/label"),
 	DEVICE_TEXT(null, "assignedDeviceValue"),
 	ASSIGNED_DEVICE_DROPDOWN(null, "assignedDeviceInput"),
