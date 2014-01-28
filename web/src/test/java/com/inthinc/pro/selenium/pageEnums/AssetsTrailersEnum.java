@@ -46,7 +46,7 @@ public enum AssetsTrailersEnum implements SeleniumEnums {
 	ODOMETER_CHECKBOX_LABEL("Odometer", "//button[15]/span/span[2]"),
 	RESTORE_ORIGINAL_LINK("Restore original", "//button[@class='ColVis_Button TableTools_Button ColVis_Restore']"),
 	//TABLE ITEMS
-	SORT_BY_TRAILERID_LINK("Trailer ID", "//th[@aria-label='Trailer ID: activate to sort column ascending']"),
+	SORT_BY_TRAILERID_LINK("Trailer ID", "//th[@aria-label='Trailer: activate to sort column ascending']"),
 	SORT_BY_TEAM_LINK("Team", "//th[@aria-label='Team: activate to sort column ascending']"),
 	SORT_BY_DEVICE_LINK("Device", "//th[@aria-label='Device: activate to sort column ascending']"),
 	SORT_BY_VEHICLE_LINK("Vehicle", "//th[@aria-label='Vehicle: activate to sort column ascending']"),
