@@ -1,7 +1,8 @@
 Narrative:Test the functionality of the Assets Trailers page
 
 Scenario: Assets - Trailers - UI
-Given I navigate to the assets trailers page
+Given I am logged in
+When I click the Top Trailers link
 Then I validate I am on the Assets Trailers page
 And I validate the Records Per Page Label text is present
 And I validate the Records Per Page dropdown is present
@@ -150,12 +151,14 @@ And I validate the Odometer checkbox is present
 And I validate the Restore Original link is present
 
 Scenario: Assets - Trailers - Default Records dropdowns are set to 10
-Given I navigate to the assets trailers page
+Given I am logged in
+When I click the Top Trailers link
 Then I validate the Records Per Page dropdown is "10"
 
 Scenario: Assets - Trailers - Records per page test
-Given I navigate to the assets trailers page
-When I select "10" from the Records Per Page dropdown 
+Given I am logged in
+When I click the Top Trailers link
+And I select "10" from the Records Per Page dropdown 
 Then I validate the 11th Row of the Trailer ID Entry link is not present
 And I validate the Entries text contains "Showing 1 to 10 of"
 And I select "25" from the Records Per Page dropdown 
@@ -169,8 +172,9 @@ And I validate the 101st Row of the Trailer ID Entry link is not present
 And I validate the Entries text contains "Showing 1 to 100 of"
 
 Scenario: Assets - Trailers -  Empty Search
-Given I navigate to the assets trailers page
-When I type "randomstringthatwillnotcomeup" into the Search textfield
+Given I am logged in
+When I click the Top Trailers link
+And I type "randomstringthatwillnotcomeup" into the Search textfield
 Then I validate the No Matching Records text is "No matching records found"
 And I validate the Entries text contains "Showing 0 to 0 of 0 entries"
 And I validate the Previous link is not present
@@ -179,21 +183,24 @@ And I validate the Previous Disabled link is present
 And I validate the Next Disabled link is present
 
 Scenario: Assets - Trailers - Filtered Entries Text Functions Correctly
-Given I navigate to the assets trailers page
-When I type "FilteredEntry" into the Search textfield
+Given I am logged in
+When I click the Top Trailers link
+And I type "FilteredEntry" into the Search textfield
 Then I validate the Entries text contains "Showing 1 to 3 of 3 entries"
 And I validate the Entries text contains "filtered from"
 And I validate the Entries text contains "total entries"
 
 Scenario: Assets - Trailers - Search Filter (clear or not clear test depending on how we change things, at the moment the test checks for not cleared text)
-Given I navigate to the assets trailers page
-When I type "SEARCHTEXT" into the Search textfield
+Given I am logged in
+When I click the Top Trailers link
+And I type "SEARCHTEXT" into the Search textfield
 And I click the Top Trailers link
 Then I validate the Search textfield is "SEARCHTEXT"
 
 Scenario: Assets - Trailers - Search All Fields
-Given I navigate to the assets trailers page
-When I click the New_ button
+Given I am logged in
+When I click the Top Trailers link
+And I click the New_ button
 And I type "SEARCHVEH1" into the Trailer ID textfield
 And I type "SEARCHVIN1" into the VIN textfield
 And I type "SEARCHMAKE1" into the Make textfield
@@ -289,8 +296,9 @@ And I click the Save button
 And I validate the Entries text contains "Showing 0 to 0 of 0 entries"
 
 Scenario: Assets - Trailers - Show Hide Columns UI Interaction
-Given I navigate to the assets trailers page
-When I click the Show Hide Columns link
+Given I am logged in
+When I click the Top Trailers link
+And I click the Show Hide Columns link
 And I uncheck the Trailer ID checkbox
 And I click the Show Hide Columns link
 Then I validate the Sort By Trailer ID link is not present
@@ -399,16 +407,18 @@ And I validate the Sort By Weight link is present
 And I validate the Sort By Odometer link is present
 
 Scenario: Assets - Trailers - Bookmark Entry 
-Given I navigate to the assets trailers page
-When I bookmark the page
+Given I am logged in
+When I click the Top Trailers link
+And I bookmark the page
 And I click the Logout link
 And I click the bookmark I just added
 And I log back in
 Then I validate I am on the Assets Trailers page
 
 Scenario: Assets - Trailers - Table Properties NEED TO IMPLEMENT CHECKING ALPHABETICAL ORDER
-Given I navigate to the assets trailers page
-When I click the Sort By Trailer ID link
+Given I am logged in
+When I click the Top Trailers link
+And I click the Sort By Trailer ID link
 And I click the Sort By Team link
 And I click the Sort By Device link
 And I click the Sort By Vehicle link
@@ -425,13 +435,15 @@ And I click the Sort By Weight link
 And I click the Sort By Odometer link
 
 Scenario: Assets - Trailers - Show/Hide Columns - Subsequent Session Retention
-Given I navigate to the assets trailers page
-When I click the Show Hide Columns link
+Given I am logged in
+When I click the Top Trailers link
+And I click the Show Hide Columns link
 And I uncheck the Trailer ID checkbox
 And I click the Show Hide Columns link
 Then I validate the Sort By Trailer ID link is not present
 And I click the Logout link
-Given I navigate to the assets trailers page
+Given I am logged in
+And I click the Top Trailers link
 Then I validate the Sort By Trailer ID link is not present
 And I click the Show Hide Columns link
 And I check the Trailer ID checkbox
@@ -439,8 +451,9 @@ And I click the Show Hide Columns link
 And I validate the Sort By Trailer ID link is present
 
 Scenario: Assets - Trailers - Click New Button, Then Try And Select A Row In The Table
-Given I navigate to the assets trailers page
-When I save the 1st Row of the Trailer ID Entry link as SAVEDTRAILER
+Given I am logged in
+When I click the Top Trailers link
+And I save the 1st Row of the Trailer ID Entry link as SAVEDTRAILER
 And I save the 1st Row of the Team Entry link as SAVEDTEAM
 And I save the 1st Row of the Device Entry link as SAVEDDEVICE
 And I save the 1st Row of the Vehicle Entry link as SAVEDVEHICLE
@@ -477,8 +490,9 @@ And I validate the Assigned Vehicle text is SAVEDVEHICLE
 And I validate the Assigned Driver text is SAVEDDRIVER
 
 Scenario: Assets - Trailers - Select A Row, Click Edit, Then Select Another Row
-Given I navigate to the assets trailers page
-When I click the 1st Row of the Trailer ID Entry link
+Given I am logged in
+When I click the Top Trailers link
+And I click the 1st Row of the Trailer ID Entry link
 And I save the 2nd Row of the Trailer ID Entry link as SAVEDTRAILER2
 And I save the 2nd Row of the Team Entry link as SAVEDTEAM2
 And I save the 2nd Row of the Device Entry link as SAVEDDEVICE2
@@ -513,8 +527,9 @@ And I validate the Assigned Vehicle text is SAVEDVEHICLE2
 And I validate the Assigned Driver text is SAVEDDRIVER2
 
 Scenario: Assets - Trailers - Select And Deselect A Row
-Given I navigate to the assets trailers page
-When I click the 1st Row of the Trailer ID Entry link
+Given I am logged in
+When I click the Top Trailers link
+And I click the 1st Row of the Trailer ID Entry link
 And I control click the 1st Row of the Trailer ID Entry link
 Then I validate the VIN text is ""
 And I validate the Make text is ""
@@ -531,8 +546,9 @@ And I validate the Assigned Vehicle text is ""
 And I validate the Assigned Driver text is ""
 
 Scenario: Assets - Trailers - Select And Deselect A Row Then Click The New Button
-Given I navigate to the assets trailers page
-When I click the 1st Row of the Trailer ID Entry link
+Given I am logged in
+When I click the Top Trailers link
+And I click the 1st Row of the Trailer ID Entry link
 And I control click the 1st Row of the Trailer ID Entry link
 And I click the New_ button
 And I validate the Trailer ID textfield is ""
@@ -552,8 +568,9 @@ And I validate the Assigned Vehicle text is ""
 And I validate the Assigned Driver text is ""
 
 Scenario: Assets - Trailers - Select A Row, Select Edit, Then Cancel
-Given I navigate to the assets trailers page
-When I click the 1st Row of the Trailer ID Entry link
+Given I am logged in
+When I click the Top Trailers link
+And I click the 1st Row of the Trailer ID Entry link
 And I save the 1st Row of the Trailer ID Entry link as SAVEDTRAILER
 And I save the 1st Row of the Team Entry link as SAVEDTEAM
 And I save the 1st Row of the Device Entry link as SAVEDDEVICE
@@ -588,8 +605,9 @@ And I validate the Assigned Vehicle text is SAVEDVEHICLE
 And I validate the Assigned Driver text is SAVEDDRIVER
 
 Scenario: Assets - Trailers - Select A Row, Select Edit, Deselect The Row
-Given I navigate to the assets trailers page
-When I click the 1st Row of the Trailer ID Entry link
+Given I am logged in
+When I click the Top Trailers link
+And I click the 1st Row of the Trailer ID Entry link
 And I click the Edit button
 And I control click the 1st Row of the Trailer ID Entry link
 Then I validate the New_ button is visible
@@ -613,8 +631,9 @@ And I validate the Assigned Vehicle text is ""
 And I validate the Assigned Driver text is ""
 
 Scenario: Assets - Trailers - Delete Trailer Test (cancel button)
-Given I navigate to the assets trailers page
-When I click the 1st Row of the Trailer ID Entry link
+Given I am logged in
+When I click the Top Trailers link
+And I click the 1st Row of the Trailer ID Entry link
 And I save the 1st Row of the Trailer ID Entry link as SAVEDTRAILER
 And I click the Edit button
 And I select "DELETED" from the Status dropdown
@@ -622,8 +641,9 @@ And I click the Cancel button
 Then I validate the 1st Row of the Trailer ID Entry link is SAVEDTRAILER
 
 Scenario: Assets - Trailers - Delete Trailer Test (save button)
-Given I navigate to the assets trailers page
-When I click the New_ button
+Given I am logged in
+When I click the Top Trailers link
+And I click the New_ button
 And I type "DELETETRAILERNAME" into the Trailer ID textfield
 And I type "DELETEVIN" into the VIN textfield
 And I type "DELETEFord" into the Make textfield
@@ -644,8 +664,9 @@ And I click the Save button
 Then I validate the 1st Row of the Trailer ID Entry link is not "DELETETRAILERNAME"
 
 Scenario: Assets - Trailers - New Trailer (cancel button - no changes)
-Given I navigate to the assets trailers page
-When I click the New_ button
+Given I am logged in
+When I click the Top Trailers link
+And I click the New_ button
 Then I validate the VIN textfield is ""
 And I validate the Make textfield is ""
 And I validate the Model text is ""
@@ -674,8 +695,9 @@ And I validate the Status dropdown is "ACTIVE"
 And I validate the Assigned Device dropdown is ""
 
 Scenario: Assets - Trailers - New Trailer (cancel button - changes)
-Given I navigate to the assets trailers page
-When I click the New_ button
+Given I am logged in
+When I click the Top Trailers link
+And I click the New_ button
 And I type "FAKETRAILERNAME" into the Trailer ID textfield
 And I select "ACTIVE" from the Status dropdown
 And I type "FAKEVINNUMBER" into the VIN textfield
@@ -722,8 +744,9 @@ And I validate the Status dropdown is "ACTIVE"
 And I validate the Assigned Device dropdown is ""
 
 Scenario: Assets - Trailers - New Trailer (save button - changes)
-Given I navigate to the assets trailers page
-When I click the New_ button
+Given I am logged in
+When I click the Top Trailers link
+And I click the New_ button
 And I type "SAVECHANGESVIN" into the VIN textfield
 And I type "Kia" into the Make textfield
 And I type "SaveChangesModel" into the Model textfield
@@ -796,8 +819,9 @@ And I click the Save button
 And I validate the Entries text contains "Showing 0 to 0 of 0 entries"
 
 Scenario: Assets - Trailers - New Trailer (save button - no changes)
-Given I navigate to the assets trailers page
-When I click the New_ button
+Given I am logged in
+When I click the Top Trailers link
+And I click the New_ button
 And I validate the Trailer ID textfield is ""
 And I validate the Status dropdown is "ACTIVE"
 Then I validate the VIN textfield is ""
@@ -829,8 +853,9 @@ And I validate the State dropdown contains "--- Select ---"
 And I validate the Assigned Device dropdown is ""
 
 Scenario: Assets - Trailers - Edit Trailer (save button - no changes)
-Given I navigate to the assets trailers page
-When I click the 1st Row of the Trailer ID Entry link
+Given I am logged in
+When I click the Top Trailers link
+And I click the 1st Row of the Trailer ID Entry link
 And I save the 1st Row of the Trailer ID Entry link as SAVEDTRAILER
 And I save the 1st Row of the Team Entry link as SAVEDTEAM
 And I save the 1st Row of the Device Entry link as SAVEDDEVICE
@@ -868,8 +893,9 @@ And I validate the Assigned Vehicle text is ""
 And I validate the Assigned Driver text is ""
 
 Scenario: Assets - Trailers - Edit Trailer (save button - blank trailer id error message)
-Given I navigate to the assets trailers page
-When I click the 1st Row of the Trailer Id Entry link
+Given I am logged in
+When I click the Top Trailers link
+And I click the 1st Row of the Trailer Id Entry link
 And I save the 1st Row of the Trailer ID Entry link as SAVEDTRAILER
 And I save the 1st Row of the Team Entry link as SAVEDTEAM
 And I save the 1st Row of the Device Entry link as SAVEDDEVICE
@@ -905,8 +931,9 @@ And I validate the Assigned Vehicle text is SAVEDVEHICLE
 And I validate the Assigned Driver text is SAVEDDRIVER
 
 Scenario: Assets - Trailers - Edit Trailer (edit button - save changes)
-Given I navigate to the assets trailers page
-When I click the New_ button
+Given I am logged in
+When I click the Top Trailers link
+And I click the New_ button
 And I type "EANDSTRAILERID" into the Trailer ID textfield
 And I type "EDITANDSAVE" into the VIN textfield
 And I type "EANDSMAKE" into the Make textfield
@@ -1021,8 +1048,9 @@ And I click the Save button
 And I validate the Entries text contains "Showing 0 to 0 of 0 entries"
 
 Scenario: Assets - Trailers - New Trailer (new button - save changes, but changes are invalid)
-Given I navigate to the assets trailers page
-When I click the New_ button
+Given I am logged in
+When I click the Top Trailers link
+And I click the New_ button
 And I type "PREINVALIDID" into the Trailer ID textfield
 And I type "INVALIDVIN" into the VIN textfield
 And I type "INVALIDNMAKE" into the Make textfield
@@ -1101,8 +1129,9 @@ And I click the Save button
 And I validate the Entries text contains "Showing 0 to 0 of 0 entries"
 
 Scenario: Assets - Trailers - New Trailer (new button - save changes, but changes are invalid)
-Given I navigate to the assets trailers page
-When I click the New_ button
+Given I am logged in
+When I click the Top Trailers link
+And I click the New_ button
 And I type "ANINVALIDVINNUMBERTOOLONG" into the VIN textfield
 And I type "WAYTOOLONGMAKEFORVALIDITY" into the Make textfield
 And I type "WAYTOOLONGMODELFORVALIDITY" into the Model textfield
@@ -1139,8 +1168,9 @@ And I validate the Assigned Team text is ""
 And I validate the Assigned Driver text is ""
 
 Scenario: Assets - Trailers - Edit Trailer (edit button - save changes, but changes are invalid) (TEST WILL FAIL TILL BUG IS FIXED)
-Given I navigate to the assets trailers page
-When I click the New_ button
+Given I am logged in
+When I click the Top Trailers link
+And I click the New_ button
 And I type "PREINVALIDID" into the Trailer ID textfield
 And I type "INVALIDVIN" into the VIN textfield
 And I type "INVALIDNMAKE" into the Make textfield
@@ -1219,8 +1249,9 @@ And I click the Save button
 And I validate the Entries text contains "Showing 0 to 0 of 0 entries"
 
 Scenario: Assets - Trailers - Edit trailer then create a new trailer
-Given I navigate to the assets trailers page
-When I click the New_ button
+Given I am logged in
+When I click the Top Trailers link
+And I click the New_ button
 And I type "EANDCNTRAILERID" into the Trailer ID textfield
 And I type "EANDCNVIN" into the VIN textfield
 And I type "EANDCNMAKE" into the Make textfield
@@ -1332,8 +1363,9 @@ And I click the Save button
 And I validate the Entries text contains "Showing 0 to 0 of 0 entries"
 
 Scenario: Assets - Trailers - Clear Device Association link
-Given I navigate to the assets trailers page
-When I click the New_ button
+Given I am logged in
+When I click the Top Trailers link
+And I click the New_ button
 And I type "CLEARDEVICETEST" into the Trailer ID textfield
 And I select "ACTIVE" from the Status dropdown
 And I type "CLEARDEVICEVIN" into the VIN textfield
@@ -1362,8 +1394,9 @@ And I type "CLEARDEVICETEST" into the Search textfield
 And I validate the Entries text contains "Showing 0 to 0 of"
 
 Scenario: Assets - Trailers - Batch Edit Test (cancel button, no changes)
-Given I navigate to the assets trailers page
-When I click the 1st Row of the Trailer ID Entry link
+Given I am logged in
+When I click the Top Trailers link
+And I click the 1st Row of the Trailer ID Entry link
 And I save the 1st Row of the Trailer ID Entry link as SAVEDTRAILER
 And I save the 1st Row of the Team Entry link as SAVEDTEAM
 And I save the 1st Row of the Device Entry link as SAVEDDEVICE
@@ -1460,8 +1493,9 @@ And I validate the 2nd Row of the Weight Entry link is SAVEDWEIGHT2
 And I validate the 2nd Row of the Odometer Entry link is SAVEDODOMETER2
 
 Scenario: Assets - Trailers - Batch Edit Test (save button, no changes)
-Given I navigate to the assets trailers page
-When I click the 1st Row of the Trailer ID Entry link
+Given I am logged in
+When I click the Top Trailers link
+And I click the 1st Row of the Trailer ID Entry link
 And I save the 1st Row of the Trailer ID Entry link as SAVEDTRAILER
 And I save the 1st Row of the Team Entry link as SAVEDTEAM
 And I save the 1st Row of the Device Entry link as SAVEDDEVICE
@@ -1558,8 +1592,9 @@ And I validate the 2nd Row of the Weight Entry link is SAVEDWEIGHT2
 And I validate the 2nd Row of the Odometer Entry link is SAVEDODOMETER2
 
 Scenario: Assets - Trailers - Batch Edit Test (cancel button, changes)
-Given I navigate to the assets trailers page
-When I click the 1st Row of the Trailer ID Entry link
+Given I am logged in
+When I click the Top Trailers link
+And I click the 1st Row of the Trailer ID Entry link
 And I save the 1st Row of the Trailer ID Entry link as SAVEDTRAILER
 And I save the 1st Row of the Team Entry link as SAVEDTEAM
 And I save the 1st Row of the Device Entry link as SAVEDDEVICE
@@ -1633,8 +1668,9 @@ And I validate the 2nd Row of the Weight Entry link is SAVEDWEIGHT2
 And I validate the 2nd Row of the Odometer Entry link is SAVEDODOMETER2
 
 Scenario: Assets - Trailers - Batch Edit and Batch Delete Test (save button, changes)
-Given I navigate to the assets trailers page
-When I click the New_ button
+Given I am logged in
+When I click the Top Trailers link
+And I click the New_ button
 And I type "BATCHSAVE1" into the Trailer ID textfield
 And I type "BATCHVIN1" into the VIN textfield
 And I type "BATCHMAKE1" into the Make textfield
@@ -1726,8 +1762,9 @@ And I click the Save button
 And I validate the Entries text contains "Showing 0 to 0 of 0 entries"
 
 Scenario: Assets - Trailers - Trailer ID is more than 30 characters (new button)
-Given I navigate to the assets trailers page
-When I click the New_ button
+Given I am logged in
+When I click the Top Trailers link
+And I click the New_ button
 And I type "1234567890123456789012345678901" into the Trailer ID textfield
 Then I validate the Trailer ID Error text is present
 And I validate the Trailer ID Error text is "The trailer id exceeds 30 characters."
@@ -1736,8 +1773,9 @@ And I click the New_ button
 And I validate the Trailer ID Error text is not visible
 
 Scenario: Assets - Trailers - Trailer ID is more than 30 characters (edit button)
-Given I navigate to the assets trailers page
-When I click the 1st Row of the Trailer ID Entry link
+Given I am logged in
+When I click the Top Trailers link
+And I click the 1st Row of the Trailer ID Entry link
 And I click the Edit button
 And I type "1234567890123456789012345678901" into the Trailer ID textfield
 Then I validate the Trailer ID Error text is present
@@ -1747,8 +1785,9 @@ And I click the Edit button
 And I validate the Trailer ID Error text is not visible
 
 Scenario: Assets - Trailers - VIN exceeds 17 characters (new button)
-Given I navigate to the assets trailers page
-When I click the New_ button
+Given I am logged in
+When I click the Top Trailers link
+And I click the New_ button
 And I type "1" into the VIN textfield
 Then I validate the VIN Error text is not present
 And I type "12" into the VIN textfield
@@ -1791,8 +1830,9 @@ And I click the New_ button
 And I validate the VIN Error text is not visible
 
 Scenario: Assets - Trailers - VIN exceeds 17 characters (edit button)
-Given I navigate to the assets trailers page
-When I click the 1st Row of the Trailer ID Entry link
+Given I am logged in
+When I click the Top Trailers link
+And I click the 1st Row of the Trailer ID Entry link
 And I click the Edit button
 And I type "1" into the VIN textfield
 Then I validate the VIN Error text is not present
@@ -1836,8 +1876,9 @@ And I click the Edit button
 And I validate the VIN Error text is not visible
 
 Scenario: Assets - Trailers - Make is more than 22 characters (new button)
-Given I navigate to the assets trailers page
-When I click the New_ button
+Given I am logged in
+When I click the Top Trailers link
+And I click the New_ button
 And I type "abcdefghijklmn123456789" into the Make textfield
 Then I validate the Make Error text is present
 And I validate the Make Error text is "The trailer make exceeds 22 characters."
@@ -1846,8 +1887,9 @@ And I click the New_ button
 And I validate the Make Error text is not visible
 
 Scenario: Assets - Trailers - Make is more than 22 characters (edit button)
-Given I navigate to the assets trailers page
-When I click the 1st Row of the Trailer ID Entry link
+Given I am logged in
+When I click the Top Trailers link
+And I click the 1st Row of the Trailer ID Entry link
 And I click the Edit button
 And I type "abcdefghijklmn123456789" into the Make textfield
 Then I validate the Make Error text is present
@@ -1857,8 +1899,9 @@ And I click the Edit button
 And I validate the Make Error text is not visible
 
 Scenario: Assets - Trailers - Model is more than 22 characters (new button)
-Given I navigate to the assets trailers page
-When I click the New_ button
+Given I am logged in
+When I click the Top Trailers link
+And I click the New_ button
 And I type "abcdefghijklmn123456789" into the Model textfield
 Then I validate the Model Error text is present
 And I validate the Model Error text is "The trailer model exceeds 22 characters."
@@ -1867,8 +1910,9 @@ And I click the New_ button
 And I validate the Model Error text is not visible
 
 Scenario: Assets - Trailers - Model is more than 22 characters (edit button)
-Given I navigate to the assets trailers page
-When I click the 1st Row of the Trailer ID Entry link
+Given I am logged in
+When I click the Top Trailers link
+And I click the 1st Row of the Trailer ID Entry link
 And I click the Edit button
 And I type "abcdefghijklmn123456789" into the Model textfield
 Then I validate the Model Error text is present
@@ -1878,8 +1922,9 @@ And I click the Edit button
 And I validate the Model Error text is not visible
 
 Scenario: Assets - Trailers - Odometer is non-numeric characters (new button)
-Given I navigate to the assets trailers page
-When I click the New_ button
+Given I am logged in
+When I click the Top Trailers link
+And I click the New_ button
 And I type "a" into the Odometer textfield
 Then I validate the Odometer Error text is present
 And I validate the Odometer Error text is "The trailer odometer can be empty or contain only numbers."
@@ -1888,8 +1933,9 @@ And I click the New_ button
 And I validate the Odometer Error text is not visible
 
 Scenario: Assets - Trailers - Odometer is non-numeric characters (edit button)
-Given I navigate to the assets trailers page
-When I click the 1st Row of the Trailer ID Entry link
+Given I am logged in
+When I click the Top Trailers link
+And I click the 1st Row of the Trailer ID Entry link
 And I click the Edit button
 And I type "a" into the Odometer textfield
 Then I validate the Odometer Error text is present
@@ -1899,8 +1945,9 @@ And I click the Edit button
 And I validate the Odometer Error text is not visible
 
 Scenario: Assets - Trailers - Year is not 4 characters (new button)
-Given I navigate to the assets trailers page
-When I click the New_ button
+Given I am logged in
+When I click the Top Trailers link
+And I click the New_ button
 And I type "0" into the Year textfield
 Then I validate the Year Error text is present
 And I validate the Year Error text is "The trailer year can be empty or contain 4 numbers."
@@ -1917,8 +1964,9 @@ And I click the New_ button
 And I validate the Year Error text is not visible
 
 Scenario: Assets - Trailers - Year is not 4 characters (edit button)
-Given I navigate to the assets trailers page
-When I click the 1st Row of the Trailer ID Entry link
+Given I am logged in
+When I click the Top Trailers link
+And I click the 1st Row of the Trailer ID Entry link
 And I click the Edit button
 And I type "0" into the Year textfield
 Then I validate the Year Error text is present
@@ -1936,8 +1984,9 @@ And I click the Edit button
 And I validate the Year Error text is not visible
 
 Scenario: Assets - Trailers - Year is alpha characters (new button)
-Given I navigate to the assets trailers page
-When I click the New_ button
+Given I am logged in
+When I click the Top Trailers link
+And I click the New_ button
 And I type "a" into the Year textfield
 Then I validate the Year Error text is present
 And I validate the Year Error text is "The trailer year can be empty or contain 4 numbers."
@@ -1946,8 +1995,9 @@ And I click the New_ button
 And I validate the Year Error text is not visible
 
 Scenario: Assets - Trailers - Year is alpha characters (edit button)
-Given I navigate to the assets trailers page
-When I click the 1st Row of the Trailer ID Entry link
+Given I am logged in
+When I click the Top Trailers link
+And I click the 1st Row of the Trailer ID Entry link
 And I click the Edit button
 And I type "a" into the Year textfield
 Then I validate the Year Error text is present
@@ -1957,8 +2007,9 @@ And I click the Edit button
 And I validate the Year Error text is not visible
 
 Scenario: Assets - Trailers - Color exceeds 14 characters (new button)
-Given I navigate to the assets trailers page
-When I click the New_ button
+Given I am logged in
+When I click the Top Trailers link
+And I click the New_ button
 And I type "abcdef123456789" into the Color textfield
 Then I validate the Color Error text is present
 And I validate the Color Error text is "The trailer color exceeds 14 characters."
@@ -1967,8 +2018,9 @@ And I click the New_ button
 And I validate the Color Error text is not visible
 
 Scenario: Assets - Trailers - Color exceeds 14 characters (edit button)
-Given I navigate to the assets trailers page
-When I click the 1st Row of the Trailer ID Entry link
+Given I am logged in
+When I click the Top Trailers link
+And I click the 1st Row of the Trailer ID Entry link
 And I click the Edit button
 And I type "abcdef123456789" into the Color textfield
 Then I validate the Color Error text is present
@@ -1978,8 +2030,9 @@ And I click the Edit button
 And I validate the Color Error text is not visible
 
 Scenario: Assets - Trailers - Weight is not numerical (new button)
-Given I navigate to the assets trailers page
-When I click the New_ button
+Given I am logged in
+When I click the Top Trailers link
+And I click the New_ button
 And I type "a" into the Weight textfield
 Then I validate the Weight Error text is present
 And I validate the Weight Error text is "The trailer weight can be empty or contain only numbers."
@@ -1988,8 +2041,9 @@ And I click the New_ button
 And I validate the Weight Error text is not visible
 
 Scenario: Assets - Trailers - Weight is not numerical (edit button)
-Given I navigate to the assets trailers page
-When I click the 1st Row of the Trailer ID Entry link
+Given I am logged in
+When I click the Top Trailers link
+And I click the 1st Row of the Trailer ID Entry link
 And I click the Edit button
 And I type "a" into the Weight textfield
 Then I validate the Weight Error text is present
@@ -1999,8 +2053,9 @@ And I click the Edit button
 And I validate the Weight Error text is not visible
 
 Scenario: Assets - Trailers - License Number exceeds 10 characters (new button)
-Given I navigate to the assets trailers page
-When I click the New_ button
+Given I am logged in
+When I click the Top Trailers link
+And I click the New_ button
 And I type "a0123456789" into the License Number textfield
 Then I validate the License Number Error text is present
 And I validate the License Number Error text is "The trailer license exceeds 10 characters."
@@ -2009,8 +2064,9 @@ And I click the New_ button
 And I validate the License Number Error text is not visible
 
 Scenario: Assets - Trailers - License Number exceeds 10 characters (edit button)
-Given I navigate to the assets trailers page
-When I click the 1st Row of the Trailer ID Entry link
+Given I am logged in
+When I click the Top Trailers link
+And I click the 1st Row of the Trailer ID Entry link
 And I click the Edit button
 And I type "a0123456789" into the License Number textfield
 Then I validate the License Number Error text is present
