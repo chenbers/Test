@@ -11,7 +11,7 @@ public enum AssetsTrailersEnum implements SeleniumEnums {
 	ENTRIES_DROPDOWN("10", "//select[@name='trailerTable_length']"),
 	ENTRIES_LABEL("Show *** entries", "//div[2]/div/div/div/div/div/div/label"),
 	SEARCH_LABEL("Search:", "//div[3]/div/label"),
-	SEARCH_TEXTFIELD(null, "trailerTable_filter"),
+	SEARCH_TEXTFIELD(null, "//input[@aria-controls='trailerTable']"),
 	//SHOW/HIDE COLUMNS SECTION
 	SHOW_HIDE_COLUMNS_LINK("Show / Hide Columns", "//button[@class='ColVis_Button TableTools_Button ColVis_MasterButton']"),
 	TRAILER_CHECKBOX(null, "//button[1]/span/span[1]/input"),
