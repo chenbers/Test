@@ -2,7 +2,7 @@ In order to view a list of Forms
 As Administrator
 I need to generate the needed submissions form for testing
 
-Scenario: TCXXXX Forms Submissions Page - Add a Form - Create a fully functional Pre Trip form with all options for submissions generation
+Scenario: Forms Submissions Page - Add a Form - Create a fully functional Pre Trip form with all options for submissions generation
 Given I am logged in
 When I click the Forms link
 And I click the New Form button
@@ -101,3 +101,5 @@ And I click the 1st Row of the Gear button
 And I click the 1st Row of the Publish link
 And I type "Submissions Form TCXXXX Pre-Trip Required" into the Search field
 And I validate the 1st Row of the Entry Name text is "Submissions Form TCXXXX Pre-Trip Required"
+
+!-- Need to add a step to generate the submissions once the form has been created and published
