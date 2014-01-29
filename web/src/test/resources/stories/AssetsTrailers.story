@@ -145,14 +145,23 @@ And I validate the Driver checkbox is checked
 And I validate the Status checkbox is present
 And I validate the Status checkbox is checked
 And I validate the VIN checkbox is present
+And I validate the VIN checkbox is not checked
 And I validate the License Number checkbox is present
+And I validate the License Number checkbox is not checked
 And I validate the State checkbox is present
+And I validate the State checkbox is not checked
 And I validate the Year checkbox is present
+And I validate the Year checkbox is not checked
 And I validate the Make checkbox is present
+And I validate the Make checkbox is not checked
 And I validate the Model checkbox is present
+And I validate the Model checkbox is not checked
 And I validate the Color checkbox is present
+And I validate the Color checkbox is not checked
 And I validate the Weight checkbox is present
+And I validate the Weight checkbox is not checked
 And I validate the Odometer checkbox is present
+And I validate the Odometer checkbox is not checked
 And I validate the Restore Original link is present
 
 Scenario: Assets - Trailers - Default Records dropdowns are set to 10
