@@ -64,8 +64,8 @@ public class PageAssetsTrailers extends Masthead {
             return new TextLink(AssetsTrailersEnum.RESTORE_ORIGINAL_LINK);
         }
         
-        public TextLink sortByTrailerID() {
-            return new TextLink(AssetsTrailersEnum.SORT_BY_TRAILERID_LINK);
+        public TextLink sortByTrailer() {
+            return new TextLink(AssetsTrailersEnum.SORT_BY_TRAILER_LINK);
         }
         
         public TextLink sortByTeam() {
@@ -124,8 +124,8 @@ public class PageAssetsTrailers extends Masthead {
             return new TextLink(AssetsTrailersEnum.SORT_BY_ODOMETER);
         }
         
-        public TextTableLink trailerIdEntry() {
-            return new TextTableLink(AssetsTrailersEnum.TRAILER_ID_ENTRY);
+        public TextTableLink trailerEntry() {
+            return new TextTableLink(AssetsTrailersEnum.TRAILER_ENTRY);
         }
         
         public TextTableLink teamEntry() {
@@ -240,8 +240,8 @@ public class PageAssetsTrailers extends Masthead {
             return new TextField(AssetsTrailersEnum.LICENSE_TRAILER_INFORMATION_TEXTFIELD);
         }
         
-        public TextField trailerID() {
-            return new TextField(AssetsTrailersEnum.TRAILER_ID_TEXTFIELD);
+        public TextField trailer() {
+            return new TextField(AssetsTrailersEnum.TRAILER_TEXTFIELD);
         }
     }
     
@@ -260,8 +260,8 @@ public class PageAssetsTrailers extends Masthead {
         }
 
         //SHOW/HIDE COLUMNS LABELS
-        public Text trailerIDCheckboxLabel() {
-            return new Text(AssetsTrailersEnum.TRAILER_ID_CHECKBOX_LABEL);
+        public Text trailerCheckboxLabel() {
+            return new Text(AssetsTrailersEnum.TRAILER_CHECKBOX_LABEL);
         }
                 
         public Text teamCheckboxLabel() {
@@ -321,8 +321,8 @@ public class PageAssetsTrailers extends Masthead {
         }
         //
         //DETAILS SECTION        
-        public Text trailerIDLabel() {
-            return new Text(AssetsTrailersEnum.TRAILER_ID_LABEL);
+        public Text trailerLabel() {
+            return new Text(AssetsTrailersEnum.TRAILER_LABEL);
         }
         
         public Text statusLabel() {
@@ -385,8 +385,8 @@ public class PageAssetsTrailers extends Masthead {
             return new Text(AssetsTrailersEnum.ASSIGNED_DRIVER_LABEL);
         }
         
-        public Text trailerID() {
-            return new Text(AssetsTrailersEnum.TRAILER_ID_TEXT);
+        public Text trailer() {
+            return new Text(AssetsTrailersEnum.TRAILER_TEXT);
         }
         
         public Text status() {
@@ -453,8 +453,8 @@ public class PageAssetsTrailers extends Masthead {
             return new Text(AssetsTrailersEnum.ENTRIES_TEXT);
         }
         
-        public Text trailerIDError() {
-            return new Text(AssetsTrailersEnum.TRAILER_ID_ERROR_TEXT);
+        public Text trailerError() {
+            return new Text(AssetsTrailersEnum.TRAILER_ERROR_TEXT);
         }
         
         public Text vinError() {
@@ -495,8 +495,8 @@ public class PageAssetsTrailers extends Masthead {
     
     public class AssetsTrailersCheckboxes {
         
-        public CheckBox trailerID() {
-            return new CheckBox(AssetsTrailersEnum.TRAILER_ID_CHECKBOX);
+        public CheckBox trailer() {
+            return new CheckBox(AssetsTrailersEnum.TRAILER_CHECKBOX);
         }
                 
         public CheckBox team() {

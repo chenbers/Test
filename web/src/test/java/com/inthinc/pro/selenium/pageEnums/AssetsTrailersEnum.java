@@ -14,8 +14,8 @@ public enum AssetsTrailersEnum implements SeleniumEnums {
 	SEARCH_TEXTFIELD(null, "trailerTable_filter"),
 	//SHOW/HIDE COLUMNS SECTION
 	SHOW_HIDE_COLUMNS_LINK("Show / Hide Columns", "//button[@class='ColVis_Button TableTools_Button ColVis_MasterButton']"),
-	TRAILER_ID_CHECKBOX(null, "//button[1]/span/span[1]/input"),
-    TRAILER_ID_CHECKBOX_LABEL("Trailer ID", "//button[1]/span/span[2]"),
+	TRAILER_CHECKBOX(null, "//button[1]/span/span[1]/input"),
+    TRAILER_CHECKBOX_LABEL("Trailer", "//button[1]/span/span[2]"),
 	TEAM_CHECKBOX(null, "//button[2]/span/span[1]/input"),
 	TEAM_CHECKBOX_LABEL("Team", "//button[2]/span/span[2]"),
 	DEVICE_CHECKBOX(null, "//button[3]/span/span[1]/input"),
@@ -46,7 +46,7 @@ public enum AssetsTrailersEnum implements SeleniumEnums {
 	ODOMETER_CHECKBOX_LABEL("Odometer", "//button[15]/span/span[2]"),
 	RESTORE_ORIGINAL_LINK("Restore original", "//button[@class='ColVis_Button TableTools_Button ColVis_Restore']"),
 	//TABLE ITEMS
-	SORT_BY_TRAILERID_LINK("Trailer ID", "//th[@aria-label='Trailer: activate to sort column ascending']"),
+	SORT_BY_TRAILER_LINK("Trailer", "//th[@aria-label='Trailer: activate to sort column ascending']"),
 	SORT_BY_TEAM_LINK("Team", "//th[@aria-label='Team: activate to sort column ascending']"),
 	SORT_BY_DEVICE_LINK("Device", "//th[@aria-label='Device: activate to sort column ascending']"),
 	SORT_BY_VEHICLE_LINK("Vehicle", "//th[@aria-label='Vehicle: activate to sort column ascending']"),
@@ -67,9 +67,9 @@ public enum AssetsTrailersEnum implements SeleniumEnums {
 	SAVE_BUTTON("Save", "//button[@id='btnDetailSave']"),
 	CANCEL_BUTTON("Cancel", "//button[@id='btnDetailCancel']"),
 	//DETAILS SECTION
-	TRAILER_ID_LABEL("Trailer ID", "//div/div/h4"),
-	TRAILER_ID_TEXT(null, "trailerIdValue"),
-	TRAILER_ID_TEXTFIELD(null, "trailerNameInput"),
+	TRAILER_LABEL("Trailer", "//div/div/h4"),
+	TRAILER_TEXT(null, "trailerIdValue"),
+	TRAILER_TEXTFIELD(null, "trailerNameInput"),
 	STATUS_LABEL("Status", "//div[2]/label"),
 	STATUS_TEXT(null, "statusValue"),
 	STATUS_DROPDOWN(null, "statusInput"),
@@ -100,7 +100,7 @@ public enum AssetsTrailersEnum implements SeleniumEnums {
 	STATE_TRAILER_INFORMATION_LABEL("State", "//div[11]/label"),
 	STATE_TRAILER_INFORMATION_TEXT(null, "stateValue"),
 	STATE_TRAILER_INFORMATION_DROPDOWN(null, "stateInput"),
-	TRAILER_ID_ERROR_TEXT("The trailer id cannot be left blank.", "//div[1]/div/div[2]/label[@class='error']"),
+	TRAILER_ERROR_TEXT("The trailer id cannot be left blank.", "//div[1]/div/div[2]/label[@class='error']"),
 	VIN_ERROR_TEXT("The trailer vin exceeds 17 characters.", "//div[3]/div/div[2]/label[@class='error']"),
     MAKE_ERROR_TEXT("The trailer make exceeds 22 characters.", "//div[4]/div/div[2]/label[@class='error']"),	
     MODEL_ERROR_TEXT("The trailer model exceeds 22 characters.", "//div[5]/div/div[2]/label[@class='error']"),	
@@ -122,7 +122,7 @@ public enum AssetsTrailersEnum implements SeleniumEnums {
     DRIVER_TEXT(null, "assignedDriverValue"),
     
 	//TABLE ITEMS
-    TRAILER_ID_ENTRY(null, "//tr[###]/td[1]"),
+    TRAILER_ENTRY(null, "//tr[###]/td[1]"),
     TEAM_ENTRY(null, "//tr[###]/td[2]"),
     DEVICE_ENTRY(null, "//tr[###]/td[3]"),
     VEHICLE_ENTRY(null, "//tr[###]/td[4]"),
