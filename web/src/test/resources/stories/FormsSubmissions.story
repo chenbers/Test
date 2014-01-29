@@ -2,7 +2,7 @@ Narrative: In order to view submitted forms within a time period
 As an Administrator
 I need a place to view and edit existing submitted forms.
 
-Scenario: TCXXXX Forms Submissions Page - Forms No Data Available In Table Message
+Scenario:  Forms Submissions Page - Forms No Data Available In Table Message
 Given I am logged in
 When I click the Forms link
 And I click the Submissions link
@@ -13,7 +13,7 @@ And I validate the No Records Found Error text is present
 And I validate the No Records Found Error text is "No data available in table"
 And I validate the Entries text contains "Showing 0 to 0 of 0 entries"
 
-Scenario: TCXXXX Forms Submissions Page - UI Test
+Scenario:Forms Submissions Page - UI Test
 Given I am logged in
 When I click the Forms link
 And I click the Submissions link
@@ -37,7 +37,7 @@ And I validate the Edited dropdown is present
 And I validate the Approved dropdown is present
 And I validate the Entries text is present
 
-Scenario: TCXXXX Forms Submissions Page - Forms No Records Found Table Message
+Scenario:Forms Submissions Page - Forms No Records Found Table Message
 Given I am logged in
 When I click the Forms link
 And I click the Submissions link
@@ -48,7 +48,7 @@ And I validate the No Records Found Error text is present
 And I validate the No Records Found Error text is "No matching records found"
 And I validate the Entries text contains "Showing 0 to 0 of 0 entries"
 
-Scenario: TCXXXX Forms Submissions Page - Make sure dates are showing correctly in the grid
+Scenario:Forms Submissions Page - Make sure dates are showing correctly in the grid (REQUIRES DATA GENERATION FOR THIS DATE)
 Given I am logged in
 When I click the Forms link
 And I click the Submissions link
@@ -65,7 +65,7 @@ And I validate the 8th Row of the Date Time Entry text contains "2013-11-19"
 And I validate the 9th Row of the Date Time Entry text contains "2013-11-19"
 And I validate the 10th Row of the Date Time Entry text contains "2013-11-19"
 
-Scenario: TCXXXX Forms Submissions Page - Click on Group Name link
+Scenario:Forms Submissions Page - Click on Group Name link
 Given I am logged in
 When I click the Forms link
 And I click the Submissions link
@@ -75,7 +75,7 @@ And I click the 1st Row of the Group Entry link
 Then I validate I am on the Team Driver Statistics page
 And I validate the Driver Team Value text is GROUP
 
-Scenario: TCXXXX Forms Submissions Page - Click on Driver Name link
+Scenario:Forms Submissions Page - Click on Driver Name link
 Given I am logged in
 When I click the Forms link
 And I click the Submissions link
@@ -85,7 +85,7 @@ And I click the 1st Row of the Driver Entry link
 Then I validate I am on the Driver Performance page
 And I validate the Driver Name link is DRIVER
 
-Scenario: TCXXXX Forms Submissions Page - Click on Vehicle name link
+Scenario:Forms Submissions Page - Click on Vehicle name link
 Given I am logged in
 When I click the Forms link
 And I click the Submissions link
@@ -95,7 +95,7 @@ And I click the 1st Row of the Vehicle Entry link
 Then I validate I am on the Vehicle Performance page
 And I validate the Vehicle Name link is VEHICLE
 
-Scenario: TCXXXX Forms Submissions Page - Approve a Form checkbox
+Scenario:Forms Submissions Page - Approve a Form checkbox
 Given I am logged in
 When I click the Forms link
 And I click the Submissions link
