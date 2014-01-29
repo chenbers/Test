@@ -15,16 +15,16 @@ And I validate the Sort By Device link is present
 And I validate the Sort By Vehicle link is present
 And I validate the Sort By Driver link is present
 And I validate the Sort By Status link is present
-And I validate the Sort By VIN link is present
-And I validate the Sort By License Number link is present
-And I validate the Sort By State link is present
-And I validate the Sort By Year link is present
-And I validate the Sort By Make link is present
-And I validate the Sort By Model link is present
-And I validate the Sort By Color link is present
-And I validate the Sort By Weight link is present
-And I validate the Sort By Odometer link is present
-And I validate the Previous Disabled link is present
+And I validate the Sort By VIN link is not present
+And I validate the Sort By License Number link is not present
+And I validate the Sort By State link is not present
+And I validate the Sort By Year link is not present
+And I validate the Sort By Make link is not present
+And I validate the Sort By Model link is not present
+And I validate the Sort By Color link is not present
+And I validate the Sort By Weight link is not present
+And I validate the Sort By Odometer link is not present
+And I validate the Previous link is not present
 And I validate the Next link is present
 And I validate the Entries text is present
 And I validate the Entries text contains "Showing 1 to 10 of"
@@ -410,15 +410,15 @@ And I validate the Sort By Device link is present
 And I validate the Sort By Vehicle link is present
 And I validate the Sort By Driver link is present
 And I validate the Sort By Status link is present
-And I validate the Sort By VIN link is present
-And I validate the Sort By License Number link is present
-And I validate the Sort By State link is present
-And I validate the Sort By Year link is present
-And I validate the Sort By Make link is present
-And I validate the Sort By Model link is present
-And I validate the Sort By Color link is present
-And I validate the Sort By Weight link is present
-And I validate the Sort By Odometer link is present
+And I validate the Sort By VIN link is not present
+And I validate the Sort By License Number link is not present
+And I validate the Sort By State link is not present
+And I validate the Sort By Year link is not present
+And I validate the Sort By Make link is not present
+And I validate the Sort By Model link is not present
+And I validate the Sort By Color link is not present
+And I validate the Sort By Weight link is not present
+And I validate the Sort By Odometer link is not present
 
 Scenario: Assets - Trailers - Bookmark Entry 
 Given I am logged in
@@ -438,15 +438,15 @@ And I click the Sort By Device link
 And I click the Sort By Vehicle link
 And I click the Sort By Driver link
 And I click the Sort By Status link
-And I click the Sort By VIN link
-And I click the Sort By License Number link
-And I click the Sort By State link
-And I click the Sort By Year link
-And I click the Sort By Make link
-And I click the Sort By Model link
-And I click the Sort By Color link
-And I click the Sort By Weight link
-And I click the Sort By Odometer link
+!-- And I click the Sort By VIN link
+!-- And I click the Sort By License Number link
+!-- And I click the Sort By State link
+!-- And I click the Sort By Year link
+!-- And I click the Sort By Make link
+!-- And I click the Sort By Model link
+!-- And I click the Sort By Color link
+!-- And I click the Sort By Weight link
+!-- And I click the Sort By Odometer link
 
 Scenario: Assets - Trailers - Show/Hide Columns - Subsequent Session Retention
 Given I am logged in
@@ -467,6 +467,16 @@ And I validate the Sort By Trailer link is present
 Scenario: Assets - Trailers - Click New Button, Then Try And Select A Row In The Table
 Given I am logged in
 When I click the Top Trailers link
+And I click the Show Hide Columns link
+And I check the VIN checkbox
+And I check the License Number checkbox
+And I check the State checkbox
+And I check the Year checkbox
+And I check the Make checkbox
+And I check the Model checkbox
+And I check the Color checkbox
+And I check the Weight checkbox
+And I check the Odometer checkbox
 And I save the 1st Row of the Trailer Entry link as SAVEDTRAILER
 And I save the 1st Row of the Team Entry link as SAVEDTEAM
 And I save the 1st Row of the Device Entry link as SAVEDDEVICE
@@ -584,6 +594,16 @@ And I validate the Assigned Driver text is ""
 Scenario: Assets - Trailers - Select A Row, Select Edit, Then Cancel
 Given I am logged in
 When I click the Top Trailers link
+And I click the Show Hide Columns link
+And I check the VIN checkbox
+And I check the License Number checkbox
+And I check the State checkbox
+And I check the Year checkbox
+And I check the Make checkbox
+And I check the Model checkbox
+And I check the Color checkbox
+And I check the Weight checkbox
+And I check the Odometer checkbox
 And I click the 1st Row of the Trailer Entry link
 And I save the 1st Row of the Trailer Entry link as SAVEDTRAILER
 And I save the 1st Row of the Team Entry link as SAVEDTEAM
@@ -647,6 +667,16 @@ And I validate the Assigned Driver text is ""
 Scenario: Assets - Trailers - Delete Trailer Test (cancel button)
 Given I am logged in
 When I click the Top Trailers link
+And I click the Show Hide Columns link
+And I check the VIN checkbox
+And I check the License Number checkbox
+And I check the State checkbox
+And I check the Year checkbox
+And I check the Make checkbox
+And I check the Model checkbox
+And I check the Color checkbox
+And I check the Weight checkbox
+And I check the Odometer checkbox
 And I click the 1st Row of the Trailer Entry link
 And I save the 1st Row of the Trailer Entry link as SAVEDTRAILER
 And I click the Edit button
@@ -869,6 +899,16 @@ And I validate the Assigned Device dropdown is ""
 Scenario: Assets - Trailers - Edit Trailer (save button - no changes)
 Given I am logged in
 When I click the Top Trailers link
+And I click the Show Hide Columns link
+And I check the VIN checkbox
+And I check the License Number checkbox
+And I check the State checkbox
+And I check the Year checkbox
+And I check the Make checkbox
+And I check the Model checkbox
+And I check the Color checkbox
+And I check the Weight checkbox
+And I check the Odometer checkbox
 And I click the 1st Row of the Trailer Entry link
 And I save the 1st Row of the Trailer Entry link as SAVEDTRAILER
 And I save the 1st Row of the Team Entry link as SAVEDTEAM
@@ -909,6 +949,16 @@ And I validate the Assigned Driver text is ""
 Scenario: Assets - Trailers - Edit Trailer (save button - blank Trailer error message)
 Given I am logged in
 When I click the Top Trailers link
+And I click the Show Hide Columns link
+And I check the VIN checkbox
+And I check the License Number checkbox
+And I check the State checkbox
+And I check the Year checkbox
+And I check the Make checkbox
+And I check the Model checkbox
+And I check the Color checkbox
+And I check the Weight checkbox
+And I check the Odometer checkbox
 And I click the 1st Row of the Trailer Entry link
 And I save the 1st Row of the Trailer Entry link as SAVEDTRAILER
 And I save the 1st Row of the Team Entry link as SAVEDTEAM
@@ -947,6 +997,16 @@ And I validate the Assigned Driver text is SAVEDDRIVER
 Scenario: Assets - Trailers - Edit Trailer (edit button - save changes)
 Given I am logged in
 When I click the Top Trailers link
+And I click the Show Hide Columns link
+And I check the VIN checkbox
+And I check the License Number checkbox
+And I check the State checkbox
+And I check the Year checkbox
+And I check the Make checkbox
+And I check the Model checkbox
+And I check the Color checkbox
+And I check the Weight checkbox
+And I check the Odometer checkbox
 And I click the New_ button
 And I type "EANDSTRAILERID" into the Trailer textfield
 And I type "EDITANDSAVE" into the VIN textfield
@@ -1064,6 +1124,16 @@ And I validate the Entries text contains "Showing 0 to 0 of 0 entries"
 Scenario: Assets - Trailers - New Trailer (new button - save changes, but changes are invalid)
 Given I am logged in
 When I click the Top Trailers link
+And I click the Show Hide Columns link
+And I check the VIN checkbox
+And I check the License Number checkbox
+And I check the State checkbox
+And I check the Year checkbox
+And I check the Make checkbox
+And I check the Model checkbox
+And I check the Color checkbox
+And I check the Weight checkbox
+And I check the Odometer checkbox
 And I click the New_ button
 And I type "PREINVALIDID" into the Trailer textfield
 And I type "INVALIDVIN" into the VIN textfield
@@ -1184,6 +1254,16 @@ And I validate the Assigned Driver text is ""
 Scenario: Assets - Trailers - Edit Trailer (edit button - save changes, but changes are invalid) (TEST WILL FAIL TILL BUG IS FIXED)
 Given I am logged in
 When I click the Top Trailers link
+And I click the Show Hide Columns link
+And I check the VIN checkbox
+And I check the License Number checkbox
+And I check the State checkbox
+And I check the Year checkbox
+And I check the Make checkbox
+And I check the Model checkbox
+And I check the Color checkbox
+And I check the Weight checkbox
+And I check the Odometer checkbox
 And I click the New_ button
 And I type "PREINVALIDID" into the Trailer textfield
 And I type "INVALIDVIN" into the VIN textfield
@@ -1265,6 +1345,16 @@ And I validate the Entries text contains "Showing 0 to 0 of 0 entries"
 Scenario: Assets - Trailers - Edit trailer then create a new trailer
 Given I am logged in
 When I click the Top Trailers link
+And I click the Show Hide Columns link
+And I check the VIN checkbox
+And I check the License Number checkbox
+And I check the State checkbox
+And I check the Year checkbox
+And I check the Make checkbox
+And I check the Model checkbox
+And I check the Color checkbox
+And I check the Weight checkbox
+And I check the Odometer checkbox
 And I click the New_ button
 And I type "EANDCNTRAILERID" into the Trailer textfield
 And I type "EANDCNVIN" into the VIN textfield
@@ -1410,6 +1500,16 @@ And I validate the Entries text contains "Showing 0 to 0 of"
 Scenario: Assets - Trailers - Batch Edit Test (cancel button, no changes)
 Given I am logged in
 When I click the Top Trailers link
+And I click the Show Hide Columns link
+And I check the VIN checkbox
+And I check the License Number checkbox
+And I check the State checkbox
+And I check the Year checkbox
+And I check the Make checkbox
+And I check the Model checkbox
+And I check the Color checkbox
+And I check the Weight checkbox
+And I check the Odometer checkbox
 And I click the 1st Row of the Trailer Entry link
 And I save the 1st Row of the Trailer Entry link as SAVEDTRAILER
 And I save the 1st Row of the Team Entry link as SAVEDTEAM
@@ -1509,6 +1609,16 @@ And I validate the 2nd Row of the Odometer Entry link is SAVEDODOMETER2
 Scenario: Assets - Trailers - Batch Edit Test (save button, no changes)
 Given I am logged in
 When I click the Top Trailers link
+And I click the Show Hide Columns link
+And I check the VIN checkbox
+And I check the License Number checkbox
+And I check the State checkbox
+And I check the Year checkbox
+And I check the Make checkbox
+And I check the Model checkbox
+And I check the Color checkbox
+And I check the Weight checkbox
+And I check the Odometer checkbox
 And I click the 1st Row of the Trailer Entry link
 And I save the 1st Row of the Trailer Entry link as SAVEDTRAILER
 And I save the 1st Row of the Team Entry link as SAVEDTEAM
@@ -1608,6 +1718,16 @@ And I validate the 2nd Row of the Odometer Entry link is SAVEDODOMETER2
 Scenario: Assets - Trailers - Batch Edit Test (cancel button, changes)
 Given I am logged in
 When I click the Top Trailers link
+And I click the Show Hide Columns link
+And I check the VIN checkbox
+And I check the License Number checkbox
+And I check the State checkbox
+And I check the Year checkbox
+And I check the Make checkbox
+And I check the Model checkbox
+And I check the Color checkbox
+And I check the Weight checkbox
+And I check the Odometer checkbox
 And I click the 1st Row of the Trailer Entry link
 And I save the 1st Row of the Trailer Entry link as SAVEDTRAILER
 And I save the 1st Row of the Team Entry link as SAVEDTEAM
@@ -1684,6 +1804,16 @@ And I validate the 2nd Row of the Odometer Entry link is SAVEDODOMETER2
 Scenario: Assets - Trailers - Batch Edit and Batch Delete Test (save button, changes)
 Given I am logged in
 When I click the Top Trailers link
+And I click the Show Hide Columns link
+And I check the VIN checkbox
+And I check the License Number checkbox
+And I check the State checkbox
+And I check the Year checkbox
+And I check the Make checkbox
+And I check the Model checkbox
+And I check the Color checkbox
+And I check the Weight checkbox
+And I check the Odometer checkbox
 And I click the New_ button
 And I type "BATCHSAVE1" into the Trailer textfield
 And I type "BATCHVIN1" into the VIN textfield
