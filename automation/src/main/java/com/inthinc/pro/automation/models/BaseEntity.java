@@ -37,7 +37,7 @@ public abstract class BaseEntity implements Serializable {
     
     @JsonProperty("modified")
     public void setModified(String modified) {
-        this.modified.setDate(modified);
+        this.modified.setDate(this.modified);
     }
 
     
