@@ -249,9 +249,9 @@ And I click the Sort By Vehicle link
 And I validate the 1st Row of the Vehicle Entry link is "autogen75"
 And I type "Automatically  Generated75" into the Search textfield
 And I click the Sort By Driver link
-And I validate the 1st Row of the Driver Entry link is "Automatically  Generated75"
+And I validate the 1st Row of the Driver Entry link is "Automatically Generated75"
 And I click the Sort By Driver link
-And I validate the 1st Row of the Driver Entry link is "Automatically  Generated75"
+And I validate the 1st Row of the Driver Entry link is "Automatically Generated75"
 And I type "ACTIVE" into the Search textfield
 And I click the Sort By Status link
 And I validate the 1st Row of the Status Entry link is "ACTIVE"
