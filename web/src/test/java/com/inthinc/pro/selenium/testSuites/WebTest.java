@@ -17,7 +17,7 @@ public class WebTest extends BrowserTest {
 
 
 	public WebTest(){
-		super(MastheadEnum.VERSION);
+		super(MastheadEnum.COPYRIGHT);
 	}
 	
     @Before
