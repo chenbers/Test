@@ -247,11 +247,11 @@ And I click the Sort By Vehicle link
 And I validate the 1st Row of the Vehicle Entry link is "autogen75"
 And I click the Sort By Vehicle link
 And I validate the 1st Row of the Vehicle Entry link is "autogen75"
-And I type "Automatically Generated75" into the Search textfield
+And I type "Automatically  Generated75" into the Search textfield
 And I click the Sort By Driver link
-And I validate the 1st Row of the Driver Entry link is "Automatically Generated75"
+And I validate the 1st Row of the Driver Entry link is "Automatically  Generated75"
 And I click the Sort By Driver link
-And I validate the 1st Row of the Driver Entry link is "Automatically Generated75"
+And I validate the 1st Row of the Driver Entry link is "Automatically  Generated75"
 And I type "ACTIVE" into the Search textfield
 And I click the Sort By Status link
 And I validate the 1st Row of the Status Entry link is "ACTIVE"
@@ -790,6 +790,16 @@ And I validate the Assigned Device dropdown is ""
 Scenario: Assets - Trailers - New Trailer (save button - changes)
 Given I am logged in
 When I click the Top Trailers link
+And I click the Show Hide Columns link
+And I check the VIN checkbox
+And I check the License Number checkbox
+And I check the State checkbox
+And I check the Year checkbox
+And I check the Make checkbox
+And I check the Model checkbox
+And I check the Color checkbox
+And I check the Weight checkbox
+And I check the Odometer checkbox
 And I click the New_ button
 And I type "SAVECHANGESVIN" into the VIN textfield
 And I type "Kia" into the Make textfield
