@@ -748,7 +748,12 @@ public class CoreMethodLib extends WebDriverBackedSelenium implements CoreMethod
      */
     @Override
     public CoreMethodLib waitForPageToLoad() {
-        waitForPageToLoad(PAGE_TIMEOUT);
+        if (myEnum.toString().contains("_IFRAME")) {
+            waitForPageToLoad("30000");
+        }
+        else {
+            waitForPageToLoad(PAGE_TIMEOUT);
+        }
         return this;
     }
 
