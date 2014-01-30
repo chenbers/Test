@@ -880,6 +880,7 @@ And I validate the State dropdown contains "--- Select ---"
 And I validate the Assigned Device dropdown is ""
 And I click the Save button
 And I validate the Trailer Error text is present
+And I validate the Trailer Error text is "The trailer name cannot be left blank."
 And I validate the Edit button is not visible
 And I validate the Cancel button is visible
 And I validate the Save button is visible
@@ -979,6 +980,7 @@ And I click the Edit button
 And I type "" into the Trailer textfield
 And I click the Save button
 Then I validate the Trailer textfield is ""
+And I validate the Trailer Error text is "The trailer name cannot be left blank."
 And I validate the VIN textfield is SAVEDVIN
 And I validate the Make textfield is SAVEDMAKE
 And I validate the Model textfield is SAVEDMODEL
@@ -1911,7 +1913,7 @@ When I click the Top Trailers link
 And I click the New_ button
 And I type "1234567890123456789012345678901" into the Trailer textfield
 Then I validate the Trailer Error text is present
-And I validate the Trailer Error text is "The Trailer exceeds 30 characters."
+And I validate the Trailer Error text is "The trailer name exceeds 30 characters."
 And I click the Cancel button
 And I click the New_ button
 And I validate the Trailer Error text is not visible
@@ -1923,7 +1925,7 @@ And I click the 1st Row of the Trailer Entry link
 And I click the Edit button
 And I type "1234567890123456789012345678901" into the Trailer textfield
 Then I validate the Trailer Error text is present
-And I validate the Trailer Error text is "The Trailer exceeds 30 characters."
+And I validate the Trailer Error text is "The trailer name exceeds 30 characters."
 And I click the Cancel button
 And I click the Edit button
 And I validate the Trailer Error text is not visible
