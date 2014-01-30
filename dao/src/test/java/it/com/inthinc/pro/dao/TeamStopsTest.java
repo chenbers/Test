@@ -17,10 +17,6 @@ import org.joda.time.Interval;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.inthinc.pro.dao.cassandra.CassandraDB;
-import com.inthinc.pro.dao.cassandra.EventCassandraDAO;
-import com.inthinc.pro.dao.cassandra.LocationCassandraDAO;
-import com.inthinc.pro.dao.hessian.DeviceHessianDAO;
 import com.inthinc.pro.dao.hessian.DriverHessianDAO;
 import com.inthinc.pro.dao.hessian.EventHessianDAO;
 import com.inthinc.pro.dao.hessian.LocationHessianDAO;
@@ -44,8 +40,6 @@ import com.inthinc.pro.notegen.WSNoteSender;
 public class TeamStopsTest {
 //    private static final Logger logger = Logger.getLogger(TeamStopsTest.class);
     private static SiloService siloService;
-    private static CassandraDB cassandraDB;
- 
     private static ITData itData;
     private static MCMSimulator mcmSim;
     
@@ -54,15 +48,15 @@ public class TeamStopsTest {
 
     DriverStops[] expectedDriverStops = {
         new DriverStops(11771, 12750, "VehicleINTERMEDIATE", 34.66848d, -92.340576d, 0l, null, 1314706917l, 0, 0, null),
-        new DriverStops(11771, 12750, "VehicleINTERMEDIATE", 34.6685d, -92.3405d, 0l, 1314706917l, 1314706980l, 68, 18, null),
+        new DriverStops(11771, 12750, "VehicleINTERMEDIATE", 34.66848d, -92.340576d, 0l, 1314706917l, 1314706980l, 68, 18, null),
         new DriverStops(11771, 12750, "VehicleINTERMEDIATE", 34.670361d, -92.377899d, 328l, 1314707308l, 1314707640l, 332, 0, null),
         new DriverStops(11771, 12750, "VehicleINTERMEDIATE", 34.62093d, -92.49765d, 536l, 1314708176l, 1314708240l, 64, 0, null),
-        new DriverStops(11771, 12750, "VehicleINTERMEDIATE", 34.623398d, -92.499512d, 347l, 1314708587l, 1314708780l, 73, 0, "Zone With Alerts")
+        new DriverStops(11771, 12750, "VehicleINTERMEDIATE", 34.623398d, -92.499512d, 347l, 1314708587l, null, 73, 0, "Zone With Alerts")
     };
     
-    Integer expectedIdleLoTotal = 537;
+    Integer expectedIdleLoTotal = 464;
     Integer expectedIdleHiTotal = 18;
-    Integer expectedWaitTotal = 120;
+    Integer expectedWaitTotal = 0;
     Long expectedDriveTimeTotal = 1211l;
     
     private static NoteGenerator noteGenerator;
@@ -79,8 +73,6 @@ public class TeamStopsTest {
         HessianTCPProxyFactory factory = new HessianTCPProxyFactory();
         mcmSim = (MCMSimulator) factory.create(MCMSimulator.class, config.getProperty(IntegrationConfig.MCM_HOST), config.getIntegerProp(IntegrationConfig.MCM_PORT));
 
-        cassandraDB = new CassandraDB(true, config.getProperty(IntegrationConfig.CASSANDRA_CLUSTER), config.getProperty(IntegrationConfig.CASSANDRA_KEYSPACE), config.getProperty(IntegrationConfig.CASSANDRA_CACHE_KEYSPACE),config.getProperty(IntegrationConfig.CASSANDRA_NODE_ADDRESS), Integer.parseInt(config.getProperty(IntegrationConfig.CASSANDRA_MAXACTIVE)), false, false);        
-        
         noteGenerator = new NoteGenerator();
         WSNoteSender wsNoteSender = new WSNoteSender();
         wsNoteSender.setUrl(config.get(IntegrationConfig.MINA_HOST).toString());
@@ -113,26 +105,15 @@ public class TeamStopsTest {
 
     @Test
     public void stops() {
-        DeviceHessianDAO deviceDAO = new DeviceHessianDAO();
-        deviceDAO.setSiloService(siloService);
         DriverHessianDAO driverDAO = new DriverHessianDAO();
         driverDAO.setSiloService(siloService);
-        EventCassandraDAO eventDAO = new EventCassandraDAO();
-        eventDAO.setCassandraDB(cassandraDB);
+        EventHessianDAO eventDAO = new EventHessianDAO();
+        eventDAO.setSiloService(siloService);
         VehicleHessianDAO vehicleDAO = new VehicleHessianDAO();
         vehicleDAO.setSiloService(siloService);
         driverDAO.setVehicleDAO(vehicleDAO);
-        eventDAO.setVehicleDAO(vehicleDAO);
-
-//         LocationHessianDAO locationDAO = new LocationHessianDAO();
-//        locationDAO.setSiloService(siloService);
-
-
-        LocationCassandraDAO locationDAO = new LocationCassandraDAO();
-        locationDAO.setEventDAO(eventDAO);
-        locationDAO.setCassandraDB(cassandraDB);
-            
-        locationDAO.setDeviceDAO(deviceDAO);
+        LocationHessianDAO locationDAO = new LocationHessianDAO();
+        locationDAO.setSiloService(siloService);
         locationDAO.setVehicleDAO(vehicleDAO);
         locationDAO.setDriverDAO(driverDAO);
         driverDAO.setLocationDAO(locationDAO);
@@ -156,15 +137,6 @@ public class TeamStopsTest {
             e.printStackTrace();
         }
         List<DriverStops> stopsList = driverDAO.getStops(team.driver.getDriverID(), team.driver.getPerson().getFullName(), interval);
-        
-        try {
-            for (DriverStops s : expectedDriverStops) {
-                s.dump();
-            }
-        } catch (Throwable e) {
-
-        }
-        
 
         assertEquals("Unexpected number of driverStops records.", expectedDriverStops.length, stopsList.size());
         int cnt = 0;
