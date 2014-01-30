@@ -3,7 +3,7 @@ In order for drivers to submit electronic forms
 As an Administrator
 I need an interface to create a form and to forward to devices for drivers to complete
 
-Scenario: TCXXXX Forms Add Page - UI Test
+Scenario: Forms Add Page - UI Test
 Given I am logged in
 When I click the Forms link
 And I click the New Form button
@@ -38,7 +38,7 @@ And I validate the View Properties Label text is present
 And I validate the Version text is present
 And I validate the Group Name Top text is present
 
-Scenario: TCXXXX Forms Add Page - UI Test - Text link
+Scenario: Forms Add Page - UI Test - Text link
 Given I am logged in
 When I click the Forms link
 And I click the New Form button
@@ -60,7 +60,7 @@ When I click the Text link
 Then I validate the 1st Row of the Delete Row link is present
 And I validate the 1st Row of the Control Flow Arrow link is present
 
-Scenario: TCXXXX Forms Add Page - UI Test - Numeric link
+Scenario: Forms Add Page - UI Test - Numeric link
 Given I am logged in
 When I click the Forms link
 And I click the New Form button
@@ -84,7 +84,7 @@ When I click the Numeric link
 Then I validate the 1st Row of the Delete Row link is present
 And I validate the 1st Row of the Control Flow Arrow link is present
 
-Scenario: TCXXXX Forms Add Page - UI Test - Date link
+Scenario: Forms Add Page - UI Test - Date link
 Given I am logged in
 When I click the Forms link
 And I click the New Form button
@@ -107,7 +107,7 @@ When I click the Date link
 Then I validate the 1st Row of the Delete Row link is present
 And I validate the 1st Row of the Control Flow Arrow link is present
 
-Scenario: TCXXXX Forms Add Page - UI Test - Choose One link
+Scenario: Forms Add Page - UI Test - Choose One link
 Given I am logged in
 When I click the Forms link
 And I click the New Form button
@@ -125,7 +125,7 @@ When I click the Choose One link
 Then I validate the 1st Row of the Delete Row link is present
 And I validate the 1st Row of the Control Flow Arrow link is present
 
-Scenario: TCXXXX Forms Add Page - UI Test - Select Multiple link
+Scenario: Forms Add Page - UI Test - Select Multiple link
 Given I am logged in
 When I click the Forms link
 And I click the New Form button
@@ -143,7 +143,7 @@ When I click the Select Multiple link
 Then I validate the 1st Row of the Delete Row link is present
 And I validate the 1st Row of the Control Flow Arrow link is present
 
-Scenario: TCXXXX Forms Add Page - Save Top Button
+Scenario: Forms Add Page - Save Top Button
 Given I am logged in
 When I click the Forms link
 And I click the New Form button
@@ -171,7 +171,7 @@ And I click the Manage link
 And I type "Form TCXXXXAdd1" into the Search field
 And I validate the 1st Row of the Entry Version text is "2"
 
-Scenario: TCXXXX Forms Add Page - Save Bottom Button
+Scenario: Forms Add Page - Save Bottom Button
 Given I am logged in
 When I click the Forms link
 And I click the New Form button
@@ -183,7 +183,7 @@ Then I validate I am on the Forms Manage page
 When I type "Form TCXXXXAdd2" into the Search field
 Then I validate the 1st Row of Entry Name text is "Form TCXXXXAdd2"
 
-Scenario: TCXXXX Forms Add Page - Cancel Top Button
+Scenario: Forms Add Page - Cancel Top Button
 Given I am logged in
 When I click the Forms link
 And I click the New Form button
@@ -198,7 +198,7 @@ When I click the Published link
 And I type "Form TCXXXXAdd3" into the Search field
 Then I validate the 1st Row of the Entry Base Form Id text is not present
 
-Scenario: TCXXXX Forms Add Page - Cancel Bottom Button
+Scenario: Forms Add Page - Cancel Bottom Button
 Given I am logged in
 When I click the Forms link
 And I click the New Form button
@@ -312,7 +312,7 @@ And I validate the Version text is ""
 And I validate the Filter Groups field is ""
 And I validate the Status dropdown is "Active"
 
-Scenario: TCXXXX Forms Add Page - Blank Data Name Error Text Field
+Scenario: Forms Add Page - Blank Data Name Error Text Field
 Given I am logged in
 When I click the Forms link
 And I click the New Form button
@@ -321,7 +321,7 @@ And I click the Text link
 And I type "" into the Data Name field
 Then I validate the Data Name Error text is "This property is required."
 
-Scenario: TCXXXX Forms Add Page - Blank Data Name Error Numeric Field
+Scenario: Forms Add Page - Blank Data Name Error Numeric Field
 Given I am logged in
 When I click the Forms link
 And I click the New Form button
@@ -330,7 +330,7 @@ And I click the Numeric link
 And I type "" into the Data Name field
 Then I validate the Data Name Error text is "This property is required."
 
-Scenario: TCXXXX Forms Add Page - Blank Data Name Error Date Field
+Scenario: Forms Add Page - Blank Data Name Error Date Field
 Given I am logged in
 When I click the Forms link
 And I click the New Form button
@@ -339,7 +339,7 @@ And I click the Date link
 And I type "" into the Data Name field
 Then I validate the Data Name Error text is "This property is required."
 
-Scenario: TCXXXX Forms Add Page - Blank Data Name Error Choose One Field
+Scenario: Forms Add Page - Blank Data Name Error Choose One Field
 Given I am logged in
 When I click the Forms link
 And I click the New Form button
@@ -348,7 +348,7 @@ And I click the Choose One link
 And I type "" into the Data Name field
 Then I validate the Data Name Error text is "This property is required."
 
-Scenario: TCXXXX Forms Add Page - Blank Data Name Error Select Multiple Field
+Scenario: Forms Add Page - Blank Data Name Error Select Multiple Field
 Given I am logged in
 When I click the Forms link
 And I click the New Form button
@@ -357,7 +357,7 @@ And I click the Select Multiple link
 And I type "" into the Data Name field
 Then I validate the Data Name Error text is "This property is required."
 
-Scenario: TCXXXX Forms Add Page - Duplicate Data Name Error Text Field
+Scenario: Forms Add Page - Duplicate Data Name Error Text Field
 Given I am logged in
 When I click the Forms link
 And I click the New Form button
@@ -370,7 +370,7 @@ Then I validate the Data Name Error text is "This property must be unique; there
 And I click the 1st Row of the Control Flow Arrow link
 And I validate the Data Name Error text is "This property must be unique; there is another control that conflicts with it."
 
-Scenario: TCXXXX Forms Add Page - Duplicate Data Name Error Numeric Field
+Scenario: Forms Add Page - Duplicate Data Name Error Numeric Field
 Given I am logged in
 When I click the Forms link
 And I click the New Form button
@@ -383,7 +383,7 @@ Then I validate the Data Name Error text is "This property must be unique; there
 And I click the 1st Row of the Control Flow Arrow link
 And I validate the Data Name Error text is "This property must be unique; there is another control that conflicts with it."
 
-Scenario: TCXXXX Forms Add Page - Duplicate Data Name Error Date Field
+Scenario: Forms Add Page - Duplicate Data Name Error Date Field
 Given I am logged in
 When I click the Forms link
 And I click the New Form button
@@ -396,7 +396,7 @@ Then I validate the Data Name Error text is "This property must be unique; there
 And I click the 1st Row of the Control Flow Arrow link
 And I validate the Data Name Error text is "This property must be unique; there is another control that conflicts with it."
 
-Scenario: TCXXXX Forms Add Page - Duplicate Data Name Error Choose One Field
+Scenario: Forms Add Page - Duplicate Data Name Error Choose One Field
 Given I am logged in
 When I click the Forms link
 And I click the New Form button
@@ -409,7 +409,7 @@ Then I validate the Data Name Error text is "This property must be unique; there
 And I click the 1st Row of the Control Flow Arrow link
 And I validate the Data Name Error text is "This property must be unique; there is another control that conflicts with it."
 
-Scenario: TCXXXX Forms Add Page - Duplicate Data Name Error Select Multiple Field
+Scenario: Forms Add Page - Duplicate Data Name Error Select Multiple Field
 Given I am logged in
 When I click the Forms link
 And I click the New Form button
@@ -422,7 +422,7 @@ Then I validate the Data Name Error text is "This property must be unique; there
 And I click the 1st Row of the Control Flow Arrow link
 And I validate the Data Name Error text is "This property must be unique; there is another control that conflicts with it."
 
-Scenario: TCXXXX Forms Add Page - Duplicate Data Name Error All Fields
+Scenario: Forms Add Page - Duplicate Data Name Error All Fields
 Given I am logged in
 When I click the Forms link
 And I click the New Form button
@@ -447,7 +447,7 @@ And I validate the Data Name Error text is "This property must be unique; there 
 And I click the 4th Row of the Control Flow Arrow link
 And I validate the Data Name Error text is "This property must be unique; there is another control that conflicts with it."
 
-Scenario: TCXXXX Forms Add Page - Space Data Name Error Text Field
+Scenario: Forms Add Page - Space Data Name Error Text Field
 Given I am logged in
 When I click the Forms link
 And I click the New Form button
@@ -456,7 +456,7 @@ And I click the Text link
 And I type "te st" into the Data Name field
 Then I validate the Data Name Error text is "Only letters and numbers are allowed."
 
-Scenario: TCXXXX Forms Add Page - Space Data Name Error Numeric Field
+Scenario: Forms Add Page - Space Data Name Error Numeric Field
 Given I am logged in
 When I click the Forms link
 And I click the New Form button
@@ -465,7 +465,7 @@ And I click the Numeric link
 And I type "te st" into the Data Name field
 Then I validate the Data Name Error text is "Only letters and numbers are allowed."
 
-Scenario: TCXXXX Forms Add Page - Space Data Name Error Date Field
+Scenario: Forms Add Page - Space Data Name Error Date Field
 Given I am logged in
 When I click the Forms link
 And I click the New Form button
@@ -474,7 +474,7 @@ And I click the Date link
 And I type "te st" into the Data Name field
 Then I validate the Data Name Error text is "Only letters and numbers are allowed."
 
-Scenario: TCXXXX Forms Add Page - Space Data Name Error Choose One Field
+Scenario: Forms Add Page - Space Data Name Error Choose One Field
 Given I am logged in
 When I click the Forms link
 And I click the New Form button
@@ -483,7 +483,7 @@ And I click the Choose One link
 And I type "te st" into the Data Name field
 Then I validate the Data Name Error text is "Only letters and numbers are allowed."
 
-Scenario: TCXXXX Forms Add Page - Space Data Name Error Select Multiple Field
+Scenario: Forms Add Page - Space Data Name Error Select Multiple Field
 Given I am logged in
 When I click the Forms link
 And I click the New Form button
@@ -492,7 +492,7 @@ And I click the Select Multiple link
 And I type "te st" into the Data Name field
 Then I validate the Data Name Error text is "Only letters and numbers are allowed."
 
-Scenario: TCXXXX Forms Add Page - Space Data Name Error All Fields
+Scenario: Forms Add Page - Space Data Name Error All Fields
 Given I am logged in
 When I click the Forms link
 And I click the New Form button
@@ -517,7 +517,7 @@ And I validate the Data Name Error text contains "Only letters and numbers are a
 And I click the 4th Row of the Control Flow Arrow link
 And I validate the Data Name Error text contains "Only letters and numbers are allowed."
 
-Scenario: TCXXXX Forms Add Page - Symbols Data Name Error Text Field
+Scenario: Forms Add Page - Symbols Data Name Error Text Field
 Given I am logged in
 When I click the Forms link
 And I click the New Form button
@@ -526,7 +526,7 @@ And I click the Text link
 And I type "!" into the Data Name field
 Then I validate the Data Name Error text is "Only letters and numbers are allowed."
 
-Scenario: TCXXXX Forms Add Page - Symbols Data Name Error Numeric Field
+Scenario: Forms Add Page - Symbols Data Name Error Numeric Field
 Given I am logged in
 When I click the Forms link
 And I click the New Form button
@@ -535,7 +535,7 @@ And I click the Numeric link
 And I type "!" into the Data Name field
 Then I validate the Data Name Error text is "Only letters and numbers are allowed."
 
-Scenario: TCXXXX Forms Add Page - Symbols Data Name Error Date Field
+Scenario: Forms Add Page - Symbols Data Name Error Date Field
 Given I am logged in
 When I click the Forms link
 And I click the New Form button
@@ -544,7 +544,7 @@ And I click the Date link
 And I type "!" into the Data Name field
 Then I validate the Data Name Error text is "Only letters and numbers are allowed."
 
-Scenario: TCXXXX Forms Add Page - Symbols Data Name Error Choose One Field
+Scenario: Forms Add Page - Symbols Data Name Error Choose One Field
 Given I am logged in
 When I click the Forms link
 And I click the New Form button
@@ -553,7 +553,7 @@ And I click the Choose One link
 And I type "!" into the Data Name field
 Then I validate the Data Name Error text is "Only letters and numbers are allowed."
 
-Scenario: TCXXXX Forms Add Page - Symbols Data Name Error Select Multiple Field
+Scenario: Forms Add Page - Symbols Data Name Error Select Multiple Field
 Given I am logged in
 When I click the Forms link
 And I click the New Form button
@@ -562,7 +562,7 @@ And I click the Select Multiple link
 And I type "!" into the Data Name field
 Then I validate the Data Name Error text is "Only letters and numbers are allowed."
 
-Scenario: TCXXXX Forms Add Page - Symbols Data Name Error All Fields
+Scenario: Forms Add Page - Symbols Data Name Error All Fields
 Given I am logged in
 When I click the Forms link
 And I click the New Form button
@@ -587,7 +587,7 @@ And I validate the Data Name Error text contains "Only letters and numbers are a
 And I click the 4th Row of the Control Flow Arrow link
 And I validate the Data Name Error text contains "Only letters and numbers are allowed."
 
-Scenario: TCXXXX Forms Add Page - Name required error
+Scenario: Forms Add Page - Name required error
 Given I am logged in
 When I click the Forms link
 And I click the New Form button
@@ -598,7 +598,7 @@ Then I validate the Name Error text contains "Name is a required field."
 And I validate the Control Error text is not present
 And I validate the Group Error text is not present
 
-Scenario: TCXXXX Forms Add Page - Name required error
+Scenario: Forms Add Page - Name required error
 Given I am logged in
 When I click the Forms link
 And I click the New Form button
@@ -609,7 +609,7 @@ Then I validate the Name Error text contains "Name is a required field."
 And I validate the Control Error text is not present
 And I validate the Group Error text is not present
 
-Scenario: TCXXXX Forms Add Page - Name required error
+Scenario: Forms Add Page - Name required error
 Given I am logged in
 When I click the Forms link
 And I click the New Form button
@@ -620,7 +620,7 @@ Then I validate the Name Error text contains "Name is a required field."
 And I validate the Control Error text is not present
 And I validate the Group Error text is not present
 
-Scenario: TCXXXX Forms Add Page - Control required error
+Scenario: Forms Add Page - Control required error
 Given I am logged in
 When I click the Forms link
 And I click the New Form button
@@ -631,7 +631,7 @@ Then I validate the Control Error text contains "Form must have at least one con
 And I validate the Name Error text is not present
 And I validate the Group Error text is not present
 
-Scenario: TCXXXX Forms Add Page - Blank Group Checkbox Error 
+Scenario: Forms Add Page - Blank Group Checkbox Error 
 Given I am logged in
 When I click the Forms link
 And I click the New Form button
@@ -642,7 +642,7 @@ Then I validate the Group Error text contains "Must select at least one group"
 And I validate the Name Error text is not present
 And I validate the Control Error text is not present
 
-Scenario: TCXXXX Forms Add Page - Name, Control, and Group Errors
+Scenario: Forms Add Page - Name, Control, and Group Errors
 Given I am logged in
 When I click the Forms link
 And I click the New Form button
@@ -653,7 +653,7 @@ Then I validate the Group Error text contains "Must select at least one group."
 
 !-- TODO: Need to handle tree checkboxes: the current checkbox cannot state (checked, unchecked) cannot be recognized.
 !-- workaround is to check twice, if we need to uncheck in the 15th line of this test
-Scenario: TCXXXX Forms Add Page - Name, Control, and Group Errors Add then remove
+Scenario: Forms Add Page - Name, Control, and Group Errors Add then remove
 Given I am logged in
 When I click the Forms link
 And I click the New Form button
@@ -680,7 +680,7 @@ And I validate the Name Error text contains "Name is a required field"
 And I validate the Control Error text is not present
 And I validate the Group Error text is not present
 
-Scenario: TCXXXX Forms Add Page - Add a Name Text Field - Read Only box checked
+Scenario: Forms Add Page - Add a Name Text Field - Read Only box checked
 Given I am logged in
 When I click the Forms link
 And I click the New Form button
@@ -700,7 +700,7 @@ When I click the 1st Row of the Gear button
 When I click the 1st Row of the Edit link
 Then I validate the Read Only checkbox is checked
 
-Scenario: TCXXXX Forms Add Page - Add a Name Text Field - Required box checked
+Scenario: Forms Add Page - Add a Name Text Field - Required box checked
 Given I am logged in
 When I click the Forms link
 And I click the New Form button
@@ -719,7 +719,7 @@ When I click the 1st Row of the Gear button
 When I click the 1st Row of the Edit link
 Then I validate the Required checkbox is checked
 
-Scenario: TCXXXX Forms Add Page - Add a Name Text Field - Length boxes checked
+Scenario: Forms Add Page - Add a Name Text Field - Length boxes checked
 Given I am logged in
 When I click the Forms link
 And I click the New Form button
@@ -748,7 +748,7 @@ And I validate the Minimum Text Length textfield is "1"
 And I validate the Maximum Text Length textfield is "4"
 And I validate the Invalid Text textfield is "Value out of range"
 
-Scenario: TCXXXX Forms Add Page - Add a Name Text Field - Required and Length boxes checked
+Scenario: Forms Add Page - Add a Name Text Field - Required and Length boxes checked
 Given I am logged in
 When I click the Forms link
 And I click the New Form button
@@ -779,7 +779,7 @@ And I validate the Minimum Text Length textfield is "2"
 And I validate the Maximum Text Length textfield is "5"
 And I validate the Invalid Text textfield is "Value out of range"
 
-Scenario: TCXXXX Forms Add Page - Add a Name Text Field - Required and Length boxes unchecked
+Scenario: Forms Add Page - Add a Name Text Field - Required and Length boxes unchecked
 Given I am logged in
 When I click the Forms link
 And I click the New Form button
@@ -822,7 +822,7 @@ When I click the Length Enable checkbox
 Then I validate the Minimum Text Length field is ""
 Then I validate the Maximum Text Length field is ""
 
-Scenario: TCXXXX Forms Add Page - Add a Text Field - Not inclusive
+Scenario: Forms Add Page - Add a Text Field - Not inclusive
 Given I am logged in
 When I click the Forms link
 And I click the New Form button
@@ -849,7 +849,7 @@ And I validate the Minimum Text Length textfield is "1"
 And I validate the Maximum Text Length textfield is "999"
 And I validate the Invalid Text textfield is "Value out of range"
 
-Scenario: TCXXXX Forms Add Page - Add a Numeric Field - Read Only box checked
+Scenario: Forms Add Page - Add a Numeric Field - Read Only box checked
 Given I am logged in
 When I click the Forms link
 And I click the New Form button
@@ -868,7 +868,7 @@ When I click the 1st Row of the Gear button
 When I click the 1st Row of the Edit link
 When I validate the Read Only checkbox is checked
 
-Scenario: TCXXXX Forms Add Page - Add a Numeric Field - Required box checked
+Scenario: Forms Add Page - Add a Numeric Field - Required box checked
 Given I am logged in
 When I click the Forms link
 And I click the New Form button
@@ -887,7 +887,7 @@ When I click the 1st Row of the Gear button
 When I click the 1st Row of the Edit link
 When I validate the Required checkbox is checked
 
-Scenario: TCXXXX Forms Add Page - Add a Numeric Field - Range boxes checked
+Scenario: Forms Add Page - Add a Numeric Field - Range boxes checked
 Given I am logged in
 When I click the Forms link
 And I click the New Form button
@@ -917,7 +917,7 @@ And I validate the Minimum Numeric Range textfield is "1"
 And I validate the Maximum Numeric Range textfield is "999"
 And I validate the Invalid Text textfield is "Value out of range"
 
-Scenario: TCXXXX Forms Add Page - Add a Numeric Field - Required and Range boxes checked
+Scenario: Forms Add Page - Add a Numeric Field - Required and Range boxes checked
 Given I am logged in
 When I click the Forms link
 And I click the New Form button
@@ -949,7 +949,7 @@ And I validate the Minimum Numeric Range field is "1"
 And I validate the Maximum Numeric Range field is "999"
 And I validate the Invalid Text field is "Value out of range"
 
-Scenario: TCXXXX Forms Add Page - Add a Numeric Field - Required and Range boxes unchecked
+Scenario: Forms Add Page - Add a Numeric Field - Required and Range boxes unchecked
 Given I am logged in
 When I click the Forms link
 And I click the New Form button
@@ -969,7 +969,7 @@ Then I validate I am on the Forms Edit page
 Then I validate the Required checkbox is not checked
 And I validate the Range Enable Numeric checkbox is not checked
 
-Scenario: TCXXXX Forms Add Page - Add a Numeric Field with Range minimum - Not inclusive
+Scenario: Forms Add Page - Add a Numeric Field with Range minimum - Not inclusive
 Given I am logged in
 When I click the Forms link
 And I click the New Form button
@@ -995,7 +995,7 @@ And I validate the Minimum Numeric Range textfield is "1"
 And I validate the Maximum Numeric Range textfield is "999"
 And I validate the Invalid Text textfield is "Value out of range"
 
-Scenario: TCXXXX Forms Add Page - Add a Date Field - Read Only box checked
+Scenario: Forms Add Page - Add a Date Field - Read Only box checked
 Given I am logged in
 When I click the Forms link
 And I click the New Form button
@@ -1015,7 +1015,7 @@ When I click the 1st Row of the Edit link
 Then I validate I am on the Forms Edit page
 Then I validate the Read Only checkbox is checked
 
-Scenario: TCXXXX Forms Add Page - Add a Date Field - Required box checked
+Scenario: Forms Add Page - Add a Date Field - Required box checked
 Given I am logged in
 When I click the Forms link
 And I click the New Form button
@@ -1035,7 +1035,7 @@ When I click the 1st Row of the Edit link
 Then I validate I am on the Forms Edit page
 Then I validate the Required checkbox is checked
 
-Scenario: TCXXXX Forms Add Page - Add a Date Field - Range boxes checked
+Scenario: Forms Add Page - Add a Date Field - Range boxes checked
 Given I am logged in
 When I click the Forms link
 And I click the New Form button
@@ -1065,7 +1065,7 @@ And I validate the Minimum Date Range textfield is "2012-02-01"
 And I validate the Maximum Date Range textfield is "2012-03-01"
 And I validate the Invalid Text textfield is "Value out of range"
 
-Scenario: TCXXXX Forms Add Page - Add a Date Field - Required and Range boxes checked
+Scenario: Forms Add Page - Add a Date Field - Required and Range boxes checked
 Given I am logged in
 When I click the Forms link
 And I click the New Form button
@@ -1097,7 +1097,7 @@ And I validate the Minimum Date Range textfield is "2012-02-01"
 And I validate the Maximum Date Range textfield is "2012-03-01"
 And I validate the Invalid Text textfield is "Value out of range"
 
-Scenario: TCXXXX Forms Add Page - Add a Date Field - Required and Range boxes unchecked
+Scenario: Forms Add Page - Add a Date Field - Required and Range boxes unchecked
 Given I am logged in
 When I click the Forms link
 And I click the New Form button
@@ -1117,7 +1117,7 @@ Then I validate I am on the Forms Edit page
 Then I validate the Required checkbox is not checked
 And I validate the Range Enable Date checkbox is not checked
 
-Scenario: TCXXXX Forms Add Page - Add a Choose One Field - Read Only box checked
+Scenario: Forms Add Page - Add a Choose One Field - Read Only box checked
 Given I am logged in
 When I click the Forms link
 And I click the New Form button
@@ -1141,7 +1141,7 @@ Then I validate the Read Only checkbox is checked
 And I validate the 1st Row of the Option English textfield is "Option 1"
 And I validate the 1st Row of the Option Underlying Value textfield is "optionone"
 
-Scenario: TCXXXX Forms Add Page - Add a Choose One Field - Required box checked
+Scenario: Forms Add Page - Add a Choose One Field - Required box checked
 Given I am logged in
 When I click the Forms link
 And I click the New Form button
@@ -1165,7 +1165,7 @@ Then I validate the Required checkbox is checked
 And I validate the 1st Row of the Option English textfield is "Option 1"
 And I validate the 1st Row of the Option Underlying Value textfield is "optionone"
 
-Scenario: TCXXXX Forms Add Page - Add a Choose One Field - Read Only and Required box checked
+Scenario: Forms Add Page - Add a Choose One Field - Read Only and Required box checked
 Given I am logged in
 When I click the Forms link
 And I click the New Form button
@@ -1191,7 +1191,7 @@ And I validate the Read Only checkbox is checked
 And I validate the 1st Row of the Option English textfield is "Option 1"
 And I validate the 1st Row of the Option Underlying Value textfield is "optionone"
 
-Scenario: TCXXXX Forms Add Page - Add a Choose One Field - Read Only and Required box is not checked
+Scenario: Forms Add Page - Add a Choose One Field - Read Only and Required box is not checked
 Given I am logged in
 When I click the Forms link
 And I click the New Form button
@@ -1215,7 +1215,7 @@ And I validate the Read Only checkbox is not checked
 And I validate the 1st Row of the Option English textfield is "Option 1"
 And I validate the 1st Row of the Option Underlying Value textfield is "optionone"
 
-Scenario: TCXXXX Forms Add Page - Add a Choose One Field - 30 option list
+Scenario: Forms Add Page - Add a Choose One Field - 30 option list
 Given I am logged in
 When I click the Forms link
 And I click the New Form button
@@ -1382,7 +1382,7 @@ And I validate the 29th Row of the Option Underlying Value textfield is "optiont
 And I validate the 30th Row of the Option English textfield is "Option 30"
 And I validate the 30th Row of the Option Underlying Value textfield is "optionthirty"
 
-Scenario: TCXXXX Forms Add Page - Add a Select Multiple Field - Read Only box checked
+Scenario: Forms Add Page - Add a Select Multiple Field - Read Only box checked
 Given I am logged in
 When I click the Forms link
 And I click the New Form button
@@ -1407,7 +1407,7 @@ And I validate the 1st Row of the Option English textfield is "Option 1"
 And I validate the 1st Row of the Option Underlying Value textfield is "optionone"
 And I click the Cancel Top button
 
-Scenario: TCXXXX Forms Add Page - Add a Select Multiple Field - Required box checked
+Scenario: Forms Add Page - Add a Select Multiple Field - Required box checked
 Given I am logged in
 When I click the Forms link
 And I click the New Form button
@@ -1431,7 +1431,7 @@ Then I validate the Required checkbox is checked
 And I validate the 1st Row of the Option English textfield is "Option 1"
 And I validate the 1st Row of the Option Underlying Value textfield is "optionone"
 
-Scenario: TCXXXX Forms Add Page - Add a Select Multiple Field - Read Only and Required box checked
+Scenario: Forms Add Page - Add a Select Multiple Field - Read Only and Required box checked
 Given I am logged in
 When I click the Forms link
 And I click the New Form button
@@ -1457,7 +1457,7 @@ And I validate the Read Only checkbox is checked
 And I validate the 1st Row of the Option English textfield is "Option 1"
 And I validate the 1st Row of the Option Underlying Value textfield is "optionone"
 
-Scenario: TCXXXX Forms Add Page - Add a Select Multiple Field - Read Only and Required box is not checked
+Scenario: Forms Add Page - Add a Select Multiple Field - Read Only and Required box is not checked
 Given I am logged in
 When I click the Forms link
 And I click the New Form button
@@ -1481,7 +1481,7 @@ And I validate the Read Only checkbox is not checked
 And I validate the 1st Row of the Option English textfield is "Option 1"
 And I validate the 1st Row of the Option Underlying Value textfield is "optionone"
 
-Scenario: TCXXXX Forms Add Page - Add a Select Multiple Field - 30 option list
+Scenario: Forms Add Page - Add a Select Multiple Field - 30 option list
 Given I am logged in
 When I click the Forms link
 And I click the New Form button
@@ -1648,7 +1648,7 @@ And I validate the 29th Row of the Option Underlying Value textfield is "optiont
 And I validate the 30th Row of the Option English textfield is "Option 30"
 And I validate the 30th Row of the Option Underlying Value textfield is "optionthirty"
 
-Scenario: TCXXXX Forms Add Page - Add a Form - Create a fully functional Pre Trip form with all options
+Scenario: Forms Add Page - Add a Form - Create a fully functional Pre Trip form with all options
 Given I am logged in
 When I click the Forms link
 And I click the New Form button
@@ -1810,7 +1810,7 @@ And I validate the 3rd Row of the Option Underlying Value textfield is "optionth
 And I validate the 4th Row of the Option English textfield is "Option 4"
 And I validate the 4th Row of the Option Underlying Value textfield is "optionfour" 
 
-Scenario: TCXXXX Forms Add Page - Add a Form - Create a fully functional Pre Trip form with no required boxes
+Scenario: Forms Add Page - Add a Form - Create a fully functional Pre Trip form with no required boxes
 Given I am logged in
 When I click the Forms link
 And I click the New Form button
