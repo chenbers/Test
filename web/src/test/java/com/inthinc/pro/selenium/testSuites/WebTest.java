@@ -1,5 +1,7 @@
 package com.inthinc.pro.selenium.testSuites;
 
+import org.jbehave.core.annotations.AfterScenario;
+import org.jbehave.core.annotations.BeforeScenario;
 import org.junit.After;
 import org.junit.Before;
 
@@ -11,7 +13,7 @@ import com.inthinc.pro.selenium.pageEnums.MastheadEnum;
  *
  */
 
-public abstract class WebTest extends BrowserTest {
+public class WebTest extends BrowserTest {
 
 
 	public WebTest(){
@@ -19,11 +21,13 @@ public abstract class WebTest extends BrowserTest {
 	}
 	
     @Before
+    @BeforeScenario
     public void a_before() {
         super.before();
     }
 
     @After
+    @AfterScenario
     @Override
     public void after() {
         super.after();

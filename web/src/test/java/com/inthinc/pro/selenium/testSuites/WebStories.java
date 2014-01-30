@@ -25,7 +25,7 @@ public abstract class WebStories {
 	    
 	        
 	    protected Test getTest(){
-	        return new WebRallyTest();
+	        return new WebTest();
 	    }    
 	    
 	    public String getUri(){
