@@ -20,7 +20,7 @@ public class AutomationTripGenerator {
         ws850.dump_settings();
         DeviceState state = ws850.getState();
         AutomationCalendar initialTime = new AutomationCalendar();
-        ws850.set_time(initialTime.setDate(1386712321));  //Tue Dec 10 14:52:01 2013
+        ws850.set_time(initialTime.setDate(1391272383));  //Tue Dec 10 14:52:01 2013
         ws850.getState().setWMP(17116);
         ws850.firstLocation(new GeoPoint(40.7103, -111.9920));
         ws850.power_on_device();
@@ -61,13 +61,13 @@ public class AutomationTripGenerator {
         AutomationDeviceEvents.statistics(ws850);
         AutomationDeviceEvents.requestSettings(ws850);
  
-//      ws850.setEmployeeID("123234345");                                         //THESE THREE LINES ARE FOR SENDING IN HOS
-//      state.setHosState(HOSState.TIMESTAMP);                           //TIMESTAMP NOTE, THIS SHOULD NOT SHOW UP
-//      AutomationDeviceEvents.hosChangeNoGPSLock(ws850, "SALT LAKE CITY, UT"); //IN THE HOS LOGS ANYMORE, BUT IT WILL SHOW UP IN THE DATABASE AND UTIL
+        ws850.setEmployeeID("Automation WS850Driver");                           //THESE THREE LINES ARE FOR SENDING IN HOS
+        state.setHosState(HOSState.TIMESTAMP);                                   //TIMESTAMP NOTE, THIS SHOULD NOT SHOW UP
+        AutomationDeviceEvents.hosChangeNoGPSLock(ws850, "SALT LAKE CITY, UT");  //IN THE HOS LOGS ANYMORE, BUT IT WILL SHOW UP IN THE DATABASE AND UTIL
         
-        ws850.setEmployeeID("Automation WS850Driver");                                      //THESE THREE LINES ARE FOR SENDING IN HOS
-        state.setHosState(HOSState.OCCUPANT_ON_DUTY);                          //DRIVER ON DUTY AS AN OCCUPANT IN A 
-        AutomationDeviceEvents.hosChangeNoGPSLock(ws850, "SALT LAKE CITY, UT");     //VEHICLE
+        ws850.setEmployeeID("Automation WS850Driver");                           //THESE THREE LINES ARE FOR SENDING IN HOS
+        state.setHosState(HOSState.OCCUPANT_ON_DUTY);                            //DRIVER ON DUTY AS AN OCCUPANT IN A 
+        AutomationDeviceEvents.hosChangeNoGPSLock(ws850, "SALT LAKE CITY, UT");  //VEHICLE
         //note.addAttr(EventAttr.SEATBELT_TOP_SPEED, state.getSeatbeltTopSpeed());
         //note.addAttr(EventAttr.SEATBELT_OUT_DISTANCE, state.getSeatbeltDistanceX100());
         
