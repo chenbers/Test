@@ -214,6 +214,16 @@ Then I validate the Search textfield is "SEARCHTEXT"
 Scenario: Assets - Trailers - Search All Fields
 Given I am logged in
 When I click the Top Trailers link
+And I click the Show Hide Columns link
+And I check the VIN checkbox
+And I check the License Number checkbox
+And I check the State checkbox
+And I check the Year checkbox
+And I check the Make checkbox
+And I check the Model checkbox
+And I check the Color checkbox
+And I check the Weight checkbox
+And I check the Odometer checkbox
 And I click the New_ button
 And I type "SEARCHVEH1" into the Trailer textfield
 And I type "SEARCHVIN1" into the VIN textfield
@@ -252,11 +262,11 @@ And I click the Sort By Driver link
 And I validate the 1st Row of the Driver Entry link is "Automatically Generated75"
 And I click the Sort By Driver link
 And I validate the 1st Row of the Driver Entry link is "Automatically Generated75"
-And I type "ACTIVE" into the Search textfield
-And I click the Sort By Status link
-And I validate the 1st Row of the Status Entry link is "ACTIVE"
-And I click the Sort By Status link
-And I validate the 1st Row of the Status Entry link is "ACTIVE"
+!-- And I type "ACTIVE" into the Search textfield
+!-- And I click the Sort By Status link
+!-- And I validate the 1st Row of the Status Entry link is "ACTIVE"
+!-- And I click the Sort By Status link
+!-- And I validate the 1st Row of the Status Entry link is "ACTIVE"
 And I type "SEARCHVIN1" into the Search textfield
 And I click the Sort By VIN link
 And I validate the 1st Row of the VIN Entry link is "SEARCHVIN1"
