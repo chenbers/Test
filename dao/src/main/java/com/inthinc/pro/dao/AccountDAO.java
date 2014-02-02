@@ -11,5 +11,6 @@ public interface AccountDAO extends GenericDAO<Account, Integer>
     
     List<Account> getAllAcctIDs();
     
+    List<Long> getAllValidAcctIDs();
 
 }

@@ -36,7 +36,7 @@ public class DataGenForHOSTesting extends DataGenForTesting {
     protected void createTestData() {
         itData = new ITData();
         Date assignmentDate = DateUtil.convertTimeInSecondsToDate(DateUtil.getDaysBackDate(DateUtil.getTodaysDate(), 2, ReportTestConst.TIMEZONE_STR));
-        ((ITData)itData).createTestData(siloService, xml, assignmentDate, false, false);
+        ((ITData)itData).createTestData(siloService, xml, assignmentDate, false, false, true);
     }
 
     @Override

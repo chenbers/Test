@@ -150,6 +150,7 @@ public class DistanceTest extends BaseJDBCTest{
         genSpeedingEvent(deviceTiwipro, noteTime, tiwiDistance);
 
         
+        sleep(2000);
 
 
         List<NoteType> noteTypeList = new ArrayList<NoteType>();

@@ -212,7 +212,16 @@ public class AutomationDeviceEvents {
 	public static void newDriverHosRule(DeviceBase device){
 		device.addEvent(newDriverHosRule(device.getState(), device.getCurrentLocation()));
 	}
+
 	
+	public static void newDriverHosRuleEx(DeviceBase device, int summaryTimestamp){
+	    device.addEvent(classes.new NewDriverHOSRuleEventEx(device.getState(), device.getCurrentLocation(), summaryTimestamp));
+	}
+
+	public static void newDriverHosRuleEx(DeviceBase device, int summaryTimestamp, int startTimestamp, int endTimestamp, int recordCount, int checksum){
+        device.addEvent(classes.new NewDriverHOSRuleEventEx(device.getState(), device.getCurrentLocation(), summaryTimestamp, startTimestamp, endTimestamp, recordCount, checksum));
+    }
+
 	/**
 	 * NEWDRIVER_HOSRULE(116, EventAttr.DRIVER_STR, EventAttr.MCM_RULESET),
 	 * @author dtanner
@@ -227,6 +236,27 @@ public class AutomationDeviceEvents {
 			
 		}
 	}
+    public class NewDriverHOSRuleEventEx extends AutomationDeviceEvents {
+        
+        private NewDriverHOSRuleEventEx(DeviceState state, GeoPoint location, int summaryTimestamp){
+            super(DeviceNoteTypes.NEWDRIVER_HOSRULE, state, location);
+            note.addAttr(EventAttr.DRIVER_ID_STR, state.getEmployeeID());
+            note.addAttr(EventAttr.CURRENT_HOS_RULESET, state.getHosRuleSet());
+            note.addAttr(EventAttr.SUMMARY_CHANGES_TIME, summaryTimestamp);
+            
+        }
+        private NewDriverHOSRuleEventEx(DeviceState state, GeoPoint location, int summaryTimestamp, int startTimestamp, int endTimestamp, int recordCount, int checksum){
+            super(DeviceNoteTypes.NEWDRIVER_HOSRULE, state, location);
+            note.addAttr(EventAttr.DRIVER_ID_STR, state.getEmployeeID());
+            note.addAttr(EventAttr.CURRENT_HOS_RULESET, state.getHosRuleSet());
+            note.addAttr(EventAttr.SUMMARY_CHANGES_TIME, summaryTimestamp);
+            note.addAttr(EventAttr.SUMMARY_START_TIME, startTimestamp);
+            note.addAttr(EventAttr.SUMMARY_STOP_TIME, endTimestamp);
+            note.addAttr(EventAttr.SUMMARY_RECORDS, recordCount);
+            note.addAttr(EventAttr.SUMMARY_CHECKSUM, checksum);
+           
+        }
+    }
 	
 	public static DriverStateChangeEvent changeDriverState(DeviceState state, GeoPoint location, String locationStr){
 		return classes.new DriverStateChangeEvent(state, location, locationStr);

@@ -21,9 +21,6 @@ import static org.junit.Assert.assertTrue;
 public class AmazonEmailReportQueueTest {
     private static AmazonQueueImpl amazonQueue;
 
-    private static final String AWS_ACCESS_KEY_ID_VALUE = "AKIAJNK2BGYZV32YDROQ";
-    private static final String AWS_SECRET_KEY_VALUE = "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";
-
     // Make sure this queue does exist on cloud
     private static final String QUEUE_NAME = "amazon-queue-email-reports-test";
 
@@ -31,7 +28,7 @@ public class AmazonEmailReportQueueTest {
     public static void beforeClass() {
         amazonQueue = new AmazonQueueImpl();
         amazonQueue.setQueueName(QUEUE_NAME);
-        amazonQueue.setAmazonSQSClient(new AmazonSQSClient(new BasicAWSCredentials(AWS_ACCESS_KEY_ID_VALUE, AWS_SECRET_KEY_VALUE)));
+        amazonQueue.setAmazonSQSClient(new AmazonSQSClient());
     }
 
     @Test

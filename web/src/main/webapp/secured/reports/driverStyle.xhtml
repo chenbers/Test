@@ -85,7 +85,8 @@ var firstLoad = new Boolean(true);
 		document.getElementById(region).className="tiny_selected";
 		
 		//turn on X and Y axis labels.
-		var data = chartVar.variables.dataXML;
+		//var data = chartVar.variables.dataXML; // commented for html-based charts
+		var data = chartVar.getXMLData();
         <ui:param name="MilesMsgKey" value="#{driverStyleBean.person.measurementType}_Miles"/>
 	    data = data.replace("showLabels=\'0\'", "showLabels=\'1\'");
 	    data = data.replace("showYAxisValues=\'0\'", "showYAxisValues=\'1\'");

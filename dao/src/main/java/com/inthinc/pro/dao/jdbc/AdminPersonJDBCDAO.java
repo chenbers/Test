@@ -47,6 +47,7 @@ public class AdminPersonJDBCDAO extends SimpleJdbcDaoSupport{
     private static final String ROLE_SELECT = "SELECT u.userID, u.roleID FROM role as r JOIN userRole as u USING (roleID) WHERE u.userID IN (:ulist)";
     private static final String ALL_PERSON_IDS_SELECT = "SELECT p.personID FROM person AS p LEFT JOIN user as u USING (personID) LEFT JOIN driver as d USING (personID) WHERE (p.acctID = :acct_id) and  (d.groupID IN (:group_list) OR u.groupID IN (:group_list)) AND (p.status != 3 AND (d.status != 3 OR u.status !=3))";
     private static final String FILTERED_PERSON_IDS_SELECT = "SELECT p.personID, u.userID, d.driverID FROM person AS p LEFT JOIN user as u USING (personID) LEFT JOIN driver as d USING (personID) WHERE (p.acctID = :acct_id) and  (d.groupID IN (:group_list) OR u.groupID IN (:group_list)) AND (p.status != 3 AND (d.status != 3 OR u.status !=3))";
+    private static final String CLEAR_FOB = "UPDATE driver set fobID='' WHERE fobID=:fob and driverID!=:driverId";
     
     
 	private static final Map<String,String> columnMap = new HashMap<String, String>();
@@ -142,6 +143,13 @@ public class AdminPersonJDBCDAO extends SimpleJdbcDaoSupport{
 			queryStr = queryStr + countFilter.toString();
 		}
 		return queryStr;
+	}
+
+	public void clearFOBonOtherDrivers(String fob, Integer driverId){
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("fob", fob);
+		params.put("driverId", driverId);
+		int rows = getSimpleJdbcTemplate().update(CLEAR_FOB, params);
 	}
 	
 	public List<Person> getPeople(final Integer acctID, final List<Integer> groupIDs, final PageParams pageParams) {

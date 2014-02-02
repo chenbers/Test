@@ -26,6 +26,7 @@ import org.apache.commons.lang.mutable.MutableInt;
 import org.apache.log4j.Logger;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.caucho.hessian.io.HessianOutput;
@@ -137,7 +138,8 @@ public class CrashTest extends BaseJDBCTest{
     public static void tearDownAfterClass() throws Exception {
     }
 
-    @Test
+    //Marking ignore since this test now included in noteservice.  BMiller 1/15/2014
+    @Ignore
     public void crashDataWithFullEvent() {
         Vehicle vehicleTiwipro = getVehicleByName("Tiwipro");
         Driver driver = getDriver();
@@ -183,7 +185,8 @@ public class CrashTest extends BaseJDBCTest{
         assertTrue("51 crash points", crashReport.getCrashDataPoints().size() == 51);
     }
 
-    @Test
+    //Marking ignore since this test now included in noteservice.  BMiller 1/15/2014
+    @Ignore
     public void crashDataForStop() {
         Vehicle vehicleTiwipro = getVehicleByName("Tiwipro");
         Driver driver = getDriver();
