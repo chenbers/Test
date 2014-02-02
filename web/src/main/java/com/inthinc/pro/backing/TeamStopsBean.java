@@ -24,7 +24,12 @@ import com.inthinc.pro.reports.ReportCriteria;
 import com.inthinc.pro.reports.ReportRenderer;
 import com.inthinc.pro.reports.service.ReportCriteriaService;
 import com.inthinc.pro.util.MessageUtil;
-
+/**
+ * Modified for #DE9193,Stops report were always in Mountain Time Zone in QA or UTC in production,
+ * regardless of user's time zone setting.Added parameter USER_TIME_ZONE as user's time zone in the
+ * report criteria parameter map.
+ *
+ */
 @KeepAlive
 public class TeamStopsBean extends BaseBean {
     
@@ -218,7 +223,7 @@ public class TeamStopsBean extends BaseBean {
                 getDateTimeZone(), getLocale(), driverStopReport);
         
         reportCriteria.setReportDate(new Date(), getUser().getPerson().getTimeZone());
-        
+        reportCriteria.addParameter(ReportCriteria.USER_TIME_ZONE, getUser().getPerson().getTimeZone());
         return reportCriteria;
 
     }

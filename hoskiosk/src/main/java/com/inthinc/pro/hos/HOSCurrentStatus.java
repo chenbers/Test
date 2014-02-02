@@ -2,7 +2,9 @@ package com.inthinc.pro.hos;
 
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
 
 import com.inthinc.hos.model.HOSRec;
 import com.inthinc.hos.model.HOSStats;
@@ -10,6 +12,7 @@ import com.inthinc.hos.model.HOSStatus;
 import com.inthinc.hos.model.RuleSetType;
 import com.inthinc.hos.rules.HOSRules;
 import com.inthinc.hos.rules.RuleSetFactory;
+import com.inthinc.hos.util.DateUtil;
 import com.inthinc.pro.dao.HOSDAO;
 import com.inthinc.pro.dao.util.HOSUtil;
 import com.inthinc.pro.model.Driver;
@@ -21,6 +24,8 @@ public class HOSCurrentStatus extends HOSBase {
     Long statusMinutes;
     Long onDutyMinutes;
     Long onDutyAvailableMinutes;
+    
+    private static final Logger logger = Logger.getLogger(HOSCurrentStatus.class);
 
     public HOSCurrentStatus(HOSDAO hosDAO) {
         super(hosDAO);
@@ -54,7 +59,7 @@ public class HOSCurrentStatus extends HOSBase {
 
 
     public void init(Driver driver) {
-        DateTime currentDate = new DateTime();
+        DateTime currentDate = new DateTime().plusSeconds(15);
         List<HOSRecord> hosRecordList = fetchHosRecordList(currentDate, driver);
         if (hosRecordList == null)
             return;
@@ -69,6 +74,8 @@ public class HOSCurrentStatus extends HOSBase {
         setStatusMinutes(currentStatusMin);
         setOnDutyMinutes(hosStats.getOnDutyMinutes());
         setOnDutyAvailableMinutes(hosStats.getOnDutyDOTMinutesRemaining());
+        
+        logger.debug("CurrentStatus: " + hosStats.getCurrentStatus() + " currentDate: " + DateUtil.getDisplayDate(currentDate, DateTimeZone.forTimeZone(driver.getPerson().getTimeZone())));
         
     }
 }

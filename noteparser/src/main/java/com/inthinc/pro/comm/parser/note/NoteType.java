@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.inthinc.pro.comm.parser.attrib.Attrib;
+import com.inthinc.pro.comm.parser.attrib.AttribParserType;
 
 
 public enum NoteType {
@@ -101,7 +102,7 @@ public enum NoteType {
 	CRASH_DATA_EXTENDED(112, new Attrib[]{}),
 	
 	HOS_CHANGE_STATE_NO_GPS_LOCK(113, new Attrib[]{Attrib.DRIVERSTATUS, Attrib.DRIVERFLAG, Attrib.DRIVERSTR, Attrib.LOCATION}),
-	NEWDRIVER_HOSRULE(116, new Attrib[]{Attrib.DRIVERSTR, Attrib.MCMRULESET}),
+	NEWDRIVER_HOSRULE(116, new Attrib[]{Attrib.DRIVERSTR, Attrib.MCMRULESET, Attrib.SUMMARY_CHANGES_TIME, Attrib.SUMMARY_START_TIME, Attrib.SUMMARY_STOP_TIME, Attrib.SUMMARY_RECORDS, Attrib.SUMMARY_CHECKSUM}),
 	WSZONES_ARRIVAL_EX(117, new Attrib[]{Attrib.ZONEID}),
 	WSZONES_DEPARTURE_EX(118, new Attrib[]{Attrib.ZONEID}),
 	REQUEST_SPECIFIC_DETAIL_RECORDS(119, new Attrib[]{}),

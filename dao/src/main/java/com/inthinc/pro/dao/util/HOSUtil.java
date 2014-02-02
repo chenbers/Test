@@ -20,6 +20,8 @@ import com.inthinc.hos.rules.HOSRules;
 import com.inthinc.hos.rules.RuleSetFactory;
 import com.inthinc.hos.util.DebugUtil;
 import com.inthinc.pro.model.Driver;
+import com.inthinc.pro.model.hos.HOSDelta;
+import com.inthinc.pro.model.hos.HOSDeltaRecord;
 import com.inthinc.pro.model.hos.HOSRecord;
 
 public class HOSUtil {
@@ -298,5 +300,31 @@ public class HOSUtil {
     }   // end add
     
     
+	public static HOSDelta getHOSDelta(List<HOSRecord> deltaRecordsList) {
+
+		HOSDelta hosDelta = new HOSDelta();
+		
+		for (HOSRecord hosRecord : deltaRecordsList) {
+		    
+		    // added or deleted record
+		    if (hosRecord.getOriginalStatus() == null && hosRecord.getOriginalLogTime() == null) {
+		        if (hosRecord.getDeleted()) {
+		            hosDelta.addDeleted(new HOSDeltaRecord(hosRecord.getStatus(), hosRecord.getLogTime()));
+		        }
+		        else {
+                    hosDelta.addAdded(new HOSDeltaRecord(hosRecord.getStatus(), hosRecord.getLogTime()));
+		        }
+		    }
+		    else {
+		        // edited record
+                hosDelta.addDeleted(new HOSDeltaRecord(hosRecord.getOriginalStatus() == null ? hosRecord.getStatus() : hosRecord.getOriginalStatus(), hosRecord.getOriginalLogTime() == null ? hosRecord.getLogTime() : hosRecord.getOriginalLogTime()));
+                if (!hosRecord.getDeleted()) {
+                    hosDelta.addAdded(new HOSDeltaRecord(hosRecord.getStatus(), hosRecord.getLogTime()));
+                }
+		    }
+		}
+		
+		return hosDelta;
+	}
 
 }

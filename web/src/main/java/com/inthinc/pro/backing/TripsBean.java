@@ -164,6 +164,7 @@ public class TripsBean extends BaseBean {
                 List<NoteType> violationEventTypeList = new ArrayList<NoteType>();
                 violationEventTypeList.addAll(EventSubCategory.SPEED.getNoteTypesInSubCategory());
                 violationEventTypeList.add(NoteType.SEATBELT);
+                violationEventTypeList.add(NoteType.NO_DRIVER);
                 violationEventTypeList.addAll(EventSubCategory.DRIVING_STYLE.getNoteTypesInSubCategory());
                 List<NoteType> idleTypes = new ArrayList<NoteType>();
                 idleTypes.add(NoteType.IDLE);
@@ -214,6 +215,7 @@ public class TripsBean extends BaseBean {
             List<NoteType> violationEventTypeList = new ArrayList<NoteType>();
             violationEventTypeList.addAll(EventSubCategory.SPEED.getNoteTypesInSubCategory());
             violationEventTypeList.add(NoteType.SEATBELT);
+            violationEventTypeList.add(NoteType.NO_DRIVER);
             violationEventTypeList.addAll(EventSubCategory.DRIVING_STYLE.getNoteTypesInSubCategory());
             List<NoteType> idleTypes = new ArrayList<NoteType>();
             idleTypes.add(NoteType.IDLE);

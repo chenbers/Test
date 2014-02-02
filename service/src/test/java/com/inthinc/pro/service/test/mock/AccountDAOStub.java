@@ -30,6 +30,12 @@ public class AccountDAOStub implements AccountDAO {
         return null;
     }
 
+    @Override
+    public List<Long> getAllValidAcctIDs() {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
     /*
      * (non-Javadoc)
      * 

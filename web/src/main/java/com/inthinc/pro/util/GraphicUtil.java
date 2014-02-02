@@ -80,7 +80,7 @@ public class GraphicUtil {
 		sb.append("lineThickness=\'4\' ");
 		sb.append("showValues=\'0\' ");
 		sb.append("showBorder=\'0\' ");
-		sb.append("drawAnchors=\'1\' ");
+		//sb.append("drawAnchors=\'1\' "); //commented for html-based charts.
 		sb.append("anchorRadius=\'3\' ");
 		sb.append("borderColor=\'#cfcfcf\' ");
 		sb.append("vDivLineColor=\'#cfcfcf\' ");
