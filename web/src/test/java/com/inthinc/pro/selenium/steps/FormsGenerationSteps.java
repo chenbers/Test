@@ -124,7 +124,7 @@ public class FormsGenerationSteps extends LoginSteps {
         manage._link().manage().click();
         i++;
         
-        while (i < 95) {
+        while (i < 98) {
             manage._button().gear().row(1).click();
             manage._link().copy().row(1).click();
             add._textField().name().type("FormGeneric" + i);
