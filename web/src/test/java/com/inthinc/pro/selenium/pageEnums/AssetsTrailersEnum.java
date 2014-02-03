@@ -8,7 +8,7 @@ public enum AssetsTrailersEnum implements SeleniumEnums {
 	
 	TITLE(null, null), //does not have a title yet
 	
-	ENTRIES_DROPDOWN("10", "//select[@name='trailerTable_length']"),
+	ENTRIES_DROPDOWN("10", "//div[@id='trailerTable_length']"),
 	ENTRIES_LABEL("Show X entries", "//div[2]/div/div/div/div/div/div/label"),
 	SEARCH_LABEL("Search:", "//div[3]/div/label"),
 	SEARCH_TEXTFIELD(null, "//input[@aria-controls='trailerTable']"),
