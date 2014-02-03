@@ -203,6 +203,8 @@
                             </excludes>
                             <includes>
                                 <include>**/selenium/**/CurrentStoryTest.java</include>
+                                <include>**/selenium/**/AAFormsGenerationForManageTest.java</include>
+                                <include>**/selenium/**/AAFormsGenerationForPublishTest.java</include>
                             </includes>
                             <systemProperties>
                                 <property>
