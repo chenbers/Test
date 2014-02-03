@@ -184,7 +184,6 @@
 								<exclude>**/selenium/**/AddEditUser.java</exclude>
 								<exclude>**/selenium/**/Admin**.java</exclude>
 								<exclude>**/selenium/**/ChangePasswordTest.java</exclude>
-								<exclude>**/selenium/**/CurrentStoryTest.java</exclude>
 								<exclude>**/selenium/**/DeviceTests.java</exclude>
 								<exclude>**/selenium/**/DriverStatisticsTest.java</exclude>
 								<exclude>**/selenium/**/FormsOptionsEditorTest.java</exclude>
@@ -205,7 +204,7 @@
 								<exclude>**/selenium/**/WebTest.java</exclude>
 							</excludes>
 							<includes>
-							    <include>**/selenium/**/**Test.java</include>
+							    <include>**/selenium/**/CurrentStoryTest.java</include>
 							</includes>
 							<systemProperties>
 								<property>
