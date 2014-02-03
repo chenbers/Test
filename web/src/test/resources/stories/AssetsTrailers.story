@@ -3,6 +3,16 @@ Narrative:Test the functionality of the Assets Trailers page
 Scenario: Assets - Trailers - UI
 Given I am logged in
 When I click the Top Trailers link
+And I click the Show Hide Columns link
+And I check the VIN checkbox
+And I check the License Number checkbox
+And I check the State checkbox
+And I check the Year checkbox
+And I check the Make checkbox
+And I check the Model checkbox
+And I check the Color checkbox
+And I check the Weight checkbox
+And I check the Odometer checkbox
 Then I validate I am on the Assets Trailers page
 And I validate the Records Per Page Label text is present
 And I validate the Records Per Page dropdown is present
@@ -204,7 +214,7 @@ Then I validate the Entries text contains "Showing 1 to 3 of 3 entries"
 And I validate the Entries text contains "filtered from"
 And I validate the Entries text contains "total entries"
 
-Scenario: Assets - Trailers - Search Filter (clear or not clear test depending on how we change things, at the moment the test checks for not cleared text)
+Scenario: Assets - Trailers - Search Filter
 Given I am logged in
 When I click the Top Trailers link
 And I type "SEARCHTEXT" into the Search textfield
@@ -442,21 +452,31 @@ Then I validate I am on the Assets Trailers page
 Scenario: Assets - Trailers - Table Properties NEED TO IMPLEMENT CHECKING ALPHABETICAL ORDER
 Given I am logged in
 When I click the Top Trailers link
+And I click the Show Hide Columns link
+And I check the VIN checkbox
+And I check the License Number checkbox
+And I check the State checkbox
+And I check the Year checkbox
+And I check the Make checkbox
+And I check the Model checkbox
+And I check the Color checkbox
+And I check the Weight checkbox
+And I check the Odometer checkbox
 And I click the Sort By Trailer link
 And I click the Sort By Team link
 And I click the Sort By Device link
 And I click the Sort By Vehicle link
 And I click the Sort By Driver link
 And I click the Sort By Status link
-!-- And I click the Sort By VIN link
-!-- And I click the Sort By License Number link
-!-- And I click the Sort By State link
-!-- And I click the Sort By Year link
-!-- And I click the Sort By Make link
-!-- And I click the Sort By Model link
-!-- And I click the Sort By Color link
-!-- And I click the Sort By Weight link
-!-- And I click the Sort By Odometer link
+And I click the Sort By VIN link
+And I click the Sort By License Number link
+And I click the Sort By State link
+And I click the Sort By Year link
+And I click the Sort By Make link
+And I click the Sort By Model link
+And I click the Sort By Color link
+And I click the Sort By Weight link
+And I click the Sort By Odometer link
 
 Scenario: Assets - Trailers - Show/Hide Columns - Subsequent Session Retention
 Given I am logged in
@@ -526,6 +546,16 @@ And I validate the Assigned Driver text is SAVEDDRIVER
 Scenario: Assets - Trailers - Select A Row, Click Edit, Then Select Another Row
 Given I am logged in
 When I click the Top Trailers link
+And I click the Show Hide Columns link
+And I check the VIN checkbox
+And I check the License Number checkbox
+And I check the State checkbox
+And I check the Year checkbox
+And I check the Make checkbox
+And I check the Model checkbox
+And I check the Color checkbox
+And I check the Weight checkbox
+And I check the Odometer checkbox
 And I click the 1st Row of the Trailer Entry link
 And I save the 2nd Row of the Trailer Entry link as SAVEDTRAILER2
 And I save the 2nd Row of the Team Entry link as SAVEDTEAM2
