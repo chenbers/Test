@@ -2240,4 +2240,3 @@ And I validate the License Number Error text is "The trailer license exceeds 10 
 And I click the Cancel button
 And I click the Edit button
 And I validate the License Number Error text is not visible
-
