@@ -5,7 +5,7 @@ import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 public enum FormsManageEnum implements SeleniumEnums {
     DEFAULT_URL("forms/"),
     
-    NEW_FORM_BUTTON(null, "//i[@class='icon-plus icon-large']"),
+    NEW_FORM_BUTTON(null, "//a[@class='btn btn-inthinc pull-left']"),
     
     RECORDS_DROPDOWN("records per page", "//select[@name='staging-forms-table_length']"),
     SEARCH_TEXTFIELD(null, "//div[@id='staging-forms-table_filter']/label/input"),
