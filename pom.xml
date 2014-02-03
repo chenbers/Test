@@ -205,7 +205,7 @@
 								<exclude>**/selenium/**/WebTest.java</exclude>
 							</excludes>
 							<includes>
-							    <include>**/selenium/**/AAFormsGenerationForManageTest.java</include>
+							    <include>**/selenium/**/AAFormsGenerationForPublishTest.java</include>
 							</includes>
 							<systemProperties>
 								<property>
