@@ -12,6 +12,7 @@ public enum AssetsTrailersEnum implements SeleniumEnums {
 	ENTRIES_LABEL("Show *** entries", "//div[2]/div/div/div/div/div/div/label"),
 	SEARCH_LABEL("Search:", "//div[3]/div/label"),
 	SEARCH_TEXTFIELD(null, "//input[@aria-controls='trailerTable']"),
+	SELECT_ALL_CHECKBOX(null, "glyphicon selectColumnButton glyphicon-check"),
 	//SHOW/HIDE COLUMNS SECTION
 	SHOW_HIDE_COLUMNS_LINK("Show / Hide Columns", "//button[@class='ColVis_Button TableTools_Button ColVis_MasterButton']"),
 	TRAILER_CHECKBOX(null, "//button[1]/span/span[1]/input"),
@@ -137,6 +138,7 @@ public enum AssetsTrailersEnum implements SeleniumEnums {
     COLOR_ENTRY(null, "//tr[###]/td[13]"),
     WEIGHT_ENTRY(null, "//tr[###]/td[14]"),
     ODOMETER_ENTRY(null, "//tr[###]/td[15]"),
+    TRAILER_ENTRY_CHECKBOX(null, "//tr[###]/td/input"),
 	
     //I'M LEAVING THESE HERE TILL I CAN SEE IF THIS TABLE HAS FILTERS
     GROUP_FILTER(null,"trailers-form:trailers:groupfsp"),

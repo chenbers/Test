@@ -1,6 +1,7 @@
 package com.inthinc.pro.selenium.pageObjects;
 
 import com.inthinc.pro.automation.elements.CheckBox;
+import com.inthinc.pro.automation.elements.CheckBoxTable;
 import com.inthinc.pro.automation.elements.DropDown;
 import com.inthinc.pro.automation.elements.Text;
 import com.inthinc.pro.automation.elements.TextButton;
@@ -489,11 +490,17 @@ public class PageAssetsTrailers extends Masthead {
             return new Text(AssetsTrailersEnum.LICENSE_NUMBER_ERROR_TEXT);
         }
         
-        
-
     }
     
     public class AssetsTrailersCheckboxes {
+        
+        public CheckBox selectAll() {
+            return new CheckBox(AssetsTrailersEnum.SELECT_ALL_CHECKBOX);
+        }
+        
+        public CheckBoxTable entry() {
+            return new CheckBoxTable(AssetsTrailersEnum.TRAILER_ENTRY_CHECKBOX);
+        }
         
         public CheckBox trailer() {
             return new CheckBox(AssetsTrailersEnum.TRAILER_CHECKBOX);
