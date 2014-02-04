@@ -738,7 +738,7 @@ And I click the 1st Row of the Trailer Entry link
 And I click the Edit button
 And I select "DELETED" from the Status dropdown
 And I click the Save button
-Then I validate the 1st Row of the Trailer Entry link is not "DELETETRAILERNAME"
+Then I validate the 1st Row of the Trailer Entry link is not present
 
 Scenario: Assets - Trailers - New Trailer (cancel button - no changes)
 Given I am logged in
@@ -2022,7 +2022,7 @@ And I type "00000000123456789" into the Vin textfield
 And I validate the Vin Error text is not present
 And I type "000000000123456789" into the Vin textfield
 And I validate the Vin Error text is present
-And I validate the Vin Error text is "The trailer Vin exceeds 17 characters."
+And I validate the Vin Error text is "The trailer vin exceeds 17 characters."
 And I click the Cancel button
 And I click the New_ button
 And I validate the Vin Error text is not visible
@@ -2068,7 +2068,7 @@ And I type "00000000123456789" into the Vin textfield
 And I validate the Vin Error text is not present
 And I type "000000000123456789" into the Vin textfield
 And I validate the Vin Error text is present
-And I validate the Vin Error text is "The trailer Vin exceeds 17 characters."
+And I validate the Vin Error text is "The trailer vin exceeds 17 characters."
 And I click the Cancel button
 And I click the Edit button
 And I validate the Vin Error text is not visible
