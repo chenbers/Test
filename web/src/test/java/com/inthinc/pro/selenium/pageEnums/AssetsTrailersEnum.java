@@ -15,8 +15,6 @@ public enum AssetsTrailersEnum implements SeleniumEnums {
 	SELECT_ALL_CHECKBOX(null, "glyphicon selectColumnButton glyphicon-check"),
 	//SHOW/HIDE COLUMNS SECTION
 	SHOW_HIDE_COLUMNS_LINK("Show / Hide Columns", "//button[@class='ColVis_Button TableTools_Button ColVis_MasterButton']"),
-	TRAILER_CHECKBOX(null, "//button[1]/span/span[1]/input"),
-    TRAILER_CHECKBOX_LABEL("Trailer", "//button[1]/span/span[2]"),
 	TEAM_CHECKBOX(null, "//button[2]/span/span[1]/input"),
 	TEAM_CHECKBOX_LABEL("Team", "//button[2]/span/span[2]"),
 	DEVICE_CHECKBOX(null, "//button[3]/span/span[1]/input"),

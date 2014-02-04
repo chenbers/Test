@@ -260,11 +260,7 @@ public class PageAssetsTrailers extends Masthead {
             return new Text(AssetsTrailersEnum.SEARCH_LABEL);
         }
 
-        //SHOW/HIDE COLUMNS LABELS
-        public Text trailerCheckboxLabel() {
-            return new Text(AssetsTrailersEnum.TRAILER_CHECKBOX_LABEL);
-        }
-                
+        //SHOW/HIDE COLUMNS LABELS               
         public Text teamCheckboxLabel() {
             return new Text(AssetsTrailersEnum.TEAM_CHECKBOX_LABEL);
         }
@@ -501,11 +497,7 @@ public class PageAssetsTrailers extends Masthead {
         public CheckBoxTable entry() {
             return new CheckBoxTable(AssetsTrailersEnum.TRAILER_ENTRY_CHECKBOX);
         }
-        
-        public CheckBox trailer() {
-            return new CheckBox(AssetsTrailersEnum.TRAILER_CHECKBOX);
-        }
-                
+    
         public CheckBox team() {
             return new CheckBox(AssetsTrailersEnum.TEAM_CHECKBOX);
         }
