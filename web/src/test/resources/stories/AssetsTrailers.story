@@ -1,24 +1,13 @@
-Narrative:Test the functionality of the Assets Trailers page
-
-Scenario: Assets - Trailers - UI
+Scenario: Assets - Trailers - Main UI
 Given I am logged in
 When I click the Top Trailers link
-And I click the Show Hide Columns link
-And I check the Vin checkbox
-And I check the License Number checkbox
-And I check the State checkbox
-And I check the Year checkbox
-And I check the Make checkbox
-And I check the Model checkbox
-And I check the Color checkbox
-And I check the Weight checkbox
-And I check the Odometer checkbox
 Then I validate I am on the Assets Trailers page
 And I validate the Records Per Page Label text is present
 And I validate the Records Per Page dropdown is present
 And I validate the Search Label text is present
 And I validate the Search textfield is present
 And I validate the Show Hide Columns link is present
+And I validate the Select All checkbox is present
 And I validate the Sort By Trailer link is present
 And I validate the Sort By Team link is present
 And I validate the Sort By Device link is present
@@ -87,6 +76,11 @@ And I validate the Assigned Device text is ""
 And I validate the Assigned Vehicle text is ""
 And I validate the Assigned Team text is ""
 And I validate the Assigned Driver text is ""
+
+Scenario: Assets - Trailers - New button UI
+Given I am logged in
+When I click the Top Trailers link
+Then I validate I am on the Assets Trailers page
 And I click the New_ button
 And I validate the Cancel button is visible
 And I validate the Save button is visible
@@ -125,6 +119,11 @@ And I validate the Weight textfield is not visible
 And I validate the License Number textfield is not visible
 And I validate the State dropdown is not visible
 And I validate the Assigned Device dropdown is not visible
+
+Scenario: Assets - Trailers - Show Hide Columns link UI
+Given I am logged in
+When I click the Top Trailers link
+Then I validate I am on the Assets Trailers page
 And I click the Show Hide Columns link
 And I validate the Team Checkbox Label text is present
 And I validate the Device Checkbox Label text is present
