@@ -229,6 +229,7 @@ And I check the Model checkbox
 And I check the Color checkbox
 And I check the Weight checkbox
 And I check the Odometer checkbox
+And I click the Top Trailers link
 And I click the New_ button
 And I type "SEARCHVEH1" into the Trailer textfield
 And I type "SEARCHVIN1" into the Vin textfield
@@ -495,6 +496,7 @@ And I check the Model checkbox
 And I check the Color checkbox
 And I check the Weight checkbox
 And I check the Odometer checkbox
+And I click the Top Trailers link
 And I save the 1st Row of the Trailer Entry link as SAVEDTRAILER
 And I save the 1st Row of the Team Entry link as SAVEDTEAM
 And I save the 1st Row of the Device Entry link as SAVEDDEVICE
@@ -544,6 +546,7 @@ And I check the Model checkbox
 And I check the Color checkbox
 And I check the Weight checkbox
 And I check the Odometer checkbox
+And I click the Top Trailers link
 And I click the 1st Row of the Trailer Entry link
 And I save the 2nd Row of the Trailer Entry link as SAVEDTRAILER2
 And I save the 2nd Row of the Team Entry link as SAVEDTEAM2
@@ -632,6 +635,7 @@ And I check the Model checkbox
 And I check the Color checkbox
 And I check the Weight checkbox
 And I check the Odometer checkbox
+And I click the Top Trailers link
 And I click the 1st Row of the Trailer Entry link
 And I save the 1st Row of the Trailer Entry link as SAVEDTRAILER
 And I save the 1st Row of the Team Entry link as SAVEDTEAM
@@ -705,6 +709,7 @@ And I check the Model checkbox
 And I check the Color checkbox
 And I check the Weight checkbox
 And I check the Odometer checkbox
+And I click the Top Trailers link
 And I click the 1st Row of the Trailer Entry link
 And I save the 1st Row of the Trailer Entry link as SAVEDTRAILER
 And I click the Edit button
@@ -828,6 +833,7 @@ And I check the Model checkbox
 And I check the Color checkbox
 And I check the Weight checkbox
 And I check the Odometer checkbox
+And I click the Top Trailers link
 And I click the New_ button
 And I type "SAVECHANGESVIN" into the Vin textfield
 And I type "Kia" into the Make textfield
@@ -948,6 +954,7 @@ And I check the Model checkbox
 And I check the Color checkbox
 And I check the Weight checkbox
 And I check the Odometer checkbox
+And I click the Top Trailers link
 And I click the 1st Row of the Trailer Entry link
 And I save the 1st Row of the Trailer Entry link as SAVEDTRAILER
 And I save the 1st Row of the Team Entry link as SAVEDTEAM
@@ -998,6 +1005,7 @@ And I check the Model checkbox
 And I check the Color checkbox
 And I check the Weight checkbox
 And I check the Odometer checkbox
+And I click the Top Trailers link
 And I click the 1st Row of the Trailer Entry link
 And I save the 1st Row of the Trailer Entry link as SAVEDTRAILER
 And I save the 1st Row of the Team Entry link as SAVEDTEAM
@@ -1047,6 +1055,7 @@ And I check the Model checkbox
 And I check the Color checkbox
 And I check the Weight checkbox
 And I check the Odometer checkbox
+And I click the Top Trailers link
 And I click the New_ button
 And I type "EANDSTRAILERID" into the Trailer textfield
 And I type "EDITANDSAVE" into the Vin textfield
@@ -1174,6 +1183,7 @@ And I check the Model checkbox
 And I check the Color checkbox
 And I check the Weight checkbox
 And I check the Odometer checkbox
+And I click the Top Trailers link
 And I click the New_ button
 And I type "PREINVALIDID" into the Trailer textfield
 And I type "INVALIDVIN" into the Vin textfield
@@ -1304,6 +1314,7 @@ And I check the Model checkbox
 And I check the Color checkbox
 And I check the Weight checkbox
 And I check the Odometer checkbox
+And I click the Top Trailers link
 And I click the New_ button
 And I type "PREINVALIDID" into the Trailer textfield
 And I type "INVALIDVIN" into the Vin textfield
@@ -1395,6 +1406,7 @@ And I check the Model checkbox
 And I check the Color checkbox
 And I check the Weight checkbox
 And I check the Odometer checkbox
+And I click the Top Trailers link
 And I click the New_ button
 And I type "EANDCNTRAILERID" into the Trailer textfield
 And I type "EANDCNVIN" into the Vin textfield
@@ -1550,6 +1562,7 @@ And I check the Model checkbox
 And I check the Color checkbox
 And I check the Weight checkbox
 And I check the Odometer checkbox
+And I click the Top Trailers link
 And I click the 1st Row of the Trailer Entry link
 And I save the 1st Row of the Trailer Entry link as SAVEDTRAILER
 And I save the 1st Row of the Team Entry link as SAVEDTEAM
@@ -1659,6 +1672,7 @@ And I check the Model checkbox
 And I check the Color checkbox
 And I check the Weight checkbox
 And I check the Odometer checkbox
+And I click the Top Trailers link
 And I click the 1st Row of the Trailer Entry link
 And I save the 1st Row of the Trailer Entry link as SAVEDTRAILER
 And I save the 1st Row of the Team Entry link as SAVEDTEAM
