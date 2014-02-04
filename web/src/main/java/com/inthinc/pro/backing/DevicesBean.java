@@ -584,8 +584,12 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
 
         public Vehicle getVehicle()
         {
-            if (vehicle == null && getVehicleID() != null)
+            if (vehicle == null && getVehicleID() != null){
+                if (bean.adminCacheBean == null)
+                    bean.loadSupportData();
+
                 vehicle = (Vehicle)bean.adminCacheBean.getAsset("vehicles", getVehicleID());
+            }
             return vehicle;
         }
 
