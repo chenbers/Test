@@ -8,11 +8,11 @@ public enum AssetsTrailersEnum implements SeleniumEnums {
 	
 	TITLE(null, null), //does not have a title yet
 	
-	ENTRIES_DROPDOWN("10", "//div[@id='trailerTable_length']"),
+	ENTRIES_DROPDOWN("10", "//select[@name='trailerTable_length']"),
 	ENTRIES_LABEL("Show X entries", "//div[2]/div/div/div/div/div/div/label"),
 	SEARCH_LABEL("Search:", "//div[3]/div/label"),
 	SEARCH_TEXTFIELD(null, "//input[@aria-controls='trailerTable']"),
-	SELECT_ALL_CHECKBOX(null, "glyphicon selectColumnButton glyphicon-check"),
+	SELECT_ALL_CHECKBOX(null, "//i[contains(@class,'glyphicon')]"),
 	//SHOW/HIDE COLUMNS SECTION
 	SHOW_HIDE_COLUMNS_LINK("Show / Hide Columns", "//button[@class='ColVis_Button TableTools_Button ColVis_MasterButton']"),
 	TEAM_CHECKBOX(null, "//button[1]/span/span[1]/input"),
