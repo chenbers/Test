@@ -1,8 +1,3 @@
-Meta:
-@page login
-
-Narrative:Test the functionality of the Reports Trailers page
-
 Scenario: Check all boxes on vehicles edit columns and save so they are visible for all the tests in this suite
 Given I am logged in
 When I click the Reports link

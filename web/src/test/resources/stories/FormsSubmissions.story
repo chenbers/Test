@@ -1,7 +1,3 @@
-Narrative: In order to view submitted forms within a time period
-As an Administrator
-I need a place to view and edit existing submitted forms.
-
 Scenario:  Forms Submissions Page - Forms No Data Available In Table Message
 Given I am logged in
 When I click the Forms link
