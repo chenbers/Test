@@ -941,6 +941,48 @@ And I select "DELETED" from the Status dropdown
 And I click the Save button
 Then I validate the 1st Row of the Trailer Entry link is not present
 
+Scenario: Assets - Trailers - Delete two trailers back to back
+Given I am logged in
+When I click the Top Trailers link
+And I click the New_ button
+And I type "DLETETRAILERNAME" into the Trailer textfield
+And I type "DLETEVIN" into the Vin textfield
+And I type "DLETEFord" into the Make textfield
+And I type "DLETEFocus" into the Model textfield
+And I type "997" into the Odometer textfield
+And I type "1964" into the Year textfield
+And I type "DLETE Red" into the Color textfield
+And I type "30519" into the Weight textfield
+And I type "DLETELIC" into the License Number textfield
+And I select "New Mexico" from the State dropdown
+And I select "MCM990052" from the Assigned Device dropdown
+And I click the Save button
+And I type "DLETETRAILERNAME" into the Search textfield
+And I click the 1st Row of the Trailer Entry link
+And I click the Edit button
+And I select "DELETED" from the Status dropdown
+And I click the Save button
+Then I validate the 1st Row of the Trailer Entry link is not present
+And I click the New_ button
+And I type "DLETETRAILERNAME" into the Trailer textfield
+And I type "DLETEVIN" into the Vin textfield
+And I type "DLETEFord" into the Make textfield
+And I type "DLETEFocus" into the Model textfield
+And I type "997" into the Odometer textfield
+And I type "1964" into the Year textfield
+And I type "DLETE Red" into the Color textfield
+And I type "30519" into the Weight textfield
+And I type "DLETELIC" into the License Number textfield
+And I select "New Mexico" from the State dropdown
+And I select "MCM990052" from the Assigned Device dropdown
+And I click the Save button
+And I type "DLETETRAILERNAME" into the Search textfield
+And I click the 1st Row of the Trailer Entry link
+And I click the Edit button
+And I select "DELETED" from the Status dropdown
+And I click the Save button
+And I validate the 1st Row of the Trailer Entry link is not present
+
 Scenario: Assets - Trailers - Delete entry then try to edit an entry
 Given I am logged in
 When I click the Top Trailers link
