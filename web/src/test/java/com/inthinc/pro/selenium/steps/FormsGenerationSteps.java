@@ -53,7 +53,7 @@ public class FormsGenerationSteps extends LoginSteps {
             i++;
         }
         
-        while (i < 10) {
+        while (i < 19) {
             manage._button().gear().row(1).click();
             manage._link().copy().row(1).click();
             add._textField().name().type("FormMGeneric" + i);
