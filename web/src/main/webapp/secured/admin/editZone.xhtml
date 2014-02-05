@@ -150,16 +150,16 @@
 	                        <tr>
 	                          <td width="160" valign="center">
 				                <h:outputText value="#{messages[option.name]}:" />
-				                <h:outputText value="*" rendered="#{option == 'SPEED_LIMIT'}"/>
+				                <h:outputText value=" (#{zonesBean.speedMeasurementName}) *" rendered="#{option == 'SPEED_LIMIT'}"/>
 	                          </td>
 	                          <td>
 	                            <h:selectOneMenu value="#{zonesBean.item.optionsMap[option]}" id="vehicleType" 
 	                            	rendered="#{option.optionType eq 'VEHICLE_TYPE'}"  style="width: 140px">
     	                    		<f:selectItems value="#{zonesBean.vehicleTypeSelectItems}"/>
                             	</h:selectOneMenu>    
-                            	<rich:inputNumberSpinner value="#{zonesBean.item.optionsMap[option].value}" id="int" step="5"
+                            	<rich:inputNumberSpinner value="#{zonesBean.measurementTypeSpeedLimit}" id="int" step="5"
                             				inputStyle="font: 10px Verdana,Arial,Helvetica,sans-serif;background:white;" 
-                            				minValue="0" maxValue="100" enableManualInput="true"
+                            				minValue="0" maxValue="#{zonesBean.measurementTypeMaxSpeedLimit}" enableManualInput="true"
                             				rendered="#{option.optionType eq 'SPEED'}"/> 
 	
 	                            <h:selectOneMenu value="#{zonesBean.item.optionsMap[option]}" id="onOff" 
