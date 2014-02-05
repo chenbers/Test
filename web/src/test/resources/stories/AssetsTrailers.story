@@ -941,6 +941,88 @@ And I select "DELETED" from the Status dropdown
 And I click the Save button
 Then I validate the 1st Row of the Trailer Entry link is not present
 
+Scenario: Assets - Trailers - Delete entry then try to edit an entry
+Given I am logged in
+When I click the Top Trailers link
+And I click the Show Hide Columns link
+And I check the Vin checkbox
+And I check the License Number checkbox
+And I check the State checkbox
+And I check the Year checkbox
+And I check the Make checkbox
+And I check the Model checkbox
+And I check the Color checkbox
+And I check the Weight checkbox
+And I check the Odometer checkbox
+And I click the Top Trailers link
+And I click the New_ button
+And I type "DELETEANDCREATENAME" into the Trailer textfield
+And I type "DELTEVIN" into the Vin textfield
+And I type "DELTEFord" into the Make textfield
+And I type "DELTEFocus" into the Model textfield
+And I type "998" into the Odometer textfield
+And I type "1959" into the Year textfield
+And I type "DELTE Red" into the Color textfield
+And I type "23019" into the Weight textfield
+And I type "DELTELIC" into the License Number textfield
+And I select "New Jersey" from the State dropdown
+And I select "MCM990051" from the Assigned Device dropdown
+And I click the Save button
+And I type "DELETEANDCREATENAME" into the Search textfield
+And I click the 1st Row of the Trailer Entry link
+And I click the Edit button
+And I select "DELETED" from the Status dropdown
+And I click the Save button
+Then I validate the 1st Row of the Trailer Entry link is not present
+And I type "" into the Search textfield
+And I click the 1st Row of the Entry checkbox
+And I save the 1st Row of the Trailer Entry link as SAVEDTRAILER
+And I save the 1st Row of the Team Entry link as SAVEDTEAM
+And I save the 1st Row of the Device Entry link as SAVEDDEVICE
+And I save the 1st Row of the Vehicle Entry link as SAVEDVEHICLE
+And I save the 1st Row of the Driver Entry link as SAVEDDRIVER
+And I save the 1st Row of the Status Entry link as SAVEDSTATUS
+And I save the 1st Row of the Vin Entry link as SAVEDVIN
+And I save the 1st Row of the License Entry link as SAVEDLICENSE
+And I save the 1st Row of the State Entry link as SAVEDSTATE
+And I save the 1st Row of the Year Entry link as SAVEDYEAR
+And I save the 1st Row of the Make Entry link as SAVEDMAKE
+And I save the 1st Row of the Model Entry link as SAVEDMODEL
+And I save the 1st Row of the Color Entry link as SAVEDCOLOR
+And I save the 1st Row of the Weight Entry link as SAVEDWEIGHT
+And I save the 1st Row of the Odometer Entry link as SAVEDODOMETER
+And I validate the Trailer text is SAVEDTRAILER
+And I validate the Status text is SAVEDSTATUS
+And I validate the Vin text is SAVEDVIN
+And I validate the Make text is SAVEDMAKE
+And I validate the Model text is SAVEDMODEL
+And I validate the Odometer text is SAVEDODOMETER
+And I validate the Year text is SAVEDYEAR
+And I validate the Color text is SAVEDCOLOR
+And I validate the Weight text is SAVEDWEIGHT
+And I validate the License Number text is SAVEDLICENSE
+And I validate the State text is SAVEDSTATE
+And I validate the Assigned Team text is SAVEDTEAM
+And I validate the Assigned Device text is SAVEDDEVICE
+And I validate the Assigned Vehicle text is SAVEDVEHICLE
+And I validate the Assigned Driver text is SAVEDDRIVER
+And I click the Edit button
+And I validate the Trailer textfield is SAVEDTRAILER
+And I validate the Status dropdown is SAVEDSTATUS
+And I validate the Vin textfield is SAVEDVIN
+And I validate the Make textfield is SAVEDMAKE
+And I validate the Model textfield is SAVEDMODEL
+And I validate the Odometer textfield is SAVEDODOMETER
+And I validate the Year textfield is SAVEDYEAR
+And I validate the Color textfield is SAVEDCOLOR
+And I validate the Weight textfield is SAVEDWEIGHT
+And I validate the License Number textfield is SAVEDLICENSE
+And I validate the State dropdown is SAVEDSTATE
+And I validate the Assigned Device dropdown is SAVEDDEVICE
+And I validate the Assigned Vehicle text is SAVEDVEHICLE
+And I validate the Assigned Team text is SAVEDTEAM
+And I validate the Assigned Driver text is SAVEDDRIVER
+
 Scenario: Assets - Trailers - New Trailer (cancel button - no changes)
 Given I am logged in
 When I click the Top Trailers link
