@@ -338,6 +338,8 @@ public class FuelStopsBean extends BaseBean {
     {
        crudStrategy.cancel();
        crudStrategy = null;
+       setTruckGallonsUI(null);
+       setTrailerGallonsUI(null);
        
        return VIEW_REDIRECT;
     }
