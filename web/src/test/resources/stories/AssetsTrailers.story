@@ -548,38 +548,23 @@ And I check the Weight checkbox
 And I check the Odometer checkbox
 And I click the Top Trailers link
 And I click the 1st Row of the Trailer Entry link
-And I save the 2nd Row of the Trailer Entry link as SAVEDTRAILER2
-And I save the 2nd Row of the Team Entry link as SAVEDTEAM2
-And I save the 2nd Row of the Device Entry link as SAVEDDEVICE2
-And I save the 2nd Row of the Vehicle Entry link as SAVEDVEHICLE2
-And I save the 2nd Row of the Driver Entry link as SAVEDDRIVER2
-And I save the 2nd Row of the Status Entry link as SAVEDSTATUS2
-And I save the 2nd Row of the Vin Entry link as SAVEDVIN2
-And I save the 2nd Row of the License Entry link as SAVEDLICENSE2
-And I save the 2nd Row of the State Entry link as SAVEDSTATE2
-And I save the 2nd Row of the Year Entry link as SAVEDYEAR2
-And I save the 2nd Row of the Make Entry link as SAVEDMAKE2
-And I save the 2nd Row of the Model Entry link as SAVEDMODEL2
-And I save the 2nd Row of the Color Entry link as SAVEDCOLOR2
-And I save the 2nd Row of the Weight Entry link as SAVEDWEIGHT2
-And I save the 2nd Row of the Odometer Entry link as SAVEDODOMETER2
 And I click the Edit button
 And I click the 2nd Row of the Trailer Entry link
-Then I validate the Vin textfield is SAVEDVIN2
-And I validate the Make textfield is SAVEDMAKE2
-And I validate the Model textfield is SAVEDMODEL2
-And I validate the Odometer textfield is SAVEDODOMETER2
-And I validate the Year textfield is SAVEDYEAR2
-And I validate the Color textfield is SAVEDCOLOR2
-And I validate the Weight textfield is SAVEDWEIGHT2
-And I validate the License Number textfield is SAVEDLICENSE2
-And I validate the State dropdown is SAVEDSTATE2
-And I validate the Trailer textfield is SAVEDTRAILER2
-And I validate the Status dropdown is SAVEDSTATUS2
-And I validate the Assigned Team text is SAVEDTEAM2
-!-- And I validate the Assigned Device dropdown is ""
-And I validate the Assigned Vehicle text is SAVEDVEHICLE2
-And I validate the Assigned Driver text is SAVEDDRIVER2
+Then I validate the Trailer textfield is ""
+And I validate the Status dropdown is "ACTIVE"
+And I validate the Vin textfield is ""
+And I validate the Make textfield is ""
+And I validate the Model textfield is ""
+And I validate the Odometer textfield is ""
+And I validate the Year textfield is ""
+And I validate the Color textfield is ""
+And I validate the Weight textfield is ""
+And I validate the License Number textfield is ""
+And I validate the State dropdown is "--- Select ---"
+And I validate the Assigned Device dropdown is ""
+And I validate the Assigned Vehicle text is ""
+And I validate the Assigned Team text is ""
+And I validate the Assigned Driver text is ""
 
 Scenario: Assets - Trailers - Select And Deselect A Row
 Given I am logged in
@@ -1952,8 +1937,9 @@ And I validate the 2nd Row of the Color Entry link is "BATCHCOLOR"
 And I validate the 2nd Row of the Weight Entry link is "1111"
 And I validate the 2nd Row of the Odometer Entry link is "999999"
 !-- Now I delete the entries so it will run just fine on the next run through
+And I click the Top Trailers link
 And I click the 1st Row of the Trailer Entry link
-And I control click the 2nd Row of the Trailer Entry link
+And I click the 2nd Row of the Trailer Entry link
 And I click the Edit button
 And I select "DELETED" from the Status dropdown
 And I click the Save button
