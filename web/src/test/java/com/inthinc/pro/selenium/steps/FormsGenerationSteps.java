@@ -66,7 +66,7 @@ public class FormsGenerationSteps extends LoginSteps {
     
     @Then("I generate 100 forms for the publish page test")
     public void thenIGenerateOneHundredFormsForThePublishPageTest() {
-        int i = 10;
+        int i = 1;
         int j = 1;
         int k = 1;
         int l = 1;
