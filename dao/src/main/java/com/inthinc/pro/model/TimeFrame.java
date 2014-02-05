@@ -16,12 +16,12 @@ import org.joda.time.Period;
 public enum TimeFrame implements BaseEnum {
     TODAY(AggregationDuration.ONE_DAY, 0) {
         public Interval getInterval(DateTimeZone dateTimeZone) {
-            return new Interval(new DateMidnight(getCurrent(), dateTimeZone), new DateMidnight(getCurrent().plusDays(1), dateTimeZone));
+            return new Interval(new DateMidnight(getCurrent(), dateTimeZone), new DateMidnight(getCurrent(), dateTimeZone));
         }
     },
     DAY(AggregationDuration.ONE_DAY, 1) {
         public Interval getInterval(DateTimeZone dateTimeZone) {
-            return new Interval(new DateMidnight(getCurrent(), dateTimeZone), new DateMidnight(getCurrent().plusDays(1), dateTimeZone));
+            return new Interval(new DateMidnight(getCurrent(), dateTimeZone), new DateMidnight(getCurrent(), dateTimeZone));
         }
     },
     ONE_DAY_AGO(AggregationDuration.ONE_DAY, 2) {
@@ -61,18 +61,18 @@ public enum TimeFrame implements BaseEnum {
     },
     WEEK(AggregationDuration.SEVEN_DAY, 9) {
         public Interval getInterval(DateTimeZone dateTimeZone) {
-            return new Interval(new DateMidnight(getCurrent().minusDays(6), dateTimeZone), new DateMidnight(getCurrent().plusDays(1), dateTimeZone));
+            return new Interval(new DateMidnight(getCurrent().minusDays(6), dateTimeZone), new DateMidnight(getCurrent(), dateTimeZone));
 //            return new Interval(new DateMidnight(getCurrent().minusWeeks(1), dateTimeZone), new DateMidnight(getCurrent().plusDays(1), dateTimeZone));            
         }
     },
     LAST_THIRTY_DAYS(AggregationDuration.ONE_MONTH, 10) {
         public Interval getInterval(DateTimeZone dateTimeZone) {
-            return new Interval(new DateMidnight(getCurrent().minusDays(30), dateTimeZone), new DateMidnight(getCurrent().plusDays(1), dateTimeZone));
+            return new Interval(new DateMidnight(getCurrent().minusDays(30), dateTimeZone), new DateMidnight(getCurrent(), dateTimeZone));
         }
     },
     MONTH(AggregationDuration.ONE_MONTH, 11) {
         public Interval getInterval(DateTimeZone dateTimeZone) {
-            return new Interval(new DateMidnight(getCurrent().monthOfYear().toInterval().getStart(), dateTimeZone), new DateMidnight(getCurrent().plusDays(1), dateTimeZone));
+            return new Interval(new DateMidnight(getCurrent().monthOfYear().toInterval().getStart(), dateTimeZone), new DateMidnight(getCurrent(), dateTimeZone));
         }
     },
     THREE_MONTHS(AggregationDuration.THREE_MONTH, 12) {
