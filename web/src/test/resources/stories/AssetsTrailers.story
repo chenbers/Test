@@ -190,7 +190,223 @@ And I select "100" from the Records Per Page dropdown
 And I validate the 101st Row of the Trailer Entry link is not present
 And I validate the Entries text contains "Showing 1 to 100 of"
 
-Scenario: Assets - Trailers -  Empty Search
+Scenario: Assets - Trailers - Select All checkbox functionality
+Given I am logged in
+When I click the Top Trailers link
+And I click the Select All checkbox
+Then I validate the 1st Row of the Entry checkbox is checked
+And I validate the 2nd Row of the Entry checkbox is checked
+And I validate the 3rd Row of the Entry checkbox is checked
+And I validate the 4th Row of the Entry checkbox is checked
+And I validate the 5th Row of the Entry checkbox is checked
+And I validate the 6th Row of the Entry checkbox is checked
+And I validate the 7th Row of the Entry checkbox is checked
+And I validate the 8th Row of the Entry checkbox is checked
+And I validate the 9th Row of the Entry checkbox is checked
+And I validate the 10th Row of the Entry checkbox is checked
+And I select "25" from the Records Per Page dropdown
+And I validate the 1st Row of the Entry checkbox is checked
+And I validate the 2nd Row of the Entry checkbox is checked
+And I validate the 3rd Row of the Entry checkbox is checked
+And I validate the 4th Row of the Entry checkbox is checked
+And I validate the 5th Row of the Entry checkbox is checked
+And I validate the 6th Row of the Entry checkbox is checked
+And I validate the 7th Row of the Entry checkbox is checked
+And I validate the 8th Row of the Entry checkbox is checked
+And I validate the 9th Row of the Entry checkbox is checked
+And I validate the 10th Row of the Entry checkbox is checked
+And I validate the 11th Row of the Entry checkbox is not checked
+And I click the Select All checkbox
+And I validate the 1st Row of the Entry checkbox is checked
+And I validate the 2nd Row of the Entry checkbox is checked
+And I validate the 3rd Row of the Entry checkbox is checked
+And I validate the 4th Row of the Entry checkbox is checked
+And I validate the 5th Row of the Entry checkbox is checked
+And I validate the 6th Row of the Entry checkbox is checked
+And I validate the 7th Row of the Entry checkbox is checked
+And I validate the 8th Row of the Entry checkbox is checked
+And I validate the 9th Row of the Entry checkbox is checked
+And I validate the 10th Row of the Entry checkbox is checked
+And I validate the 11th Row of the Entry checkbox is checked
+And I validate the 12th Row of the Entry checkbox is checked
+And I validate the 13th Row of the Entry checkbox is checked
+And I validate the 14th Row of the Entry checkbox is checked
+And I validate the 15th Row of the Entry checkbox is checked
+And I validate the 16th Row of the Entry checkbox is checked
+And I validate the 17th Row of the Entry checkbox is checked
+And I validate the 18th Row of the Entry checkbox is checked
+And I validate the 19th Row of the Entry checkbox is checked
+And I validate the 20th Row of the Entry checkbox is checked
+And I validate the 21st Row of the Entry checkbox is checked
+And I validate the 22nd Row of the Entry checkbox is checked
+And I validate the 23rd Row of the Entry checkbox is checked
+And I validate the 24th Row of the Entry checkbox is checked
+And I validate the 25th Row of the Entry checkbox is checked
+And I select "50" from the Records Per Page dropdown
+And I validate the 1st Row of the Entry checkbox is checked
+And I validate the 25th Row of the Entry checkbox is checked
+And I validate the 26th Row of the Entry checkbox is not checked
+And I validate the 50th Row of the Entry checkbox is not checked
+And I click the Select All checkbox
+And I validate the 1st Row of the Entry checkbox is checked
+And I validate the 2nd Row of the Entry checkbox is checked
+And I validate the 3rd Row of the Entry checkbox is checked
+And I validate the 4th Row of the Entry checkbox is checked
+And I validate the 5th Row of the Entry checkbox is checked
+And I validate the 6th Row of the Entry checkbox is checked
+And I validate the 7th Row of the Entry checkbox is checked
+And I validate the 8th Row of the Entry checkbox is checked
+And I validate the 9th Row of the Entry checkbox is checked
+And I validate the 10th Row of the Entry checkbox is checked
+And I validate the 11th Row of the Entry checkbox is checked
+And I validate the 12th Row of the Entry checkbox is checked
+And I validate the 13th Row of the Entry checkbox is checked
+And I validate the 14th Row of the Entry checkbox is checked
+And I validate the 15th Row of the Entry checkbox is checked
+And I validate the 16th Row of the Entry checkbox is checked
+And I validate the 17th Row of the Entry checkbox is checked
+And I validate the 18th Row of the Entry checkbox is checked
+And I validate the 19th Row of the Entry checkbox is checked
+And I validate the 20th Row of the Entry checkbox is checked
+And I validate the 21st Row of the Entry checkbox is checked
+And I validate the 22nd Row of the Entry checkbox is checked
+And I validate the 23rd Row of the Entry checkbox is checked
+And I validate the 24th Row of the Entry checkbox is checked
+And I validate the 25th Row of the Entry checkbox is checked
+And I validate the 26th Row of the Entry checkbox is checked
+And I validate the 27th Row of the Entry checkbox is checked
+And I validate the 28th Row of the Entry checkbox is checked
+And I validate the 29th Row of the Entry checkbox is checked
+And I validate the 30th Row of the Entry checkbox is checked
+And I validate the 31st Row of the Entry checkbox is checked
+And I validate the 32nd Row of the Entry checkbox is checked
+And I validate the 33rd Row of the Entry checkbox is checked
+And I validate the 34th Row of the Entry checkbox is checked
+And I validate the 35th Row of the Entry checkbox is checked
+And I validate the 36th Row of the Entry checkbox is checked
+And I validate the 37th Row of the Entry checkbox is checked
+And I validate the 38th Row of the Entry checkbox is checked
+And I validate the 39th Row of the Entry checkbox is checked
+And I validate the 40th Row of the Entry checkbox is checked
+And I validate the 41st Row of the Entry checkbox is checked
+And I validate the 42nd Row of the Entry checkbox is checked
+And I validate the 43rd Row of the Entry checkbox is checked
+And I validate the 44th Row of the Entry checkbox is checked
+And I validate the 45th Row of the Entry checkbox is checked
+And I validate the 46th Row of the Entry checkbox is checked
+And I validate the 47th Row of the Entry checkbox is checked
+And I validate the 48th Row of the Entry checkbox is checked
+And I validate the 49th Row of the Entry checkbox is checked
+And I validate the 50th Row of the Entry checkbox is checked
+And I select "100" from the Records Per Page dropdown
+And I validate the 1st Row of the Entry checkbox is checked
+And I validate the 26th Row of the Entry checkbox is checked
+And I validate the 50th Row of the Entry checkbox is checked
+And I validate the 51st Row of the Entry checkbox is not checked
+And I validate the 100th Row of the Entry checkbox is not checked
+And I click the Select All checkbox
+And I validate the 1st Row of the Entry checkbox is checked
+And I validate the 2nd Row of the Entry checkbox is checked
+And I validate the 3rd Row of the Entry checkbox is checked
+And I validate the 4th Row of the Entry checkbox is checked
+And I validate the 5th Row of the Entry checkbox is checked
+And I validate the 6th Row of the Entry checkbox is checked
+And I validate the 7th Row of the Entry checkbox is checked
+And I validate the 8th Row of the Entry checkbox is checked
+And I validate the 9th Row of the Entry checkbox is checked
+And I validate the 10th Row of the Entry checkbox is checked
+And I validate the 11th Row of the Entry checkbox is checked
+And I validate the 12th Row of the Entry checkbox is checked
+And I validate the 13th Row of the Entry checkbox is checked
+And I validate the 14th Row of the Entry checkbox is checked
+And I validate the 15th Row of the Entry checkbox is checked
+And I validate the 16th Row of the Entry checkbox is checked
+And I validate the 17th Row of the Entry checkbox is checked
+And I validate the 18th Row of the Entry checkbox is checked
+And I validate the 19th Row of the Entry checkbox is checked
+And I validate the 20th Row of the Entry checkbox is checked
+And I validate the 21st Row of the Entry checkbox is checked
+And I validate the 22nd Row of the Entry checkbox is checked
+And I validate the 23rd Row of the Entry checkbox is checked
+And I validate the 24th Row of the Entry checkbox is checked
+And I validate the 25th Row of the Entry checkbox is checked
+And I validate the 26th Row of the Entry checkbox is checked
+And I validate the 27th Row of the Entry checkbox is checked
+And I validate the 28th Row of the Entry checkbox is checked
+And I validate the 29th Row of the Entry checkbox is checked
+And I validate the 30th Row of the Entry checkbox is checked
+And I validate the 31st Row of the Entry checkbox is checked
+And I validate the 32nd Row of the Entry checkbox is checked
+And I validate the 33rd Row of the Entry checkbox is checked
+And I validate the 34th Row of the Entry checkbox is checked
+And I validate the 35th Row of the Entry checkbox is checked
+And I validate the 36th Row of the Entry checkbox is checked
+And I validate the 37th Row of the Entry checkbox is checked
+And I validate the 38th Row of the Entry checkbox is checked
+And I validate the 39th Row of the Entry checkbox is checked
+And I validate the 40th Row of the Entry checkbox is checked
+And I validate the 41st Row of the Entry checkbox is checked
+And I validate the 42nd Row of the Entry checkbox is checked
+And I validate the 43rd Row of the Entry checkbox is checked
+And I validate the 44th Row of the Entry checkbox is checked
+And I validate the 45th Row of the Entry checkbox is checked
+And I validate the 46th Row of the Entry checkbox is checked
+And I validate the 47th Row of the Entry checkbox is checked
+And I validate the 48th Row of the Entry checkbox is checked
+And I validate the 49th Row of the Entry checkbox is checked
+And I validate the 50th Row of the Entry checkbox is checked
+And I validate the 51st Row of the Entry checkbox is checked
+And I validate the 52nd Row of the Entry checkbox is checked
+And I validate the 53rd Row of the Entry checkbox is checked
+And I validate the 54th Row of the Entry checkbox is checked
+And I validate the 55th Row of the Entry checkbox is checked
+And I validate the 56th Row of the Entry checkbox is checked
+And I validate the 57th Row of the Entry checkbox is checked
+And I validate the 58th Row of the Entry checkbox is checked
+And I validate the 59th Row of the Entry checkbox is checked
+And I validate the 60th Row of the Entry checkbox is checked
+And I validate the 61st Row of the Entry checkbox is checked
+And I validate the 62nd Row of the Entry checkbox is checked
+And I validate the 63rd Row of the Entry checkbox is checked
+And I validate the 64th Row of the Entry checkbox is checked
+And I validate the 65th Row of the Entry checkbox is checked
+And I validate the 66th Row of the Entry checkbox is checked
+And I validate the 67th Row of the Entry checkbox is checked
+And I validate the 68th Row of the Entry checkbox is checked
+And I validate the 69th Row of the Entry checkbox is checked
+And I validate the 70th Row of the Entry checkbox is checked
+And I validate the 71st Row of the Entry checkbox is checked
+And I validate the 72nd Row of the Entry checkbox is checked
+And I validate the 73rd Row of the Entry checkbox is checked
+And I validate the 74th Row of the Entry checkbox is checked
+And I validate the 75th Row of the Entry checkbox is checked
+And I validate the 76th Row of the Entry checkbox is checked
+And I validate the 77th Row of the Entry checkbox is checked
+And I validate the 78th Row of the Entry checkbox is checked
+And I validate the 79th Row of the Entry checkbox is checked
+And I validate the 80th Row of the Entry checkbox is checked
+And I validate the 81st Row of the Entry checkbox is checked
+And I validate the 82nd Row of the Entry checkbox is checked
+And I validate the 83rd Row of the Entry checkbox is checked
+And I validate the 84th Row of the Entry checkbox is checked
+And I validate the 85th Row of the Entry checkbox is checked
+And I validate the 86th Row of the Entry checkbox is checked
+And I validate the 87th Row of the Entry checkbox is checked
+And I validate the 88th Row of the Entry checkbox is checked
+And I validate the 89th Row of the Entry checkbox is checked
+And I validate the 90th Row of the Entry checkbox is checked
+And I validate the 91st Row of the Entry checkbox is checked
+And I validate the 92nd Row of the Entry checkbox is checked
+And I validate the 93rd Row of the Entry checkbox is checked
+And I validate the 94th Row of the Entry checkbox is checked
+And I validate the 95th Row of the Entry checkbox is checked
+And I validate the 96th Row of the Entry checkbox is checked
+And I validate the 97th Row of the Entry checkbox is checked
+And I validate the 98th Row of the Entry checkbox is checked
+And I validate the 99th Row of the Entry checkbox is checked
+And I validate the 100th Row of the Entry checkbox is checked
+
+Scenario: Assets - Trailers - Empty Search
 Given I am logged in
 When I click the Top Trailers link
 And I type "randomstringthatwillnotcomeup" into the Search textfield

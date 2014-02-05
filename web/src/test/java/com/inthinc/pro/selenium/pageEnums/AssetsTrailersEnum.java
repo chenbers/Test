@@ -121,7 +121,7 @@ public enum AssetsTrailersEnum implements SeleniumEnums {
     DRIVER_TEXT(null, "assignedDriverValue"),
     
 	//TABLE ITEMS
-    TRAILER_ENTRY_CHECKBOX(null, "//tr[###]/td[1]"),
+    TRAILER_ENTRY_CHECKBOX(null, "//tr[###]/td[1]/input[@type='checkbox']"),
     TRAILER_ENTRY(null, "//tr[###]/td[2]"),
     TEAM_ENTRY(null, "//tr[###]/td[3]"),
     DEVICE_ENTRY(null, "//tr[###]/td[4]"),
