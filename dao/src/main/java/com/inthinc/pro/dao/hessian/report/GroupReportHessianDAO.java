@@ -125,7 +125,17 @@ public class GroupReportHessianDAO extends AbstractReportHessianDAO implements G
         DateTime intervalToUse = day.plusMillis(offset).toDateTime(DateTimeZone.UTC).toDateMidnight().toDateTime();
         
         return getDriverScores(groupID, intervalToUse, intervalToUse, gh);
-    }    
+    }
+
+    @Override
+    public List<DriverVehicleScoreWrapper> getDriverScoresWithNaturalInterval(Integer groupID, DateTime day, GroupHierarchy gh) {
+        //The hessian method being called requires two params, both should be the same midnight value of the day you are trying to indicate.
+
+        //Adjust the millis to the Midnight value.
+        DateTime intervalToUse = day.toDateMidnight().toDateTime();
+
+        return getDriverScores(groupID, intervalToUse, intervalToUse, gh);
+    }
 
     @Override
     public List<DriverVehicleScoreWrapper> getDriverScores(Integer groupID, Interval interval, GroupHierarchy gh) {
@@ -134,7 +144,14 @@ public class GroupReportHessianDAO extends AbstractReportHessianDAO implements G
 
         return getDriverScores(groupID, scoringInterval.getStart(), scoringInterval.getEnd(), gh);
     }
-    
+
+    @Override
+    public List<DriverVehicleScoreWrapper> getDriverScoresWithNaturalInterval(Integer groupID, Interval interval, GroupHierarchy gh) {
+        Interval scoringInterval = getNaturalScoringInterval(interval);
+        logger.debug("getDriverScoresWithNaturalInterval: " + DateUtil.getDisplayInterval(scoringInterval, DateTimeZone.UTC));
+
+        return getDriverScores(groupID, scoringInterval.getStart(), scoringInterval.getEnd(), gh);
+    }
 
     @Override
     public List<DriverVehicleScoreWrapper> getVehicleScores(Integer groupID, Duration duration, GroupHierarchy gh) {
@@ -189,7 +206,26 @@ public class GroupReportHessianDAO extends AbstractReportHessianDAO implements G
         DateTime intervalToUse = day.plusMillis(offset).toDateTime(DateTimeZone.UTC).toDateMidnight().toDateTime();
         
         return getVehicleScores(groupID, intervalToUse, intervalToUse, gh);
-    }  
+    }
+
+    /**
+     * Similar to {@link #getScoringInterval(org.joda.time.Interval)} but it does not
+     * convert the interval to UTC, it remains in the users time zone.
+     */
+    Interval getNaturalScoringInterval(Interval interval){
+        //find the days in the interval
+        Days days = Days.daysBetween(interval.getStart(), interval.getEnd());
+        int daysBetween = days.getDays() < 0 ? 0 : days.getDays();
+
+        //get the intervals start DateTime
+        DateTime startDateTime = interval.getStart();
+
+        //Adjust the millis to the Midnight value.
+        DateTime start = startDateTime.toDateMidnight().toDateTime();
+        DateTime end = start.plusDays(daysBetween);
+
+        return new Interval(start, end);
+    }
 
     Interval getScoringInterval(Interval interval) {
         

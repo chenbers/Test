@@ -75,10 +75,12 @@ public class TeamStatisticsBean extends BaseBean {
             // 1: week value, calculate start and add seven, if no driving in time frame will show last DAY score
             // 2: month or year, use duration identifier, if no driving in time frame will show last MONTH score
             // switch( MiscUtil.whichMethodToUse(teamCommonBean) ) {
+
+            // note: uses new methods that do not convert dates to UTC
             switch (teamCommonBean.getTimeFrame()) {
                 case WEEK:
                     driverStatistics = (isVehicleStats) ? groupReportDAO.getVehicleScores(teamCommonBean.getGroupID(), teamCommonBean.getTimeFrame().getInterval(getDateTimeZone()),
-                            getGroupHierarchy()) : groupReportDAO.getDriverScores(teamCommonBean.getGroupID(), teamCommonBean.getTimeFrame().getInterval(getDateTimeZone()), getGroupHierarchy());
+                            getGroupHierarchy()) : groupReportDAO.getDriverScoresWithNaturalInterval(teamCommonBean.getGroupID(), teamCommonBean.getTimeFrame().getInterval(getDateTimeZone()), getGroupHierarchy());
                     break;
                 case MONTH:
                 case YEAR:
@@ -87,7 +89,7 @@ public class TeamStatisticsBean extends BaseBean {
                     break;
                 default:
                     driverStatistics = (isVehicleStats) ? groupReportDAO.getVehicleScores(teamCommonBean.getGroupID(), teamCommonBean.getTimeFrame().getInterval(getDateTimeZone()).getStart(),
-                            getGroupHierarchy()) : groupReportDAO.getDriverScores(teamCommonBean.getGroupID(), teamCommonBean.getTimeFrame().getInterval(getDateTimeZone()).getStart(),
+                            getGroupHierarchy()) : groupReportDAO.getDriverScoresWithNaturalInterval(teamCommonBean.getGroupID(), teamCommonBean.getTimeFrame().getInterval(getDateTimeZone()).getStart(),
                             getGroupHierarchy());
                     break;
             }

@@ -110,7 +110,17 @@ public class TeamMockData {
         }
 
         @Override
+        public List<DriverVehicleScoreWrapper> getDriverScoresWithNaturalInterval(Integer groupID, Interval interval, GroupHierarchy gh) {
+            return getDriverVehicleScoreWrappers();
+        }
+
+        @Override
         public List<DriverVehicleScoreWrapper> getDriverScores(Integer groupID, DateTime day, GroupHierarchy gh) {
+            return getDriverVehicleScoreWrappers();
+        }
+
+        @Override
+        public List<DriverVehicleScoreWrapper> getDriverScoresWithNaturalInterval(Integer groupID, DateTime day, GroupHierarchy gh) {
             return getDriverVehicleScoreWrappers();
         }
 
