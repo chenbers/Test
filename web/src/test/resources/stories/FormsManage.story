@@ -1,7 +1,3 @@
-In order to view a list of Forms
-As Administrator
-I need a UI on the Administrator page that lists the Forms
-
 Scenario: TCXXXX: Forms Manage Page - Table View - UI
 Given I am logged in
 When I click the Forms link

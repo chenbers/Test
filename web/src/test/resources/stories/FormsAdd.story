@@ -1,8 +1,3 @@
-Narrative: 
-In order for drivers to submit electronic forms
-As an Administrator
-I need an interface to create a form and to forward to devices for drivers to complete
-
 Scenario: Forms Add Page - UI Test
 Given I am logged in
 When I click the Forms link

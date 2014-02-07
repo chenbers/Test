@@ -1,7 +1,3 @@
-In order to view a list of Forms
-As Administrator
-I need to generate the needed submissions form for testing
-
 Scenario: Forms Submissions Page - Add a Form - Create a fully functional Pre Trip form with all options for submissions generation
 Given I am logged in
 When I click the Forms link
