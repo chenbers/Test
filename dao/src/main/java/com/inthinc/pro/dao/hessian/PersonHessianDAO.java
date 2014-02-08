@@ -2,6 +2,7 @@ package com.inthinc.pro.dao.hessian;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -257,15 +258,52 @@ public class PersonHessianDAO extends GenericHessianDAO<Person, Integer> impleme
     }
 
     @Override
-    public Integer delete(Person person)
-    {
-        if ((person.getUser() != null) && (person.getUser().getUserID() != null))
-            getSiloService().deleteUser(person.getUser().getUserID());
-        if ((person.getDriver() != null) && (person.getDriver().getDriverID() != null))
-            getSiloService().deleteDriver(person.getDriver().getDriverID());
+	public Integer delete(final Person person) {
+		if ((person.getUser() != null) && (person.getUser().getUserID() != null)) {
+			getSiloService().deleteUser(person.getUser().getUserID());
+			deleteAlertsByUserId(person.getUser().getUserID());
+			deleteReportsByUserId(person);
+		}
+		if ((person.getDriver() != null) && (person.getDriver().getDriverID() != null)) {
+			getSiloService().deleteDriver(person.getDriver().getDriverID());
+		}
 
-        return super.deleteByID(person.getPersonID());
-    }
+		return super.deleteByID(person.getPersonID());
+	}
+
+	/**
+	 * @param person
+	 */
+	private void deleteReportsByUserId(final Person person) {
+		try {
+			final List<Map<String, Object>> reportPrefsByUserIdList = getSiloService().getReportPrefsByUserID(
+					person.getUser().getUserID());
+			final Iterator<Map<String, Object>> iterator = reportPrefsByUserIdList.iterator();
+			while (iterator.hasNext()) {
+				final Map<String, Object> next = iterator.next();
+				final Integer reportPrefID = (Integer) next.get("reportPrefID");
+				getSiloService().deleteReportPref(reportPrefID);
+			}
+		} catch (final EmptyResultSetException e) {
+			// TODO need to be refactored the getReportPrefsByUserID
+			// function to not return an exception when no reports are
+			// retrieved
+			logger.info("No report for username=" + person.getUser().getUsername());
+		}
+	}
+
+	/**
+	 * @param userID
+	 */
+	private void deleteAlertsByUserId(final Integer userID) {
+		final List<Map<String, Object>> alertsByUserIdMap = getSiloService().getAlertsByUserID(userID);
+		final Iterator<Map<String, Object>> iterator = alertsByUserIdMap.iterator();
+		while (iterator.hasNext()) {
+			final Map<String, Object> next = iterator.next();
+			final Integer redFlagAlertId = (Integer) next.get("alertID");
+			getSiloService().deleteAlert(redFlagAlertId);
+		}
+	}
 
     @Override
     public List<Person> getPeopleInAccount(Integer acctID) {
