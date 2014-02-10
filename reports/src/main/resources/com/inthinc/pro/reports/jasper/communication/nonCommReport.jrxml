@@ -163,7 +163,7 @@
 			<textField isBlankWhenNull="true">
 				<reportElement mode="Transparent" x="489" y="0" width="263" height="20"/>
 				<textElement verticalAlignment="Middle"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{lastReportedEvent.type}.name().equals("BASE") ? $R{unknownType} : $F{lastReportedEvent.type}.name()]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{lastReportedEvent.type}.name()]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement mode="Transparent" x="131" y="1" width="143" height="20">

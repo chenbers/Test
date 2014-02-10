@@ -8,6 +8,8 @@ import java.util.Locale;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
+import org.joda.time.DateMidnight;
+import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.Interval;
 
@@ -114,6 +116,24 @@ public class DriverCoachingReportCriteria extends ReportCriteria{
             return this;
         }
 
+
+        /**
+         * Gets a custom interval with the end date equal to the given interval and the start date based on the
+         * given time frame's duration
+         *
+         * @param timeFrame time frame to get duration
+         * @param interval interval to get end date
+         * @param dateTimeZone time zone for new interval
+         * @return the new interval
+         */
+        public Interval getCustomInterval(TimeFrame timeFrame, Interval interval, DateTimeZone dateTimeZone) {
+            DateMidnight end =  interval.getEnd().toDateMidnight();
+            long endMilis = end.getMillis();
+            long startMilis = interval.getEnd().toDateMidnight().minus(timeFrame.getInterval().toDurationMillis()).getMillis();
+
+            return TimeFrame.CUSTOM_RANGE.getInterval(startMilis, endMilis, dateTimeZone);
+        }
+
         public List<ReportCriteria> build(){
             if(groupReportDAO == null){
                 throw new IllegalArgumentException("groupReportDAO must not be null");
@@ -130,19 +150,19 @@ public class DriverCoachingReportCriteria extends ReportCriteria{
             if(this.dateTimeZone == null){
                 this.dateTimeZone = DateTimeZone.UTC;
             }
-            
-           
-            
+
+
+
             //If we're requesting this for a driver
             if(groupID == null){
                 Driver driver = driverDAO.findByID(driverID);
                 groupID = driver.getGroupID();
             }
-            
-            loadDriverScoresIntoMap(TimeFrame.DAY);
-            loadDriverScoresIntoMap(TimeFrame.PAST_SEVEN_DAYS);
-            loadDriverScoresIntoMap(TimeFrame.LAST_THIRTY_DAYS);
-            loadDriverScoresIntoMap(TimeFrame.THREE_MONTHS);
+
+            loadDriverScoresIntoMap(TimeFrame.DAY, getCustomInterval(TimeFrame.DAY, interval, dateTimeZone));
+            loadDriverScoresIntoMap(TimeFrame.PAST_SEVEN_DAYS, getCustomInterval(TimeFrame.PAST_SEVEN_DAYS, interval, dateTimeZone));
+            loadDriverScoresIntoMap(TimeFrame.LAST_THIRTY_DAYS, getCustomInterval(TimeFrame.LAST_THIRTY_DAYS, interval, dateTimeZone));
+            loadDriverScoresIntoMap(TimeFrame.THREE_MONTHS, getCustomInterval(TimeFrame.THREE_MONTHS, interval, dateTimeZone));
 
             List<ReportCriteria> driverCoachingReportCriterias = new ArrayList<ReportCriteria>();
             
@@ -204,10 +224,11 @@ public class DriverCoachingReportCriteria extends ReportCriteria{
          * 
          * This is used to display all scores along the top of the report.
          * 
-         * @param driverVehicleScoreWrappers
+         * @param timeFrame
+         * @param interval
          */
-        private void loadDriverScoresIntoMap(TimeFrame timeFrame){
-            List<DriverVehicleScoreWrapper> dayScoreList =  groupReportDAO.getDriverScores(groupID, timeFrame.getInterval(this.dateTimeZone), this.groupHierarchy);
+        private void loadDriverScoresIntoMap(TimeFrame timeFrame, Interval interval){
+            List<DriverVehicleScoreWrapper> dayScoreList =  groupReportDAO.getDriverScores(groupID, interval, this.groupHierarchy);
             
             for(DriverVehicleScoreWrapper driverVehicleScoreWrapper:dayScoreList){
                 /* If the driverID is present, then we're going to only allow the driver to be added */
