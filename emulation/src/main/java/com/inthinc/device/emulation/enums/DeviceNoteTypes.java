@@ -454,8 +454,10 @@ public enum DeviceNoteTypes implements BaseEnum  {
     DVIR_DRIVEN_NOPREINSPEC(224),
     DVIR_DRIVEN_NOPOSTINSPEC(225),
 //    STATS2(225),
-    CREATE_ROAD_HAZARD(226), 
+    CREATE_ROAD_HAZARD(226,  EventAttr.MAX_LATITUDE, EventAttr.MAX_LONGITUDE), 
 
+    SEND_ROAD_HAZARD(228,  EventAttr.MAX_LATITUDE, EventAttr.MAX_LONGITUDE),
+    
     //Put in for customer G&K to help detect tampering to tiwis.
     POWER_INTERRUPTED(229),
     

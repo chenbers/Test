@@ -242,6 +242,8 @@ public abstract class DeviceNote implements Comparable<DeviceNote> {
                     longToByte(baos, ((Integer)object).longValue(), key.getSize());
                 } else if (object instanceof Long){
                     longToByte(baos, (Long)object, key.getSize());    
+                } else if (object instanceof Double){
+                    doubleToByte(baos, (Double)object);    
                 }
             } else if (object instanceof String){
                 byte[] str = ((String)object).getBytes();
