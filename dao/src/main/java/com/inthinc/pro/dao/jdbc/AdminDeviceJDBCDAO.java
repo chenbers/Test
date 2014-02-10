@@ -26,19 +26,22 @@ public class AdminDeviceJDBCDAO extends SimpleJdbcDaoSupport {
     private static final String PAGED_DEVICE_COLUMNS_STRING = "d.deviceID, d.acctID, d.baseID, d.status, d.autoLogoff," +
             " d.productVer, d.firmVer, d.witnessVer, d.emuFeatureMask, d.serialNum, d.name, d.imei, d.mcmid, d.altImei, " +
             " d.sim, d.phone, d.ephone, d.emuMd5, d.speedSet, d.accel, d.brake, d.turn, d.vert, d.modified, d.activated, " +
-            " (select distinct v.vehicleID from vddlog v where v.deviceID = d.deviceID order by start desc limit 1) vehicleID ";
+            " d.vehicleID, d.vehicleName ";
 
-    private static final String PAGED_DEVICE_SUFFIX = "FROM device d where d.acctID = :acctID";
+    private static final String PAGED_DEVICE_SUFFIX = "FROM (select d.*, vdd.vehicleID, veh.name vehicleName from device d " +
+            " LEFT OUTER JOIN vddlog vdd ON (d.deviceID = vdd.deviceID and vdd.stop is null)" +
+            " LEFT OUTER JOIN vehicle veh on (veh.vehicleID = vdd.vehicleID)" +
+            " ) d where d.acctID = :acctID and d.status != 3";
 
     private static final String PAGED_DEVICE_SELECT = "SELECT " + PAGED_DEVICE_COLUMNS_STRING + " " + PAGED_DEVICE_SUFFIX;
 
-    private static final String PAGED_DEVICE_COUNT = "SELECT COUNT(*)  " + PAGED_DEVICE_SUFFIX;
+    private static final String PAGED_DEVICE_COUNT = "SELECT COUNT(*) "+ PAGED_DEVICE_SUFFIX;
 
     private static final Map<String, String> pagedColumnMap = new HashMap<String, String>();
 
     static {
-        pagedColumnMap.put("name", "d.deviceID");
-        pagedColumnMap.put("vehicleID", "vehicleID");
+        pagedColumnMap.put("name", "d.name");
+        pagedColumnMap.put("vehicleID", "d.vehicleName");
         pagedColumnMap.put("productVer", "d.productVer");
         pagedColumnMap.put("imei", "d.imei");
         pagedColumnMap.put("phone", "d.phone");
