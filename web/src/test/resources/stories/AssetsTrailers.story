@@ -15,7 +15,7 @@ And I validate the Sort By Vehicle link is present
 And I validate the Sort By Driver link is present
 And I validate the Sort By Status link is present
 And I validate the Sort By Vin link is not present
-And I validate the Sort By License Number link is not present
+And I validate the Sort By License link is not present
 And I validate the Sort By State link is not present
 And I validate the Sort By Year link is not present
 And I validate the Sort By Make link is not present
@@ -42,7 +42,7 @@ And I validate the Odometer Label text is present
 And I validate the Year Label text is present
 And I validate the Color Label text is present
 And I validate the Weight Label text is present
-And I validate the License Number Label text is present
+And I validate the License Label text is present
 And I validate the State Label text is present
 And I validate the Assignment Label text is present
 And I validate the Assigned Device Label text is present
@@ -58,7 +58,7 @@ And I validate the Odometer textfield is not visible
 And I validate the Year textfield is not visible
 And I validate the Color textfield is not visible
 And I validate the Weight textfield is not visible
-And I validate the License Number textfield is not visible
+And I validate the License textfield is not visible
 And I validate the State dropdown is not visible
 And I validate the Assigned Device dropdown is not visible
 And I validate the Trailer text is ""
@@ -70,7 +70,7 @@ And I validate the Odometer text is ""
 And I validate the Year text is ""
 And I validate the Color text is ""
 And I validate the Weight text is ""
-And I validate the License Number text is ""
+And I validate the License text is ""
 And I validate the State text is ""
 And I validate the Assigned Device text is ""
 And I validate the Assigned Vehicle text is ""
@@ -95,7 +95,7 @@ And I validate the Odometer textfield is visible
 And I validate the Year textfield is visible
 And I validate the Color textfield is visible
 And I validate the Weight textfield is visible
-And I validate the License Number textfield is visible
+And I validate the License textfield is visible
 And I validate the State dropdown is visible
 And I validate the Assigned Device dropdown is visible
 And I validate the Assigned Device dropdown is ""
@@ -116,7 +116,7 @@ And I validate the Odometer textfield is not visible
 And I validate the Year textfield is not visible
 And I validate the Color textfield is not visible
 And I validate the Weight textfield is not visible
-And I validate the License Number textfield is not visible
+And I validate the License textfield is not visible
 And I validate the State dropdown is not visible
 And I validate the Assigned Device dropdown is not visible
 
@@ -131,7 +131,7 @@ And I validate the Vehicle Checkbox Label text is present
 And I validate the Driver Checkbox Label text is present
 And I validate the Status Checkbox Label text is present
 And I validate the Vin Checkbox Label text is present
-And I validate the License Number Checkbox Label text is present
+And I validate the License Checkbox Label text is present
 And I validate the State Checkbox Label text is present
 And I validate the Year Checkbox Label text is present
 And I validate the Make Checkbox Label text is present
@@ -151,8 +151,8 @@ And I validate the Status checkbox is present
 And I validate the Status checkbox is checked
 And I validate the Vin checkbox is present
 And I validate the Vin checkbox is not checked
-And I validate the License Number checkbox is present
-And I validate the License Number checkbox is not checked
+And I validate the License checkbox is present
+And I validate the License checkbox is not checked
 And I validate the State checkbox is present
 And I validate the State checkbox is not checked
 And I validate the Year checkbox is present
@@ -437,7 +437,7 @@ Given I am logged in
 When I click the Top Trailers link
 And I click the Show Hide Columns link
 And I check the Vin checkbox
-And I check the License Number checkbox
+And I check the License checkbox
 And I check the State checkbox
 And I check the Year checkbox
 And I check the Make checkbox
@@ -455,7 +455,7 @@ And I type "333555" into the Odometer textfield
 And I type "3055" into the Year textfield
 And I type "SEARCHCOLO1" into the Color textfield
 And I type "987654321" into the Weight textfield
-And I type "SEARCHLIC1" into the License Number textfield
+And I type "SEARCHLIC1" into the License textfield
 And I select "Federated States of Micronesia" from the State dropdown
 And I select "MCM990075" from the Assigned Device dropdown
 And I click the Save button
@@ -575,10 +575,10 @@ Then I validate the Sort By Vin link is not present
 And I check the Vin checkbox
 And I validate the Sort By Vin link is present
 When I click the Show Hide Columns link
-And I uncheck the License Number checkbox
-Then I validate the Sort By License Number link is not present
-And I check the License Number checkbox
-And I validate the Sort By License Number link is present
+And I uncheck the License checkbox
+Then I validate the Sort By License link is not present
+And I check the License checkbox
+And I validate the Sort By License link is present
 When I click the Show Hide Columns link
 And I uncheck the State checkbox
 Then I validate the Sort By State link is not present
@@ -620,7 +620,7 @@ And I uncheck the Vehicle checkbox
 And I uncheck the Driver checkbox
 And I uncheck the Status checkbox
 And I uncheck the Vin checkbox
-And I uncheck the License Number checkbox
+And I uncheck the License checkbox
 And I uncheck the State checkbox
 And I uncheck the Year checkbox
 And I uncheck the Make checkbox
@@ -636,7 +636,7 @@ And I validate the Sort By Vehicle link is present
 And I validate the Sort By Driver link is present
 And I validate the Sort By Status link is present
 And I validate the Sort By Vin link is not present
-And I validate the Sort By License Number link is not present
+And I validate the Sort By License link is not present
 And I validate the Sort By State link is not present
 And I validate the Sort By Year link is not present
 And I validate the Sort By Make link is not present
@@ -659,7 +659,7 @@ Given I am logged in
 When I click the Top Trailers link
 And I click the Show Hide Columns link
 And I check the Vin checkbox
-And I check the License Number checkbox
+And I check the License checkbox
 And I check the State checkbox
 And I check the Year checkbox
 And I check the Make checkbox
@@ -674,7 +674,7 @@ And I click the Sort By Vehicle link
 And I click the Sort By Driver link
 And I click the Sort By Status link
 And I click the Sort By Vin link
-And I click the Sort By License Number link
+And I click the Sort By License link
 And I click the Sort By State link
 And I click the Sort By Year link
 And I click the Sort By Make link
@@ -704,7 +704,7 @@ Given I am logged in
 When I click the Top Trailers link
 And I click the Show Hide Columns link
 And I check the Vin checkbox
-And I check the License Number checkbox
+And I check the License checkbox
 And I check the State checkbox
 And I check the Year checkbox
 And I check the Make checkbox
@@ -740,7 +740,7 @@ And I validate the Odometer text is SAVEDODOMETER
 And I validate the Year text is SAVEDYEAR
 And I validate the Color text is SAVEDCOLOR
 And I validate the Weight text is SAVEDWEIGHT
-And I validate the License Number text is SAVEDLICENSE
+And I validate the License text is SAVEDLICENSE
 And I validate the State text is SAVEDSTATE
 And I validate the Trailer text is SAVEDTRAILER
 And I validate the Status text is SAVEDSTATUS
@@ -754,7 +754,7 @@ Given I am logged in
 When I click the Top Trailers link
 And I click the Show Hide Columns link
 And I check the Vin checkbox
-And I check the License Number checkbox
+And I check the License checkbox
 And I check the State checkbox
 And I check the Year checkbox
 And I check the Make checkbox
@@ -775,7 +775,7 @@ And I validate the Odometer textfield is ""
 And I validate the Year textfield is ""
 And I validate the Color textfield is ""
 And I validate the Weight textfield is ""
-And I validate the License Number textfield is ""
+And I validate the License textfield is ""
 And I validate the State dropdown is "--- Select ---"
 And I validate the Assigned Device dropdown is ""
 And I validate the Assigned Vehicle text is ""
@@ -792,7 +792,7 @@ And I validate the Make text is ""
 And I validate the Year text is ""
 And I validate the Color text is ""
 And I validate the Weight text is ""
-And I validate the License Number text is ""
+And I validate the License text is ""
 And I validate the State text is ""
 And I validate the Trailer text is ""
 And I validate the Status text is ""
@@ -816,7 +816,7 @@ And I validate the Odometer textfield is ""
 And I validate the Year textfield is ""
 And I validate the Color textfield is ""
 And I validate the Weight textfield is ""
-And I validate the License Number textfield is ""
+And I validate the License textfield is ""
 And I validate the State dropdown contains "--- Select ---"
 And I validate the Assigned Device dropdown is ""
 And I validate the Assigned Team text is ""
@@ -828,7 +828,7 @@ Given I am logged in
 When I click the Top Trailers link
 And I click the Show Hide Columns link
 And I check the Vin checkbox
-And I check the License Number checkbox
+And I check the License checkbox
 And I check the State checkbox
 And I check the Year checkbox
 And I check the Make checkbox
@@ -862,7 +862,7 @@ And I validate the Odometer text is SAVEDODOMETER
 And I validate the Year text is SAVEDYEAR
 And I validate the Color text is SAVEDCOLOR
 And I validate the Weight text is SAVEDWEIGHT
-And I validate the License Number text is SAVEDLICENSE
+And I validate the License text is SAVEDLICENSE
 And I validate the State text is SAVEDSTATE
 And I validate the Trailer text is SAVEDTRAILER
 And I validate the Status text is SAVEDSTATUS
@@ -888,7 +888,7 @@ And I validate the Odometer text is ""
 And I validate the Year text is ""
 And I validate the Color text is ""
 And I validate the Weight text is ""
-And I validate the License Number text is ""
+And I validate the License text is ""
 And I validate the State text is ""
 And I validate the Trailer text is ""
 And I validate the Status text is ""
@@ -902,7 +902,7 @@ Given I am logged in
 When I click the Top Trailers link
 And I click the Show Hide Columns link
 And I check the Vin checkbox
-And I check the License Number checkbox
+And I check the License checkbox
 And I check the State checkbox
 And I check the Year checkbox
 And I check the Make checkbox
@@ -930,7 +930,7 @@ And I type "999" into the Odometer textfield
 And I type "1961" into the Year textfield
 And I type "DELETE Red" into the Color textfield
 And I type "230519" into the Weight textfield
-And I type "DELETELIC" into the License Number textfield
+And I type "DELETELIC" into the License textfield
 And I select "New York" from the State dropdown
 And I select "MCM990050" from the Assigned Device dropdown
 And I click the Save button
@@ -953,7 +953,7 @@ And I type "997" into the Odometer textfield
 And I type "1964" into the Year textfield
 And I type "DLETE Red" into the Color textfield
 And I type "30519" into the Weight textfield
-And I type "DLETELIC" into the License Number textfield
+And I type "DLETELIC" into the License textfield
 And I select "New Mexico" from the State dropdown
 And I select "MCM990052" from the Assigned Device dropdown
 And I click the Save button
@@ -972,7 +972,7 @@ And I type "997" into the Odometer textfield
 And I type "1964" into the Year textfield
 And I type "DLETE Red" into the Color textfield
 And I type "30519" into the Weight textfield
-And I type "DLETELIC" into the License Number textfield
+And I type "DLETELIC" into the License textfield
 And I select "New Mexico" from the State dropdown
 And I select "MCM990052" from the Assigned Device dropdown
 And I click the Save button
@@ -988,7 +988,7 @@ Given I am logged in
 When I click the Top Trailers link
 And I click the Show Hide Columns link
 And I check the Vin checkbox
-And I check the License Number checkbox
+And I check the License checkbox
 And I check the State checkbox
 And I check the Year checkbox
 And I check the Make checkbox
@@ -1006,7 +1006,7 @@ And I type "998" into the Odometer textfield
 And I type "1959" into the Year textfield
 And I type "DELTE Red" into the Color textfield
 And I type "23019" into the Weight textfield
-And I type "DELTELIC" into the License Number textfield
+And I type "DELTELIC" into the License textfield
 And I select "New Jersey" from the State dropdown
 And I select "MCM990051" from the Assigned Device dropdown
 And I click the Save button
@@ -1042,7 +1042,7 @@ And I validate the Odometer text is SAVEDODOMETER
 And I validate the Year text is SAVEDYEAR
 And I validate the Color text is SAVEDCOLOR
 And I validate the Weight text is SAVEDWEIGHT
-And I validate the License Number text is SAVEDLICENSE
+And I validate the License text is SAVEDLICENSE
 And I validate the State text is SAVEDSTATE
 And I validate the Assigned Team text is SAVEDTEAM
 And I validate the Assigned Device text is SAVEDDEVICE
@@ -1058,7 +1058,7 @@ And I validate the Odometer textfield is SAVEDODOMETER
 And I validate the Year textfield is SAVEDYEAR
 And I validate the Color textfield is SAVEDCOLOR
 And I validate the Weight textfield is SAVEDWEIGHT
-And I validate the License Number textfield is SAVEDLICENSE
+And I validate the License textfield is SAVEDLICENSE
 And I validate the State dropdown is SAVEDSTATE
 And I validate the Assigned Device dropdown is SAVEDDEVICE
 And I validate the Assigned Vehicle text is SAVEDVEHICLE
@@ -1076,7 +1076,7 @@ And I validate the Odometer text is ""
 And I validate the Year textfield is ""
 And I validate the Color textfield is ""
 And I validate the Weight textfield is ""
-And I validate the License Number textfield is ""
+And I validate the License textfield is ""
 And I validate the State dropdown contains "--- Select ---"
 And I validate the Trailer textfield is ""
 And I validate the Status dropdown is "ACTIVE"
@@ -1090,7 +1090,7 @@ And I validate the Odometer text is ""
 And I validate the Year textfield is ""
 And I validate the Color textfield is ""
 And I validate the Weight textfield is ""
-And I validate the License Number textfield is ""
+And I validate the License textfield is ""
 And I validate the State dropdown contains "--- Select ---"
 And I validate the Trailer textfield is ""
 And I validate the Status dropdown is "ACTIVE"
@@ -1109,7 +1109,7 @@ And I type "129018" into the Odometer textfield
 And I type "1985" into the Year textfield
 And I type "Race Red" into the Color textfield
 And I type "21000" into the Weight textfield
-And I type "INTHINCLIC" into the License Number textfield
+And I type "INTHINCLIC" into the License textfield
 And I select "Alabama" from the State dropdown
 And I select "MCM990000" from the Assigned Device dropdown
 And I click the Cancel button
@@ -1123,7 +1123,7 @@ And I validate the Odometer text is ""
 And I validate the Year text is ""
 And I validate the Color text is ""
 And I validate the Weight text is ""
-And I validate the License Number text is ""
+And I validate the License text is ""
 And I validate the State text is ""
 And I validate the Trailer text is ""
 And I validate the Status text is ""
@@ -1139,7 +1139,7 @@ And I validate the Odometer text is ""
 And I validate the Year textfield is ""
 And I validate the Color textfield is ""
 And I validate the Weight textfield is ""
-And I validate the License Number textfield is ""
+And I validate the License textfield is ""
 And I validate the State dropdown contains "--- Select ---"
 And I validate the Trailer textfield is ""
 And I validate the Status dropdown is "ACTIVE"
@@ -1150,7 +1150,7 @@ Given I am logged in
 When I click the Top Trailers link
 And I click the Show Hide Columns link
 And I check the Vin checkbox
-And I check the License Number checkbox
+And I check the License checkbox
 And I check the State checkbox
 And I check the Year checkbox
 And I check the Make checkbox
@@ -1167,7 +1167,7 @@ And I type "1010" into the Odometer textfield
 And I type "2008" into the Year textfield
 And I type "Purple" into the Color textfield
 And I type "15000" into the Weight textfield
-And I type "INTHINCLI1" into the License Number textfield
+And I type "INTHINCLI1" into the License textfield
 And I select "Vermont" from the State dropdown
 And I type "SAVECHANGESNAME" into the Trailer textfield
 And I select "ACTIVE" from the Status dropdown
@@ -1188,7 +1188,7 @@ And I validate the Odometer text is ""
 And I validate the Year text is ""
 And I validate the Color text is ""
 And I validate the Weight text is ""
-And I validate the License Number text is ""
+And I validate the License text is ""
 And I validate the State text is ""
 And I validate the Assigned Device text is ""
 And I validate the Assigned Vehicle text is ""
@@ -1219,7 +1219,7 @@ And I validate the Odometer text is "1010"
 And I validate the Year text is "2008"
 And I validate the Color text is "Purple"
 And I validate the Weight text is "15000"
-And I validate the License Number text is "INTHINCLI1"
+And I validate the License text is "INTHINCLI1"
 And I validate the State text is "Vermont"
 And I validate the Assigned Team text is "Test Group WR"
 And I validate the Assigned Device text is "MCM990001"
@@ -1244,7 +1244,7 @@ And I validate the Odometer textfield is ""
 And I validate the Year textfield is ""
 And I validate the Color textfield is ""
 And I validate the Weight textfield is ""
-And I validate the License Number textfield is ""
+And I validate the License textfield is ""
 And I validate the State dropdown contains "--- Select ---"
 And I validate the Assigned Device dropdown is ""
 And I click the Save button
@@ -1262,7 +1262,7 @@ And I validate the Odometer textfield is ""
 And I validate the Year textfield is ""
 And I validate the Color textfield is ""
 And I validate the Weight textfield is ""
-And I validate the License Number textfield is ""
+And I validate the License textfield is ""
 And I validate the State dropdown contains "--- Select ---"
 And I validate the Assigned Device dropdown is ""
 
@@ -1271,7 +1271,7 @@ Given I am logged in
 When I click the Top Trailers link
 And I click the Show Hide Columns link
 And I check the Vin checkbox
-And I check the License Number checkbox
+And I check the License checkbox
 And I check the State checkbox
 And I check the Year checkbox
 And I check the Make checkbox
@@ -1310,7 +1310,7 @@ And I validate the Odometer text is ""
 And I validate the Year text is ""
 And I validate the Color text is ""
 And I validate the Weight text is ""
-And I validate the License Number text is ""
+And I validate the License text is ""
 And I validate the State text is ""
 And I validate the Assigned Team text is ""
 And I validate the Assigned Device text is ""
@@ -1322,7 +1322,7 @@ Given I am logged in
 When I click the Top Trailers link
 And I click the Show Hide Columns link
 And I check the Vin checkbox
-And I check the License Number checkbox
+And I check the License checkbox
 And I check the State checkbox
 And I check the Year checkbox
 And I check the Make checkbox
@@ -1359,7 +1359,7 @@ And I validate the Odometer textfield is SAVEDODOMETER
 And I validate the Year textfield is SAVEDYEAR
 And I validate the Color textfield is SAVEDCOLOR
 And I validate the Weight textfield is SAVEDWEIGHT
-And I validate the License Number textfield is SAVEDLICENSE
+And I validate the License textfield is SAVEDLICENSE
 And I validate the State dropdown is SAVEDSTATE
 And I validate the Status dropdown is SAVEDSTATUS
 And I validate the Assigned Team text is SAVEDTEAM
@@ -1372,7 +1372,7 @@ Given I am logged in
 When I click the Top Trailers link
 And I click the Show Hide Columns link
 And I check the Vin checkbox
-And I check the License Number checkbox
+And I check the License checkbox
 And I check the State checkbox
 And I check the Year checkbox
 And I check the Make checkbox
@@ -1390,7 +1390,7 @@ And I type "505" into the Odometer textfield
 And I type "1952" into the Year textfield
 And I type "Puse" into the Color textfield
 And I type "15032" into the Weight textfield
-And I type "EANDSLN" into the License Number textfield
+And I type "EANDSLN" into the License textfield
 And I select "Washington" from the State dropdown
 And I select "MCM990058" from the Assigned Device dropdown
 And I click the Save button
@@ -1420,7 +1420,7 @@ And I validate the Odometer text is SAVEDODOMETER
 And I validate the Year text is SAVEDYEAR
 And I validate the Color text is SAVEDCOLOR
 And I validate the Weight text is SAVEDWEIGHT
-And I validate the License Number text is SAVEDLICENSE
+And I validate the License text is SAVEDLICENSE
 And I validate the State text is SAVEDSTATE
 And I validate the Assigned Team text is SAVEDTEAM
 And I validate the Assigned Device text is SAVEDDEVICE
@@ -1434,7 +1434,7 @@ And I validate the Odometer textfield is SAVEDODOMETER
 And I validate the Year textfield is SAVEDYEAR
 And I validate the Color textfield is SAVEDCOLOR
 And I validate the Weight textfield is SAVEDWEIGHT
-And I validate the License Number textfield is SAVEDLICENSE
+And I validate the License textfield is SAVEDLICENSE
 And I validate the State dropdown is SAVEDSTATE
 And I validate the Trailer textfield is SAVEDTRAILER
 And I validate the Status dropdown is SAVEDSTATUS
@@ -1451,7 +1451,7 @@ And I type "1059753" into the Odometer textfield
 And I type "1900" into the Year textfield
 And I type "ANEWCOLOR" into the Color textfield
 And I type "55" into the Weight textfield
-And I type "ANEWLIS" into the License Number textfield
+And I type "ANEWLIS" into the License textfield
 And I select "Alaska" from the State dropdown
 And I click the Save button
 And I validate the Edit button is not visible
@@ -1466,7 +1466,7 @@ And I validate the Odometer text is ""
 And I validate the Year text is ""
 And I validate the Color text is ""
 And I validate the Weight text is ""
-And I validate the License Number text is ""
+And I validate the License text is ""
 And I validate the State text is ""
 And I validate the Assigned Team text is ""
 And I validate the Assigned Device text is ""
@@ -1500,7 +1500,7 @@ Given I am logged in
 When I click the Top Trailers link
 And I click the Show Hide Columns link
 And I check the Vin checkbox
-And I check the License Number checkbox
+And I check the License checkbox
 And I check the State checkbox
 And I check the Year checkbox
 And I check the Make checkbox
@@ -1518,7 +1518,7 @@ And I type "516132" into the Odometer textfield
 And I type "1772" into the Year textfield
 And I type "Gurple" into the Color textfield
 And I type "116631" into the Weight textfield
-And I type "INVALIDLN" into the License Number textfield
+And I type "INVALIDLN" into the License textfield
 And I select "Pennsylvania" from the State dropdown
 And I select "MCM990066" from the Assigned Device dropdown
 And I click the Save button
@@ -1546,7 +1546,7 @@ And I validate the Odometer text is SAVEDODOMETER
 And I validate the Year text is SAVEDYEAR
 And I validate the Color text is SAVEDCOLOR
 And I validate the Weight text is SAVEDWEIGHT
-And I validate the License Number text is SAVEDLICENSE
+And I validate the License text is SAVEDLICENSE
 And I validate the State text is SAVEDSTATE
 And I validate the Trailer text is SAVEDTRAILER
 And I validate the Status text is SAVEDSTATUS
@@ -1563,7 +1563,7 @@ And I type "a" into the Odometer textfield
 And I type "19101" into the Year textfield
 And I type "ATOOLONGCOLORNAME" into the Color textfield
 And I type "a" into the Weight textfield
-And I type "ATOOLONGLICENSENUMBER" into the License Number textfield
+And I type "ATOOLONGLICENSENUMBER" into the License textfield
 And I click the Save button
 And I validate the Trailer textfield is ""
 And I validate the Status dropdown is "ACTIVE"
@@ -1574,7 +1574,7 @@ And I validate the Odometer textfield is "a"
 And I validate the Year textfield is "19101"
 And I validate the Color textfield is "ATOOLONGCOLORNAME"
 And I validate the Weight textfield is "a"
-And I validate the License Number textfield is "ATOOLONGLICENSENUMBER"
+And I validate the License textfield is "ATOOLONGLICENSENUMBER"
 And I validate the State dropdown is "Pennsylvania"
 And I validate the Assigned Device dropdown is SAVEDDEVICE
 And I validate the Assigned Vehicle text is SAVEDVEHICLE
@@ -1598,7 +1598,7 @@ And I type "a" into the Odometer textfield
 And I type "19101" into the Year textfield
 And I type "ATOOLONGCOLORNAME" into the Color textfield
 And I type "a" into the Weight textfield
-And I type "ATOOLONGLICENSENUMBER" into the License Number textfield
+And I type "ATOOLONGLICENSENUMBER" into the License textfield
 And I select "MCM990011" from the Assigned Device dropdown
 And I click the Save button
 Then I validate the Trailer textfield is ""
@@ -1618,8 +1618,8 @@ And I validate the Color textfield is "ATOOLONGCOLORNAME"
 And I validate the Color Error text is visible
 And I validate the Weight textfield is "a"
 And I validate the Weight Error text is visible
-And I validate the License Number textfield is "ATOOLONGLICENSENUMBER"
-And I validate the License Number Error text is visible
+And I validate the License textfield is "ATOOLONGLICENSENUMBER"
+And I validate the License Error text is visible
 And I validate the State dropdown is "--- Select ---"
 And I validate the Assigned Device dropdown is "MCM990011"
 And I validate the Assigned Vehicle text is ""
@@ -1631,7 +1631,7 @@ Given I am logged in
 When I click the Top Trailers link
 And I click the Show Hide Columns link
 And I check the Vin checkbox
-And I check the License Number checkbox
+And I check the License checkbox
 And I check the State checkbox
 And I check the Year checkbox
 And I check the Make checkbox
@@ -1649,7 +1649,7 @@ And I type "516132" into the Odometer textfield
 And I type "1772" into the Year textfield
 And I type "Gurple" into the Color textfield
 And I type "116631" into the Weight textfield
-And I type "INVALIDLN" into the License Number textfield
+And I type "INVALIDLN" into the License textfield
 And I select "Pennsylvania" from the State dropdown
 And I select "MCM990066" from the Assigned Device dropdown
 And I click the Save button
@@ -1677,7 +1677,7 @@ And I validate the Odometer text is SAVEDODOMETER
 And I validate the Year text is SAVEDYEAR
 And I validate the Color text is SAVEDCOLOR
 And I validate the Weight text is SAVEDWEIGHT
-And I validate the License Number text is SAVEDLICENSE
+And I validate the License text is SAVEDLICENSE
 And I validate the State text is SAVEDSTATE
 And I validate the Trailer text is SAVEDTRAILER
 And I validate the Status text is SAVEDSTATUS
@@ -1694,7 +1694,7 @@ And I type "a" into the Odometer textfield
 And I type "19101" into the Year textfield
 And I type "ATOOLONGCOLORNAME" into the Color textfield
 And I type "a" into the Weight textfield
-And I type "ATOOLONGLICENSENUMBER" into the License Number textfield
+And I type "ATOOLONGLICENSENUMBER" into the License textfield
 And I click the Save button
 And I validate the Trailer textfield is ""
 And I validate the Status dropdown is "ACTIVE"
@@ -1705,7 +1705,7 @@ And I validate the Odometer textfield is "a"
 And I validate the Year textfield is "19101"
 And I validate the Color textfield is "ATOOLONGCOLORNAME"
 And I validate the Weight textfield is "a"
-And I validate the License Number textfield is "ATOOLONGLICENSENUMBER"
+And I validate the License textfield is "ATOOLONGLICENSENUMBER"
 And I validate the State dropdown is "Pennsylvania"
 And I validate the Assigned Device dropdown is SAVEDDEVICE
 And I validate the Assigned Vehicle text is SAVEDVEHICLE
@@ -1723,7 +1723,7 @@ Given I am logged in
 When I click the Top Trailers link
 And I click the Show Hide Columns link
 And I check the Vin checkbox
-And I check the License Number checkbox
+And I check the License checkbox
 And I check the State checkbox
 And I check the Year checkbox
 And I check the Make checkbox
@@ -1741,7 +1741,7 @@ And I type "115" into the Odometer textfield
 And I type "1852" into the Year textfield
 And I type "Parchment" into the Color textfield
 And I type "150632" into the Weight textfield
-And I type "EANDCNLN" into the License Number textfield
+And I type "EANDCNLN" into the License textfield
 And I select "Wisconsin" from the State dropdown
 And I select "MCM990061" from the Assigned Device dropdown
 And I click the Save button
@@ -1769,7 +1769,7 @@ And I validate the Odometer text is SAVEDODOMETER
 And I validate the Year text is SAVEDYEAR
 And I validate the Color text is SAVEDCOLOR
 And I validate the Weight text is SAVEDWEIGHT
-And I validate the License Number text is SAVEDLICENSE
+And I validate the License text is SAVEDLICENSE
 And I validate the State text is SAVEDSTATE
 And I validate the Trailer text is SAVEDTRAILER
 And I validate the Status text is SAVEDSTATUS
@@ -1785,7 +1785,7 @@ And I validate the Odometer textfield is SAVEDODOMETER
 And I validate the Year textfield is SAVEDYEAR
 And I validate the Color textfield is SAVEDCOLOR
 And I validate the Weight textfield is SAVEDWEIGHT
-And I validate the License Number textfield is SAVEDLICENSE
+And I validate the License textfield is SAVEDLICENSE
 And I validate the State dropdown is SAVEDSTATE
 And I validate the Trailer textfield is SAVEDTRAILER
 And I validate the Status dropdown is SAVEDSTATUS
@@ -1802,7 +1802,7 @@ And I type "102385" into the Odometer textfield
 And I type "1910" into the Year textfield
 And I type "ANEWERCOLOR" into the Color textfield
 And I type "60" into the Weight textfield
-And I type "NEWLICENS2" into the License Number textfield
+And I type "NEWLICENS2" into the License textfield
 And I select "Texas" from the State dropdown
 And I click the Save button
 And I validate the Trailer text is ""
@@ -1814,7 +1814,7 @@ And I validate the Odometer text is ""
 And I validate the Year text is ""
 And I validate the Color text is ""
 And I validate the Weight text is ""
-And I validate the License Number text is ""
+And I validate the License text is ""
 And I validate the State text is ""
 And I validate the Assigned Team text is ""
 And I validate the Assigned Device text is ""
@@ -1856,7 +1856,7 @@ And I type "159702" into the Odometer textfield
 And I type "2003" into the Year textfield
 And I type "CLEARDEVICECOL" into the Color textfield
 And I type "15003" into the Weight textfield
-And I type "CLEARDEVIC" into the License Number textfield
+And I type "CLEARDEVIC" into the License textfield
 And I select "Virginia" from the State dropdown
 And I select "MCM990098" from the Assigned Device dropdown
 And I click the Save button
@@ -1866,8 +1866,8 @@ And I click the Edit button
 And I select "Remove Device Assignment" from the Assigned Device dropdown
 And I click the Save button
 And I click the 1st Row of the Trailer Entry link
-Then I validate the Assigned Device text is "none assigned"
-And I validate the 1st Row of the Device Entry link is "none assigned"
+Then I validate the Assigned Device text is ""
+And I validate the 1st Row of the Device Entry link is ""
 And I click the Edit button
 And I select "DELETED" from the Status dropdown
 And I click the Save button
@@ -1879,7 +1879,7 @@ Given I am logged in
 When I click the Top Trailers link
 And I click the Show Hide Columns link
 And I check the Vin checkbox
-And I check the License Number checkbox
+And I check the License checkbox
 And I check the State checkbox
 And I check the Year checkbox
 And I check the Make checkbox
@@ -1929,7 +1929,7 @@ And I validate the Odometer text is ""
 And I validate the Year text is ""
 And I validate the Color text is ""
 And I validate the Weight text is ""
-And I validate the License Number text is ""
+And I validate the License text is ""
 And I validate the State text is ""
 And I validate the Assigned Device text is ""
 And I validate the Assigned Vehicle text is ""
@@ -1947,8 +1947,8 @@ And I validate the Odometer textfield is ""
 And I validate the Year textfield is ""
 And I validate the Color textfield is ""
 And I validate the Weight textfield is ""
-And I validate the License Number textfield is disabled
-And I validate the License Number textfield is ""
+And I validate the License textfield is disabled
+And I validate the License textfield is ""
 And I validate the State dropdown is "--- Select ---"
 And I validate the Assigned Device dropdown is disabled
 And I validate the Assigned Device dropdown is ""
@@ -1989,7 +1989,7 @@ Given I am logged in
 When I click the Top Trailers link
 And I click the Show Hide Columns link
 And I check the Vin checkbox
-And I check the License Number checkbox
+And I check the License checkbox
 And I check the State checkbox
 And I check the Year checkbox
 And I check the Make checkbox
@@ -2039,7 +2039,7 @@ And I validate the Odometer text is ""
 And I validate the Year text is ""
 And I validate the Color text is ""
 And I validate the Weight text is ""
-And I validate the License Number text is ""
+And I validate the License text is ""
 And I validate the State text is ""
 And I validate the Assigned Device text is ""
 And I validate the Assigned Vehicle text is ""
@@ -2057,8 +2057,8 @@ And I validate the Odometer textfield is ""
 And I validate the Year textfield is ""
 And I validate the Color textfield is ""
 And I validate the Weight textfield is ""
-And I validate the License Number textfield is disabled
-And I validate the License Number textfield is ""
+And I validate the License textfield is disabled
+And I validate the License textfield is ""
 And I validate the State dropdown is "--- Select ---"
 And I validate the Assigned Device dropdown is disabled
 And I validate the Assigned Device dropdown is ""
@@ -2099,7 +2099,7 @@ Given I am logged in
 When I click the Top Trailers link
 And I click the Show Hide Columns link
 And I check the Vin checkbox
-And I check the License Number checkbox
+And I check the License checkbox
 And I check the State checkbox
 And I check the Year checkbox
 And I check the Make checkbox
@@ -2185,7 +2185,7 @@ Given I am logged in
 When I click the Top Trailers link
 And I click the Show Hide Columns link
 And I check the Vin checkbox
-And I check the License Number checkbox
+And I check the License checkbox
 And I check the State checkbox
 And I check the Year checkbox
 And I check the Make checkbox
@@ -2202,7 +2202,7 @@ And I type "666" into the Odometer textfield
 And I type "1955" into the Year textfield
 And I type "BATCHCOLO1" into the Color textfield
 And I type "100001" into the Weight textfield
-And I type "BATCHLIC1" into the License Number textfield
+And I type "BATCHLIC1" into the License textfield
 And I select "New York" from the State dropdown
 And I select "MCM990030" from the Assigned Device dropdown
 And I click the Save button
@@ -2215,7 +2215,7 @@ And I type "777" into the Odometer textfield
 And I type "1956" into the Year textfield
 And I type "BATCHCOLO2" into the Color textfield
 And I type "100002" into the Weight textfield
-And I type "BATCHLIC2" into the License Number textfield
+And I type "BATCHLIC2" into the License textfield
 And I select "New Jersey" from the State dropdown
 And I select "MCM990031" from the Assigned Device dropdown
 And I click the Save button
@@ -2576,25 +2576,25 @@ And I click the Cancel button
 And I click the Edit button
 And I validate the Weight Error text is not visible
 
-Scenario: Assets - Trailers - License Number exceeds 10 characters (new button)
+Scenario: Assets - Trailers - License exceeds 10 characters (new button)
 Given I am logged in
 When I click the Top Trailers link
 And I click the New_ button
-And I type "a0123456789" into the License Number textfield
-Then I validate the License Number Error text is present
-And I validate the License Number Error text is "The trailer license exceeds 10 characters."
+And I type "a0123456789" into the License textfield
+Then I validate the License Error text is present
+And I validate the License Error text is "The trailer license exceeds 10 characters."
 And I click the Cancel button
 And I click the New_ button
-And I validate the License Number Error text is not visible
+And I validate the License Error text is not visible
 
-Scenario: Assets - Trailers - License Number exceeds 10 characters (edit button)
+Scenario: Assets - Trailers - License exceeds 10 characters (edit button)
 Given I am logged in
 When I click the Top Trailers link
 And I click the 1st Row of the Trailer Entry link
 And I click the Edit button
-And I type "a0123456789" into the License Number textfield
-Then I validate the License Number Error text is present
-And I validate the License Number Error text is "The trailer license exceeds 10 characters."
+And I type "a0123456789" into the License textfield
+Then I validate the License Error text is present
+And I validate the License Error text is "The trailer license exceeds 10 characters."
 And I click the Cancel button
 And I click the Edit button
-And I validate the License Number Error text is not visible
+And I validate the License Error text is not visible

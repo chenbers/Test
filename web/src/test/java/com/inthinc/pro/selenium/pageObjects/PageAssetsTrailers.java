@@ -93,8 +93,8 @@ public class PageAssetsTrailers extends Masthead {
             return new TextLink(AssetsTrailersEnum.SORT_BY_VIN);
         }
         
-        public TextLink sortByLicenseNumber() {
-            return new TextLink(AssetsTrailersEnum.SORT_BY_LICENSE_NUMBER);
+        public TextLink sortByLicense() {
+            return new TextLink(AssetsTrailersEnum.SORT_BY_LICENSE);
         }
         
         public TextLink sortByState() {
@@ -237,7 +237,7 @@ public class PageAssetsTrailers extends Masthead {
             return new TextField(AssetsTrailersEnum.WEIGHT_TRAILER_INFORMATION_TEXTFIELD);
         }
         
-        public TextField licenseNumber() {
+        public TextField license() {
             return new TextField(AssetsTrailersEnum.LICENSE_TRAILER_INFORMATION_TEXTFIELD);
         }
         
@@ -285,7 +285,7 @@ public class PageAssetsTrailers extends Masthead {
             return new Text(AssetsTrailersEnum.VIN_CHECKBOX_LABEL);
         }
         
-        public Text licenseNumberCheckboxLabel() {
+        public Text licenseCheckboxLabel() {
             return new Text(AssetsTrailersEnum.LICENSE_CHECKBOX_LABEL);
         }
                 
@@ -354,7 +354,7 @@ public class PageAssetsTrailers extends Masthead {
             return new Text(AssetsTrailersEnum.WEIGHT_TRAILER_INFORMATION_LABEL);
         }
         
-        public Text licenseNumberLabel() {
+        public Text licenseLabel() {
             return new Text(AssetsTrailersEnum.LICENSE_TRAILER_INFORMATION_LABEL);
         }
         
@@ -418,7 +418,7 @@ public class PageAssetsTrailers extends Masthead {
             return new Text(AssetsTrailersEnum.WEIGHT_TRAILER_INFORMATION_TEXT);
         }
         
-        public Text licenseNumber() {
+        public Text license() {
             return new Text(AssetsTrailersEnum.LICENSE_TRAILER_INFORMATION_TEXT);
         }
         
@@ -482,8 +482,8 @@ public class PageAssetsTrailers extends Masthead {
             return new Text(AssetsTrailersEnum.WEIGHT_ERROR_TEXT);
         }
         
-        public Text licenseNumberError() {
-            return new Text(AssetsTrailersEnum.LICENSE_NUMBER_ERROR_TEXT);
+        public Text licenseError() {
+            return new Text(AssetsTrailersEnum.LICENSE_ERROR_TEXT);
         }
         
     }
@@ -522,7 +522,7 @@ public class PageAssetsTrailers extends Masthead {
             return new CheckBox(AssetsTrailersEnum.VIN_CHECKBOX);
         }
         
-        public CheckBox licenseNumber() {
+        public CheckBox license() {
             return new CheckBox(AssetsTrailersEnum.LICENSE_CHECKBOX);
         }
                 
