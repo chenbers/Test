@@ -217,6 +217,22 @@
 									</h:selectOneMenu>
 								</td>
 							</tr>
+
+                            <h:outputText>
+                                <tr>
+                                    <td  valign="top">
+                                        <h:outputText value="#{messages.reportSchedule_format}"/>
+                                        <h:outputText rendered="#{not reportScheduleBean.batchEdit}" styleClass="required" value=" *" />
+                                    </td>
+                                    <td>
+                                        <rich:message for="editReportSchedule-format" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
+                                        <h:selectOneMenu id="editReportSchedule-format" value="#{reportScheduleBean.item.format}" converter="SimpleBeanConverter" required="true" requiredMessage="#{messages.required}">
+                                            <f:selectItems value="#{reportScheduleBean.formats}"/>
+                                        </h:selectOneMenu>
+                                    </td>
+
+                                </tr>
+                            </h:outputText>
 							
 							<ui:repeat value="#{reportScheduleBean.item.report.criterias}" var="criteria">
 								<h:outputText rendered="#{criteria eq 'DURATION'}">

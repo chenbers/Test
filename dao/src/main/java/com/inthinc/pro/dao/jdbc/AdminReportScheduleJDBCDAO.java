@@ -41,7 +41,7 @@ public class AdminReportScheduleJDBCDAO extends SimpleJdbcDaoSupport implements 
         return null;
     }
 
-    private static final String REPORTPREFS_DEEP = "select r.acctID,r.reportPrefID,r.paramType,r.reportID,r.userID,r.name,r.occurrence,r.startDate,r.lastDate,r.status, p.first, p.last from reportPref r,user u, person p where p.personID =u.personID and r.userID=u.userID and r.acctID=:acctID and (u.userID = :userID or u.groupID in(:groupIDs))";
+    private static final String REPORTPREFS_DEEP = "select r.acctID,r.format,r.reportPrefID,r.paramType,r.reportID,r.userID,r.name,r.occurrence,r.startDate,r.lastDate,r.status, p.first, p.last from reportPref r,user u, person p where p.personID =u.personID and r.userID=u.userID and r.acctID=:acctID and (u.userID = :userID or u.groupID in(:groupIDs))";
     private static ParameterizedRowMapper<ReportSchedule> reportScheduleRowMapper = new ParameterizedRowMapper<ReportSchedule>() {
         @Override
         public ReportSchedule mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -60,6 +60,12 @@ public class AdminReportScheduleJDBCDAO extends SimpleJdbcDaoSupport implements 
             reportSchedule.setStatus(Status.valueOf(rs.getInt("status")));
             reportSchedule.setReportScheduleID(ObjectToInteger(rs.getObject("reportPrefID")));
             reportSchedule.setFullName(rs.getString("first")+ " "+rs.getString("last"));
+
+            String format = rs.getString("format");
+            if (format == null || format.isEmpty())
+                reportSchedule.setFormat("PDF");
+            else
+                reportSchedule.setFormat(format);
             return reportSchedule;
         };
     };

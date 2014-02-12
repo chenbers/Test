@@ -156,6 +156,16 @@
                                     </td>
                                  </tr>
                            </h:outputText>
+                           <h:outputText>
+                                <tr>
+                                    <td width="100" valign="top">
+                                        <h:outputText value="#{messages.reportSchedule_format}"/>
+                                    </td>
+                                    <td>
+                                        <h:outputText value="#{reportScheduleBean.item.format}"/>
+                                    </td>
+                                </tr>
+                           </h:outputText>
                             <h:outputText rendered="#{reportScheduleBean.item.report.useTimeFrame}">
                                  <tr>
                                     <td width="100" valign="top">
