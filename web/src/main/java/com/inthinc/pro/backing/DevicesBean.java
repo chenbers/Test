@@ -235,6 +235,7 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
         deviceView.setOldVehicleID(device.getVehicleID());
         deviceView.setSelected(false);
         deviceView.setFirmwareVersionDate();
+        deviceView.setVehicleName(device.getVehicleName());
         if (device.getPhone() != null)
             deviceView.setPhone(MiscUtil.formatPhone(device.getPhone()));
         
@@ -545,6 +546,8 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
         @Column(updateable = false)
         private Vehicle vehicle;
         @Column(updateable = false)
+        private String vehicleName;
+        @Column(updateable = false)
         private boolean selected;
         @Column(updateable = false)
         private Date firmwareVersionDate;
@@ -638,6 +641,14 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
         }
         public String getStatusName(){
         	return MessageUtil.getMessageString(getStatus().toString());
+        }
+
+        public String getVehicleName() {
+            return vehicleName;
+        }
+
+        public void setVehicleName(String vehicleName) {
+            this.vehicleName = vehicleName;
         }
     }
     public boolean isBatchProductChoice(ProductType productType){

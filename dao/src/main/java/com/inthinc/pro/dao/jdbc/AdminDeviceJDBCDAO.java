@@ -142,7 +142,7 @@ public class AdminDeviceJDBCDAO extends SimpleJdbcDaoSupport {
     }
 
     private Integer getIntOrNullFromRS(ResultSet rs, String columnName) throws SQLException {
-        return rs.getObject(columnName) == null ? null : rs.getInt(columnName);
+        return rs.getObject(columnName) == null ? null : (int) rs.getLong(columnName);
     }
 
     private Date getDateOrNullFromRS(ResultSet rs, String columnName) throws SQLException {
@@ -157,6 +157,7 @@ public class AdminDeviceJDBCDAO extends SimpleJdbcDaoSupport {
 
             device.setDeviceID(getIntOrNullFromRS(rs, "deviceID"));
             device.setVehicleID(getIntOrNullFromRS(rs, "vehicleID"));
+            device.setVehicleName(getStringOrNullFromRS(rs, "vehicleName"));
             device.setAccountID(getIntOrNullFromRS(rs, "acctID"));
             device.setStatus(rs.getObject("status") == null ? null : DeviceStatus.valueOf(rs.getInt("status")));
             device.setName(getStringOrNullFromRS(rs, "name"));
