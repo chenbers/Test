@@ -200,7 +200,7 @@
                  <table width="100%" border="0" cellspacing="2" cellpadding="4" align="left">
                     <tr>
                       <td width="100" valign="top"><h:outputText value="#{messages.editDevice_vehicleID}" /></td>
-                      <td width="100" style="font-weight:bold;"><h:outputText id="chosenVehicleShow" value="#{devicesBean.item.vehicle.name}" /></td>
+                      <td width="100" style="font-weight:bold;"><h:outputText id="chosenVehicleShow" value="#{devicesBean.item.vehicle!=null ? devicesBean.item.vehicle.name : devicesBean.item.vehicleName}" /></td>
             <td width="550" align="right">
             <rich:toggleControl value="#{messages.editDevice_showVehiclesForAssignment}" switchToState="open" >
             </rich:toggleControl></td>
@@ -215,7 +215,7 @@
                  <table width="100%" border="0" cellspacing="2" cellpadding="4" align="left">
                     <tr>
                       <td width="100" valign="top"><h:outputText value="#{messages.editDevice_vehicleID}" /></td>
-                      <td width="100" style="font-weight:bold;"><h:outputText id="chosenVehicleHide" value="#{devicesBean.item.vehicle.name}" /></td>
+                      <td width="100" style="font-weight:bold;"><h:outputText id="chosenVehicleHide" value="#{devicesBean.item.vehicle!=null ? devicesBean.item.vehicle.name : devicesBean.item.vehicleName}" /></td>
             		  <td width="550" align="right">
             		  <rich:toggleControl value="#{messages.editDevice_hideVehiclesForAssignment}" switchToState="closed" >
             		  </rich:toggleControl>

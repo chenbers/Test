@@ -156,7 +156,12 @@ public class AdminDeviceJDBCDAO extends SimpleJdbcDaoSupport {
             Device device = new Device();
 
             device.setDeviceID(getIntOrNullFromRS(rs, "deviceID"));
-            device.setVehicleID(getIntOrNullFromRS(rs, "vehicleID"));
+
+            Integer vehicleId = getIntOrNullFromRS(rs, "vehicleID");
+            if (vehicleId != null && vehicleId.intValue() == 0)
+                vehicleId = null;
+            device.setVehicleID(vehicleId);
+
             device.setVehicleName(getStringOrNullFromRS(rs, "vehicleName"));
             device.setAccountID(getIntOrNullFromRS(rs, "acctID"));
             device.setStatus(rs.getObject("status") == null ? null : DeviceStatus.valueOf(rs.getInt("status")));

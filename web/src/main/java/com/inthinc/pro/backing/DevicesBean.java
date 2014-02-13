@@ -169,6 +169,9 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
         adminCacheBean.addAssetMap("vehicles",vehicleMap);
     }
     public List<Vehicle> getVehicles(){
+        if (adminCacheBean == null)
+            loadItems();
+
         //filter on the filter item
         return vehicleChoiceTableColumns.getFilteredItems(adminCacheBean,chooseVehicleSearchKeyword,true);
     }
@@ -589,7 +592,7 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
         {
             if (vehicle == null && getVehicleID() != null){
                 if (bean.adminCacheBean == null)
-                    bean.loadSupportData();
+                    bean.loadItems();
 
                 vehicle = (Vehicle)bean.adminCacheBean.getAsset("vehicles", getVehicleID());
             }
@@ -644,6 +647,9 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
         }
 
         public String getVehicleName() {
+            if (vehicleName == null)
+                return "";
+
             return vehicleName;
         }
 
