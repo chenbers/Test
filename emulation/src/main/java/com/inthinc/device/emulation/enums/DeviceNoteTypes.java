@@ -219,7 +219,7 @@ public enum DeviceNoteTypes implements BaseEnum  {
      * 
      * Attributes [...] ATTR_FOB_ID
      */
-    NEWDRIVER_HOSRULE(116, EventAttr.DRIVER_ID_STR, EventAttr.CURRENT_HOS_RULESET),
+    NEWDRIVER_HOSRULE(116, EventAttr.DRIVER_ID_STR, EventAttr.CURRENT_HOS_RULESET, EventAttr.ATTR_FOB_ID),
 
     /**
      * Sent on a zone arrival <br/>
