@@ -484,11 +484,6 @@ And I click the Sort By Driver link
 And I validate the 1st Row of the Driver Entry link is "Automatically Generated75"
 And I click the Sort By Driver link
 And I validate the 1st Row of the Driver Entry link is "Automatically Generated75"
-!-- And I type "ACTIVE" into the Search textfield
-!-- And I click the Sort By Status link
-!-- And I validate the 1st Row of the Status Entry link is "ACTIVE"
-!-- And I click the Sort By Status link
-!-- And I validate the 1st Row of the Status Entry link is "ACTIVE"
 And I type "SEARCHVIN1" into the Search textfield
 And I click the Sort By Vin link
 And I validate the 1st Row of the Vin Entry link is "SEARCHVIN1"
