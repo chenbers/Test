@@ -28,6 +28,7 @@ public class TeamMockData {
     public static final Integer DRIVER_ID = 1;
     public static final Integer ACCOUNT_ID = 1;
     public static final Integer SCORE_OVERALL = 45;
+    public static final Integer SCORE_OVERALL_UT = 40;
     public static final Integer SCORE_NA = -1;
     
     public static final Integer TREND_SCORE_DEFAULT = 25;
@@ -111,7 +112,7 @@ public class TeamMockData {
 
         @Override
         public List<DriverVehicleScoreWrapper> getDriverScoresWithUserTimeZone(Integer groupID, Interval interval, GroupHierarchy gh) {
-            return getDriverVehicleScoreWrappers();
+            return getDriverVehicleScoreWrappersUT();
         }
 
         @Override
@@ -121,7 +122,7 @@ public class TeamMockData {
 
         @Override
         public List<DriverVehicleScoreWrapper> getDriverScoresWithUserTimeZone(Integer groupID, DateTime day, GroupHierarchy gh) {
-            return getDriverVehicleScoreWrappers();
+            return getDriverVehicleScoreWrappersUT();
         }
 
         @Override
@@ -193,6 +194,12 @@ public class TeamMockData {
         
         retVal.add(dvsw);
         
+        return retVal;
+    }
+
+    public List<DriverVehicleScoreWrapper> getDriverVehicleScoreWrappersUT() {
+        List<DriverVehicleScoreWrapper> retVal = getDriverVehicleScoreWrappers();
+        retVal.get(0).getScore().setOverall(SCORE_OVERALL_UT);
         return retVal;
     }
     
