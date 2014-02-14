@@ -177,13 +177,13 @@ public class GroupReportCassandraDAO extends ReportCassandraDAO implements Group
     }
 
     @Override
-    public List<DriverVehicleScoreWrapper> getDriverScoresWithNaturalInterval(Integer groupID, DateTime day, GroupHierarchy gh) {
-        logger.debug("getDriverScoresWithNaturalInterval DateTime: " + day);
+    public List<DriverVehicleScoreWrapper> getDriverScoresWithUserTimeZone(Integer groupID, DateTime day, GroupHierarchy gh) {
+        logger.debug("getDriverScoresWithUserTimeZone DateTime: " + day);
         // The hessian method being called requires two params, both should be the same midnight value of the day you are trying to indicate.
 
         // Adjust the millis to the Midnight value.
         DateTime intervalToUse = day.toDateMidnight().toDateTime();
-        logger.debug("getDriverScoresWithNaturalInterval intervalToUse: " + intervalToUse);
+        logger.debug("getDriverScoresWithUserTimeZone intervalToUse: " + intervalToUse);
 
         return getDriverScores(groupID, intervalToUse, intervalToUse, gh);
     }
@@ -213,7 +213,7 @@ public class GroupReportCassandraDAO extends ReportCassandraDAO implements Group
     }
 
     @Override
-    public List<DriverVehicleScoreWrapper> getDriverScoresWithNaturalInterval(Integer groupID, Interval interval, GroupHierarchy gh) {
+    public List<DriverVehicleScoreWrapper> getDriverScoresWithUserTimeZone(Integer groupID, Interval interval, GroupHierarchy gh) {
         // find the days in the interval
         Days days = Days.daysBetween(interval.getStart(), interval.getEnd());
         int daysBetween = days.getDays();

@@ -12,7 +12,6 @@ import com.inthinc.pro.backing.ui.ScoreBox;
 import com.inthinc.pro.backing.ui.ScoreBoxSizes;
 import com.inthinc.pro.dao.report.GroupReportDAO;
 import com.inthinc.pro.model.MeasurementType;
-import com.inthinc.pro.model.TimeFrame;
 import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.model.aggregation.DriverVehicleScoreWrapper;
 import com.inthinc.pro.reports.ReportCriteria;
@@ -80,7 +79,7 @@ public class TeamStatisticsBean extends BaseBean {
             switch (teamCommonBean.getTimeFrame()) {
                 case WEEK:
                     driverStatistics = (isVehicleStats) ? groupReportDAO.getVehicleScores(teamCommonBean.getGroupID(), teamCommonBean.getTimeFrame().getInterval(getDateTimeZone()),
-                            getGroupHierarchy()) : groupReportDAO.getDriverScoresWithNaturalInterval(teamCommonBean.getGroupID(), teamCommonBean.getTimeFrame().getInterval(getDateTimeZone()), getGroupHierarchy());
+                            getGroupHierarchy()) : groupReportDAO.getDriverScoresWithUserTimeZone(teamCommonBean.getGroupID(), teamCommonBean.getTimeFrame().getInterval(getDateTimeZone()), getGroupHierarchy());
                     break;
                 case MONTH:
                 case YEAR:
@@ -89,7 +88,7 @@ public class TeamStatisticsBean extends BaseBean {
                     break;
                 default:
                     driverStatistics = (isVehicleStats) ? groupReportDAO.getVehicleScores(teamCommonBean.getGroupID(), teamCommonBean.getTimeFrame().getInterval(getDateTimeZone()).getStart(),
-                            getGroupHierarchy()) : groupReportDAO.getDriverScoresWithNaturalInterval(teamCommonBean.getGroupID(), teamCommonBean.getTimeFrame().getInterval(getDateTimeZone()).getStart(),
+                            getGroupHierarchy()) : groupReportDAO.getDriverScoresWithUserTimeZone(teamCommonBean.getGroupID(), teamCommonBean.getTimeFrame().getInterval(getDateTimeZone()).getStart(),
                             getGroupHierarchy());
                     break;
             }
