@@ -15,6 +15,8 @@ import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 import javax.faces.validator.ValidatorException;
 
+import com.inthinc.pro.dao.GroupDAO;
+import com.inthinc.pro.model.GroupHierarchy;
 import org.springframework.beans.BeanUtils;
 
 import com.inthinc.pro.backing.filtering.ColumnFiltering;
@@ -85,7 +87,9 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
     }
     private DeviceDAO   deviceDAO;
     private VehicleDAO  vehicleDAO;
+    private VehicleDAO  vehicleJDBCDAO;
     private DriverDAO   driverDAO;
+    private GroupDAO    groupDAO;
 
     private ColumnFiltering<Vehicle> chooseVehicleFiltering;
     private VehicleChoiceTableColumns vehicleChoiceTableColumns;
@@ -172,8 +176,12 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
     }
 
     private void loadVehicles(){
-        CacheItemMap<Vehicle,Vehicle> vehicleMap = new VehicleMap(getUser().getGroupID());
-        vehicleMap.setDAO(vehicleDAO);
+        Integer groupID = getUser().getGroupID();
+        GroupHierarchy groupHierarchy = new GroupHierarchy(groupDAO.getGroupsByAcctID(getAccountID()));
+        List<Integer> groupIDList = groupHierarchy.getSubGroupIDList(groupID);
+
+        CacheItemMap<Vehicle,Vehicle> vehicleMap = new VehicleMap(groupIDList);
+        vehicleMap.setDAO(vehicleJDBCDAO);
         vehicleMap.buildMap();
         adminCacheBean.addAssetMap("vehicles",vehicleMap);
     }
@@ -231,9 +239,6 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
 
     private void loadVehiclesAndAssociatedData(){
         loadVehicles();
-        loadGroups();
-        loadDrivers();
-        loadDevices();
     }
 
     /**
@@ -683,26 +688,12 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
         return deviceDAO;
     }
 
-    @SuppressWarnings("unchecked")
-    public CacheItemMap<Driver, Driver> getDriverMap() {
-        return (CacheItemMap<Driver, Driver>)adminCacheBean.getMap("drivers");
-    }
-
-    @SuppressWarnings("unchecked")
-    public CacheItemMap<Device, Device> getDeviceMap() {
-        return (CacheItemMap<Device, Device>)adminCacheBean.getMap("devices");
-    }
 
     @SuppressWarnings("unchecked")
     public CacheItemMap<Vehicle, Vehicle> getVehicleMap() {
         return (CacheItemMap<Vehicle, Vehicle>)adminCacheBean.getMap("vehicles");
     }
 
-    @SuppressWarnings("unchecked")
-    public CacheItemMap<Group, Group> getGroupMap() {
-        return (CacheItemMap<Group, Group>)adminCacheBean.getMap("groups");
-    }
-    
     @SuppressWarnings("unchecked")
     public CacheItemMap<DeviceSettingDefinition,VehicleSetting> getVehicleSettingMap() {
         return (CacheItemMap<DeviceSettingDefinition, VehicleSetting>)adminCacheBean.getMap("vehicleSettings");
@@ -730,5 +721,21 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
 
     public void setChosenVehicleID(String chosenVehicleID) {
         this.chosenVehicleID = chosenVehicleID;
+    }
+
+    public GroupDAO getGroupDAO() {
+        return groupDAO;
+    }
+
+    public void setGroupDAO(GroupDAO groupDAO) {
+        this.groupDAO = groupDAO;
+    }
+
+    public VehicleDAO getVehicleJDBCDAO() {
+        return vehicleJDBCDAO;
+    }
+
+    public void setVehicleJDBCDAO(VehicleDAO vehicleJDBCDAO) {
+        this.vehicleJDBCDAO = vehicleJDBCDAO;
     }
 }
