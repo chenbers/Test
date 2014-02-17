@@ -381,6 +381,9 @@ public abstract class DeviceNote implements Comparable<DeviceNote> {
 
 	public abstract DeviceNote unPackage(byte[] packagedNote);
 	
+	public byte[] Package(byte[] payload) {
+	    return payload;
+	}
 	
 	public static DeviceNote unPackageS(byte[] packagedNote){
 		DeviceNote note = null;
