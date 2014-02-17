@@ -117,7 +117,22 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
             chooseVehicleFiltering.put(column, null);
         }
     }
-    
+
+    @Override
+    public List<DeviceView> getFilteredItems() {
+        filteredItems.clear();
+        filteredItems.addAll(items);
+        return filteredItems;
+    }
+
+    @Override
+    protected void applyFilter(int page)
+    {
+        filteredItems.clear();
+        filteredItems.addAll(items);
+    }
+
+
     public List<SelectItem> getProductTypesSelectItems(){
         
         return ProductTypeSelectItems.getSelectItems();
@@ -132,13 +147,7 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
             return getEditRedirect();
         }
     }
-    /**
-     * Creates a VehicleView object from the given Vehicle object.
-     * 
-     * @param vehicle
-     *            The vehicle.
-     * @return The new VehicleView object.
-     */
+
     private void loadGroups()
     {
         CacheItemMap<Group,Group> groupMap = new GroupMap(getUser().getPerson().getAcctID(),getUser().getGroupID());
@@ -169,17 +178,18 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
         adminCacheBean.addAssetMap("vehicles",vehicleMap);
     }
     public List<Vehicle> getVehicles(){
-        if (adminCacheBean == null)
-            loadItems();
-
         //filter on the filter item
+        loadSupportData();
+        if (adminCacheBean.getMap("vehicles") == null){
+          loadVehiclesAndAssociatedData();
+        }
+
         return vehicleChoiceTableColumns.getFilteredItems(adminCacheBean,chooseVehicleSearchKeyword,true);
     }
     
     @Override
     protected List<DeviceView> loadItems()
     {
-        
         // get the devices
         final List<Device> plainDevices = deviceDAO.getDevicesByAcctID(getAccountID());
         // convert the Devices to DeviceViews
@@ -187,11 +197,9 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
         for (final Device device : plainDevices){
             items.add(createDeviceView(device));
         }
-        loadSupportData();
         vehicleChoiceTableColumns = new VehicleChoiceTableColumns();
        
         return items;
-
 
        // for pagination version
 //        return null;
@@ -214,15 +222,20 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
 //    
     @SuppressWarnings("unchecked")
     private void loadSupportData(){
-        
-        adminCacheBean = new AdminCacheBean();
-        loadDevices();
+        if (adminCacheBean == null)
+            adminCacheBean = new AdminCacheBean();
+
+        vehicleChoiceTableColumns = new VehicleChoiceTableColumns();
+        chooseVehicleItems = new ArrayList<Vehicle>();
+    }
+
+    private void loadVehiclesAndAssociatedData(){
+        loadVehicles();
         loadGroups();
         loadDrivers();
-        loadVehicles();
-        chooseVehicleItems = (List<Vehicle>) adminCacheBean.getAssets("vehicles");
-        
+        loadDevices();
     }
+
     /**
      * Creates a DeviceView object from the given Device object.
      * 
@@ -590,10 +603,7 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
 
         public Vehicle getVehicle()
         {
-            if (vehicle == null && getVehicleID() != null){
-                if (bean.adminCacheBean == null)
-                    bean.loadItems();
-
+            if (vehicle == null && getVehicleID() != null && bean.adminCacheBean != null){
                 vehicle = (Vehicle)bean.adminCacheBean.getAsset("vehicles", getVehicleID());
             }
             return vehicle;

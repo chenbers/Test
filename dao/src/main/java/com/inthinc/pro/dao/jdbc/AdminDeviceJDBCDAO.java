@@ -35,14 +35,14 @@ public class AdminDeviceJDBCDAO extends SimpleJdbcDaoSupport {
 
     private static final String PAGED_DEVICE_SELECT = "SELECT " + PAGED_DEVICE_COLUMNS_STRING + " " + PAGED_DEVICE_SUFFIX;
 
-    private static final String PAGED_DEVICE_COUNT = "SELECT COUNT(*) "+ PAGED_DEVICE_SUFFIX;
+    private static final String PAGED_DEVICE_COUNT = "SELECT COUNT(*) nr " + PAGED_DEVICE_SUFFIX;
 
     private static final Map<String, String> pagedColumnMap = new HashMap<String, String>();
 
     static {
         pagedColumnMap.put("name", "d.name");
         pagedColumnMap.put("vehicleID", "d.vehicleName");
-        pagedColumnMap.put("productVer", "d.productVer");
+        pagedColumnMap.put("productVersion", "d.productVer");
         pagedColumnMap.put("imei", "d.imei");
         pagedColumnMap.put("phone", "d.phone");
         pagedColumnMap.put("status", "d.status");
@@ -54,7 +54,11 @@ public class AdminDeviceJDBCDAO extends SimpleJdbcDaoSupport {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("acctID", acctID);
         deviceCount = addFiltersToQuery(filters, deviceCount, params);
-        Integer cnt = getSimpleJdbcTemplate().queryForInt(deviceCount, params);
+        List<Integer> cntList = getSimpleJdbcTemplate().query(deviceCount, pagedDeviceCountRowMapper, params);
+        Integer cnt = 0;
+        if (cntList!=null && !cntList.isEmpty())
+            cnt = cntList.get(0);
+
         return cnt;
     }
 
@@ -80,11 +84,11 @@ public class AdminDeviceJDBCDAO extends SimpleJdbcDaoSupport {
         return deviceList;
     }
 
-    private boolean isNumeric(String str){
+    private boolean isNumeric(String str) {
         boolean ret = true;
-        try{
-            Integer.valueOf(str);
-        }catch(NumberFormatException nf){
+        try {
+            Integer.valueOf(str.trim());
+        } catch (NumberFormatException nf) {
             ret = false;
         }
         return ret;
@@ -97,10 +101,23 @@ public class AdminDeviceJDBCDAO extends SimpleJdbcDaoSupport {
 
         String filterVal = filter.getFilter().toString();
 
-
         // status
         if (filter.getField().equals("status") && !isNumeric(filterVal)) {
-           filter.setFilter(Status.valueOf(filterVal).getCode());
+            filter.setFilter(Status.valueOf(filterVal).getCode());
+        }
+
+        //product version
+        if (filter.getField().equals("productVersion")) {
+            if (filter.getFilter() instanceof List) {
+                filter.setFilterOp(FilterOp.IN);
+            } else if (!isNumeric(filterVal)) {
+                ProductType productType = ProductType.valueOf(filterVal);
+                List<Integer> versionList = (List<Integer>) productType.getFilter();
+                if (versionList != null && !versionList.isEmpty()) {
+                    filter.setFilterOp(FilterOp.IN);
+                    filter.setFilter(versionList);
+                }
+            }
         }
 
         return filter;
@@ -149,6 +166,12 @@ public class AdminDeviceJDBCDAO extends SimpleJdbcDaoSupport {
         return rs.getObject(columnName) == null ? null : rs.getDate(columnName);
     }
 
+    private ParameterizedRowMapper<Integer> pagedDeviceCountRowMapper = new ParameterizedRowMapper<Integer>() {
+        @Override
+        public Integer mapRow(ResultSet rs, int rowNum) throws SQLException {
+            return getIntOrNullFromRS(rs, "nr");
+        }
+    };
 
     private ParameterizedRowMapper<Device> pagedDeviceRowMapper = new ParameterizedRowMapper<Device>() {
         @Override
@@ -176,7 +199,6 @@ public class AdminDeviceJDBCDAO extends SimpleJdbcDaoSupport {
             device.setAltimei(getStringOrNullFromRS(rs, "altImei"));
             device.setProductVer(getIntOrNullFromRS(rs, "productVer"));
             device.setMcmid(getStringOrNullFromRS(rs, "mcmid"));
-            device.setProductVersion(rs.getObject("productVer") == null ? null : ProductType.valueOf(rs.getInt("productVer")));
             device.setWitnessVersion(getIntOrNullFromRS(rs, "witnessVer"));
             device.setEmuMd5(getStringOrNullFromRS(rs, "emuMd5"));
 
@@ -188,12 +210,12 @@ public class AdminDeviceJDBCDAO extends SimpleJdbcDaoSupport {
         Map<String, String> params = new HashMap<String, String>();
         params.put("deviceID", String.valueOf(testDeviceId));
         params.put("acctID", String.valueOf(testAccountId));
-        getSimpleJdbcTemplate().update("insert into device (deviceID, acctID, imei, name, modified, activated) values (:deviceID, :acctID, 'test-imei', 'test-name', NOW(), NOW())",params);
+        getSimpleJdbcTemplate().update("insert into device (deviceID, acctID, imei, name, modified, activated) values (:deviceID, :acctID, 'test-imei', 'test-name', NOW(), NOW())", params);
     }
 
     public void deleteTestDevice(int testDeviceId) {
         Map<String, String> params = new HashMap<String, String>();
         params.put("deviceID", String.valueOf(testDeviceId));
-        getSimpleJdbcTemplate().update("delete from device where deviceID = :deviceID",params);
+        getSimpleJdbcTemplate().update("delete from device where deviceID = :deviceID", params);
     }
 }
