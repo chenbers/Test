@@ -322,6 +322,12 @@ public class EmailReportAmazonPullJob extends QuartzJobBean {
     private void emailReport(ReportSchedule reportSchedule, Person person, List<ReportCriteria> reportCriteriaList, Person owner, boolean allowUnsubscribe) {
         // Set the current date of the reports
         FormatType formatType = FormatType.PDF;
+        try{
+            FormatType.valueOf(reportSchedule.getFormat());
+        } catch (Throwable t){
+            logger.info("Failed to read format type for report schedule: "+reportSchedule.getReportScheduleID()+". Keeping PDF as default.");
+        }
+
         if (reportSchedule == null) {
             logger.error("Email reportSchedule is null");
         }
