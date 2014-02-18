@@ -100,7 +100,7 @@ And I validate the 1st Row of the Distance Driven Value text contains "km"
 And I click the year Duration link
 And I click the Sort By Vehicle link
 And I click the Sort By Vehicle link
-And I click the 2nd Row of the Vehicle Value link
+And I click the 1st Row of the Vehicle Value link
 And I verify "Crashes per million kilometers" is on the page 
 And I click the Maximize Speed button
 And I click the twelve months Duration link
@@ -200,7 +200,7 @@ And I validate the 1st Row of the Distance Driven Value text contains "mi"
 And I click the year Duration link
 And I click the Sort By Vehicle link
 And I click the Sort By Vehicle link
-And I click the 2nd Row of the Vehicle Value link
+And I click the 1st Row of the Vehicle Value link
 And I verify "Crashes per million miles" is on the page 
 And I click the Maximize Speed button
 And I click the twelve months Duration link
@@ -304,7 +304,7 @@ And I validate the 1st Row of the Distance Driven Value text contains "km"
 And I click the year Duration link
 And I click the Sort By Vehicle link
 And I click the Sort By Vehicle link
-And I click the 2nd Row of the Vehicle Value link
+And I click the 1st Row of the Vehicle Value link
 And I verify "Crashes per million kilometers" is on the page 
 And I click the Maximize Speed button
 And I click the twelve months Duration link
@@ -406,7 +406,7 @@ And I validate the 1st Row of the Distance Driven Value text contains "mi"
 And I click the year Duration link
 And I click the Sort By Vehicle link
 And I click the Sort By Vehicle link
-And I click the 2nd Row of the Vehicle Value link
+And I click the 1st Row of the Vehicle Value link
 And I verify "Crashes per million miles" is on the page 
 And I click the Maximize Speed button
 And I click the twelve months Duration link
