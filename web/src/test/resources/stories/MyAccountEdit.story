@@ -52,7 +52,7 @@ And I click the bookmark I just added
 And I log back in under the editable account
 Then I validate I am on the My Account Edit page
 
-Scenario: TC1275: My Account - Edit Account - Measurement Validation for Waysmart drivers (REQUIRES USER HAS DATA)
+Scenario: TC1275: My Account - Edit Account - Measurement Validation for Waysmart 850 drivers and vehicles (REQUIRES USER HAS DATA)
 Given I navigate to localhost
 When I click the My Account link
 And I click the Edit button
@@ -61,13 +61,10 @@ And I click the Save button
 And I click the My Messages link
 And I click the My Account link
 Then I validate the Measurement text is "Metric"
-And I click group "Test Group WR" Groups navtree
+And I click group "Automation Test Team" Groups navtree
 And I validate the Distance Driven Team Value text contains "km"
 And I validate the 1st Row of the Distance Driven Value text contains "km"
-And I click the year Duration link
-And I click the Sort By Driver link
-And I click the Sort By Driver link
-And I click the 6th Row of the Driver Value link
+And I click the 1st Row of the Driver Value link
 And I verify "Crashes per million kilometers" is on the page
 And I click the Maximize Speed button
 And I click the twelve months Duration link
@@ -93,13 +90,10 @@ And I click the Return To Performance Page button
 And I click the View All Trips link
 And I verify "Total Kilometers Driven" is on the page
 And I validate the 1st Row of the Distance Entry text contains "km"
-And I click group "Test Group WR" Groups navtree
+And I click group "Automation Test Team" Groups navtree
 And I click the Vehicle Statistics link
 And I validate the Distance Driven Team Value text contains "km"
 And I validate the 1st Row of the Distance Driven Value text contains "km"
-And I click the year Duration link
-And I click the Sort By Vehicle link
-And I click the Sort By Vehicle link
 And I click the 1st Row of the Vehicle Value link
 And I verify "Crashes per million kilometers" is on the page 
 And I click the Maximize Speed button
@@ -126,7 +120,7 @@ And I click the Return To Performance Page button
 And I click the View All Trips link
 And I verify "Total Kilometers Driven" is on the page
 And I validate the 1st Row of the Distance Entry text contains "km"
-And I click group "Test Group WR" Groups navtree
+And I click group "Automation Test Team" Groups navtree
 And I click the Speed link
 And I validate the Category One Speeds Header text contains "kph"
 And I validate the Category Two Speeds Header text contains "kph"
@@ -161,13 +155,10 @@ And I click the Save button
 And I click the My Messages link
 And I click the My Account link
 And I validate the Measurement text is "English"
-And I click group "Test Group WR" Groups navtree
+And I click group "Automation Test Team" Groups navtree
 And I validate the Distance Driven Team Value text contains "mi"
 And I validate the 1st Row of the Distance Driven Value text contains "mi"
-And I click the year Duration link
-And I click the Sort By Driver link
-And I click the Sort By Driver link
-And I click the 6th Row of the Driver Value link
+And I click the 1st Row of the Driver Value link
 And I verify "Crashes per million miles" is on the page 
 And I click the Maximize Speed button
 And I click the twelve months Duration link
@@ -193,13 +184,10 @@ And I click the Return To Performance Page button
 And I click the View All Trips link
 And I verify "Total Miles Driven" is on the page
 And I validate the 1st Row of the Distance Entry text contains "mi"
-And I click group "Test Group WR" Groups navtree
+And I click group "Automation Test Team" Groups navtree
 And I click the Vehicle Statistics link
 And I validate the Distance Driven Team Value text contains "mi"
 And I validate the 1st Row of the Distance Driven Value text contains "mi"
-And I click the year Duration link
-And I click the Sort By Vehicle link
-And I click the Sort By Vehicle link
 And I click the 1st Row of the Vehicle Value link
 And I verify "Crashes per million miles" is on the page 
 And I click the Maximize Speed button
@@ -226,7 +214,7 @@ And I click the Return To Performance Page button
 And I click the View All Trips link
 And I verify "Total Miles Driven" is on the page
 And I validate the 1st Row of the Distance Entry text contains "mi"
-And I click group "Test Group WR" Groups navtree
+And I click group "Automation Test Team" Groups navtree
 And I click the Speed link
 And I validate the Category One Speeds Header text contains "mph"
 And I validate the Category Two Speeds Header text contains "mph"
@@ -255,7 +243,7 @@ And I validate the Number Speeding Total Distance Driven text contains "mi"
 And I validate the Number Speeding Total Distance Speeding text contains "mi"
 And I validate the Title Speeding text contains "mi"
 
-Scenario: TC6139: My Account - Edit Account - Measurement Validation for Tiwi drivers (REQUIRES USER HAS DATA)
+Scenario: TC6139: My Account - Edit Account - Measurement Validation for Tiwi drivers and vehicles (REQUIRES USER HAS DATA)
 Given I navigate to localhost
 When I click the My Account link
 And I click the Edit button
@@ -469,7 +457,7 @@ And I click the Edit button
 And I select "Metric" from the Measurement dropdown
 And I click the Save button
 Then I validate the Measurement text is "Metric"
-When I click group "Test Group WR" Groups navtree
+When I click group "Automation Test Team" Groups navtree
 And I click the year Duration link
 And I save the Fuel Efficiency Team Value text as DFE1
 And I click the Vehicle Statistics link
@@ -480,7 +468,7 @@ And I click the Edit button
 And I select "English" from the Measurement dropdown
 And I click the Save button
 Then I validate the Measurement text is "English"
-When I click group "Test Group WR" Groups navtree
+When I click group "Automation Test Team" Groups navtree
 And I click the year Duration link
 Then I validate the Fuel Efficiency Team Value text is not DFE1
 When I click the Vehicle Statistics link
@@ -623,7 +611,7 @@ And I click the Save button
 Then I validate the Error Email One text is "Incorrect format (jdoe@tiwipro.com)"
 And I validate the Error Email Two text is "Incorrect format (jdoe@tiwipro.com)"
 
-Scenario: TC1271: My Account - Edit Account - Cancel Button (Changes) -  Requires DE7955 is fixed
+Scenario: TC1271: My Account - Edit Account - Cancel Button (Changes)
 Given I navigate to localhost
 When I click the My Account link
 And I click the Edit button
