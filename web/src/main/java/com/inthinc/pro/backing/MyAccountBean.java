@@ -68,6 +68,14 @@ public class MyAccountBean extends BaseBean {
         }
         return result;
     }
+    
+    public String cancel()
+    {
+    	String result = null;
+    	restorePerson();
+    	result = "pretty:myAccount";
+       return result;
+    }
 
     private void restorePerson() {
         getUser().setPerson(personDAO.findByID(getUser().getPerson().getPersonID()));
