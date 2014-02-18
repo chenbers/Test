@@ -8,7 +8,7 @@ public enum MyAccountEditEnum implements SeleniumEnums {
 
     /* Buttons and Title */
     SAVE_BUTTON("Save", "my_form:editAccountSave"),
-    CANCEL_BUTTON("Cancel", "editAccountCancel"),
+    CANCEL_BUTTON("Cancel", "my_form:editAccountCancel"),
     MAIN_TITLE("My Account", "//span[@class='account']"),
 
     /* Account Information */
