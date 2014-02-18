@@ -358,7 +358,7 @@ And I validate the Sort By Vehicle Fuel link is present
 And I validate the Sort By Trailer Fuel link is present
 And I validate the Sort By Edited link is present
 
-Scenario: TC5700: HOS - Fuel Stops - Vehicle field Tiwi
+Scenario: TC5700: HOS - Fuel Stops - Vehicle field test for all 3 devices (820, 850, and tiwi)
 Given I am logged in
 When I click the HOS link
 And I click the HOS Fuel Stops link
@@ -367,20 +367,23 @@ And I click the Refresh button
 Then I validate the Vehicle textfield is ""
 And I type "waysmart01" into the Vehicle textfield
 And I validate the suggested row 1 from the Vehicle textfield is "waysmart01"
+And I click the suggested row 1 from the Vehicle textfield
+And I click the Refresh button
+And I validate the Vehicle textfield is "waysmart01"
 And I type "" into the Vehicle textfield
 And I type "autogen01" into the Vehicle textfield
-And I save the Vehicle textfield as CURRENTVEHICLE
+And I validate the suggested row 1 from the Vehicle textfield is "autogen01"
+And I click the suggested row 1 from the Vehicle textfield
 And I click the Refresh button
-And I validate the suggested row 1 from the Vehicle textfield is CURRENTVEHICLE
+And I validate the Vehicle textfield is "autogen01"
 And I type "" into the Vehicle textfield
 And I type "TEST VEHICLE 1" into the Vehicle textfield
-And I save the Vehicle textfield as CURRENTVEHICLE2
+And I validate the suggested row 1 from the Vehicle textfield is ""
 And I click the Refresh button
-And I validate the suggested row 1 from the Vehicle textfield is not CURRENTVEHICLE2
+And I validate the Vehicle textfield is "TEST VEHICLE 1"
 And I click the Add button
-And I validate I am on the Add Fuel page
-And I click the Cancel Top button
 And I validate I am on the Fuel Stops page
+And I validate the Vehicle textfield is ""
 
 Scenario: TC5703: HOS - Fuel Stops - Fuel fields
 Given I am logged in
