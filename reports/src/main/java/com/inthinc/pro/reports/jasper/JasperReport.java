@@ -103,8 +103,12 @@ public class JasperReport implements Report
                 exportToExcelStream(os, jp);
                 bytes = os.toByteArray();
                 ext = ".xls";
-            }
-            else {
+            } else if (formatType == FormatType.CSV){
+                ByteArrayOutputStream os = new ByteArrayOutputStream();
+                exportToCsvStream(os, jp);
+                bytes = os.toByteArray();
+                ext = ".csv";
+            } else {
                 bytes = JasperExportManager.exportReportToPdf(jp);
             }
             ReportAttatchment reportAttatchment = new ReportAttatchment(FILE_NAME + ext, bytes);
