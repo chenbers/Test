@@ -15,26 +15,27 @@ public class AutomationTripGenerator {
     public static void main(String args[]) {
 
         //NewNoteTest noteTest = new NewNoteTest(AutoSilos.QA);
-        //noteTest.testDVIRNote("MCM821853", "300034012559130");
+        //noteTest.testDVIRNote("", "");
+        //TiwiProDevice ws850 = new TiwiProDevice("970399012109740", ProductType.TIWIPRO_R747);
         WaysmartDevice ws850 = new WaysmartDevice("AUTOMATION850", "AUTOMATION850", AutoSilos.QA, Direction.gprs);
         ws850.dump_settings();
         DeviceState state = ws850.getState();
         AutomationCalendar initialTime = new AutomationCalendar();
-        ws850.set_time(initialTime.setDate(1391272383));  //Tue Dec 10 14:52:01 2013
+        ws850.set_time(initialTime.setDate(1392752420));  //Tue Feb 18 12:40:20 2014 GMT-7
         ws850.getState().setWMP(17116);
         ws850.firstLocation(new GeoPoint(40.7103, -111.9920));
+        ws850.setEmployeeID("AUTOWS850"); 
         ws850.power_on_device();
         ws850.turn_key_on(15);
         ws850.getState().setLowIdle(300).setHighIdle(300);
-        //AutomationDeviceEvents.idling(ws850);
+        AutomationDeviceEvents.idling(ws850);
         ws850.getState().setSpeedLimit(5);
-        //ws850.increment_time(20);
         AutomationDeviceEvents.seatbelt(ws850);
         ws850.enter_zone(1062);
         ws850.update_location(new GeoPoint(40.711, -111.9921), 15);
         AutomationDeviceEvents.panic(ws850);                                 //NECESSARY FOR AUTOMATION TESTS, WS ONLY
         
-        //state.setSeatbeltViolationDistanceX100(500);
+        state.setSeatbeltViolationDistanceX100(500);
         
         ws850.increment_time(5);
         AutomationDeviceEvents.seatbelt(ws850);
@@ -48,24 +49,24 @@ public class AutomationTripGenerator {
         
         ws850.update_location(new GeoPoint(40.7115, -111.9816), 15);
         
-        //AutomationDeviceEvents.rfKill(ws850);
-//        ws850.boundaryChange();
+        AutomationDeviceEvents.rfKill(ws850);
+        ws850.boundaryChange();
         
         ws850.increment_time(5);
         //ws850.tampering(4);
         
-        //AutomationDeviceEvents.powerInterruption(ws850);
+        AutomationDeviceEvents.powerInterruption(ws850);
         
         ws850.last_location(new GeoPoint(40.7115, -111.9817), 15);
         
         AutomationDeviceEvents.statistics(ws850);
         AutomationDeviceEvents.requestSettings(ws850);
  
-        ws850.setEmployeeID("Automation WS850Driver");                           //THESE THREE LINES ARE FOR SENDING IN HOS
+//        ws850.setEmployeeID("AUTOWS850");                                        //THESE THREE LINES ARE FOR SENDING IN HOS
         state.setHosState(HOSState.TIMESTAMP);                                   //TIMESTAMP NOTE, THIS SHOULD NOT SHOW UP
         AutomationDeviceEvents.hosChangeNoGPSLock(ws850, "SALT LAKE CITY, UT");  //IN THE HOS LOGS ANYMORE, BUT IT WILL SHOW UP IN THE DATABASE AND UTIL
         
-        ws850.setEmployeeID("Automation WS850Driver");                           //THESE THREE LINES ARE FOR SENDING IN HOS
+//        ws850.setEmployeeID("AUTOWS850");                                        //THESE THREE LINES ARE FOR SENDING IN HOS
         state.setHosState(HOSState.OCCUPANT_ON_DUTY);                            //DRIVER ON DUTY AS AN OCCUPANT IN A 
         AutomationDeviceEvents.hosChangeNoGPSLock(ws850, "SALT LAKE CITY, UT");  //VEHICLE
         //note.addAttr(EventAttr.SEATBELT_TOP_SPEED, state.getSeatbeltTopSpeed());
