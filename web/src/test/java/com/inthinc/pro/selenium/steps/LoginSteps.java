@@ -45,6 +45,23 @@ public class LoginSteps extends WebSteps {
         loginPage._button().logIn().click();
     }
     
+    @Given("I navigate to localhost")
+    public void givenINavigateToLocalhost() {
+        loginPage.open("https://localhost:8443/tiwipro/");
+        loginPage._textField().username().type("secondPrime");
+        loginPage._textField().password().type("2ut2CFmnH$f!");
+        loginPage._button().logIn().click();
+    }
+    
+    
+    @Given("I navigate to localhost an account that can be edited")
+    public void givenINavigateToLocalhostAnAccountThatCanBeEdited() {
+        loginPage.open("https://localhost:8443/tiwipro/");
+        loginPage._textField().username().type("secondEditable");
+        loginPage._textField().password().type("2ut2CFmnH$f!");
+        loginPage._button().logIn().click();
+    }
+    
     @Given("I am logged in as a \"$roleName\" user")
     @When("I am logged in as a \"$roleName\" user")
     public void loginAsAUserofRole(String roleName) {
