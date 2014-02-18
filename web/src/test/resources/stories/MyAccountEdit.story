@@ -7,7 +7,7 @@ Meta:
 Narrative: 
 
 Scenario: TC6274: My Account Edit - UI
-Given I am logged in
+Given I navigate to localhost
 When I click the My Account link
 And I click the Edit button
 Then I validate I am on the My Account Edit page
@@ -33,7 +33,7 @@ And I validate the Phone One textfield is present
 And I validate the Phone Two textfield is present
 
 Scenario: TC1267: My Account - Edit Account - Bookmark Entry
-Given I am logged in
+Given I navigate to localhost
 When I click the My Account link
 And I click the Edit button
 And I bookmark the page
@@ -43,7 +43,7 @@ And I log back in
 Then I validate I am on the My Account Edit page
 
 Scenario: TC1269: My Account - Edit Account - Bookmark Entry to Different Account
-Given I am logged in
+Given I navigate to localhost
 When I click the My Account link
 And I click the Edit button
 And I bookmark the page
@@ -53,7 +53,7 @@ And I log back in under the editable account
 Then I validate I am on the My Account Edit page
 
 Scenario: TC1275: My Account - Edit Account - Measurement Validation for Waysmart drivers (REQUIRES USER HAS DATA)
-Given I am logged in
+Given I navigate to localhost
 When I click the My Account link
 And I click the Edit button
 And I select "Metric" from the Measurement dropdown
@@ -62,8 +62,6 @@ And I click the My Messages link
 And I click the My Account link
 Then I validate the Measurement text is "Metric"
 And I click group "Test Group WR" Groups navtree
-And I verify "Crashes per million kilometers" is on the page
-And I verify "Kilometers since last crash" is on the page
 And I validate the Distance Driven Team Value text contains "km"
 And I validate the 1st Row of the Distance Driven Value text contains "km"
 And I click the year Duration link
@@ -164,8 +162,6 @@ And I click the My Messages link
 And I click the My Account link
 And I validate the Measurement text is "English"
 And I click group "Test Group WR" Groups navtree
-And I verify "Crashes per million miles" is on the page
-And I verify "Miles since last crash" is on the page
 And I validate the Distance Driven Team Value text contains "mi"
 And I validate the 1st Row of the Distance Driven Value text contains "mi"
 And I click the year Duration link
@@ -260,7 +256,7 @@ And I validate the Number Speeding Total Distance Speeding text contains "mi"
 And I validate the Title Speeding text contains "mi"
 
 Scenario: TC6139: My Account - Edit Account - Measurement Validation for Tiwi drivers (REQUIRES USER HAS DATA)
-Given I am logged in
+Given I navigate to localhost
 When I click the My Account link
 And I click the Edit button
 And I select "Metric" from the Measurement dropdown
@@ -269,8 +265,6 @@ And I click the My Messages link
 And I click the My Account link
 Then I validate the Measurement text is "Metric"
 And I click group "Test Group WR" Groups navtree
-And I verify "Crashes per million kilometers" is on the page
-And I verify "Kilometers since last crash" is on the page
 And I validate the Distance Driven Team Value text contains "km"
 And I validate the 1st Row of the Distance Driven Value text contains "km"
 And I click the year Duration link
@@ -373,8 +367,6 @@ And I click the My Messages link
 And I click the My Account link
 And I validate the Measurement text is "English"
 And I click group "Test Group WR" Groups navtree
-And I verify "Crashes per million miles" is on the page
-And I verify "Miles since last crash" is on the page
 And I validate the Distance Driven Team Value text contains "mi"
 And I validate the 1st Row of the Distance Driven Value text contains "mi"
 And I click the year Duration link
@@ -471,7 +463,7 @@ And I validate the Number Speeding Total Distance Speeding text contains "mi"
 And I validate the Title Speeding text contains "mi"
 
 Scenario: TC1273: My Account - Edit Account - Fuel Efficiency Ratio Validation
-Given I am logged in
+Given I navigate to localhost
 When I click the My Account link
 And I click the Edit button
 And I select "Metric" from the Measurement dropdown
@@ -496,7 +488,7 @@ And I click the year Duration link
 Then I validate the Fuel Efficiency Team Value text is not DFE2
 
 Scenario: TC1276: My Account - Edit Account - Missing Required Field Error
-Given I am logged in
+Given I navigate to localhost
 When I click the My Account link
 And I click the Edit button
 And I type "" into the Email One textfield
@@ -509,7 +501,7 @@ And I click the Save button
 Then I validate the Error Email One text is "Required"
 
 Scenario: TC1277: My Account - Edit Account - Phone Max Characters Error
-Given I am logged in
+Given I navigate to localhost
 When I click the My Account link
 And I click the Edit button
 And I type "0000000000000000" into the Phone One textfield
@@ -519,7 +511,7 @@ Then I validate the Error Phone One text is "Must consist of up to 15 numeric ch
 And I validate the Error Phone Two text is "Must consist of up to 15 numeric characters"
 
 Scenario: TC1278: My Account - Edit Account - Phone Missing Character Error
-Given I am logged in
+Given I navigate to localhost
 When I click the My Account link
 And I click the Edit button
 And I type "00" into the Phone One textfield
@@ -529,7 +521,7 @@ Then I validate the Error Phone One text is "Must consist of up to 15 numeric ch
 And I validate the Error Phone Two text is "Must consist of up to 15 numeric characters"
 
 Scenario: TC1279: My Account - Edit Account - Phone Special Character Error
-Given I am logged in
+Given I navigate to localhost
 When I click the My Account link
 And I click the Edit button
 And I type "& ^ $" into the Phone One textfield
@@ -539,7 +531,7 @@ Then I validate the Error Phone One text is "Must consist of up to 15 numeric ch
 And I validate the Error Phone Two text is "Must consist of up to 15 numeric characters"
 
 Scenario: TC1282: My Account - Edit Account - Text Message Format Error
-Given I am logged in
+Given I navigate to localhost
 When I click the My Account link
 And I click the Edit button
 And I type "8015551234 @domain.com" into the Text Message One textfield
@@ -549,7 +541,7 @@ Then I validate the Error Text One text is "Incorrect format (8015551212@tmomail
 And I validate the Error Text Two text is "Incorrect format (8015551212@tmomail.com)"
 
 Scenario: TC1280: My Account - Edit Account - Save Button
-Given I am logged in an account that can be edited
+Given I navigate to localhost an account that can be edited
 When I click the My Account link
 And I click the Edit button
 And I select "English (United States)" from the Locale dropdown
@@ -622,7 +614,7 @@ And I select "English (United States)" from the Locale dropdown
 And I click the Save button
 
 Scenario: TC1272: My Account - Edit Account - E-mail Address Format Error
-Given I am logged in
+Given I navigate to localhost
 When I click the My Account link
 And I click the Edit button
 And I type "tlc1960@test" into the Email One textfield
@@ -632,7 +624,7 @@ Then I validate the Error Email One text is "Incorrect format (jdoe@tiwipro.com)
 And I validate the Error Email Two text is "Incorrect format (jdoe@tiwipro.com)"
 
 Scenario: TC1271: My Account - Edit Account - Cancel Button (Changes) -  Requires DE7955 is fixed
-Given I am logged in
+Given I navigate to localhost
 When I click the My Account link
 And I click the Edit button
 And I select "English (United States)" from the Locale dropdown
