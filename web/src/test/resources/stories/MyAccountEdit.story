@@ -611,7 +611,7 @@ And I click the Save button
 Then I validate the Error Email One text is "Incorrect format (jdoe@tiwipro.com)"
 And I validate the Error Email Two text is "Incorrect format (jdoe@tiwipro.com)"
 
-Scenario: TC1271: My Account - Edit Account - Cancel Button (Changes)
+Scenario: TC1271: My Account - Edit Account - Cancel Button (Changes)  WILL FAIL TILL DE7955 IS FIXED
 Given I navigate to localhost
 When I click the My Account link
 And I click the Edit button
