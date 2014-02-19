@@ -26,7 +26,7 @@ public class FormsGenerationSteps extends LoginSteps {
             manage._button().newForm().click();
             add._textField().name().type("FormPreTrip" + i);
             add._dropDown().trigger().selectTheOptionContaining("Pre-Trip", 1);
-            add._checkBox().groups().click();
+            add._checkBox().groups().check();
             add._link().text().click();
             add._button().saveTop().click();
             i++;
@@ -36,7 +36,7 @@ public class FormsGenerationSteps extends LoginSteps {
             manage._button().newForm().click();
             add._textField().name().type("FormPostTrip" + i);
             add._dropDown().trigger().selectTheOptionContaining("Post-Trip", 1);
-            add._checkBox().groups().click();
+            add._checkBox().groups().check();
             add._link().text().click();
             add._button().saveTop().click();
             i++;
@@ -47,7 +47,7 @@ public class FormsGenerationSteps extends LoginSteps {
             add._textField().name().type("FormInactive" + i);
             add._dropDown().status().selectTheOptionContaining("Inactive", 1);
             add._textField().description().type("Required");
-            add._checkBox().groups().click();
+            add._checkBox().groups().check();
             add._link().text().click();
             add._button().saveTop().click();
             i++;
@@ -75,7 +75,7 @@ public class FormsGenerationSteps extends LoginSteps {
             manage._button().newForm().click();
             add._textField().name().type("FormPublish" + l);
             add._textField().description().type("Required");
-            add._checkBox().groups().click();
+            add._checkBox().groups().check();
             add._link().text().click();
             add._button().saveTop().click();
             manage._textField().search().type("FormPublish" + l);
@@ -89,7 +89,7 @@ public class FormsGenerationSteps extends LoginSteps {
             manage._button().newForm().click();
             add._textField().name().type("FormPostTrip" + j);
             add._dropDown().trigger().selectTheOptionContaining("Post-Trip", 1);
-            add._checkBox().groups().click();
+            add._checkBox().groups().check();
             add._link().text().click();
             add._button().saveTop().click();
             manage._textField().search().type("FormPostTrip" + j);
@@ -103,7 +103,7 @@ public class FormsGenerationSteps extends LoginSteps {
             manage._button().newForm().click();
             add._textField().name().type("FormPreTrip" + k);
             add._dropDown().trigger().selectTheOptionContaining("Pre-Trip", 1);
-            add._checkBox().groups().click();
+            add._checkBox().groups().check();
             add._link().text().click();
             add._button().saveTop().click();
             manage._textField().search().type("FormPreTrip" + k);
@@ -115,7 +115,7 @@ public class FormsGenerationSteps extends LoginSteps {
         
         manage._button().newForm().click();
         add._textField().name().type("FormGeneric" + i);
-        add._checkBox().groups().click();
+        add._checkBox().groups().check();
         add._link().text().click();
         add._button().saveTop().click();
         manage._textField().search().type("FormGeneric" + i);
