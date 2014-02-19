@@ -323,7 +323,7 @@ public class EmailReportAmazonPullJob extends QuartzJobBean {
         // Set the current date of the reports
         FormatType formatType = FormatType.PDF;
         try{
-            FormatType.valueOf(reportSchedule.getFormat());
+            formatType = FormatType.valueOf(reportSchedule.getFormat());
         } catch (Throwable t){
             logger.info("Failed to read format type for report schedule: "+reportSchedule.getReportScheduleID()+". Keeping PDF as default.");
         }
@@ -347,9 +347,6 @@ public class EmailReportAmazonPullJob extends QuartzJobBean {
             reportCriteria.setMeasurementType(person.getMeasurementType());
             reportCriteria.setFuelEfficiencyType(person.getFuelEfficiencyType());
             reportCriteria.setTimeZone(person.getTimeZone());
-
-            if (reportCriteria.getReport().getPrettyTemplate() == null)
-                formatType = FormatType.EXCEL;
         }
         Report report = reportCreator.getReport(reportCriteriaList);
 
