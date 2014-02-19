@@ -148,18 +148,18 @@ public class AutoCustomSteps {
         return loginUser.get();
     }
 
-    @Given("I am logged in")
-    @Composite(steps = {
-            "Given I am using as the default user for my user",
-            "Given I log in"})
-    public void givenIAmLoggedIn(){}
+//    @Given("I am logged in")
+//    @Composite(steps = {
+//            "Given I am using as the default user for my user",
+//            "Given I log in"})
+//    public void givenIAmLoggedIn(){}
 
-    @When("I am logged in")
-    @Composite(steps = {
-            "When I type my user name into the Username field",
-            "When I type my password into the Password field",
-            "When I click the Login button"})
-    public void whenIAmLoggedIn(){}
+//    @When("I am logged in")
+//    @Composite(steps = {
+//            "When I type my user name into the Username field",
+//            "When I type my password into the Password field",
+//            "When I click the Login button"})
+//    public void whenIAmLoggedIn(){}
 
     @Given("I am logged in $params")
     @Composite(steps = {

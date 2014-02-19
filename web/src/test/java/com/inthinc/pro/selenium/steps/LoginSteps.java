@@ -23,6 +23,15 @@ public class LoginSteps extends WebSteps {
     
     private static final PageLogin page = new PageLogin();
     
+    @Given("I am logged in")
+    @When("I am logged in")
+    public void givenIAmLoggedIn() {
+            loginPage.open("https://qa.inthinc.com/tiwipro");
+            page._textField().username().type("secondPrime");
+            page._textField().password().type("2ut2CFmnH$f!");
+            page._button().logIn().click();
+    }
+    
     @When("I log back in")
     public void whenILogBackIn() {
         loginPage._textField().username().type("secondPrime");
