@@ -74,7 +74,7 @@ And I validate the Group textfield is present
 And I validate the Driver textfield is present
 And I validate the Vehicle textfield is present
 And I validate the Category dropdown is present
-And I validate the Status Filter dropdown is present
+And I validate the Status dropdown is present
 
 Scenario: TC5722: Notifications - Zones - Vehicle Link
 Given I am logged in
@@ -114,7 +114,7 @@ And I validate the Group textfield is present
 And I validate the Driver textfield is present
 And I validate the Vehicle textfield is present
 And I validate the Category dropdown is present
-And I validate the Status Filter dropdown is present
+And I validate the Status dropdown is present
 
 Scenario: TC5724: Notifications - Zones - Edit Columns - Cancel Button (No Changes)
 Given I am logged in
@@ -135,7 +135,7 @@ And I validate the Group textfield is present
 And I validate the Driver textfield is present
 And I validate the Vehicle textfield is present
 And I validate the Category dropdown is present
-And I validate the Status Filter dropdown is present
+And I validate the Status dropdown is present
 
 Scenario: TC5725: Notifications - Zones - Edit Columns - Check Box Selection via Mouse
 Given I am logged in
