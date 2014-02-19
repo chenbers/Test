@@ -26,7 +26,7 @@
 	
     <rich:modalPanel id="editColumns" headerClass="popupHeader" controlsClass="popupControls" width="500" height="50" 
     	autosized="true" resizeable="false" zindex="2000" 
-    	onshow="document.getElementById('editColumnsForm:#{context}-editColumnsGrid:0:col').focus();">
+    	onshow="document.getElementById('#{context}_editColumnsForm:#{context}-editColumnsGrid:0:col').focus();">
 										 
       <f:facet name="header">
         <h:outputText value="#{messages.editColumns_title}" />
@@ -40,7 +40,7 @@
       </h:panelGroup>
 
 
-      <a4j:form id="editColumnsForm">
+      <a4j:form id="#{context}_editColumnsForm">
 
         <rich:dataGrid id="#{context}-editColumnsGrid" columns="3" value="#{bean.availableColumns}" var="col" width="100%" style="border:0">
           <h:outputLabel rendered="#{bean.tableColumns[col].canHide}">
@@ -55,7 +55,7 @@
             action="#{bean.tablePref.cancelEdit}" 
             ajaxSingle="true" 
             oncomplete="Richfaces.hideModalPanel('editColumns');"
-            reRender="editColumnsForm:#{context}-editColumnsGrid" tabindex="3">
+            reRender="#{context}_editColumnsForm:#{context}-editColumnsGrid" tabindex="3">
             <span class="cancel">
              <h:outputText value="#{messages.button_cancel}" />
             </span>
