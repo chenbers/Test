@@ -112,6 +112,11 @@ public class VehicleDaoStub implements VehicleDAO {
         return new ArrayList<Vehicle>();
     }
 
+    @Override
+    public List<Vehicle> getVehiclesInGroupIDList(List<Integer> groupIDList) {
+        return new ArrayList<Vehicle>();
+    }
+
     /* (non-Javadoc)
      * @see com.inthinc.pro.dao.VehicleDAO#getVehiclesNearLoc(java.lang.Integer, java.lang.Integer, java.lang.Double, java.lang.Double)
      */
