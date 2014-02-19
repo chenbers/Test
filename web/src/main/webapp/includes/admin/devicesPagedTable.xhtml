@@ -21,7 +21,7 @@
     </rich:column>
     <rich:column id="vehicle" rendered="#{devicesBean.tableColumns['vehicleID'].visible}" sortBy="#{vehicleID}" filterBy="#{vehicleID}">
       <f:facet name="header"><h:outputText value="#{messages.devicesHeader_vehicleID}" /></f:facet>
-      <h:outputText value="#{item.vehicle.name}" />
+      <h:outputText value="#{item.vehicleName}" />
     </rich:column>
     <!--  TODO: CJ REMOVED SORT BECAUSE OF SORT BY IS ON A UI RENDERED FIELD, I.E. ONLY DATABASE SORT IS SUPPORTED  -->
     <rich:column id="productVersion" rendered="#{devicesBean.tableColumns['productVer'].visible}" 
