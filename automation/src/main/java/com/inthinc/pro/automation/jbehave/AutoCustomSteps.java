@@ -78,7 +78,7 @@ public class AutoCustomSteps {
         
         rest.get().putObject(Account.class, loginAccount.get(), null);
         rest.get().putObject(User.class, loginUser.get(), null);
-        
+        Log.info("END OF SCENARIO");
     }
     
     @Then("I assert \"$lookfor\" is on the page")
