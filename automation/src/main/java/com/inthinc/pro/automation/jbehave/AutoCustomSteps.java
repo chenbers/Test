@@ -71,13 +71,13 @@ public class AutoCustomSteps {
     
     @AfterScenario
     public void afterScenario(){
-        if (loginAccount.get() == null || loginUser.get() == null || rest.get() == null){
-            Log.info("The default login info was not set");
-            return;
-        }
-        
-        rest.get().putObject(Account.class, loginAccount.get(), null);
-        rest.get().putObject(User.class, loginUser.get(), null);
+//        if (loginAccount.get() == null || loginUser.get() == null || rest.get() == null){
+//            Log.info("The default login info was not set");
+//            return;
+//        }
+//        
+//        rest.get().putObject(Account.class, loginAccount.get(), null);
+//        rest.get().putObject(User.class, loginUser.get(), null);
         Log.info("END OF SCENARIO");
     }
     
