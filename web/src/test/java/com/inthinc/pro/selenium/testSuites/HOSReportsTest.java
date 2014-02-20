@@ -18,7 +18,7 @@ import com.inthinc.pro.selenium.steps.LoginSteps;
 @UsingSteps(instances={LoginSteps.class})
 @PageObjects(list={PageLogin.class, PageExecutiveDashboard.class, PageAdminUsers.class, PageHOSDriverLogs.class, PageHOSFuelStops.class, PageHOSAddEditFuelStops.class,
         PageHOSAddEditDriverLogs.class})
-@StoryPath(path="HOSReports.story")
+@StoryPath(path="HOSReports.story")  //this story file no longer exists
 public class HOSReportsTest extends WebStories {
 	@Ignore
     @Test

@@ -186,9 +186,10 @@
 								<exclude>**/selenium/**/DeviceTests.java</exclude>
 								<exclude>**/selenium/**/DriverStatisticsTest.java</exclude>
 								<exclude>**/selenium/**/FormsOptionsEditorTest.java</exclude>
-								<exclude>**/selenium/**/NotificationsEmergencyTest.java</exclude>
 								<exclude>**/selenium/**/GainReportsTest.java</exclude>
+								<exclude>**/selenium/**/HOSReportsTest.java</exclude>
 								<exclude>**/selenium/**/Mass**.java</exclude>
+								<exclude>**/selenium/**/NotificationsEmergencyTest.java</exclude>
 								<exclude>**/selenium/**/NotificationTest.java</exclude>
 								<exclude>**/selenium/**/PasswordChangeTest.java</exclude>
 								<exclude>**/selenium/**/RoadHazardEndpointTest.java</exclude>
