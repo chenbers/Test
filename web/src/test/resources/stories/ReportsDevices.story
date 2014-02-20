@@ -20,18 +20,18 @@ When I log back in
 Then I validate I am on the Reports Devices page
 
 Scenario: TC1527: Reports - Devices - Table Properties NEED ASSISTANCE IN IMPLEMENTING HOW TO CHECK ORDER
-Given I am logged in
-When I click the Reports link
-And I click the Devices link
-And I click the Sort By Device ID link
-And I click the Sort By Assigned Vehicle link
-And I click the Sort By Assigned Vehicle link
-And I click the Sort By IMEI link
-And I click the Sort By IMEI link
-And I click the Sort By Device Phone link
-And I click the Sort By Device Phone link
-And I click the Sort By Status link
-And I click the Sort By Status link
+!-- Given I am logged in
+!-- When I click the Reports link
+!-- And I click the Devices link
+!-- And I click the Sort By Device ID link
+!-- And I click the Sort By Assigned Vehicle link
+!-- And I click the Sort By Assigned Vehicle link
+!-- And I click the Sort By IMEI link
+!-- And I click the Sort By IMEI link
+!-- And I click the Sort By Device Phone link
+!-- And I click the Sort By Device Phone link
+!-- And I click the Sort By Status link
+!-- And I click the Sort By Status link
 
 Scenario: TC1528: Reports - Devices - Tools Button
 Given I am logged in
