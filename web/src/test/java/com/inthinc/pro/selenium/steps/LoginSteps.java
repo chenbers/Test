@@ -7,6 +7,7 @@ import org.jbehave.core.annotations.When;
 import com.inthinc.pro.automation.logging.Log;
 import com.inthinc.pro.automation.models.AutomationUser;
 import com.inthinc.pro.selenium.pageObjects.PageAdminVehicles;
+import com.inthinc.pro.selenium.pageObjects.PageErrorPage;
 import com.inthinc.pro.selenium.pageObjects.PageFormsManage;
 import com.inthinc.pro.selenium.pageObjects.PageLogin;
 import com.inthinc.pro.selenium.pageObjects.PageNotificationsDiagnostics;
@@ -14,22 +15,33 @@ import com.inthinc.pro.selenium.pageObjects.PageNotificationsSafety;
 
 public class LoginSteps extends WebSteps {
     
-    PageLogin loginPage = new PageLogin();
     AutomationUser login;
     PageNotificationsDiagnostics notifdiag = new PageNotificationsDiagnostics();
     PageNotificationsSafety safteydiag = new PageNotificationsSafety();
     PageFormsManage manage = new PageFormsManage();
     PageAdminVehicles pav = new PageAdminVehicles();
+    PageErrorPage errorPage = new PageErrorPage();
     
-    private static final PageLogin page = new PageLogin();
+    private static final PageLogin loginPage = new PageLogin();
     
     @Given("I am logged in")
     @When("I am logged in")
     public void givenIAmLoggedIn() {
             loginPage.open("https://qa.inthinc.com/tiwipro");
-            page._textField().username().type("secondPrime");
-            page._textField().password().type("2ut2CFmnH$f!");
-            page._button().logIn().click();
+            //I've added this method to handle when QA times out and displays the Connection Problem page
+            if(!loginPage._textField().username().isPresent()) {
+                int time = 0;
+                while (time < 30) {
+                    errorPage._button().tryAgain().click();
+                    time++;
+                    if(loginPage._textField().username().isPresent()) {
+                        break;
+                    }
+                }
+            }
+            loginPage._textField().username().type("secondPrime");
+            loginPage._textField().password().type("2ut2CFmnH$f!");
+            loginPage._button().logIn().click();
     }
     
     @When("I log back in")
@@ -76,14 +88,14 @@ public class LoginSteps extends WebSteps {
     public void loginAsAUserofRole(String roleName) {
         
         if (roleName.equals("TestUser")) {
-            page._textField().username().type("TEST_39880");
-            page._textField().password().type("password");
-            page._button().logIn().click();
+            loginPage._textField().username().type("TEST_39880");
+            loginPage._textField().password().type("password");
+            loginPage._button().logIn().click();
         }
         if (roleName.equals("TeamOnly")) {
-            page._textField().username().type("CaptainNemo");
-            page._textField().password().type("Muttley");
-            page._button().logIn().click();
+            loginPage._textField().username().type("CaptainNemo");
+            loginPage._textField().password().type("Muttley");
+            loginPage._button().logIn().click();
         }
     }
     
@@ -112,7 +124,7 @@ public class LoginSteps extends WebSteps {
     
     @When("the focus should be on the User Name Field")
     public void whenTheFocusShouldBeOnUserNameField() {
-        if (!page._textField().username().hasFocus())
+        if (!loginPage._textField().username().hasFocus())
             test.addError("The User Name field does NOT have focus");
     }
     

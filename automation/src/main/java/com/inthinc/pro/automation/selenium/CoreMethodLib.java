@@ -33,6 +33,7 @@ import com.inthinc.pro.automation.utils.AutomationStringUtil;
 import com.inthinc.pro.automation.utils.AutomationThread;
 import com.thoughtworks.selenium.DefaultSelenium;
 import com.thoughtworks.selenium.SeleniumException;
+import com.thoughtworks.selenium.Wait.WaitTimedOutException;
 
 /****************************************************************************************
  * Extend the functionality of DefaultSelenium, but add some error handling around it
@@ -763,7 +764,12 @@ public class CoreMethodLib extends WebDriverBackedSelenium implements CoreMethod
      */
     @Override
     public CoreMethodLib waitForPageToLoad(Integer timeout) {
-        waitForPageToLoad(timeout.toString());
+        try {
+            waitForPageToLoad(timeout.toString());
+        } catch (WaitTimedOutException e) {
+            Log.warning("There may have been a page timeout during this test.");
+        }
+
         return this;
     }
 
