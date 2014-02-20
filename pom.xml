@@ -200,6 +200,7 @@
                                 <exclude>**/selenium/**/WebDevice**.java</exclude>
                                 <exclude>**/selenium/**/WebRallyTest.java</exclude>
                                 <exclude>**/selenium/**/WebTest.java</exclude>
+                                <exclude>**/selenium/**/HOSReportsTest.java</exclude>
                             </excludes>
                             <includes>
                                 <include>**/selenium/**/CurrentStoryTest.java</include>
