@@ -29,6 +29,7 @@ public class FormsGenerationSteps extends LoginSteps {
             add._checkBox().groups().check();
             add._link().text().click();
             add._button().saveTop().click();
+            System.out.println("FormPreTrip" + i + "created successfully.");
             i++;
         }
         
@@ -39,6 +40,7 @@ public class FormsGenerationSteps extends LoginSteps {
             add._checkBox().groups().check();
             add._link().text().click();
             add._button().saveTop().click();
+            System.out.println("FormPostTrip" + i + "created successfully.");
             i++;
         }
         
@@ -50,6 +52,7 @@ public class FormsGenerationSteps extends LoginSteps {
             add._checkBox().groups().check();
             add._link().text().click();
             add._button().saveTop().click();
+            System.out.println("FormInactive" + i + "created successfully.");
             i++;
         }
         
@@ -58,6 +61,7 @@ public class FormsGenerationSteps extends LoginSteps {
             manage._link().copy().row(1).click();
             add._textField().name().type("FormMGeneric" + i);
             add._button().saveTop().click();
+            System.out.println("FormMGeneric" + i + "created successfully.");
             i++;
         }
         
@@ -82,6 +86,7 @@ public class FormsGenerationSteps extends LoginSteps {
             manage._button().gear().row(1).click();
             manage._link().publish().row(1).click();
             manage._link().manage().click();
+            System.out.println("FormPublish" + l + "created successfully.");
             l++;
         }
         
@@ -96,6 +101,7 @@ public class FormsGenerationSteps extends LoginSteps {
             manage._button().gear().row(1).click();
             manage._link().publish().row(1).click();
             manage._link().manage().click();
+            System.out.println("FormPostTrip" + j + "created successfully.");
             j++;
         }
         
@@ -110,6 +116,7 @@ public class FormsGenerationSteps extends LoginSteps {
             manage._button().gear().row(1).click();
             manage._link().publish().row(1).click();
             manage._link().manage().click();
+            System.out.println("FormPreTrip" + k + "created successfully.");
             k++;
         }
         
@@ -122,6 +129,7 @@ public class FormsGenerationSteps extends LoginSteps {
         manage._button().gear().row(1).click();
         manage._link().publish().row(1).click();
         manage._link().manage().click();
+        System.out.println("FormGeneric" + i + "created successfully.");
         i++;
         
         while (i < 98) {
@@ -133,6 +141,7 @@ public class FormsGenerationSteps extends LoginSteps {
             manage._button().gear().row(1).click();
             manage._link().publish().row(1).click();
             manage._link().manage().click();
+            System.out.println("FormGeneric" + i + "created successfully.");
             i++;
         }
         
