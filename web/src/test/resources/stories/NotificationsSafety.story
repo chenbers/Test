@@ -32,19 +32,19 @@ And I click the 1st Row of the Entry Driver link
 Then I validate the Driver Name link is SAVEDENTRY
 
 Scenario: TC1486: Notifications - Safety - Table Properties NEED ASSISTANCE IN IMPLEMENTING HOW TO CHECK ORDER
-Given I am logged in
-When I click the Notifications link
-And I click the Safety link
-And I select "Top" from the Team dropdown
-And I select "Past Year" from the Time Frame dropdown
-And I click the Refresh button
-Then I validate the Sort By Date Time column sorts correctly
-And I validate the Sort By Driver column sorts correctly
-And I validate the Sort By Driver column sorts correctly
-And I validate the Sort By Group column sorts correctly
-And I validate the Sort By Group column sorts correctly
-And I validate the Sort By Vehicle column sorts correctly
-And I validate the Sort By Vehicle column sorts correctly
+!-- Given I am logged in
+!-- When I click the Notifications link
+!-- And I click the Safety link
+!-- And I select "Top" from the Team dropdown
+!-- And I select "Past Year" from the Time Frame dropdown
+!-- And I click the Refresh button
+!-- Then I validate the Sort By Date Time column sorts correctly
+!-- And I validate the Sort By Driver column sorts correctly
+!-- And I validate the Sort By Driver column sorts correctly
+!-- And I validate the Sort By Group column sorts correctly
+!-- And I validate the Sort By Group column sorts correctly
+!-- And I validate the Sort By Vehicle column sorts correctly
+!-- And I validate the Sort By Vehicle column sorts correctly
 
 Scenario: TC1487: Notifications - Safety - Tools Button
 Given I am logged in
