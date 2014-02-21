@@ -22,7 +22,7 @@ public class FormsGenerationSteps extends LoginSteps {
     public void thenIGenerateOneHundredFormsForTheManagePageTest() {
         int i = 1;
         
-        while (i < 6) {
+        while (i < 2) {
             manage._button().newForm().click();
             add._textField().name().type("FormPreTrip" + i);
             add._dropDown().trigger().selectTheOptionContaining("Pre-Trip", 1);
@@ -33,7 +33,7 @@ public class FormsGenerationSteps extends LoginSteps {
             i++;
         }
         
-        while (i < 12) {
+        while (i < 3) {
             manage._button().newForm().click();
             add._textField().name().type("FormPostTrip" + i);
             add._dropDown().trigger().selectTheOptionContaining("Post-Trip", 1);
@@ -44,7 +44,7 @@ public class FormsGenerationSteps extends LoginSteps {
             i++;
         }
         
-        while (i < 18) {
+        while (i < 4) {
             manage._button().newForm().click();
             add._textField().name().type("FormInactive" + i);
             add._dropDown().status().selectTheOptionContaining("Inactive", 1);
@@ -56,7 +56,7 @@ public class FormsGenerationSteps extends LoginSteps {
             i++;
         }
         
-        while (i < 19) {
+        while (i < 5) {
             manage._button().gear().row(1).click();
             manage._link().copy().row(1).click();
             add._textField().name().type("FormMGeneric" + i);
@@ -75,7 +75,7 @@ public class FormsGenerationSteps extends LoginSteps {
         int k = 1;
         int l = 1;
         
-        while (l < 6) {
+        while (l < 2) {
             manage._button().newForm().click();
             add._textField().name().type("FormPublish" + l);
             add._textField().description().type("Required");
@@ -90,7 +90,7 @@ public class FormsGenerationSteps extends LoginSteps {
             l++;
         }
         
-        while (j < 6) {
+        while (j < 2) {
             manage._button().newForm().click();
             add._textField().name().type("FormPostTrip" + j);
             add._dropDown().trigger().selectTheOptionContaining("Post-Trip", 1);
@@ -105,7 +105,7 @@ public class FormsGenerationSteps extends LoginSteps {
             j++;
         }
         
-        while (k < 6) {
+        while (k < 2) {
             manage._button().newForm().click();
             add._textField().name().type("FormPreTrip" + k);
             add._dropDown().trigger().selectTheOptionContaining("Pre-Trip", 1);
@@ -132,7 +132,7 @@ public class FormsGenerationSteps extends LoginSteps {
         System.out.println("FormGeneric" + i + "created successfully.");
         i++;
         
-        while (i < 98) {
+        while (i < 97) {
             manage._button().gear().row(1).click();
             manage._link().copy().row(1).click();
             add._textField().name().type("FormGeneric" + i);
