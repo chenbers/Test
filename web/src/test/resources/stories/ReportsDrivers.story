@@ -125,9 +125,9 @@ And I validate the Sort By Overall link is present
 And I validate the Sort By Speed link is present
 And I validate the Sort By Style link is present
 And I validate the Sort By Seatbelt link is present
-And I validate the Group Search textfield is present
-And I validate the Driver Search textfield is present
-And I validate the Vehicle Search textfield is present
+And I validate the Group textfield is present
+And I validate the Driver textfield is present
+And I validate the Vehicle textfield is present
 And I validate the Overall dropdown is present
 And I validate the Speed dropdown is present
 And I validate the Style dropdown is present
