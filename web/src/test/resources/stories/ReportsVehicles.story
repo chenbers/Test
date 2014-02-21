@@ -248,7 +248,7 @@ And I check 1st Row of the Column checkbox
 And I check 2nd Row of the Column checkbox
 And I click the Save button
 
-!-- Scenario: TC6275: Reports - Vehicles - Edit Columns - Default Command Button (THERE CURRENTLY IS NO DEFAULT KEY, REMOVING THIS TEST)
+Scenario: TC6275: Reports - Vehicles - Edit Columns - Default Command Button (THERE CURRENTLY IS NO DEFAULT KEY, REMOVING THIS TEST)
 !-- Given I am logged in
 !-- When I click the Reports link
 !-- And I click the Vehicles link
