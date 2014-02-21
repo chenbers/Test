@@ -26,6 +26,7 @@
     <bean id="daoUtilBean" class="com.inthinc.pro.backing.dao.DaoUtilBean" init-method="init" parent="baseBean" scope="session">
         <property name="driverDAO" ref="driverDAO"/>
         <property name="vehicleDAO" ref="vehicleDAO"/>
+        <property name="groupDAO" ref="groupDAO"/>
     </bean>
 
 	<bean id="fwdcmdBean" class="com.inthinc.pro.backing.FwdCmdBean" scope="session"/>
