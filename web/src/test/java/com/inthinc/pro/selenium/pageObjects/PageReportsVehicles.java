@@ -41,15 +41,15 @@ public class PageReportsVehicles extends ReportsBar {
 
 	public class VehicleReportDropDowns extends ReportsBarDropDowns {
 
-		public DHXDropDown overallFilter() {
+		public DHXDropDown overall() {
 			return new ReportsBarDropDowns().score(ReportsBarEnum.OVERALL_SCORE_DHX, page);
 		}
 
-		public DHXDropDown speedFilter() {
+		public DHXDropDown speed() {
 			return new ReportsBarDropDowns().score(ReportsBarEnum.SPEED_SCORE_DHX, page);
 		}
 
-		public DHXDropDown styleFilter() {
+		public DHXDropDown style() {
 			return new ReportsBarDropDowns().score(ReportsBarEnum.STYLE_SCORE_DHX, page);
 		}
 
@@ -125,20 +125,20 @@ public class PageReportsVehicles extends ReportsBar {
 
 	public class VehicleReportTextFields extends ReportsBarTextFields {
 
-		public TextField driverFilter() {
-			return new TextField(ReportsVehiclesEnum.DRIVER_FILTER);
+		public TextField driver() {
+			return new TextField(ReportsVehiclesEnum.DRIVER_TEXTFIELD);
 		}
 
-		public TextField groupFilter() {
-			return new TextField(ReportsVehiclesEnum.GROUP_FILTER);
+		public TextField group() {
+			return new TextField(ReportsVehiclesEnum.GROUP_TEXTFIELD);
 		}
 
-		public TextField vehicleFilter() {
-			return new TextField(ReportsVehiclesEnum.VEHICLE_FILTER);
+		public TextField vehicle() {
+			return new TextField(ReportsVehiclesEnum.VEHICLE_TEXTFIELD);
 		}
 
-		public TextField yearMakeModelFilter() {
-			return new TextField(ReportsVehiclesEnum.YEAR_MAKE_MODEL_FILTER);
+		public TextField yearMakeModel() {
+			return new TextField(ReportsVehiclesEnum.YEAR_MAKE_MODEL_TEXTFIELD);
 		}
 	}
 
