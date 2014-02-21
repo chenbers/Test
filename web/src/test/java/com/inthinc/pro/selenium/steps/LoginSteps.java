@@ -27,7 +27,7 @@ public class LoginSteps extends WebSteps {
     @Given("I am logged in")
     @When("I am logged in")
     public void givenIAmLoggedIn() {
-            loginPage.open("https://qa.inthinc.com/tiwipro");
+            loginPage.open("https://qa.inthinc.com");
             //I've added this method to handle when QA times out and displays the Connection Problem page
             if(!loginPage._textField().username().isPresent()) {
                 int time = 0;
