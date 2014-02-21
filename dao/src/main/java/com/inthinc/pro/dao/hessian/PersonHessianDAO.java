@@ -262,7 +262,7 @@ public class PersonHessianDAO extends GenericHessianDAO<Person, Integer> impleme
 		if ((person.getUser() != null) && (person.getUser().getUserID() != null)) {
 			getSiloService().deleteUser(person.getUser().getUserID());
 			deleteAlertsByUserId(person.getUser().getUserID());
-			deleteReportsByUserId(person);
+			deleteReportsByUserId(person.getUser());
 		}
 		if ((person.getDriver() != null) && (person.getDriver().getDriverID() != null)) {
 			getSiloService().deleteDriver(person.getDriver().getDriverID());
@@ -272,12 +272,12 @@ public class PersonHessianDAO extends GenericHessianDAO<Person, Integer> impleme
 	}
 
 	/**
-	 * @param person
+	 * @param user
 	 */
-	private void deleteReportsByUserId(final Person person) {
+	private void deleteReportsByUserId(final User user) {
 		try {
 			final List<Map<String, Object>> reportPrefsByUserIdList = getSiloService().getReportPrefsByUserID(
-					person.getUser().getUserID());
+					user.getUserID());
 			final Iterator<Map<String, Object>> iterator = reportPrefsByUserIdList.iterator();
 			while (iterator.hasNext()) {
 				final Map<String, Object> next = iterator.next();
@@ -288,7 +288,7 @@ public class PersonHessianDAO extends GenericHessianDAO<Person, Integer> impleme
 			// TODO need to be refactored the getReportPrefsByUserID
 			// function to not return an exception when no reports are
 			// retrieved
-			logger.info("No report for username=" + person.getUser().getUsername());
+			logger.info("No report for username=" + user.getUsername());
 		}
 	}
 
@@ -296,8 +296,8 @@ public class PersonHessianDAO extends GenericHessianDAO<Person, Integer> impleme
 	 * @param userID
 	 */
 	private void deleteAlertsByUserId(final Integer userID) {
-		final List<Map<String, Object>> alertsByUserIdMap = getSiloService().getAlertsByUserID(userID);
-		final Iterator<Map<String, Object>> iterator = alertsByUserIdMap.iterator();
+		final List<Map<String, Object>> alertsByUserIdList = getSiloService().getAlertsByUserID(userID);
+		final Iterator<Map<String, Object>> iterator = alertsByUserIdList.iterator();
 		while (iterator.hasNext()) {
 			final Map<String, Object> next = iterator.next();
 			final Integer redFlagAlertId = (Integer) next.get("alertID");
