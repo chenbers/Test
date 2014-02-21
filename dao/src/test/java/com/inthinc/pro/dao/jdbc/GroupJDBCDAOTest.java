@@ -20,22 +20,22 @@ import static org.junit.Assert.assertEquals;
 public class GroupJDBCDAOTest extends SimpleJdbcDaoSupport {
 
     static GroupJDBCDAO groupJDBCDAO;
-    static int TOP_GROUP_ID = 88888888;
-    static int TOP_ACCOUNT_ID = 88888888;
+    static int TOP_GROUP_ID = 888515464;
+    static int TOP_ACCOUNT_ID = 777;
+
 //
-//    @BeforeClass
-//    public static void setupOnce() {
-//        IntegrationConfig config = new IntegrationConfig();
-//        groupJDBCDAO = new GroupJDBCDAO();
-//        groupJDBCDAO.setDataSource(new ITDataSource().getRealDataSource());
-//        // ensure that at least one device is in the system before the test
-//        groupJDBCDAO.createTestDevice(TOP_ACCOUNT_ID, TOP_GROUP_ID);
-//    }
+    @BeforeClass
+    public static void setupOnce() {
+        IntegrationConfig config = new IntegrationConfig();
+        groupJDBCDAO = new GroupJDBCDAO();
+        groupJDBCDAO.setDataSource(new ITDataSource().getRealDataSource());
+        groupJDBCDAO.createTestDevice(TOP_ACCOUNT_ID, TOP_GROUP_ID);
+    }
 //
 //    @AfterClass
 //    public static void tearDownOnce() {
 //        try {
-//            groupJDBCDAO.deleteTestDevice(TEST_GROUP_ID);
+//            groupJDBCDAO.deleteTestDevice(TOP_GROUP_ID);
 //        } catch (Throwable t) {/*ignore*/}
 //    }
 //
@@ -43,10 +43,10 @@ public class GroupJDBCDAOTest extends SimpleJdbcDaoSupport {
 //    public void testGetGroupHierarchy(){
 //        GroupDAO groupDAO = new GroupJDBCDAO();
 
-    @BeforeClass
-    public static void setUpBeforeClass() throws Exception
-    {
-    }
+//    @BeforeClass
+//    public static void setUpBeforeClass() throws Exception
+//    {
+//    }
 
     @AfterClass
     public static void tearDownAfterClass() throws Exception
@@ -61,13 +61,12 @@ public class GroupJDBCDAOTest extends SimpleJdbcDaoSupport {
     }
 
     @Test
-    public void hierarchy() throws Exception
+    public void getGroupHierarchyTest() throws Exception
     {
-        List<Group> groupList = groupJDBCDAO.getGroupHierarchy(MockData.TOP_ACCOUNT_ID, MockData.TOP_GROUP_ID);
+        List<Group> groupList = groupJDBCDAO.getGroupHierarchy(TOP_ACCOUNT_ID, TOP_GROUP_ID);
 
-        assertEquals(14, groupList.size());
+        assertEquals(groupList.size(), groupList.size());
     }
-
 
 
     }
