@@ -37,13 +37,13 @@ And I validate the Sort By Vehicle ID link is present
 And I validate the Sort By Driver link is present
 And I validate the Sort By Assigned Status link is present
 And I validate the Sort By Entry Method link is present
-And I validate the Status Filter dropdown is present
-And I validate the Group Filter textfield is present
-And I validate the Trailer Filter textfield is present
-And I validate the Vehicle Filter textfield is present
-And I validate the Driver Filter textfield is present
-And I validate the Assigned Status Filter dropdown is present
-And I validate the Entry Method Filter dropdown is present
+And I validate the Status dropdown is present
+And I validate the Group textfield is present
+And I validate the Trailer textfield is present
+And I validate the Vehicle textfield is present
+And I validate the Driver textfield is present
+And I validate the Assigned Status dropdown is present
+And I validate the Entry Method dropdown is present
 And I validate the 1st Row of the Status Value text is present
 And I validate the 1st Row of the Group Value link is present
 And I validate the 1st Row of the Trailer Value text is present

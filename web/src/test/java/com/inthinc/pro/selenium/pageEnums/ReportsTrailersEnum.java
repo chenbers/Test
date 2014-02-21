@@ -8,10 +8,10 @@ public enum ReportsTrailersEnum implements SeleniumEnums {
 	
 	TITLE("Trailer Report", "//span[@class='trailer']"),
 	
-	GROUP_FILTER(null,"trailers-form:trailers:groupfsp"),
-    TRAILER_FILTER(null, "trailers-form:trailers:namefsp"),
-    VEHICLE_FILTER(null,"trailers-form:trailers:vehicle_namefsp"),
-    DRIVER_FILTER(null,"trailers-form:trailers:fullNamefsp"),
+	GROUP_TEXTFIELD(null,"trailers-form:trailers:groupfsp"),
+    TRAILER_TEXTFIELD(null, "trailers-form:trailers:namefsp"),
+    VEHICLE_TEXTFIELD(null,"trailers-form:trailers:vehicle_namefsp"),
+    DRIVER_TEXTFIELD(null,"trailers-form:trailers:fullNamefsp"),
 
     STATUS_VALUE(null, "trailers-form:trailers:###:status"),
     GROUP_VALUE(null,"trailers-form:trailers:###:group"),

@@ -42,16 +42,16 @@ public class PageReportsTrailers extends ReportsBar {
     
     public class TrailerReportDropDowns extends ReportsBarDropDowns {
         
-        public DHXDropDown statusFilter() {
+        public DHXDropDown status() {
             return new ReportsBarDropDowns().score(ReportsBarEnum.STATUS_SCORE_DHX, page);
         }
         
         
-        public DHXDropDown assignedStatusFilter() {
+        public DHXDropDown assignedStatus() {
             return new ReportsBarDropDowns().score(ReportsBarEnum.ASSIGNED_STATUS_DHX, page);
         }
         
-        public DHXDropDown entryMethodFilter() {
+        public DHXDropDown entryMethod() {
             return new ReportsBarDropDowns().score(ReportsBarEnum.ENTRY_METHOD_DHX, page);
         }
         
@@ -107,20 +107,20 @@ public class PageReportsTrailers extends ReportsBar {
     
     public class TrailerReportTextFields extends ReportsBarTextFields {
         
-        public TextField groupFilter() {
-            return new TextField(ReportsTrailersEnum.GROUP_FILTER);
+        public TextField group() {
+            return new TextField(ReportsTrailersEnum.GROUP_TEXTFIELD);
         }
         
-        public TextField trailerFilter() {
-            return new TextField(ReportsTrailersEnum.TRAILER_FILTER);
+        public TextField trailer() {
+            return new TextField(ReportsTrailersEnum.TRAILER_TEXTFIELD);
         }
         
-        public TextField vehicleFilter() {
-            return new TextField(ReportsTrailersEnum.VEHICLE_FILTER);
+        public TextField vehicle() {
+            return new TextField(ReportsTrailersEnum.VEHICLE_TEXTFIELD);
         }
         
-        public TextField driverFilter() {
-            return new TextField(ReportsTrailersEnum.DRIVER_FILTER);
+        public TextField driver() {
+            return new TextField(ReportsTrailersEnum.DRIVER_TEXTFIELD);
         }
     }
     

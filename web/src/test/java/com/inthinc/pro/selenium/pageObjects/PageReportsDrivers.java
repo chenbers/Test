@@ -42,19 +42,19 @@ public class PageReportsDrivers extends ReportsBar {
 
     public class DriverReportDropDowns extends ReportsBarDropDowns {
 
-        public DHXDropDown overallFilter() {
+        public DHXDropDown overall() {
             return new ReportsBarDropDowns().score(ReportsBarEnum.OVERALL_SCORE_DHX, page);
         }
 
-        public DHXDropDown seatBeltFilter() {
+        public DHXDropDown seatBelt() {
             return new ReportsBarDropDowns().score(ReportsBarEnum.SEATBELT_SCORE_DHX, page);
         }
 
-        public DHXDropDown speedFilter() {
+        public DHXDropDown speed() {
             return new ReportsBarDropDowns().score(ReportsBarEnum.SPEED_SCORE_DHX, page);
         }
 
-        public DHXDropDown styleFilter() {
+        public DHXDropDown style() {
             return new ReportsBarDropDowns().score(ReportsBarEnum.STYLE_SCORE_DHX, page);
         }
 
@@ -133,20 +133,20 @@ public class PageReportsDrivers extends ReportsBar {
 
     public class DriverReportTextFields extends ReportsBarTextFields {
 
-        public TextField driverFilter() {
-            return new TextField(ReportsDriversEnum.DRIVER_FILTER);
+        public TextField driver() {
+            return new TextField(ReportsDriversEnum.DRIVER_TEXTFIELD);
         }
 
-        public TextField employeeFilter() {
-            return new TextField(ReportsDriversEnum.EMPLOYEE_FILTER);
+        public TextField employee() {
+            return new TextField(ReportsDriversEnum.EMPLOYEE_TEXTFIELD);
         }
 
-        public TextField groupFilter() {
-            return new TextField(ReportsDriversEnum.GROUP_FILTER);
+        public TextField group() {
+            return new TextField(ReportsDriversEnum.GROUP_TEXTFIELD);
         }
 
-        public TextField vehicleFilter() {
-            return new TextField(ReportsDriversEnum.VEHICLE_FILTER);
+        public TextField vehicle() {
+            return new TextField(ReportsDriversEnum.VEHICLE_TEXTFIELD);
         }
     }
 
