@@ -81,7 +81,7 @@ public class PageNotificationsCrashHistory extends NotificationsEventsBar {
         }
     }
     
-    public class NotificationsCrashHistoryTexts extends EventsBarTexts {
+    public class NotificationsCrashHistoryTexts extends NotificationsBarTexts {
         
         public TextTable entryOccupants() {
             return new TextTable(NotificationsCrashHistoryEnum.OCCUPANTS_ENTRY);
