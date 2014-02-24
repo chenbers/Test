@@ -1,6 +1,7 @@
 package com.inthinc.pro.dao.jdbc;
 
 import com.inthinc.pro.dao.GroupDAO;
+import com.inthinc.pro.model.DOTOfficeType;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.GroupStatus;
 import com.inthinc.pro.model.LatLng;
@@ -18,11 +19,11 @@ import java.util.Map;
 
 public class GroupJDBCDAO extends SimpleJdbcDaoSupport implements GroupDAO   {
 
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 2855781183498326572L;
 
     private static final String GET_GROUP = "select g.groupID, g.acctID, g.parentID, g.name, g.desc, g.status, g.groupPath, g.addrID, g.addrID2, g.level, g.managerID, g.mapZoom, g.mapLat, g.mapLng, g.zoneRev, g.aggDate, g.newAggDate, g.dotOfficeType  from groups g ";
 
-    private static final String GET_GROUP_ACCT = "select g.groupID, g.acctID, g.parentID, g.name, g.desc, g.status, g.groupPath, g.addrID, g.addrID2, g.level, g.managerID, g.mapZoom, g.mapLat, g.mapLng, g.zoneRev, g.aggDate, g.newAggDate, g.dotOfficeType  from groups g ";
+    private static final String GET_GROUP_ACCT = "select g.groupID, g.acctID, g.parentID, g.name, g.desc, g.status, g.groupPath, g.addrID, g.addrID2, g.level, g.managerID, g.mapZoom, g.mapLat, g.mapLng, g.zoneRev, g.aggDate, g.newAggDate, g.dotOfficeType  from groups g where g.status <> 3 ";
 
     private static final String DEL_GROUP_BY_ID = "DELETE FROM groups WHERE groupID = ?";
 
@@ -42,7 +43,9 @@ public class GroupJDBCDAO extends SimpleJdbcDaoSupport implements GroupDAO   {
             groupItem.setMapZoom(rs.getInt("mapZoom"));
             groupItem.setZoneRev(rs.getInt("zoneRev"));
             groupItem.setAggDate(rs.getString("aggDate"));
-//            groupItem.setDotOfficeType();
+            groupItem.setMapLat(groupItem.getMapLat());
+            groupItem.setMapLng(groupItem.getMapLng());
+            groupItem.setDotOfficeType(rs.getObject("dotOfficeType") == null ? null : DOTOfficeType.valueOf(rs.getInt("dotOfficeType")));
             groupItem.setAddressID(rs.getInt("addrID"));
             groupItem.setPath(rs.getString("groupPath"));
 
@@ -53,37 +56,33 @@ public class GroupJDBCDAO extends SimpleJdbcDaoSupport implements GroupDAO   {
     @Override
     public List<Group> getGroupHierarchy(Integer acctID, Integer groupID) {
         Map<String, Object> params = new HashMap<String, Object>();
-
-        params.put("groupID", groupID);
         params.put("acctID", acctID);
+        params.put("groupID", groupID);
 
         StringBuilder groupSelect = new StringBuilder(GET_GROUP);
-//        List <Group> groupHierarchy = new ArrayList<Group>();
-        List <Group> groupList = getSimpleJdbcTemplate().query(groupSelect.toString(), groupParameterizedRow, params);
-//        List <Group> allGroups = getGroupsByAcctID(acctID);
-//
-//        for (Group group : allGroups)
-//        {
-//            if (group.getGroupID().equals(groupID))
-//            {
-//                groupHierarchy.add(group);
-//                addChildren(allGroups, groupHierarchy, group.getGroupID());
-//                break;
-//            }
-//        }
+        List <Group> allGroups = getGroupsByAcctID(acctID);
+        List <Group> groupHierarchy = new ArrayList<Group>();
 
-        return groupList;
+        for (Group group : allGroups)
+        {
+            if (group.getGroupID().equals(groupID))
+            {
+                groupHierarchy.add(group);
+                addChildren(allGroups, groupHierarchy, group.getGroupID());
+                break;
+            }
+        }
+        return groupHierarchy;
     }
 
     @Override
     public List<Group> getGroupsByAcctID(Integer acctID) {
         Map<String, Object> params = new HashMap<String, Object>();
-
         params.put("acctID", acctID);
 
         StringBuilder groupSelectAcct = new StringBuilder(GET_GROUP_ACCT);
-        List<Group> groupAcctID = getSimpleJdbcTemplate().query(groupSelectAcct.toString(), groupParameterizedRow, params);
 
+        List<Group> groupAcctID = getSimpleJdbcTemplate().query(groupSelectAcct.toString(), groupParameterizedRow, params);
         return groupAcctID;
     }
 
@@ -91,6 +90,7 @@ public class GroupJDBCDAO extends SimpleJdbcDaoSupport implements GroupDAO   {
     public Integer delete(Group group) {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("groupID", group.getGroupID());
+
         return getSimpleJdbcTemplate().update(DEL_GROUP_BY_ID, params);
     }
 
@@ -114,6 +114,19 @@ public class GroupJDBCDAO extends SimpleJdbcDaoSupport implements GroupDAO   {
         throw new NotImplementedException();
     }
 
+    public void createTestDevice(int testAccountId, int testGroupId) {
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("groupID", String.valueOf(testGroupId));
+        params.put("acctID", String.valueOf(testAccountId));
+        getSimpleJdbcTemplate().update("insert into groups (groupID, acctID, name, `desc`, parentID, status, groupPath, addrID, mapZoom, zoneRev, mapLat, mapLng) values (:groupID, :acctID, 'test-name', 'test-desc', 4, 1, '/0/4/5/', 972, 17, 2, '28.065', '-82.3664')", params);
+    }
+
+    public void deleteTestDevice(int testGroupId) {
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("groupID", String.valueOf(testGroupId));
+        getSimpleJdbcTemplate().update("delete from groups where groupID = :groupID", params);
+    }
+
     private void addChildren(List<Group> allGroups , List<Group> groupHierarchy, Integer parentID)
     {
         for (Group group : allGroups)
@@ -124,18 +137,5 @@ public class GroupJDBCDAO extends SimpleJdbcDaoSupport implements GroupDAO   {
                 addChildren(allGroups, groupHierarchy, group.getGroupID());
             }
         }
-    }
-
-    public void createTestDevice(int testAccountId, int testGroupId) {
-        Map<String, String> params = new HashMap<String, String>();
-        params.put("groupID", String.valueOf(testGroupId));
-        params.put("acctID", String.valueOf(testAccountId));
-        getSimpleJdbcTemplate().update("insert into groups (groupID, acctID, name, `desc`, parentID, status, groupPath) values (:groupID, :acctID, 'test-name', 'test-desc', 4, 1, '/0/4/5/')", params);
-    }
-
-    public void deleteTestDevice(int testGroupId) {
-        Map<String, String> params = new HashMap<String, String>();
-        params.put("groupID", String.valueOf(testGroupId));
-        getSimpleJdbcTemplate().update("delete from groups where groupID = :groupID", params);
     }
 }
