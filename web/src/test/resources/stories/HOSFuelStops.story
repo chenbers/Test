@@ -331,7 +331,6 @@ And I uncheck the 4th Row of the Column checkbox
 And I uncheck the 6th Row of the Column checkbox
 And I uncheck the 7th Row of the Column checkbox
 And I uncheck the 8th Row of the Column checkbox
-And I uncheck the 9th Row of the Column checkbox
 And I click the Save button
 And the Edit Columns popup closes
 And I validate the Sort By Date Time link is not present
@@ -351,7 +350,6 @@ And I check the 4th Row of the Column checkbox
 And I check the 6th Row of the Column checkbox
 And I check the 7th Row of the Column checkbox
 And I check the 8th Row of the Column checkbox
-And I check the 9th Row of the Column checkbox
 And I click the Save button
 And the Edit Columns popup closes
 And I validate the Sort By Date Time link is present
