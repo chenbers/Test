@@ -25,31 +25,10 @@ public class PageNotificationsCrashHistory extends NotificationsEventsBar {
         page = "crashHistory";
     }
     
-    public class NotificationsCrashHistoryLinks extends NotificationsBarLinks {
-        
-        @Override
-        public TextLink editColumns() {
-            return new TextLink(NotificationsCrashHistoryEnum.EDIT_COLUMNS);    
-        }
+    public class NotificationsCrashHistoryLinks extends EventsBarLinks {
         
         public TextLink addCrashReport() {
             return new TextLink(NotificationsCrashHistoryEnum.ADD_CRASH_REPORT);
-        }
-        
-        public TextLink sortByDateTime(){
-            return new TextLink(NotificationsCrashHistoryEnum.SORT_DATE_TIME);
-        }
-        
-        public TextLink sortByGroup(){
-            return new TextLink(NotificationsCrashHistoryEnum.SORT_GROUP);
-        }
-        
-        public TextLink sortByDriver(){
-            return new TextLink(NotificationsCrashHistoryEnum.SORT_DRIVER);
-        }
-        
-        public TextLink sortByVehicle(){
-            return new TextLink(NotificationsCrashHistoryEnum.SORT_VEHICLE);
         }
         
         public TextLink sortByOccupants(){
@@ -64,18 +43,6 @@ public class PageNotificationsCrashHistory extends NotificationsEventsBar {
             return new TextLink(NotificationsCrashHistoryEnum.SORT_WEATHER);
         }
         
-        public TextTableLink entryGroup() {
-            return new TextTableLink(NotificationsCrashHistoryEnum.GROUP_ENTRY);
-        }
-        
-        public TextTableLink entryDriver() {
-            return new TextTableLink(NotificationsCrashHistoryEnum.DRIVER_ENTRY);
-        }
-        
-        public TextTableLink entryVehicle() {
-            return new TextTableLink(NotificationsCrashHistoryEnum.VEHICLE_ENTRY);
-        }
-        
         public TextTableLink entryDetails() {
             return new TextTableLink(NotificationsCrashHistoryEnum.DETAILS_ENTRY);
         }
@@ -83,46 +50,13 @@ public class PageNotificationsCrashHistory extends NotificationsEventsBar {
     
     public class NotificationsCrashHistoryButtons extends EventsBarButtons {
         
-        public TextButton refresh() {
-            return new TextButton(NotificationsCrashHistoryEnum.REFRESH);
-        }
-        
-        public Button tools() {
-            return new Button(NotificationsCrashHistoryEnum.TOOLS);
-        }
-        
-        public Button exportToPDF() {
-            return new Button(NotificationsCrashHistoryEnum.EXPORT_TO_PDF);
-        }
-        
-        public Button emailThisReport() {
-            return new Button(NotificationsCrashHistoryEnum.EMAIL_REPORT);
-        }
-        
-        public Button exportToExcel() {
-            return new Button(NotificationsCrashHistoryEnum.EXPORT_TO_EXCEL);
-        }
-        
         public Button search() {
             return new Button(NotificationsCrashHistoryEnum.SEARCH_BUTTON);
         }
         
-        public ButtonTable entryLocation() {
-        	return new ButtonTable(NotificationsBarEnum.LOCATION_ENTRY);
-        }
-        
     }
     
-    public class NotificationsCrashHistoryDropDown {
-        
-        public DHXDropDown team() {
-            return new DHXDropDown(NotificationsCrashHistoryEnum.TEAM_DROP_DOWN, enums);
-        }
-        
-        public DHXDropDown timeFrame() {
-            return new DHXDropDown(NotificationsCrashHistoryEnum.TIME_FRAME_DROP_DOWN, page);
-        }
-    }
+    public class NotificationsCrashHistoryDropDown {}
     
     public class NotificationsCrashHistoryPopUps extends MastheadPopUps {
         
@@ -153,10 +87,6 @@ public class PageNotificationsCrashHistory extends NotificationsEventsBar {
     
     public class NotificationsCrashHistoryTexts extends NotificationsBarTexts {
         
-        public TextTable dateTime() {
-            return new TextTable(NotificationsBarEnum.DATE_TIME_ENTRY);
-        }
-        
         public TextTable entryOccupants() {
             return new TextTable(NotificationsCrashHistoryEnum.OCCUPANTS_ENTRY);
         }
@@ -172,10 +102,7 @@ public class PageNotificationsCrashHistory extends NotificationsEventsBar {
         public Text title(){
             return new Text(NotificationsCrashHistoryEnum.TITLE);
         }
-        
-        public Text counter(){
-            return new Text(NotificationsBarEnum.COUNTER);
-        }
+
     }
     
     public NotificationsCrashHistoryLinks _link() {
@@ -213,6 +140,7 @@ public class PageNotificationsCrashHistory extends NotificationsEventsBar {
 
     @Override
     protected boolean checkIsOnPage() {
-        return _link().addCrashReport().isPresent();
+        return _link().addCrashReport().isPresent() &&
+                        _button().search().isPresent();
     }
 }

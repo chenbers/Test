@@ -39,7 +39,7 @@ public abstract class NotificationsEventsBar extends NotificationsBar {
             return new Button(NotificationsBarEnum.EXPORT_TO_EXCEL, page);
         }
 
-        public ButtonTable eventLocation() {
+        public ButtonTable entryLocation() {
             return new ButtonTable(NotificationsBarEnum.LOCATION_ENTRY, page);
         }
 	}

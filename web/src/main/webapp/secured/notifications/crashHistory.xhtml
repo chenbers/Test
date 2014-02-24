@@ -70,7 +70,7 @@
 						</table>
 					  </li>
 					  <li class="l">
-						<a4j:commandButton id="crashHistoryRefresh" styleClass="left" oncomplete="initializeTable()"
+						<a4j:commandButton id="#{context}_refresh" styleClass="left" oncomplete="initializeTable()"
 									reRender="header,crashHistory-form:crashHistory,crashHistory-form:crashHistory-bottomScroller" 
 									action="#{crashHistoryBean.refreshAction}">
 	           				<span class="refresh">
@@ -97,7 +97,7 @@
 		            		</a4j:commandButton>            								
 					   </li>
 					  <li class="l text">
-						<a4j:commandLink id="crashHistoryEditColumns" styleClass="ls_tab_edit_columns" title="#{messages.button_editColumns}" oncomplete="javascript:Richfaces.showModalPanel('editColumns')" 
+						<a4j:commandLink id="#{context}_editColumns" styleClass="ls_tab_edit_columns" title="#{messages.button_editColumns}" oncomplete="javascript:Richfaces.showModalPanel('editColumns')"
 							reRender="editColumnsForm:editColumnGrid">
 							#{messages.button_editColumns}
 						</a4j:commandLink>
@@ -111,7 +111,7 @@
 					  	</li>  					  
 					  </security:authorize>
 					  <li class="r grid_icon">
-						<h:panelGroup id="crashHistoryReportToolImageId">
+						<h:panelGroup id="#{context}_reportToolImageId">
 							<h:graphicImage title="#{messages.contextMenu_tools_menu}" style="cursor: pointer;" value="/images/ico_tools.png"/>
 						</h:panelGroup>
 					  </li>
@@ -129,7 +129,7 @@
 		               	<ui:include src="/includes/reportsContextMenu.xhtml">	
 							<ui:param  name="emailModalPanelID" value="crashHistoryReportEmailModal" />
 							<ui:param  name="reportBean" value="#{crashHistoryBean}"/>
-							<ui:param  name="attachTo" value="crashHistoryReportToolImageId"/>
+							<ui:param  name="attachTo" value="#{context}_reportToolImageId"/>
 							<ui:param  name="exportExcel" value="TRUE"/>
     	 					<ui:param name="context" value="#{context}" />
 						</ui:include>
