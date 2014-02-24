@@ -68,6 +68,7 @@ And I click the Delete button
 And the Delete popup opens
 And I click the Delete button
 And the Delete popup closes
+And I click the Refresh button
 And I click the Add button
 Then I validate the Value Vehicle text is present
 And I validate the Time Message text is present
@@ -77,6 +78,7 @@ And I type "5,631.00" into the Trailer Fuel textfield
 And I select "tiwi 00" from the Driver dropdown
 And I save the Date dropdown as DATE
 And I save the Hours textfield as HOURS
+And I type "10" into the Minutes textfield
 And I save the Minutes textfield as MINUTES
 And I save the Seconds textfield as SECONDS
 And I save the Am Pm dropdown as AMPM
@@ -93,6 +95,7 @@ And I click the HOS link
 And I click the HOS Fuel Stops link
 And I type "waysmart01" into the Vehicle textfield
 And I click the suggested row 1 from the Vehicle textfield
+And I click the Refresh button
 And I validate the 1st Row of the Entry Date Time text contains DATETIME
 And I check the Check All checkbox
 And I click the Delete button
