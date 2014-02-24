@@ -48,18 +48,18 @@ Scenario:Forms Submissions Page - Make sure dates are showing correctly in the g
 Given I am logged in
 When I click the Forms link
 And I click the Submissions link
-And I select "2013-11-19" from the Date dropdown
+And I select "2014-01-01" from the Date dropdown
 And I click the Refresh button
-Then I validate the 1st Row of the Date Time Entry text contains "2013-11-19"
-And I validate the 2nd Row of the Date Time Entry text contains "2013-11-19"
-And I validate the 3rd Row of the Date Time Entry text contains "2013-11-19"
-And I validate the 4th Row of the Date Time Entry text contains "2013-11-19"
-And I validate the 5th Row of the Date Time Entry text contains "2013-11-19"
-And I validate the 6th Row of the Date Time Entry text contains "2013-11-19"
-And I validate the 7th Row of the Date Time Entry text contains "2013-11-19"
-And I validate the 8th Row of the Date Time Entry text contains "2013-11-19"
-And I validate the 9th Row of the Date Time Entry text contains "2013-11-19"
-And I validate the 10th Row of the Date Time Entry text contains "2013-11-19"
+Then I validate the 1st Row of the Date Time Entry text contains "2014-01-01"
+And I validate the 2nd Row of the Date Time Entry text contains "2014-01-01"
+And I validate the 3rd Row of the Date Time Entry text contains "2014-01-01"
+And I validate the 4th Row of the Date Time Entry text contains "2014-01-01"
+And I validate the 5th Row of the Date Time Entry text contains "2014-01-01"
+And I validate the 6th Row of the Date Time Entry text contains "2014-01-01"
+And I validate the 7th Row of the Date Time Entry text contains "2014-01-01"
+And I validate the 8th Row of the Date Time Entry text contains "2014-01-01"
+And I validate the 9th Row of the Date Time Entry text contains "2014-01-01"
+And I validate the 10th Row of the Date Time Entry text contains "2014-01-01"
 
 Scenario:Forms Submissions Page - Click on Group Name link
 Given I am logged in
