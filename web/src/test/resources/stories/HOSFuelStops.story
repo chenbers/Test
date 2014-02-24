@@ -27,7 +27,7 @@ And I click the Save Top button
 And I validate the Error Master text is "1 error(s) occurred. Please verify all the data entered is correct." 
 And I validate the Error Date text is "Date/Time in the future is not valid."
 
-Scenario: TC5628: HOS - Fuel Stops - Cancel Add Fuel Stop  (will fail until defect DE7966 is fixed)
+Scenario: TC5628: HOS - Fuel Stops - Cancel Add Fuel Stop
 Given I am logged in
 When I click the HOS link
 And I click the HOS Fuel Stops link
@@ -36,6 +36,7 @@ And I click the suggested row 1 from the Vehicle textfield
 And I click the Add button
 Then I validate the Value Vehicle text is present
 And I validate the Time Message text is present
+And I validate the Trailer Fuel textfield is not present
 And I type "5628" into the Trailer textfield
 And I type "5628" into the Vehicle Fuel textfield
 And I type "5628" into the Trailer Fuel textfield
@@ -43,9 +44,11 @@ And I select "tiwi 00" from the Driver dropdown
 And I click the Cancel Top button
 And I click the Add button
 And I validate the Trailer textfield is ""
+And I validate the Trailer Fuel textfield is not present
+And I type "5628" into the Trailer textfield
 And I validate the Vehicle Fuel textfield is ""
 And I validate the Trailer Fuel textfield is ""
-And I validate the Driver dropdown is ""
+And I validate the Driver dropdown is "Waysmart 01"
 And I click the Reports link
 And I click the HOS link
 And I click the HOS Fuel Stops link
