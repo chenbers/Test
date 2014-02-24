@@ -5,7 +5,6 @@ And I click the Published link
 Then I validate the Manage link is present
 And I validate the Published link is present
 And I validate the Submissions link is present
-And I validate the Customers link is present
 And I validate the Records Per Page dropdown is present
 And I validate the Search textfield is present
 And I validate the Sort By Name link is present
