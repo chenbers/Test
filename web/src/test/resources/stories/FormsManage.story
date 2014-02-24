@@ -5,7 +5,6 @@ Then I validate the New Form button is present
 And I validate the Manage link is present
 And I validate the Published link is present
 And I validate the Submissions link is present
-And I validate the Customers link is present
 And I validate the Records Per Page dropdown is present
 And I validate the Search textfield is present
 And I validate the Sort By Name link is present
@@ -52,7 +51,7 @@ And I click the 1st Row of the Edit link
 Then I validate I am on the Forms Edit page
 And I validate the Name field is SAVEDFORM
 
-Scenario: TCXXXX: Search - Manage tab
+Scenario: Forms Manage Page - Search
 Given I am logged in
 When I click the Forms link
 And I type "FormPreTrip" into the Search textfield
@@ -89,7 +88,7 @@ And I validate the 2nd Row of the Entry Trigger text contains "Post-Trip"
 And I validate the 3rd Row of the Entry Trigger text contains "Post-Trip"
 And I validate the 4th Row of the Entry Trigger text contains "Post-Trip"
 
-Scenario: TCXXXX: Search - Manage tab stays blank
+Scenario: Forms Manage Page - Search - Manage page stays blank
 Given I am logged in
 When I click the Forms link
 And I click the Published link
