@@ -27,6 +27,7 @@
         <property name="driverDAO" ref="driverDAO"/>
         <property name="vehicleDAO" ref="vehicleDAO"/>
         <property name="groupDAO" ref="groupDAO"/>
+        <property name="userDAO" ref="userDAO"/>
     </bean>
 
 	<bean id="fwdcmdBean" class="com.inthinc.pro.backing.FwdCmdBean" scope="session"/>

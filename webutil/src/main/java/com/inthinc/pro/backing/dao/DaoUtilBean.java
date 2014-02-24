@@ -25,6 +25,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.dao.GroupDAO;
+import com.inthinc.pro.dao.UserDAO;
 import com.inthinc.pro.dao.VehicleDAO;
 import com.inthinc.pro.exception.UpdateGroupException;
 import com.inthinc.pro.model.Group;
@@ -80,6 +81,7 @@ public class DaoUtilBean extends BaseBean
     private DriverDAO driverDAO;
     private VehicleDAO vehicleDAO;
     private GroupDAO groupDAO;
+    private UserDAO userDAO;
 
 
     public static final String NO_RESULTS = "No results were returned";
@@ -732,10 +734,12 @@ public class DaoUtilBean extends BaseBean
         boolean groupHasActiveChildren = false;
         boolean groupHasActiveDrivers = false;
         boolean groupHasActiveVehicles = false;
+        boolean groupHasActiveUsers = false;
 
         Group original= groupDAO.findByID(groupID);
         groupHasActiveDrivers = !driverDAO.getDriverNames(groupID).isEmpty();
         groupHasActiveVehicles = !vehicleDAO.getVehicleNames(groupID).isEmpty();
+        groupHasActiveUsers = !userDAO.getUsersInGroupHierarchy(groupID).isEmpty();
 
         List<Group> subGroups = getSubGroups(original.getGroupID());
 
@@ -750,7 +754,7 @@ public class DaoUtilBean extends BaseBean
             }
         }
 
-        return groupHasActiveChildren || groupHasActiveDrivers || groupHasActiveVehicles;
+        return groupHasActiveChildren || groupHasActiveDrivers || groupHasActiveVehicles || groupHasActiveUsers;
     }
 
     public List<Group> getSubGroups(Integer parentGroupID){
@@ -790,5 +794,13 @@ public class DaoUtilBean extends BaseBean
 
     public GroupDAO getGroupDAO() {
         return groupDAO;
+    }
+
+    public UserDAO getUserDAO() {
+        return userDAO;
+    }
+
+    public void setUserDAO(UserDAO userDAO) {
+        this.userDAO = userDAO;
     }
 }
