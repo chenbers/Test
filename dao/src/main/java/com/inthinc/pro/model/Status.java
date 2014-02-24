@@ -9,6 +9,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 public enum Status implements BaseEnum
 {
+    NEW(0, "NEW"),
     ACTIVE(1, "ACTIVE"),
     INACTIVE(2, "INACTIVE"),
     DELETED(3, "DELETED");

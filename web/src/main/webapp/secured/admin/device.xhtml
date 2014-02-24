@@ -154,7 +154,7 @@
                                 <td width="100"><h:outputText value="#{messages.editDevice_vehicleID}" /></td>
                                 <td>
                                   <h:panelGroup id="vehicleID">
-                                    <h:outputText value="#{devicesBean.item.vehicle.name}" /><h:outputText value=" " />
+                                    <h:outputText value="#{devicesBean.item.vehicle!=null ? devicesBean.item.vehicle.name : devicesBean.item.vehicleName}" /><h:outputText value=" " />
                                    <!--  bug 4324 remove <a href="#" onclick="Richfaces.showModalPanel('chooseVehicle'); return false;"><h:outputText value="#{messages.editDevice_assign}" /></a> -->
                                   </h:panelGroup>
                                 </td>
