@@ -36,13 +36,13 @@ public class TeamCommonBean extends BaseBean {
     private Integer groupID;
     private Group group;
 
-    private TimeFrame timeFrame = TimeFrame.ONE_DAY_AGO;
     private UITabPanel teamTabPanel;
     private String selectedTabId;
     
     private Map<String,List<DriverVehicleScoreWrapper>> cachedResults = Collections.synchronizedMap(new HashMap<String,List<DriverVehicleScoreWrapper>>());
 //    private Map<String,Map<Integer, List<ScoreableEntity>>> cachedTrendResults = Collections.synchronizedMap(new HashMap<String,Map<Integer, List<ScoreableEntity>>>());
     private Map<String,GroupTrendWrapper> cachedTrendResults = Collections.synchronizedMap(new HashMap<String,GroupTrendWrapper>());
+    private TeamCommonBeanTimeFrame teamCommonBeanTimeFrameBean;
     
     public void init() {
     	//This sets the selected tab id to always be teamStatistics. Breaks the backbutton and history funtionality.
@@ -95,19 +95,19 @@ public class TeamCommonBean extends BaseBean {
     }
 
     public DateTime getStartTime() {
-        return timeFrame.getInterval().getStart();
+        return teamCommonBeanTimeFrameBean.getTimeFrame().getInterval().getStart();
     }
     
     public DateTime getEndTime() {
-        return timeFrame.getInterval().getEnd();
+        return teamCommonBeanTimeFrameBean.getTimeFrame().getInterval().getEnd();
     }
     
     public TimeFrame getTimeFrame() {
-        return timeFrame;
+        return teamCommonBeanTimeFrameBean.getTimeFrame();
     }
 
     public void setTimeFrame(TimeFrame timeFrame) {
-        this.timeFrame = timeFrame;
+    	teamCommonBeanTimeFrameBean.setTimeFrame(timeFrame);
     }
 
 	public UITabPanel getTeamTabPanel() {
@@ -318,4 +318,18 @@ public class TeamCommonBean extends BaseBean {
                 this.getTimeFrame() == TimeFrame.SIX_DAYS_AGO ||
                 this.getTimeFrame() == TimeFrame.MONTH;
     }
+
+	/**
+	 * @return the teamCommonBeanTimeFrame
+	 */
+	public TeamCommonBeanTimeFrame getTeamCommonBeanTimeFrame() {
+		return teamCommonBeanTimeFrameBean;
+	}
+
+	/**
+	 * @param teamCommonBeanTimeFrame the teamCommonBeanTimeFrame to set
+	 */
+	public void setTeamCommonBeanTimeFrame(TeamCommonBeanTimeFrame teamCommonBeanTimeFrame) {
+		this.teamCommonBeanTimeFrameBean = teamCommonBeanTimeFrame;
+	}
 }
