@@ -8,6 +8,30 @@ Meta:
 
 Narrative:
 
+Scenario: TC1568: Reports - Drivers - UI
+Given I am logged in
+When I click the Reports link
+And I click the Drivers link
+Then I validate I am on the Drivers page
+And I validate the Edit Columns link is present
+And I validate the Tools button is present
+And I validate the Counter text is present
+And I validate the Sort By Driver link is present
+And I validate the Sort By Group link is present
+And I validate the Sort By Vehicle link is present
+And I validate the Sort By Distance Driven link is present
+And I validate the Sort By Overall link is present
+And I validate the Sort By Speed link is present
+And I validate the Sort By Style link is present
+And I validate the Sort By Seatbelt link is present
+And I validate the Group textfield is present
+And I validate the Driver textfield is present
+And I validate the Vehicle textfield is present
+And I validate the Overall dropdown is present
+And I validate the Speed dropdown is present
+And I validate the Style dropdown is present
+And I validate the Seatbelt dropdown is present
+
 Scenario: TC1540: Reports - Drivers - Bookmark Entry 
 Given I am logged in
 And I click the Master Search button
@@ -20,6 +44,16 @@ When I log back in
 Then I validate I am on the Reports Drivers page
 And I validate the Master Search textfield is ""
 And I validate that the 1st Row of the Driver Value link is SAVEDDRIVER
+
+Scenario: Reports - Drivers - Bookmark Entry to Different Account
+Given I am logged in
+When I click the Reports link
+And I click the Drivers link
+And I bookmark the page
+And I click the Logout link
+And I click the bookmark I just added
+And I log back in under the editable account
+Then I validate I am on the Reports Drivers page
 
 Scenario: TC1543: Reports - Drivers - Driver Link
 Given I am logged in
@@ -108,30 +142,6 @@ And I click the Tools button
 Then I validate the Export Email button is present
 And I validate the Export PDF button is present
 And I validate the Export Excel button is present
-
-Scenario: TC1568: Reports - Drivers - UI
-Given I am logged in
-When I click the Reports link
-And I click the Drivers link
-Then I validate I am on the Drivers page
-And I validate the Edit Columns link is present
-And I validate the Tools button is present
-And I validate the Counter text is present
-And I validate the Sort By Driver link is present
-And I validate the Sort By Group link is present
-And I validate the Sort By Vehicle link is present
-And I validate the Sort By Distance Driven link is present
-And I validate the Sort By Overall link is present
-And I validate the Sort By Speed link is present
-And I validate the Sort By Style link is present
-And I validate the Sort By Seatbelt link is present
-And I validate the Group textfield is present
-And I validate the Driver textfield is present
-And I validate the Vehicle textfield is present
-And I validate the Overall dropdown is present
-And I validate the Speed dropdown is present
-And I validate the Style dropdown is present
-And I validate the Seatbelt dropdown is present
 
 Scenario: TC1569: Reports - Drivers - Vehicle Link
 Given I am logged in
@@ -265,7 +275,7 @@ And I validate the Sort By Driver link is present
 And I validate the Sort By Group link is present
 And I validate the Sort By Employee ID link is present
 
-!-- Scenario: TC1576: Reports - Drivers - Edit Columns - Default Command Button
+Scenario: TC1576: Reports - Drivers - Edit Columns - Default Command Button
 !-- Given I am logged in
 !-- When I click the Reports link
 !-- And I click the Drivers link
