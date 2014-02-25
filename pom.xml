@@ -58,19 +58,19 @@
         </developer>
     </developers>
     <modules>
-        <module>web</module>
-        <module>webutil</module>
+       <module>web</module>
+        <!-- <module>webutil</module>
         <module>scheduler</module>
         <module>service</module>
         <module>reports</module>
-        <!-- <module>webfulfillment</module> -->
-        <module>hoskiosk</module>
-        <module>dao</module>
-        <module>i18nutil</module>
-        <module>automation</module>
-        <module>noteparser</module>
-        <module>emulation</module>
-        <module>aggregation</module>
+        <module>webfulfillment</module>
+        <module>hoskiosk</module> 
+        <module>dao</module> 
+        <module>i18nutil</module> 
+        <module>automation</module> 
+        <module>noteparser</module> 
+        <module>emulation</module> 
+        <module>aggregation</module> -->
     </modules>
     <properties>
         <compileSource>1.6</compileSource>
@@ -78,7 +78,7 @@
         <skipUT>true</skipUT>
         <skipIT>true</skipIT>
         <skipAT>false</skipAT>
-        <AT.threadCount>2</AT.threadCount>
+        <AT.threadCount>4</AT.threadCount>
         <AT.isThreadCountPerCore>true</AT.isThreadCountPerCore>
         <AT.parallelOn>classes</AT.parallelOn>
         <junit.version>4.11</junit.version>
@@ -130,7 +130,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>2.14</version>
+                <version>2.11</version>
                 <configuration>
                     <skip>${skipUT}</skip>
                     <excludes>
@@ -179,13 +179,12 @@
                             <threadCount>${AT.threadCount}</threadCount>
                             <perCoreThreadCount>${AT.isThreadCountPerCore}</perCoreThreadCount>
                             <excludes>
-								<exclude>**/selenium/**/AdminVehicle850Test.java</exclude>
-								<exclude>**/selenium/**/CurrentStoryTest.java</exclude>
-								<exclude>**/selenium/**/RouteGetEndpointTest.java</exclude>
+								<exclude>**/selenium/testSuites/**/AdminVehicle850Test.java</exclude>
+								<exclude>**/selenium/testSuites/**/RouteGetEndpointTest.java</exclude>
 								<exclude>**/selenium/testSuites/**/WebTest.java</exclude>
                             </excludes>
                             <includes>
-								<include>**/selenium/**/**Test.java</include>
+								<include>**/selenium/testSuites/**/CurrentStoryTest.java</include>
                             </includes>
                             <systemProperties>
                                 <property>
