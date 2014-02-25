@@ -1,4 +1,4 @@
-Scenario: TCXXXX: Forms Manage Page - Table View - UI
+Scenario: Forms Manage Page - Table View - UI
 Given I am logged in
 When I click the Forms link
 Then I validate the New Form button is present
@@ -15,12 +15,34 @@ And I validate the Sort By Status link is present
 And I validate the Sort By Trigger link is present
 And I validate the Entries text is present
 
-Scenario: TCXXXX: Default Records dropdowns are set to 10
+Scenario: Forms Manage Page - Bookmark Entry
+Given I am logged in
+When I click the Forms link
+And I validate I am on the Forms Manage page
+And I bookmark the page
+And I click the Logout link
+And I click the bookmark I just added
+Then I validate I am on the Login page
+When I log back in
+Then I validate I am on the Forms Manage page
+
+Scenario: Forms Manage Page - Bookmark Entry to Different Account
+Given I am logged in
+When I click the Forms link
+And I validate I am on the Forms Manage page
+And I bookmark the page
+And I click the Logout link
+And I click the bookmark I just added
+Then I validate I am on the Login page
+When I log back in under the editable account
+Then I validate I am on the Forms Manage page
+
+Scenario: Default Records dropdowns are set to 10
 Given I am logged in
 When I click the Forms link
 Then I validate the Records Per Page dropdown is "10"
 
-Scenario: TCXXXX: Forms Manage Page - Records per page test
+Scenario: Forms Manage Page - Records per page test
 Given I am logged in
 When I click the Forms link
 And I select "10" from the Records Per Page dropdown 
@@ -36,13 +58,13 @@ And I select "100" from the Records Per Page dropdown
 And I validate the 101st Row of the Entry Name text is not present
 And I validate the Entries text contains "Showing 1 to 100 of"
 
-Scenario: TCXXXX: Forms Manage Page - New Form button
+Scenario: Forms Manage Page - New Form button
 Given I am logged in
 When I click the Forms link
 And I click the New Form button
 Then I validate I am on the Forms Add page
 
-Scenario: TCXXXX: Forms Manage Page - Forms Edit link
+Scenario: Forms Manage Page - Forms Edit link
 Given I am logged in
 When I click the Forms link
 And I save the 1st Row of the Entry Name text as SAVEDFORM
@@ -98,7 +120,7 @@ Then I validate the Search textfield is ""
 And I click the Published link
 And I validate the Search textfield is ""
 
-Scenario: TCXXXX: Empty Search
+Scenario: Empty Search
 Given I am logged in
 When I click the Forms link
 And I type "randomstringthatwillnotcomeup" into the Search textfield
@@ -107,7 +129,7 @@ And I validate the Entries text contains "Showing 0 to 0 of 0 entries"
 And I validate the Previous link is not present
 And I validate the Next link is not present
 
-Scenario: TCXXXX: Forms Manage Page - Copy Form with all fields and Validate
+Scenario: Forms Manage Page - Copy Form with all fields and Validate
 Given I am logged in
 When I click the Forms link
 And I click the New Form button
