@@ -63,14 +63,6 @@
         <module>scheduler</module>
         <module>service</module>
         <module>reports</module>
-<!--         <module>webfulfillment</module> -->
-        <module>hoskiosk</module> 
-        <module>dao</module> 
-        <module>i18nutil</module> 
-        <module>automation</module> 
-        <module>noteparser</module> 
-        <module>emulation</module> 
-        <module>aggregation</module>
     </modules>
     <properties>
         <compileSource>1.6</compileSource>
@@ -180,16 +172,12 @@
                             <threadCount>${AT.threadCount}</threadCount>
                             <perCoreThreadCount>${AT.isThreadCountPerCore}</perCoreThreadCount>
                             <excludes>
-                                <exclude>**/selenium/**/AdminVehicle850Test.java</exclude>
-                                <exclude>**/selenium/**/CurrentStoryTest.java</exclude>
-                                <exclude>**/selenium/**/RouteGetEndpointTest.java</exclude>
+                                <exclude>**/selenium/testSuites/**/AdminVehicle850Test.java</exclude>
+                                <exclude>**/selenium/testSuites/**/RouteGetEndpointTest.java</exclude>
                                 <exclude>**/selenium/testSuites/**/WebTest.java</exclude>
                             </excludes>
                             <includes>
-                                <include>**/selenium/**/CurrentStoryTest.java</include>
-                                <include>**/selenium/**/AAFormsGenerationForManageTest.java</include>
-                                <include>**/selenium/**/AAFormsGenerationForPublishTest.java</include>
-                                <include>**/selenium/**/AAFormsGenerationForSubmissionsTest.java</include>
+                                <include>**/selenium/testSuites/**/CurrentStoryTest.java</include>
                             </includes>
                             <systemProperties>
                                 <property>
