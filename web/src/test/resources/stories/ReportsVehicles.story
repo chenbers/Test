@@ -23,6 +23,31 @@ And I check the 8th Row of the Column checkbox
 And I check the 9th Row of the Column checkbox
 And I click the the Save button
 
+Scenario: TC1641: Reports - Vehicles - UI
+Given I am logged in
+When I click the Reports link
+And I click the Vehicles link
+Then I validate I am on the Reports Vehicles page
+And I validate the Edit Columns link is present
+And I validate the Tools button is present
+And I validate the Counter text is present
+And I validate the Sort By Group link is present
+And I validate the Sort By Vehicle ID link is present
+And I validate the Sort By Year Make Model link is present
+And I validate the Sort By Driver link is present
+And I validate the Sort By Distance Driven link is present
+And I validate the Sort By Odometer link is present
+And I validate the Sort By Overall link is present
+And I validate the Sort By Speed link is present
+And I validate the Sort By Style link is present
+And I validate the Group Value text table link is present
+And I validate the Vehicle Value text table link is present
+And I validate the Year Make Model link is present
+And I validate the Sort By Driver link is present
+And I validate the Overall dropdown is present
+And I validate the Speed dropdown is present
+And I validate the Style dropdown is present
+
 Scenario: TC1614: Reports - Vehicles - Bookmark Entry 
 Given I am logged in
 And I select "Vehicles" from the Master Search dropdown
@@ -35,6 +60,16 @@ When I log back in
 Then I validate I am on the Reports Vehicles page
 And I validate the Master Search textfield is ""
 And I validate that the 1st Row of the Vehicle Value link is SAVEDVEHICLE
+
+Scenario: Reports - Vehicles - Bookmark Entry to Different Account
+Given I am logged in
+When I click the Reports link
+And I click the Vehicles link
+And I bookmark the page
+And I click the Logout link
+And I click the bookmark I just added
+And I log back in under the editable account
+Then I validate I am on the Reports Vehicles page
 
 Scenario: TC1619: Reports - Vehicles - Driving Style Score Link
 Given I am logged in
@@ -99,31 +134,6 @@ And I click the Tools button
 Then I validate the Email Report button is present
 And I validate the Export Pdf button is present
 And I validate the Export Excel button is present
-
-Scenario: TC1641: Reports - Vehicles - UI
-Given I am logged in
-When I click the Reports link
-And I click the Vehicles link
-Then I validate I am on the Reports Vehicles page
-And I validate the Edit Columns link is present
-And I validate the Tools button is present
-And I validate the Counter text is present
-And I validate the Sort By Group link is present
-And I validate the Sort By Vehicle ID link is present
-And I validate the Sort By Year Make Model link is present
-And I validate the Sort By Driver link is present
-And I validate the Sort By Distance Driven link is present
-And I validate the Sort By Odometer link is present
-And I validate the Sort By Overall link is present
-And I validate the Sort By Speed link is present
-And I validate the Sort By Style link is present
-And I validate the Group Value text table link is present
-And I validate the Vehicle Value text table link is present
-And I validate the Year Make Model link is present
-And I validate the Sort By Driver link is present
-And I validate the Overall dropdown is present
-And I validate the Speed dropdown is present
-And I validate the Style dropdown is present
 
 Scenario: TC1642: Reports - Vehicles - Vehicle ID Link
 Given I am logged in
