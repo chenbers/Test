@@ -1,4 +1,6 @@
-Scenario: Check all boxes on vehicles edit columns and save so they are visible for all the tests in this suite
+Narrative:
+
+Scenario: Reports - Trailers - Check all boxes on vehicles edit columns and save so they are visible for all the tests in this suite
 Given I am logged in
 When I click the Reports link
 And I click the Trailers link
@@ -114,6 +116,16 @@ Then I validate I am on the Reports Trailers page
 And I validate the Master Search textfield is ""
 And I validate that the 1st Row of the Trailer Value text is SAVEDTRAILER
 
+Scenario: Reports - Trailers - Bookmark Entry to Different Account
+Given I am logged in
+When I click the Reports link
+And I click the Trailers link
+And I bookmark the page
+And I click the Logout link
+And I click the bookmark I just added
+And I log back in under the editable account
+Then I validate I am on the Reports Trailers page
+
 Scenario: Reports - Trailers - Group Link
 Given I am logged in
 When I click the Reports link
@@ -124,17 +136,17 @@ And I save the 1st Row of the Group Value link as SAVEDGROUP
 And I click the the 1st Row of the Group Value link
 Then I validate the Driver Team Value text is SAVEDGROUP
 
-Scenario: Reports - Trailers - Table Properties NEED TO IMPLEMENT CHECKING ALPHABETICAL ORDER
-Given I am logged in
-When I click the Reports link
-And I click the Trailers link
-And I click the Sort By Status link
-And I click the Sort By Group link
-And I click the Sort By Trailer ID link
-And I click the Sort By Vehicle ID link
-And I click the Sort By Driver link
-And I click the Sort By Assigned Status link
-And I click the Sort By Entry Method link
+Scenario: Reports - Trailers - Table Properties
+!-- Given I am logged in
+!-- When I click the Reports link
+!-- And I click the Trailers link
+!-- And I click the Sort By Status link
+!-- And I click the Sort By Group link
+!-- And I click the Sort By Trailer ID link
+!-- And I click the Sort By Vehicle ID link
+!-- And I click the Sort By Driver link
+!-- And I click the Sort By Assigned Status link
+!-- And I click the Sort By Entry Method link
 
 Scenario: Reports - Trailers - Vehicle ID Link
 Given I am logged in
@@ -316,5 +328,3 @@ When I log back in
 And I click the Reports link
 And I click the Trailers link
 Then I validate the Sort By Group link is present
-
-
