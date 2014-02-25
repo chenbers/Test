@@ -8,6 +8,30 @@ Meta:
 
 Narrative:
 
+Scenario: TC1488: Notifications - Safety - UI
+Given I am logged in
+When I click the Notifications link
+And I click the Safety link
+Then I validate I am on the Notifications Safety page
+And I validate the Team dropdown is present
+And I validate the Time Frame dropdown is present
+And I validate the Refresh button is present
+And I validate the Edit Columns link is present
+And I validate the Tools button is present
+And I validate the Counter text is present
+And I validate the Sort By Date Time link is present
+And I validate the Sort By Group link is present
+And I validate the Sort By Driver link is present
+And I validate the Sort By Vehicle link is present
+And I validate the Header Category text is present
+And I validate the Header Detail text is present
+And I validate the Header Status text is present
+And I validate the Group textfield is present
+And I validate the Driver textfield is present
+And I validate the Vehicle textfield is present
+And I validate the Category dropdown is present
+And I validate the Status dropdown is present
+
 Scenario: TC1475: Notifications - Safety - Bookmark Entry 
 Given I am logged in
 When I click the Notifications link
@@ -17,6 +41,16 @@ And I click the Logout link
 And I click the bookmark I just added
 Then I validate I am on the Login page
 When I log back in
+Then I validate I am on the Notifications Safety page
+
+Scenario: Notifications - Safety - Bookmark Entry to Different Account
+Given I am logged in
+When I click the Notifications link
+And I click the Safety link
+And I bookmark the page
+And I click the Logout link
+And I click the bookmark I just added
+And I log back in under the editable account
 Then I validate I am on the Notifications Safety page
 
 Scenario: TC1437: Notifications - Safety - Driver Link
@@ -30,6 +64,19 @@ And I click the Sort By Driver link
 And I save the 1st Row of the Entry Driver link as SAVEDENTRY
 And I click the 1st Row of the Entry Driver link
 Then I validate the Driver Name link is SAVEDENTRY
+
+Scenario: Notifications - Safety - Group Link
+Given I am logged in
+When I click the Notifications link
+And I click the Safety link
+And I select "Top" from the Team dropdown
+And I select "Past Year" from the Time Frame dropdown
+And I click the Refresh button
+And I click the Sort By Group link
+And I save the 1st Row of the Entry Group link as SAVEDENTRY
+And I click the 1st Row of the Entry Group link
+And I validate the Driver Team Value text is SAVEDENTRY
+Then I validate the Team Name text is SAVEDENTRY
 
 Scenario: TC1486: Notifications - Safety - Table Properties NEED ASSISTANCE IN IMPLEMENTING HOW TO CHECK ORDER
 !-- Given I am logged in
@@ -54,30 +101,6 @@ And I click the Tools button
 Then I validate the Email Report button is present
 And I validate the Export To PDF button is present
 And I validate the Export To Excel button is present
-
-Scenario: TC1488: Notifications - Safety - UI
-Given I am logged in
-When I click the Notifications link
-And I click the Safety link
-Then I validate I am on the Notifications Safety page
-And I validate the Team dropdown is present
-And I validate the Time Frame dropdown is present
-And I validate the Refresh button is present
-And I validate the Edit Columns link is present
-And I validate the Tools button is present
-And I validate the Counter text is present
-And I validate the Sort By Date Time link is present
-And I validate the Sort By Group link is present
-And I validate the Sort By Driver link is present
-And I validate the Sort By Vehicle link is present
-And I validate the Header Category text is present
-And I validate the Header Detail text is present
-And I validate the Header Status text is present
-And I validate the Group textfield is present
-And I validate the Driver textfield is present
-And I validate the Vehicle textfield is present
-And I validate the Category dropdown is present
-And I validate the Status dropdown is present
 
 Scenario: TC1489: Notifications - Safety - Vehicle Link
 Given I am logged in
@@ -205,7 +228,7 @@ And I validate the Sort By Vehicle link is present
 And I validate the Header Category text is present
 And I validate the Header Detail text is present
 
-!-- Scenario: TC1496: Notifications - Safety - Edit Columns - Default Command Button
+Scenario: TC1496: Notifications - Safety - Edit Columns - Default Command Button
 !-- Given I am logged in
 !-- When I click the Notifications link
 !-- And I click the Safety link
