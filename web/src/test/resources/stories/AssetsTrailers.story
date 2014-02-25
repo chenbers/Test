@@ -1226,7 +1226,7 @@ And I select "DELETED" from the Status dropdown
 And I click the Save button
 And I validate the Entries text contains "Showing 0 to 0 of 0 entries"
 
-Scenario: Assets - Trailers - New Trailer (save button - no changes)
+Scenario: Assets - Trailers - New Trailer (save button - no changes - error text)
 Given I am logged in
 When I click the Top Trailers link
 And I click the New_ button
@@ -1621,7 +1621,7 @@ And I validate the Assigned Vehicle text is ""
 And I validate the Assigned Team text is ""
 And I validate the Assigned Driver text is ""
 
-Scenario: Assets - Trailers - Edit Trailer (edit button - save changes, but changes are invalid) (TEST WILL FAIL TILL BUG IS FIXED)
+Scenario: Assets - Trailers - Edit Trailer (edit button - save changes, but changes are invalid)
 Given I am logged in
 When I click the Top Trailers link
 And I click the Show Hide Columns link
