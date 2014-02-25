@@ -1,4 +1,4 @@
-package com.inthinc.pro.selenium.testSuites;
+package com.inthinc.pro.selenium.oldTestSuites;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -12,6 +12,7 @@ import com.inthinc.device.hessian.tcp.AutomationHessianFactory;
 import com.inthinc.pro.automation.utils.AutomationThread;
 import com.inthinc.pro.selenium.pageObjects.PageLogin;
 import com.inthinc.pro.selenium.pageObjects.PageNotificationsRedFlags;
+import com.inthinc.pro.selenium.testSuites.WebTest;
 
 @Ignore
 public class ChangePasswordTest extends WebTest {

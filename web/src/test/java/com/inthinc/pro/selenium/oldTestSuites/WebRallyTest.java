@@ -1,4 +1,4 @@
-package com.inthinc.pro.selenium.testSuites;
+package com.inthinc.pro.selenium.oldTestSuites;
 
 import org.apache.log4j.Level;
 import org.jbehave.core.annotations.AfterScenario;

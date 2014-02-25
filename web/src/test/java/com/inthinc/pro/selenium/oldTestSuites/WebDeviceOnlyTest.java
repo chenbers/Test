@@ -1,13 +1,13 @@
-package com.inthinc.pro.selenium.testSuites;
+package com.inthinc.pro.selenium.oldTestSuites;
 
 import org.junit.After;
 import org.junit.Before;
 
-import com.inthinc.pro.automation.test.DeviceOnlyRallyTest;
+import com.inthinc.pro.automation.test.DeviceOnlyTest;
 
-public class WebDeviceOnlyRallyTest extends DeviceOnlyRallyTest {
+public class WebDeviceOnlyTest extends DeviceOnlyTest {
 
-    public WebDeviceOnlyRallyTest() {
+    public WebDeviceOnlyTest() {
     }
     
     @Before

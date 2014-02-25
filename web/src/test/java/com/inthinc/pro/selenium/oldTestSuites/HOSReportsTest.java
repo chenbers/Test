@@ -1,4 +1,4 @@
-package com.inthinc.pro.selenium.testSuites;
+package com.inthinc.pro.selenium.oldTestSuites;
 
 import org.jbehave.core.annotations.UsingSteps;
 import org.junit.Ignore;
@@ -14,6 +14,7 @@ import com.inthinc.pro.selenium.pageObjects.PageHOSDriverLogs;
 import com.inthinc.pro.selenium.pageObjects.PageHOSFuelStops;
 import com.inthinc.pro.selenium.pageObjects.PageLogin;
 import com.inthinc.pro.selenium.steps.LoginSteps;
+import com.inthinc.pro.selenium.testSuites.WebStories;
 
 @UsingSteps(instances={LoginSteps.class})
 @PageObjects(list={PageLogin.class, PageExecutiveDashboard.class, PageAdminUsers.class, PageHOSDriverLogs.class, PageHOSFuelStops.class, PageHOSAddEditFuelStops.class,

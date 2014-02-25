@@ -33,6 +33,10 @@ public class PageAssetsTrailers extends Masthead {
             return new TextButton(AssetsTrailersEnum.CANCEL_BUTTON);
         }
         
+        public TextButton delete() {
+            return new TextButton(AssetsTrailersEnum.DELETE_BUTTON);
+        }
+        
     }
     
     public class AssetsTrailersDropDowns extends MastheadDropDowns {

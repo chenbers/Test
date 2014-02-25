@@ -1,4 +1,4 @@
-package com.inthinc.pro.selenium.testSuites;
+package com.inthinc.pro.selenium.oldTestSuites;
 
 
 //TEST BEING TAKEN OFFLINE FOR NOW

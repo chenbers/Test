@@ -65,6 +65,7 @@ public enum AssetsTrailersEnum implements SeleniumEnums {
 	EDIT_BUTTON("Edit", "//button[@id='btnDetailEdit']"),
 	SAVE_BUTTON("Save", "//button[@id='btnDetailSave']"),
 	CANCEL_BUTTON("Cancel", "//button[@id='btnDetailCancel']"),
+	DELETE_BUTTON("Cancel", "//button[@id='btnDelete']"),
 	//DETAILS SECTION
 	TRAILER_LABEL("Trailer", "//div/div/h4"),
 	TRAILER_TEXT(null, "trailerIdValue"),

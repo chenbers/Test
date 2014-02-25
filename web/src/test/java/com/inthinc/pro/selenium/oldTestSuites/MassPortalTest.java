@@ -1,4 +1,4 @@
-package com.inthinc.pro.selenium.testSuites;
+package com.inthinc.pro.selenium.oldTestSuites;
 
 import org.junit.Ignore;
 import org.junit.Test;
@@ -7,6 +7,7 @@ import com.inthinc.pro.automation.models.AutomationUser;
 import com.inthinc.pro.selenium.pageObjects.PageAdminUserDetails;
 import com.inthinc.pro.selenium.pageObjects.PageAdminUsers;
 import com.inthinc.pro.selenium.pageObjects.PageMyAccount;
+import com.inthinc.pro.selenium.testSuites.WebTest;
 
 @Ignore
 public class MassPortalTest extends WebTest {

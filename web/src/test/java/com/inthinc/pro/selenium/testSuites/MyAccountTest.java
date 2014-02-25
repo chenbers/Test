@@ -5,7 +5,6 @@ import org.junit.Test;
 
 import com.inthinc.pro.automation.annotations.AutomationAnnotations.PageObjects;
 import com.inthinc.pro.automation.annotations.AutomationAnnotations.StoryPath;
-import com.inthinc.pro.selenium.pageObjects.PageAdminAddEditUser;
 import com.inthinc.pro.selenium.pageObjects.PageAdminUserDetails;
 import com.inthinc.pro.selenium.pageObjects.PageAdminUsers;
 import com.inthinc.pro.selenium.pageObjects.PageExecutiveDashboard;
