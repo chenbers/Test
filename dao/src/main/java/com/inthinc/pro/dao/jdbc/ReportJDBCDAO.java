@@ -91,7 +91,7 @@ public class ReportJDBCDAO extends SimpleJdbcDaoSupport implements ReportDAO {
     private static final String SELECT_getIdlingReportPage = "SELECT di.driverID as driverID, di.driverName as driverName, di.groupID as groupID, di.groupName as groupName," +
             " sum(agg.driveTime) as driveTime, sum(agg.idleLo) as lowIdleTime, sum(agg.idleHi) as highIdleTime, (BIT_OR(agg.emuFeatureMask) & 4 != 0) as hasRPM, d.status" +
             " FROM driverInfo di LEFT JOIN driver d ON (d.driverID = di.driverID) LEFT JOIN agg on agg.driverID=di.driverID WHERE" +
-            " di.groupId in (select g.groupID from groups g where g.groupPath like :groupID) AND agg.aggDate between :intervalStart AND :intervalEnd GROUP BY di.driverID ";
+            " di.groupId in (select g.groupID from groups g where g.groupPath like :groupID) AND agg.aggDate between :intervalStart AND :intervalEnd";
 
     private static final Map<String, String> pagedColumnMapIdleReport = new HashMap<String, String>();
 
@@ -235,7 +235,6 @@ public class ReportJDBCDAO extends SimpleJdbcDaoSupport implements ReportDAO {
 
     @Override
     public Integer getIdlingReportCount(Integer groupID, Interval interval, List<TableFilterField> filters) {
-        //resolve later
         SimpleDateFormat dbFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 
 
@@ -245,7 +244,7 @@ public class ReportJDBCDAO extends SimpleJdbcDaoSupport implements ReportDAO {
         params.put("intervalEnd", dbFormat.format(interval.getEnd().toDate()));
 
         StringBuilder idlingReportCountSelect = new StringBuilder(addIdlingFilter(filters, SELECT_getIdlingReportPage, params));
-        String idlingQueryCount = "SELECT count(*) as nr from (" + idlingReportCountSelect.toString() + ") as x;";
+        String idlingQueryCount = "SELECT count(*) as nr from (" + idlingReportCountSelect.toString() + " GROUP BY di.driverID ) as x;";
 
         List<Integer> cntDevice = getSimpleJdbcTemplate().query(idlingQueryCount, idlingReportRowMapperCount, params);
         Integer cnt = 0;
@@ -257,11 +256,15 @@ public class ReportJDBCDAO extends SimpleJdbcDaoSupport implements ReportDAO {
 
     @Override
     public List<IdlingReportItem> getIdlingReportPage(Integer groupID, Interval interval, PageParams pageParams) {
+        SimpleDateFormat dbFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("groupID", "%/" + groupID + "/%");
+        params.put("intervalStart", dbFormat.format(interval.getStart().toDate()));
+        params.put("intervalEnd", dbFormat.format(interval.getEnd().toDate()));
 
         StringBuilder idlingReportPageSelect = new StringBuilder();
-        idlingReportPageSelect.append(SELECT_getIdlingReportPage + " where dvv.groupId in (select g.groupID from groups g where g.groupPath like :groupID) ");
+        idlingReportPageSelect.append(SELECT_getIdlingReportPage);
 
         /***FILTERING***/
         idlingReportPageSelect = new StringBuilder(addFiltersToQuery(pageParams.getFilterList(), idlingReportPageSelect.toString(), params, pagedColumnMapIdleReport));
@@ -270,6 +273,7 @@ public class ReportJDBCDAO extends SimpleJdbcDaoSupport implements ReportDAO {
         if (pageParams.getSort() != null && !pageParams.getSort().getField().isEmpty())
             idlingReportPageSelect.append(" ORDER BY " + pagedColumnMapIdleReport.get(pageParams.getSort().getField()) + " " + (pageParams.getSort().getOrder() == SortOrder.ASCENDING ? "ASC" : "DESC"));
 
+        idlingReportPageSelect.append(" GROUP BY di.driverID ");
         /***PAGING***/
         if (pageParams.getStartRow() != null && pageParams.getEndRow() != null)
             idlingReportPageSelect.append(" LIMIT " + pageParams.getStartRow() + ", " + ((pageParams.getEndRow() - pageParams.getStartRow()) + 1));

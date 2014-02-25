@@ -37,63 +37,64 @@ public class ReportJDBCDAOTest {
     /**
      * Tests that count and list work.
      */
-//    @Test
-//    public void testDriverCountAndList() {
-//        List<TableFilterField> filterList = new ArrayList<TableFilterField>();
-//        filterList.add(new TableFilterField("driverID", 1352));
-//        int count = reportJDBCDAO.getDriverReportCount(TEST_GROUP_ID, filterList);
-//        assertTrue(count > 0);
-//
-//        PageParams pp = new PageParams();
-//        pp.setStartRow(0);
-//        pp.setEndRow(20);
-//        pp.setFilterList(filterList);
-//
-//        List<DriverReportItem> driverReportList = reportJDBCDAO.getDriverReportPage(TEST_GROUP_ID, pp);
-//        assertTrue(!driverReportList.isEmpty());
-//
-//    }
-//    @Test
-//    public void testVehicleCountAndList() {
-//        List<TableFilterField> filterList = new ArrayList<TableFilterField>();
-//        filterList.add(new TableFilterField("groupName", "looo"));
-//        int count = reportJDBCDAO.getVehicleReportCount(TEST_GROUP_ID, filterList);
-//        assertTrue(count>0);
-//
-//        PageParams pp = new PageParams();
-//        pp.setStartRow(0);
-//        pp.setEndRow(20);
-//        pp.setFilterList(filterList);
-//
-//        List<VehicleReportItem> driverReportList = reportJDBCDAO.getVehicleReportPage(TEST_GROUP_ID, pp);
-//        assertTrue(!driverReportList.isEmpty());
-//
-//    }
-//    @Test
-//    public void testDeviceCountAndList() {
-//        List<TableFilterField> filterList = new ArrayList<TableFilterField>();
-//        filterList.add(new TableFilterField("devicePhone", "8011"));
-//        filterList.add(new TableFilterField("vehicleName", "MIKE"));
-//        int count = reportJDBCDAO.getDeviceReportCount(TEST_GROUP_ID, filterList);
-//        assertTrue(count>0);
-//
-//        PageParams pp = new PageParams();
-//        pp.setStartRow(0);
-//        pp.setEndRow(20);
-//        pp.setFilterList(filterList);
-//
-//        List<DeviceReportItem> driverReportList = reportJDBCDAO.getDeviceReportPage(TEST_GROUP_ID, pp);
-//        assertTrue(!driverReportList.isEmpty());
-//
-//    }
+    @Test
+    public void testDriverCountAndList() {
+        List<TableFilterField> filterList = new ArrayList<TableFilterField>();
+        filterList.add(new TableFilterField("driverID", 1352));
+        int count = reportJDBCDAO.getDriverReportCount(TEST_GROUP_ID, filterList);
+        assertTrue(count > 0);
+
+        PageParams pp = new PageParams();
+        pp.setStartRow(0);
+        pp.setEndRow(20);
+        pp.setFilterList(filterList);
+
+        List<DriverReportItem> driverReportList = reportJDBCDAO.getDriverReportPage(TEST_GROUP_ID, pp);
+        assertTrue(!driverReportList.isEmpty());
+
+    }
+    @Test
+    public void testVehicleCountAndList() {
+        List<TableFilterField> filterList = new ArrayList<TableFilterField>();
+        filterList.add(new TableFilterField("groupName", "looo"));
+        int count = reportJDBCDAO.getVehicleReportCount(TEST_GROUP_ID, filterList);
+        assertTrue(count>0);
+
+        PageParams pp = new PageParams();
+        pp.setStartRow(0);
+        pp.setEndRow(20);
+        pp.setFilterList(filterList);
+
+        List<VehicleReportItem> driverReportList = reportJDBCDAO.getVehicleReportPage(TEST_GROUP_ID, pp);
+        assertTrue(!driverReportList.isEmpty());
+
+    }
+    @Test
+    public void testDeviceCountAndList() {
+        List<TableFilterField> filterList = new ArrayList<TableFilterField>();
+        filterList.add(new TableFilterField("devicePhone", "8011"));
+        filterList.add(new TableFilterField("vehicleName", "MIKE"));
+        int count = reportJDBCDAO.getDeviceReportCount(TEST_GROUP_ID, filterList);
+        assertTrue(count>0);
+
+        PageParams pp = new PageParams();
+        pp.setStartRow(0);
+        pp.setEndRow(20);
+        pp.setFilterList(filterList);
+
+        List<DeviceReportItem> driverReportList = reportJDBCDAO.getDeviceReportPage(TEST_GROUP_ID, pp);
+        assertTrue(!driverReportList.isEmpty());
+
+    }
 
     @Test
     public void testIdleDriverCountAndList() {
         List<TableFilterField> filterList = new ArrayList<TableFilterField>();
-//        filterList.add(new TableFilterField("vehicleName", "MIKE"));
+        filterList.add(new TableFilterField("driverName", "MIKE"));
+//        filterList.add(new TableFilterField("hasRPM","1"));
 
         DateTimeZone dateTimeZone = DateTimeZone.forID(ReportTestConst.TIMEZONE_STR);
-        Interval interval = new Interval(new DateMidnight(new org.joda.time.DateTime().minusYears(10), dateTimeZone), new DateMidnight(new org.joda.time.DateTime(), dateTimeZone));
+        Interval interval = new Interval(new DateMidnight(new org.joda.time.DateTime().minusDays(1), dateTimeZone), new DateMidnight(new org.joda.time.DateTime(), dateTimeZone));
 
         int count = reportJDBCDAO.getIdlingReportCount(TEST_GROUP_ID, interval, filterList);
         assertTrue(count>0);
