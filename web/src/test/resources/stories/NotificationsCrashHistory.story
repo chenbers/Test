@@ -12,11 +12,10 @@ Scenario: TC1351: Notifications - Crash History - UI
 Given I am logged in
 When I click the Notifications link
 And I click the Crash History link
-And I select "Top - Test Group WR" from the Team dropdown
+And I select "Top - Automation Test Team" from the Team dropdown
 And I select "All" from the Time Frame dropdown
 Then I validate the Team dropdown is present
 And I validate the Time Frame dropdown is present
-
 
 Scenario: TC1335: Notifications - Crash History - Add Crash Report Link
 Given I am logged in
@@ -51,7 +50,7 @@ Scenario: TC1339: Notifications - Crash History - Bookmark Entry with Search
 Given I am logged in
 When I click the Notifications link
 And I click the Crash History link
-And I select "Top - Test Group WR" from the Team dropdown
+And I select "Top - Automation Test Team" from the Team dropdown
 And I type "TIWI00" into the Search textfield
 And I click the Search button
 Then I validate the 1st Row of the Vehicle link is present
@@ -69,7 +68,7 @@ Scenario: TC1340: Notifications - Crash History - Details Link
 Given I am logged in
 When I click the Notifications link
 And I click the Crash History link
-And I select "Top - Test Group WR" from the Team dropdown
+And I select "Top - Automation Test Team" from the Team dropdown
 And I select "All" from the Time Frame dropdown
 And I click the Refresh button
 And I click the 1st Row of the Entry Details link
@@ -79,7 +78,7 @@ Scenario: TC1341: Notifications - Crash History - Driver Link
 Given I am logged in
 When I click the Notifications link
 And I click the Crash History link
-And I select "Top - Test Group WR" from the Team dropdown
+And I select "Top - Automation Test Team" from the Team dropdown
 And I select "All" from the Time Frame dropdown
 And I type "TIWI00" into the Search textfield
 And I click the Search button
@@ -92,7 +91,7 @@ Scenario: TC1349: Notifications - Crash History - Table Properties NEED TO IMPLE
 Given I am logged in
 When I click the Notifications link
 And I click the Crash History link
-And I select "Top - Test Group WR" from the Team dropdown
+And I select "Top - Automation Test Team" from the Team dropdown
 And I select "All" from the Time Frame dropdown
 And I click the Refresh button
 Then I validate the Sort By Date Time column is sorted in ascending order
@@ -178,7 +177,7 @@ Scenario: TC1353: Notifications - Crash History - Vehicle Link
 Given I am logged in
 When I click the Notifications link
 And I click the Crash History link
-And I select "Top - Test Group WR" from the Team dropdown
+And I select "Top - Automation Test Team" from the Team dropdown
 And I select "All" from the Time Frame dropdown
 And I click the Refresh button
 And I click the Sort By Driver link
@@ -411,7 +410,7 @@ Scenario: TC5169: Notifications - Crash History - Edit and Confirm Crash Report
 Given I am logged in
 When I click the Notifications link
 And I click the Crash History link
-And I select "Top - Test Group WR" from the Team dropdown
+And I select "Top - Automation Test Team" from the Team dropdown
 And I select "All" from the Time Frame dropdown
 And I click the Refresh button
 And I click the 1st Row of the Details link
@@ -447,7 +446,7 @@ And I validate the Weather link is "snow"
 And I validate the Occupant count is "2"
 And I validate the Description text is "testing Add Crash Report TC5168"
 When I click the Back To Crash History List link
-And I select "Top - Test Group WR" from the Team dropdown
+And I select "Top - Automation Test Team" from the Team dropdown
 And I select "All" from the Time Frame dropdown
 And I click the Refresh button
 Then I validate the 1st Row of the Date Time text contains SAVEDDATETIME
