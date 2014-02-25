@@ -150,21 +150,6 @@ Then I validate I am on the Forms Manage page
 And I type "Form TCXXXXAdd1" into the Search field
 And I validate the 1st Row of Entry Name text is "Form TCXXXXAdd1"
 And I validate the 1st Row of the Entry Version text is "1"
-And I click the Published link
-And I validate I am on the Forms Published page
-And I type "Form TCXXXXAdd1" into the Search textfield
-And I validate the 1st Row of the Entry Base Form Id text is not present
-And I click the Manage link
-And I validate I am on the Forms Manage page
-And I type "Form TCXXXXAdd1" into the Search field
-And I click the 1st Row of the Gear button
-And I click the 1st Row of the Publish link
-And I validate I am on the Forms Published page
-And I type "Form TCXXXXAdd1" into the Search field
-And I validate the 1st Row of the Entry Name text is "Form TCXXXXAdd1"
-And I click the Manage link
-And I type "Form TCXXXXAdd1" into the Search field
-And I validate the 1st Row of the Entry Version text is "2"
 
 Scenario: Forms Add Page - Save Bottom Button
 Given I am logged in
@@ -177,6 +162,7 @@ And I click the Save Bottom button
 Then I validate I am on the Forms Manage page
 When I type "Form TCXXXXAdd2" into the Search field
 Then I validate the 1st Row of Entry Name text is "Form TCXXXXAdd2"
+And I validate the 1st Row of the Entry Version text is "1"
 
 Scenario: Forms Add Page - Cancel Top Button
 Given I am logged in
@@ -208,7 +194,7 @@ When I click the Published link
 And I type "Form TCXXXXAdd3" into the Search field
 Then I validate the 1st Row of the Entry Base Form Id text is not present
 
-Scenario: TCXXXX: Forms Add Page - Add Form link top (cancel - no changes)
+Scenario: Forms Add Page - Add Form link top (cancel - no changes)
 Given I am logged in
 When I click the Forms link
 And I click the New Form button
@@ -234,7 +220,7 @@ And I validate the Filter Groups field is ""
 And I validate the 1st Row of the Groups checkbox is not checked
 And I validate the View Properties Label text is present
 
-Scenario: TCXXXX: Forms Add Page - Add Form link bottom (cancel - no changes)
+Scenario: Forms Add Page - Add Form link bottom (cancel - no changes)
 Given I am logged in
 When I click the Forms link
 And I click the New Form button
@@ -260,7 +246,7 @@ And I validate the Filter Groups field is ""
 And I validate the 1st Row of the Groups checkbox is not checked
 And I validate the View Properties Label text is present
 
-Scenario: TCXXXX: Forms Add Page - Add Form link top (cancel - changes)
+Scenario: Forms Add Page - Add Form link top (cancel - changes)
 Given I am logged in
 When I click the Forms link
 And I click the New Form button
@@ -285,7 +271,7 @@ And I validate the 1st Row of the Groups checkbox is not checked
 And I validate the View Properties Label text is present
 And I validate the Status dropdown is "Active"
 
-Scenario: TCXXXX: Forms Add Page - Add Form link bottom (cancel - changes)
+Scenario: Forms Add Page - Add Form link bottom (cancel - changes)
 Given I am logged in
 When I click the Forms link
 And I click the New Form button
