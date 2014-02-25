@@ -504,5 +504,4 @@ And I click the Delete button
 And the Delete popup opens
 And I click the Delete button
 And the Delete popup closes
-
 !-- add Entry Location text test
