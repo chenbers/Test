@@ -8,6 +8,45 @@ Meta:
 
 Narrative:
 
+Scenario: TC1452: Notifications - Red Flags - UI
+Given I am logged in
+When I click the Notifications link
+And I click the Red Flags link
+And I click the Edit Columns link
+And the Edit Columns popup opens
+And I check the 1st Row of the Column checkbox
+And I check the 2nd Row of the Column checkbox
+And I check the 3rd Row of the Column checkbox
+And I check the 4th Row of the Column checkbox
+And I check the 5th Row of the Column checkbox
+And I check the 6th Row of the Column checkbox
+And I check the 7th Row of the Column checkbox
+And I check the 8th Row of the Column checkbox
+And I click the Save button
+And the Edit Columns popup closes
+Then I validate I am on the Notifications Red Flags page
+And I validate the Team dropdown is present
+And I validate the Time Frame dropdown is present
+And I validate the Refresh button is present
+And I validate the Edit Columns link is present
+And I validate the Tools button is present
+And I validate the Counter text is present
+And I validate the Header Level text is present
+And I validate the Header Alert Details text is present
+And I validate the Sort By Date Time link is present
+And I validate the Sort By Group link is present
+And I validate the Sort By Driver link is present
+And I validate the Sort By Vehicle link is present
+And I validate the Header Category text is present
+And I validate the Header Detail text is present
+And I validate the Header Status text is present
+And I validate the Level Filter dropdown is present
+And I validate the Group textfield is present
+And I validate the Driver textfield is present
+And I validate the Vehicle textfield is present
+And I validate the Category dropdown is present
+And I validate the Status dropdown is present
+
 Scenario: TC1464: Notifications - Red Flags - Edit Columns - UI
 Given I am logged in
 When I click the Notifications link
@@ -67,6 +106,16 @@ And I click the bookmark I just added
 And I log back in
 Then I validate I am on the Notifications Red Flags page
 
+Scenario: Notifications - Red Flags - Bookmark Entry to Different Account
+Given I am logged in
+When I click the Notifications link
+And I click the Red Flags link
+And I bookmark the page
+And I click the Logout link
+And I click the bookmark I just added
+And I log back in under the editable account
+Then I validate I am on the Notifications Red Flags page
+
 Scenario: TC1437: Notifications - Red Flags - Driver Link
 Given I am logged in
 When I click the Notifications link
@@ -79,7 +128,7 @@ And I save the 1st Row of the Entry Driver link as SAVEDENTRY
 And I click the 1st Row of the Entry Driver link
 Then I validate the Driver Name link contains SAVEDENTRY
 
-Scenario: Notifications - Red Flags - Group Link (Need to add a rally story)
+Scenario: Notifications - Red Flags - Group Link
 Given I am logged in
 When I click the Notifications link
 And I click the Red Flags link
@@ -115,45 +164,6 @@ And I click the Tools button
 Then I validate the Email Report button is present
 And I validate the Export To PDF button is present
 And I validate the Export To Excel button is present
-
-Scenario: TC1452: Notifications - Red Flags - UI
-Given I am logged in
-When I click the Notifications link
-And I click the Red Flags link
-And I click the Edit Columns link
-And the Edit Columns popup opens
-And I check the 1st Row of the Column checkbox
-And I check the 2nd Row of the Column checkbox
-And I check the 3rd Row of the Column checkbox
-And I check the 4th Row of the Column checkbox
-And I check the 5th Row of the Column checkbox
-And I check the 6th Row of the Column checkbox
-And I check the 7th Row of the Column checkbox
-And I check the 8th Row of the Column checkbox
-And I click the Save button
-And the Edit Columns popup closes
-Then I validate I am on the Notifications Red Flags page
-And I validate the Team dropdown is present
-And I validate the Time Frame dropdown is present
-And I validate the Refresh button is present
-And I validate the Edit Columns link is present
-And I validate the Tools button is present
-And I validate the Counter text is present
-And I validate the Header Level text is present
-And I validate the Header Alert Details text is present
-And I validate the Sort By Date Time link is present
-And I validate the Sort By Group link is present
-And I validate the Sort By Driver link is present
-And I validate the Sort By Vehicle link is present
-And I validate the Header Category text is present
-And I validate the Header Detail text is present
-And I validate the Header Status text is present
-And I validate the Level Filter dropdown is present
-And I validate the Group textfield is present
-And I validate the Driver textfield is present
-And I validate the Vehicle textfield is present
-And I validate the Category dropdown is present
-And I validate the Status dropdown is present
 
 Scenario: TC1453: Notifications - Red Flags - Vehicle Link
 Given I am logged in
@@ -298,7 +308,7 @@ And I validate the Sort By Vehicle link is present
 And I validate the Header Category text is present
 And I validate the Header Detail text is present
 
-!-- Scenario: TC1460: Notifications - Red Flags - Edit Columns - Default Command Button
+Scenario: TC1460: Notifications - Red Flags - Edit Columns - Default Command Button
 !-- Given I am logged in
 !-- When I click the Notifications link
 !-- And I click the Red Flags link
@@ -359,7 +369,7 @@ When I click the Notifications link
 And I click the Red Flags link
 Then I validate the Header Level text is present
 
-!-- Scenario: TC1467: Notifications - Red Flags - Exclude Link  - Default Command Button
+Scenario: TC1467: Notifications - Red Flags - Exclude Link  - Default Command Button
 !-- Given I am logged in
 !-- When I click the Notifications link
 !-- And I click the Red Flags link
