@@ -21,6 +21,7 @@ import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -106,8 +107,26 @@ public class ReportJDBCDAO extends SimpleJdbcDaoSupport implements ReportDAO {
         pagedColumnMapIdleReport.put("hasRPM", "hasRPM");
 //        pagedColumnMapIdleReport.put("vehicleName", "vehicleName");
 //        pagedColumnMapIdleReport.put("vehicleID", "vehicleID");
+    }
 
+    private static final String SELECT_getIdlingVehicleReportPage ="SELECT di.driverID as driverID, di.driverName as driverName, vi.groupID as groupID, g.name as groupName, " +
+            "agg.vehicleID as vehicleID, vi.name as vehicleName, sum(agg.driveTime) as driveTime, sum(agg.idleLo) as lowIdleTime, sum(agg.idleHi) as highIdleTime," +
+            " (BIT_OR(agg.emuFeatureMask) & 4 != 0) as hasRPM, vi.status" +
+            " FROM driverInfo di LEFT JOIN agg on agg.driverID=di.driverID LEFT JOIN vehicle vi on agg.vehicleID=vi.vehicleID LEFT JOIN groups g on vi.groupID = g.groupID " +
+            "WHERE di.groupId in (select g.groupID from groups g where g.groupPath like :groupID) AND agg.aggDate between :intervalStart AND :intervalEnd ";
 
+    private static final Map<String, String> pagedColumnMapIdleVehicleReport= new HashMap<String, String>();
+    static {
+        pagedColumnMapIdleVehicleReport.put("groupName", "groupName");
+        pagedColumnMapIdleVehicleReport.put("groupID", "groupID");
+        pagedColumnMapIdleVehicleReport.put("driverName", "driverName");
+        pagedColumnMapIdleVehicleReport.put("driverID", "driverID");
+        pagedColumnMapIdleVehicleReport.put("driveTime", "driveTime");
+        pagedColumnMapIdleVehicleReport.put("lowIdleTime", "lowIdleTime");
+        pagedColumnMapIdleVehicleReport.put("highIdleTime", "highIdleTime");
+        pagedColumnMapIdleVehicleReport.put("hasRPM", "hasRPM");
+        pagedColumnMapIdleVehicleReport.put("vehicleName", "vehicleName");
+        pagedColumnMapIdleVehicleReport.put("vehicleID", "vehicleID");
     }
 
 
@@ -285,23 +304,107 @@ public class ReportJDBCDAO extends SimpleJdbcDaoSupport implements ReportDAO {
 
     @Override
     public Integer getIdlingVehicleReportCount(Integer groupID, Interval interval, List<TableFilterField> filters) {
-        return null;
+        SimpleDateFormat dbFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("groupID", "%/" + groupID + "/%");
+        params.put("intervalStart", dbFormat.format(interval.getStart().toDate()));
+        params.put("intervalEnd", dbFormat.format(interval.getEnd().toDate()));
+
+        StringBuilder idlingVehicleReportCountSelect = new StringBuilder(addIdlingFilter(filters, SELECT_getIdlingVehicleReportPage, params));
+        String idlingVehicleQueryCount = "SELECT count(*) as nr from (" + idlingVehicleReportCountSelect.toString() + "GROUP BY vi.vehicleID) as x";
+
+        List<Integer> cntDevice = getSimpleJdbcTemplate().query(idlingVehicleQueryCount, idlingVehicleRowMapperCount, params);
+        Integer cnt = 0;
+        if (cntDevice != null && !cntDevice.isEmpty())
+            cnt = cntDevice.get(0);
+
+        return cnt;
     }
 
     @Override
     public List<IdlingReportItem> getIdlingVehicleReportPage(Integer groupID, Interval interval, PageParams pageParams) {
-        return null;
+        SimpleDateFormat dbFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("groupID", "%/" + groupID + "/%");
+        params.put("intervalStart", dbFormat.format(interval.getStart().toDate()));
+        params.put("intervalEnd", dbFormat.format(interval.getEnd().toDate()));
+
+        StringBuilder idlingVehiclePageSelect = new StringBuilder();
+        idlingVehiclePageSelect.append(SELECT_getIdlingVehicleReportPage);
+
+        /***FILTERING***/
+        idlingVehiclePageSelect = new StringBuilder(addFiltersToQuery(pageParams.getFilterList(), idlingVehiclePageSelect.toString(), params, pagedColumnMapIdleVehicleReport));
+
+        /***SORTING***/
+        if (pageParams.getSort() != null && !pageParams.getSort().getField().isEmpty())
+            idlingVehiclePageSelect.append(" ORDER BY " + pagedColumnMapIdleVehicleReport.get(pageParams.getSort().getField()) + " " + (pageParams.getSort().getOrder() == SortOrder.ASCENDING ? "ASC" : "DESC"));
+
+            idlingVehiclePageSelect.append(" GROUP BY vi.vehicleID ");
+        /***PAGING***/
+        if (pageParams.getStartRow() != null && pageParams.getEndRow() != null)
+            idlingVehiclePageSelect.append(" LIMIT " + pageParams.getStartRow() + ", " + ((pageParams.getEndRow() - pageParams.getStartRow()) + 1));
+
+        List<IdlingReportItem> idlingVehicleReportItemList = getSimpleJdbcTemplate().query(idlingVehiclePageSelect.toString(), idlingVehicleRowMapper, params);
+
+        return idlingVehicleReportItemList;
     }
 
     @Override
     public Integer getIdlingVehicleReportSupportsIdleStatsCount(Integer groupID, Interval interval, List<TableFilterField> filters) {
-        return null;
+        //copy getIdlingVehicleReportCount
+        if (filters == null)
+            filters = new ArrayList<TableFilterField>();
+        List<TableFilterField> reportFilters = new ArrayList<TableFilterField>();
+        for (TableFilterField filter : filters)
+            reportFilters.add(filter);
+        reportFilters.add(new TableFilterField("hasRPM", Integer.valueOf(1)));
+
+        SimpleDateFormat dbFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("groupID", "%/" + groupID + "/%");
+        params.put("intervalStart", dbFormat.format(interval.getStart().toDate()));
+        params.put("intervalEnd", dbFormat.format(interval.getEnd().toDate()));
+
+
+        StringBuilder idlingVehicleReportCountSelect = new StringBuilder(addIdlingFilter(reportFilters, SELECT_getIdlingVehicleReportPage, params));
+        String idlingVehicleQueryCount = "SELECT count(*) as nr from (" + idlingVehicleReportCountSelect.toString() + "GROUP BY vi.vehicleID) as x";
+
+        List<Integer> cntDevice = getSimpleJdbcTemplate().query(idlingVehicleQueryCount, idlingVehicleRowMapperCount, params);
+        Integer cnt = 0;
+        if (cntDevice != null && !cntDevice.isEmpty())
+            cnt = cntDevice.get(0);
+
+        return cnt;
     }
 
     @Override
     public Integer getIdlingReportSupportsIdleStatsCount(Integer groupID, Interval interval, List<TableFilterField> filters) {
         //copy getIdlingReportCount
-        return null;
+        if (filters == null) filters = new ArrayList<TableFilterField>();
+        List<TableFilterField> reportFilters = new ArrayList<TableFilterField>();
+        for (TableFilterField filter : filters)
+            reportFilters.add(filter);
+        reportFilters.add(new TableFilterField("hasRPM", Integer.valueOf(1)));
+
+        SimpleDateFormat dbFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("groupID", "%/" + groupID + "/%");
+        params.put("intervalStart", dbFormat.format(interval.getStart().toDate()));
+        params.put("intervalEnd", dbFormat.format(interval.getEnd().toDate()));
+
+        StringBuilder idlingReportSupportsCountSelect = new StringBuilder(addIdlingFilter(reportFilters, SELECT_getIdlingReportPage, params));
+        String idlingSupportsQueryCount = "SELECT count(*) as nr from (" + idlingReportSupportsCountSelect.toString() + ") as x;";
+
+        List<Integer> cntDevice = getSimpleJdbcTemplate().query(idlingSupportsQueryCount, idlingReportRowMapperCount, params);
+        Integer cnt = 0;
+        if (cntDevice != null && !cntDevice.isEmpty())
+            cnt = cntDevice.get(0);
+
+        return cnt;
     }
 
     @Override
@@ -400,54 +503,26 @@ public class ReportJDBCDAO extends SimpleJdbcDaoSupport implements ReportDAO {
         }
     };
 
-    //IDLING FILTERS
-//    buildIdlingFilter(startD, stopD, filterList, groupIDTableName=''):
-//            "Build part of the WHERE clause from items in filterList" resultFilter = ''
-//    resultHaving = ''
-//    joinWord = 'HAVING'
-//    havingFields = {'driveTime':1, 'lowIdleTime':1, 'highIdleTime':1}
-//    if startD != None and stopD != None:
-//    resultFilter += " AND agg.aggDate>='%s' AND agg.aggDate<='%s'" % (str(startD), str(stopD))
-//            if filterList != None:
-//            for filter in filterList:
-//    field = filter[u'field']
-//    value = filter[u'filter']
-//            if(field == 'groupID' and groupIDTableName != '' ):
-//    field = groupIDTableName+'.'+field
-//    if field == u'hasRPM':
-//            if value == 1:
-//    resultFilter += ' AND (agg.emuFeatureMask & 4) != 0'
-//            else:
-//    resultFilter += ' AND (agg.emuFeatureMask & 4) = 0'
-//    elif field == u'vehicleName':
-//    columnIndex = 5
-//    escaped_value = escape(value)
-//    resultFilter += " AND %s LIKE '%%%s%%'" % (IdlingTemplate[columnIndex][1], escaped_value)
-//    elif field == u'groupName':
-//    escaped_value = escape(value)
-//    resultFilter += " AND %s LIKE '%%%s%%'" % ('groupName', escaped_value)
-//    elif field in havingFields:
-//            if type(value) == int or type(value) == long:
-//    resultHaving += ' %s %s=%d' % (joinWord, field, value)
-//    joinWord = 'AND'
-//    elif type(value) == dict:
-//            if u'min' in value and u'max' in value:
-//    resultHaving += ' %s %s>=%d AND %s<%d' % (joinWord, field, value[u'min'], field, value[u'max'])
-//    joinWord = 'AND'
-//            else:
-//            if type(value) == int or type(value) == long:
-//    resultFilter += ' AND %s=%d' % (field, value)
-//    elif type(value) == list:
-//    s = [str(i)  for i in value]
-//    resultFilter += ' AND %s IN (%s)' % (field, ','.join(s))
-//    elif type(value) == dict:
-//            if u'min' in value and u'max' in value:
-//    resultFilter += ' AND %s>=%d AND %s<%d' % (field, value[u'min'], field, value[u'max'])
-//            else:
-//    escaped_value = escape(value)
-//    resultFilter += " AND %s LIKE '%%%s%%'" % (field, escaped_value)
-//            return (resultFilter,resultHaving)
+    private ParameterizedRowMapper<IdlingReportItem> idlingVehicleRowMapper = new ParameterizedRowMapper<IdlingReportItem>() {
+        @Override
+        public IdlingReportItem mapRow(ResultSet rs, int rowNum) throws SQLException {
+            IdlingReportItem idlingVehicleReportItem = new IdlingReportItem();
+            idlingVehicleReportItem.setDriverID(rs.getInt("driverID"));
+            idlingVehicleReportItem.setDriverName(rs.getString("driverName"));
+            idlingVehicleReportItem.setDriveTime(rs.getInt("driveTime"));
+            idlingVehicleReportItem.setGroupID(rs.getInt("groupID"));
+            idlingVehicleReportItem.setGroupName(rs.getString("groupName"));
+            idlingVehicleReportItem.setHasRPM(rs.getInt("hasRPM"));
+            idlingVehicleReportItem.setHighIdleTime(rs.getInt("highIdleTime"));
+            idlingVehicleReportItem.setLowIdleTime(rs.getInt("lowIdleTime"));
+            idlingVehicleReportItem.setStatus(Status.valueOf(rs.getInt("status")));
+            idlingVehicleReportItem.setVehicleID(rs.getInt("vehicleID"));
+            idlingVehicleReportItem.setVehicleName(rs.getString("vehicleName"));
+            return idlingVehicleReportItem;
+        }
+    };
 
+    //IDLING FILTERS
 
     private String addIdlingFilter(final List<TableFilterField> filters, String queryStr, Map<String, Object> params) {
 
@@ -583,6 +658,13 @@ public class ReportJDBCDAO extends SimpleJdbcDaoSupport implements ReportDAO {
             return getIntOrNullFromRS(rs, "nr");
         }
     };
+    private ParameterizedRowMapper<Integer> idlingVehicleRowMapperCount= new ParameterizedRowMapper<Integer>() {
+        @Override
+        public Integer mapRow(ResultSet rs, int rowNum) throws SQLException {
+            return getIntOrNullFromRS(rs, "nr");
+        }
+    };
+
 
 
     private Integer getIntOrNullFromRS(ResultSet rs, String columnName) throws SQLException {
