@@ -1,4 +1,4 @@
-Scenario: TCXXXX: Forms Published Page - Table View - UI
+Scenario: Forms Published Page - Table View - UI
 Given I am logged in
 When I click the Forms link
 And I click the Published link
@@ -14,13 +14,37 @@ And I validate the Sort By Description link is present
 And I validate the Sort By Trigger link is present
 And I validate the Entries text is present
 
-Scenario: TCXXXX: Forms Published Page - Default Records dropdowns are set to 10
+Scenario: Forms Published Page - Bookmark Entry
+Given I am logged in
+When I click the Forms link
+And I click the Published link
+And I validate I am on the Forms Published page
+And I bookmark the page
+And I click the Logout link
+And I click the bookmark I just added
+Then I validate I am on the Login page
+When I log back in
+Then I validate I am on the Forms Published page
+
+Scenario: Forms Published Page - Bookmark Entry to Different Account
+Given I am logged in
+When I click the Forms link
+And I click the Published link
+And I validate I am on the Forms Published page
+And I bookmark the page
+And I click the Logout link
+And I click the bookmark I just added
+Then I validate I am on the Login page
+When I log back in under the editable account
+Then I validate I am on the Forms Published page
+
+Scenario: Forms Published Page - Default Records dropdowns are set to 10
 Given I am logged in
 When I click the Forms link
 And I click the Published link
 Then I validate the Records Per Page dropdown is "10"
 
-Scenario: TCXXXX: Forms Published Page - Records per page test
+Scenario: Forms Published Page - Records per page test
 Given I am logged in
 When I click the Forms link
 And I click the Published link
@@ -37,7 +61,7 @@ And I select "100" from the Records Per Page dropdown
 And I validate the 101st Row of the Entry Name text is not present
 And I validate the Entries text contains "Showing 1 to 100 of"
 
-Scenario: TCXXXX: Search - Forms Published Page - Create and publish a form
+Scenario: Search - Forms Published Page - Create and publish a form
 Given I am logged in
 When I click the Forms link
 And I click the New Form button
@@ -52,7 +76,7 @@ Then I validate the 1st Row of the Entry Name text is "A Published Test Form"
 And I click the Manage link
 And I validate the 1st Row of the Entry Version text is "2"
 
-Scenario: TCXXXX: Search - Published tab
+Scenario: Forms Published Page - Search
 Given I am logged in
 When I click the Forms link
 And I click the Published link
@@ -82,7 +106,7 @@ And I validate the 2nd Row of the Entry Trigger text contains "Post-Trip"
 And I validate the 3rd Row of the Entry Trigger text contains "Post-Trip"
 And I validate the 4th Row of the Entry Trigger text contains "Post-Trip"
 
-Scenario: TCXXXX: Search - Published tab stays blank
+Scenario: Forms Published Page - Search - Published tab stays blank
 Given I am logged in
 When I click the Forms link
 And I type "Pre-Trip" into the Search textfield
@@ -91,7 +115,7 @@ Then I validate the Search textfield is ""
 And I click the Manage link
 And I validate the Search textfield is ""
 
-Scenario: TCXXXX: Empty Search
+Scenario: Forms Published Page - Empty Search
 Given I am logged in
 When I click the Forms link
 And I click the Published link
