@@ -37,7 +37,7 @@ Scenario:Forms Submissions Page - Forms No Records Found Table Message
 Given I am logged in
 When I click the Forms link
 And I click the Submissions link
-And I select 100 days in the past from the Date dropdown
+And I select 200 days in the past from the Date dropdown
 And I click the Refresh button
 Then I validate the 1st Row of the Form Entry text is not present
 And I validate the No Records Found Error text is present
@@ -100,7 +100,7 @@ Then I validate the 1st Row of the Approved Entry checkbox is checked
 And I uncheck the 1st Row of the Approved Entry checkbox
 And I validate the 1st Row of the Approved Entry checkbox is not checked
 
-Scenario: TCXXXX: Forms Submissions Page - Records per page test
+Scenario: Forms Submissions Page - Records per page test
 Given I am logged in
 When I click the Forms link
 And I click the Submissions link
@@ -116,7 +116,7 @@ And I select "100" from the Records Per Page dropdown
 And I validate the 101st Row of the Date Time Entry text is not present
 And I validate the Entries text contains "Showing 1 to 100"
 
-Scenario: TCXXXX: Forms Submissions Page - Bookmark Entry
+Scenario: Forms Submissions Page - Bookmark Entry
 Given I am logged in
 When I click the Forms link
 And I click the Submissions link
@@ -128,7 +128,7 @@ Then I validate I am on the Login page
 When I log back in
 Then I validate I am on the Forms Submissions page
 
-Scenario: TCXXXX: Forms Submissions Page - Bookmark Entry to Different Account
+Scenario: Forms Submissions Page - Bookmark Entry to Different Account
 Given I am logged in
 When I click the Forms link
 And I click the Submissions link
@@ -140,7 +140,7 @@ Then I validate I am on the Login page
 When I log back in under the editable account
 Then I validate I am on the Forms Submissions page
 
-Scenario: TCXXXX: Forms Submissions Page - Edit Approved check (No change to Edited column)
+Scenario: Forms Submissions Page - Edit Approved check (No change to Edited column)
 Given I am logged in
 When I click the Forms link
 And I click the Submissions link
@@ -164,7 +164,7 @@ And I validate the 1st Row of the Edited Entry text is "no"
 And I uncheck the 1st Row of the Approved Entry checkbox
 And I validate the 1st Row of the Approved Entry checkbox is not checked
 
-Scenario: TCXXXX: Forms Submissions Page - Edit Approved uncheck (No change to Edited column)
+Scenario: Forms Submissions Page - Edit Approved uncheck (No change to Edited column)
 Given I am logged in
 When I click the Forms link
 And I click the Submissions link
@@ -185,7 +185,7 @@ And I click the Refresh button
 Then I validate the 1st Row of the Approved Entry checkbox is not checked
 And I validate the 1st Row of the Edited Entry text is "no"
 
-Scenario: TCXXXX: Forms Submissions Page - Inline Edit - Forms link disappears (Requires there be form data)
+Scenario: Forms Submissions Page - Inline Edit - Forms link disappears (Requires there be form data)
 Given I am logged in
 When I click the Forms link
 And I click the Submissions link
@@ -194,7 +194,7 @@ And I select "FormGeneric10 (1)" from the Form dropdown
 And I click the Refresh button
 And I validate the 1st Row of the Form Entry text is not present
 
-Scenario: TCXXXX: Forms Submissions Page - Inline Edit - All Forms (make sure you cannot do)
+Scenario: Forms Submissions Page - Inline Edit - All Forms (make sure you cannot do)
 Given I am logged in
 When I click the Forms link
 And I click the Submissions link
@@ -204,7 +204,7 @@ And I validate the 1st Row of the Numeric Entry textfield is not present
 And I validate the 1st Row of the Decimal Entry textfield is not present
 And I validate the 1st Row of the Date Entry dropdown is not present
 
-Scenario: TCXXXX: Forms Submissions Page - Inline Edit - Cancel Changes (Requires Form TCXXX Pre-Trip Required (1) is published and submitted)
+Scenario: Forms Submissions Page - Inline Edit - Cancel Changes (Requires Form TCXXX Pre-Trip Required (1) is published and submitted)
 Given I am logged in
 When I click the Forms link
 And I click the Submissions link
@@ -234,7 +234,7 @@ And I validate the 1st Row of the Chooseone Entry text is SAVEDCHOOSEONE
 And I validate the 1st Row of the Choosemany Entry text is SAVEDCHOOSEMANY
 And I validate the 1st Row of the Edited Entry text is "no"
 
-Scenario: TCXXXX: Forms Submissions Page - Inline Edit - Save Changes
+Scenario: Forms Submissions Page - Inline Edit - Save Changes
 Given I am logged in
 When I click the Forms link
 And I click the Submissions link
@@ -265,7 +265,7 @@ And I validate the 1st Row of the Chooseone Entry text is not SAVEDCHOOSEONE
 And I validate the 1st Row of the Choosemany Entry text is not SAVEDCHOOSEMANY
 And I validate the 1st Row of the Edited Entry text is "yes"
 
-Scenario: TCXXXX: Forms Submissions Page - Inline Edit - Generate error messages - blank fields (required)
+Scenario: Forms Submissions Page - Inline Edit - Generate error messages - blank fields (required)
 Given I am logged in
 When I click the Forms link
 And I click the Submissions link
@@ -286,7 +286,7 @@ And I validate the Invalid Numeric Error text is present
 And I validate the Invalid Decimal Error text is present
 And I validate the Invalid Date Error text is present
 
-Scenario: TCXXXX: Forms Submissions Page - Inline Edit - Generate error messages - text out of range
+Scenario: Forms Submissions Page - Inline Edit - Generate error messages - text out of range
 Given I am logged in
 When I click the Forms link
 And I click the Submissions link
@@ -297,7 +297,7 @@ And I type "TCXXXXTCXXXXTCXXXX" into the 1st Row of the Text Entry textfield
 And I click the 1st Row of the Save button
 And I validate the Invalid Text Error text is present
 
-Scenario: TCXXXX: Forms Submissions Page - Inline Edit - Generate error messages - numeric out of range
+Scenario: Forms Submissions Page - Inline Edit - Generate error messages - numeric out of range
 Given I am logged in
 When I click the Forms link
 And I click the Submissions link
@@ -311,7 +311,7 @@ And I type "101" into the 1st Row of the Numeric Entry textfield
 And I click the 1st Row of the Save button
 And I validate the Invalid Numeric Error text is present
 
-Scenario: TCXXXX: Forms Submissions Page - Inline Edit - Generate error messages - decimal out of range
+Scenario: Forms Submissions Page - Inline Edit - Generate error messages - decimal out of range
 Given I am logged in
 When I click the Forms link
 And I click the Submissions link
@@ -325,7 +325,7 @@ And I type "100.1" into the 1st Row of the Decimal Entry textfield
 And I click the 1st Row of the Save button
 And I validate the Invalid Decimal Error text is present
 
-Scenario: TCXXXX: Forms Submissions Page - Inline Edit - Generate error messages - date out of range
+Scenario: Forms Submissions Page - Inline Edit - Generate error messages - date out of range
 Given I am logged in
 When I click the Forms link
 And I click the Submissions link
