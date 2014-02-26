@@ -23,15 +23,15 @@ public class PageReportsTrailers extends ReportsBar {
     
     public class TrailerReportButtons extends ReportsBarButtons {
         
-        public TextButton emailReport() {
+        public TextButton emailThisReport() {
             return new TextButton(ReportsBarEnum.TOOL_EMAIL, page);
         }
         
-        public TextButton exportExcel() {
+        public TextButton exportToExcel() {
             return new TextButton(ReportsBarEnum.TOOL_EXCEL, page);
         }
         
-        public TextButton exportPdf() {
+        public TextButton exportToPDF() {
             return new TextButton(ReportsBarEnum.TOOL_PDF, page);
         }
         

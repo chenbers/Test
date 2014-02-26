@@ -75,15 +75,15 @@ public class PageReportsIdlingVehicles extends ReportsBar {
 	        return new TextButton(ReportsIdlingVehiclesEnum.REFRESH);
 	    }
 
-		public TextButton exportEmail() {
+		public TextButton emailThisReport() {
 			return new TextButton(ReportsBarEnum.TOOL_EMAIL, page);
 		}
 
-		public TextButton exportExcel() {
+		public TextButton exportToExcel() {
 			return new TextButton(ReportsBarEnum.TOOL_EXCEL, page);
 		}
 
-		public TextButton exportPDF() {
+		public TextButton exportToPDF() {
 			return new TextButton(ReportsBarEnum.TOOL_PDF, page);
 		}
 

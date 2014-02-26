@@ -31,7 +31,7 @@ public abstract class NotificationsEventsBar extends NotificationsBar {
             return new Button(NotificationsBarEnum.EXPORT_TO_PDF, page);
         }
 
-        public Button emailReport() {
+        public Button emailThisReport() {
             return new Button(NotificationsBarEnum.EMAIL_REPORT, page);
         }
 
