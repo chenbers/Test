@@ -58,7 +58,7 @@ public class PageReportsDevices extends ReportsBar {
 	    }
 	    
 		public TextTableLink vehicleValue(){
-			return new TextTableLink(ReportsDriversEnum.VEHICLE_VALUE);
+			return new TextTableLink(ReportsDevicesEnum.VEHICLE_VALUE);
 		}
 		
 		public TextLink sortByDeviceID(){
