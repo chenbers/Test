@@ -70,7 +70,7 @@
 						</table>
 					  </li>
 					  <li class="l">
-						<a4j:commandButton id="crashHistoryRefresh" styleClass="left" oncomplete="initializeTable()"
+						<a4j:commandButton id="#{context}_refresh" styleClass="left" oncomplete="initializeTable()"
 									reRender="header,crashHistory-form:crashHistory,crashHistory-form:crashHistory-bottomScroller" 
 									action="#{crashHistoryBean.refreshAction}">
 	           				<span class="refresh">
