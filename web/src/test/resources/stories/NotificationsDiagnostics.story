@@ -69,7 +69,7 @@ Given I am logged in
 When I click the Notifications link
 And I click the Diagnostics link
 And I select "Top" from the Team dropdown
-And I select "Past Year" from the Time Frame dropdown
+And I select "Past 30 Days" from the Time Frame dropdown
 And I click the Refresh button
 And I click the Sort By Group link
 And I save the 1st Row of the Entry Group link as SAVEDENTRY
