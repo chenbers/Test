@@ -93,13 +93,12 @@ public class CoreMethodLib extends WebDriverBackedSelenium implements CoreMethod
      */
     @Override
     public CoreMethodLib click(SeleniumEnumWrapper myEnum) {
+        String element = getClickable(getLocator(myEnum));
         //This checks to see if the element is in the iframe at the top of the page, and clicks it if it is
         if (myEnum.toString().contains("_IFRAME")) {
             WebElement frame = getWrappedDriver().findElement(By.tagName("iframe"));
             getWrappedDriver().switchTo().frame(frame);
         }
-        String element = getClickable(getLocator(myEnum));
-        click(element);
         //The publish page takes a while to load after publishing a form so I'm adding in a wait.
         if (myEnum.toString().contains("PUBLISH_ENTRY_LINK")) {
             AutomationThread.pause(7);
@@ -108,7 +107,8 @@ public class CoreMethodLib extends WebDriverBackedSelenium implements CoreMethod
         if (element.contains("timeFrameForm:")) {
             AutomationThread.pause(20, "click(" + myEnum + ")");
         }
-        AutomationThread.pause(5, "click(" + myEnum + ")");
+        click(element);
+        AutomationThread.pause(2, "click(" + myEnum + ")");
         loadPause();
         return this;
     }
