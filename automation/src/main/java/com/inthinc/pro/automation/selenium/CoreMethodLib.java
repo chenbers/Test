@@ -790,7 +790,6 @@ public class CoreMethodLib extends WebDriverBackedSelenium implements CoreMethod
     private WebElement getMatches(String select, String option, Integer matchNumber){
     	//MWEISS - I've added this catFilter method to handle the nested drop downs in the Notifications section
     	if (select.contains("catFilter")) {
-    		counter = 2;
         	String xpath = select+"/optgroup[2]/option["+option+"]";
             return selectNested(select, xpath, option, matchNumber);
     	}
@@ -810,7 +809,7 @@ public class CoreMethodLib extends WebDriverBackedSelenium implements CoreMethod
             return allMatches.get(matchNumber);
         	
 
-        errors.addError("getMatches insufficient matches found", "There is no matchNumber at index "+matchNumber+", there were only "+allMatches.size()+" matches found", ErrorLevel.WARN);
+        errors.addError("getMatches insufficient matches found", "There is no matchNumber at index "+matchNumber+", there were only "+allMatches.size()+" matches found", ErrorLevel.ERROR);
         throw new SeleniumException("There is no matchNumber at index "+matchNumber+", there were only "+allMatches.size()+" matches found");
     }
     
@@ -827,7 +826,7 @@ public class CoreMethodLib extends WebDriverBackedSelenium implements CoreMethod
             	return selectNested(select, xpath, option, matchNumber);
     		}
 
-        errors.addError("getMatches insufficient matches found", "There is no matchNumber at index "+matchNumber+", there were only "+allMatches.size()+" matches found", ErrorLevel.WARN);
+        errors.addError("getMatches insufficient matches found", "There is no matchNumber at index "+matchNumber+", there were only "+allMatches.size()+" matches found", ErrorLevel.ERROR);
         throw new SeleniumException("There is no matchNumber at index "+matchNumber+", there were only "+allMatches.size()+" matches found");	
 
     }
