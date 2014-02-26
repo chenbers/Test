@@ -68,7 +68,8 @@ Given I am logged in
 When I click the Notifications link
 And I click the Crash History link
 And I select "Top - Automation Test Team" from the Team dropdown
-And I type "TIWI00" into the Search textfield
+And I sleect "All" from the Time Frame dropdown
+And I type "Automation" into the Search textfield
 And I click the Search button
 Then I validate the 1st Row of the Vehicle link is present
 When I bookmark the page
