@@ -56,7 +56,7 @@ public class PageNotificationsCrashHistory extends NotificationsEventsBar {
         
     }
     
-    public class NotificationsCrashHistoryDropDown {}
+    public class NotificationsCrashHistoryDropDown extends EventsBarDropDowns {}
     
     public class NotificationsCrashHistoryPopUps extends MastheadPopUps {
         
