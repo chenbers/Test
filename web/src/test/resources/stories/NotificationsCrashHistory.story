@@ -12,10 +12,27 @@ Scenario: TC1351: Notifications - Crash History - UI
 Given I am logged in
 When I click the Notifications link
 And I click the Crash History link
-And I select "Top - Automation Test Team" from the Team dropdown
-And I select "All" from the Time Frame dropdown
-Then I validate the Team dropdown is present
+Then I validate I am on the Notifications Crash History page
+And I validate the Title text is present
+And I validate the Team dropdown is present
 And I validate the Time Frame dropdown is present
+And I validate the Refresh button is present
+And I validate the Search textfield is present
+And I validate the Edit Columns link is present
+And I validate the Add Crash Report link is present
+And I validate the Counter text is present
+And I validate the Sort By Date Time link is present
+And I validate the Sort By Group link is present
+And I validate the Sort By Driver link is present
+And I validate the Sort By Vehicle link is present
+And I validate the Sort By Occupants link is present
+And I validate the Sort By Status link is present
+And I validate the Sort By Weather link is present
+And I validate the Tools button is present
+And I click the Tools button
+And I validate the Email This Report button is present
+And I validate the Export To PDF button is present
+And I validate the Export To Excel button is present
 
 Scenario: TC1335: Notifications - Crash History - Add Crash Report Link
 Given I am logged in
@@ -87,49 +104,40 @@ And I click the 1st Row of the Entry Driver link
 Then I validate I am on the Driver Performance page
 And I validate the Driver Name link is SAVEDNAME
 
-Scenario: TC1349: Notifications - Crash History - Table Properties NEED TO IMPLEMENT CHECKING ALPHABETICAL ORDER IN A NEW STEP
-Given I am logged in
-When I click the Notifications link
-And I click the Crash History link
-And I select "Top - Automation Test Team" from the Team dropdown
-And I select "All" from the Time Frame dropdown
-And I click the Refresh button
-Then I validate the Sort By Date Time column is sorted in ascending order
-And I click the Sort By Date Time link
-And I validate the Sort By Date Time column is sorted in descending order
-And I click the Sort By Group link
-And I validate the Sort By Group column is sorted in ascending order
-And I click the Sort By Group link
-And I validate the Sort By Group column is sorted in descending order
-And I click the Sort By Driver link
-And I validate the Sort By Driver column is sorted in ascending order
-And I click the Sort By Driver link
-And I validate the Sort By Driver column is sorted in descending order
-And I click the Sort By Vehicle link
-And I validate the Sort By Vehicle column is sorted in ascending order
-And I click the Sort By Vehicle link
-And I validate the Sort By Vehicle column is sorted in descending order
-And I click the Sort By Occupants link
-And I validate the Sort By Occupants column is sorted in ascending order
-And I click the Sort By Occupants link
-And I validate the Sort By Occupants column is sorted in descending order
-And I click the Sort By Status link
-And I validate the Sort By Status column is sorted in ascending order
-And I click the Sort By Status link
-And I validate the Sort By Status column is sorted in descending order
-And I click the Sort By Weather link
-And I validate the Sort By Weather column is sorted in ascending order
-And I click the Sort By Weather link
-And I validate the Sort By Weather column is sorted in descending order
-
-Scenario: TC1350: Notifications - Crash History - Tools Button
-Given I am logged in
-When I click the Notifications link
-And I click the Crash History link
-And I click the Tools button
-Then I validate the Email This Report button is present
-And I validate the Export To PDF button is present
-And I validate the Export To Excel button is present
+Scenario: TC1349: Notifications - Crash History - Table Properties
+!-- Given I am logged in
+!-- When I click the Notifications link
+!-- And I click the Crash History link
+!-- And I select "Top - Automation Test Team" from the Team dropdown
+!-- And I select "All" from the Time Frame dropdown
+!-- And I click the Refresh button
+!-- Then I validate the Sort By Date Time column is sorted in ascending order
+!-- And I click the Sort By Date Time link
+!-- And I validate the Sort By Date Time column is sorted in descending order
+!-- And I click the Sort By Group link
+!-- And I validate the Sort By Group column is sorted in ascending order
+!-- And I click the Sort By Group link
+!-- And I validate the Sort By Group column is sorted in descending order
+!-- And I click the Sort By Driver link
+!-- And I validate the Sort By Driver column is sorted in ascending order
+!-- And I click the Sort By Driver link
+!-- And I validate the Sort By Driver column is sorted in descending order
+!-- And I click the Sort By Vehicle link
+!-- And I validate the Sort By Vehicle column is sorted in ascending order
+!-- And I click the Sort By Vehicle link
+!-- And I validate the Sort By Vehicle column is sorted in descending order
+!-- And I click the Sort By Occupants link
+!-- And I validate the Sort By Occupants column is sorted in ascending order
+!-- And I click the Sort By Occupants link
+!-- And I validate the Sort By Occupants column is sorted in descending order
+!-- And I click the Sort By Status link
+!-- And I validate the Sort By Status column is sorted in ascending order
+!-- And I click the Sort By Status link
+!-- And I validate the Sort By Status column is sorted in descending order
+!-- And I click the Sort By Weather link
+!-- And I validate the Sort By Weather column is sorted in ascending order
+!-- And I click the Sort By Weather link
+!-- And I validate the Sort By Weather column is sorted in descending order
 
 Scenario: TC1351: Notifications - Crash History - UI (With Admin Rights)
 Given I am logged in
