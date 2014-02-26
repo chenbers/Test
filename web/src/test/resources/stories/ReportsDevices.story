@@ -54,10 +54,10 @@ When I click the Reports link
 And I click the Devices link
 And I click the Sort By Vehicle link
 And I click the Sort By Vehicle link
-And I save the 1st Row of the Vehicle Value link as SAVEDENTRY
+And I save the 1st Row of the Vehicle Value link as SAVEDVEHICLEENTRY
 And I click the 1st Row of the Vehicle Value link
 Then I validate I am on the Vehicle Performance page
-And I validate the Vehicle Name link contains SAVEDENTRY
+And I validate the Vehicle Name link contains SAVEDVEHICLEENTRY
 
 Scenario: TC1527: Reports - Devices - Table Properties NEED ASSISTANCE IN IMPLEMENTING HOW TO CHECK ORDER
 !-- Given I am logged in
