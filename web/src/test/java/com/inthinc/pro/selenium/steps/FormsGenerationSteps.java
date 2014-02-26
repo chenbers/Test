@@ -65,7 +65,7 @@ public class FormsGenerationSteps extends LoginSteps {
 //            i++;
 //        }
         
-        System.out.println("SUCCESS!");
+        System.out.println("FORMS MANAGE GENERATION SUCCESS!");
     }
     
     @Then("I generate 100 forms for the publish page test")
@@ -145,7 +145,7 @@ public class FormsGenerationSteps extends LoginSteps {
             i++;
         }
         
-        System.out.println("SUCCESS!");
+        System.out.println("FORMS PUBLISHED GENERATION SUCCESS!");
     }
     
     @Given("I generate submissions")
