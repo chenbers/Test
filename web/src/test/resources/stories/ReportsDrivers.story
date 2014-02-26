@@ -139,9 +139,9 @@ Given I am logged in
 When I click the Reports link
 And I click the Drivers link
 And I click the Tools button
-Then I validate the Export Email button is present
-And I validate the Export PDF button is present
-And I validate the Export Excel button is present
+Then I validate the Email This Report button is present
+And I validate the Export To PDF button is present
+And I validate the Export To Excel button is present
 
 Scenario: TC1569: Reports - Drivers - Vehicle Link
 Given I am logged in

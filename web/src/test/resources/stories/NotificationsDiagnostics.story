@@ -94,7 +94,7 @@ Given I am logged in
 When I click the Notifications link
 And I click the Diagnostics link
 And I click the Tools button
-Then I validate the Email Report button is present
+Then I validate the Email This Report button is present
 And I validate the Export To PDF button is present
 And I validate the Export To Excel button is present
 

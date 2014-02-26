@@ -131,9 +131,9 @@ Given I am logged in
 When I click the Reports link
 And I click the Vehicles link
 And I click the Tools button
-Then I validate the Email Report button is present
-And I validate the Export Pdf button is present
-And I validate the Export Excel button is present
+Then I validate the Email This Report button is present
+And I validate the Export To PDF button is present
+And I validate the Export To Excel button is present
 
 Scenario: TC1642: Reports - Vehicles - Vehicle ID Link
 Given I am logged in

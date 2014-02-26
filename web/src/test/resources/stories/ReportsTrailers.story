@@ -54,9 +54,9 @@ And I validate the 1st Row of the Driver Value link is present
 And I validate the 1st Row of the Assigned Status Value text is present
 And I validate the 1st Row of the Entry Method Value text is present
 And I click the Tools button
-And I validate the Email Report button is present
-And I validate the Export Excel button is present
-And I validate the Export Pdf button is present
+And I validate the Email This Report button is present
+And I validate the Export To Excel button is present
+And I validate the Export To PDF button is present
 
 Scenario: Reports - Trailers - Edit Columns - UI
 Given I am logged in
