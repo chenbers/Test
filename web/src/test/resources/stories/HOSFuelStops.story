@@ -6,6 +6,23 @@ Meta:
 
 Narrative: 
 
+Scenario: HOS - Fuel Stops - Make sure columns are available for all tests in this suite
+Given I am logged in
+When I click the HOS link
+And I click the HOS Fuel Stops link
+And I click the Edit Columns button
+And the Edit Columns popup opens
+And I check the 1st Row of the Column checkbox
+And I check the 2nd Row of the Column checkbox
+And I check the 3rd Row of the Column checkbox
+And I check the 4th Row of the Column checkbox
+And I check the 5th Row of the Column checkbox
+And I check the 6th Row of the Column checkbox
+And I check the 7th Row of the Column checkbox
+And I check the 8th Row of the Column checkbox
+And I click the Save button
+And the Edit Columns popup closes
+
 Scenario: TC5627: HOS - Fuel Stops - Add Fuel Stop: generate error messages for required fields
 Given I am logged in
 When I click the HOS link
@@ -328,6 +345,7 @@ And I uncheck the 1st Row of the Column checkbox
 And I uncheck the 2nd Row of the Column checkbox
 And I uncheck the 3rd Row of the Column checkbox
 And I uncheck the 4th Row of the Column checkbox
+And I uncheck the 5th Row of the Column checkbox
 And I uncheck the 6th Row of the Column checkbox
 And I uncheck the 7th Row of the Column checkbox
 And I uncheck the 8th Row of the Column checkbox
@@ -347,6 +365,7 @@ And I check the 1st Row of the Column checkbox
 And I check the 2nd Row of the Column checkbox
 And I check the 3rd Row of the Column checkbox
 And I check the 4th Row of the Column checkbox
+And I check the 5th Row of the Column checkbox
 And I check the 6th Row of the Column checkbox
 And I check the 7th Row of the Column checkbox
 And I check the 8th Row of the Column checkbox
