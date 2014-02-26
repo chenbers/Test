@@ -97,7 +97,7 @@
 		            		</a4j:commandButton>            								
 					   </li>
 					  <li class="l text">
-						<a4j:commandLink id="crashHistoryEditColumns" styleClass="ls_tab_edit_columns" title="#{messages.button_editColumns}" oncomplete="javascript:Richfaces.showModalPanel('editColumns')" 
+						<a4j:commandLink id="#{context}_editColumns" styleClass="ls_tab_edit_columns" title="#{messages.button_editColumns}" oncomplete="javascript:Richfaces.showModalPanel('#{context}_editColumns')" 
 							reRender="editColumnsForm:editColumnGrid">
 							#{messages.button_editColumns}
 						</a4j:commandLink>
@@ -137,7 +137,7 @@
 		    		</a4j:region>
 		    		        
 					<div class="spacer"></div>
-		            <h:panelGroup id="crashHistoryTable" layout="block" styleClass="datagrid_panel">
+		            <h:panelGroup id="#{context}_table" layout="block" styleClass="datagrid_panel">
 						<ui:include src="/includes/crashHistoryTable.xhtml">	
 							<ui:param name="numRowsPerPg" value="#{crashHistoryBean.numRowsPerPg}"/>									
 		             		<ui:param name="tableData" value="#{crashHistoryBean.tableData}"/>             						
@@ -146,7 +146,7 @@
 <!--		             		<ui:param name="formId" value="crashHistory_Table_Form"/>-->
 		             		<ui:param name="clearTitle" value="#{messages.notes_crashhistory_clearTitle}"/>
 		             		<ui:param name="clearInst" value="#{messages.notes_crashhistory_clearInst}"/>
-		             		<ui:param name="clearRerender" value="#{context}_search:header,crashHistory-form:crashHistory"/>
+		             		<ui:param name="clearRerender" value="#{context}_search:header,#{context}-form:#{context}"/>
     	 					<ui:param name="context" value="#{context}" />
 		    			</ui:include>    							
 		            </h:panelGroup>					
