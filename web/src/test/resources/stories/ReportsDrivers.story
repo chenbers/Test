@@ -35,7 +35,7 @@ And I validate the Seatbelt dropdown is present
 Scenario: TC1540: Reports - Drivers - Bookmark Entry 
 Given I am logged in
 And I click the Master Search button
-And I save the 1st Row of the Driver Value link as SAVEDDRIVER
+And I save the 1st Row of the Driver Value link as SAVEDREPORTSDRIVERSDRIVER1
 And I bookmark the page
 And I click the Logout link
 And I click the bookmark I just added
@@ -43,7 +43,7 @@ Then I validate I am on the Login page
 When I log back in
 Then I validate I am on the Reports Drivers page
 And I validate the Master Search textfield is ""
-And I validate that the 1st Row of the Driver Value link is SAVEDDRIVER
+And I validate that the 1st Row of the Driver Value link is SAVEDREPORTSDRIVERSDRIVER1
 
 Scenario: Reports - Drivers - Bookmark Entry to Different Account
 Given I am logged in
@@ -59,61 +59,61 @@ Scenario: TC1543: Reports - Drivers - Driver Link
 Given I am logged in
 When I click the Reports link
 And I click the Drivers link
-And I save the 1st Row of the Driver Value link as SAVEDDRIVER
+And I save the 1st Row of the Driver Value link as SAVEDREPORTSDRIVERSDRIVER2
 And I click the 1st Row of the Driver Value link
-Then I validate the Driver Name link is SAVEDDRIVER
+Then I validate the Driver Name link is SAVEDREPORTSDRIVERSDRIVER2
 
 Scenario: TC1545: Reports - Drivers - Driving Style Score Link
 Given I am logged in
 When I click the Reports link
 And I click the Drivers link
-And I save the 1st Row of the Driver Value link as SAVEDDRIVER
-And I save the 1st Row of the Style Value link as SAVEDSTYLE
+And I save the 1st Row of the Driver Value link as SAVEDREPORTSDRIVERSDRIVER3
+And I save the 1st Row of the Style Value link as SAVEDREPORTSDRIVERSSTYLE3
 And I click the 1st Row of the Style Value link
 And I click the twelve months Duration link
-Then I validate the Driving Style Score Value text is SAVEDSTYLE
-And I validate the Driver Name link is SAVEDDRIVER
+Then I validate the Driving Style Score Value text is SAVEDREPORTSDRIVERSSTYLE3
+And I validate the Driver Name link is SAVEDREPORTSDRIVERSDRIVER3
 
 Scenario: TC1550: Reports - Drivers - Group Link
 Given I am logged in
 When I click the Reports link
 And I click the Drivers link
-And I save the 1st Row of the Group Value link as SAVEDENTRY
+And I save the 1st Row of the Group Value link as SAVEDREPORTSDRIVERSENTRY4
 And I click the 1st Row of the Group Value link
-Then I validate the Driver Team Value text is SAVEDENTRY
+Then I validate the Driver Team Value text is SAVEDREPORTSDRIVERSENTRY4
 
 Scenario: TC1553: Reports - Drivers - Overall Score Link
 Given I am logged in
 When I click the Reports link
 And I click the Drivers link
-And I save the 1st Row of the Driver Value link as SAVEDDRIVER
-And I save the 1st Row of the Overall Value link as SAVEDOVERALL
+And I save the 1st Row of the Driver Value link as SAVEDREPORTSDRIVERSDRIVER5
+And I save the 1st Row of the Overall Value link as SAVEDREPORTSDRIVERSOVERALL5
 And I click the 1st Row of the Overall Value link
 And I click the twelve months Overall Duration link
-Then I validate the Overall Score text is SAVEDOVERALL
-And I validate the Driver Name link is SAVEDDRIVER
+Then I validate the Overall Score text is SAVEDREPORTSDRIVERSOVERALL5
+And I validate the Driver Name link is SAVEDREPORTSDRIVERSDRIVER5
 
 Scenario: TC1562: Reports - Drivers - Seat Belt Score Link
 Given I am logged in
 When I click the Reports link
 And I click the Drivers link
-And I save the 1st Row of the Driver Value link as SAVEDDRIVER
-And I save the 1st Row of the Seatbelt Value link as SAVEDSEATBELT
+And I save the 1st Row of the Driver Value link as SAVEDREPORTSDRIVERSDRIVER6
+And I save the 1st Row of the Seatbelt Value link as SAVEDREPORTSDRIVERSSEATBELT6
 And I click the 1st Row of the Seatbelt Value link
 And I click the twelve months Duration link
-Then I validate the Overall Score Value text is SAVEDSEATBELT
-And I validate the Driver Name link is SAVEDDRIVER
+Then I validate the Overall Score Value text is SAVEDREPORTSDRIVERSSEATBELT6
+And I validate the Driver Name link is SAVEDREPORTSDRIVERSDRIVER6
 
 Scenario: TC1564: Reports - Drivers - Speed Score Link
 Given I am logged in
 When I click the Reports link
 And I click the Drivers link
-And I save the 1st Row of the Driver Value link as SAVEDDRIVER
-And I save the 1st Row of the Speed Value link as SAVEDSPEED
+And I save the 1st Row of the Driver Value link as SAVEDREPORTSDRIVERSDRIVER7
+And I save the 1st Row of the Speed Value link as SAVEDREPORTSDRIVERSSPEED7
 And I click the 1st Row of the Seatbelt Value link
 And I click the twelve months Duration link
-Then I validate the Overall Score Value text is SAVEDSPEED
-And I validate the Driver Name link is SAVEDDRIVER
+Then I validate the Overall Score Value text is SAVEDREPORTSDRIVERSSPEED7
+And I validate the Driver Name link is SAVEDREPORTSDRIVERSDRIVER7
 
 Scenario: TC1566: Reports - Drivers - Table Properties NEED ASSISTANCE IN IMPLEMENTING HOW TO CHECK ORDER
 Given I am logged in
@@ -149,10 +149,10 @@ When I click the Reports link
 And I click the Drivers link
 And I click the Sort By Vehicle link
 And I click the Sort By Vehicle link
-And I save the 1st Row of the Vehicle Value link as SAVEDENTRY
+And I save the 1st Row of the Vehicle Value link as SAVEDREPORTSDRIVERSENTRY8
 And I click the 1st Row of the Vehicle Value link
 Then I validate I am on the Vehicle Performance page
-And I validate the Vehicle Name link contains SAVEDENTRY
+And I validate the Vehicle Name link contains SAVEDREPORTSDRIVERSENTRY8
 
 Scenario: TC1571: Reports - Drivers - Edit Columns - Cancel Button (Changes)
 Given I am logged in

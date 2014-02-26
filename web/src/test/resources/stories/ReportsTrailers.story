@@ -107,14 +107,14 @@ Scenario: Reports - Trailers - Bookmark Entry
 Given I am logged in
 And I select "Trailers" from the Master Search dropdown
 And I click the Master Search button
-And I save the 1st Row of the Trailer Value text as SAVEDTRAILER
+And I save the 1st Row of the Trailer Value text as SAVEDREPORTSTRAILERSTRAILER
 When I bookmark the page
 And I click the Logout link
 And I click the bookmark I just added
 When I log back in
 Then I validate I am on the Reports Trailers page
 And I validate the Master Search textfield is ""
-And I validate that the 1st Row of the Trailer Value text is SAVEDTRAILER
+And I validate that the 1st Row of the Trailer Value text is SAVEDREPORTSTRAILERSTRAILER
 
 Scenario: Reports - Trailers - Bookmark Entry to Different Account
 Given I am logged in
@@ -132,9 +132,9 @@ When I click the Reports link
 And I click the Trailers link
 And I click the Sort By Group link
 And I click the Sort By Group link
-And I save the 1st Row of the Group Value link as SAVEDGROUP
+And I save the 1st Row of the Group Value link as SAVEDREPORTSTRAILERSGROUP
 And I click the the 1st Row of the Group Value link
-Then I validate the Driver Team Value text is SAVEDGROUP
+Then I validate the Driver Team Value text is SAVEDREPORTSTRAILERSGROUP
 
 Scenario: Reports - Trailers - Table Properties
 !-- Given I am logged in
@@ -153,10 +153,10 @@ Given I am logged in
 When I click the Reports link
 And I click the Trailers link
 And I click the Sort By Vehicle ID link
-And I save the 1st Row of the Vehicle Value link as SAVEDVEHICLE
+And I save the 1st Row of the Vehicle Value link as SAVEDREPORTSTRAILERSVEHICLE
 And I click the 1st Row of the Vehicle Value link
 Then I validate I am on the Vehicle Performance page
-And I validate the Vehicle Name link contains SAVEDVEHICLE
+And I validate the Vehicle Name link contains SAVEDREPORTSTRAILERSVEHICLE
 
 Scenario: Reports - Trailers - Driver Link
 Given I am logged in
@@ -164,10 +164,10 @@ When I click the Reports link
 And I click the Trailers link
 And I click the Sort By Driver link
 And I click the Sort By Driver link
-And I save the 1st Row of the Driver Value link as SAVEDDRIVER
+And I save the 1st Row of the Driver Value link as SAVEDREPORTSTRAILERSDRIVER
 And I click the 1st Row of the Driver Value link
 Then I validate I am on the Driver Performance page
-And I validate the Driver Name link contains SAVEDDRIVER
+And I validate the Driver Name link contains SAVEDREPORTSTRAILERSDRIVER
 
 Scenario: Reports - Trailers - Edit Columns - Cancel Button (Changes)
 Given I am logged in
