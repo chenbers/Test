@@ -19,7 +19,7 @@ public class FuelStopsTableColumns extends BaseTableColumns {
         AVAILABLE_COLUMNS.add("driver");
         AVAILABLE_COLUMNS.add("vehicle");
         AVAILABLE_COLUMNS.add("trailer");
-        AVAILABLE_COLUMNS.add("service");
+       // AVAILABLE_COLUMNS.add("service");
         AVAILABLE_COLUMNS.add("location");
         AVAILABLE_COLUMNS.add("truckGallons");
         AVAILABLE_COLUMNS.add("trailerGallons");
