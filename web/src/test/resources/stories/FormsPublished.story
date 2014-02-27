@@ -38,29 +38,6 @@ Then I validate I am on the Login page
 When I log back in under the editable account
 Then I validate I am on the Forms Published page
 
-Scenario: Forms Published Page - Default Records dropdowns are set to 10
-Given I am logged in
-When I click the Forms link
-And I click the Published link
-Then I validate the Records Per Page dropdown is "10"
-
-Scenario: Forms Published Page - Records per page test
-Given I am logged in
-When I click the Forms link
-And I click the Published link
-And I select "10" from the Records Per Page dropdown
-Then I validate the 11th Row of the Entry Name text is not present
-And I validate the Entries text contains "Showing 1 to 10 of"
-And I select "25" from the Records Per Page dropdown
-And I validate the 26th Row of the Entry Name text is not present
-And I validate the Entries text contains "Showing 1 to 25 of"
-And I select "50" from the Records Per Page dropdown
-And I validate the 51st Row of the Entry Name text is not present
-And I validate the Entries text contains "Showing 1 to 50 of"
-And I select "100" from the Records Per Page dropdown
-And I validate the 101st Row of the Entry Name text is not present
-And I validate the Entries text contains "Showing 1 to 100 of"
-
 Scenario: Search - Forms Published Page - Create and publish a form
 Given I am logged in
 When I click the Forms link
@@ -124,3 +101,26 @@ And I validate the No Records Error text is "No matching records found"
 And I validate the Entries text contains "Showing 0 to 0 of 0 entries"
 And I validate the Previous link is not present
 And I validate the Next link is not present
+
+Scenario: Forms Published Page - Default Records dropdowns are set to 10
+Given I am logged in
+When I click the Forms link
+And I click the Published link
+Then I validate the Records Per Page dropdown is "10"
+
+Scenario: Forms Published Page - Records per page test
+Given I am logged in
+When I click the Forms link
+And I click the Published link
+And I select "10" from the Records Per Page dropdown
+Then I validate the 11th Row of the Entry Name text is not present
+And I validate the Entries text contains "Showing 1 to 10 of"
+And I select "25" from the Records Per Page dropdown
+And I validate the 26th Row of the Entry Name text is not present
+And I validate the Entries text contains "Showing 1 to 25 of"
+And I select "50" from the Records Per Page dropdown
+And I validate the 51st Row of the Entry Name text is not present
+And I validate the Entries text contains "Showing 1 to 50 of"
+And I select "100" from the Records Per Page dropdown
+And I validate the 101st Row of the Entry Name text is not present
+And I validate the Entries text contains "Showing 1 to 100 of"

@@ -1,14 +1,3 @@
-Scenario:  Forms Submissions Page - Forms No Data Available In Table Message
-Given I am logged in
-When I click the Forms link
-And I click the Submissions link
-And I select "Form TCXXXXAdd1 (1)" from the Form dropdown
-And I click the Refresh button
-Then I validate the 1st Row of the Form Entry text is not present
-And I validate the No Records Found Error text is present
-And I validate the No Records Found Error text is "No data available in table"
-And I validate the Entries text contains "Showing 0 to 0 of 0 entries"
-
 Scenario:Forms Submissions Page - UI Test
 Given I am logged in
 When I click the Forms link
@@ -32,6 +21,17 @@ And I validate the Vehicle textfield is present
 And I validate the Edited dropdown is present
 And I validate the Approved dropdown is present
 And I validate the Entries text is present
+
+Scenario:  Forms Submissions Page - Forms No Data Available In Table Message
+Given I am logged in
+When I click the Forms link
+And I click the Submissions link
+And I select "Form TCXXXXAdd1 (1)" from the Form dropdown
+And I click the Refresh button
+Then I validate the 1st Row of the Form Entry text is not present
+And I validate the No Records Found Error text is present
+And I validate the No Records Found Error text is "No data available in table"
+And I validate the Entries text contains "Showing 0 to 0 of 0 entries"
 
 Scenario:Forms Submissions Page - Forms No Records Found Table Message
 Given I am logged in
@@ -99,22 +99,6 @@ And I check the 1st Row of the Approved Entry checkbox
 Then I validate the 1st Row of the Approved Entry checkbox is checked
 And I uncheck the 1st Row of the Approved Entry checkbox
 And I validate the 1st Row of the Approved Entry checkbox is not checked
-
-Scenario: Forms Submissions Page - Records per page test
-Given I am logged in
-When I click the Forms link
-And I click the Submissions link
-Then I validate the 11th Row of the Date Time Entry text is not present
-And I validate the Entries text contains "Showing 1 to 10"
-And I select "25" from the Records Per Page dropdown
-And I validate the 26th Row of the Date Time Entry text is not present
-And I validate the Entries text contains "Showing 1 to 25"
-And I select "50" from the Records Per Page dropdown
-And I validate the 51st Row of the Date Time Entry text is not present
-And I validate the Entries text contains "Showing 1 to 50"
-And I select "100" from the Records Per Page dropdown
-And I validate the 101st Row of the Date Time Entry text is not present
-And I validate the Entries text contains "Showing 1 to 100"
 
 Scenario: Forms Submissions Page - Bookmark Entry
 Given I am logged in
@@ -338,3 +322,19 @@ Then I validate the Invalid Date Error text is present
 And I select 180 days in the past from the 1st Row of the Date Entry dropdown
 And I click the 1st Row of the Save button
 And I validate the Invalid Date Error text is present
+
+Scenario: Forms Submissions Page - Records per page test
+Given I am logged in
+When I click the Forms link
+And I click the Submissions link
+Then I validate the 11th Row of the Date Time Entry text is not present
+And I validate the Entries text contains "Showing 1 to 10"
+And I select "25" from the Records Per Page dropdown
+And I validate the 26th Row of the Date Time Entry text is not present
+And I validate the Entries text contains "Showing 1 to 25"
+And I select "50" from the Records Per Page dropdown
+And I validate the 51st Row of the Date Time Entry text is not present
+And I validate the Entries text contains "Showing 1 to 50"
+And I select "100" from the Records Per Page dropdown
+And I validate the 101st Row of the Date Time Entry text is not present
+And I validate the Entries text contains "Showing 1 to 100"
