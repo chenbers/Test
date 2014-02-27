@@ -181,6 +181,7 @@
                             <excludes>
 								<exclude>**/selenium/testSuites/**/AdminVehicle850Test.java</exclude>
 								<exclude>**/selenium/testSuites/**/RouteGetEndpointTest.java</exclude>
+								<exclude>**/selenium/testSuites/**/StressTest**.java</exclude>
 								<exclude>**/selenium/testSuites/**/WebTest.java</exclude>
                             </excludes>
                             <includes>
