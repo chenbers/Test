@@ -179,6 +179,7 @@
                             <threadCount>${AT.threadCount}</threadCount>
                             <perCoreThreadCount>${AT.isThreadCountPerCore}</perCoreThreadCount>
                             <excludes>
+                                <exclude>**/selenium/testSuites/**/AAForms**.java</exclude>
 								<exclude>**/selenium/testSuites/**/AdminVehicle850Test.java</exclude>
 								<exclude>**/selenium/testSuites/**/RouteGetEndpointTest.java</exclude>
 								<exclude>**/selenium/testSuites/**/StressTest**.java</exclude>
