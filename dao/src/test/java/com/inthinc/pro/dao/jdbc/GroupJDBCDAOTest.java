@@ -11,6 +11,7 @@ import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 public class GroupJDBCDAOTest extends SimpleJdbcDaoSupport {
@@ -37,7 +38,6 @@ public class GroupJDBCDAOTest extends SimpleJdbcDaoSupport {
          public void getGroupHierarchyTest() throws Exception
     {
         List<Group> groupList = groupJDBCDAO.getGroupHierarchy(ACCOUNT_ID, GROUP_ID);
-
         assertTrue(groupList.size() > 0);
     }
 
@@ -45,11 +45,18 @@ public class GroupJDBCDAOTest extends SimpleJdbcDaoSupport {
     public void getGroupsByAcctIDTest() throws Exception
     {
         List<Group> groupListByAccount = groupJDBCDAO.getGroupsByAcctID(ACCOUNT_ID);
-
         assertTrue(groupListByAccount.size() > 0);
     }
 
-
+    @Test
+    public void findByIDTest() throws Exception
+    {
+        Group groupFindByID = groupJDBCDAO.findByID(GROUP_ID);
+        assertNotNull(groupFindByID);
     }
+
+
+
+}
 
 

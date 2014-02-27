@@ -17,13 +17,14 @@ import java.util.List;
 import java.util.Map;
 
 
-public class GroupJDBCDAO extends SimpleJdbcDaoSupport implements GroupDAO   {
+public class GroupJDBCDAO extends SimpleJdbcDaoSupport implements GroupDAO {
 
     private static final long serialVersionUID = 2855781183498326572L;
 
     private static final String GET_GROUP = "select g.groupID, g.acctID, g.parentID, g.name, g.desc, g.status, g.groupPath, g.addrID, g.addrID2, g.level, g.managerID, g.mapZoom, g.mapLat, g.mapLng, g.zoneRev, g.aggDate, g.newAggDate, g.dotOfficeType  from groups g ";
-
     private static final String GET_GROUP_ACCT = "select g.groupID, g.acctID, g.parentID, g.name, g.desc, g.status, g.groupPath, g.addrID, g.addrID2, g.level, g.managerID, g.mapZoom, g.mapLat, g.mapLng, g.zoneRev, g.aggDate, g.newAggDate, g.dotOfficeType  from groups g where g.status <> 3 ";
+
+    private static final String FIND_GROUP_BY_ID = "select g.groupID, g.acctID, g.parentID, g.name, g.desc, g.status, g.groupPath, g.addrID, g.addrID2, g.level, g.managerID, g.mapZoom, g.mapLat, g.mapLng, g.zoneRev, g.aggDate, g.newAggDate, g.dotOfficeType  from groups g where g.groupID =:groupID";
 
     private static final String DEL_GROUP_BY_ID = "DELETE FROM groups WHERE groupID = ?";
 
@@ -95,8 +96,11 @@ public class GroupJDBCDAO extends SimpleJdbcDaoSupport implements GroupDAO   {
     }
 
     @Override
-    public Group findByID(Integer integer) {
-        throw new NotImplementedException();
+    public Group findByID(Integer groupID) {
+        Map<String, Object> args = new HashMap<String, Object>();
+        args.put("groupID", groupID);
+        StringBuilder groupSelectAcct = new StringBuilder(FIND_GROUP_BY_ID);
+        return getSimpleJdbcTemplate().queryForObject(groupSelectAcct.toString(), groupParameterizedRow, args );
     }
 
     @Override
@@ -110,8 +114,8 @@ public class GroupJDBCDAO extends SimpleJdbcDaoSupport implements GroupDAO   {
     }
 
     @Override
-    public Integer deleteByID(Integer integer) {
-        throw new NotImplementedException();
+    public Integer deleteByID(Integer groupID) {
+        return getJdbcTemplate().update(DEL_GROUP_BY_ID, new Object[] { groupID });
     }
 
     public void createTestDevice(int testAccountId, int testGroupId) {
