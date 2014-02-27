@@ -78,7 +78,7 @@
         <skipUT>true</skipUT>
         <skipIT>true</skipIT>
         <skipAT>false</skipAT>
-        <AT.threadCount>4</AT.threadCount>
+        <AT.threadCount>8</AT.threadCount>
         <AT.isThreadCountPerCore>true</AT.isThreadCountPerCore>
         <AT.parallelOn>classes</AT.parallelOn>
         <junit.version>4.11</junit.version>
@@ -179,7 +179,8 @@
                             <threadCount>${AT.threadCount}</threadCount>
                             <perCoreThreadCount>${AT.isThreadCountPerCore}</perCoreThreadCount>
                             <excludes>
-                                <exclude>**/selenium/testSuites/**/AAForms**.java</exclude>
+                                <exclude>**/selenium/testSuites/**/AAFormsGenerationForManageTest.java</exclude>
+                                <exclude>**/selenium/testSuites/**/AAFormsGenerationForPublishTest.java</exclude>
 								<exclude>**/selenium/testSuites/**/AdminVehicle850Test.java</exclude>
 								<exclude>**/selenium/testSuites/**/RouteGetEndpointTest.java</exclude>
 								<exclude>**/selenium/testSuites/**/StressTest**.java</exclude>
