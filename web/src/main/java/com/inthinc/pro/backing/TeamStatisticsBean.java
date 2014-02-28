@@ -124,10 +124,11 @@ public class TeamStatisticsBean extends BaseBean {
 
     public List<DriverVehicleScoreWrapper> getDriverTotals() {
         List<DriverVehicleScoreWrapper> local = new ArrayList<DriverVehicleScoreWrapper>();
+        List<DriverVehicleScoreWrapper> driverStats = getDriverStatistics();
 
-        DriverVehicleScoreWrapper dvsw = DriverVehicleScoreWrapper.summarize(getDriverStatistics(), teamCommonBean.getGroup());
+        DriverVehicleScoreWrapper dvsw = DriverVehicleScoreWrapper.summarize(driverStats, teamCommonBean.getGroup());
         
-        if(teamCommonBean.useTrendScores()){
+        if(driverStats.size() > 1 && teamCommonBean.useTrendScores()){
             Number score = this.getTeamCommonBean().getOverallScoreUsingTrendScore(groupReportDAO);
             dvsw.getScore().setOverall(score);
         }

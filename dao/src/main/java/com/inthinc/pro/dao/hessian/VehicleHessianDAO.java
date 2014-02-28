@@ -22,6 +22,7 @@ import com.inthinc.pro.model.LatLng;
 import com.inthinc.pro.model.Trip;
 import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.model.VehicleName;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 @SuppressWarnings("serial")
 public class VehicleHessianDAO extends GenericHessianDAO<Vehicle, Integer> implements VehicleDAO, FindByKey<Vehicle> {
@@ -38,6 +39,11 @@ public class VehicleHessianDAO extends GenericHessianDAO<Vehicle, Integer> imple
         } catch (EmptyResultSetException e) {
             return Collections.emptyList();
         }
+    }
+
+    @Override
+    public List<Vehicle> getVehiclesInGroupIDList(List<Integer> groupIDList) {
+        throw new NotImplementedException();
     }
 
     @Override

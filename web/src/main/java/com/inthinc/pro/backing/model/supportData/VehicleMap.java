@@ -9,24 +9,22 @@ import com.inthinc.pro.model.Vehicle;
 
 public class VehicleMap extends CacheItemMap<Vehicle,Vehicle> {
 
-    private Integer groupID;
+    private List<Integer> groupIDList;
     private VehicleDAO vehicleDAO;
     
-    
-    public VehicleMap(Integer groupID) {
+    public VehicleMap(List<Integer> groupIDList) {
         super();
-        this.groupID = groupID;
+        this.groupIDList = groupIDList;
     }
 
     @Override
     protected Vehicle fetchItem(Integer key) {
-        
         return vehicleDAO.findByID(key);
     }
 
     @Override
     protected List<Vehicle> fetchItems() {
-        return vehicleDAO.getVehiclesInGroupHierarchy(groupID);
+        return vehicleDAO.getVehiclesInGroupIDList(groupIDList);
     }
 
     @Override
@@ -55,9 +53,12 @@ public class VehicleMap extends CacheItemMap<Vehicle,Vehicle> {
             vehicleDAO = (VehicleDAO) dao;
         }
     }
-    
-    public void setGroupID(Integer groupID) {
-        this.groupID = groupID;
+
+    public List<Integer> getGroupIDList() {
+        return groupIDList;
     }
 
+    public void setGroupIDList(List<Integer> groupIDList) {
+        this.groupIDList = groupIDList;
+    }
 }
