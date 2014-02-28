@@ -16,7 +16,7 @@ import org.joda.time.Period;
 public enum TimeFrame implements BaseEnum {
     TODAY(AggregationDuration.ONE_DAY, 0) {
         public Interval getInterval(DateTimeZone dateTimeZone) {
-            return new Interval(new DateMidnight(getCurrent(), dateTimeZone), new DateMidnight(getCurrent(), dateTimeZone));
+            return new Interval(new DateMidnight(getCurrent(), dateTimeZone), new DateMidnight(getCurrent().plusDays(1), dateTimeZone));
         }
     },
     DAY(AggregationDuration.ONE_DAY, 1) {
