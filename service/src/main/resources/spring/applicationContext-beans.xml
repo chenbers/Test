@@ -180,7 +180,9 @@
 		<property name="waysmartDAO" ref="waysmartDAO" />
 		<property name="stateMileageDAO" ref="stateMileageDAO" />
 		<property name="addressDAO" ref="addressDAO" />
-	</bean>
+        <property name="trailerReportDAO" ref="trailerReportDAO" />
+
+    </bean>
 
 	<!--  hos -->
 	<bean id="RuleSetFactory" class="com.inthinc.hos.rules.RuleSetFactory">

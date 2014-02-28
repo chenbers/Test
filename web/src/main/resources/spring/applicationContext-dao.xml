@@ -100,8 +100,9 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
     <bean id="configuratorDAO" class="com.inthinc.pro.dao.hessian.ConfiguratorHessianDAO" />
     <bean id="redFlagAlertsDAO" class="com.inthinc.pro.dao.hessian.RedFlagAlertHessianDAO"></bean>
     <bean id="phoneControlDAO" class="com.inthinc.pro.dao.hessian.PhoneControlHessianDAO"></bean>
-    <bean id="reportDAO" class="com.inthinc.pro.dao.hessian.ReportHessianDAO">
-        <property name="driverPerformanceMapper" ref="driverPerformanceMapper" />
+    <bean id="reportDAO" class="com.inthinc.pro.dao.jdbc.ReportJDBCDAO">
+        <property name="dataSource" ref="dataSource" />
+
     </bean>
 
     <!-- Un-comment and comment out mock DAOs below this to use real data -->
