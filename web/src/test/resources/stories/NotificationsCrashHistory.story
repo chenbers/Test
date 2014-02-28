@@ -98,7 +98,7 @@ When I click the Notifications link
 And I click the Crash History link
 And I select "Top - Automation Test Team" from the Team dropdown
 And I select "All" from the Time Frame dropdown
-And I type "TIWI00" into the Search textfield
+And I type "Automation" into the Search textfield
 And I click the Search button
 And I save the 1st Row of the Entry Driver link as SAVEDNAME
 And I click the 1st Row of the Entry Driver link
