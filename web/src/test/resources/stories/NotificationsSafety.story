@@ -328,24 +328,38 @@ And I validate the Yes button is present
 And I validate the No button is present
 And I validate the Close button is present
 
-Scenario: TC5738: Notifications - Safety - Include Link
+Scenario: TC5738: Notifications - Safety - Exclude and Include Link
 Given I am logged in
 When I click the Notifications link
 And I click the Safety link
 And I select "Top" from the Team dropdown
 And I select "Past Year" from the Time Frame dropdown
 And I click the Refresh button
+And I save the Counter text as TABLECOUNT
 And I save the 1st Row of the Entry Date Time text as SAVEDDATETIME
 And I save the 1st Row of the Entry Detail text as SAVEDDETAIL
+And I save the 1st Row of the Entry Category text as SAVEDCATEGORY
 And I click the 1st Row of the Entry Status link
 And the Exclude Event popup opens
 Then I validate the Message text contains SAVEDDATETIME
 And I validate the Message text contains SAVEDDETAIL
 And I click the Yes button
 And the Exclude Event popup closes
+Then I validate the Counter text is TABLECOUNT
+And I select "excluded" from the Status dropdown
+And I validate the 1st Row of the Entry Date Time text is SAVEDDATETIME
+And I validate the 1st Row of the Entry Detail text is SAVEDDETAIL
+And I validate the 1st Row of the Entry Category text is SAVEDCATEGORY
 And I validate the 1st Row of the Entry Status link is "include"
 And I click the 1st Row of the Entry Status link
+And I validate the 1st Row of the Entry Status link is not present
+And I select "included" from the Status dropdown
+And I click the Refresh button
 And I validate the 1st Row of the Entry Status link is "exclude"
+And I validate the 2nd Row of the Entry Status link is "exclude"
+And I validate the 3rd Row of the Entry Status link is "exclude"
+And I validate the 4th Row of the Entry Status link is "exclude"
+And I validate the 5th Row of the Entry Status link is "exclude"
 
 Scenario: TC5743: Notifications - Safety - Time Frame
 Given I am logged in

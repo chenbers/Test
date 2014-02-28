@@ -314,10 +314,12 @@ And I click the Zones link
 And I select "Top" from the Team dropdown
 And I select "Past 30 Days" from the Time Frame dropdown
 And I click the Refresh button
+And I save the Counter text as TABLECOUNT
 And I select "Zone Arrival" from the Category dropdown
 And I click the Refresh button
 And I save the 1st Row of the Entry Date Time text as SAVEDDATETIME
 And I save the 1st Row of the Entry Detail text as SAVEDDETAIL
+And I save the 1st Row of the Entry Category text as SAVEDCATEGORY
 And I combine SAVEDDETAIL with "
 " with SAVEDDATETIME and save them as SAVEDCOMBINED
 And I click the 1st Row of the Entry Status link
@@ -325,9 +327,21 @@ And the Exclude Event popup opens
 Then I validate the Message text is SAVEDCOMBINED
 And I click the Yes button
 And the Exclude Event popup closes
+And I validate the Counter text is TABLECOUNT
+And I select "excluded" from the Status dropdown
+And I validate the 1st Row of the Entry Date Time text is SAVEDDATETIME
+And I validate the 1st Row of the Entry Detail text is SAVEDDETAIL
+And I validate the 1st Row of the Entry Category text is SAVEDCATEGORY
 And I validate the 1st Row of the Entry Status link is "include"
 And I click the 1st Row of the Entry Status link
+And I validate the 1st Row of the Entry Status link is not present
+And I select "included" from the Status dropdown
+And I click the Refresh button
 And I validate the 1st Row of the Entry Status link is "exclude"
+And I validate the 2nd Row of the Entry Status link is "exclude"
+And I validate the 3rd Row of the Entry Status link is "exclude"
+And I validate the 4th Row of the Entry Status link is "exclude"
+And I validate the 5th Row of the Entry Status link is "exclude"
 
 Scenario: TC5734: Notifications - Zones - Exclude Link - Zone Departure Event
 Given I am logged in
@@ -340,6 +354,7 @@ And I select "Zone Departure" from the Category dropdown
 And I click the Refresh button
 And I save the 1st Row of the Entry Date Time text as SAVEDDATETIME
 And I save the 1st Row of the Entry Detail text as SAVEDDETAIL
+And I save the 1st Row of the Entry Category text as SAVEDCATEGORY
 And I combine SAVEDDETAIL with "
 " with SAVEDDATETIME and save them as SAVEDCOMBINED
 And I click the 1st Row of the Entry Status link
@@ -347,9 +362,19 @@ And the Exclude Event popup opens
 Then I validate the Message text is SAVEDCOMBINED
 And I click the Yes button
 And the Exclude Event popup closes
+And I select "excluded" from the Status dropdown
+And I validate the 1st Row of the Entry Date Time text is SAVEDDATETIME
+And I validate the 1st Row of the Entry Detail text is SAVEDDETAIL
+And I validate the 1st Row of the Entry Category text is SAVEDCATEGORY
 And I validate the 1st Row of the Entry Status link is "include"
 And I click the 1st Row of the Entry Status link
+And I validate the 1st Row of the Entry Status link is not present
+And I select "included" from the Status dropdown
 And I validate the 1st Row of the Entry Status link is "exclude"
+And I validate the 2nd Row of the Entry Status link is "exclude"
+And I validate the 3rd Row of the Entry Status link is "exclude"
+And I validate the 4th Row of the Entry Status link is "exclude"
+And I validate the 5th Row of the Entry Status link is "exclude"
 
 Scenario: TC5735: Notifications - Zones - Exclude Link - UI
 Given I am logged in
@@ -369,26 +394,26 @@ And I validate the Yes button is present
 And I validate the No button is present
 And I validate the Close button is present
 
-Scenario: TC5736: Notifications - Zones - Include Link 
-Given I am logged in
-When I click the Notifications link
-And I click the Zones link
-And I select "Top" from the Team dropdown
-And I select "Past 30 Days" from the Time Frame dropdown
-And I click the Refresh button
-And I save the 1st Row of the Entry Date Time text as SAVEDDATETIME
-And I save the 1st Row of the Entry Detail text as SAVEDDETAIL
-And I combine SAVEDDETAIL with "
-" with SAVEDDATETIME and save them as SAVEDCOMBINED
-And I click the 1st Row of the Entry Status link
-And the Exclude Event popup opens
-Then I validate the Message text is SAVEDCOMBINED
-And I click the Yes button
-And the Exclude Event popup closes
-And I click the Refresh button
-And I validate the 1st Row of the Entry Status link is "include"
-And I click the 1st Row of the Entry Status link
-And I validate the 1st Row of the Entry Status link is "exclude"
+Scenario: TC5736: Notifications - Zones - Include Link (The exclude link tests also test the include link so I'm excluding this test for now)
+!-- Given I am logged in
+!-- When I click the Notifications link
+!-- And I click the Zones link
+!-- And I select "Top" from the Team dropdown
+!-- And I select "Past 30 Days" from the Time Frame dropdown
+!-- And I click the Refresh button
+!-- And I save the 1st Row of the Entry Date Time text as SAVEDDATETIME
+!-- And I save the 1st Row of the Entry Detail text as SAVEDDETAIL
+!-- And I combine SAVEDDETAIL with "
+!-- " with SAVEDDATETIME and save them as SAVEDCOMBINED
+!-- And I click the 1st Row of the Entry Status link
+!-- And the Exclude Event popup opens
+!-- Then I validate the Message text is SAVEDCOMBINED
+!-- And I click the Yes button
+!-- And the Exclude Event popup closes
+!-- And I click the Refresh button
+!-- And I validate the 1st Row of the Entry Status link is "include"
+!-- And I click the 1st Row of the Entry Status link
+!-- And I validate the 1st Row of the Entry Status link is "exclude"
 
 Scenario: TC5741: Notifications - Zones - Time Frame (Requires data from today and yesterday)
 Given I am logged in

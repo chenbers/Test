@@ -417,7 +417,7 @@ And the Exclude Event popup closes
 Then I validate the 1st Row of the Entry Date Time text is SAVEDDATETIME
 And I validate the 1st Row of the Entry Detail text is SAVEDDETAIL
 
-Scenario: TC1469: Notifications - Red Flags - Exclude Link - Yes Button
+Scenario: TC1469: Notifications - Red Flags - Exclude Link - Yes Button (will not pass till DE9371 is fixed)
 Given I am logged in
 When I click the Notifications link
 And I click the Red Flags link
@@ -425,29 +425,43 @@ And I select "Top" from the Team dropdown
 And I select "Past Year" from the Time Frame dropdown
 And I click the Refresh button
 And I save the Counter text as TABLECOUNT
+And I save the 1st Row of the Entry Date Time text as SAVEDDATETIME
+And I save the 1st Row of the Entry Detail text as SAVEDDETAIL
+And I save the 1st Row of the Entry Category text as SAVEDCATEGORY
 And I click the 1st Row of the Entry Status link
 And the Exclude Event popup opens
 And I click the Yes button
 And the Exclude Event popup closes
 Then I validate the Counter text is TABLECOUNT
+And I select "excluded" from the Status dropdown
+And I validate the 1st Row of the Entry Date Time text is SAVEDDATETIME
+And I validate the 1st Row of the Entry Detail text is SAVEDDETAIL
+And I validate the 1st Row of the Entry Category text is SAVEDCATEGORY
 And I validate the 1st Row of the Entry Status link is "include"
 And I click the 1st Row of the Entry Status link
-And I validate the 1st Row of the Entry Status link is "exclude"
-
-Scenario: TC5739: Notifications - Red Flags - Include Link
-Given I am logged in
-When I click the Notifications link
-And I click the Red Flags link
-And I select "Top" from the Team dropdown
-And I select "Past Year" from the Time Frame dropdown
+And I validate the 1st Row of the Entry Status link is not present
+And I select "included" from the Status dropdown
 And I click the Refresh button
-And I click the 1st Row of the Entry Status link
-And the Exclude Event popup opens
-And I click the Yes button
-And the Exclude Event popup closes
-Then I validate the 1st Row of the Entry Status link is "include"
-And I click the 1st Row of the Entry Status link
 And I validate the 1st Row of the Entry Status link is "exclude"
+And I validate the 2nd Row of the Entry Status link is "exclude"
+And I validate the 3rd Row of the Entry Status link is "exclude"
+And I validate the 4th Row of the Entry Status link is "exclude"
+And I validate the 5th Row of the Entry Status link is "exclude"
+
+Scenario: TC5739: Notifications - Red Flags - Include Link (The exclude link tests also test the include link so I'm excluding this test for now)
+!-- Given I am logged in
+!-- When I click the Notifications link
+!-- And I click the Red Flags link
+!-- And I select "Top" from the Team dropdown
+!-- And I select "Past Year" from the Time Frame dropdown
+!-- And I click the Refresh button
+!-- And I click the 1st Row of the Entry Status link
+!-- And the Exclude Event popup opens
+!-- And I click the Yes button
+!-- And the Exclude Event popup closes
+!-- Then I validate the 1st Row of the Entry Status link is "include"
+!-- And I click the 1st Row of the Entry Status link
+!-- And I validate the 1st Row of the Entry Status link is "exclude"
 
 Scenario: TC5744: Notifications - Red Flags - Time Frame (requires entries from today and yesterday)
 Given I am logged in
