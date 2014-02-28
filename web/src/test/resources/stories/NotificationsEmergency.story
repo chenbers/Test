@@ -72,10 +72,10 @@ And I select "Top" from the Team dropdown
 And I select "Past Year" from the Time Frame dropdown
 And I click the Refresh button
 And I click the Sort By Group link
-And I save the 1st Row of the Entry Group link as SAVEDENTRY
+And I save the 1st Row of the Entry Group link as SAVEDEMERGENCYENTRY
 And I click the 1st Row of the Entry Group link
-And I validate the Driver Team Value text is SAVEDENTRY
-Then I validate the Team Name text is SAVEDENTRY
+And I validate the Driver Team Value text is SAVEDEMERGENCYENTRY
+Then I validate the Team Name text is SAVEDEMERGENCYENTRY
 
 Scenario: TC1416: Notifications - Emergency - Tools Button
 Given I am logged in
@@ -94,10 +94,10 @@ And I select "Top" from the Team dropdown
 And I select "Past Year" from the Time Frame dropdown
 And I click the Refresh button
 And I click the Sort By Driver link
-And I save the 1st Row of the Entry Vehicle link as SAVEDENTRY
+And I save the 1st Row of the Entry Vehicle link as SAVEDEMERGENCYENTRY
 And I click the 1st Row of the Entry Vehicle link
 Then I validate I am on the Vehicle Performance page
-And I validate the Vehicle Name link contains SAVEDENTRY
+And I validate the Vehicle Name link contains SAVEDEMERGENCYENTRY
 
 Scenario: TC1420: Notifications - Emergency - Edit Columns - Cancel Button (Changes)
 Given I am logged in
@@ -301,12 +301,12 @@ And I click the Emergency link
 And I select "Top" from the Team dropdown
 And I select "Past Year" from the Time Frame dropdown
 And I click the Refresh button
-And I save the 1st Row of the Entry Date Time text as SAVEDDATETIME
-And I save the 1st Row of the Entry Detail text as SAVEDDETAIL
+And I save the 1st Row of the Entry Date Time text as SAVEDEMERGENCYDATETIME
+And I save the 1st Row of the Entry Detail text as SAVEDEMERGENCYDETAIL
 And I click the 1st Row of the Entry Status link
 And the Exclude Event popup opens
-Then I validate the Message text contains SAVEDDATETIME
-And I validate the Message text contains SAVEDDETAIL
+Then I validate the Message text contains SAVEDEMERGENCYDATETIME
+And I validate the Message text contains SAVEDEMERGENCYDETAIL
 And I validate the Yes button is present
 And I validate the No button is present
 And I validate the Close button is present
@@ -318,21 +318,21 @@ And I click the Emergency link
 And I select "Top" from the Team dropdown
 And I select "Past Year" from the Time Frame dropdown
 And I click the Refresh button
-And I save the 1st Row of the Entry Date Time text as SAVEDDATETIME
-And I save the 1st Row of the Entry Detail text as SAVEDDETAIL
+And I save the 1st Row of the Entry Date Time text as SAVEDEMERGENCYDATETIME
+And I save the 1st Row of the Entry Detail text as SAVEDEMERGENCYDETAIL
 And I click the 1st Row of the Entry Status link
 And the Exclude Event popup opens
 And I click the No button
 And the Exclude Event popup closes
-Then I validate the 1st Row of the Entry Date Time text is SAVEDDATETIME
-And I validate the 1st Row of the Entry Detail text is SAVEDDETAIL
+Then I validate the 1st Row of the Entry Date Time text is SAVEDEMERGENCYDATETIME
+And I validate the 1st Row of the Entry Detail text is SAVEDEMERGENCYDETAIL
 
 Scenario: TC1431: Notifications - Emergency - Exclude Link - Default Command Button
 !-- Given I am logged in
 !-- When I click the Notifications link
 !-- And I click the Emergency link
 !-- And I select "Top" from the Team dropdown
-!-- And I select "Past 30 Days" from the Time Frame dropdown
+!-- And I select "Past Year" from the Time Frame dropdown
 !-- And I click the Refresh button
 !-- And I save the Counter text as TABLECOUNT
 !-- And I click the 1st Row of the Entry Status link
@@ -342,20 +342,36 @@ Scenario: TC1431: Notifications - Emergency - Exclude Link - Default Command But
 !-- Then I validate the Counter text is TABLECOUNT
 !-- And I validate the 1st Row of the Entry Status link is "include"
 
-Scenario: TC1432: Notifications - Emergency - Exclude Link - OK Button
+Scenario: TC1432: Notifications - Emergency - Exclude Link - Exclude and Include links - Yes Button
 Given I am logged in
 When I click the Notifications link
 And I click the Emergency link
 And I select "Top" from the Team dropdown
-And I select "Past 30 Days" from the Time Frame dropdown
+And I select "Past Year" from the Time Frame dropdown
 And I click the Refresh button
-And I save the Counter text as TABLECOUNT
+And I save the Counter text as EMERGENCYTABLECOUNT
+And I save the 1st Row of the Entry Date Time text as SAVEDEMERGENCYDATETIME
+And I save the 1st Row of the Entry Detail text as SAVEDEMERGENCYDETAIL
+And I save the 1st Row of the Entry Category text as SAVEDEMERGENCYCATEGORY
 And I click the 1st Row of the Entry Status link
 And the Exclude Event popup opens
 And I click the Yes button
 And the Exclude Event popup closes
-Then I validate the Counter text is TABLECOUNT
+Then I validate the Counter text is EMERGENCYTABLECOUNT
+And I select "excluded" from the Status dropdown
+And I validate the 1st Row of the Entry Date Time text is SAVEDEMERGENCYDATETIME
+And I validate the 1st Row of the Entry Detail text is SAVEDEMERGENCYDETAIL
+And I validate the 1st Row of the Entry Category text is SAVEDEMERGENCYCATEGORY
 And I validate the 1st Row of the Entry Status link is "include"
+And I click the 1st Row of the Entry Status link
+And I validate the 1st Row of the Entry Status link is not present
+And I select "included" from the Status dropdown
+And I click the Refresh button
+And I validate the 1st Row of the Entry Status link is "exclude"
+And I validate the 2nd Row of the Entry Status link is "exclude"
+And I validate the 3rd Row of the Entry Status link is "exclude"
+And I validate the 4th Row of the Entry Status link is "exclude"
+And I validate the 5th Row of the Entry Status link is "exclude"
 
 Scenario: Notifications - Emergency - Time Frame
 Given I am logged in
@@ -364,9 +380,9 @@ And I click the Emergency link
 And I select "Top" from the Team dropdown
 And I select "Today" from the Time Frame dropdown
 And I click the Refresh button
-And I save the 1st Row of the Entry Date Time text as SAVEDDATETIME
+And I save the 1st Row of the Entry Date Time text as SAVEDEMERGENCYDATETIME
 And I click the Emergency link
 And I select "Top" from the Team dropdown
 And I select "Yesterday" from the Time Frame dropdown
 And I click the Refresh button
-Then I validate the 1st Row of the Entry Date Time text is not SAVEDDATETIME
+Then I validate the 1st Row of the Entry Date Time text is not SAVEDEMERGENCYDATETIME

@@ -60,9 +60,9 @@ And I select "Top" from the Team dropdown
 And I select "Past 30 Days" from the Time Frame dropdown
 And I click the Refresh button
 And I click the Sort By Driver link
-And I save the 1st Row of the Entry Driver link as SAVEDENTRY
+And I save the 1st Row of the Entry Driver link as SAVEDDIAGNOSTICSDRIVERENTRY
 And I click the 1st Row of the Entry Driver link
-Then I validate the Driver Name link is SAVEDENTRY
+Then I validate the Driver Name link is SAVEDDIAGNOSTICSDRIVERENTRY
 
 Scenario: Notifications - Diagnostics - Group Link
 Given I am logged in
@@ -72,10 +72,10 @@ And I select "Top" from the Team dropdown
 And I select "Past 30 Days" from the Time Frame dropdown
 And I click the Refresh button
 And I click the Sort By Group link
-And I save the 1st Row of the Entry Group link as SAVEDENTRY
+And I save the 1st Row of the Entry Group link as SAVEDDIAGNOSTICSGROUPENTRY
 And I click the 1st Row of the Entry Group link
-And I validate the Driver Team Value text is SAVEDENTRY
-Then I validate the Team Name text is SAVEDENTRY
+And I validate the Driver Team Value text is SAVEDDIAGNOSTICSGROUPENTRY
+Then I validate the Team Name text is SAVEDDIAGNOSTICSGROUPENTRY
 
 Scenario: TC1381: Notifications - Diagnostics - Table Properties (not implemented)
 !-- Given I am logged in
@@ -106,10 +106,10 @@ And I select "Top" from the Team dropdown
 And I select "Past 30 Days" from the Time Frame dropdown
 And I click the Refresh button
 And I click the Sort By Driver link
-And I save the 1st Row of the Entry Vehicle link as SAVEDENTRY
+And I save the 1st Row of the Entry Vehicle link as SAVEDDIAGNOSTICSVEHICLEENTRY
 And I click the 1st Row of the Entry Vehicle link
 Then I validate I am on the Vehicle Performance page
-And I validate the Vehicle Name link contains SAVEDENTRY
+And I validate the Vehicle Name link contains SAVEDDIAGNOSTICSVEHICLEENTRY
 
 Scenario: TC1386: Notifications - Diagnostics - Edit Columns - Cancel Button (Changes)
 Given I am logged in
@@ -313,44 +313,73 @@ And I click the Diagnostics link
 And I select "Top" from the Team dropdown
 And I select "Past 30 Days" from the Time Frame dropdown
 And I click the Refresh button
-And I save the 1st Row of the Entry Date Time text as SAVEDDATETIME
-And I save the 1st Row of the Entry Detail text as SAVEDDETAIL
+And I save the 1st Row of the Entry Date Time text as SAVEDDIAGNOSTICSDATETIME
+And I save the 1st Row of the Entry Detail text as SAVEDDIAGNOSTICSDETAIL
 And I click the 1st Row of the Entry Status link
 And the Exclude Event popup opens
-Then I validate the Message text contains SAVEDDATETIME
-And I validate the Message text contains SAVEDDETAIL
+Then I validate the Message text contains SAVEDDIAGNOSTICSDATETIME
+And I validate the Message text contains SAVEDDIAGNOSTICSDETAIL
 And I validate the Yes button is present
 And I validate the No button is present
 And I validate the Close button is present
 
-Scenario: TC1396: Notifications > Diagnostics > Exclude Link - Event Interaction
+Scenario: Notifications - Diagnostics - Exclude Link - No Button
 Given I am logged in
 When I click the Notifications link
 And I click the Diagnostics link
 And I select "Top" from the Team dropdown
 And I select "Past 30 Days" from the Time Frame dropdown
 And I click the Refresh button
-And I save the Counter text as RECORDS
+And I save the 1st Row of the Entry Date Time text as SAVEDDIAGNOSTICSDATETIME
+And I save the 1st Row of the Entry Detail text as SAVEDDIAGNOSTICSDETAIL
+And I click the 1st Row of the Entry Status link
+And the Exclude Event popup opens
+And I click the No button
+And the Exclude Event popup closes
+Then I validate the 1st Row of the Entry Date Time text is SAVEDDIAGNOSTICSDATETIME
+And I validate the 1st Row of the Entry Detail text is SAVEDDIAGNOSTICSDETAIL
+
+Scenario: TC1396: Notifications - Diagnostics - Exclude and Include Links - Yes Button
+Given I am logged in
+When I click the Notifications link
+And I click the Diagnostics link
+And I select "Top" from the Team dropdown
+And I select "Past 30 Days" from the Time Frame dropdown
+And I click the Refresh button
+And I save the Counter text as DIAGNOSTICSTABLECOUNT
+And I save the 1st Row of the Entry Date Time text as SAVEDDIAGNOSTICSDATETIME
+And I save the 1st Row of the Entry Detail text as SAVEDDIAGNOSTICSDETAIL
+And I save the 1st Row of the Entry Category text as SAVEDDIAGNOSTICSCATEGORY
 And I click the 1st Row of the Entry Status link
 And the Exclude Event popup opens
 And I click the Yes button
 And the Exclude Event popup closes
-Then I validate the Counter text is RECORDS
+Then I validate the Counter text is DIAGNOSTICSTABLECOUNT
+And I select "excluded" from the Status dropdown
+And I validate the 1st Row of the Entry Date Time text is SAVEDDIAGNOSTICSDATETIME
+And I validate the 1st Row of the Entry Detail text is SAVEDDIAGNOSTICSDETAIL
+And I validate the 1st Row of the Entry Category text is SAVEDDIAGNOSTICSCATEGORY
 And I validate the 1st Row of the Entry Status link is "include"
 And I click the 1st Row of the Entry Status link
-And I validate the Counter text is RECORDS
+And I validate the 1st Row of the Entry Status link is not present
+And I select "included" from the Status dropdown
+And I click the Refresh button
 And I validate the 1st Row of the Entry Status link is "exclude"
+And I validate the 2nd Row of the Entry Status link is "exclude"
+And I validate the 3rd Row of the Entry Status link is "exclude"
+And I validate the 4th Row of the Entry Status link is "exclude"
+And I validate the 5th Row of the Entry Status link is "exclude"
 
-Scenario: TC5742: Notifications - Diagnostics - Time Frame
+Scenario: TC5742: Notifications - Diagnostics - Time Frame (requires entries from today and yesterday)
 Given I am logged in
 When I click the Notifications link
 And I click the Diagnostics link
 And I select "Top" from the Team dropdown
 And I select "Today" from the Time Frame dropdown
 And I click the Refresh button
-And I save the 1st Row of the Entry Date Time text as SAVEDDATETIME
+And I save the 1st Row of the Entry Date Time text as SAVEDDIAGNOSTICSDATETIME
 And I click the Diagnostics link
 And I select "Top" from the Team dropdown
 And I select "Yesterday" from the Time Frame dropdown
 And I click the Refresh button
-Then I validate the 1st Row of the Entry Date Time text is not SAVEDDATETIME
+Then I validate the 1st Row of the Entry Date Time text is not SAVEDDIAGNOSTICSDATETIME

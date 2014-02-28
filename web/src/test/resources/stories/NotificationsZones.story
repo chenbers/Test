@@ -61,9 +61,9 @@ And I select "Top" from the Team dropdown
 And I select "Past 30 Days" from the Time Frame dropdown
 And I click the Refresh button
 And I click the Sort By Driver link
-And I save the 1st Row of the Entry Driver link as SAVEDENTRY
+And I save the 1st Row of the Entry Driver link as SAVEDZONESDRIVERENTRY
 And I click the 1st Row of the Entry Driver link
-Then I validate the Driver Name link is SAVEDENTRY
+Then I validate the Driver Name link is SAVEDZONESDRIVERENTRY
 
 Scenario: Notifications - Zones - Group Link
 Given I am logged in
@@ -73,10 +73,10 @@ And I select "Top" from the Team dropdown
 And I select "Past 30 Days" from the Time Frame dropdown
 And I click the Refresh button
 And I click the Sort By Group link
-And I save the 1st Row of the Entry Group link as SAVEDENTRY
+And I save the 1st Row of the Entry Group link as SAVEDZONESGROUPENTRY
 And I click the 1st Row of the Entry Group link
-And I validate the Driver Team Value text is SAVEDENTRY
-Then I validate the Team Name text is SAVEDENTRY
+And I validate the Driver Team Value text is SAVEDZONESGROUPENTRY
+Then I validate the Team Name text is SAVEDZONESGROUPENTRY
 
 Scenario: TC5719: Notifications - Zones - Table Properties NEED ASSISTANCE IN IMPLEMENTING HOW TO CHECK ORDER
 !-- Given I am logged in
@@ -107,10 +107,10 @@ And I select "Top" from the Team dropdown
 And I select "Past 30 Days" from the Time Frame dropdown
 And I click the Refresh button
 And I click the Sort By Driver link
-And I save the 1st Row of the Entry Vehicle link as SAVEDENTRY
+And I save the 1st Row of the Entry Vehicle link as SAVEDZONESVEHICLEENTRY
 And I click the 1st Row of the Entry Vehicle link
 Then I validate I am on the Vehicle Performance page
-And I validate the Vehicle Name link contains SAVEDENTRY
+And I validate the Vehicle Name link contains SAVEDZONESVEHICLEENTRY
 
 Scenario: TC5723: Notifications - Zones - Edit Columns - Cancel Button (Changes)
 Given I am logged in
@@ -307,31 +307,81 @@ And I validate the 6th Row of the Column checkbox is checked
 And I validate the Save button is present
 And I validate the Cancel button is present
 
-Scenario: TC5733: Notifications - Zones - Exclude Link - Zone Arrival Event
+Scenario: Notifications - Zones - Exclude Link - UI
 Given I am logged in
 When I click the Notifications link
 And I click the Zones link
 And I select "Top" from the Team dropdown
 And I select "Past 30 Days" from the Time Frame dropdown
 And I click the Refresh button
-And I save the Counter text as TABLECOUNT
-And I select "Zone Arrival" from the Category dropdown
-And I click the Refresh button
-And I save the 1st Row of the Entry Date Time text as SAVEDDATETIME
-And I save the 1st Row of the Entry Detail text as SAVEDDETAIL
-And I save the 1st Row of the Entry Category text as SAVEDCATEGORY
-And I combine SAVEDDETAIL with "
-" with SAVEDDATETIME and save them as SAVEDCOMBINED
+And I save the 1st Row of the Entry Date Time text as SAVEDZONESDATETIME
+And I save the 1st Row of the Entry Detail text as SAVEDZONESDETAIL
 And I click the 1st Row of the Entry Status link
 And the Exclude Event popup opens
-Then I validate the Message text is SAVEDCOMBINED
+Then I validate the Message text contains SAVEDZONESDATETIME
+And I validate the Message text contains SAVEDZONESDETAIL
+And I validate the Yes button is present
+And I validate the No button is present
+And I validate the Close button is present
+
+Scenario: Notifications - Zones - Exclude Link - No Button - Zone Arrival Event
+Given I am logged in
+When I click the Notifications link
+And I click the Zones link
+And I select "Top" from the Team dropdown
+And I select "Past 30 Days" from the Time Frame dropdown
+And I click the Refresh button
+And I select "Zone Arrival" from the Category dropdown
+And I click the Refresh button
+And I save the 1st Row of the Entry Date Time text as SAVEDZONESDATETIME
+And I save the 1st Row of the Entry Detail text as SAVEDZONESDETAIL
+And I click the 1st Row of the Entry Status link
+And the Exclude Event popup opens
+And I click the No button
+And the Exclude Event popup closes
+Then I validate the 1st Row of the Entry Date Time text is SAVEDZONESDATETIME
+And I validate the 1st Row of the Entry Detail text is SAVEDZONESDETAIL
+
+Scenario: Notifications - Zones - Exclude Link - No Button - Zone Departure Event
+Given I am logged in
+When I click the Notifications link
+And I click the Zones link
+And I select "Top" from the Team dropdown
+And I select "Past 30 Days" from the Time Frame dropdown
+And I click the Refresh button
+And I select "Zone Departure" from the Category dropdown
+And I click the Refresh button
+And I save the 1st Row of the Entry Date Time text as SAVEDZONESDATETIME
+And I save the 1st Row of the Entry Detail text as SAVEDZONESDETAIL
+And I click the 1st Row of the Entry Status link
+And the Exclude Event popup opens
+And I click the No button
+And the Exclude Event popup closes
+Then I validate the 1st Row of the Entry Date Time text is SAVEDZONESDATETIME
+And I validate the 1st Row of the Entry Detail text is SAVEDZONESDETAIL
+
+Scenario: TC5733: Notifications - Zones - Exclude and Include Links - Zone Arrival Event
+Given I am logged in
+When I click the Notifications link
+And I click the Zones link
+And I select "Top" from the Team dropdown
+And I select "Past 30 Days" from the Time Frame dropdown
+And I click the Refresh button
+And I save the Counter text as ZONESTABLECOUNT
+And I select "Zone Arrival" from the Category dropdown
+And I click the Refresh button
+And I save the 1st Row of the Entry Date Time text as SAVEDZONESDATETIME
+And I save the 1st Row of the Entry Detail text as SAVEDZONESDETAIL
+And I save the 1st Row of the Entry Category text as SAVEDZONESCATEGORY
+And I click the 1st Row of the Entry Status link
+And the Exclude Event popup opens
 And I click the Yes button
 And the Exclude Event popup closes
-And I validate the Counter text is TABLECOUNT
+Then I validate the Counter text is ZONESTABLECOUNT
 And I select "excluded" from the Status dropdown
-And I validate the 1st Row of the Entry Date Time text is SAVEDDATETIME
-And I validate the 1st Row of the Entry Detail text is SAVEDDETAIL
-And I validate the 1st Row of the Entry Category text is SAVEDCATEGORY
+And I validate the 1st Row of the Entry Date Time text is SAVEDZONESDATETIME
+And I validate the 1st Row of the Entry Detail text is SAVEDZONESDETAIL
+And I validate the 1st Row of the Entry Category text is SAVEDZONESCATEGORY
 And I validate the 1st Row of the Entry Status link is "include"
 And I click the 1st Row of the Entry Status link
 And I validate the 1st Row of the Entry Status link is not present
@@ -352,47 +402,28 @@ And I select "Past 30 Days" from the Time Frame dropdown
 And I click the Refresh button
 And I select "Zone Departure" from the Category dropdown
 And I click the Refresh button
-And I save the 1st Row of the Entry Date Time text as SAVEDDATETIME
-And I save the 1st Row of the Entry Detail text as SAVEDDETAIL
-And I save the 1st Row of the Entry Category text as SAVEDCATEGORY
-And I combine SAVEDDETAIL with "
-" with SAVEDDATETIME and save them as SAVEDCOMBINED
+And I save the 1st Row of the Entry Date Time text as SAVEDZONESDATETIME
+And I save the 1st Row of the Entry Detail text as SAVEDZONESDETAIL
+And I save the 1st Row of the Entry Category text as SAVEDZONESCATEGORY
 And I click the 1st Row of the Entry Status link
 And the Exclude Event popup opens
-Then I validate the Message text is SAVEDCOMBINED
 And I click the Yes button
 And the Exclude Event popup closes
+Then I validate the Counter text is ZONESTABLECOUNT
 And I select "excluded" from the Status dropdown
-And I validate the 1st Row of the Entry Date Time text is SAVEDDATETIME
-And I validate the 1st Row of the Entry Detail text is SAVEDDETAIL
-And I validate the 1st Row of the Entry Category text is SAVEDCATEGORY
+And I validate the 1st Row of the Entry Date Time text is SAVEDZONESDATETIME
+And I validate the 1st Row of the Entry Detail text is SAVEDZONESDETAIL
+And I validate the 1st Row of the Entry Category text is SAVEDZONESCATEGORY
 And I validate the 1st Row of the Entry Status link is "include"
 And I click the 1st Row of the Entry Status link
 And I validate the 1st Row of the Entry Status link is not present
 And I select "included" from the Status dropdown
+And I click the Refresh button
 And I validate the 1st Row of the Entry Status link is "exclude"
 And I validate the 2nd Row of the Entry Status link is "exclude"
 And I validate the 3rd Row of the Entry Status link is "exclude"
 And I validate the 4th Row of the Entry Status link is "exclude"
 And I validate the 5th Row of the Entry Status link is "exclude"
-
-Scenario: TC5735: Notifications - Zones - Exclude Link - UI
-Given I am logged in
-When I click the Notifications link
-And I click the Zones link
-And I select "Top" from the Team dropdown
-And I select "Past 30 Days" from the Time Frame dropdown
-And I click the Refresh button
-And I save the 1st Row of the Entry Date Time text as SAVEDDATETIME
-And I save the 1st Row of the Entry Detail text as SAVEDDETAIL
-And I combine SAVEDDETAIL with "
-" with SAVEDDATETIME and save them as SAVEDCOMBINED
-And I click the 1st Row of the Entry Status link
-And the Exclude Event popup opens
-Then I validate the Message text is SAVEDCOMBINED
-And I validate the Yes button is present
-And I validate the No button is present
-And I validate the Close button is present
 
 Scenario: TC5736: Notifications - Zones - Include Link (The exclude link tests also test the include link so I'm excluding this test for now)
 !-- Given I am logged in
@@ -401,13 +432,13 @@ Scenario: TC5736: Notifications - Zones - Include Link (The exclude link tests a
 !-- And I select "Top" from the Team dropdown
 !-- And I select "Past 30 Days" from the Time Frame dropdown
 !-- And I click the Refresh button
-!-- And I save the 1st Row of the Entry Date Time text as SAVEDDATETIME
-!-- And I save the 1st Row of the Entry Detail text as SAVEDDETAIL
-!-- And I combine SAVEDDETAIL with "
-!-- " with SAVEDDATETIME and save them as SAVEDCOMBINED
+!-- And I save the 1st Row of the Entry Date Time text as SAVEDZONESDATETIME
+!-- And I save the 1st Row of the Entry Detail text as SAVEDZONESDETAIL
+!-- And I combine SAVEDZONESDETAIL with "
+!-- " with SAVEDZONESDATETIME and save them as SAVEDZONESCOMBINED
 !-- And I click the 1st Row of the Entry Status link
 !-- And the Exclude Event popup opens
-!-- Then I validate the Message text is SAVEDCOMBINED
+!-- Then I validate the Message text is SAVEDZONESCOMBINED
 !-- And I click the Yes button
 !-- And the Exclude Event popup closes
 !-- And I click the Refresh button
@@ -422,9 +453,9 @@ And I click the Zones link
 And I select "Top" from the Team dropdown
 And I select "Today" from the Time Frame dropdown
 And I click the Refresh button
-And I save the 1st Row of the Entry Date Time text as SAVEDDATETIME
+And I save the 1st Row of the Entry Date Time text as SAVEDZONESDATETIME
 And I click the Zones link
 And I select "Top" from the Team dropdown
 And I select "Yesterday" from the Time Frame dropdown
 And I click the Refresh button
-Then I validate the 1st Row of the Entry Date Time text is not SAVEDDATETIME
+Then I validate the 1st Row of the Entry Date Time text is not SAVEDZONESDATETIME
