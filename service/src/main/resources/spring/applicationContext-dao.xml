@@ -98,7 +98,6 @@
 	<bean id="stateMileageDAO" class="com.inthinc.pro.dao.jdbc.StateMileageJDBCDAO" parent="genericJDBCDAO"/>
 	<bean id="phoneControlDAO" class="com.inthinc.pro.dao.hessian.PhoneControlHessianDAO" parent="genericDAO"></bean>
 	<bean id="superuserDAO" class="com.inthinc.pro.dao.hessian.SuperuserHessianDAO" parent="genericDAO"></bean>
-    <bean id="trailerReportDAO" class="com.inthinc.pro.dao.jdbc.TrailerReportJDBCDAO" parent="genericDAO"></bean>
 
 
     <!-- Address Lookup -->
