@@ -1,20 +1,22 @@
 package com.inthinc.pro.dao.jdbc;
 
+import com.inthinc.pro.aggregation.util.DateUtil;
 import com.inthinc.pro.dao.GroupDAO;
-import com.inthinc.pro.model.DOTOfficeType;
-import com.inthinc.pro.model.Group;
-import com.inthinc.pro.model.GroupStatus;
-import com.inthinc.pro.model.LatLng;
+import com.inthinc.pro.model.*;
+import com.mysql.jdbc.Statement;
 import org.apache.commons.lang.NotImplementedException;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.simple.ParameterizedRowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.sql.*;
+import java.sql.Date;
+import java.util.*;
 
 
 public class GroupJDBCDAO extends SimpleJdbcDaoSupport implements GroupDAO {
@@ -23,10 +25,12 @@ public class GroupJDBCDAO extends SimpleJdbcDaoSupport implements GroupDAO {
 
     private static final String GET_GROUP = "select g.groupID, g.acctID, g.parentID, g.name, g.desc, g.status, g.groupPath, g.addrID, g.addrID2, g.level, g.managerID, g.mapZoom, g.mapLat, g.mapLng, g.zoneRev, g.aggDate, g.newAggDate, g.dotOfficeType  from groups g ";
     private static final String GET_GROUP_ACCT = "select g.groupID, g.acctID, g.parentID, g.name, g.desc, g.status, g.groupPath, g.addrID, g.addrID2, g.level, g.managerID, g.mapZoom, g.mapLat, g.mapLng, g.zoneRev, g.aggDate, g.newAggDate, g.dotOfficeType  from groups g where g.status <> 3 ";
-
+    private static final String INSERT_GROUP_ACCOUNT = "insert into groups (groupID, acctID, parentID, name, `desc`, status, groupPath, addrID, addrID2, level, managerID, mapZoom, mapLat, mapLng, zoneRev, aggDate, dotOfficeType)  values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )";
     private static final String FIND_GROUP_BY_ID = "select g.groupID, g.acctID, g.parentID, g.name, g.desc, g.status, g.groupPath, g.addrID, g.addrID2, g.level, g.managerID, g.mapZoom, g.mapLat, g.mapLng, g.zoneRev, g.aggDate, g.newAggDate, g.dotOfficeType  from groups g where g.groupID =:groupID";
 
     private static final String DEL_GROUP_BY_ID = "DELETE FROM groups WHERE groupID = ?";
+
+    private static final DateTimeFormatter dateFormatter = DateTimeFormat.forPattern("yyyy-MM-dd");
 
 
     private ParameterizedRowMapper<Group> groupParameterizedRow = new ParameterizedRowMapper<Group>() {
@@ -35,24 +39,32 @@ public class GroupJDBCDAO extends SimpleJdbcDaoSupport implements GroupDAO {
             Group groupItem = new Group();
             groupItem.setGroupID(rs.getInt("groupID"));
             groupItem.setAccountID(rs.getInt("acctID"));
-            groupItem.setParentID(rs.getInt("parentID"));
+            groupItem.setParentID(getIntOrNullFromRs(rs,"parentID"));
             groupItem.setName(rs.getString("name"));
             groupItem.setDescription(rs.getString("desc"));
             groupItem.setStatus(rs.getObject("status") == null ? null : GroupStatus.valueOf(rs.getInt("status")));
             groupItem.setPath(rs.getString("groupPath"));
-            groupItem.setManagerID(rs.getInt("managerID"));
-            groupItem.setMapZoom(rs.getInt("mapZoom"));
-            groupItem.setZoneRev(rs.getInt("zoneRev"));
+            groupItem.setManagerID(getIntOrNullFromRs(rs,"managerID"));
+            groupItem.setMapZoom(getIntOrNullFromRs(rs, "mapZoom"));
+            groupItem.setZoneRev(getIntOrNullFromRs(rs,"zoneRev"));
             groupItem.setAggDate(rs.getString("aggDate"));
             groupItem.setMapLat(groupItem.getMapLat());
             groupItem.setMapLng(groupItem.getMapLng());
             groupItem.setDotOfficeType(rs.getObject("dotOfficeType") == null ? null : DOTOfficeType.valueOf(rs.getInt("dotOfficeType")));
-            groupItem.setAddressID(rs.getInt("addrID"));
+            groupItem.setAddressID(getIntOrNullFromRs(rs,"addrID"));
             groupItem.setPath(rs.getString("groupPath"));
+            groupItem.setType(rs.getObject("level") == null? null : GroupType.valueOf(rs.getInt("level")));
 
             return groupItem;
         }
     };
+
+    public Integer getIntOrNullFromRs(ResultSet rs, String key) throws SQLException {
+        Object obj = rs.getObject(key);
+        if (obj == null)
+            return null;
+        else return rs.getInt(key);
+    }
 
     @Override
     public List<Group> getGroupHierarchy(Integer acctID, Integer groupID) {
@@ -104,8 +116,60 @@ public class GroupJDBCDAO extends SimpleJdbcDaoSupport implements GroupDAO {
     }
 
     @Override
-    public Integer create(Integer integer, Group entity) {
-        throw new NotImplementedException();
+    public Integer create(Integer integer,final Group entity) {
+        JdbcTemplate jdbcTemplate = getJdbcTemplate();
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+        PreparedStatementCreator psc = new PreparedStatementCreator() {
+
+            @Override
+            public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
+                PreparedStatement ps = con.prepareStatement(INSERT_GROUP_ACCOUNT, Statement.RETURN_GENERATED_KEYS);
+//                groupID, acctID, parentID, name, desc, status, groupPath, addrID, addrID2, level, managerID, mapZoom, mapLat, mapLng, zoneRev, aggDate, dotOfficeType
+                ps.setInt(1, entity.getGroupID());
+                ps.setInt(2, entity.getAccountID());
+                ps.setInt(3, entity.getParentID());
+                ps.setString(4, entity.getName());
+                ps.setString(5, entity.getDescription());
+                ps.setInt(6, entity.getStatus().getCode());
+
+                //TODO see how i can make getpath
+                ps.setString(7, entity.getPath());
+//                ps.setInt(8, entity.getAddressID());
+
+                //TODO study and modify address & insert in table address with new id
+                if(entity.getAddressID()==null){
+                    ps.setNull(8, Types.NULL);
+                    ps.setNull(9, Types.NULL);
+                }else{
+                    ps.setInt(8, entity.getAddressID());
+                    ps.setInt(9, entity.getAddressID());
+                }
+                ps.setInt(10, entity.getType().getCode());
+//                ps.setInt(11, entity.getManagerID());
+                if(entity.getManagerID()==null){
+                    ps.setNull(11, Types.NULL);
+                }else{
+                    ps.setInt(11, entity.getManagerID());
+                }
+                ps.setInt(12, entity.getMapZoom());
+                ps.setDouble(13, entity.getMapLat());
+                ps.setDouble(14, entity.getMapLng());
+//                ps.setInt(15, entity.getZoneRev());
+                //TODO study and modify zoneRev
+                if(entity.getZoneRev()==null){
+                    ps.setInt(15, 1);
+                }else{
+                    ps.setInt(15, entity.getZoneRev());
+                }
+                java.util.Date rightNow = new java.util.Date();
+                ps.setDate(16, new Date(rightNow.getTime()));
+                ps.setInt(17, entity.getDotOfficeType().getCode());
+                logger.debug(ps.toString());
+                return ps;
+            }
+        };
+        jdbcTemplate.update(psc, keyHolder);
+        return keyHolder.getKey().intValue();
     }
 
     @Override

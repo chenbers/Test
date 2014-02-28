@@ -56,7 +56,6 @@ public class GroupJDBCDAOTest extends SimpleJdbcDaoSupport {
     }
 
 
-
 }
 
 
