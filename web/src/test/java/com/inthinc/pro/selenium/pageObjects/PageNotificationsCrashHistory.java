@@ -78,14 +78,14 @@ public class PageNotificationsCrashHistory extends NotificationsEventsBar {
         
     }
     
-    public class NotificationsCrashHistoryTextFields extends NotificationsBarTextFields {
+    public class NotificationsCrashHistoryTextFields extends EventsBarTextFields {
         
         public TextField search() {
             return new TextField(NotificationsCrashHistoryEnum.SEARCH_BOX);
         }
     }
     
-    public class NotificationsCrashHistoryTexts extends NotificationsBarTexts {
+    public class NotificationsCrashHistoryTexts extends EventsBarTexts {
         
         public TextTable entryOccupants() {
             return new TextTable(NotificationsCrashHistoryEnum.OCCUPANTS_ENTRY);
