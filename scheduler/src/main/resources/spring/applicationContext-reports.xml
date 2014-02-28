@@ -32,8 +32,6 @@
     <property name="formsDAO" ref="formsDAO"/>
     <property name="dvirViolationReportDAO" ref="dvirViolationReportDAO" />
     <property name="dvirInspectionRepairReportDAO" ref="dvirInspectionRepairReportDAO" />
-     <property name="trailerReportDAO" ref="trailerReportDAO" />
-
   </bean>
 
   <!-- Forgot username/password Beans -->
