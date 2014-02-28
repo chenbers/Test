@@ -47,8 +47,12 @@
         <property name="reportService" ref="reportServiceBean" />
     </bean>
 
-    <bean id="reportDAO" class="com.inthinc.pro.dao.hessian.ReportHessianDAO"  parent="genericDAO">
-        <property name="driverPerformanceMapper" ref="driverPerformanceMapper" />
+    <bean id="reportDAO" class="com.inthinc.pro.dao.jdbc.ReportJDBCDAO"  parent="genericDAO">
+        <property name="dataSource" ref="tiwiJDBCDataSource" />
+    </bean>
+
+    <bean id="trailerReportDAO" class="com.inthinc.pro.dao.jdbc.TrailerReportJDBCDAO"  parent="genericDAO">
+        <property name="dataSource" ref="tiwiJDBCDataSource" />
     </bean>
 
      <!-- Address Lookup -->
