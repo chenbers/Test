@@ -19,8 +19,7 @@ import com.inthinc.pro.selenium.steps.LoginSteps;
 
 @UsingSteps(instances={LoginSteps.class, FormsGenerationSteps.class})
 @PageObjects(list={PageLogin.class, 
-		PageExecutiveDashboard.class, PageExecutiveOverallExpansion.class, 
-        PageTeamDriverStatistics.class, PageFormsSubmissions.class,
+		PageExecutiveDashboard.class, PageExecutiveOverallExpansion.class,
         PageFormsAdd.class, PageFormsPublished.class, 
         PageFormsManage.class, PageFormsEdit.class})
 @StoryPath(path="AAFormsGenerationForManageTest.story")
