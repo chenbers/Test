@@ -100,7 +100,7 @@ public enum TimeFrame implements BaseEnum {
     },
     LAST_MONTH(AggregationDuration.ONE_MONTH, 16) {
         public Interval getInterval(DateTimeZone dateTimeZone) {
-            return new Interval(new DateMidnight(getCurrent().monthOfYear().toInterval().getStart().minusMonths(1), dateTimeZone), new DateMidnight(getCurrent().monthOfYear().toInterval().getStart(), dateTimeZone));
+            return new Interval(new DateMidnight(getCurrent().monthOfYear().toInterval().getStart().minusMonths(1), dateTimeZone), new DateMidnight(getCurrent().monthOfYear().toInterval().getStart(), dateTimeZone).toDateTime().minusSeconds(1));
         }
     },
     PAST_SEVEN_DAYS(AggregationDuration.SEVEN_DAY, 17) {
