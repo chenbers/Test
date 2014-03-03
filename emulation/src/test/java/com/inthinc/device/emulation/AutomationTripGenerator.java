@@ -23,7 +23,7 @@ public class AutomationTripGenerator {
         ws850.dump_settings();
         DeviceState state = ws850.getState();
         AutomationCalendar initialTime = new AutomationCalendar();
-        ws850.set_time(initialTime.setDate(1392890588));  //Tue Feb 18 12:40:20 2014 GMT-7
+        ws850.set_time(initialTime.setDate(1393764474));  //head to http://www.epochconverter.com/ and you can enter the date you need here
         ws850.getState().setWMP(17116);
         ws850.firstLocation(new GeoPoint(40.7103, -111.9920));
         ws850.setEmployeeID("AUTOWS850"); 
