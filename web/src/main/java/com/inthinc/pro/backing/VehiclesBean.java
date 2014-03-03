@@ -17,6 +17,9 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 
+import com.inthinc.pro.dao.GroupDAO;
+import com.inthinc.pro.dao.jdbc.DriverJDBCDAO;
+import com.inthinc.pro.model.GroupHierarchy;
 import org.springframework.beans.BeanUtils;
 
 import com.inthinc.pro.backing.fwdcmd.WaysmartForwardCommand;
@@ -109,6 +112,8 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
 
     private VehicleDAO                            vehicleDAO;
     private DriverDAO                             driverDAO;
+    private DriverJDBCDAO                         driverJDBCDAO;
+    private GroupDAO                              groupDAO;
 
     private List<Driver>                          drivers;
     private TreeMap<Integer, Boolean>             driverAssigned;
@@ -122,6 +127,8 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
     private CacheBean cacheBean;
     
     private FwdCmdSpoolWS fwdCmdSpoolWS;
+
+    private Map<Integer, Driver> driverMap;
 
     
     @Override
@@ -416,8 +423,16 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
 
     public List<Driver> getDrivers()
     {
-        if (drivers == null)
-            drivers = driverDAO.getAllDrivers(getUser().getGroupID());
+        if (drivers == null) {
+            Integer groupID = getUser().getGroupID();
+            GroupHierarchy groupHierarchy = new GroupHierarchy(groupDAO.getGroupsByAcctID(getAccountID()));
+            List<Integer> groupIDList = groupHierarchy.getSubGroupIDList(groupID);
+            drivers = driverJDBCDAO.getDriversInGroupIDList(groupIDList);
+            driverMap = new HashMap<Integer, Driver>();
+            for (Driver d: drivers){
+                driverMap.put(d.getDriverID(), d);
+            }
+        }
         return drivers;
     }
 
@@ -881,8 +896,11 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
 
         public Driver getDriver()
         {
+            if (bean.driverMap == null)
+                bean.getDrivers();
+
             if (driver == null)
-                driver = bean.driverDAO.findByID(getDriverID());
+                driver = bean.driverMap.get(getDriverID());
             return driver;
         }
 
@@ -1025,5 +1043,19 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
         this.selectedMap = selectedMap;
     }
 
+    public GroupDAO getGroupDAO() {
+        return groupDAO;
+    }
 
+    public void setGroupDAO(GroupDAO groupDAO) {
+        this.groupDAO = groupDAO;
+    }
+
+    public DriverJDBCDAO getDriverJDBCDAO() {
+        return driverJDBCDAO;
+    }
+
+    public void setDriverJDBCDAO(DriverJDBCDAO driverJDBCDAO) {
+        this.driverJDBCDAO = driverJDBCDAO;
+    }
 }

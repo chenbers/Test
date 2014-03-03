@@ -86,6 +86,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
     <bean id="vehicleJDBCDAO" class="com.inthinc.pro.dao.jdbc.VehicleJDBCDAO" />
     <bean id="deviceDAO" class="com.inthinc.pro.dao.hessian.DeviceHessianDAO" />
     <bean id="driverDAO" class="com.inthinc.pro.dao.hessian.DriverHessianDAO"></bean>
+    <bean id="driverJDBCDAO" class="com.inthinc.pro.dao.jdbc.DriverJDBCDAO" />
     <bean id="redFlagDAO" class="com.inthinc.pro.dao.hessian.RedFlagHessianDAO"></bean>
     <bean id="redFlagAlertDAO" class="com.inthinc.pro.dao.hessian.RedFlagAlertHessianDAO"></bean>
     <bean id="tablePreferenceDAO" class="com.inthinc.pro.dao.hessian.TablePreferenceHessianDAO"></bean>
