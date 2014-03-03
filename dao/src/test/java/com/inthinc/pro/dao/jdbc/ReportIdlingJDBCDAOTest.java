@@ -5,6 +5,7 @@ import it.config.ITDataSource;
 import it.config.IntegrationConfig;
 import it.config.ReportTestConst;
 import org.joda.time.DateMidnight;
+import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.Interval;
 import org.junit.AfterClass;
@@ -22,9 +23,8 @@ import static junit.framework.Assert.assertEquals;
 public class ReportIdlingJDBCDAOTest {
     static ReportIdlingJDBCDAO reportIdlingJDBCDAO;
     static int TEST_GROUP_ID = 999999999;
-    Interval interval = new Interval(null);
-    // DateTimeZone dateTimeZone = DateTimeZone.forID(ReportTestConst.TIMEZONE_STR);
-    // Interval interval = new Interval(null, null);
+    static DateTime SEP_12_2013 = new DateTime(1378944000000l);// 1375401600000l);
+    static Interval interval = new Interval(SEP_12_2013, SEP_12_2013.plusDays(2));
 
 
     @BeforeClass
@@ -43,15 +43,14 @@ public class ReportIdlingJDBCDAOTest {
             reportIdlingJDBCDAO.deleteTest(TEST_GROUP_ID);
         } catch (Throwable t) {/*ignore*/}
     }
+
     /*
     * Test getIdlingReportData
     * */
     @Test
-    public void testGetIdlingReportData (){
-        List<IdlingReportItem> reportList = reportIdlingJDBCDAO.getIdlingReportData(TEST_GROUP_ID,interval);
+    public void testGetIdlingReportData() {
+        List<IdlingReportItem> reportList = reportIdlingJDBCDAO.getIdlingReportData(TEST_GROUP_ID, interval);
         assertEquals(reportList.size(), 1);
-
-
     }
 
 }
