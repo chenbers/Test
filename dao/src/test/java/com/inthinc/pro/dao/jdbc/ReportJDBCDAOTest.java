@@ -1,5 +1,10 @@
 package com.inthinc.pro.dao.jdbc;
 
+import com.inthinc.pro.dao.hessian.DriverHessianDAO;
+import com.inthinc.pro.dao.hessian.ReportHessianDAO;
+import com.inthinc.pro.dao.hessian.mapper.DriverPerformanceMapper;
+import com.inthinc.pro.dao.hessian.proserver.SiloService;
+import com.inthinc.pro.dao.hessian.proserver.SiloServiceCreator;
 import com.inthinc.pro.model.DeviceReportItem;
 import com.inthinc.pro.model.DriverReportItem;
 import com.inthinc.pro.model.IdlingReportItem;
@@ -20,6 +25,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertTrue;
 
 public class ReportJDBCDAOTest {
@@ -27,6 +33,10 @@ public class ReportJDBCDAOTest {
 //for testdev.inthink test_group_id = 35
 //    static int TEST_GROUP_ID = 35;
     static int TEST_GROUP_ID = 1;
+    private static SiloService siloService;
+    IntegrationConfig config = new IntegrationConfig();
+    String host = config.get(IntegrationConfig.SILO_HOST).toString();
+    Integer port = Integer.valueOf(config.get(IntegrationConfig.SILO_PORT).toString());
 
     @BeforeClass
     public static void setupOnce() {
@@ -40,12 +50,26 @@ public class ReportJDBCDAOTest {
      */
     @Test
     public void testDriverCountAndList() {
+        //settings for Hessian
+        siloService = new SiloServiceCreator(host, port).getService();
+
+        ReportHessianDAO reportDAO = new ReportHessianDAO();
+        reportDAO.setSiloService(siloService);
+        DriverPerformanceMapper driverPerformanceMapper = new DriverPerformanceMapper();
+        DriverHessianDAO driverDAO = new DriverHessianDAO();
+        driverDAO.setSiloService(siloService);
+        driverPerformanceMapper.setDriverDAO(driverDAO);
+        reportDAO.setDriverPerformanceMapper(driverPerformanceMapper);
+
         List<TableFilterField> filterList = new ArrayList<TableFilterField>();
 // for testdev.inthink
 //        filterList.add(new TableFilterField("driverID", 97));
         filterList.add(new TableFilterField("driverID", 1352));
         int count = reportJDBCDAO.getDriverReportCount(TEST_GROUP_ID, filterList);
-        assertTrue(count > 0);
+        //hessian
+        int countHesian = reportDAO.getDriverReportCount(TEST_GROUP_ID, filterList);
+       // Compare count for ReportJDBCDAO and  ReportHessianDAO
+        assertEquals(count,countHesian);
 
         PageParams pp = new PageParams();
         pp.setStartRow(0);
@@ -53,7 +77,15 @@ public class ReportJDBCDAOTest {
         pp.setFilterList(filterList);
 
         List<DriverReportItem> driverReportList = reportJDBCDAO.getDriverReportPage(TEST_GROUP_ID, pp);
+        int driverReportListCount = driverReportList.size();
         assertTrue(!driverReportList.isEmpty());
+        //HESSIAN
+        List<DriverReportItem> driverReportListHessian = reportDAO.getDriverReportPage(TEST_GROUP_ID, pp);
+        int driverReportListHessianCount = driverReportListHessian.size();
+        assertTrue(!driverReportListHessian.isEmpty());
+        // Compare sixe lists for ReportJDBCDAO and  ReportHessianDAO
+        assertEquals(driverReportListCount,driverReportListHessianCount);
+
     }
 
     @Test
