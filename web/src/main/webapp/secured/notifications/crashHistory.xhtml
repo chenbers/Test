@@ -1,34 +1,27 @@
-<ui:composition	template="notifications.xhtml" 
-				xmlns="http://www.w3.org/1999/xhtml" 
-				xmlns:ui="http://java.sun.com/jsf/facelets"
-  				xmlns:h="http://java.sun.com/jsf/html" 
-  				xmlns:rich="http://richfaces.org/rich"
-  				xmlns:a4j="http://richfaces.org/a4j"
-  				xmlns:iwi="http://pro.tiwi.com/jsf"
-  				xmlns:f="http://java.sun.com/jsf/core"
-                xmlns:c="http://java.sun.com/jstl/core"
-	            xmlns:t="http://myfaces.apache.org/tomahawk"
-                xmlns:pretty="http://ocpsoft.com/prettyfaces"
-                xmlns:security="http://pro.tiwi.com/jsf/security">
+<ui:composition	template="notifications.xhtml" xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html" 
+    xmlns:rich="http://richfaces.org/rich" xmlns:a4j="http://richfaces.org/a4j" xmlns:iwi="http://pro.tiwi.com/jsf" xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:c="http://java.sun.com/jstl/core" xmlns:t="http://myfaces.apache.org/tomahawk" xmlns:pretty="http://ocpsoft.com/prettyfaces" xmlns:security="http://pro.tiwi.com/jsf/security">
 	
 	<ui:param name="crashhistorySubSelected" value="current" />
-    <ui:param name="ajaxPanels" value="crashHistoryTable,crashHistorySearch"/>
-    <ui:param name="context" value="crashHistory"/>
-    <ui:param name="title" value="#{messages.navigation_notifications} - #{messages.notes_tab_crashhistory}"/>
+	<ui:param name="context" value="crashHistory"/>
+    <ui:param name="ajaxPanels" value="#{context}_table,#{context}_search"/>
 
+    <ui:param name="title" value="#{messages.navigation_notifications} - #{messages.notes_tab_crashhistory}"/>
 	<ui:define name="content">
 		<a4j:keepAlive beanName="crashHistoryBean" />
+		
 		<table width="940" border="0" align="center" cellpadding="0" cellspacing="0" style="margin: 0 auto 0 auto;">
 		  <tr>
 		    <td valign="top">
 		      <!-- START PANEL -->
 		      <h:panelGroup layout="block" styleClass="">
+		      
 		        <h:panelGroup layout="block" styleClass="panel_nw">
 		          <div id="panel_title" class="panel_title"> <span class="crash">#{messages.notes_crashhistory_title}</span>
 		          	<span class="panel_links">
                         #{messages.notes_crashhistory_description}
 		          	</span>
-					<a4j:status id="crashHistoryStatus" for="crashHistorySearch_region">
+					<a4j:status id="crashHistoryStatus" for="#{context}_searchRegion">
 						<f:facet name="start">
 							<h:outputText><img src="#{facesContext.externalContext.request.contextPath}/images/progress2.gif" align="top" />&#160;</h:outputText>
 						</f:facet>
@@ -39,21 +32,21 @@
 		        <h:panelGroup layout="block" styleClass="panel_w">
 		          <h:panelGroup layout="block" styleClass="panel_content">
 		
-					<a4j:region id="crashHistorySearch_region">
+					<a4j:region id="#{context}_searchRegion">
 		
-					<a4j:form id="crashHistorySearch">							
+					<a4j:form id="#{context}_search">							
 		            <ul id="grid_nav" style="margin: 0;">
                       <li class="l select">
           				<table border="0" cellspacing="0" cellpadding="4" id="grid_nav_group_box">
 		                  <tr>
 						  	<td>#{messages.group_team} </td>
 		 					<td>
-							<h:selectOneMenu value="#{crashHistoryBean.searchCoordinationBean.groupID}" id="crashHistory_groupID" style="width:100px;size:auto;">
+							<h:selectOneMenu value="#{crashHistoryBean.searchCoordinationBean.groupID}" id="#{context}_groupID" style="width:175px;size:auto;">
   								<f:selectItem itemLabel="" />
   								<f:selectItems value="#{crashHistoryBean.teams}" />  
 							</h:selectOneMenu>
 							<ui:include src="/includes/dhtmlSelectBox.xhtml">	
-     			 					<ui:param name="selectBoxID" value="crashHistorySearch:crashHistory_groupID" />
+     			 					<ui:param name="selectBoxID" value="#{context}_search:#{context}_groupID" />
 							</ui:include>
 							
 							</td>
@@ -65,19 +58,19 @@
 		                  <tr>
 						  	<td>#{messages.timeFrame} </td>
 					  	 	<td>
-					  	 	<h:selectOneMenu value="#{crashHistoryBean.timeFrameBean.timeFrameKey}" id="crashHistory_timeframe" style="width: 75px;">
+					  	 	<h:selectOneMenu value="#{crashHistoryBean.timeFrameBean.timeFrameKey}" id="#{context}_timeframe" style="width: 75px;">
 								<f:selectItems value="#{crashHistoryBean.timeFrameBean.selectItems}" />
 							</h:selectOneMenu>
 							
 							<ui:include src="/includes/dhtmlSelectBox.xhtml">	
-		   			 			<ui:param name="selectBoxID" value="#{context}Search:#{context}_timeframe" />
+		   			 			<ui:param name="selectBoxID" value="#{context}_search:#{context}_timeframe" />
 							</ui:include>
 							</td>
 						  </tr>
 						</table>
 					  </li>
 					  <li class="l">
-						<a4j:commandButton id="crashHistoryRefresh" styleClass="left" oncomplete="initializeTable()"
+						<a4j:commandButton id="#{context}_refresh" styleClass="left" oncomplete="initializeTable()"
 									reRender="header,crashHistory-form:crashHistory,crashHistory-form:crashHistory-bottomScroller" 
 									action="#{crashHistoryBean.refreshAction}">
 	           				<span class="refresh">
@@ -90,13 +83,13 @@
 		                  <tr>
 		                    <td>#{messages.notes_crashhistory_search}</td>
 		                    <td>
-		                      <h:inputText id="searchText" value="#{eventsSearchCoordinationBean.searchFor}" styleClass="text" size="5" onkeypress="if (event &amp;&amp; event.keyCode == 13) { document.getElementById('crashHistorySearch:crashHistorySearch').onclick(); return false; } return true;" />
+		                      <h:inputText id="searchText" value="#{eventsSearchCoordinationBean.searchFor}" styleClass="text" size="8" onkeypress="if (event &amp;&amp; event.keyCode == 13) { document.getElementById('#{context}_search:#{context}_search').onclick(); return false; } return true;" />
 		                    </td>
 		                  </tr>
 		                </table>
 		              </li>
 					  <li class="l">
-							<a4j:commandButton id="crashHistorySearch" action="#{crashHistoryBean.searchAction}" 
+							<a4j:commandButton id="#{context}_search" action="#{crashHistoryBean.searchAction}" 
 		            					reRender="navigation:redirectSearch,header,crashHistory-form:crashHistory,crashHistory-form:crashHistory-bottomScroller" styleClass="left">
 		            				<span class="search">
 		            					<h:outputText value="#{messages.button_search}" />
@@ -104,7 +97,7 @@
 		            		</a4j:commandButton>            								
 					   </li>
 					  <li class="l text">
-						<a4j:commandLink id="crashHistoryEditColumns" styleClass="ls_tab_edit_columns" title="#{messages.button_editColumns}" oncomplete="javascript:Richfaces.showModalPanel('editColumns')" 
+						<a4j:commandLink id="#{context}_editColumns" styleClass="ls_tab_edit_columns" title="#{messages.button_editColumns}" oncomplete="javascript:Richfaces.showModalPanel('#{context}_editColumns')" 
 							reRender="editColumnsForm:editColumnGrid">
 							#{messages.button_editColumns}
 						</a4j:commandLink>
@@ -144,7 +137,7 @@
 		    		</a4j:region>
 		    		        
 					<div class="spacer"></div>
-		            <h:panelGroup id="crashHistoryTable" layout="block" styleClass="datagrid_panel">
+		            <h:panelGroup id="#{context}_table" layout="block" styleClass="datagrid_panel">
 						<ui:include src="/includes/crashHistoryTable.xhtml">	
 							<ui:param name="numRowsPerPg" value="#{crashHistoryBean.numRowsPerPg}"/>									
 		             		<ui:param name="tableData" value="#{crashHistoryBean.tableData}"/>             						
@@ -153,7 +146,7 @@
 <!--		             		<ui:param name="formId" value="crashHistory_Table_Form"/>-->
 		             		<ui:param name="clearTitle" value="#{messages.notes_crashhistory_clearTitle}"/>
 		             		<ui:param name="clearInst" value="#{messages.notes_crashhistory_clearInst}"/>
-		             		<ui:param name="clearRerender" value="crashHistorySearch:header,crashHistory-form:crashHistory"/>
+		             		<ui:param name="clearRerender" value="#{context}_search:header,#{context}-form:#{context}"/>
     	 					<ui:param name="context" value="#{context}" />
 		    			</ui:include>    							
 		            </h:panelGroup>					

@@ -15,12 +15,8 @@ public class VehicleChoiceTableColumns {
     private enum VehicleColumn {
         
         NAME {String getItem(AdminCacheBean adminCacheBean, Vehicle vehicle){return vehicle.getName();}},
-        DRIVERID {String getItem(AdminCacheBean adminCacheBean, Vehicle vehicle){
-            DriverName driver = (DriverName)adminCacheBean.getAsset("drivers",vehicle.getDriverID());
-            if (driver == null) return null;
-            return driver.getDriverName();}},
-        GROUPID {String getItem(AdminCacheBean adminCacheBean, Vehicle vehicle){
-            return ((Group)adminCacheBean.getAsset("groups",vehicle.getGroupID())).getName();}},
+        DRIVERID {String getItem(AdminCacheBean adminCacheBean, Vehicle vehicle){return vehicle.getDriverName();}},
+        GROUPID {String getItem(AdminCacheBean adminCacheBean, Vehicle vehicle){return vehicle.getGroupName();}},
         YEAR {String getItem(AdminCacheBean adminCacheBean, Vehicle vehicle){
             Integer year = vehicle.getYear();
             return  year == null?null:year.toString();}},
@@ -28,9 +24,10 @@ public class VehicleChoiceTableColumns {
         MODEL {String getItem(AdminCacheBean adminCacheBean, Vehicle vehicle){return  vehicle.getModel();}},
         VIN {String getItem(AdminCacheBean adminCacheBean, Vehicle vehicle){return vehicle.getVIN();}},
         DEVICEID {String getItem(AdminCacheBean adminCacheBean, Vehicle vehicle){
-            Device device = (Device)adminCacheBean.getAsset("devices",vehicle.getDeviceID());
-            if (device == null) return null;
-            return device.getName();}};
+            if (vehicle.getDevice()==null)
+                return null;
+            return vehicle.getDevice().getName();
+        }};
 
         abstract String getItem(AdminCacheBean adminCacheBean, Vehicle vehicle);
     }

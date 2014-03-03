@@ -287,7 +287,19 @@ public class GroupDaoStub implements GroupDAO, GroupReportDAO {
     }
 
     @Override
+    public List<DriverVehicleScoreWrapper> getDriverScoresWithUserTimeZone(Integer groupID, Interval interval, GroupHierarchy gh) {
+     // TODO temporarily calling OLD (non GroupHierarch stub), assuming Bill has his own version of GroupDaoStub
+        return getDriverScores(groupID, interval);
+    }
+
+    @Override
     public List<DriverVehicleScoreWrapper> getDriverScores(Integer groupID, DateTime day, GroupHierarchy gh) {
+     // TODO temporarily calling OLD (non GroupHierarch stub), assuming Bill has his own version of GroupDaoStub
+        return getDriverScores(groupID, day);
+    }
+
+    @Override
+    public List<DriverVehicleScoreWrapper> getDriverScoresWithUserTimeZone(Integer groupID, DateTime day, GroupHierarchy gh) {
      // TODO temporarily calling OLD (non GroupHierarch stub), assuming Bill has his own version of GroupDaoStub
         return getDriverScores(groupID, day);
     }

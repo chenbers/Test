@@ -1,18 +1,13 @@
 package com.inthinc.pro.model;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
-import java.util.List;
-
-import org.joda.time.DateMidnight;
 import org.joda.time.DateTime;
-import org.joda.time.DateTimeConstants;
 import org.joda.time.DateTimeZone;
 import org.joda.time.Interval;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.junit.AfterClass;
-import org.junit.Ignore;
 import org.junit.Test;
 
 public class TimeFrameTest {
@@ -71,7 +66,6 @@ public class TimeFrameTest {
 	           "2011-11-01 00:00:00 UTC", "2011-11-30 23:59:59 UTC",// LAST_MONTH
                "2011-11-29 00:00:00 UTC", "2011-12-06 23:59:59 UTC",// PAST 7 DAYS
                "2011-12-06 00:00:00 UTC", "2011-12-06 23:59:59 UTC",//CUSTOM_RANGE
-
 	   };
        public String[] expectedMountain = {
                "2011-12-05 00:00:00 MST", "2011-12-05 23:59:59 MST",// TODAY

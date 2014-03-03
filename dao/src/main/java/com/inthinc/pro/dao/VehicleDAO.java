@@ -14,6 +14,8 @@ import com.inthinc.pro.model.VehicleName;
 
 public interface VehicleDAO extends GenericDAO<Vehicle, Integer> {
     List<Vehicle> getVehiclesInGroupHierarchy(Integer groupID);
+
+    List<Vehicle> getVehiclesInGroupIDList(List<Integer> groupIDList);
     
     List<Vehicle> getVehiclesInGroup(Integer groupID);
 

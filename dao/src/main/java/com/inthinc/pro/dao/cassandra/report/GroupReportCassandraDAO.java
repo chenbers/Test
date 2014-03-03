@@ -177,6 +177,18 @@ public class GroupReportCassandraDAO extends ReportCassandraDAO implements Group
     }
 
     @Override
+    public List<DriverVehicleScoreWrapper> getDriverScoresWithUserTimeZone(Integer groupID, DateTime day, GroupHierarchy gh) {
+        logger.debug("getDriverScoresWithUserTimeZone DateTime: " + day);
+        // The hessian method being called requires two params, both should be the same midnight value of the day you are trying to indicate.
+
+        // Adjust the millis to the Midnight value.
+        DateTime intervalToUse = day.toDateMidnight().toDateTime();
+        logger.debug("getDriverScoresWithUserTimeZone intervalToUse: " + intervalToUse);
+
+        return getDriverScores(groupID, intervalToUse, intervalToUse, gh);
+    }
+
+    @Override
     public List<DriverVehicleScoreWrapper> getDriverScores(Integer groupID, Interval interval, GroupHierarchy gh) {
         // The hessian method being called requires two params, which should be the midnight value of the interval
         // you are trying to indicate.
@@ -196,6 +208,21 @@ public class GroupReportCassandraDAO extends ReportCassandraDAO implements Group
         // apply the offset to the startDateTime's underlying millis.
         // Then change the timezone to UTC. Then adjust the millis to the Midnight value.
         DateTime intervalToUse = startDateTime.plusMillis(offset).toDateTime(DateTimeZone.UTC).toDateMidnight().toDateTime();
+
+        return getDriverScores(groupID, intervalToUse, intervalToUse.plusDays(daysBetween), gh);
+    }
+
+    @Override
+    public List<DriverVehicleScoreWrapper> getDriverScoresWithUserTimeZone(Integer groupID, Interval interval, GroupHierarchy gh) {
+        // find the days in the interval
+        Days days = Days.daysBetween(interval.getStart(), interval.getEnd());
+        int daysBetween = days.getDays();
+
+        // get the intervals start DateTime
+        DateTime startDateTime = interval.getStart();
+
+        // Adjust the millis to the Midnight value.
+        DateTime intervalToUse = startDateTime.toDateMidnight().toDateTime();
 
         return getDriverScores(groupID, intervalToUse, intervalToUse.plusDays(daysBetween), gh);
     }

@@ -242,6 +242,8 @@ public abstract class DeviceNote implements Comparable<DeviceNote> {
                     longToByte(baos, ((Integer)object).longValue(), key.getSize());
                 } else if (object instanceof Long){
                     longToByte(baos, (Long)object, key.getSize());    
+                } else if (object instanceof Double){
+                    doubleToByte(baos, (Double)object);    
                 }
             } else if (object instanceof String){
                 byte[] str = ((String)object).getBytes();
@@ -379,6 +381,9 @@ public abstract class DeviceNote implements Comparable<DeviceNote> {
 
 	public abstract DeviceNote unPackage(byte[] packagedNote);
 	
+	public byte[] Package(byte[] payload) {
+	    return payload;
+	}
 	
 	public static DeviceNote unPackageS(byte[] packagedNote){
 		DeviceNote note = null;

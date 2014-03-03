@@ -20,6 +20,7 @@ public class Device extends BaseEntity implements HasAccountId
     private Integer           accountID;
     @Column(updateable = false)
     private Integer           vehicleID;
+    private String            vehicleName;
     private DeviceStatus      status;
     private String            name;
     private String            imei; //waysmart iridium imei, tiwipro imei
@@ -257,5 +258,13 @@ public class Device extends BaseEntity implements HasAccountId
         if (productVer != null){
             setProductVersion(ProductType.getProductTypeFromVersion(productVer));
         }
+    }
+
+    public String getVehicleName() {
+        return vehicleName;
+    }
+
+    public void setVehicleName(String vehicleName) {
+        this.vehicleName = vehicleName;
     }
 }

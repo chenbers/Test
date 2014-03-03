@@ -219,7 +219,7 @@ public enum DeviceNoteTypes implements BaseEnum  {
      * 
      * Attributes [...] ATTR_FOB_ID
      */
-    NEWDRIVER_HOSRULE(116, EventAttr.DRIVER_ID_STR, EventAttr.CURRENT_HOS_RULESET),
+    NEWDRIVER_HOSRULE(116, EventAttr.DRIVER_ID_STR, EventAttr.CURRENT_HOS_RULESET, EventAttr.ATTR_FOB_ID),
 
     /**
      * Sent on a zone arrival <br/>
@@ -454,8 +454,10 @@ public enum DeviceNoteTypes implements BaseEnum  {
     DVIR_DRIVEN_NOPREINSPEC(224),
     DVIR_DRIVEN_NOPOSTINSPEC(225),
 //    STATS2(225),
-    CREATE_ROAD_HAZARD(226), 
+    CREATE_ROAD_HAZARD(226,  EventAttr.MAX_LATITUDE, EventAttr.MAX_LONGITUDE), 
 
+    SEND_ROAD_HAZARD(228,  EventAttr.MAX_LATITUDE, EventAttr.MAX_LONGITUDE),
+    
     //Put in for customer G&K to help detect tampering to tiwis.
     POWER_INTERRUPTED(229),
     
@@ -514,7 +516,7 @@ public enum DeviceNoteTypes implements BaseEnum  {
     STRIPPED_GET_SPECIFIC_DETAIL_RECORDS(250),
     STRIPPED_GET_SHORT_ID(251, EventAttr.EMPLOYEE_ID_STR),
     GET_OCCUPANTS_STRIPPED(252, EventAttr.EMPLOYEE_ID_STR),
-    GET_OCCUPANT_INFO_STRIPPED(253, EventAttr.EMPLOYEE_ID_STR),
+    GET_OCCUPANT_INFO_STRIPPED(253, EventAttr.DRIVER_ID),
     STRIPPED_ACKNOWLEDGE(254),
     STRIPPED_UPPER_LIMIT(255),
     
