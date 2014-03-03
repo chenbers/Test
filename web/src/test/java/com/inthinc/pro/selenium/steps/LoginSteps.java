@@ -44,7 +44,7 @@ public class LoginSteps extends WebSteps {
             loginPage._button().logIn().click();
     }
     
-    @Given("I am logged in")
+    @Given("I am logged in an account without admin rights")
     @When("I am logged in an account without admin rights")
     public void givenIAmLoggedInAnAccountWithoutAdminRights() {
             loginPage.open("https://qa.inthinc.com");
