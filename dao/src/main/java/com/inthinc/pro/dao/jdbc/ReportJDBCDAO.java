@@ -16,6 +16,7 @@ import org.apache.log4j.Logger;
 import org.joda.time.Interval;
 import org.springframework.jdbc.core.simple.ParameterizedRowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -28,6 +29,7 @@ import java.util.Map;
 
 public class ReportJDBCDAO extends SimpleJdbcDaoSupport implements ReportDAO {
     private static final Logger logger = Logger.getLogger(ReportJDBCDAO.class);
+    private SimpleDateFormat dbFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 
     private static final String SELECT_DRIVERS = "Select  dp.driverID," +
             " dp.driverName,dp.employeeID,dp.groupID,dp.groupName,dp.vehicleID," +
@@ -143,9 +145,7 @@ public class ReportJDBCDAO extends SimpleJdbcDaoSupport implements ReportDAO {
         pagedColumnMapIdleVehicleReport.put("lowIdleTime", "lowIdleTime");
         pagedColumnMapIdleVehicleReport.put("highIdleTime", "highIdleTime");
         pagedColumnMapIdleVehicleReport.put("hasRPM", "hasRPM");
-
     }
-
 
     @Override
     public Integer getDriverReportCount(Integer groupID, List<TableFilterField> filters) {
@@ -181,11 +181,8 @@ public class ReportJDBCDAO extends SimpleJdbcDaoSupport implements ReportDAO {
         if (pageParams.getStartRow() != null && pageParams.getEndRow() != null)
             reportSelect.append(" LIMIT " + pageParams.getStartRow() + ", " + ((pageParams.getEndRow() - pageParams.getStartRow()) + 1));
 
-        List<DriverReportItem> reportItemList = getSimpleJdbcTemplate().query(reportSelect.toString(), DriverReportRowMapper, params);
-
-        return reportItemList;
-
-
+        List<DriverReportItem> reportDriverItemList = getSimpleJdbcTemplate().query(reportSelect.toString(), DriverReportRowMapper, params);
+        return reportDriverItemList;
     }
 
     @Override
@@ -200,7 +197,6 @@ public class ReportJDBCDAO extends SimpleJdbcDaoSupport implements ReportDAO {
         Integer cnt = 0;
         if (cntVehicle != null && !cntVehicle.isEmpty())
             cnt = cntVehicle.get(0);
-
         return cnt;
     }
 
@@ -224,7 +220,6 @@ public class ReportJDBCDAO extends SimpleJdbcDaoSupport implements ReportDAO {
             vehicleReportPageSelect.append(" LIMIT " + pageParams.getStartRow() + ", " + ((pageParams.getEndRow() - pageParams.getStartRow()) + 1));
 
         List<VehicleReportItem> vehicleReportPageItemList = getSimpleJdbcTemplate().query(vehicleReportPageSelect.toString(), VehicleReportRowMapper, params);
-
         return vehicleReportPageItemList;
     }
 
@@ -240,7 +235,6 @@ public class ReportJDBCDAO extends SimpleJdbcDaoSupport implements ReportDAO {
         Integer cnt = 0;
         if (cntDevice != null && !cntDevice.isEmpty())
             cnt = cntDevice.get(0);
-
         return cnt;
     }
 
@@ -264,16 +258,11 @@ public class ReportJDBCDAO extends SimpleJdbcDaoSupport implements ReportDAO {
             deviceReportPageSelect.append(" LIMIT " + pageParams.getStartRow() + ", " + ((pageParams.getEndRow() - pageParams.getStartRow()) + 1));
 
         List<DeviceReportItem> deviceReportPageItemList = getSimpleJdbcTemplate().query(deviceReportPageSelect.toString(), DeviceReportRowMapper, params);
-
         return deviceReportPageItemList;
-
     }
 
     @Override
     public Integer getIdlingReportCount(Integer groupID, Interval interval, List<TableFilterField> filters) {
-        SimpleDateFormat dbFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-
-
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("groupID", "%/" + groupID + "/%");
         params.put("intervalStart", dbFormat.format(interval.getStart().toDate()));
@@ -286,14 +275,11 @@ public class ReportJDBCDAO extends SimpleJdbcDaoSupport implements ReportDAO {
         Integer cnt = 0;
         if (cntDevice != null && !cntDevice.isEmpty())
             cnt = cntDevice.get(0);
-
         return cnt;
     }
 
     @Override
     public List<IdlingReportItem> getIdlingReportPage(Integer groupID, Interval interval, PageParams pageParams) {
-        SimpleDateFormat dbFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("groupID", "%/" + groupID + "/%");
         params.put("intervalStart", dbFormat.format(interval.getStart().toDate()));
@@ -305,9 +291,11 @@ public class ReportJDBCDAO extends SimpleJdbcDaoSupport implements ReportDAO {
         /***FILTERING***/
         idlingReportPageSelect = new StringBuilder(addFiltersToQuery(pageParams.getFilterList(), idlingReportPageSelect.toString(), params, pagedColumnMapIdleReport));
 
+        /***GROUP***/
+        idlingReportPageSelect.append(" GROUP BY di.driverID ");
+
         /***SORTING***/
         if (pageParams.getSort() != null && !pageParams.getSort().getField().isEmpty())
-            idlingReportPageSelect.append(" GROUP BY di.driverID ");
         idlingReportPageSelect.append(" ORDER BY " + pagedColumnMapIdleReport.get(pageParams.getSort().getField()) + " " + (pageParams.getSort().getOrder() == SortOrder.ASCENDING ? "ASC" : "DESC"));
 
         /***PAGING***/
@@ -315,14 +303,11 @@ public class ReportJDBCDAO extends SimpleJdbcDaoSupport implements ReportDAO {
             idlingReportPageSelect.append(" LIMIT " + pageParams.getStartRow() + ", " + ((pageParams.getEndRow() - pageParams.getStartRow()) + 1));
 
         List<IdlingReportItem> idlingReportItemList = getSimpleJdbcTemplate().query(idlingReportPageSelect.toString(), idlingReportRowMapper, params);
-
         return idlingReportItemList;
     }
 
     @Override
     public Integer getIdlingVehicleReportCount(Integer groupID, Interval interval, List<TableFilterField> filters) {
-        SimpleDateFormat dbFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("groupID", "%/" + groupID + "/%");
         params.put("intervalStart", dbFormat.format(interval.getStart().toDate()));
@@ -335,14 +320,11 @@ public class ReportJDBCDAO extends SimpleJdbcDaoSupport implements ReportDAO {
         Integer cnt = 0;
         if (cntDevice != null && !cntDevice.isEmpty())
             cnt = cntDevice.get(0);
-
         return cnt;
     }
 
     @Override
     public List<IdlingReportItem> getIdlingVehicleReportPage(Integer groupID, Interval interval, PageParams pageParams) {
-        SimpleDateFormat dbFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("groupID", "%/" + groupID + "/%");
         params.put("intervalStart", dbFormat.format(interval.getStart().toDate()));
@@ -354,9 +336,11 @@ public class ReportJDBCDAO extends SimpleJdbcDaoSupport implements ReportDAO {
         /***FILTERING***/
         idlingVehiclePageSelect = new StringBuilder(addFiltersToQuery(pageParams.getFilterList(), idlingVehiclePageSelect.toString(), params, pagedColumnMapIdleVehicleReport));
 
+        /***GROUP***/
+        idlingVehiclePageSelect.append(" GROUP BY agg.vehicleID ");
+
         /***SORTING***/
         if (pageParams.getSort() != null && !pageParams.getSort().getField().isEmpty())
-            idlingVehiclePageSelect.append(" GROUP BY agg.vehicleID ");
         idlingVehiclePageSelect.append(" ORDER BY " + pagedColumnMapIdleVehicleReport.get(pageParams.getSort().getField()) + " " + (pageParams.getSort().getOrder() == SortOrder.ASCENDING ? "ASC" : "DESC"));
 
         /***PAGING***/
@@ -364,21 +348,17 @@ public class ReportJDBCDAO extends SimpleJdbcDaoSupport implements ReportDAO {
             idlingVehiclePageSelect.append(" LIMIT " + pageParams.getStartRow() + ", " + ((pageParams.getEndRow() - pageParams.getStartRow()) + 1));
 
         List<IdlingReportItem> idlingVehicleReportItemList = getSimpleJdbcTemplate().query(idlingVehiclePageSelect.toString(), idlingVehicleRowMapper, params);
-
         return idlingVehicleReportItemList;
     }
 
     @Override
     public Integer getIdlingVehicleReportSupportsIdleStatsCount(Integer groupID, Interval interval, List<TableFilterField> filters) {
-        //copy getIdlingVehicleReportCount
         if (filters == null)
             filters = new ArrayList<TableFilterField>();
         List<TableFilterField> reportFilters = new ArrayList<TableFilterField>();
         for (TableFilterField filter : filters)
             reportFilters.add(filter);
         reportFilters.add(new TableFilterField("hasRPM", Integer.valueOf(1)));
-
-        SimpleDateFormat dbFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("groupID", "%/" + groupID + "/%");
@@ -393,20 +373,16 @@ public class ReportJDBCDAO extends SimpleJdbcDaoSupport implements ReportDAO {
         Integer cnt = 0;
         if (cntDevice != null && !cntDevice.isEmpty())
             cnt = cntDevice.get(0);
-
         return cnt;
     }
 
     @Override
     public Integer getIdlingReportSupportsIdleStatsCount(Integer groupID, Interval interval, List<TableFilterField> filters) {
-        //copy getIdlingReportCount
         if (filters == null) filters = new ArrayList<TableFilterField>();
         List<TableFilterField> reportFilters = new ArrayList<TableFilterField>();
         for (TableFilterField filter : filters)
             reportFilters.add(filter);
         reportFilters.add(new TableFilterField("hasRPM", Integer.valueOf(1)));
-
-        SimpleDateFormat dbFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("groupID", "%/" + groupID + "/%");
@@ -420,28 +396,27 @@ public class ReportJDBCDAO extends SimpleJdbcDaoSupport implements ReportDAO {
         Integer cnt = 0;
         if (cntDevice != null && !cntDevice.isEmpty())
             cnt = cntDevice.get(0);
-
         return cnt;
     }
 
     @Override
     public Object findByID(Integer integer) {
-        return null;
+        throw new NotImplementedException();
     }
 
     @Override
     public Integer create(Integer integer, Object entity) {
-        return null;
+        throw new NotImplementedException();
     }
 
     @Override
     public Integer update(Object entity) {
-        return null;
+        throw new NotImplementedException();
     }
 
     @Override
     public Integer deleteByID(Integer integer) {
-        return null;
+        throw new NotImplementedException();
     }
 
     private ParameterizedRowMapper<DeviceReportItem> DeviceReportRowMapper = new ParameterizedRowMapper<DeviceReportItem>() {
