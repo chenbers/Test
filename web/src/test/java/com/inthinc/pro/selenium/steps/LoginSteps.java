@@ -44,6 +44,26 @@ public class LoginSteps extends WebSteps {
             loginPage._button().logIn().click();
     }
     
+    @Given("I am logged in")
+    @When("I am logged in an account without admin rights")
+    public void givenIAmLoggedInAnAccountWithoutAdminRights() {
+            loginPage.open("https://qa.inthinc.com");
+            //I've added this method to handle when QA times out and displays the Connection Problem page
+            if(!loginPage._textField().username().isPresent()) {
+                int time = 0;
+                while (time < 30) {
+                    errorPage._button().tryAgain().click();
+                    time++;
+                    if(loginPage._textField().username().isPresent()) {
+                        break;
+                    }
+                }
+            }
+            loginPage._textField().username().type("waysmart01");
+            loginPage._textField().password().type("password");
+            loginPage._button().logIn().click();
+    }
+
     @When("I log back in")
     public void whenILogBackIn() {
         loginPage._textField().username().type("secondPrime");
