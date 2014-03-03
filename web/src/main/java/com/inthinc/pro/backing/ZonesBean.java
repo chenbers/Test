@@ -592,9 +592,9 @@ public class ZonesBean extends BaseBean
 
         // metric - transform
         if (measurementType == MeasurementType.METRIC){
-            Map<ZoneAvailableOption, OptionValue> optionsMap =item.getOptionsMap();
+            Map<ZoneAvailableOption, OptionValue> optionsMap = item.getOptionsMap();
             Integer kphValue = optionsMap.get(ZoneAvailableOption.SPEED_LIMIT).getValue();
-            Integer mphValue = (int) Math.ceil(Math.abs(kphValue / KPH_IN_MPH));
+            Integer mphValue = (int) (kphValue / KPH_IN_MPH);
             optionsMap.put(ZoneAvailableOption.SPEED_LIMIT, new SpeedValue(mphValue));
             item.setOptionsMap(optionsMap);
             item.setOptions(getOptionsFromMap());
@@ -638,7 +638,7 @@ public class ZonesBean extends BaseBean
 
         //transform if necessary
         if (measurementType.equals(MeasurementType.METRIC))
-            value = (int) Math.abs(Math.floor(value * KPH_IN_MPH));
+            value = (int) (value * KPH_IN_MPH);
 
         return value;
     }
