@@ -28,7 +28,11 @@ public class GroupJDBCDAO extends SimpleJdbcDaoSupport implements GroupDAO {
     private static final String INSERT_GROUP_ACCOUNT = "insert into groups (groupID, acctID, parentID, name, `desc`, status, groupPath, addrID, addrID2, level, managerID, mapZoom, mapLat, mapLng, zoneRev, aggDate, dotOfficeType)  values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )";
     private static final String FIND_GROUP_BY_ID = "select g.groupID, g.acctID, g.parentID, g.name, g.desc, g.status, g.groupPath, g.addrID, g.addrID2, g.level, g.managerID, g.mapZoom, g.mapLat, g.mapLng, g.zoneRev, g.aggDate, g.newAggDate, g.dotOfficeType  from groups g where g.groupID =:groupID";
 
+   private static final String FIND_ADDRESS_ID_BY_ACCOUNT  = "select addrID, acctID, addr1, addr2, city, stateID, zip from address where acctID =:acctID";
+
     private static final String DEL_GROUP_BY_ID = "DELETE FROM groups WHERE groupID = ?";
+    private static final String ADD_NEW_ADDRESS = "INSERT INTO address (acctID, addr1, addr2, city, zip) VALUES (?, ?, ?, ?, ?)";
+
 
     private static final DateTimeFormatter dateFormatter = DateTimeFormat.forPattern("yyyy-MM-dd");
 
@@ -119,6 +123,7 @@ public class GroupJDBCDAO extends SimpleJdbcDaoSupport implements GroupDAO {
     public Integer create(Integer integer,final Group entity) {
         JdbcTemplate jdbcTemplate = getJdbcTemplate();
         KeyHolder keyHolder = new GeneratedKeyHolder();
+        createAddress(entity.getAddress());
         PreparedStatementCreator psc = new PreparedStatementCreator() {
 
             @Override
@@ -206,4 +211,28 @@ public class GroupJDBCDAO extends SimpleJdbcDaoSupport implements GroupDAO {
             }
         }
     }
+
+    public Integer createAddress(final Address address) {
+        JdbcTemplate jdbcTemplate = getJdbcTemplate();
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+        PreparedStatementCreator psc = new PreparedStatementCreator() {
+
+            @Override
+            public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
+                PreparedStatement ps = con.prepareStatement(ADD_NEW_ADDRESS, Statement.RETURN_GENERATED_KEYS);
+//                addrID, acctID, addr1, addr2, city, stateID, zip
+                ps.setInt(1, address.getAccountID());
+                ps.setString(2, address.getAddr1());
+                ps.setString(3, address.getAddr2());
+                ps.setString(4, address.getCity());
+//                psT.setString(6,address.getState());
+                ps.setString(5, address.getZip());
+
+                return ps;
+            }
+        };
+        jdbcTemplate.update(psc, keyHolder);
+        return keyHolder.getKey().intValue();
+    }
+
 }
