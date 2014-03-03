@@ -148,8 +148,8 @@ public class PageHOSFuelStops extends HOSBar {
 
     public class FuelStopsTexts extends HOSBarTexts {
 
-        public Text counter() {
-            return new Text(HOSFuelStopsEnum.COUNTER);
+        public Text records() {
+            return new Text(HOSFuelStopsEnum.RECORDS);
         }
 
         public Text labelDateRange() {

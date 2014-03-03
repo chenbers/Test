@@ -148,8 +148,8 @@ public class PageReportsVehicles extends ReportsBar {
 			return new Text(ReportsVehiclesEnum.TITLE);
 		}
 		
-		public Text counter(){
-			return new Text(ReportsBarEnum.COUNTER, page);
+		public Text records(){
+			return new Text(ReportsBarEnum.RECORDS, page);
 		}
 		
 		public TextTable distanceDrivenValue() {

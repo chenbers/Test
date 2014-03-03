@@ -105,8 +105,8 @@ public class PageReportsDevices extends ReportsBar {
 			return new TextTable(ReportsDevicesEnum.STATUS_VALUE);
 		}
 		
-		public Text counter(){
-			return new Text(ReportsBarEnum.COUNTER, page);
+		public Text records(){
+			return new Text(ReportsBarEnum.RECORDS, page);
 		}
 	}
 	

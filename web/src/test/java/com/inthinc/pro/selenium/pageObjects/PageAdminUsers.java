@@ -335,7 +335,7 @@ public class PageAdminUsers extends AdminTables {
 
     @Override
     protected boolean checkIsOnPage() {
-        return _button().delete().isPresent() && _text().counter().isPresent();
+        return _button().delete().isPresent() && _text().records().isPresent();
     }
     
 }

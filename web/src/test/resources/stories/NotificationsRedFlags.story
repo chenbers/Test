@@ -30,7 +30,7 @@ And I validate the Time Frame dropdown is present
 And I validate the Refresh button is present
 And I validate the Edit Columns link is present
 And I validate the Tools button is present
-And I validate the Counter text is present
+And I validate the Records text is present
 And I validate the Header Level text is present
 And I validate the Header Alert Details text is present
 And I validate the Sort By Date Time link is present
@@ -376,12 +376,12 @@ Scenario: TC1467: Notifications - Red Flags - Exclude Link  - Default Command Bu
 !-- And I select "Top" from the Team dropdown
 !-- And I select "Past Year" from the Time Frame dropdown
 !-- And I click the Refresh button
-!-- And I save the Counter text as TABLECOUNT
+!-- And I save the Records text as TABLECOUNT
 !-- And I click the 1st Row of the Entry Status link
 !-- And the Exclude Event popup opens
 !-- And I press the Enter key
 !-- And the Exclude Event popup closes
-!-- Then I validate the Counter text is TABLECOUNT
+!-- Then I validate the Records text is TABLECOUNT
 !-- And I validate the 1st Row of the Entry Status link is "include"
 
 Scenario: TC1472: Notifications - Red Flags - Exclude Link - UI
@@ -424,7 +424,7 @@ And I click the Red Flags link
 And I select "Top" from the Team dropdown
 And I select "Past Year" from the Time Frame dropdown
 And I click the Refresh button
-And I save the Counter text as REDFLAGSTABLECOUNT
+And I save the Records text as REDFLAGSTABLECOUNT
 And I save the 1st Row of the Entry Date Time text as SAVEDREDFLAGSDATETIME
 And I save the 1st Row of the Entry Detail text as SAVEDREDFLAGSDETAIL
 And I save the 1st Row of the Entry Category text as SAVEDREDFLAGSCATEGORY
@@ -432,7 +432,7 @@ And I click the 1st Row of the Entry Status link
 And the Exclude Event popup opens
 And I click the Yes button
 And the Exclude Event popup closes
-Then I validate the Counter text is REDFLAGSTABLECOUNT
+Then I validate the Records text is REDFLAGSTABLECOUNT
 And I select "excluded" from the Status dropdown
 And I validate the 1st Row of the Entry Date Time text is SAVEDREDFLAGSDATETIME
 And I validate the 1st Row of the Entry Detail text is SAVEDREDFLAGSDETAIL

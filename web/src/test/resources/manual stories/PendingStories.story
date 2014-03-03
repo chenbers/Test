@@ -361,7 +361,7 @@ And I type "TIWI00" into the Search textfield
 And I click the Search button
 And I click the Forward One pagescroller
 And I click the Sort Status link
-And I save the Counter text as RECORDS
+And I save the Records text as RECORDS
 And I click the Add Crash Report link
 And I save the Date Time dropdown as DATETIME
 And I select the text containing "TIWI02" from the Vehicle dropdown
@@ -375,7 +375,7 @@ And I select "Top - Test Group WR" from the Team dropdown
 And I type "TIWI00" into the Search textfield
 And I select "All" from the Time Frame dropdown
 And I click the Search button
-Then I validate the Counter text is not RECORDS
+Then I validate the Records text is not RECORDS
 And I validate the "1" text of the pagescroller is not clickable
 And I validate the 1st Row of the Date Time text is DATETIME
 And I validate the 1st Row of the Driver link is "Alma Mater"

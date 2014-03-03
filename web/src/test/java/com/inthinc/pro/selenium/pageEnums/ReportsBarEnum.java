@@ -30,7 +30,7 @@ public enum ReportsBarEnum implements SeleniumEnums {
     TOOL_PDF("Export To PDF", "***-form:***-export_menu_item:anchor"),
     TOOL_EXCEL("Export To Excel", "***-form:***-exportExcelMEnuItem:icon"),
     
-    COUNTER("Showing XXX to YYY of ZZZ records", "***-form:header"), 
+    RECORDS("Showing XXX to YYY of ZZZ records", "***-form:header"), 
 
     ;
 

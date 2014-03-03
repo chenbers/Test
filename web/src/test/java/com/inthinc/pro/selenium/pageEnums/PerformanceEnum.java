@@ -55,7 +55,7 @@ public enum PerformanceEnum implements SeleniumEnums {
 
     /* Details */
     DETAILS_TITLE("Details", Xpath.start().span(Id.clazz("details")).toString()),
-    DETAILS_X_OF_Y("Showing XXX to YYY of ZZZ records", "headerEvents"),
+    RECORDS("Showing XXX to YYY of ZZZ records", "headerEvents"),
 
 	
 	;

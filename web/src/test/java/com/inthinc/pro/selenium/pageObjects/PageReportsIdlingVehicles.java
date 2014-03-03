@@ -38,8 +38,8 @@ public class PageReportsIdlingVehicles extends ReportsBar {
 			return new TextTable(ReportsIdlingVehiclesEnum.TOTAL_IDLE_VALUE);
 		}
 		
-		public Text counter(){
-			return new Text(ReportsBarEnum.COUNTER, page);
+		public Text records(){
+			return new Text(ReportsBarEnum.RECORDS, page);
 		}
 		
 		public Text idlingCounter(){

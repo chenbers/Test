@@ -18,7 +18,7 @@ And I validate the Time Frame dropdown is present
 And I validate the Refresh button is present
 And I validate the Edit Columns link is present
 And I validate the Tools button is present
-And I validate the Counter text is present
+And I validate the Records text is present
 And I validate the Sort By Date Time link is present
 And I validate the Sort By Group link is present
 And I validate the Sort By Driver link is present
@@ -350,7 +350,7 @@ And I click the Safety link
 And I select "Top" from the Team dropdown
 And I select "Past Year" from the Time Frame dropdown
 And I click the Refresh button
-And I save the Counter text as SAFETYTABLECOUNT
+And I save the Records text as SAFETYTABLECOUNT
 And I save the 1st Row of the Entry Date Time text as SAVEDSAFETYDATETIME
 And I save the 1st Row of the Entry Detail text as SAVEDSAFETYDETAIL
 And I save the 1st Row of the Entry Category text as SAVEDSAFETYCATEGORY
@@ -358,7 +358,7 @@ And I click the 1st Row of the Entry Status link
 And the Exclude Event popup opens
 And I click the Yes button
 And the Exclude Event popup closes
-Then I validate the Counter text is SAFETYTABLECOUNT
+Then I validate the Records text is SAFETYTABLECOUNT
 And I select "excluded" from the Status dropdown
 And I validate the 1st Row of the Entry Date Time text is SAVEDSAFETYDATETIME
 And I validate the 1st Row of the Entry Detail text is SAVEDSAFETYDETAIL

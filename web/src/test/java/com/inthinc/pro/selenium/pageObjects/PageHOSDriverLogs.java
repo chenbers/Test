@@ -100,8 +100,8 @@ public class PageHOSDriverLogs extends HOSBar {
             return new Text(HOSDriverLogsEnum.DATE_ERROR);
         }
         
-        public Text counter() {
-            return new Text(HOSDriverLogsEnum.COUNTER);
+        public Text records() {
+            return new Text(HOSDriverLogsEnum.RECORDS);
         }
         
         public TextDateFieldLabel labelDateRange() {

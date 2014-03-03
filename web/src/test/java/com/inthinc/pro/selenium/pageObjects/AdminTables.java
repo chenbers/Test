@@ -70,7 +70,7 @@ public abstract class AdminTables extends AdminBar {
     public class AdminTablesTexts extends AdminBarTexts {
         public Text labelTitle()		{return new TextFieldLabel(AdminBarEnum.TITLE, page);}
         public Text labelSearchBox() 	{return new TextFieldLabel(AdminBarEnum.SEARCH_TEXTFIELD, page);}
-        public Text counter() 			{return new Text(AdminBarEnum.COUNTER);}
+        public Text records() 			{return new Text(AdminBarEnum.RECORDS);}
     }
 
 

@@ -83,8 +83,8 @@ public abstract class NotificationsEventsBar extends NotificationsBar {
             return new TextTable(NotificationsBarEnum.DETAIL_ENTRY, page);
         }
 
-        public Text counter() {
-            return new Text(NotificationsBarEnum.COUNTER, page);
+        public Text records() {
+            return new Text(NotificationsBarEnum.RECORDS, page);
         }
 	}
 	

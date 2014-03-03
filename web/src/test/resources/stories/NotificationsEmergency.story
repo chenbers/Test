@@ -18,7 +18,7 @@ And I validate the Time Frame dropdown is present
 And I validate the Refresh button is present
 And I validate the Edit Columns link is present
 And I validate the Tools button is present
-And I validate the Counter text is present
+And I validate the Records text is present
 And I validate the Sort By Date Time link is present
 And I validate the Sort By Group link is present
 And I validate the Sort By Driver link is present
@@ -334,12 +334,12 @@ Scenario: TC1431: Notifications - Emergency - Exclude Link - Default Command But
 !-- And I select "Top" from the Team dropdown
 !-- And I select "Past Year" from the Time Frame dropdown
 !-- And I click the Refresh button
-!-- And I save the Counter text as TABLECOUNT
+!-- And I save the Records text as TABLECOUNT
 !-- And I click the 1st Row of the Entry Status link
 !-- And the Exclude Event popup opens
 !-- And I press the Enter Key
 !-- And the Exclude Event popup closes
-!-- Then I validate the Counter text is TABLECOUNT
+!-- Then I validate the Records text is TABLECOUNT
 !-- And I validate the 1st Row of the Entry Status link is "include"
 
 Scenario: TC1432: Notifications - Emergency - Exclude Link - Exclude and Include links - Yes Button
@@ -349,7 +349,7 @@ And I click the Emergency link
 And I select "Top" from the Team dropdown
 And I select "Past Year" from the Time Frame dropdown
 And I click the Refresh button
-And I save the Counter text as EMERGENCYTABLECOUNT
+And I save the Records text as EMERGENCYTABLECOUNT
 And I save the 1st Row of the Entry Date Time text as SAVEDEMERGENCYDATETIME
 And I save the 1st Row of the Entry Detail text as SAVEDEMERGENCYDETAIL
 And I save the 1st Row of the Entry Category text as SAVEDEMERGENCYCATEGORY
@@ -357,7 +357,7 @@ And I click the 1st Row of the Entry Status link
 And the Exclude Event popup opens
 And I click the Yes button
 And the Exclude Event popup closes
-Then I validate the Counter text is EMERGENCYTABLECOUNT
+Then I validate the Records text is EMERGENCYTABLECOUNT
 And I select "excluded" from the Status dropdown
 And I validate the 1st Row of the Entry Date Time text is SAVEDEMERGENCYDATETIME
 And I validate the 1st Row of the Entry Detail text is SAVEDEMERGENCYDETAIL

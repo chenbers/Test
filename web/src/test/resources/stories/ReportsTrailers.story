@@ -31,7 +31,7 @@ Then I validate I am on the Reports Trailers page
 And I validate the Title text is "Trailer Report"
 And I validate the Edit Columns link is present
 And I validate the Tools button is present
-And I validate the Counter text is present
+And I validate the Records text is present
 And I validate the Sort By Status link is present
 And I validate the Sort By Group link is present
 And I validate the Sort By Trailer ID link is present

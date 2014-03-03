@@ -27,7 +27,7 @@ public enum HOSDriverLogsEnum implements SeleniumEnums {
     SEND_LOGS_MESSAGE(null, "hos-table-form:sendLogsError"),
     
     
-    COUNTER("Showing XXX to YYY of ZZZ records", "hos-table-form:header"),
+    RECORDS("Showing XXX to YYY of ZZZ records", "hos-table-form:header"),
     
     CHECK_ALL(null, "hos-table-form:hosTable:selectAll"),
     

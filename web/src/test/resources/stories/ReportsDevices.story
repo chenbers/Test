@@ -15,7 +15,7 @@ And I click the Devices link
 Then I validate I am on the Reports Devices page
 And I validate the Edit Columns link is present
 And I validate the Tools button is present
-And I validate the Counter text is present
+And I validate the Records text is present
 And I validate the Sort By Device ID link is present
 And I validate the Sort By Assigned Vehicle link is present
 And I validate the Sort By IMEI link is present

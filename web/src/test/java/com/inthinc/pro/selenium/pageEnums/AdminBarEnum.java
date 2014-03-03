@@ -61,7 +61,7 @@ public enum AdminBarEnum implements SeleniumEnums {
     DELETE("Delete", "personTable-form:***Table-adminTableDelete"),
     BATCH_EDIT("Batch Edit", "admin-table-form:***Table-adminTableEdit" ),
     
-    COUNTER("Showing XXX to YYY of ZZZ records","personTable-form:header"),
+    RECORDS("Showing XXX to YYY of ZZZ records","personTable-form:header"),
 
     
     TITLE(null, Xpath.start().span(Id.clazz("admin")).toString()),

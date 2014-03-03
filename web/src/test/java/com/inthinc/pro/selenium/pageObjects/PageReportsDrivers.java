@@ -152,8 +152,8 @@ public class PageReportsDrivers extends ReportsBar {
 
     public class DriverReportTexts extends ReportsBarTexts {
 
-        public Text counter() {
-            return new Text(ReportsBarEnum.COUNTER, page);
+        public Text records() {
+            return new Text(ReportsBarEnum.RECORDS, page);
         }
 
         public TextTable distanceDrivenValue() {

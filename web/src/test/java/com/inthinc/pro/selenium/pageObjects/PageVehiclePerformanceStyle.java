@@ -128,8 +128,8 @@ public class PageVehiclePerformanceStyle extends NavigationBar {
 
 	public class VehicleStyleTexts extends NavigationBarTexts {
 
-		public Text counter() {
-			return new Text(PerformanceEnum.DETAILS_X_OF_Y);
+		public Text records() {
+			return new Text(PerformanceEnum.RECORDS);
 		}
 
 		public TextTable dateTime() {
