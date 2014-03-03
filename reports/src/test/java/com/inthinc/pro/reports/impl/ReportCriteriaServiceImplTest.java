@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import com.inthinc.pro.model.Vehicle;
 import mockit.VerificationsInOrder;
 
 import org.joda.time.DateTime;
@@ -318,6 +319,11 @@ public class ReportCriteriaServiceImplTest extends BaseUnitTest {
             List<Driver> list = Collections.emptyList();
             list.add(driver);
             return list;
+        }
+
+        @Override
+        public List<Driver> getDriversInGroupIDList(List<Integer> groupIDList) {
+            return null;
         }
 
         @Override
