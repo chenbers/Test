@@ -118,14 +118,6 @@
 					  	<li class="r divider"><img src="#{facesContext.externalContext.request.contextPath}/images/grid_nav_divider.png" />
 					  </li>
 		              </ul>
-                    
-                      <div align="right" style="width: 100%"> 
-                         <h:outputFormat id="header" value="#{messages.notes_crashhistory_recordCountHeader}">
-							<a4j:actionparam value="#{crashHistoryBean.start}"/>
-							<a4j:actionparam value="#{crashHistoryBean.end}"/>
-							<a4j:actionparam value="#{crashHistoryBean.maxCount}"/>
-						 </h:outputFormat>
-                      </div>    
 		               	<ui:include src="/includes/reportsContextMenu.xhtml">	
 							<ui:param  name="emailModalPanelID" value="crashHistoryReportEmailModal" />
 							<ui:param  name="reportBean" value="#{crashHistoryBean}"/>
