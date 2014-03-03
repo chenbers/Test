@@ -78,7 +78,7 @@
         <skipUT>true</skipUT>
         <skipIT>true</skipIT>
         <skipAT>false</skipAT>
-        <AT.threadCount>8</AT.threadCount>
+        <AT.threadCount>4</AT.threadCount>
         <AT.isThreadCountPerCore>true</AT.isThreadCountPerCore>
         <AT.parallelOn>classes</AT.parallelOn>
         <junit.version>4.11</junit.version>
