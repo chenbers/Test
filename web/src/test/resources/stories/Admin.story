@@ -4,9 +4,9 @@ Meta:
 @page login
 @testFolder TF391
 
-Narrative: Test the admin users page to see that it exists
+Narrative: Test the admin users page
 
-Scenario: TC147: Admin - UI
+Scenario: TC14033: Admin - UI
 Given I am logged in
 When I click the Admin link
 And I click the Users link
@@ -53,48 +53,27 @@ And I validate the Sort By Bar Code link is present
 And I validate the Sort By RFID One link is present
 And I validate the Sort By RFID Two link is present
 And I validate the Sort By One Wire ID link is present
-And I validate the  is present
-And I validate the  is present
-And I validate the  is present
-And I validate the  is present
-And I validate the  is present
-And I validate the  is present
-And I validate the  is present
-And I validate the  is present
-And I validate the  is present
-And I validate the  is present
-And I validate the  is present
-And I validate the  is present
-And I validate the  is present
-And I validate the  is present
-And I validate the  is present
-And I validate the  is present
-And I validate the  is present
-And I validate the  is present
-And I validate the  is present
-And I validate the  is present
-And I validate the  is present
-And I validate the  is present
-And I validate the  is present
-And I validate the  is present
-And I validate the  is present
-And I validate the  is present
-And I validate the  is present
-And I validate the  is present
-And I validate the  is present
-And I validate the  is present
-And I validate the  is present
-And I validate the  is present
-And I validate the  is present
-And I validate the  is present
-And I validate the  is present
-And I validate the  is present
-And I validate the  is present
-And I validate the  is present
-And I validate the  is present
-And I validate the  is present
-And I validate the  is present
-And I validate the  is present
-And I validate the  is present
-And I validate the  is present
-And I validate the  is present
+And I validate the Sort By Locale link is present
+And I validate the Measurement Type Header text is present
+And I validate the Fuel Efficiency Ratio Header text is present
+And I validate the Driver Status Header text is present
+And I validate the Sort By Driver License Number link is present
+And I validate the Sort By License Class link is present
+And I validate the Sort By License State link is present
+And I validate the Sort By License Expiration link is present
+And I validate the Sort By Certifications link is present
+And I validate the DOT Header text is present
+And I validate the Driver Name Header text is present
+And I validate the Add Vehicle link is not present
+And I validate the Add Hazard link is not present
+And I validate the Route Hazards link is not present
+And I validate the Add Red Flag link is not present
+And I validate the Add Report link is not present
+And I validate the Add Custom Role link is not present
+
+Scenario: Admin - Edit Columns UI
+Given I am logged in
+When I click the Admin link
+And I click the Users link
+And I click the Edit Columns link
+And the Edit Columns Popup opens
