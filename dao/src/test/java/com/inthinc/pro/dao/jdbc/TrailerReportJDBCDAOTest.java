@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertNotNull;
 
 /**
  * Created by infrasoft04 on 3/4/14.
@@ -53,7 +54,7 @@ public class TrailerReportJDBCDAOTest {
     }
 
     @Test
-    public void testTrailerReportItemByGroupPaging(){
+    public void testTrailerReportItemAndCount(){
         List<Integer> groupList = new ArrayList<Integer>();
         groupList.add(new Integer(TEST_GROUP_ID));
         PageParams pp = new PageParams();
@@ -61,5 +62,10 @@ public class TrailerReportJDBCDAOTest {
         pp.setEndRow(20);
         List<TrailerReportItem> TrailerReportItemList = trailerReportJDBCDAO.getTrailerReportItemByGroupPaging(TEST_ACCOUNT_ID, groupList,pp);
         assertEquals(TrailerReportItemList.size(), 1);
+
+        List<TableFilterField> filter = new ArrayList<TableFilterField>();
+        int TrailerReportItemCount = trailerReportJDBCDAO.getTrailerReportCount(TEST_ACCOUNT_ID, groupList,filter);
+        assertNotNull(TrailerReportItemCount);
+
     }
 }

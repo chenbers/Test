@@ -213,8 +213,8 @@ public class TrailerReportJDBCDAO extends SimpleJdbcDaoSupport implements Traile
 
 
         //  trailer
-        getSimpleJdbcTemplate().update("insert into trailer(trailerID,acctId,status,odometer,absOdometer,weight,year,stateId,modified)" +
-                " values (:trailerID,:acctID,1,300,1,800,2014,44,'2014-03-04');", params);
+        getSimpleJdbcTemplate().update("insert into trailer(trailerID,acctId,status,odometer,absOdometer,weight,year,stateId,modified,deviceID)" +
+                " values (:trailerID,:acctID,1,300,1,800,2014,44,'2014-03-04',:deviceID);", params);
         //vehicle
         getSimpleJdbcTemplate().update("insert into vehicle(vehicleID,groupID, status, vtype, hos, dot, ifta, zonetype, odometer, weight,year, stateID, modified )" +
                 " values (:vehicleID,:groupID,1,0,0,1,0,0,125,800,2014,:stateID,'2014-03-04');", params);
