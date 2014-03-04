@@ -272,9 +272,7 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
     {
         if (column.equals("driverID"))
         {
-            if ((vehicle.getDriver() != null) && (vehicle.getDriver().getPerson() != null))
-                return vehicle.getDriver().getPerson().getFullName();
-            return null;
+            return vehicle.getDriverName();
         }
         else if (column.equals("groupID"))
         {
@@ -786,7 +784,9 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
         private EditableVehicleSettings editableVehicleSettings;
         @Column(updateable = false)
         private boolean           selected;
-        
+        @Column(updateable = false)
+        private String           driverName;
+
         @Column(updateable = false)
         private WaysmartForwardCommand wirelineDoorAlarm;
 
@@ -970,6 +970,14 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
                 ((WS850EditableVehicleSettings)editableVehicleSettings).setDotVehicleType(ws850HosDotType.getConfiguratorSetting());
             }
             
+        }
+
+        public String getDriverName() {
+            return driverName;
+        }
+
+        public void setDriverName(String driverName) {
+            this.driverName = driverName;
         }
     }
 
