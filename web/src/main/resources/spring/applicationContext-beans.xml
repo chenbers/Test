@@ -296,7 +296,9 @@
       <property name="driverJDBCDAO" ref="driverJDBCDAO"></property>
       <property name="groupDAO" ref="groupDAO"></property>
   </bean>
-  <bean id="vehicleSettingsFactory" class="com.inthinc.pro.backing.model.VehicleSettingsFactory" scope="session"/>
+  <bean id="vehicleSettingsFactory" class="com.inthinc.pro.backing.model.VehicleSettingsFactory" scope="session">
+      <property name="deviceDAO" ref="deviceJDBCDAO"></property>
+  </bean>
 
   <bean id="devicesBean" class="com.inthinc.pro.backing.DevicesBean" scope="session" init-method="initBean">
       <property name="vehicleDAO" ref="vehicleDAO"></property>
