@@ -20,13 +20,15 @@ public class AutomationTripGenerator {
         //noteTest.testDVIRNote("", "");
         //TiwiProDevice ws850 = new TiwiProDevice("970399012109740", ProductType.TIWIPRO_R747);
         WaysmartDevice ws850 = new WaysmartDevice("AUTOMATION850", "AUTOMATION850", AutoSilos.QA, Direction.gprs);
+        int driverID = 78318;  //This is for the Automation WS850Driver, make sure you comment this out if you are going to send tiwi notes
         ws850.dump_settings();
         DeviceState state = ws850.getState();
         AutomationCalendar initialTime = new AutomationCalendar();
-        ws850.set_time(initialTime.setDate(1393764474));  //head to http://www.epochconverter.com/ and you can enter the date you need here
+        ws850.set_time(initialTime.setDate(1393759060));  //head to http://www.epochconverter.com/ and you can enter the date you need here
         ws850.getState().setWMP(17116);
         ws850.firstLocation(new GeoPoint(40.7103, -111.9920));
         ws850.setEmployeeID("AUTOWS850"); 
+        state.setDriverID(driverID);
         ws850.power_on_device();
         ws850.increment_time(1);
         ws850.turn_key_on(15);
