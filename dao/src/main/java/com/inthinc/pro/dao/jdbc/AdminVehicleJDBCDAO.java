@@ -236,7 +236,8 @@ public class AdminVehicleJDBCDAO extends SimpleJdbcDaoSupport{
             vehicle.setModel(rs.getString("v.model"));
 //            vehicle.setModified(rs.getDate("v.modified"));
             vehicle.setName(rs.getString("v.name"));
-            
+            vehicle.setDriverName(rs.getString("CONCAT(p.first, ' ', p.last)"));
+
             Long absOdometer = rs.getObject("v.absOdometer") == null ? null : (rs.getLong("v.absOdometer"));
             Long odometer = rs.getObject("v.odometer") == null ? null : rs.getLong("v.odometer");
             if (absOdometer != null) {
