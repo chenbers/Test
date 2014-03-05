@@ -330,18 +330,19 @@ public class AutoPageRunner {
                 }
                 
                 if (methods.containsKey(elementName)){
-                    return tryElementName(elementClass, methods.get(elementName));
-                } else {
-                    for (Map.Entry<String, Method> entry : methods.entrySet()){
-                        if (entry.getKey().contains("column")){
-                            try {
-                                return tryElementName(elementClass, entry.getValue()); 
-                            } catch (Exception e){
-                                continue;
-                            }
-                        }
-                    }
-                }
+                    return tryElementName(elementClass, methods.get(elementName)); }
+                //I'm taking this out since I'm not using the find a column by name method
+//                } else {
+//                    for (Map.Entry<String, Method> entry : methods.entrySet()){
+//                        if (entry.getKey().contains("column")){
+//                            try {
+//                                return tryElementName(elementClass, entry.getValue()); 
+//                            } catch (Exception e){
+//                                continue;
+//                            }
+//                        }
+//                    }
+//                }
             }
             throw new NoSuchMethodException("Could not find Element for " + workingOnStep);
     
