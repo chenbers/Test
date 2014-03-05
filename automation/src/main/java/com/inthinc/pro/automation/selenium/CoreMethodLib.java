@@ -2,8 +2,11 @@ package com.inthinc.pro.automation.selenium;
 
 import java.io.IOException;
 import java.io.StringWriter;
+import java.lang.reflect.Method;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -27,6 +30,7 @@ import com.inthinc.pro.automation.AutomationPropertiesBean;
 import com.inthinc.pro.automation.enums.Browsers;
 import com.inthinc.pro.automation.enums.ErrorLevel;
 import com.inthinc.pro.automation.enums.SeleniumEnumWrapper;
+import com.inthinc.pro.automation.jbehave.AutoPageRunner;
 import com.inthinc.pro.automation.logging.Log;
 import com.inthinc.pro.automation.utils.AutoServers;
 import com.inthinc.pro.automation.utils.AutomationStringUtil;
@@ -768,7 +772,10 @@ public class CoreMethodLib extends WebDriverBackedSelenium implements CoreMethod
             waitForPageToLoad(timeout.toString());
         } catch (WaitTimedOutException e) {
             Log.warning("There may have been a page timeout during this test.");
-        }
+            String tryAgainButton = "//*[@id='errorTryAgain']";
+            click(tryAgainButton);
+            AutomationThread.pause(15);
+            }
 
         return this;
     }
