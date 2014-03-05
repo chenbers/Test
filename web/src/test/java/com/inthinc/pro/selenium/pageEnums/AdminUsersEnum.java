@@ -48,6 +48,7 @@ public enum AdminUsersEnum implements SeleniumEnums {
     BAR_CODE(null, "personTable-form:personTable:barcodeheader"),
     RFID_1(null, "personTable-form:personTable:rfid1header"),
     RFID_2(null, "personTable-form:personTable:rfid2header"),
+    ONE_WIRE(null, "personTable-form:personTable:fobIDheader"),
     LOCALE(null, "personTable-form:personTable:displayNameheader"),
     MEASUREMENT_TYPE(null, "personTable-form:personTable:measurementTypeheader"),
     FUEL_EFFICIENCY_RATIO(null, "personTable-form:personTable:fuelEfficiencyTypeheader"),

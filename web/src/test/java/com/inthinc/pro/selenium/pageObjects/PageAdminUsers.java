@@ -144,6 +144,7 @@ public class PageAdminUsers extends AdminTables {
         public TextLink sortByGender(){
             return new TextLink(AdminUsersEnum.GENDER);
         }
+        
         public TextLink sortByBarCode(){
             return new TextLink(AdminUsersEnum.BAR_CODE);
         }
@@ -156,11 +157,15 @@ public class PageAdminUsers extends AdminTables {
             return new TextLink(AdminUsersEnum.RFID_2);
         }
         
+        public TextLink sortByOneWireID(){
+            return new TextLink(AdminUsersEnum.ONE_WIRE);
+        }
+        
         public TextLink sortByLocale(){
             return new TextLink(AdminUsersEnum.LOCALE);
         }
         
-        public TextLink sortByDriverLicense(){
+        public TextLink sortByDriverLicenseNumber(){
             return new TextLink(AdminUsersEnum.DRIVER_LICENSE);
         }
         
