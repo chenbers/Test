@@ -26,15 +26,15 @@ public class StepsAdmin extends LoginSteps {
         adminUsers._link().adminUsers();
     }
     
-    @When("i select a valid user")
-    public void whenISelectAValidUser() {
-        adminUsers._link().tableEntryUserFullName().row(1).click();
-    }
+//    @When("i select a valid user")
+//    public void whenISelectAValidUser() {
+//        adminUsers._link().tableEntryUserFullName().row(1).click();
+//    }
     
-    @When("i click the edit link")
-    public void whenIClickTheEditLink() {
-      adminUsers._link().edit().row(1).click();
-    }
+//    @When("i click the edit link")
+//    public void whenIClickTheEditLink() {
+//      adminUsers._link().edit().row(1).click();
+//    }
     
     
     
