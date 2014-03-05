@@ -91,23 +91,23 @@ And I validate the 4th Row of the Name link contains "AG0"
 
 
 Scenario: TC767: Admin - Users - Table Properties
-Given I am logged in
-When I click the Admin link
-And I click the Edit Columns link
-And I the Edit Columns popup opens
-And I check the 1st Row of the Edit Columns checkbox
-And I check the 2nd Row of the Edit Columns checkbox
-And I check the 3rd Row of the Edit Columns checkbox
-And I check the 4th Row of the Edit Columns checkbox
-And I check the 5th Row of the Edit Columns checkbox
-And I check the 6th Row of the Edit Columns checkbox
-And I check the 7th Row of the Edit Columns checkbox
-And I check the 8th Row of the Edit Columns checkbox
-And I check the 9th Row of the Edit Columns checkbox
-And I check the 10th Row of the Edit Columns checkbox
-And I click the Save Button
-And I the Edit Columns popup closes
-Then I validate the table columns are sorted correctly
+!-- Given I am logged in
+!-- When I click the Admin link
+!-- And I click the Edit Columns link
+!-- And I the Edit Columns popup opens
+!-- And I check the 1st Row of the Edit Columns checkbox
+!-- And I check the 2nd Row of the Edit Columns checkbox
+!-- And I check the 3rd Row of the Edit Columns checkbox
+!-- And I check the 4th Row of the Edit Columns checkbox
+!-- And I check the 5th Row of the Edit Columns checkbox
+!-- And I check the 6th Row of the Edit Columns checkbox
+!-- And I check the 7th Row of the Edit Columns checkbox
+!-- And I check the 8th Row of the Edit Columns checkbox
+!-- And I check the 9th Row of the Edit Columns checkbox
+!-- And I check the 10th Row of the Edit Columns checkbox
+!-- And I click the Save Button
+!-- And I the Edit Columns popup closes
+!-- Then I validate the table columns are sorted correctly
 
 Scenario: TC768: Admin - Users - UI
 Given I am logged in
