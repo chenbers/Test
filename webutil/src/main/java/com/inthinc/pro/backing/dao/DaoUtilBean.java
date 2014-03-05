@@ -23,6 +23,13 @@ import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 import javax.servlet.http.HttpServletResponse;
 
+import com.inthinc.pro.dao.DriverDAO;
+import com.inthinc.pro.dao.GroupDAO;
+import com.inthinc.pro.dao.UserDAO;
+import com.inthinc.pro.dao.VehicleDAO;
+import com.inthinc.pro.exception.UpdateGroupException;
+import com.inthinc.pro.model.Group;
+import com.inthinc.pro.model.GroupStatus;
 import org.apache.log4j.Logger;
 import org.richfaces.model.Ordering;
 
@@ -71,7 +78,12 @@ public class DaoUtilBean extends BaseBean
     
     private Integer populateID;
     private Boolean populateAvailable;
-    
+    private DriverDAO driverDAO;
+    private VehicleDAO vehicleDAO;
+    private GroupDAO groupDAO;
+    private UserDAO userDAO;
+
+
     public static final String NO_RESULTS = "No results were returned";
 	public List<String> getExcludedMethods() {
     	return excludedMethods;
@@ -321,6 +333,10 @@ public class DaoUtilBean extends BaseBean
         	Object args[] = getArgsFromParamList();
 
         	DaoMethod daomethod = methodMap.get(selectedMethod);
+            if(selectedMethod.equals("updateGroup") && groupHasActiveAssets(Integer.valueOf(args[0].toString())) && "3".equals(paramList.get(5).getParamValue())){
+
+                throw new UpdateGroupException("Cannot delete a group that contains a subordinate group, driver, or vehicle.");
+            }
             Object dataAccess = getDataAccess(daomethod.getInterfaceIdx());
             InvocationHandler handler = Proxy.getInvocationHandler(dataAccess);
 
@@ -712,5 +728,79 @@ public class DaoUtilBean extends BaseBean
     }
     public void setPopulateAvailable(Boolean populateAvailable) {
         this.populateAvailable = populateAvailable;
+    }
+
+    public boolean groupHasActiveAssets(Integer groupID) {
+        boolean groupHasActiveChildren = false;
+        boolean groupHasActiveDrivers = false;
+        boolean groupHasActiveVehicles = false;
+        boolean groupHasActiveUsers = false;
+
+        Group original= groupDAO.findByID(groupID);
+        groupHasActiveDrivers = !driverDAO.getDriverNames(groupID).isEmpty();
+        groupHasActiveVehicles = !vehicleDAO.getVehicleNames(groupID).isEmpty();
+        groupHasActiveUsers = !userDAO.getUsersInGroupHierarchy(groupID).isEmpty();
+
+        List<Group> subGroups = getSubGroups(original.getGroupID());
+
+        if (!subGroups.isEmpty()) {
+            for (Group group : subGroups) {
+                if (group.getStatus() != GroupStatus.GROUP_DELETED) {
+                    groupHasActiveChildren = true;
+                    break;
+                } else
+                    groupHasActiveChildren |= groupHasActiveAssets(group.getGroupID());
+
+            }
+        }
+
+        return groupHasActiveChildren || groupHasActiveDrivers || groupHasActiveVehicles || groupHasActiveUsers;
+    }
+
+    public List<Group> getSubGroups(Integer parentGroupID){
+        List<Group> subGroups = groupDAO.getGroupHierarchy(getAccountID(), parentGroupID);
+        return extractSubGroupIDs(parentGroupID,subGroups);
+    }
+    private List<Group> extractSubGroupIDs(Integer parentGroupID, List<Group> subGroups){
+
+        List<Group> subGroupIDs = new ArrayList<Group>();
+        for(Group group : subGroups){
+            if(parentGroupID.equals(group.getParentID())){
+                subGroupIDs.add(group);
+            }
+        }
+        return subGroupIDs;
+    }
+
+    public DriverDAO getDriverDAO() {
+        return driverDAO;
+    }
+
+    public void setDriverDAO(DriverDAO driverDAO) {
+        this.driverDAO = driverDAO;
+    }
+
+    public VehicleDAO getVehicleDAO() {
+        return vehicleDAO;
+    }
+
+    public void setVehicleDAO(VehicleDAO vehicleDAO) {
+        this.vehicleDAO = vehicleDAO;
+    }
+
+    public void setGroupDAO(GroupDAO groupDAO) {
+        this.groupDAO = groupDAO;
+    }
+
+    public GroupDAO getGroupDAO() {
+        return groupDAO;
+    }
+
+    public UserDAO getUserDAO() {
+        return userDAO;
+    }
+
+    public void setUserDAO(UserDAO userDAO) {
+        this.userDAO = userDAO;
     }
 }

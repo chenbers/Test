@@ -25,10 +25,11 @@ public enum Attrib {
 	NOTEMAPREV(20, AttribParserType.BYTE, "maprev"),
 
     WITNESSVER(25, AttribParserType.INTEGER),
-    FIRMWAREVER(150, AttribParserType.INTEGER),
+    LOW_POWER_MODE_TIMEOUT(150, AttribParserType.INTEGER),
 	
 	OBDPCT(49, AttribParserType.BYTE),
 	GPSFILTER(166, AttribParserType.SHORT),
+    FIRMWAREVER(193, AttribParserType.INTEGER),
 	
 	TYPE_FWDCMD_ID(194, AttribParserType.LONG),
 	TYPE_FWDCMD(195, AttribParserType.INTEGER),
