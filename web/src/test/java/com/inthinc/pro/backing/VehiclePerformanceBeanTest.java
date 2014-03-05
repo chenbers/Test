@@ -28,8 +28,6 @@ public class VehiclePerformanceBeanTest extends BaseBeanTest {
    final Date endDate = new org.joda.time.DateTime(2012, 11, 27, 13, 45, 27, 1).toDate();
    private  List<LatLng> route ;
 
-
-
     @BeforeClass
     public static void setUpBeforeClass() throws Exception
     {
@@ -43,7 +41,6 @@ public class VehiclePerformanceBeanTest extends BaseBeanTest {
     @Test
     public void bean()
     {
-
         // team level login
         loginUser("custom101");
         // get the bean from the applicationContext (initialized by Spring injection)
@@ -91,6 +88,5 @@ public class VehiclePerformanceBeanTest extends BaseBeanTest {
 
         //test
         assertNotNull(vehiclePerformanceBean.buildReportCriteria());
-
     }
 }
