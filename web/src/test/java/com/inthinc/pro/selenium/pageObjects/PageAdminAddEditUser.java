@@ -13,6 +13,7 @@ import com.inthinc.pro.automation.elements.TextFieldLabel;
 import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 import com.inthinc.pro.selenium.pageEnums.AdminAddEditUserEnum;
 import com.inthinc.pro.selenium.pageEnums.AdminBarEnum;
+import com.inthinc.pro.selenium.pageEnums.AdminUsersEnum;
 import com.inthinc.pro.selenium.pageEnums.AdminTables.UserColumns;
 
 public class PageAdminAddEditUser extends AdminBar {
@@ -22,19 +23,11 @@ public class PageAdminAddEditUser extends AdminBar {
     public PageAdminAddEditUser() {
         checkMe.add(AdminAddEditUserEnum.DRIVER_TEAM_DHX);
     }
-    
 
     @Override
     public SeleniumEnums setUrl() {
         return AdminAddEditUserEnum.DEFAULT_URL;
     }
-    
-
-    public AddEditUserPopUps _popUp() {
-        return new AddEditUserPopUps();
-    }
-
-    public class AddEditUserPopUps extends MastheadPopUps {}
 
     public class AddEditUserCheckBoxs {
 
@@ -48,10 +41,6 @@ public class PageAdminAddEditUser extends AdminBar {
 
     }
 
-    public AddEditUserCheckBoxs _checkBox() {
-        return new AddEditUserCheckBoxs();
-    }
-
     public class AddEditUserSelects {
 
         public Selector rolesLeft() {
@@ -63,21 +52,11 @@ public class PageAdminAddEditUser extends AdminBar {
         }
     }
 
-    public AddEditUserSelects _select() {
-        return new AddEditUserSelects();
-    }
-
-    public AddEditUserLinks _link() {
-        return new AddEditUserLinks();
-    }
-
-    public class AddEditUserLinks extends AdminBarLinks {}
-
-    public AddEditUserTexts _text() {
-        return new AddEditUserTexts();
-    }
-
     public class AddEditUserTexts extends AdminBarTexts {
+        
+        public Text title() {
+            return new Text(AdminAddEditUserEnum.TITLE);
+        }
 
         public Text masterError() {
             return new Text(AdminBarEnum.MASTER_ERROR);
@@ -109,10 +88,6 @@ public class PageAdminAddEditUser extends AdminBar {
 
     }
 
-    public AddEditUserTextFields _textField() {
-        return new AddEditUserTextFields();
-    }
-
     public class AddEditUserTextFields extends AdminBarTextFields {
 
         //TODO: question: as an automation script writer, how do I know the difference between (person/driver/user)Fields?
@@ -132,19 +107,90 @@ public class PageAdminAddEditUser extends AdminBar {
         	return new TextField(AdminAddEditUserEnum.FIRST_NAME_FIELD);
         }
         
+        public TextField middleName() {
+            return new TextField(AdminAddEditUserEnum.MIDDLE_NAME_FIELD);
+        }
+        
         public TextField lastName() {
         	return new TextField(AdminAddEditUserEnum.LAST_NAME_FIELD);
         }
         
-        public TextField emailOne() {
-        	return new TextField(AdminAddEditUserEnum.EMAIL_ONE_FIELD);
+        public TextField dOB() {
+            return new TextField(AdminAddEditUserEnum.DOB_FIELD);
         }
         
+        public TextField driverLicenseNumber() {
+            return new TextField(AdminAddEditUserEnum.DRIVER_LICENSE_NUMBER_FIELD);
+        }
         
-    }
-
-    public AddEditUserButtons _button() {
-        return new AddEditUserButtons();
+        public TextField Class() {
+            return new TextField(AdminAddEditUserEnum.CLASS_FIELD);
+        }
+        
+        public TextField expiration() {
+            return new TextField(AdminAddEditUserEnum.EXPIRATION_FIELD);
+        }
+        
+        public TextField certifications() {
+            return new TextField(AdminAddEditUserEnum.CERTIFICATIONS_FIELD);
+        }
+        
+        public TextField rFIDBarCode() {
+            return new TextField(AdminAddEditUserEnum.RFID_BAR_CODE_FIELD);
+        }
+        
+        public TextField oneWireID() {
+            return new TextField(AdminAddEditUserEnum.ONE_WIRE_ID_FIELD);
+        }
+        
+        public TextField employeeID() {
+            return new TextField(AdminAddEditUserEnum.EMPLOYEE_ID_FIELD);
+        }
+        
+        public TextField reportsTo() {
+            return new TextField(AdminAddEditUserEnum.REPORTS_TO_FIELD);
+        }
+        
+        public TextField title() {
+            return new TextField(AdminAddEditUserEnum.TITLE_FIELD);
+        }
+        
+        public TextField userName() {
+            return new TextField(AdminAddEditUserEnum.USER_NAME_FIELD);
+        }
+        
+        public TextField password() {
+            return new TextField(AdminAddEditUserEnum.PASSWORD_FIELD);
+        }
+        
+        public TextField passwordAgain() {
+            return new TextField(AdminAddEditUserEnum.PASSWORD_AGAIN_FIELD);
+        }
+        
+        public TextField emailOne() {
+            return new TextField(AdminAddEditUserEnum.EMAIL_ONE_FIELD);
+        }
+        
+        public TextField emailTwo() {
+            return new TextField(AdminAddEditUserEnum.EMAIL_TWO_FIELD);
+        }
+        
+        public TextField textMessageOne() {
+            return new TextField(AdminAddEditUserEnum.TEXT_MESSAGE_ONE_FIELD);
+        }
+        
+        public TextField textMessageTwo() {
+            return new TextField(AdminAddEditUserEnum.TEXT_MESSAGE_TWO_FIELD);
+        }
+        
+        public TextField phoneOne() {
+            return new TextField(AdminAddEditUserEnum.PHONE_ONE_FIELD);
+        }
+        
+        public TextField phoneTwo() {
+            return new TextField(AdminAddEditUserEnum.PHONE_TWO_FIELD);
+        }
+        
     }
 
     public class AddEditUserButtons extends AdminBarButtons {
@@ -183,10 +229,6 @@ public class PageAdminAddEditUser extends AdminBar {
 
     }
 
-    public AddEditUserDropDowns _dropDown() {
-        return new AddEditUserDropDowns();
-    }
-
     public class AddEditUserDropDowns extends AdminBarDropDowns {
 
         private SeleniumEnums[] enums = { AdminAddEditUserEnum.USER_GROUP_DHX, AdminAddEditUserEnum.DRIVER_TEAM_DHX };
@@ -195,11 +237,11 @@ public class PageAdminAddEditUser extends AdminBar {
             return new DropDown(AdminAddEditUserEnum.DROP_DOWNS, dropDown);
         }
 
-        public DHXDropDown driverTeam() {
+        public DHXDropDown team() {
             return new DHXDropDown(AdminAddEditUserEnum.DRIVER_TEAM_DHX, enums);
         }
 
-        public DHXDropDown userGroup() {
+        public DHXDropDown group() {
             return new DHXDropDown(AdminAddEditUserEnum.USER_GROUP_DHX, enums);
         }
         
@@ -242,6 +284,54 @@ public class PageAdminAddEditUser extends AdminBar {
         public DropDown driverState(){
             return new DropDown(AdminAddEditUserEnum.STATE);
         }
+        
+        public DropDown information(){
+            return new DropDown(AdminAddEditUserEnum.INFORMATION);
+        }
+        
+        public DropDown warning(){
+            return new DropDown(AdminAddEditUserEnum.WARNING);
+        }
+        
+        public DropDown critical(){
+            return new DropDown(AdminAddEditUserEnum.CRITICAL);
+        }
+        
+    }
+    
+    public class AddEditUserLinks extends AdminBarLinks {}
+    public class AddEditUserPopUps extends MastheadPopUps {}
+    
+    public AddEditUserDropDowns _dropDown() {
+        return new AddEditUserDropDowns();
+    }
+    
+    public AddEditUserCheckBoxs _checkBox() {
+        return new AddEditUserCheckBoxs();
+    }
+    
+    public AddEditUserSelects _select() {
+        return new AddEditUserSelects();
+    }
+
+    public AddEditUserLinks _link() {
+        return new AddEditUserLinks();
+    }
+    
+    public AddEditUserTexts _text() {
+        return new AddEditUserTexts();
+    }
+
+    public AddEditUserPopUps _popUp() {
+        return new AddEditUserPopUps();
+    }
+
+    public AddEditUserTextFields _textField() {
+        return new AddEditUserTextFields();
+    }
+
+    public AddEditUserButtons _button() {
+        return new AddEditUserButtons();
     }
 
     @Override
@@ -249,9 +339,8 @@ public class PageAdminAddEditUser extends AdminBar {
         return AdminAddEditUserEnum.DEFAULT_URL.getURL();
     }
 
-
     @Override
     protected boolean checkIsOnPage() {
-        return _button().cancelBottom().isPresent() && _text().personLabel(UserColumns.FIRST_NAME).isPresent();
+        return _button().cancelBottom().isPresent() && _text().title().isPresent();
     }
 }
