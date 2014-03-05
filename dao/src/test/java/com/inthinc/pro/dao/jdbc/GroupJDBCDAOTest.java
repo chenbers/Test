@@ -77,6 +77,7 @@ public class GroupJDBCDAOTest extends SimpleJdbcDaoSupport {
         Group groupFindByID = groupJDBCDAO.findByID(GROUP_ID);
         assertNotNull(groupFindByID);
         assertTrue(groupFindByID.getGroupID().equals(GROUP_ID));
+        assertEquals(groupFindByID.getPath(),"/0/4/"+GROUP_ID+"/");
     }
 
     @Test

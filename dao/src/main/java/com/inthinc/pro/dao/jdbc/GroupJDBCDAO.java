@@ -7,7 +7,6 @@ import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.GroupStatus;
 import com.inthinc.pro.model.GroupType;
 import com.mysql.jdbc.Statement;
-import org.apache.commons.lang.NotImplementedException;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -18,7 +17,6 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -157,7 +155,7 @@ public class GroupJDBCDAO extends SimpleJdbcDaoSupport implements GroupDAO {
                 ps.setInt(2, entity.getParentID());
                 ps.setString(3, entity.getName() == null ? "" : entity.getName().trim());
                 ps.setString(4, entity.getDescription());
-                if (entity.getStatus() == null || entity.getStatus().getCode()==null) {
+                if (entity.getStatus() == null || entity.getStatus().getCode() == null) {
                     ps.setNull(5, Types.NULL);
                 } else {
                     ps.setInt(5, entity.getStatus().getCode());
@@ -165,13 +163,13 @@ public class GroupJDBCDAO extends SimpleJdbcDaoSupport implements GroupDAO {
 
                 ps.setString(6, entity.getPath());
 
-                if (entity.getDotOfficeType() == null || entity.getDotOfficeType().getCode()==null) {
+                if (entity.getDotOfficeType() == null || entity.getDotOfficeType().getCode() == null) {
                     ps.setNull(7, Types.NULL);
                 } else {
                     ps.setInt(7, entity.getDotOfficeType().getCode());
                 }
 
-                if (entity.getType() == null || entity.getType().getCode()==null) {
+                if (entity.getType() == null || entity.getType().getCode() == null) {
                     ps.setNull(8, Types.NULL);
                 } else {
                     ps.setInt(8, entity.getType().getCode());
@@ -209,6 +207,7 @@ public class GroupJDBCDAO extends SimpleJdbcDaoSupport implements GroupDAO {
         };
 
         jdbcTemplate.update(psc, keyHolder);
+        updateGroupPathById(keyHolder.getKey().intValue());
         return keyHolder.getKey().intValue();
     }
 
@@ -227,7 +226,7 @@ public class GroupJDBCDAO extends SimpleJdbcDaoSupport implements GroupDAO {
                 ps.setInt(2, entity.getParentID());
                 ps.setString(3, entity.getName() == null ? "" : entity.getName().trim());
                 ps.setString(4, entity.getDescription());
-                if (entity.getStatus() == null || entity.getStatus().getCode()==null) {
+                if (entity.getStatus() == null || entity.getStatus().getCode() == null) {
                     ps.setNull(5, Types.NULL);
                 } else {
                     ps.setInt(5, entity.getStatus().getCode());
@@ -235,13 +234,13 @@ public class GroupJDBCDAO extends SimpleJdbcDaoSupport implements GroupDAO {
 
                 ps.setString(6, entity.getPath());
 
-                if (entity.getDotOfficeType() == null || entity.getDotOfficeType().getCode()==null) {
+                if (entity.getDotOfficeType() == null || entity.getDotOfficeType().getCode() == null) {
                     ps.setNull(7, Types.NULL);
                 } else {
                     ps.setInt(7, entity.getDotOfficeType().getCode());
                 }
 
-                if (entity.getType() == null || entity.getType().getCode()==null) {
+                if (entity.getType() == null || entity.getType().getCode() == null) {
                     ps.setNull(8, Types.NULL);
                 } else {
                     ps.setInt(8, entity.getType().getCode());
@@ -282,6 +281,7 @@ public class GroupJDBCDAO extends SimpleJdbcDaoSupport implements GroupDAO {
         };
 
         jdbcTemplate.update(psc);
+        updateGroupPathById(entity.getGroupID());
         return entity.getGroupID();
     }
 
@@ -295,7 +295,8 @@ public class GroupJDBCDAO extends SimpleJdbcDaoSupport implements GroupDAO {
         Map<String, String> params = new HashMap<String, String>();
         params.put("groupID", String.valueOf(testGroupId));
         params.put("acctID", String.valueOf(testAccountId));
-        getSimpleJdbcTemplate().update("insert into groups (groupID, acctID, name, `desc`, parentID, status, groupPath, addrID, mapZoom, zoneRev, mapLat, mapLng) values (:groupID, :acctID, 'test-group-name', 'test-group-desc', 4, 1, '/0/4/5/', 972, 17, 2, '28.065', '-82.3664')", params);
+        getSimpleJdbcTemplate().update("insert into groups (groupID, acctID, name, `desc`, parentID, status, groupPath, addrID, mapZoom, zoneRev, mapLat, mapLng) values (:groupID, :acctID, 'test-group-name', 'test-group-desc', 4, 1, '/1/2/3/', 972, 17, 2, '28.065', '-82.3664')", params);
+        updateGroupPathById(testGroupId);
     }
 
     public void deleteTestGroup(int testGroupId) {
@@ -362,6 +363,16 @@ public class GroupJDBCDAO extends SimpleJdbcDaoSupport implements GroupDAO {
         jdbcTemplate.update(psc, keyHolder);
         newAddress.setAddrID(keyHolder.getKey().intValue());
         return newAddress;
+    }
+
+    private void updateGroupPathById(Integer groupID) {
+        try {
+            Map<String, String> params = new HashMap<String, String>();
+            params.put("groupID", String.valueOf(groupID));
+            getSimpleJdbcTemplate().update("call updateGroupPathById(:groupID)",params);
+        } catch (Throwable t) {
+            logger.error("Unable to update group path for id: " + groupID);
+        }
     }
 }
 
