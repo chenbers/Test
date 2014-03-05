@@ -55,11 +55,11 @@ public enum AdminBarEnum implements SeleniumEnums {
 
     
     /* Buttons and Strings */
-    SEARCH_BUTTON("Search", "admin-table-form:***Table-adminTableSearch" ),
+    SEARCH_BUTTON("Search", "personTable-form:***Table-adminTableSearch" ),
     SEARCH_LABEL("Search", "//table[@id='grid_nav_search_box']/tbody/tr/td[1]" ),
-    SEARCH_TEXTFIELD(null, "admin-table-form:***Table-filterTable" ),
+    SEARCH_TEXTFIELD(null, "personTable-form:***Table-filterTable" ),
     DELETE("Delete", "personTable-form:***Table-adminTableDelete"),
-    BATCH_EDIT("Batch Edit", "admin-table-form:***Table-adminTableEdit" ),
+    BATCH_EDIT("Batch Edit", "personTable-form:***Table-adminTableEdit" ),
     
     RECORDS("Showing XXX to YYY of ZZZ records","personTable-form:header"),
 
@@ -68,14 +68,14 @@ public enum AdminBarEnum implements SeleniumEnums {
     
     EDIT_COLUMNS_LINK(editColumns, "***Table-form:***Table-adminTableEditColumns"),
 
-    TABLE_HEADERS(null, "admin-table-form:***Table:*column*header:sortDiv"),
-    TABLE_ENTRIES(null, "admin-table-form:***Table:###:*column*"),
+    TABLE_HEADERS(null, "personTable-form:***Table:*column*header:sortDiv"),
+    TABLE_ENTRIES(null, "personTable-form:***Table:###:*column*"),
     
 
-    SELECT_ALL(null, "admin-table-form:***Table:selectAll"),
-    SELECT_ROW(null, "admin-table-form:***Table:###:select"),
+    SELECT_ALL(null, "personTable-form:***Table:selectAll"),
+    SELECT_ROW(null, "personTable-form:***Table:###:select"),
 
-    EDIT_ITEM("edit", "admin-table-form:***Table:###:edit"),
+    EDIT_ITEM("edit", "personTable-form:***Table:###:edit"),
     
     
     /* Multi Selector */
