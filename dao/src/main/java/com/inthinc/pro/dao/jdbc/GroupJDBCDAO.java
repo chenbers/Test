@@ -88,6 +88,17 @@ public class GroupJDBCDAO extends SimpleJdbcDaoSupport implements GroupDAO {
         }
     };
 
+    private ParameterizedRowMapper<Group> groupPathParameterizedRow = new ParameterizedRowMapper<Group>() {
+        @Override
+        public Group mapRow(ResultSet rs, int rowNum) throws SQLException {
+            Group groupItem = new Group();
+            groupItem.setGroupID(rs.getInt("groupID"));
+            groupItem.setParentID(getIntOrNullFromRs(rs, "parentID"));
+
+            return groupItem;
+        }
+    };
+
 
     public Integer getIntOrNullFromRs(ResultSet rs, String key) throws SQLException {
         Object obj = rs.getObject(key);
@@ -367,9 +378,67 @@ public class GroupJDBCDAO extends SimpleJdbcDaoSupport implements GroupDAO {
 
     private void updateGroupPathById(Integer groupID) {
         try {
+            boolean more = true;
+            String path = "";
+            String curGroupsSql = "select groupID, parentID from siloDB.groups where groupID = :groupID";
+            String curGroupSqlParent = "SELECT groupID, parentID FROM siloDB.groups where groupID = :parentID and :path not like concat('%/',parentID,'/%')";
+            final String updateGroupPath = "update groups set groupPath = ? where groupID = ? and(groupPath != ? OR groupPath is null)";
             Map<String, String> params = new HashMap<String, String>();
             params.put("groupID", String.valueOf(groupID));
-            getSimpleJdbcTemplate().update("call updateGroupPathById(:groupID)",params);
+
+            Group group = null;
+            while (more) {
+                try {
+                    group = getSimpleJdbcTemplate().queryForObject(curGroupsSql, groupPathParameterizedRow, params);
+                } catch (Throwable t) {
+                    more = false;
+                }
+                if (group == null || group.getGroupID() == null || group.getParentID() == null) {
+                    more = false;
+                }
+
+                if (more) {
+                    path = "/" + groupID + "/";
+                    while (more) {
+                        path = "/" + group.getParentID() + path;
+
+                        params = new HashMap<String, String>();
+                        params.put("parentID", String.valueOf(group.getParentID()));
+                        params.put("path", path);
+
+                        try {
+                            Group innerGroup = getSimpleJdbcTemplate().queryForObject(curGroupSqlParent, groupPathParameterizedRow, params);
+
+                            if (innerGroup == null || innerGroup.getParentID() == null) {
+                                more = false;
+                            } else {
+                                group.setParentID(innerGroup.getParentID());
+                            }
+                        } catch (Exception e) {
+                            more = false;
+                        }
+                    }
+                    final Integer groupIDFinal = groupID;
+                    final String pathFinal = path;
+                    JdbcTemplate jdbcTemplate = getJdbcTemplate();
+                    PreparedStatementCreator psc = new PreparedStatementCreator() {
+
+                        @Override
+                        public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
+
+                            PreparedStatement ps = con.prepareStatement(updateGroupPath);
+                            ps.setString(1, pathFinal);
+                            ps.setInt(2, groupIDFinal);
+                            ps.setString(3, pathFinal);
+                            logger.debug(ps.toString());
+                            return ps;
+                        }
+                    };
+
+                    jdbcTemplate.update(psc);
+                    more = false;
+                }
+            }
         } catch (Throwable t) {
             logger.error("Unable to update group path for id: " + groupID);
         }
