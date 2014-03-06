@@ -369,6 +369,8 @@ public class TeamCommonBean extends BaseBean {
 		}
 
 		/**
+     * Return team name
+     *
 		 * @return the teamTabName
 		 */
 		public String getTeamTabName() {
