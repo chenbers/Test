@@ -21,6 +21,8 @@ public class LoginSteps extends WebSteps {
     PageFormsManage manage = new PageFormsManage();
     PageAdminVehicles pav = new PageAdminVehicles();
     PageErrorPage errorPage = new PageErrorPage();
+    String secondPrime = "secondPrime";
+    String secondPrimePassword = "2ut2CFmnH$f!";
     
     private static final PageLogin loginPage = new PageLogin();
     
@@ -28,19 +30,9 @@ public class LoginSteps extends WebSteps {
     @When("I am logged in")
     public void givenIAmLoggedIn() {
             loginPage.open("https://qa.inthinc.com");
-            //I've added this method to handle when QA times out and displays the Connection Problem page
-            if(!loginPage._textField().username().isPresent()) {
-                int time = 0;
-                while (time < 30) {
-                    errorPage._button().tryAgain().click();
-                    time++;
-                    if(loginPage._textField().username().isPresent()) {
-                        break;
-                    }
-                }
-            }
-            loginPage._textField().username().type("secondPrime");
-            loginPage._textField().password().type("2ut2CFmnH$f!");
+            timeout();
+            loginPage._textField().username().type(secondPrime);
+            loginPage._textField().password().type(secondPrimePassword);
             loginPage._button().logIn().click();
     }
     
@@ -48,17 +40,7 @@ public class LoginSteps extends WebSteps {
     @When("I am logged in an account without admin rights")
     public void givenIAmLoggedInAnAccountWithoutAdminRights() {
             loginPage.open("https://qa.inthinc.com");
-            //I've added this method to handle when QA times out and displays the Connection Problem page
-            if(!loginPage._textField().username().isPresent()) {
-                int time = 0;
-                while (time < 30) {
-                    errorPage._button().tryAgain().click();
-                    time++;
-                    if(loginPage._textField().username().isPresent()) {
-                        break;
-                    }
-                }
-            }
+            timeout();
             loginPage._textField().username().type("waysmart01");
             loginPage._textField().password().type("password");
             loginPage._button().logIn().click();
@@ -66,31 +48,33 @@ public class LoginSteps extends WebSteps {
 
     @When("I log back in")
     public void whenILogBackIn() {
-        loginPage._textField().username().type("secondPrime");
-        loginPage._textField().password().type("2ut2CFmnH$f!");
+        timeout();
+        loginPage._textField().username().type(secondPrime);
+        loginPage._textField().password().type(secondPrimePassword);
         loginPage._button().logIn().click();
     }
     
     @When("I log back in under the editable account")
     public void whenILogBackInUnderTheEditableAccount() {
-        loginPage._textField().username().type("secondEditable");
-        loginPage._textField().password().type("2ut2CFmnH$f!");
+        loginPage._textField().username().type(secondPrime);
+        loginPage._textField().password().type(secondPrimePassword);
         loginPage._button().logIn().click();
     }
     
     @Given("I navigate to the assets trailers page")
     public void givenINavigateToTheAssetsTrailersPage() {
         loginPage.open("https://qa.inthinc.com/assets/trailers");
-        loginPage._textField().username().type("secondPrime");
-        loginPage._textField().password().type("2ut2CFmnH$f!");
+        loginPage._textField().username().type(secondPrime);
+        loginPage._textField().password().type(secondPrimePassword);
         loginPage._button().logIn().click();
     }
     
     @Given("I navigate to localhost")
     public void givenINavigateToLocalhost() {
         loginPage.open("https://localhost:8443/tiwipro/");
-        loginPage._textField().username().type("secondPrime");
-        loginPage._textField().password().type("2ut2CFmnH$f!");
+        timeout();
+        loginPage._textField().username().type(secondPrime);
+        loginPage._textField().password().type(secondPrimePassword);
         loginPage._button().logIn().click();
     }
     
@@ -387,5 +371,19 @@ public class LoginSteps extends WebSteps {
         } catch (Exception p) {
             System.out.println(p.getStackTrace());
         }
+    }
+    
+    //I've added this method to handle when QA times out and displays the Connection Problem page
+    public void timeout() {
+    if(!loginPage._textField().username().isPresent()) {
+        int time = 0;
+        while (time < 30) {
+            errorPage._button().tryAgain().click();
+            time++;
+            if(loginPage._textField().username().isPresent()) {
+                break;
+            }
+        }
+    }
     }
 }
