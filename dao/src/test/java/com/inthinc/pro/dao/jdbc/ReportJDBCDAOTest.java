@@ -64,7 +64,7 @@ public class ReportJDBCDAOTest {
         List<TableFilterField> filterList = new ArrayList<TableFilterField>();
 // for testdev.inthink
 //        filterList.add(new TableFilterField("driverID", 97));
-        filterList.add(new TableFilterField("driverID", 1352));
+        //filterList.add(new TableFilterField("driverID", 1352));
         int count = reportJDBCDAO.getDriverReportCount(TEST_GROUP_ID, filterList);
         //hessian
         int countHesian = reportDAO.getDriverReportCount(TEST_GROUP_ID, filterList);
@@ -130,12 +130,12 @@ public class ReportJDBCDAOTest {
     public void testIdleDriverCountAndList() {
         List<TableFilterField> filterList = new ArrayList<TableFilterField>();
 // for testdev.inthinc d 011596000035091
-//       filterList.add(new TableFilterField("driverName", "d 011"));
+ //      filterList.add(new TableFilterField("driverName", "d 011"));
         filterList.add(new TableFilterField("driverName", "MIKE"));
 //      filterList.add(new TableFilterField("hasRPM","1"));
 
         DateTimeZone dateTimeZone = DateTimeZone.forID(ReportTestConst.TIMEZONE_STR);
-        Interval interval = new Interval(new DateMidnight(new org.joda.time.DateTime().minusDays(1), dateTimeZone), new DateMidnight(new org.joda.time.DateTime(), dateTimeZone));
+        Interval interval = new Interval(new DateMidnight(new org.joda.time.DateTime().minusDays(7), dateTimeZone), new DateMidnight(new org.joda.time.DateTime(), dateTimeZone));
 
         int count = reportJDBCDAO.getIdlingReportCount(TEST_GROUP_ID, interval, filterList);
         assertTrue(count > 0);
@@ -149,25 +149,25 @@ public class ReportJDBCDAOTest {
         assertTrue(!driverReportList.isEmpty());
     }
 
-//    @Test
-//    public void testIdleVehicleCountAndList() {
-//        List<TableFilterField> filterList = new ArrayList<TableFilterField>();
-//        filterList.add(new TableFilterField("driverName", "Speed"));
-//        DateTimeZone dateTimeZone = DateTimeZone.forID(ReportTestConst.TIMEZONE_STR);
-//        Interval interval = new Interval(new DateMidnight(new org.joda.time.DateTime().minusDays(10), dateTimeZone), new DateMidnight(new org.joda.time.DateTime(), dateTimeZone));
-//
-//        int count = reportJDBCDAO.getIdlingVehicleReportCount(TEST_GROUP_ID, interval, filterList);
-//        assertTrue(count > 0);
-//
-//        PageParams pp = new PageParams();
-//        pp.setStartRow(0);
-//        pp.setEndRow(20);
-//        pp.setFilterList(filterList);
-//
-//        List<IdlingReportItem> driverReportList = reportJDBCDAO.getIdlingVehicleReportPage(TEST_GROUP_ID, interval, pp);
-//        assertTrue(!driverReportList.isEmpty());
-//
-//    }
+    @Test
+    public void testIdleVehicleCountAndList() {
+        List<TableFilterField> filterList = new ArrayList<TableFilterField>();
+        filterList.add(new TableFilterField("driverName", "Speed"));
+        DateTimeZone dateTimeZone = DateTimeZone.forID(ReportTestConst.TIMEZONE_STR);
+        Interval interval = new Interval(new DateMidnight(new org.joda.time.DateTime().minusYears(1), dateTimeZone), new DateMidnight(new org.joda.time.DateTime(), dateTimeZone));
+
+        int count = reportJDBCDAO.getIdlingVehicleReportCount(TEST_GROUP_ID, interval, filterList);
+        assertTrue(count > 0);
+
+        PageParams pp = new PageParams();
+        pp.setStartRow(0);
+        pp.setEndRow(20);
+        pp.setFilterList(filterList);
+
+        List<IdlingReportItem> driverReportList = reportJDBCDAO.getIdlingVehicleReportPage(TEST_GROUP_ID, interval, pp);
+        assertTrue(!driverReportList.isEmpty());
+
+    }
 
     @Test
     public void testIdlingVehicleReportSupportsIdleStatsCount() {
