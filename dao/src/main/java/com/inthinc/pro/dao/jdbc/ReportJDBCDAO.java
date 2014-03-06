@@ -129,7 +129,7 @@ public class ReportJDBCDAO extends SimpleJdbcDaoSupport implements ReportDAO {
             " FROM driverInfo di LEFT JOIN agg on agg.driverID=di.driverID " +
             "LEFT JOIN vehicle vi on agg.vehicleID=vi.vehicleID" +
             " LEFT JOIN groups g on vi.groupID = g.groupID " +
-            "WHERE di.groupId in (select g.groupID from groups g where g.groupPath like :groupID)" +
+            "WHERE vi.groupId in (select g.groupID from groups g where g.groupPath like :groupID)" +
             " AND agg.aggDate between :intervalStart AND :intervalEnd ";
 
     private static final Map<String, String> pagedColumnMapIdleVehicleReport = new HashMap<String, String>();
@@ -269,7 +269,7 @@ public class ReportJDBCDAO extends SimpleJdbcDaoSupport implements ReportDAO {
         params.put("intervalEnd", dbFormat.format(interval.getEnd().toDate()));
 
         StringBuilder idlingReportCountSelect = new StringBuilder(addIdlingFilter(filters, SELECT_IDLING_DRIVERS, params, pagedColumnMapIdleReport));
-        String idlingQueryCount = "SELECT count(*) as nr from (" + idlingReportCountSelect.toString() + " GROUP BY di.driverID ) as x;";
+        String idlingQueryCount = "SELECT count(*) as nr from (" + idlingReportCountSelect.toString() + " GROUP BY di.driverID ORDER BY driverName asc ) as x;";
 
         List<Integer> cntDevice = getSimpleJdbcTemplate().query(idlingQueryCount, idlingReportRowMapperCount, params);
         Integer cnt = 0;
@@ -314,7 +314,7 @@ public class ReportJDBCDAO extends SimpleJdbcDaoSupport implements ReportDAO {
         params.put("intervalEnd", dbFormat.format(interval.getEnd().toDate()));
 
         StringBuilder idlingVehicleReportCountSelect = new StringBuilder(addIdlingFilter(filters, SELECT_IDLING_VEHICLES, params, pagedColumnMapIdleVehicleReport));
-        String idlingVehicleQueryCount = "SELECT count(*) as nr from (" + idlingVehicleReportCountSelect.toString() + " GROUP BY agg.vehicleID) as x";
+        String idlingVehicleQueryCount = "SELECT count(*) as nr from (" + idlingVehicleReportCountSelect.toString() + " GROUP BY agg.vehicleID ORDER BY vehicleName asc) as x";
 
         List<Integer> cntDevice = getSimpleJdbcTemplate().query(idlingVehicleQueryCount, idlingVehicleRowMapperCount, params);
         Integer cnt = 0;
