@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -200,6 +201,7 @@ public class TripsBean extends BaseBean {
             allEvents.addAll(trip.getViolationEvents());
             allEvents.addAll(trip.getIdleEvents());
             allEvents.addAll(trip.getTamperEvents());
+            removeDuplicateEvents(allEvents);
             Collections.sort(allEvents);
             Collections.reverse(allEvents);
             allEventsMap = new LinkedHashMap<Long,Event>();
@@ -250,6 +252,7 @@ public class TripsBean extends BaseBean {
             allEvents.addAll(violationEvents);
             allEvents.addAll(idleEvents);
             allEvents.addAll(tamperEvents);
+            removeDuplicateEvents(allEvents);
             Collections.sort(allEvents);
             Collections.reverse(allEvents);
             allEventsMap = new LinkedHashMap<Long,Event>();
@@ -843,5 +846,19 @@ public class TripsBean extends BaseBean {
                 selectedTrip.addLocations(driverDAO.getLocationsForTrip(selectedTrip.getTrip().getDriverID(), selectedTrip.getTrip().getStartTime(), selectedTrip.getTrip().getEndTime()));
             
         }
+    }
+
+    //function to compare the final event list to be able to remove possible duplicates - to be removed if the cause is found
+    private List<Event> removeDuplicateEvents(List<Event> events) {
+
+        for (int i = 0; i < events.size(); i++) {
+            for (int j = i + 1; j < events.size(); j++) {
+                if (events.get(i).equalsWithoutID(events.get(j))) {
+                    events.remove(i);
+                }
+            }
+        }
+        return events;
+
     }
 }
