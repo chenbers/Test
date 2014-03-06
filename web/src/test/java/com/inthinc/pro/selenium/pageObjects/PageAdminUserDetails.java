@@ -19,11 +19,6 @@ public class PageAdminUserDetails extends AdminBar {
         checkMe.add(AdminUserDetailsEnum.USER_INFORMATION);
     }
 
-    public UserDetailsPopUps _popUp() {
-        return new UserDetailsPopUps();
-    }
-    
-
     @Override
     public SeleniumEnums setUrl() {
         return AdminUserDetailsEnum.DEFAULT_URL;
@@ -96,8 +91,84 @@ public class PageAdminUserDetails extends AdminBar {
         	return new Text(AdminUserDetailsEnum.LAST_NAME);
         }
         
+        public Text suffix() {
+            return new Text(AdminUserDetailsEnum.SUFFIX);
+        }
+        
+        public Text dob() {
+            return new Text(AdminUserDetailsEnum.DOB);
+        }
+        
+        public Text gender() {
+            return new Text(AdminUserDetailsEnum.GENDER);
+        }
+        
+        public Text driverLicenseNumber() {
+            return new Text(AdminUserDetailsEnum.DRIVER_LICENSE_NUMBER);
+        }
+        
+        public Text Class() {
+            return new Text(AdminUserDetailsEnum.CLASS);
+        }
+        
+        public Text state() {
+            return new Text(AdminUserDetailsEnum.STATE);
+        }
+        
+        public Text expiration() {
+            return new Text(AdminUserDetailsEnum.EXPIRATION);
+        }
+        
+        public Text certifications() {
+            return new Text(AdminUserDetailsEnum.CERTIFICATIONS);
+        }
+        
+        public Text dot() {
+            return new Text(AdminUserDetailsEnum.DOT);
+        }
+        
+        public Text team() {
+            return new Text(AdminUserDetailsEnum.TEAM);
+        }
+        
+        public Text driverStatus() {
+            return new Text(AdminUserDetailsEnum.DRIVER_STATUS);
+        }
+        
+        public Text rFIDBarCode() {
+            return new Text(AdminUserDetailsEnum.RFID_BAR_CODE);
+        }
+        
+        public Text rFIDOne() {
+            return new Text(AdminUserDetailsEnum.RFID_1);
+        }
+        
+        public Text rFIDTwo() {
+            return new Text(AdminUserDetailsEnum.RFID_2);
+        }
+        
+        public Text oneWireID() {
+            return new Text(AdminUserDetailsEnum.ONE_WIRE_ID);
+        }
+        
+        public Text employeeID() {
+            return new Text(AdminUserDetailsEnum.EMP_ID);
+        }
+        
+        public Text reportsTo() {
+            return new Text(AdminUserDetailsEnum.REPORTS_TO);
+        }
+        
+        public Text title() {
+            return new Text(AdminUserDetailsEnum.TITLE);
+        }
+        
         public Text locale() {
         	return new Text(AdminUserDetailsEnum.LOCALE);
+        }
+        
+        public Text timeZone() {
+            return new Text(AdminUserDetailsEnum.TIME_ZONE);
         }
         
         public Text measurement() {
@@ -116,8 +187,12 @@ public class PageAdminUserDetails extends AdminBar {
         	return new Text(AdminUserDetailsEnum.GROUP);
         }
         
-        public Text team() {
-        	return new Text(AdminUserDetailsEnum.TEAM);
+        public Text roles() {
+            return new Text(AdminUserDetailsEnum.ROLES);
+        }
+        
+        public Text status() {
+            return new Text(AdminUserDetailsEnum.USER_STATUS);
         }
         
         public Text textMessageOne() {
@@ -170,6 +245,10 @@ public class PageAdminUserDetails extends AdminBar {
 
     public UserDetailsTextFields _textField() {
         return new UserDetailsTextFields();
+    }
+    
+    public UserDetailsPopUps _popUp() {
+        return new UserDetailsPopUps();
     }
 
     // Helper methods

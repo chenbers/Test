@@ -17,7 +17,7 @@ public enum AdminUserDetailsEnum implements SeleniumEnums {
 	GENDER(null, "//ul[@id='grid_nav']/../table/tbody/tr/td[1]/table[1]/tbody/tr[6]/td[2]"),
 	
 	DRIVER_INFORMATION(null, "//ul[@id='grid_nav']/../table/tbody/tr/td[1]/div[3]"),
-	LICENSE_NUMBER(null, "//ul[@id='grid_nav']/../table/tbody/tr/td[1]/table[2]/tbody/tr[1]/td[2]"),
+	DRIVER_LICENSE_NUMBER(null, "//ul[@id='grid_nav']/../table/tbody/tr/td[1]/table[2]/tbody/tr[1]/td[2]"),
 	CLASS(null, "//ul[@id='grid_nav']/../table/tbody/tr/td[1]/table[2]/tbody/tr[2]/td[2]"),
 	STATE(null, "//ul[@id='grid_nav']/../table/tbody/tr/td[1]/table[2]/tbody/tr[3]/td[2]"),
 	EXPIRATION(null, "//ul[@id='grid_nav']/../table/tbody/tr/td[1]/table[2]/tbody/tr[4]/td[2]"),
@@ -26,10 +26,11 @@ public enum AdminUserDetailsEnum implements SeleniumEnums {
 	TEAM(null, "//ul[@id='grid_nav']/../table/tbody/tr/td[1]/table[2]/tbody/tr[7]/td[2]"),
 	DRIVER_STATUS(null, "//ul[@id='grid_nav']/../table/tbody/tr/td[1]/table[2]/tbody/tr[8]/td[2]"),
 	
-	RFID_INFORMATION(null, "//ul[@id='grid_nav']/../table/tbody/tr/td[1]/div[5]"),
-	BAR_CODE(null, "//ul[@id='grid_nav']/../table/tbody/tr/td[1]/table[3]/tbody/tr[1]/td[2]"),
-	ID_1(null, "//ul[@id='grid_nav']/../table/tbody/tr/td[1]/table[3]/tbody/tr[2]/td[2]"),
-	ID_2(null, "//ul[@id='grid_nav']/../table/tbody/tr/td[1]/table[3]/tbody/tr[3]/td[2]"),
+	DRIVER_IDENTIFICATION(null, "//ul[@id='grid_nav']/../table/tbody/tr/td[1]/div[5]"),
+	RFID_BAR_CODE(null, "//ul[@id='grid_nav']/../table/tbody/tr/td[1]/table[3]/tbody/tr[1]/td[2]"),
+	RFID_1(null, "//ul[@id='grid_nav']/../table/tbody/tr/td[1]/table[3]/tbody/tr[2]/td[2]"),
+	RFID_2(null, "//ul[@id='grid_nav']/../table/tbody/tr/td[1]/table[3]/tbody/tr[3]/td[2]"),
+	ONE_WIRE_ID(null, "//ul[@id='grid_nav']/../table/tbody/tr/td[1]/table[3]/tbody/tr[4]/td[2]"),
 	
 	EMPLOYEE_INFORMATION(null, "//ul[@id='grid_nav']/../table/tbody/tr/td[3]/div[1]"),
 	EMP_ID(null, "//ul[@id='grid_nav']/../table/tbody/tr/td[3]/table[1]/tbody/tr[1]/td[2]"),
