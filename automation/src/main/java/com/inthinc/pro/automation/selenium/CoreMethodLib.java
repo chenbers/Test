@@ -32,6 +32,7 @@ import com.inthinc.pro.automation.enums.ErrorLevel;
 import com.inthinc.pro.automation.enums.SeleniumEnumWrapper;
 import com.inthinc.pro.automation.jbehave.AutoPageRunner;
 import com.inthinc.pro.automation.logging.Log;
+import com.inthinc.pro.automation.test.BrowserTest;
 import com.inthinc.pro.automation.utils.AutoServers;
 import com.inthinc.pro.automation.utils.AutomationStringUtil;
 import com.inthinc.pro.automation.utils.AutomationThread;
@@ -59,6 +60,7 @@ public class CoreMethodLib extends WebDriverBackedSelenium implements CoreMethod
     private SeleniumEnumWrapper myEnum;
     private final Browsers browser;
 	int counter = 2;
+    int z = 0;
     
     private static ThreadLocal<CoreMethodInterface> instance = new ThreadLocal<CoreMethodInterface>();
     
@@ -742,6 +744,7 @@ public class CoreMethodLib extends WebDriverBackedSelenium implements CoreMethod
             doneWaiting = x > secondsToWait;
         }
         if (!found)
+            
             errors.addError("waitForElementPresent TIMEOUT", "while waiting for " + element, ErrorLevel.WARN);
         return this;
     }
@@ -768,13 +771,20 @@ public class CoreMethodLib extends WebDriverBackedSelenium implements CoreMethod
      */
     @Override
     public CoreMethodLib waitForPageToLoad(Integer timeout) {
+        String tryAgainButton = "//*[@id='errorTryAgain']";
         try {
             waitForPageToLoad(timeout.toString());
         } catch (WaitTimedOutException e) {
-            Log.warning("There may have been a page timeout during this test.");
-            String tryAgainButton = "//*[@id='errorTryAgain']";
-            click(tryAgainButton);
-            AutomationThread.pause(15);
+            while (z < 15) {
+                Log.warning("There may have been a page timeout during this test.");
+                click(tryAgainButton);
+                AutomationThread.pause(10);
+                z++;
+                }
+            if (z == 15) {
+                Log.error("Unable to re-establish a connection, ending test.");
+                getSeleniumThread().stop();
+                }
             }
 
         return this;
