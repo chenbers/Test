@@ -3,7 +3,7 @@ package com.inthinc.pro.backing;
 import com.inthinc.pro.model.TimeFrame;
 
 /**
- * Bean used for timeframe to be the same as long as the session
+ * Bean used for timeframe to be the same as long as the session live
  * 
  */
 public class TeamCommonBeanTimeFrame {

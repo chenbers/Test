@@ -74,6 +74,7 @@
   <bean id="dashBoardDetailBean" class="com.inthinc.pro.backing.DashBoardDetailBean" scope="request" parent="baseBean">
   </bean>
 
+
   <bean id="teamCommonBeanTimeFrameBean" class="com.inthinc.pro.backing.TeamCommonBeanTimeFrame" scope="session"/>
   <bean id="teamCommonBean" class="com.inthinc.pro.backing.TeamCommonBean" scope="request" parent="baseBean" init-method="init">
   	<property name="teamCommonBeanTimeFrame" ref="teamCommonBeanTimeFrameBean"/>
