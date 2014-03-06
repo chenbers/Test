@@ -1,5 +1,8 @@
 package com.inthinc.pro.model.hos;
 
+import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.commons.lang.builder.ToStringStyle;
+
 import com.inthinc.hos.model.RuleSetType;
 import com.inthinc.pro.model.BaseEntity;
 import com.inthinc.pro.model.FuelEfficiencyType;
@@ -146,5 +149,10 @@ public class HOSDriverLogin extends BaseEntity {
 
     public void setMeasurementType(MeasurementType measurementType) {
         this.measurementType = measurementType;
+    }
+    @Override
+    public String toString() {
+        return ToStringBuilder.reflectionToString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+        
     }
 }
