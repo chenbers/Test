@@ -312,4 +312,53 @@ public class TeamStatisticsBeanTest extends BaseBeanTest  {
         // assert different scores
         assertTrue(utcScore != userTimeZoneScore);
     }
+
+
+    @Test
+    public void testScoresWithUserTimeZone() {
+        ProUser proUser = loginUser(UnitTestStats.UNIT_TEST_LOGIN);
+        User user = proUser.getUser();
+        Person person = user.getPerson();
+
+        //set person time zone to gmt + 2
+        person.setTimeZone(TimeZone.getTimeZone("GMT+2"));
+
+        TeamStatisticsBean teamStatisticsBean = (TeamStatisticsBean) applicationContext.getBean("teamStatisticsBean");
+        TeamCommonBean teamCommonBean = teamStatisticsBean.getTeamCommonBean();
+        TeamMockData teamMockData = new TeamMockData();
+        GroupReportDAO groupReportDAO = teamMockData.getMockGroupReportDAO();
+        teamStatisticsBean.setGroupReportDAO(groupReportDAO);
+
+        // set time frame for one day ago
+        teamCommonBean.setTimeFrame(TimeFrame.ONE_DAY_AGO);
+        assertEquals(teamCommonBean.getTimeFrame().name(), "ONE_DAY_AGO");
+
+        List<DriverVehicleScoreWrapper> scoresWithUTCTimeZone = groupReportDAO.getDriverScores(teamCommonBean.getGroupID(), teamCommonBean.getTimeFrame().getInterval(teamStatisticsBean.getDateTimeZone()).getStart(),
+                teamStatisticsBean.getGroupHierarchy());
+
+        List<DriverVehicleScoreWrapper> scoresWithUserTimeZone = groupReportDAO.getDriverScoresWithUserTimeZone(teamCommonBean.getGroupID(), teamCommonBean.getTimeFrame().getInterval(teamStatisticsBean.getDateTimeZone()).getStart(),
+                teamStatisticsBean.getGroupHierarchy());
+
+        //there must be data
+        assertTrue(scoresWithUTCTimeZone != null && scoresWithUTCTimeZone.size() > 0);
+        assertTrue(scoresWithUserTimeZone != null && scoresWithUserTimeZone.size() > 0);
+
+        // calculate both avg scores then compare
+        int utcScore = 0;
+        for (DriverVehicleScoreWrapper score : scoresWithUTCTimeZone) {
+            utcScore += score.getScore().getOverall().intValue();
+        }
+        utcScore = utcScore / scoresWithUTCTimeZone.size();
+        assertTrue(utcScore > 0);
+
+        int userTimeZoneScore = 0;
+        for (DriverVehicleScoreWrapper score : scoresWithUserTimeZone) {
+            userTimeZoneScore += score.getScore().getOverall().intValue();
+        }
+        userTimeZoneScore = userTimeZoneScore / scoresWithUserTimeZone.size();
+        assertTrue(utcScore > 0);
+
+        // assert different scores
+        assertTrue(utcScore != userTimeZoneScore);
+    }
 }
