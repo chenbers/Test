@@ -531,4 +531,49 @@ And I validate the Sort By Certifications link is present
 And I validate the DOT Header text is present
 And I validate the Driver Team Header text is present
 
-Scenario: Admin - Add User
+Scenario: Admin - Add User with all fields filled out (first half of this test works, I'm working on the other half in the currentstory file)
+Given I am logged in
+When I click the Admin link
+And I click the Admin Add User link
+And I type "Add" into the First Name field
+And I type "All" into the Middle Name field
+And I type "Fields" into the Last Name field
+And I select "Jr." from the Suffix dropdown
+And I type "Jan 1, 1980" into the DOB field
+And I select "Male" from the Gender dropdown
+Then I validate the Driver Information checkbox is checked
+And I type "AllFieldsDriversLi1" into the Driver License Number field
+And I type "A" into the Class field
+And I select "Utah" from the Driver State dropdown
+And I type "Jan 1, 2015" into the Expiration field
+And I type "Test Certification" into the Certifications field
+And I select "Texas" from the DOT dropdown
+And I select "Top - Automation Test Team" from the Team dropdown
+And I select "Active" from the Driver Status dropdown
+And I type "" into the RFID Bar Code field
+And I type "2" into the One Wire ID field
+And I type "ADDALLFIEL" into the Employee ID field
+And I type "The Man" into the Reports To field
+And I type "Runt" into the Title field
+And I validate the Locale dropdown is "English (United States)"
+And I select "US/Mountain (GMT-7:0)" from the Time Zone dropdown
+And I validate the Measurement dropdown is "English"
+And I validate the Fuel Efficiency Ratio dropdown is "Miles Per Gallon (US)"
+And I validate the Login Information checkbox is checked
+And I type "AddAllFieldsUser" into the User Name field
+And I type "password" into the Password field
+And I type "password" into the Password Again field
+And I select "Top - Automation Test Team" from the Group dropdown
+And I select "Active" from the User Status dropdown
+And I type "fakeemail@fakeemailadd.com" into the Email One field
+And I type "fakeemail2@fakeemailadd.com" into the Email Two field
+And I type "1111111111@fakeemailadd.com" into the Text Message One field
+And I type "2222222222@fakeemailadd.com" into the Text Message Two field
+And I type "1111111111" into the Phone One field
+And I type "2222222222" into the Phone Two field
+And I validate the Information dropdown is "None"
+And I validate the Warning dropdown is "None"
+And I validate the Critical dropdown is "None"
+And I click the Save Bottom button
+
+
