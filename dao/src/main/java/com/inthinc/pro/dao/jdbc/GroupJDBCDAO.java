@@ -9,6 +9,7 @@ import com.inthinc.pro.model.GroupType;
 import com.mysql.jdbc.Statement;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.simple.ParameterizedRowMapper;
@@ -390,7 +391,7 @@ public class GroupJDBCDAO extends SimpleJdbcDaoSupport implements GroupDAO {
             while (more) {
                 try {
                     group = getSimpleJdbcTemplate().queryForObject(curGroupsSql, groupPathParameterizedRow, params);
-                } catch (Throwable t) {
+                } catch (EmptyResultDataAccessException t) {
                     more = false;
                 }
                 if (group == null || group.getGroupID() == null || group.getParentID() == null) {
@@ -414,7 +415,7 @@ public class GroupJDBCDAO extends SimpleJdbcDaoSupport implements GroupDAO {
                             } else {
                                 group.setParentID(innerGroup.getParentID());
                             }
-                        } catch (Exception e) {
+                        } catch (EmptyResultDataAccessException e) {
                             more = false;
                         }
                     }
