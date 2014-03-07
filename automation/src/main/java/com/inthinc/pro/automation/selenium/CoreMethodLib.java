@@ -86,6 +86,10 @@ public class CoreMethodLib extends WebDriverBackedSelenium implements CoreMethod
     @Override
     public CoreMethodLib check(SeleniumEnumWrapper myEnum) {
         String element = getLocator(myEnum);
+        if (myEnum.toString().contains("GROUPS_CHECKBOX"));
+        {
+            AutomationThread.pause(5);
+        }
         check(element);
         loadPause();
         return this;
@@ -112,6 +116,9 @@ public class CoreMethodLib extends WebDriverBackedSelenium implements CoreMethod
         //Adding in this method for the time duration links on the team pages, they need a longer wait time for the page to load, otherwise an error gets thrown
         if (element.contains("timeFrameForm:")) {
             AutomationThread.pause(20, "click(" + myEnum + ")");
+        }
+        if(myEnum.toString().contains("NEW_FORM_BUTTON")) {
+            AutomationThread.pause(7);
         }
         click(element);
         AutomationThread.pause(2, "click(" + myEnum + ")");
