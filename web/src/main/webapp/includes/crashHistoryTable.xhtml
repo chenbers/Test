@@ -10,7 +10,14 @@
 	            xmlns:pretty="http://ocpsoft.com/prettyfaces">
     
     
-    <h:form id="#{context}-form">							 
+    <h:form id="#{context}-form">	
+        <div align="right" style="width: 100%"> 
+            <h:outputFormat id="header" value="#{messages.notes_crashhistory_recordCountHeader}">
+				<a4j:actionparam value="#{crashHistoryBean.start}"/>
+				<a4j:actionparam value="#{crashHistoryBean.end}"/>
+				<a4j:actionparam value="#{crashHistoryBean.maxCount}"/>
+			</h:outputFormat>
+        </div>    						 
     <rich:jQuery selector="document" query="ready(function(){initializeTable()})" />          
     <div class="datagrid_panel" style="width:925px; overflow: auto">
         
@@ -53,7 +60,7 @@
                <h:outputText value="#{item.group}" rendered="#{item.groupID eq null}"/>
             </rich:column>
             
-            <rich:column id="driverName" rendered="#{tableColumns['driver'].visible}" sortBy="#{item.driverName}" >
+            <rich:column id="driver" rendered="#{tableColumns['driver'].visible}" sortBy="#{item.driverName}" >
                 <f:facet name="header">
                     <h:outputText value="#{messages.notes_crashhistory_driver}" />
                 </f:facet>
@@ -65,7 +72,7 @@
 				</ui:include>
             </rich:column>
             
-            <rich:column id="vehiclename" rendered="#{tableColumns['vehicle'].visible}" sortBy="#{item.vehicleName}" >
+            <rich:column id="vehicle" rendered="#{tableColumns['vehicle'].visible}" sortBy="#{item.vehicleName}" >
                 <f:facet name="header">
                     <h:outputText value="#{messages.notes_crashhistory_vehicle}" />
                 </f:facet>                

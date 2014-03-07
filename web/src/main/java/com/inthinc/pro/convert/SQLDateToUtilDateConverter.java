@@ -46,6 +46,7 @@ public class SQLDateToUtilDateConverter extends BaseConverter {
 	 */
 	private String getDateTimeZone(final UIComponent uiComponent, final Object value, final TimeZone timeZone) {
 		final Calendar instance = Calendar.getInstance(timeZone);
+        instance.setTimeZone(timeZone);
 		instance.setTime((Date) value);
 		final String pattern = (String) uiComponent.getAttributes().get("pattern");
 		if ((pattern != null) && (!pattern.isEmpty())) {
@@ -63,6 +64,7 @@ public class SQLDateToUtilDateConverter extends BaseConverter {
 	 */
 	private String formatDate(final Calendar instance, final String pattern) {
 		final SimpleDateFormat sdf = new SimpleDateFormat(pattern);
+        sdf.setTimeZone(instance.getTimeZone());
 		return sdf.format(instance.getTime());
 	}
 }
