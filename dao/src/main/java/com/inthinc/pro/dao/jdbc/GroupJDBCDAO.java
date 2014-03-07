@@ -9,6 +9,7 @@ import com.inthinc.pro.model.GroupType;
 import com.mysql.jdbc.Statement;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.simple.ParameterizedRowMapper;
@@ -369,7 +370,60 @@ public class GroupJDBCDAO extends SimpleJdbcDaoSupport implements GroupDAO {
         try {
             Map<String, String> params = new HashMap<String, String>();
             params.put("groupID", String.valueOf(groupID));
-            getSimpleJdbcTemplate().update("call updateGroupPathById(:groupID)",params);
+
+            Group group = null;
+            while (more) {
+                try {
+                    group = getSimpleJdbcTemplate().queryForObject(curGroupsSql, groupPathParameterizedRow, params);
+                } catch (EmptyResultDataAccessException t) {
+                    more = false;
+                }
+                if (group == null || group.getGroupID() == null || group.getParentID() == null) {
+                    more = false;
+                }
+
+                if (more) {
+                    path = "/" + groupID + "/";
+                    while (more) {
+                        path = "/" + group.getParentID() + path;
+
+                        params = new HashMap<String, String>();
+                        params.put("parentID", String.valueOf(group.getParentID()));
+                        params.put("path", path);
+
+                        try {
+                            Group innerGroup = getSimpleJdbcTemplate().queryForObject(curGroupSqlParent, groupPathParameterizedRow, params);
+
+                            if (innerGroup == null || innerGroup.getParentID() == null) {
+                                more = false;
+                            } else {
+                                group.setParentID(innerGroup.getParentID());
+                            }
+                        } catch (EmptyResultDataAccessException e) {
+                            more = false;
+                        }
+                    }
+                    final Integer groupIDFinal = groupID;
+                    final String pathFinal = path;
+                    JdbcTemplate jdbcTemplate = getJdbcTemplate();
+                    PreparedStatementCreator psc = new PreparedStatementCreator() {
+
+                        @Override
+                        public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
+
+                            PreparedStatement ps = con.prepareStatement(updateGroupPath);
+                            ps.setString(1, pathFinal);
+                            ps.setInt(2, groupIDFinal);
+                            ps.setString(3, pathFinal);
+                            logger.debug(ps.toString());
+                            return ps;
+                        }
+                    };
+
+                    jdbcTemplate.update(psc);
+                    more = false;
+                }
+            }
         } catch (Throwable t) {
             logger.error("Unable to update group path for id: " + groupID);
         }
