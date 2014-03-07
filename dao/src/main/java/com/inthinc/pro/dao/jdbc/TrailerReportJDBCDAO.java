@@ -194,60 +194,6 @@ public class TrailerReportJDBCDAO extends SimpleJdbcDaoSupport implements Traile
         int result = getSimpleJdbcTemplate().queryForInt(sqlQuery);
         return result > 0;
     }
-    public void createTestTrailerReport(int testAccountId,int testTrailerId, int testDeviceId,int testVehicleId,
-                                        int testGroupId,int testStateId, int testPersonId, int testAddrId,
-                                        int testParentId, int testManagerId , int testDriverId, int testVddlogId) {
-        Map<String, String> params = new HashMap<String, String>();
-        params.put("trailerID", String.valueOf(testTrailerId));
-        params.put("acctID", String.valueOf(testAccountId));
-        params.put("deviceID", String.valueOf(testDeviceId));
-        params.put("vehicleID", String.valueOf(testVehicleId));
-        params.put("groupID", String.valueOf(testGroupId));
-        params.put("stateID", String.valueOf(testStateId));
-        params.put("personID", String.valueOf(testPersonId));
-        params.put("addrID", String.valueOf(testAddrId));
-        params.put("parentID", String.valueOf(testParentId));
-        params.put("managerID", String.valueOf(testManagerId));
-        params.put("driverID", String.valueOf(testDriverId));
-        params.put("vddlogID", String.valueOf(testVddlogId));
 
-
-        //  trailer
-        getSimpleJdbcTemplate().update("insert into trailer(trailerID,acctId,status,odometer,absOdometer,weight,year,stateId,modified,deviceID)" +
-                " values (:trailerID,:acctID,1,300,1,800,2014,44,'2014-03-04',:deviceID);", params);
-        //vehicle
-        getSimpleJdbcTemplate().update("insert into vehicle(vehicleID,groupID, status, vtype, hos, dot, ifta, zonetype, odometer, weight,year, stateID, modified )" +
-                " values (:vehicleID,:groupID,1,0,0,1,0,0,125,800,2014,:stateID,'2014-03-04');", params);
-        //driver
-        getSimpleJdbcTemplate().update("insert into driver(driverID, groupID, personID, status, stateID,dot, modified)" +
-                " values (:driverID, :groupID,:personID,1,:stateID,0,'2014-03-04' );", params);
-        //person
-        getSimpleJdbcTemplate().update("insert into person(personID, acctID,tzID,status, measureType, fuelEffType, addrID, gender, height, weight, info, warn, crit, modified )" +
-                " values (:personID,:acctID,547,1,1,1,:addrID,1,60,80,1,1,1,'2014-03-04' );", params);
-        // groups
-        getSimpleJdbcTemplate().update("insert into groups(groupID, acctId, parentID, status, addrID, addrID2,level, managerID, mapZoom, zoneRev, dotOfficeType,name,`desc`)" +
-                " values (:groupID,:acctID,:parentID,1,:addrID,0,1,:managerID,2,2,0,'test_name','test_desc');", params);
-        //vddlog
-        getSimpleJdbcTemplate().update("insert into vddlog(vddlogID,acctID,deviceID,baseID,emuFeatureMask,vehicleID,vgroupID,vtype,driverID,dgroupID,tzID,start,imei)" +
-                " values (:vddlogID,:acctID,:deviceID,111 ,6173 , :vehicleID,:groupID,0, :driverID, :groupID,33,'2014-04-06','test_imei' );", params);
-    }
-    public void deleteTestTrailerReport(int testAccountId,int testTrailerId, int testDeviceId,int testVehicleId,
-                                        int testGroupId, int testPersonId, int testDriverId,  int testVddlogId) {
-        Map<String, String> params = new HashMap<String, String>();
-        params.put("trailerID", String.valueOf(testTrailerId));
-        params.put("acctID", String.valueOf(testAccountId));
-        params.put("deviceID", String.valueOf(testDeviceId));
-        params.put("vehicleID", String.valueOf(testVehicleId));
-        params.put("groupID", String.valueOf(testGroupId));
-        params.put("personID", String.valueOf(testPersonId));
-        params.put("driverID", String.valueOf(testDriverId));
-        params.put("vddlogID", String.valueOf(testVddlogId));
-        getSimpleJdbcTemplate().update("delete from trailer where trailerId = :trailerID ;", params);
-        getSimpleJdbcTemplate().update("delete  from vehicle where vehicleID = :vehicleID ;", params);
-        getSimpleJdbcTemplate().update("delete from driver where driverID = :driverID ;", params);
-        getSimpleJdbcTemplate().update("delete from person where personID= :personID ;", params);
-        getSimpleJdbcTemplate().update("delete from groups where groupID = :groupID ;", params);
-        getSimpleJdbcTemplate().update("delete from vddlog  where vddlogID = :vddlogID", params);
-    }
 
 }
