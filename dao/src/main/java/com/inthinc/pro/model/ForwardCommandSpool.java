@@ -2,6 +2,9 @@ package com.inthinc.pro.model;
 
 import java.util.Date;
 
+import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.commons.lang.builder.ToStringStyle;
+
 public class ForwardCommandSpool extends BaseEntity {
 
     /**
@@ -190,4 +193,9 @@ public class ForwardCommandSpool extends BaseEntity {
         this.iridiumStatus = iridiumStatus;
     }
 
+    @Override
+    public String toString() {
+        return ToStringBuilder.reflectionToString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+        
+    }
 }

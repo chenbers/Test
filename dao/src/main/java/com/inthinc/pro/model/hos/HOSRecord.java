@@ -5,6 +5,9 @@ import java.util.TimeZone;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
+import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.commons.lang.builder.ToStringStyle;
+
 import com.inthinc.hos.model.HOSOrigin;
 import com.inthinc.hos.model.HOSStatus;
 import com.inthinc.hos.model.RuleSetType;
@@ -449,4 +452,9 @@ public class HOSRecord extends BaseEntity implements Comparable<HOSRecord>{
         return (o.getLogTime().compareTo(getLogTime()));
     }
 
+    @Override
+    public String toString() {
+        return ToStringBuilder.reflectionToString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+        
+    }
 }

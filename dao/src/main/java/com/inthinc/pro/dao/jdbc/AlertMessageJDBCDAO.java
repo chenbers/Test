@@ -504,7 +504,7 @@ public class AlertMessageJDBCDAO extends GenericJDBCDAO implements AlertMessageD
         try {
             conn = getConnection();
             statement = conn.createStatement();
-            resultSet = statement.executeQuery(FETCH_RED_FLAG_MESSAGE_INFO_PREFIX + noteIDList.toString() + FETCH_RED_FLAG_MESSAGE_INFO_SUFFIX);
+            resultSet = statement.executeQuery(FETCH_RED_FLAG_MESSAGE_INFO_PREFIX + !(noteIDList.toString() == null) + FETCH_RED_FLAG_MESSAGE_INFO_SUFFIX);
 
             while (resultSet.next()) {
                 long noteID = resultSet.getLong(1);
