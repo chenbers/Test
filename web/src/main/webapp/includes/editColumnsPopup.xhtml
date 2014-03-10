@@ -24,7 +24,7 @@
       </ui:include>
 -->
 	
-    <rich:modalPanel id="editColumns" headerClass="popupHeader" controlsClass="popupControls" width="500" height="50" 
+    <rich:modalPanel id="#{context}_editColumns" headerClass="popupHeader" controlsClass="popupControls" width="500" height="50" 
     	autosized="true" resizeable="false" zindex="2000" 
     	onshow="document.getElementById('#{context}_editColumnsForm:#{context}-editColumnsGrid:0:col').focus();">
 										 
@@ -32,7 +32,7 @@
         <h:outputText value="#{messages.editColumns_title}" />
       </f:facet>
       <f:facet name="controls">
-        <h:graphicImage value="/images/modal_close.gif" width="19" height="19" style="cursor:pointer" onclick="document.getElementById('editColumnsForm:#{context}-editColumnsPopupCancel').onclick()" />
+        <h:graphicImage value="/images/modal_close.gif" width="19" height="19" style="cursor:pointer" onclick="document.getElementById('#{context}_editColumnsForm:#{context}-editColumnsPopupCancel').onclick()" />
       </f:facet>
 
       <h:panelGroup layout="block" styleClass="popupsubtitle">
@@ -54,7 +54,7 @@
             styleClass="left"
             action="#{bean.tablePref.cancelEdit}" 
             ajaxSingle="true" 
-            oncomplete="Richfaces.hideModalPanel('editColumns');"
+            oncomplete="Richfaces.hideModalPanel('#{context}_editColumns');"
             reRender="#{context}_editColumnsForm:#{context}-editColumnsGrid" tabindex="3">
             <span class="cancel">
              <h:outputText value="#{messages.button_cancel}" />
@@ -64,7 +64,7 @@
           <a4j:commandButton id="#{context}-editColumnsPopupSave"
           	type="submit"
             action="#{bean.tablePref.saveColumns}"                 
-            oncomplete="Richfaces.hideModalPanel('editColumns')" 
+            oncomplete="Richfaces.hideModalPanel('#{context}_editColumns')" 
             reRender="#{reRender}" styleClass="left" tabindex="2">
             <span class="save">
               <h:outputText value="#{messages.button_save}" />
