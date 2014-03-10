@@ -532,7 +532,7 @@ And I validate the DOT Header text is present
 And I validate the Driver Team Header text is present
 
 Scenario: Admin - Add User with all fields filled out (first half of this test works, I'm working on the other half in the currentstory file)
-Given I am logged in
+Given I navigate to localhost
 When I click the Admin link
 And I click the Admin Add User link
 And I type "Add" into the First Name field
@@ -549,6 +549,7 @@ And I type "Jan 1, 2015" into the Expiration field
 And I type "Test Certification" into the Certifications field
 And I select "Texas" from the DOT dropdown
 And I select "Top - Automation Test Team" from the Team dropdown
+And I select "Top - Automation Test Team" from the Group dropdown
 And I select "Active" from the Driver Status dropdown
 And I type "" into the RFID Bar Code field
 And I type "2" into the One Wire ID field
@@ -563,7 +564,6 @@ And I validate the Login Information checkbox is checked
 And I type "AddAllFieldsUser" into the User Name field
 And I type "password" into the Password field
 And I type "password" into the Password Again field
-And I select "Top - Automation Test Team" from the Group dropdown
 And I select "Active" from the User Status dropdown
 And I type "fakeemail@fakeemailadd.com" into the Email One field
 And I type "fakeemail2@fakeemailadd.com" into the Email Two field
