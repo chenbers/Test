@@ -67,8 +67,17 @@
 	    		gpsSpeed.push([#{point.time.time}, #{point.gpsSpeed}, new google.maps.LatLng(#{point.lat}, #{point.lng})]);
 	    		obdSpeed.push([#{point.time.time}, #{point.obdSpeed}, new google.maps.LatLng(#{point.lat}, #{point.lng})]);
 	    		rpm.push([#{point.time.time}, #{point.rpm}, new google.maps.LatLng(#{point.lat}, #{point.lng})]);
-				crashPoints.push(new google.maps.LatLng(#{point.lat}, #{point.lng}));
-				crashBounds.extend(new google.maps.LatLng(#{point.lat}, #{point.lng}));
+	    		// Check for valid crashData points
+	    		var validlatlng = getValidLatLng(#{point.lat}, #{point.lng});	
+	    		if(validlatlng){
+	    			crashPoints.push(new google.maps.LatLng(#{point.lat}, #{point.lng}));
+					var validCrashlatlng = getValidLatLng(crashPoint.latlng.lat(), crashPoint.latlng.lng());
+					// Replace invalid crashReport lat/lng with valid crashData points 
+					if(!validCrashlatlng){
+						crashPoint = {latlng: new google.maps.LatLng(#{point.lat}, #{point.lng}), time: #{crashReportBean.crashReport.date.time}}
+					}
+				}
+				crashBounds.extend(new google.maps.LatLng(#{point.lat}, #{point.lng}));				
 	    	</a4j:repeat>    	
 		
 	    	tripBounds = new google.maps.LatLngBounds();
@@ -78,6 +87,12 @@
     		</a4j:repeat>
 			
 			function initMap() {
+				// Get cahedNote Events if crashReport lat/lng are invalid 
+				var validCrashlatlng = getValidLatLng(crashPoint.latlng.lat(), crashPoint.latlng.lng());
+				if(!validCrashlatlng){
+					crashPoint = {latlng: new google.maps.LatLng(#{crashReportBean.crashReport.lat}, #{crashReportBean.crashReport.lng}), time: #{crashReportBean.crashReport.date.time}};
+					crashBounds.extend(new google.maps.LatLng(#{crashReportBean.crashReport.lat}, #{crashReportBean.crashReport.lng}));					
+				}
 	  			if (map == null) {
 					map = inthincMap.init({
 						'canvasID' : 'map-canvas',
@@ -199,6 +214,14 @@
 		        	}
 	            });
 			}
+			
+			function getValidLatLng(lat, lng){
+				if((lat > 0.005 || lat < -0.005) && (lng > 0.005 || lng < -0.005))
+					return true;
+				else
+					return false;
+			}
+			
 			/*]]>*/
             
 	        function formatDate(date) {
