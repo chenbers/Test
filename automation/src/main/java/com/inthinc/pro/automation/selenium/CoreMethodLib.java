@@ -88,7 +88,7 @@ public class CoreMethodLib extends WebDriverBackedSelenium implements CoreMethod
         String element = getLocator(myEnum);
         if (myEnum.toString().contains("GROUPS_CHECKBOX"));
         {
-            AutomationThread.pause(5);
+            AutomationThread.pause(10);
         }
         check(element);
         loadPause();
@@ -108,16 +108,13 @@ public class CoreMethodLib extends WebDriverBackedSelenium implements CoreMethod
             WebElement frame = getWrappedDriver().findElement(By.tagName("iframe"));
             getWrappedDriver().switchTo().frame(frame);
         }
-        //The publish page takes a while to load after publishing a form so I'm adding in a wait.
-        if (myEnum.toString().contains("PUBLISH_ENTRY_LINK")) {
-            AutomationThread.pause(7);
-        }
         String element = getClickable(getLocator(myEnum));
         //Adding in this method for the time duration links on the team pages, they need a longer wait time for the page to load, otherwise an error gets thrown
         if (element.contains("timeFrameForm:")) {
-            AutomationThread.pause(20, "click(" + myEnum + ")");
+            AutomationThread.pause(20);
         }
-        if(myEnum.toString().contains("NEW_FORM_BUTTON")) {
+        //Some of the forms elements can take a while to load, adding in a wait before they click.
+        if(myEnum.toString().contains("NEW_FORM_BUTTON")  || myEnum.toString().contains("NAME_FIELD") || myEnum.toString().contains("PUBLISH_ENTRY_LINK")) {
             AutomationThread.pause(7);
         }
         click(element);
