@@ -31,11 +31,13 @@ import com.inthinc.pro.automation.enums.Browsers;
 import com.inthinc.pro.automation.enums.ErrorLevel;
 import com.inthinc.pro.automation.enums.SeleniumEnumWrapper;
 import com.inthinc.pro.automation.jbehave.AutoPageRunner;
+import com.inthinc.pro.automation.jbehave.AutoStepVariables;
 import com.inthinc.pro.automation.logging.Log;
 import com.inthinc.pro.automation.test.BrowserTest;
 import com.inthinc.pro.automation.utils.AutoServers;
 import com.inthinc.pro.automation.utils.AutomationStringUtil;
 import com.inthinc.pro.automation.utils.AutomationThread;
+import com.inthinc.pro.automation.utils.MasterTest;
 import com.thoughtworks.selenium.DefaultSelenium;
 import com.thoughtworks.selenium.SeleniumException;
 import com.thoughtworks.selenium.Wait.WaitTimedOutException;
@@ -779,19 +781,23 @@ public class CoreMethodLib extends WebDriverBackedSelenium implements CoreMethod
         try {
             waitForPageToLoad(timeout.toString());
         } catch (WaitTimedOutException e) {
-            while (z < 15) {
-                Log.warning("There may have been a page timeout during this test.");
-                click(tryAgainButton);
-                AutomationThread.pause(10);
-                z++;
-                }
-            if (z == 15) {
-                Log.error("Unable to re-establish a connection, ending test.");
-                getSeleniumThread().stop();
+            while(verifyIsTextOnPage("Unable to connect")) {
+                    Log.warning("There may have been a page timeout during this test.");
+                        click(tryAgainButton);
+                        AutomationThread.pause(10);
+                        z++;
+                        if (z == 15) {
+                            Log.error("Unable to re-establish a connection, ending test.");
+                            getSeleniumThread().stop();
+                        }
                 }
             }
 
         return this;
+    }
+    
+    private boolean verifyIsTextOnPage(String lookfor) { 
+        return (CoreMethodLib.getSeleniumThread().isTextPresent(lookfor));
     }
 
     @Override
