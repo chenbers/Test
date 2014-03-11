@@ -366,15 +366,15 @@ public class GroupJDBCDAO extends SimpleJdbcDaoSupport implements GroupDAO {
         return newAddress;
     }
 
-    private void updateGroupPathById(Integer groupID) {
+    public void updateGroupPathById(Integer groupID) {
         try {
-            Map<String, String> params = new HashMap<String, String>();
-            params.put("groupID", String.valueOf(groupID));
-
+            boolean more = true;
+            String path = "";
             Group group = null;
+
             while (more) {
                 try {
-                    group = getSimpleJdbcTemplate().queryForObject(curGroupsSql, groupPathParameterizedRow, params);
+                    group = findFastById(groupID);
                 } catch (EmptyResultDataAccessException t) {
                     more = false;
                 }
@@ -387,12 +387,8 @@ public class GroupJDBCDAO extends SimpleJdbcDaoSupport implements GroupDAO {
                     while (more) {
                         path = "/" + group.getParentID() + path;
 
-                        params = new HashMap<String, String>();
-                        params.put("parentID", String.valueOf(group.getParentID()));
-                        params.put("path", path);
-
                         try {
-                            Group innerGroup = getSimpleJdbcTemplate().queryForObject(curGroupSqlParent, groupPathParameterizedRow, params);
+                            Group innerGroup = findFastGroupByParentIdAndPath(group.getParentID(), path);
 
                             if (innerGroup == null || innerGroup.getParentID() == null) {
                                 more = false;
@@ -403,30 +399,74 @@ public class GroupJDBCDAO extends SimpleJdbcDaoSupport implements GroupDAO {
                             more = false;
                         }
                     }
-                    final Integer groupIDFinal = groupID;
-                    final String pathFinal = path;
-                    JdbcTemplate jdbcTemplate = getJdbcTemplate();
-                    PreparedStatementCreator psc = new PreparedStatementCreator() {
 
-                        @Override
-                        public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
-
-                            PreparedStatement ps = con.prepareStatement(updateGroupPath);
-                            ps.setString(1, pathFinal);
-                            ps.setInt(2, groupIDFinal);
-                            ps.setString(3, pathFinal);
-                            logger.debug(ps.toString());
-                            return ps;
-                        }
-                    };
-
-                    jdbcTemplate.update(psc);
+                    updateGroupPath(groupID, path);
                     more = false;
                 }
             }
         } catch (Throwable t) {
             logger.error("Unable to update group path for id: " + groupID);
         }
+    }
+
+    /**
+     * Finds a group by id but only binds the group id and parent id.
+     * It's used to speed up {@link #updateGroupPathById}
+     *
+     * @param groupID group id
+     * @return group with id and parent id bound
+     */
+    public Group findFastById(Integer groupID) {
+        String curGroupsSql = "select groupID, parentID from siloDB.groups where groupID = :groupID";
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("groupID", String.valueOf(groupID));
+
+        return getSimpleJdbcTemplate().queryForObject(curGroupsSql, groupPathParameterizedRow, params);
+    }
+
+    /**
+     * Finds a group by parent id and path but only binds the group id and parent id.
+     * It's used to speed up {@link #updateGroupPathById}
+     *
+     * @param parentID parent id for group
+     * @param path     path for group
+     * @return group with id and parent id bound
+     */
+    public Group findFastGroupByParentIdAndPath(Integer parentID, String path) {
+        String curGroupSqlParent = "SELECT groupID, parentID FROM siloDB.groups where groupID = :parentID and :path not like concat('%/',parentID,'/%')";
+
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("parentID", String.valueOf(parentID));
+        params.put("path", path);
+
+        return getSimpleJdbcTemplate().queryForObject(curGroupSqlParent, groupPathParameterizedRow, params);
+    }
+
+    /**
+     * Updates a group's path by group id.
+     *
+     * @param groupID group id
+     * @param path    new path
+     */
+    public void updateGroupPath(final Integer groupID, final String path) {
+        final String updateGroupPath = "update groups set groupPath = ? where groupID = ? and(groupPath != ? OR groupPath is null)";
+
+        JdbcTemplate jdbcTemplate = getJdbcTemplate();
+        PreparedStatementCreator psc = new PreparedStatementCreator() {
+
+            @Override
+            public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
+
+                PreparedStatement ps = con.prepareStatement(updateGroupPath);
+                ps.setString(1, path);
+                ps.setInt(2, groupID);
+                ps.setString(3, path);
+                logger.debug(ps.toString());
+                return ps;
+            }
+        };
+
+        jdbcTemplate.update(psc);
     }
 }
 
