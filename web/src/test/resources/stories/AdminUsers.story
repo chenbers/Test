@@ -532,7 +532,7 @@ And I validate the DOT Header text is present
 And I validate the Driver Team Header text is present
 
 Scenario: Admin - Add User with all fields filled out (first half of this test works, I'm working on the other half in the currentstory file)
-Given I navigate to localhost
+Given I am logged in
 When I click the Admin link
 And I click the Admin Add User link
 And I type "Add" into the First Name field
@@ -575,5 +575,87 @@ And I validate the Information dropdown is "None"
 And I validate the Warning dropdown is "None"
 And I validate the Critical dropdown is "None"
 And I click the Save Bottom button
-
-
+And I validate I am on the Admin User Details Page
+And I validate the First Name text is "Add"
+And I validate the Middle Name text is "All"
+And I validate the Last Name text is "Fields"
+And I validate the Suffix text is "Jr."
+And I validate the DOB text is "Jan 1, 1980"
+And I validate the Gender text is "Male"
+And I validate the Driver License Number text is "AllFieldsDriversLi1"
+And I validate the Class text is "A"
+And I validate the State text is "Utah"
+And I validate the Expiration text is "Jan 1, 2015"
+And I validate the Certifications text is "Test Certification"
+And I validate the DOT text is "Texas"
+And I validate the Team text is "Top - Automation Test Team"
+And I validate the Driver Status text is "Active"
+And I validate the RFID Bar Code text is ""
+And I validate the RFID One text is ""
+And I validate the RFID Two text is ""
+And I validate the One Wire ID text is "2"
+And I validate the Employee ID text is "ADDALLFIEL"
+And I validate the Reports To text is "The Man"
+And I validate the Title text is "Runt"
+And I validate the Locale text is "English (United States)"
+And I validate the Time Zone text is "US/Mountain (GMT-7:0)"
+And I validate the Measurement text is "English"
+And I validate the Fuel Efficiency Ratio text is "Miles Per Gallon (US)"
+And I validate the User Name text is "AddAllFieldsUser"
+And I validate the Group text is "Top - Automation Test Team"
+And I validate the Roles text is "Normal"
+And I validate the User Status text is "Active"
+And I validate the Email One link is "fakeemail@fakeemailadd.com"
+And I validate the Email Two link is "fakeemail2@fakeemailadd.com"
+And I validate the Text Message One text is "1111111111@fakeemailadd.com"
+And I validate the Text Message Two text is ""2222222222@fakeemailadd.com"
+And I validate the Phone One text is "1111111111"
+And I validate the Phone Two text is "2222222222"
+And I validate the Information text is "None"
+And I validate the Warning text is "None"
+And I validate the Critical text is "None"
+And I click the Back To Users link
+And I validate I am on the Admin Users page
+And I type "Add All Fields Jr." into the Name textfield
+And I validate the 1st Row of the Name link is "Add All Fields Jr."
+And I validate the 1st Row of the User Status text is "Active"
+And I validate the 1st Row of the User Name text is "AddAllFieldsUser"
+And I validate the 1st Row of the User Group text is "Automation Test Team"
+And I validate the 1st Row of the Roles text is "Normal"
+And I validate the 1st Row of the Phone One text is "1111111111"
+And I validate the 1st Row of the Phone Two text is "2222222222"
+And I validate the 1st Row of the Email One link is "fakeemail@fakeemailadd.com"
+And I validate the 1st Row of the Email Two link is "fakeemail2@fakeemailadd.com"
+And I validate the 1st Row of the Text Message One text is "1111111111@fakeemailadd.com"
+And I validate the 1st Row of the Text Message Two text is ""2222222222@fakeemailadd.com"
+And I validate the 1st Row of the Information Alerts text is "None"
+And I validate the 1st Row of the Warning Alerts text is "None"
+And I validate the 1st Row of the Critical Alerts text is "None"
+And I validate the 1st Row of the Time Zone text is "US/Mountain (GMT-7:0)"
+And I validate the 1st Row of the Employee ID text is "ADDALLFIEL"
+And I validate the 1st Row of the Reports To text is "The Man"
+And I validate the 1st Row of the Title text is "Runt"
+And I validate the 1st Row of the DOB text is "Jan 1, 1980"
+And I validate the 1st Row of the Gender text is "Male"
+And I validate the 1st Row of the Bar Code text is ""
+And I validate the 1st Row of the RFID One text is ""
+And I validate the 1st Row of the RFID Two text is ""
+And I validate the 1st Row of the One Wire ID text is "2"
+And I validate the 1st Row of the Locale text is "English (United States)"
+And I validate the 1st Row of the Measurement Type text is "English"
+And I validate the 1st Row of the Fuel Efficiency Ratio text is "Miles Per Gallon (US)"
+And I validate the 1st Row of the Driver Status text is "Active"
+And I validate the 1st Row of the Driver License Number text is "AllFieldsDriversLi1"
+And I validate the 1st Row of the License Class text is "A"
+And I validate the 1st Row of the License State text is "Utah"
+And I validate the 1st Row of the License Expiration text is "Jan 1, 2015"
+And I validate the 1st Row of the Certifications text is "Test Certification"
+And I validate the 1st Row of the DOT text is "Texas"
+And I validate the 1st Row of the Driver Team text is "Automation Test Team"
+And I check the 1st Row of the Check checkbox
+And I click the Delete button
+And the Delete popup opens
+And I click the Delete button
+And the Delete popup closes
+And I type "Add All Fields Jr." into the Name textfield
+And I validate the 1st Row of the Name link is not "Add All Fields Jr."
