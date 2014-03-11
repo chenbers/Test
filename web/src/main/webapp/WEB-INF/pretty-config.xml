@@ -112,6 +112,10 @@
 		<pattern>/app/driver/trips/#{driverTripsBean.identifiableEntityBean.id}</pattern>
 		<view-id>/secured/driverTrips.faces</view-id>
 	</url-mapping>
+    <url-mapping id="driverTripsWHP">
+        <pattern>/app/driver/trips/#{driverTripsBean.identifiableEntityBean.id}/#{driverTripsBean.timeFrameBean}</pattern>
+        <view-id>/secured/driverTrips.faces</view-id>
+    </url-mapping>
 	<url-mapping id="vehiclePerformance">
 		<pattern>/app/vehicle/#{vehiclePerformanceBean.vehicleID}</pattern>
 		<view-id>/secured/vehiclePerformance.faces</view-id>
@@ -132,6 +136,10 @@
 		<pattern>/app/vehicle/trips/#{vehicleTripsBean.identifiableEntityBean.id}</pattern>
 		<view-id>/secured/vehicleTrips.faces</view-id>
 	</url-mapping>
+    <url-mapping id="vehicleTripsWHP">
+        <pattern>/app/vehicle/trips/#{vehicleTripsBean.identifiableEntityBean.id}/#{vehicleTripsBean.timeFrameBean}</pattern>
+        <view-id>/secured/vehicleTrips.faces</view-id>
+    </url-mapping>
 	
     <!-- Reports Section -->
     <url-mapping id="reports">
