@@ -74,6 +74,13 @@ public class TeamCommonBean extends BaseBean {
 		}
 		this.groupID = groupID;
 
+        if (dayLabels.isEmpty()) {
+//            Interval interval = new Interval(Days.SEVEN, new DateMidnight());
+            Interval interval = new Interval(Days.SEVEN, new DateMidnight(DateTimeZone.forTimeZone(getPerson().getTimeZone())));
+            for (int i = 0; i < 7; i++) {
+                dayLabels.add(interval.getEnd().minusDays(i).dayOfWeek().getAsShortText(getLocale()));
+            }
+        }
 	}
 
 	public Group getGroup() {
