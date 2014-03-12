@@ -39,6 +39,15 @@ public class TeamMockData {
     public static final Integer TREND_SCORE_FOUR_DAY_AGO = 32;
     public static final Integer TREND_SCORE_FIVE_DAY_AGO = 33;
     
+    public static final Integer TREND_SCORE_TODAY_UT = 40;
+    public static final Integer TREND_SCORE_ONE_DAY_AGO_UT = 40;
+    public static final Integer TREND_SCORE_TWO_DAY_AGO_UT= 40;
+    public static final Integer TREND_SCORE_THREE_DAY_AGO_UT = 40;
+    public static final Integer TREND_SCORE_FOUR_DAY_AGO_UT = 40;
+    public static final Integer TREND_SCORE_FIVE_DAY_AGO_UT = 40;
+    public static final Integer TREND_SCORE_MONTH_UT = 45;
+
+    
     public static final Integer TREND_SCORE_MONTH = 45;
     
     public static final String PERSON_FIRST_NAME = "PfirstName";
