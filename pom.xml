@@ -59,18 +59,18 @@
     </developers>
     <modules>
        <module>web</module>
-        <module>webutil</module>
+        <!-- <module>webutil</module>
         <module>scheduler</module>
         <module>service</module>
         <module>reports</module>
-       <!--  <module>webfulfillment</module> -->
+        <module>webfulfillment</module>
         <module>hoskiosk</module> 
         <module>dao</module> 
         <module>i18nutil</module> 
         <module>automation</module> 
         <module>noteparser</module> 
         <module>emulation</module> 
-        <module>aggregation</module>
+        <module>aggregation</module> -->
     </modules>
     <properties>
         <compileSource>1.6</compileSource>
