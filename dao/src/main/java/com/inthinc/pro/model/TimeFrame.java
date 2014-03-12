@@ -26,37 +26,37 @@ public enum TimeFrame implements BaseEnum {
     },
     ONE_DAY_AGO(AggregationDuration.ONE_DAY, 2) {
         public Interval getInterval(DateTimeZone dateTimeZone) {
-            return new Interval(new DateMidnight(getCurrent().minusDays(1), dateTimeZone), new DateMidnight(getCurrent(), dateTimeZone));
+            return new Interval(new DateMidnight(getCurrent().minusDays(1), dateTimeZone), new DateMidnight(getCurrent(), dateTimeZone).toDateTime().minusSeconds(1));
         }
     },
     TWO_DAYS_AGO(AggregationDuration.ONE_DAY, 3) {
         public Interval getInterval(DateTimeZone dateTimeZone) {
-            return new Interval(new DateMidnight(getCurrent().minusDays(2), dateTimeZone), new DateMidnight(getCurrent().minusDays(1), dateTimeZone));
+            return new Interval(new DateMidnight(getCurrent().minusDays(2), dateTimeZone), new DateMidnight(getCurrent().minusDays(1), dateTimeZone).toDateTime().minusSeconds(1));
         }
     },
     THREE_DAYS_AGO(AggregationDuration.ONE_DAY, 4) {
         public Interval getInterval(DateTimeZone dateTimeZone) {
-            return new Interval(new DateMidnight(getCurrent().minusDays(3), dateTimeZone), new DateMidnight(getCurrent().minusDays(2), dateTimeZone));
+            return new Interval(new DateMidnight(getCurrent().minusDays(3), dateTimeZone), new DateMidnight(getCurrent().minusDays(2), dateTimeZone).toDateTime().minusSeconds(1));
         }
     },
     FOUR_DAYS_AGO(AggregationDuration.ONE_DAY, 5) {
         public Interval getInterval(DateTimeZone dateTimeZone) {
-            return new Interval(new DateMidnight(getCurrent().minusDays(4), dateTimeZone), new DateMidnight(getCurrent().minusDays(3), dateTimeZone));
+            return new Interval(new DateMidnight(getCurrent().minusDays(4), dateTimeZone), new DateMidnight(getCurrent().minusDays(3), dateTimeZone).toDateTime().minusSeconds(1));
         }
     },
     FIVE_DAYS_AGO(AggregationDuration.ONE_DAY, 6) {
         public Interval getInterval(DateTimeZone dateTimeZone) {
-            return new Interval(new DateMidnight(getCurrent().minusDays(5), dateTimeZone), new DateMidnight(getCurrent().minusDays(4), dateTimeZone));
+            return new Interval(new DateMidnight(getCurrent().minusDays(5), dateTimeZone), new DateMidnight(getCurrent().minusDays(4), dateTimeZone).toDateTime().minusSeconds(1));
         }
     },
     SIX_DAYS_AGO(AggregationDuration.ONE_DAY, 7) {
         public Interval getInterval(DateTimeZone dateTimeZone) {
-            return new Interval(new DateMidnight(getCurrent().minusDays(6), dateTimeZone), new DateMidnight(getCurrent().minusDays(5), dateTimeZone));
+            return new Interval(new DateMidnight(getCurrent().minusDays(6), dateTimeZone), new DateMidnight(getCurrent().minusDays(5), dateTimeZone).toDateTime().minusSeconds(1));
         }
     },
     SEVEN_DAYS_AGO(AggregationDuration.ONE_DAY, 8) {
         public Interval getInterval(DateTimeZone dateTimeZone) {
-            return new Interval(new DateMidnight(getCurrent().minusDays(7), dateTimeZone), new DateMidnight(getCurrent().minusDays(6), dateTimeZone));
+            return new Interval(new DateMidnight(getCurrent().minusDays(7), dateTimeZone), new DateMidnight(getCurrent().minusDays(6), dateTimeZone).toDateTime().minusSeconds(1));
         }
     },
     WEEK(AggregationDuration.SEVEN_DAY, 9) {
@@ -134,7 +134,8 @@ public enum TimeFrame implements BaseEnum {
         throw new IllegalArgumentException("getInterval(long, long, DateTimeZone) does NOT change the interval for TimeFrame."+this.toString()+"; and should not be called");
     }
     public Integer getNumberOfDays(){
-        System.out.println(this.getDuration().getMillis()+"/"+DateTimeConstants.MILLIS_PER_DAY+" == "+this.getDuration().getMillis()/DateTimeConstants.MILLIS_PER_DAY);
+        logger.info(this.getDuration().getMillis()+"/"+DateTimeConstants.MILLIS_PER_DAY+" == "+this.getDuration().getMillis()/DateTimeConstants.MILLIS_PER_DAY);
+        //System.out.println(this.getDuration().getMillis()+"/"+DateTimeConstants.MILLIS_PER_DAY+" == "+this.getDuration().getMillis()/DateTimeConstants.MILLIS_PER_DAY);
         return (int) (this.getDuration().getMillis()/DateTimeConstants.MILLIS_PER_DAY);
 
     }
