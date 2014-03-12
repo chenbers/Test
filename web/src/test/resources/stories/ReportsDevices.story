@@ -8,40 +8,6 @@ Meta:
 
 Narrative:
 
-Scenario: TC1513: Reports - Devices - Bookmark Entry 
-Given I am logged in
-When I click the Reports link
-And I click the Devices link
-And I bookmark the page
-And I click the Logout link
-And I click the bookmark I just added
-Then I validate I am on the Login page
-Given I am logged in
-Then I validate I am on the Reports Devices page
-
-Scenario: TC1527: Reports - Devices - Table Properties NEED ASSISTANCE IN IMPLEMENTING HOW TO CHECK ORDER
-Given I am logged in
-When I click the Reports link
-And I click the Devices link
-And I click the Sort By Device ID link
-And I click the Sort By Assigned Vehicle link
-And I click the Sort By Assigned Vehicle link
-And I click the Sort By IMEI link
-And I click the Sort By IMEI link
-And I click the Sort By Device Phone link
-And I click the Sort By Device Phone link
-And I click the Sort By Status link
-And I click the Sort By Status link
-
-Scenario: TC1528: Reports - Devices - Tools Button
-Given I am logged in
-When I click the Reports link
-And I click the Devices link
-And I click the Tools button
-Then I validate the Export Email button is present
-And I validate the Export PDF button is present
-And I validate the Export Excel button is present
-
 Scenario: TC1529: Reports - Devices - UI
 Given I am logged in
 When I click the Reports link
@@ -49,7 +15,7 @@ And I click the Devices link
 Then I validate I am on the Reports Devices page
 And I validate the Edit Columns link is present
 And I validate the Tools button is present
-And I validate the Counter text is present
+And I validate the Records text is present
 And I validate the Sort By Device ID link is present
 And I validate the Sort By Assigned Vehicle link is present
 And I validate the Sort By IMEI link is present
@@ -60,6 +26,61 @@ And I validate the Assigned Vehicle Filter textfield is present
 And I validate the IMEI Filter textfield is present
 And I validate the Device Phone Number Filter textfield is present
 And I validate the Status dropdown is present
+
+Scenario: TC1513: Reports - Devices - Bookmark Entry 
+Given I am logged in
+When I click the Reports link
+And I click the Devices link
+And I bookmark the page
+And I click the Logout link
+And I click the bookmark I just added
+Then I validate I am on the Login page
+When I log back in
+Then I validate I am on the Reports Devices page
+
+Scenario: Reports - Devices - Bookmark Entry to Different Account
+Given I am logged in
+When I click the Reports link
+And I click the Devices link
+And I bookmark the page
+And I click the Logout link
+And I click the bookmark I just added
+And I log back in under the editable account
+Then I validate I am on the Reports Devices page
+
+Scenario: Reports - Devices - Vehicle Link
+Given I am logged in
+When I click the Reports link
+And I click the Devices link
+And I click the Sort By Vehicle link
+And I click the Sort By Vehicle link
+And I save the 1st Row of the Vehicle Value link as SAVEDVEHICLEENTRY
+And I click the 1st Row of the Vehicle Value link
+Then I validate I am on the Vehicle Performance page
+And I validate the Vehicle Name link contains SAVEDVEHICLEENTRY
+
+Scenario: TC1527: Reports - Devices - Table Properties NEED ASSISTANCE IN IMPLEMENTING HOW TO CHECK ORDER
+!-- Given I am logged in
+!-- When I click the Reports link
+!-- And I click the Devices link
+!-- And I click the Sort By Device ID link
+!-- And I click the Sort By Assigned Vehicle link
+!-- And I click the Sort By Assigned Vehicle link
+!-- And I click the Sort By IMEI link
+!-- And I click the Sort By IMEI link
+!-- And I click the Sort By Device Phone link
+!-- And I click the Sort By Device Phone link
+!-- And I click the Sort By Status link
+!-- And I click the Sort By Status link
+
+Scenario: TC1528: Reports - Devices - Tools Button
+Given I am logged in
+When I click the Reports link
+And I click the Devices link
+And I click the Tools button
+Then I validate the Email This Report button is present
+And I validate the Export To PDF button is present
+And I validate the Export To Excel button is present
 
 Scenario: TC1530: Reports - Devices - Edit Columns - Cancel Button (Changes)
 Given I am logged in
@@ -152,22 +173,22 @@ And I validate the Sort By Assigned Vehicle link is present
 And I validate the Sort By IMEI link is present
 
 Scenario: TC1535: Reports - Devices - Edit Columns - Default Command Button
-Given I am logged in
-When I click the Reports link
-And I click the Devices link
-And I click the Edit Columns link
-And the Edit Columns popup opens
-And I uncheck the 1st Row of the Column checkbox
-And I press the Enter Key
-And the Edit Columns popup closes
-Then I validate the Sort By Device ID link is not present
-And I click the Edit Columns link
-And the Edit Columns popup opens
-And I validate the 1st Row of the Column checkbox is not checked
-And I check the 1st Row of the Column checkbox
-And I press the Enter Key
-And the Edit Columns popup closes
-And I validate the Sort By Device ID link is present
+!-- Given I am logged in
+!-- When I click the Reports link
+!-- And I click the Devices link
+!-- And I click the Edit Columns link
+!-- And the Edit Columns popup opens
+!-- And I uncheck the 1st Row of the Column checkbox
+!-- And I press the Enter Key
+!-- And the Edit Columns popup closes
+!-- Then I validate the Sort By Device ID link is not present
+!-- And I click the Edit Columns link
+!-- And the Edit Columns popup opens
+!-- And I validate the 1st Row of the Column checkbox is not checked
+!-- And I check the 1st Row of the Column checkbox
+!-- And I press the Enter Key
+!-- And the Edit Columns popup closes
+!-- And I validate the Sort By Device ID link is present
 
 Scenario: TC1536: Reports - Devices - Edit Columns - Save Button
 Given I am logged in

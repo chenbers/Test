@@ -151,7 +151,7 @@ public class User extends BaseEntity {
 
     @JsonProperty("lastLogin")
     public void setLastLogin(String lastLogin) {
-        this.lastLogin.setDate(lastLogin);
+        this.lastLogin.setDate(this.lastLogin);
     }
 
     public AutomationCalendar getLastLogin() {
@@ -160,7 +160,7 @@ public class User extends BaseEntity {
 
     @JsonProperty("passwordDT")
     public void setPasswordDT(String passwordDT) {
-        this.passwordDT.setDate(passwordDT);
+        this.passwordDT.setDate(this.passwordDT);
     }
 
     public AutomationCalendar getPasswordDT() {

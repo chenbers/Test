@@ -58,7 +58,7 @@ public class PageReportsDevices extends ReportsBar {
 	    }
 	    
 		public TextTableLink vehicleValue(){
-			return new TextTableLink(ReportsDriversEnum.VEHICLE_VALUE);
+			return new TextTableLink(ReportsDevicesEnum.VEHICLE_VALUE);
 		}
 		
 		public TextLink sortByDeviceID(){
@@ -105,8 +105,8 @@ public class PageReportsDevices extends ReportsBar {
 			return new TextTable(ReportsDevicesEnum.STATUS_VALUE);
 		}
 		
-		public Text counter(){
-			return new Text(ReportsBarEnum.COUNTER, page);
+		public Text records(){
+			return new Text(ReportsBarEnum.RECORDS, page);
 		}
 	}
 	
@@ -116,15 +116,15 @@ public class PageReportsDevices extends ReportsBar {
 	
 	public class DeviceReportsButtons extends ReportsBarButtons{
 
-		public TextButton exportEmail() {
+		public TextButton emailThisReport() {
 			return new TextButton(ReportsBarEnum.TOOL_EMAIL, page);
 		}
 
-		public TextButton exportExcel() {
+		public TextButton exportToExcel() {
 			return new TextButton(ReportsBarEnum.TOOL_EXCEL, page);
 		}
 
-		public TextButton exportPDF() {
+		public TextButton exportToPDF() {
 			return new TextButton(ReportsBarEnum.TOOL_PDF, page);
 		}
 

@@ -10,6 +10,21 @@ Narrative:
 
 In order to show the inthinc portal login features, As a varying types of users, I want to see valid and invalid logins
 
+Scenario: TC1250 - Log In - UI
+Given I am on the Login page 
+Then I validate the User Name textfield is present
+And I validate the Password textfield is present
+And I validate the Login button is present
+And I validate the Legal Notice link is present
+And I validate the Privacy Policy link is present
+And I validate the Forgot Username Or Password link is present
+And I validate the Logo text is present
+And I validate the Copyright text is present
+
+Scenario: TC1247: Log In - Log In Button
+Given I am logged in
+Then I validate I am on the Executive Dashboard page
+
 Scenario: TC1241: Log In - Blank User Name and Password Error
 Given I am on the Login page
 When I click the Login button
@@ -59,10 +74,6 @@ Then I validate the Error text is "The credentials you provided cannot be determ
 And I validate the User Name textfield is "this will never be a valid User Name" 
 And I validate the Password textfield is "" 
 
-Scenario: TC1247: Log In - Log In Button
-Given I am logged in
-Then I validate I am on the Executive Dashboard page
-
 Scenario: TC1248: Log In - Password Incorrect Case Error
 Given I am on the Login page
 When I type "secondPrime" into the User Name textfield
@@ -71,17 +82,6 @@ And I click the Login button
 Then I validate the Error text contains "The credentials you provided cannot be determined to be authentic."
 And I validate the User Name textfield is "secondPrime" 
 And I validate the Password textfield is "" 
-
-Scenario: TC1250 - Log In - UI
-Given I am on the Login page 
-Then I validate the User Name textfield is present
-And I validate the Password textfield is present
-And I validate the Login button is present
-And I validate the Legal Notice link is present
-And I validate the Privacy Policy link is present
-And I validate the Forgot Username Or Password link is present
-And I validate the Logo text is present
-And I validate the Copyright text is present
 
 Scenario: TC1251 - Log In - User Name Incorrect Case Error
 Given I am on the Login page

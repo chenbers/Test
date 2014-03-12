@@ -9,11 +9,9 @@ public enum FormsAddEnum implements SeleniumEnums {
     NAME_LABEL("Name:", "//label[@for='renameFormField']"),
     DESCRIPTION_LABEL("Description:", "//label[@for='description']"),
     TRIGGER_LABEL("Trigger:", "//label[@for='select-trigger']"),
-    ROUTE_LABEL("Route Trigger Expression:", "//label[@for='routeTrigger']"),
-//    VERSION_LABEL("Version:", "//label[@for='version']"),
+    TRIGGER_ACTION_LABEL("Trigger Action:", "//label[@for='select-triggerActionType']"),
+    VERSION_LABEL("Version:", "//label[@for='version']"),
     STATUS_LABEL("Status:", "//label[@for='select-status']"),
-    HOS_LABEL("HOS:", "//label[@for='hos-filter']"),
-    VEHICLE_TAGS_LABEL("Vehicle Tags:", "//label[@for='tags']"),
     SELECT_GROUP_LABEL("Select Group", "//span[@class='navbar-text']"),
     PROPERTIES_LABEL("Properties", "//div[@class='propertiesPane']/h3"),
     VIEW_PROPERTIES_LABEL("First add a control, then select it to view its properties here.", "//li[@class='emptyData']"),
@@ -31,13 +29,11 @@ public enum FormsAddEnum implements SeleniumEnums {
     STATUS_DROPDOWN(null, "//select[@id='select-status']"),
     ROUTE_TRIGGER_EXPRESSION_FIELD(null, "routeTrigger"),
     VERSION_TEXT(null, "//input[@id='version']"),
-    HOS_DROPDOWN(null, "//select[@id='select-hos-status']"),
-    VEHICLE_TAGS_DROPDOWN(null, "//div[@class='text-wrap']"),
-    VEHICLE_TAGS_ARROW(null, "//div[@class='text-arrow']"),
     FILTER_GROUPS_FIELD(null, "//div/span/input[@id='group-search']"),
     GROUPS_ARROW(null, "//ins[@class='jstree-icon']"),			//needs more work so I can select specific arrows
     GROUPS_CHECKBOX(null, "//ins[@class='jstree-checkbox']"),	//needs more work so I can select specific checkboxes
-    GROUPS_NAV_TEXT(null,"//li[contains(@class,'jstree-checked')]/a"),
+    GROUPS_NAV_TOP_TEXT(null,"//div[2]/div[2]/div/div/ul/li/a"),
+    GROUPS_NAV_SUB_TEXT(null,"ul/li/ul/li[###]/a/text()"),
     GROUPS_NAV_CHECKBOX(null,"//li[contains(@class,'jstree-checked')]/a/ins[@class='jstree-checkbox']"),
     GROUPS_NAV_SEARCHED(null,"//li/a[@class='jstree-search']"),
     GROUPS_NAV_SEARCHED_TEXT(null,"//li/a[@class='jstree-search']"),
@@ -53,12 +49,13 @@ public enum FormsAddEnum implements SeleniumEnums {
     PREVIEW_AREA(null, "//div[@class='workspaceScrollArea']"),
     CONTROL_FLOW_ARROW(null, "//div[###]/div[2]/div[11]"),
     DELETE_CONTROL(null, "//a[@class='deleteControl']"),
-    DELETE_ROW(null,"//div[2]/div[3]/div[2]/div[2]/div/div[2]/div[###]/div/a[@id='delete_form']"),	// this will delete the specified field by row
+    DELETE_ROW(null,"//div[3]/div[2]/div[2]/div/div[2]/div[###]/div/a[@id='delete_form']"),	// this will delete the specified field by row
     
     DATANAME_FIELD("untitled###", "property_name"),
     CAPTION_FIELD(null, "//li[2]/div/ul/li/input"),
     HINT_FIELD(null, "//li[3]/div/ul/li/input"),
-    DEFAULT_VALUE(null, "//input[@id='property_defaultValue']"),
+    DEFAULT_VALUE_TEXT_AND_NUMERIC(null, "//li[4]/div/input[2]"),
+    DEFAULT_VALUE_DATE_CHOOSE_AND_SELECT(null, "//input[@id='property_defaultValue']"),
     READ_ONLY_CHECKBOX(null, "//input[@id='property_readOnly']"),
     REQUIRED_CHECKBOX(null, "property_required"),
     LENGTH_CHECKBOX(null, "property_range_enabled"),
@@ -81,7 +78,6 @@ public enum FormsAddEnum implements SeleniumEnums {
     INVALID_TEXT_FIELD(null, "//li[8]/div/ul/li/input"),
     KIND_DROPDOWN(null, "//select[@class='editorSelect']"),
     ADD_OPTION_LINK("Add Option", "//a[@class='addOption']"),
-    BULK_EDIT_LINK("bulk edit", "//a[@class='optionsEditorLink']"),
     OPTION_FIELD(null, "//li[###]/div/div/ul/li/input"),
     OPTION_UNDERLYING_VALUE_FIELD(null, "//li[###]/div/div[2]/input"),
     OPTION_REMOVE(null, "//li[###]/div[@class='uiText']/a[@class='removeOption']"),
@@ -92,15 +88,11 @@ public enum FormsAddEnum implements SeleniumEnums {
     FIRST_SELECT_ONE_ELEMENT(null,"//div[contains(@class,'control inputSelectOne')]"),
     FIRST_SELECT_MULTIPLE_ELEMENT(null,"//div[contains(@class,'control inputSelectMany')]"),
     
-    ADVANCED_ARROW(null, "//div[@class='icon']"),
-    RELEVANCE_FIELD(null, "property_Relevance"),
-    CONSTRAINT_FIELD(null, "property_Constraint"),
-    INSTANCE_DESTINATION_FIELD(null, "property_Instance Destination"),
-    
     NAME_TEXT_ERROR(null, "//*[@id='name.errors']"),		//"Name is a required field."
     CONTROL_TEXT_ERROR(null, "//*[@id='payload.errors']"),	//"Form must have at least one control."
     GROUP_TEXT_ERROR(null, "//*[@id='groupIDs.errors']"),	//"Must select at least one group."
     DATA_NAME_ERROR(null, "//ul[@class='errorList']"),		//"This property is required"
+    SUCCESS_ALERT(null,"//div[@id='#success-alert']"),
     
     //GROUPS ITEMS THAT ARE NOT BEING IMPLEMENTED YET:
     GROUP_LINK("Group", "//a[@class='toolButton group ui-draggable']"),

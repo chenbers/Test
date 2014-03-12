@@ -7,6 +7,7 @@
 
 package com.inthinc.pro.selenium.pageObjects;
 
+import com.inthinc.pro.automation.elements.Button;
 import com.inthinc.pro.automation.elements.PageScroller;
 import com.inthinc.pro.automation.elements.Text;
 import com.inthinc.pro.automation.elements.TextLink;
@@ -120,34 +121,47 @@ public abstract class Masthead extends AbstractPage {
     }
 	
 	public class MastheadButtons {
+
+        public Button logo(){
+            return new Button(MastheadEnum.LOGO_IFRAME);
+        }
 	}
 
 	public class MastheadDropDowns {
 	}
 
 	public class MastheadLinks {
-		public TextLinkNewWindow help() {
-			return new TextLinkNewWindow(MastheadEnum.HELP);
-		}
+	    
+	    public TextLink fleet() {
+	        return new TextLink(MastheadEnum.FLEET_IFRAME);
+	    }
+        
+        public TextLink forms() {
+            return new TextLink(MastheadEnum.FORMS_IFRAME);
+        }
+        
+        public TextLink topTrailers() {
+            return new TextLink(MastheadEnum.TOP_TRAILERS_IFRAME);
+        }
+        
+        public TextLink myMessages() {
+            return new TextLink(MastheadEnum.MY_MESSAGES_IFRAME);
+        }
+        
+        public TextLink myAccount() {
+            return new TextLink(MastheadEnum.MY_ACCOUNT_IFRAME);
+        }
 
+        public TextLink logout() {
+            return new TextLink(MastheadEnum.LOGOUT_IFRAME);
+        }
+        
+        public TextLinkNewWindow privacyPolicy() {
+            return new TextLinkNewWindow(MastheadEnum.PRIVACY);
+        }
+        
 		public TextLinkNewWindow legalNotice() {
 			return new TextLinkNewWindow(MastheadEnum.LEGAL);
-		}
-
-		public TextLink logout() {
-			return new TextLink(MastheadEnum.LOGOUT);
-		}
-
-		public TextLink myAccount() {
-			return new TextLink(MastheadEnum.MY_ACCOUNT);
-		}
-
-		public TextLink myMessages() {
-			return new TextLink(MastheadEnum.MY_MESSAGES);
-		}
-
-		public TextLinkNewWindow privacyPolicy() {
-			return new TextLinkNewWindow(MastheadEnum.PRIVACY);
 		}
 
 		public TextLinkNewWindow support() {

@@ -38,8 +38,8 @@ public class PageReportsIdlingVehicles extends ReportsBar {
 			return new TextTable(ReportsIdlingVehiclesEnum.TOTAL_IDLE_VALUE);
 		}
 		
-		public Text counter(){
-			return new Text(ReportsBarEnum.COUNTER, page);
+		public Text records(){
+			return new Text(ReportsBarEnum.RECORDS, page);
 		}
 		
 		public Text idlingCounter(){
@@ -75,15 +75,15 @@ public class PageReportsIdlingVehicles extends ReportsBar {
 	        return new TextButton(ReportsIdlingVehiclesEnum.REFRESH);
 	    }
 
-		public TextButton exportEmail() {
+		public TextButton emailThisReport() {
 			return new TextButton(ReportsBarEnum.TOOL_EMAIL, page);
 		}
 
-		public TextButton exportExcel() {
+		public TextButton exportToExcel() {
 			return new TextButton(ReportsBarEnum.TOOL_EXCEL, page);
 		}
 
-		public TextButton exportPDF() {
+		public TextButton exportToPDF() {
 			return new TextButton(ReportsBarEnum.TOOL_PDF, page);
 		}
 

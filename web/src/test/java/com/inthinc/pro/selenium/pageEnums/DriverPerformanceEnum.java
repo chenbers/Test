@@ -11,7 +11,7 @@ public enum DriverPerformanceEnum implements SeleniumEnums {
 
     VIEW_ALL_TRIPS("View all trips", "driverPerformanceDriverTrips"), 
     
-    EXPANDED_DRIVER_NAME_LINK(null, "driver***ChartForm:driver***DriverPerformance"),
+    EXPANDED_DRIVER_NAME_LINK(null, "driver***ChartForm:drivers***DriverPerformance"),
     EXPANDED_BREADCRUMB(null, "driver***ChartForm:breadcrumbitem:###:driver***-dashboard"),
 
     

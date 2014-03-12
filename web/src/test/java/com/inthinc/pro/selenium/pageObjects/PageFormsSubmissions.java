@@ -53,6 +53,10 @@ public class PageFormsSubmissions extends FormsTables {
     	public Button cancel() {
     		return new Button(FormsSubmissionsEnum.CANCEL_BUTTON);
     	}
+    	
+    	public Button editRow() {
+    	    return new Button(FormsSubmissionsEnum.EDIT_ROW_BUTTON);
+    	}
         
     }
 

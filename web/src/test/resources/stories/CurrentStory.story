@@ -1,9 +1,4 @@
-Scenario: : Live Fleet - Map Marker
+Scenario: TC9718 Forms Add Page - Save Top Button
 Given I am logged in
-When I click the Live Fleet link
-And I Evaluate Javascript "optimization = false;"
-And I type "4225 Lake Park Blvd, West Valley City, UT 84102" into the Find Address textfield
-And I click the Locate button
-And I wait
-And I click the Marker textlink
-Then I verify "40.710575,-111.992065" is on the page
+When I click the Forms link
+Then I validate I am on the Forms Manage page

@@ -4,19 +4,17 @@ import java.util.EnumSet;
 import java.util.HashMap;
 
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.android.AndroidDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.ie.InternetExplorerDriver;
-import org.openqa.selenium.iphone.IPhoneDriver;
 
 public enum Browsers {
     
-    ANDROID("android", AndroidDriver.class),
+//    ANDROID("android", AndroidDriver.class),
     CHROME("chrome", ChromeDriver.class),
     FIREFOX("ff", FirefoxDriver.class),
     INTERNET_EXPLORER("ie", InternetExplorerDriver.class),
-    IPHONE("iphone", IPhoneDriver.class),
+//    IPHONE("iphone", IPhoneDriver.class),
     
     ;
     

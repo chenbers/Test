@@ -77,6 +77,8 @@ public class SelectableObject extends TextObject implements Selectable {
             xpath = getSelectXpath();
         }
         getSelenium().click(xpath, Id.contains(Id.text(), partialMatch), matchNumber);
+        String selected = getSelenium().getSelectedLabel(myEnum);
+        assertEquals(partialMatch, selected);
         return this;
     }
 

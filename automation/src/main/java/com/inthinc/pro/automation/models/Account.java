@@ -158,7 +158,7 @@ public class Account extends BaseEntity implements Comparable<Account> {
 
     @JsonProperty("zonePublishDate")
     public void setZonePublishDate(String zonePublishDate) {
-        this.zonePublishDate.setDate(zonePublishDate);
+        this.zonePublishDate.setDate(this.zonePublishDate);
     }
     
     @Override

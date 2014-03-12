@@ -22,15 +22,15 @@ public class PageReportsDrivers extends ReportsBar {
 
     public class DriverReportButtons extends ReportsBarButtons {
 
-        public TextButton exportEmail() {
+        public TextButton emailThisReport() {
             return new TextButton(ReportsBarEnum.TOOL_EMAIL, page);
         }
 
-        public TextButton exportExcel() {
+        public TextButton exportToExcel() {
             return new TextButton(ReportsBarEnum.TOOL_EXCEL, page);
         }
 
-        public TextButton exportPDF() {
+        public TextButton exportToPDF() {
             return new TextButton(ReportsBarEnum.TOOL_PDF, page);
         }
 
@@ -42,19 +42,19 @@ public class PageReportsDrivers extends ReportsBar {
 
     public class DriverReportDropDowns extends ReportsBarDropDowns {
 
-        public DHXDropDown overallFilter() {
+        public DHXDropDown overall() {
             return new ReportsBarDropDowns().score(ReportsBarEnum.OVERALL_SCORE_DHX, page);
         }
 
-        public DHXDropDown seatBeltFilter() {
+        public DHXDropDown seatBelt() {
             return new ReportsBarDropDowns().score(ReportsBarEnum.SEATBELT_SCORE_DHX, page);
         }
 
-        public DHXDropDown speedFilter() {
+        public DHXDropDown speed() {
             return new ReportsBarDropDowns().score(ReportsBarEnum.SPEED_SCORE_DHX, page);
         }
 
-        public DHXDropDown styleFilter() {
+        public DHXDropDown style() {
             return new ReportsBarDropDowns().score(ReportsBarEnum.STYLE_SCORE_DHX, page);
         }
 
@@ -133,27 +133,27 @@ public class PageReportsDrivers extends ReportsBar {
 
     public class DriverReportTextFields extends ReportsBarTextFields {
 
-        public TextField driverFilter() {
-            return new TextField(ReportsDriversEnum.DRIVER_FILTER);
+        public TextField driver() {
+            return new TextField(ReportsDriversEnum.DRIVER_TEXTFIELD);
         }
 
-        public TextField employeeFilter() {
-            return new TextField(ReportsDriversEnum.EMPLOYEE_FILTER);
+        public TextField employee() {
+            return new TextField(ReportsDriversEnum.EMPLOYEE_TEXTFIELD);
         }
 
-        public TextField groupFilter() {
-            return new TextField(ReportsDriversEnum.GROUP_FILTER);
+        public TextField group() {
+            return new TextField(ReportsDriversEnum.GROUP_TEXTFIELD);
         }
 
-        public TextField vehicleFilter() {
-            return new TextField(ReportsDriversEnum.VEHICLE_FILTER);
+        public TextField vehicle() {
+            return new TextField(ReportsDriversEnum.VEHICLE_TEXTFIELD);
         }
     }
 
     public class DriverReportTexts extends ReportsBarTexts {
 
-        public Text counter() {
-            return new Text(ReportsBarEnum.COUNTER, page);
+        public Text records() {
+            return new Text(ReportsBarEnum.RECORDS, page);
         }
 
         public TextTable distanceDrivenValue() {

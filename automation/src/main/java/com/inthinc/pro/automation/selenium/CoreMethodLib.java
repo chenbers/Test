@@ -2,8 +2,11 @@ package com.inthinc.pro.automation.selenium;
 
 import java.io.IOException;
 import java.io.StringWriter;
+import java.lang.reflect.Method;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -17,6 +20,7 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriverBackedSelenium;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -26,12 +30,17 @@ import com.inthinc.pro.automation.AutomationPropertiesBean;
 import com.inthinc.pro.automation.enums.Browsers;
 import com.inthinc.pro.automation.enums.ErrorLevel;
 import com.inthinc.pro.automation.enums.SeleniumEnumWrapper;
+import com.inthinc.pro.automation.jbehave.AutoPageRunner;
+import com.inthinc.pro.automation.jbehave.AutoStepVariables;
 import com.inthinc.pro.automation.logging.Log;
+import com.inthinc.pro.automation.test.BrowserTest;
 import com.inthinc.pro.automation.utils.AutoServers;
 import com.inthinc.pro.automation.utils.AutomationStringUtil;
 import com.inthinc.pro.automation.utils.AutomationThread;
+import com.inthinc.pro.automation.utils.MasterTest;
 import com.thoughtworks.selenium.DefaultSelenium;
 import com.thoughtworks.selenium.SeleniumException;
+import com.thoughtworks.selenium.Wait.WaitTimedOutException;
 
 /****************************************************************************************
  * Extend the functionality of DefaultSelenium, but add some error handling around it
@@ -53,6 +62,7 @@ public class CoreMethodLib extends WebDriverBackedSelenium implements CoreMethod
     private SeleniumEnumWrapper myEnum;
     private final Browsers browser;
 	int counter = 2;
+    int z = 0;
     
     private static ThreadLocal<CoreMethodInterface> instance = new ThreadLocal<CoreMethodInterface>();
     
@@ -78,6 +88,10 @@ public class CoreMethodLib extends WebDriverBackedSelenium implements CoreMethod
     @Override
     public CoreMethodLib check(SeleniumEnumWrapper myEnum) {
         String element = getLocator(myEnum);
+        if (myEnum.toString().contains("GROUPS_CHECKBOX"));
+        {
+            AutomationThread.pause(10);
+        }
         check(element);
         loadPause();
         return this;
@@ -91,10 +105,22 @@ public class CoreMethodLib extends WebDriverBackedSelenium implements CoreMethod
      */
     @Override
     public CoreMethodLib click(SeleniumEnumWrapper myEnum) {
+        //This checks to see if the element is in the iframe at the top of the page, and clicks it if it is
+        if (myEnum.toString().contains("_IFRAME")) {
+            WebElement frame = getWrappedDriver().findElement(By.tagName("iframe"));
+            getWrappedDriver().switchTo().frame(frame);
+        }
         String element = getClickable(getLocator(myEnum));
+        //Adding in this method for the time duration links on the team pages, they need a longer wait time for the page to load, otherwise an error gets thrown
+        if (element.contains("timeFrameForm:")) {
+            AutomationThread.pause(20);
+        }
+        //Some of the forms elements can take a while to load, adding in a wait before they click.
+        if(myEnum.toString().contains("NEW_FORM_BUTTON")  || myEnum.toString().contains("NAME_FIELD") || myEnum.toString().contains("PUBLISH_ENTRY_LINK")) {
+            AutomationThread.pause(7);
+        }
         click(element);
-//        AutomationThread.pause(20, "click(" + myEnum + ")");
-        AutomationThread.pause(5, "click(" + myEnum + ")");
+        AutomationThread.pause(2, "click(" + myEnum + ")");
         loadPause();
         return this;
     }
@@ -150,6 +176,26 @@ public class CoreMethodLib extends WebDriverBackedSelenium implements CoreMethod
 
     @Override
     public CoreMethodLib doubleClickAt(SeleniumEnumWrapper myEnum, String coordString) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+    
+    @Override
+    public CoreMethodLib controlClick(SeleniumEnumWrapper myEnum) {
+        Actions builder = new Actions(getWrappedDriver());
+        String element = getLocator(myEnum);
+        WebElement item = getWrappedDriver().findElement(getLocator(element));
+        builder.moveToElement(item);
+        builder.keyDown(Keys.CONTROL);
+        builder.click();
+        builder.keyUp(Keys.CONTROL).build().perform();
+//        AutomationThread.pause(1, "control click(" + myEnum + ")");
+//        loadPause();
+        return this;
+    }
+    
+    @Override
+    public CoreMethodLib controlClickAt(SeleniumEnumWrapper myEnum, String coordString) {
         // TODO Auto-generated method stub
         return null;
     }
@@ -661,7 +707,7 @@ public class CoreMethodLib extends WebDriverBackedSelenium implements CoreMethod
         fireEvent(element, "keyup");
         fireEvent(element, "blur");
 //        AutomationThread.pause(20, "Give the page a second to catch up if it has some refreshing to do");
-        AutomationThread.pause(7, "Give the page a second to catch up if it has some refreshing to do");
+        AutomationThread.pause(2, "Give the page a second to catch up if it has some refreshing to do");
         loadPause();
         return this;
     }
@@ -699,11 +745,12 @@ public class CoreMethodLib extends WebDriverBackedSelenium implements CoreMethod
             boolean foundByEnum = ((element instanceof SeleniumEnumWrapper) && (isElementPresent((SeleniumEnumWrapper) element)));
             found = foundByString || foundByEnum;
 //            AutomationThread.pause(5, "waitForElementPresent: " + element); //5 seconds
-            AutomationThread.pause(2, "waitForElementPresent: " + element); //5 seconds
+            AutomationThread.pause(2, "waitForElementPresent: " + element); //2 seconds
             x++;
             doneWaiting = x > secondsToWait;
         }
         if (!found)
+            
             errors.addError("waitForElementPresent TIMEOUT", "while waiting for " + element, ErrorLevel.WARN);
         return this;
     }
@@ -714,7 +761,12 @@ public class CoreMethodLib extends WebDriverBackedSelenium implements CoreMethod
      */
     @Override
     public CoreMethodLib waitForPageToLoad() {
-        waitForPageToLoad(PAGE_TIMEOUT);
+        if (myEnum.toString().contains("_IFRAME")) {
+            waitForPageToLoad("30000");
+        }
+        else {
+            waitForPageToLoad(PAGE_TIMEOUT);
+        }
         return this;
     }
 
@@ -725,8 +777,27 @@ public class CoreMethodLib extends WebDriverBackedSelenium implements CoreMethod
      */
     @Override
     public CoreMethodLib waitForPageToLoad(Integer timeout) {
-        waitForPageToLoad(timeout.toString());
+        String tryAgainButton = "//*[@id='errorTryAgain']";
+        try {
+            waitForPageToLoad(timeout.toString());
+        } catch (WaitTimedOutException e) {
+            while(verifyIsTextOnPage("Unable to connect")) {
+                    Log.warning("There may have been a page timeout during this test.");
+                        click(tryAgainButton);
+                        AutomationThread.pause(10);
+                        z++;
+                        if (z == 15) {
+                            Log.error("Unable to re-establish a connection, ending test.");
+                            getSeleniumThread().stop();
+                        }
+                }
+            }
+
         return this;
+    }
+    
+    private boolean verifyIsTextOnPage(String lookfor) { 
+        return (CoreMethodLib.getSeleniumThread().isTextPresent(lookfor));
     }
 
     @Override
@@ -746,7 +817,6 @@ public class CoreMethodLib extends WebDriverBackedSelenium implements CoreMethod
     private WebElement getMatches(String select, String option, Integer matchNumber){
     	//MWEISS - I've added this catFilter method to handle the nested drop downs in the Notifications section
     	if (select.contains("catFilter")) {
-    		counter = 2;
         	String xpath = select+"/optgroup[2]/option["+option+"]";
             return selectNested(select, xpath, option, matchNumber);
     	}
@@ -766,7 +836,7 @@ public class CoreMethodLib extends WebDriverBackedSelenium implements CoreMethod
             return allMatches.get(matchNumber);
         	
 
-        errors.addError("getMatches insufficient matches found", "There is no matchNumber at index "+matchNumber+", there were only "+allMatches.size()+" matches found", ErrorLevel.WARN);
+        errors.addError("getMatches insufficient matches found", "There is no matchNumber at index "+matchNumber+", there were only "+allMatches.size()+" matches found", ErrorLevel.ERROR);
         throw new SeleniumException("There is no matchNumber at index "+matchNumber+", there were only "+allMatches.size()+" matches found");
     }
     
@@ -783,7 +853,7 @@ public class CoreMethodLib extends WebDriverBackedSelenium implements CoreMethod
             	return selectNested(select, xpath, option, matchNumber);
     		}
 
-        errors.addError("getMatches insufficient matches found", "There is no matchNumber at index "+matchNumber+", there were only "+allMatches.size()+" matches found", ErrorLevel.WARN);
+        errors.addError("getMatches insufficient matches found", "There is no matchNumber at index "+matchNumber+", there were only "+allMatches.size()+" matches found", ErrorLevel.ERROR);
         throw new SeleniumException("There is no matchNumber at index "+matchNumber+", there were only "+allMatches.size()+" matches found");	
 
     }

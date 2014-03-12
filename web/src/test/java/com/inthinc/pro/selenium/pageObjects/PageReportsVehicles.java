@@ -22,15 +22,15 @@ public class PageReportsVehicles extends ReportsBar {
 	
 	public class VehicleReportButtons extends ReportsBarButtons {
 
-		public TextButton emailReport() {
+		public TextButton emailThisReport() {
 			return new TextButton(ReportsBarEnum.TOOL_EMAIL, page);
 		}
 
-		public TextButton exportExcel() {
+		public TextButton exportToExcel() {
 			return new TextButton(ReportsBarEnum.TOOL_EXCEL, page);
 		}
 
-		public TextButton exportPdf() {
+		public TextButton exportToPDF() {
 			return new TextButton(ReportsBarEnum.TOOL_PDF, page);
 		}
 
@@ -41,15 +41,15 @@ public class PageReportsVehicles extends ReportsBar {
 
 	public class VehicleReportDropDowns extends ReportsBarDropDowns {
 
-		public DHXDropDown overallFilter() {
+		public DHXDropDown overall() {
 			return new ReportsBarDropDowns().score(ReportsBarEnum.OVERALL_SCORE_DHX, page);
 		}
 
-		public DHXDropDown speedFilter() {
+		public DHXDropDown speed() {
 			return new ReportsBarDropDowns().score(ReportsBarEnum.SPEED_SCORE_DHX, page);
 		}
 
-		public DHXDropDown styleFilter() {
+		public DHXDropDown style() {
 			return new ReportsBarDropDowns().score(ReportsBarEnum.STYLE_SCORE_DHX, page);
 		}
 
@@ -125,20 +125,20 @@ public class PageReportsVehicles extends ReportsBar {
 
 	public class VehicleReportTextFields extends ReportsBarTextFields {
 
-		public TextField driverFilter() {
-			return new TextField(ReportsVehiclesEnum.DRIVER_FILTER);
+		public TextField driver() {
+			return new TextField(ReportsVehiclesEnum.DRIVER_TEXTFIELD);
 		}
 
-		public TextField groupFilter() {
-			return new TextField(ReportsVehiclesEnum.GROUP_FILTER);
+		public TextField group() {
+			return new TextField(ReportsVehiclesEnum.GROUP_TEXTFIELD);
 		}
 
-		public TextField vehicleFilter() {
-			return new TextField(ReportsVehiclesEnum.VEHICLE_FILTER);
+		public TextField vehicle() {
+			return new TextField(ReportsVehiclesEnum.VEHICLE_TEXTFIELD);
 		}
 
-		public TextField yearMakeModelFilter() {
-			return new TextField(ReportsVehiclesEnum.YEAR_MAKE_MODEL_FILTER);
+		public TextField yearMakeModel() {
+			return new TextField(ReportsVehiclesEnum.YEAR_MAKE_MODEL_TEXTFIELD);
 		}
 	}
 
@@ -148,8 +148,8 @@ public class PageReportsVehicles extends ReportsBar {
 			return new Text(ReportsVehiclesEnum.TITLE);
 		}
 		
-		public Text counter(){
-			return new Text(ReportsBarEnum.COUNTER, page);
+		public Text records(){
+			return new Text(ReportsBarEnum.RECORDS, page);
 		}
 		
 		public TextTable distanceDrivenValue() {

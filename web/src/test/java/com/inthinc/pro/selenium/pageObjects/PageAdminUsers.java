@@ -4,6 +4,7 @@ import java.util.Iterator;
 
 import com.inthinc.pro.automation.elements.ElementInterface.Checkable;
 import com.inthinc.pro.automation.elements.ElementInterface.TextBased;
+import com.inthinc.pro.automation.elements.Text;
 import com.inthinc.pro.automation.elements.TextButton;
 import com.inthinc.pro.automation.elements.TextField;
 import com.inthinc.pro.automation.elements.TextLink;
@@ -71,13 +72,15 @@ public class PageAdminUsers extends AdminTables {
     public class AdminUsersDropDowns extends AdminTablesDropDowns {}
     
     public class AdminUsersLinks extends AdminTablesLinks {
-
-        public TextTableLink tableEntryUserFullName() {
-            return new TextTableLink(AdminBarEnum.TABLE_ENTRIES, page, UserColumns.FULL_NAME);
-        }
-        public TextTableLink tableEntryUserEmail1() {
-            return new TextTableLink(AdminBarEnum.TABLE_ENTRIES, page, UserColumns.EMAIL_1);
-        }
+//These methods no longer work, I'm removing them for now
+//        public TextTableLink tableEntryUserFullName() {
+//            return new TextTableLink(AdminBarEnum.TABLE_ENTRIES, page, UserColumns.FULL_NAME);
+//        }
+//
+//        public TextTableLink tableEntryUserEmail1() {
+//            return new TextTableLink(AdminBarEnum.TABLE_ENTRIES, page, UserColumns.EMAIL_1);
+//        }
+//
 //        public TextLink sortByColumn(UserColumns column) {
 //            return new TextLink(AdminBarEnum.TABLE_HEADERS, page, column);
 //        }
@@ -90,56 +93,32 @@ public class PageAdminUsers extends AdminTables {
             return new TextLink(AdminUsersEnum.NAME);
         }
         
-        public TextLink sortByUserStatus(){
-            return new TextLink(AdminUsersEnum.USER_STATUS);
-        }
-        
         public TextLink sortByUserName(){
             return new TextLink(AdminUsersEnum.USER_NAME);
         }
         
-        public TextLink sortByUserGroup(){
-            return new TextLink(AdminUsersEnum.USER_GROUP);
-        }
-        
-        public TextLink sortByRoles(){
-            return new TextLink(AdminUsersEnum.ROLES);
-        }
-        
-        public TextLink sortByPhone1(){
+        public TextLink sortByPhoneOne(){
             return new TextLink(AdminUsersEnum.PHONE_1);
         }
         
-        public TextLink sortByPhone2(){
+        public TextLink sortByPhoneTwo(){
             return new TextLink(AdminUsersEnum.PHONE_2);
         }
         
-        public TextLink sortByEmail1(){
+        public TextLink sortByEmailOne(){
             return new TextLink(AdminUsersEnum.EMAIL_1);
         }
         
-        public TextLink sortByEmail2(){
+        public TextLink sortByEmailTwo(){
             return new TextLink(AdminUsersEnum.EMAIL_2);
         }
         
-        public TextLink sortByTextMessage1(){
+        public TextLink sortByTextMessageOne(){
             return new TextLink(AdminUsersEnum.TEXT_MESSAGE_1);
         }
         
-        public TextLink sortByTextMessage2(){
+        public TextLink sortByTextMessageTwo(){
             return new TextLink(AdminUsersEnum.TEXT_MESSAGE_2);
-        }
-        
-        public TextLink sortByInformationAlerts(){
-            return new TextLink(AdminUsersEnum.INFORMATION_ALERTS);
-        }
-        
-        public TextLink sortByWarningAlerts(){
-            return new TextLink(AdminUsersEnum.WARNING_ALERTS);
-        }
-        
-        public TextLink sortByCriticalALerts(){
-            return new TextLink(AdminUsersEnum.CRITICAL_ALERTS);
         }
         
         public TextLink sortByTimeZone(){
@@ -154,7 +133,7 @@ public class PageAdminUsers extends AdminTables {
             return new TextLink(AdminUsersEnum.REPORTS_TO);
         }
         
-        public TextLink sortByJobTitle(){
+        public TextLink sortByTitle(){
             return new TextLink(AdminUsersEnum.JOB_TITLE);
         }
         
@@ -165,35 +144,28 @@ public class PageAdminUsers extends AdminTables {
         public TextLink sortByGender(){
             return new TextLink(AdminUsersEnum.GENDER);
         }
+        
         public TextLink sortByBarCode(){
             return new TextLink(AdminUsersEnum.BAR_CODE);
         }
         
-        public TextLink sortByRFID1(){
+        public TextLink sortByRFIDOne(){
             return new TextLink(AdminUsersEnum.RFID_1);
         }
         
-        public TextLink sortByRFID2(){
+        public TextLink sortByRFIDTwo(){
             return new TextLink(AdminUsersEnum.RFID_2);
+        }
+        
+        public TextLink sortByOneWireID(){
+            return new TextLink(AdminUsersEnum.ONE_WIRE);
         }
         
         public TextLink sortByLocale(){
             return new TextLink(AdminUsersEnum.LOCALE);
         }
         
-        public TextLink sortByMeasurementType(){
-            return new TextLink(AdminUsersEnum.MEASUREMENT_TYPE);
-        }
-        
-        public TextLink sortByFuelEfficiencyRatio(){
-            return new TextLink(AdminUsersEnum.FUEL_EFFICIENCY_RATIO);
-        }
-        
-        public TextLink sortByDriverStatus(){
-            return new TextLink(AdminUsersEnum.DRIVER_STATUS);
-        }
-        
-        public TextLink sortByDriverLicense(){
+        public TextLink sortByDriverLicenseNumber(){
             return new TextLink(AdminUsersEnum.DRIVER_LICENSE);
         }
         
@@ -211,14 +183,6 @@ public class PageAdminUsers extends AdminTables {
         
         public TextLink sortByCertifications(){
             return new TextLink(AdminUsersEnum.CERTIFICATIONS);
-        }
-        
-        public TextLink sortByDOT(){
-            return new TextLink(AdminUsersEnum.DOT);
-        }
-        
-        public TextLink sortByDriverTeam(){
-            return new TextLink(AdminUsersEnum.DRIVER_TEAM);
         }
         
         public TextTableLink entryName() {
@@ -245,15 +209,65 @@ public class PageAdminUsers extends AdminTables {
     
     public class AdminUsersTexts extends AdminTablesTexts {
 
-//        public TextTable tableColumn(UserColumns column) {
-//            return new TextTable(AdminBarEnum.TABLE_ENTRIES, page, column);
-//        }
+        public TextTable tableColumn(UserColumns column) {
+            return new TextTable(AdminBarEnum.TABLE_ENTRIES, page, column);
+        }
+        
+        public Text title() {
+            return new Text(AdminUsersEnum.TITLE);
+        }
         
         public TextTable entryUserName() {
         	return new TextTable(AdminUsersEnum.ENTRY_USERNAME);
         }
         
+        public Text userStatusHeader(){
+            return new Text(AdminUsersEnum.USER_STATUS);
+        }
+        
+        public Text userGroupHeader(){
+            return new Text(AdminUsersEnum.USER_GROUP);
+        }
+        
+        public Text rolesHeader(){
+            return new Text(AdminUsersEnum.ROLES);
+        }
+        
+        public Text informationAlertsHeader(){
+            return new Text(AdminUsersEnum.INFORMATION_ALERTS);
+        }
+        
+        public Text warningAlertsHeader(){
+            return new Text(AdminUsersEnum.WARNING_ALERTS);
+        }
+        
+        public Text criticalAlertsHeader(){
+            return new Text(AdminUsersEnum.CRITICAL_ALERTS);
+        }
+        
+        public Text measurementTypeHeader(){
+            return new Text(AdminUsersEnum.MEASUREMENT_TYPE);
+        }
+        
+        public Text fuelEfficiencyRatioHeader(){
+            return new Text(AdminUsersEnum.FUEL_EFFICIENCY_RATIO);
+        }
+        
+        public Text driverStatusHeader(){
+            return new Text(AdminUsersEnum.DRIVER_STATUS);
+        }
+        
+        public Text dOTHeader(){
+            return new Text(AdminUsersEnum.DOT);
+        }
+        
+        public Text driverTeamHeader(){
+            return new Text(AdminUsersEnum.DRIVER_TEAM);
+        }
+        
     }
+    
+    public class AdminUsersCheckboxes extends AdminTablesCheckBoxs {}
 
     public AdminUsersButtons _button() {
         return new AdminUsersButtons();
@@ -279,13 +293,9 @@ public class PageAdminUsers extends AdminTables {
         return new AdminUsersPopUps();
     }
     
-    /* NEED TO IMPLEMENT CLICKING THE SELECT ALL BOX
-    
-    public CheckBoxTable _checkBox() {
-        return new CheckBoxTable(PopUpEnum.SELECT_ALL_CHECKBOX, page);
+    public AdminUsersCheckboxes _checkBox() {
+        return new AdminUsersCheckboxes();
     }
-       
-    */
 
 
     public class AdminUsersPopUps extends AdminTablesPopUps {
@@ -296,20 +306,20 @@ public class PageAdminUsers extends AdminTables {
     
 
     //Helper methods
-    public PageAdminUsers showAllColumns() {//TODO: davidTanner: is there already something tying the checkbox and it's label together?  it could be very handy to be able to ensure that a specific column was visible instead of having to cycle through them ALL?
-        this._link().editColumns().click();
-        Iterator<Checkable> colCheckBoxes = this._popUp().editColumns()._checkBox().column().iterator();
-        while(colCheckBoxes.hasNext()){
-            colCheckBoxes.next().check();
-        }
-        this._popUp().editColumns()._button().save().click();
-        return this;
-    }
-    public PageAdminUsers search(String searchString) {
-        this._textField().search().type(searchString);
-        this._button().search().click();
-        return this;
-    }
+//    public PageAdminUsers showAllColumns() {//TODO: davidTanner: is there already something tying the checkbox and it's label together?  it could be very handy to be able to ensure that a specific column was visible instead of having to cycle through them ALL?
+//        this._link().editColumns().click();
+//        Iterator<Checkable> colCheckBoxes = this._popUp().editColumns()._checkBox().column().iterator();
+//        while(colCheckBoxes.hasNext()){
+//            colCheckBoxes.next().check();
+//        }
+//        this._popUp().editColumns()._button().save().click();
+//        return this;
+//    }
+//    public PageAdminUsers search(String searchString) {
+//        this._textField().search().type(searchString);
+//        this._button().search().click();
+//        return this;
+//    }
 //    public PageAdminUsers clickFullNameMatching(UserColumns column, String value){
 //        this.showAllColumns();
 //        this.search(value);
@@ -335,7 +345,7 @@ public class PageAdminUsers extends AdminTables {
 
     @Override
     protected boolean checkIsOnPage() {
-        return _button().delete().isPresent() && _text().counter().isPresent();
+        return _button().delete().isPresent() && _text().title().isPresent();
     }
     
 }

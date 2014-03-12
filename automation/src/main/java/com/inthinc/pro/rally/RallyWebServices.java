@@ -31,8 +31,8 @@ public enum RallyWebServices {
 
 	
 
-    public static final String username = "dtanner@inthinc.com";
-    public static final String password = "aOURh7PL5v";
+    public static final String username = "mweiss@inthinc.com";
+    public static final String password = "MWpassw0rd12";
 	
 	private RallyWebServices(String value) {
 		this.name = value;

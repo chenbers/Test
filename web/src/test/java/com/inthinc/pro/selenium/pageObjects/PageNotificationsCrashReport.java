@@ -145,8 +145,8 @@ public class PageNotificationsCrashReport extends NotificationsBar {
 
     @Override
     protected boolean checkIsOnPage() {
-        return _link().back().isPresent() &&
-               _text().occupantCount().isPresent();
+        return _link().back().isPresent(); // &&
+               // _text().occupantCount().isPresent();
     }
 
 }

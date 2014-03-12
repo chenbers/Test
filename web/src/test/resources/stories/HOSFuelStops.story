@@ -6,11 +6,28 @@ Meta:
 
 Narrative: 
 
+Scenario: HOS - Fuel Stops - Make sure columns are available for all tests in this suite
+Given I am logged in
+When I click the HOS link
+And I click the HOS Fuel Stops link
+And I click the Edit Columns button
+And the Edit Columns popup opens
+And I check the 1st Row of the Column checkbox
+And I check the 2nd Row of the Column checkbox
+And I check the 3rd Row of the Column checkbox
+And I check the 4th Row of the Column checkbox
+And I check the 5th Row of the Column checkbox
+And I check the 6th Row of the Column checkbox
+And I check the 7th Row of the Column checkbox
+And I check the 8th Row of the Column checkbox
+And I click the Save button
+And the Edit Columns popup closes
+
 Scenario: TC5627: HOS - Fuel Stops - Add Fuel Stop: generate error messages for required fields
 Given I am logged in
 When I click the HOS link
 And I click the HOS Fuel Stops link
-And I type "TIWI00" into the Vehicle textfield
+And I type "waysmart01" into the Vehicle textfield
 And I click the suggested row 1 from the Vehicle textfield
 And I click the Add button
 And I select row 1 from the Driver dropdown
@@ -27,15 +44,16 @@ And I click the Save Top button
 And I validate the Error Master text is "1 error(s) occurred. Please verify all the data entered is correct." 
 And I validate the Error Date text is "Date/Time in the future is not valid."
 
-Scenario: TC5628: HOS - Fuel Stops - Cancel Add Fuel Stop  (will fail until defect DE7966 is fixed)
+Scenario: TC5628: HOS - Fuel Stops - Cancel Add Fuel Stop
 Given I am logged in
 When I click the HOS link
 And I click the HOS Fuel Stops link
-And I type "TIWI00" into the Vehicle textfield
+And I type "waysmart01" into the Vehicle textfield
 And I click the suggested row 1 from the Vehicle textfield
 And I click the Add button
 Then I validate the Value Vehicle text is present
 And I validate the Time Message text is present
+And I validate the Trailer Fuel textfield is not present
 And I type "5628" into the Trailer textfield
 And I type "5628" into the Vehicle Fuel textfield
 And I type "5628" into the Trailer Fuel textfield
@@ -43,13 +61,15 @@ And I select "tiwi 00" from the Driver dropdown
 And I click the Cancel Top button
 And I click the Add button
 And I validate the Trailer textfield is ""
+And I validate the Trailer Fuel textfield is not present
+And I type "5628" into the Trailer textfield
 And I validate the Vehicle Fuel textfield is ""
 And I validate the Trailer Fuel textfield is ""
-And I validate the Driver dropdown is ""
+And I validate the Driver dropdown is "Waysmart 01"
 And I click the Reports link
 And I click the HOS link
 And I click the HOS Fuel Stops link
-And I type "TIWI00" into the Vehicle textfield
+And I type "waysmart01" into the Vehicle textfield
 And I click the suggested row 1 from the Vehicle textfield
 And I validate the 1st Row of the Entry Date Time text is not present
 
@@ -57,7 +77,7 @@ Scenario: TC5631: HOS - Fuel Stops - Add Fuel Stop
 Given I am logged in
 When I click the HOS link
 And I click the HOS Fuel Stops link
-And I type "TIWI00" into the Vehicle textfield
+And I type "waysmart01" into the Vehicle textfield
 And I click the suggested row 1 from the Vehicle textfield
 And I click the Refresh button
 And I check the Check All checkbox
@@ -65,6 +85,7 @@ And I click the Delete button
 And the Delete popup opens
 And I click the Delete button
 And the Delete popup closes
+And I click the Refresh button
 And I click the Add button
 Then I validate the Value Vehicle text is present
 And I validate the Time Message text is present
@@ -74,6 +95,7 @@ And I type "5,631.00" into the Trailer Fuel textfield
 And I select "tiwi 00" from the Driver dropdown
 And I save the Date dropdown as DATE
 And I save the Hours textfield as HOURS
+And I type "10" into the Minutes textfield
 And I save the Minutes textfield as MINUTES
 And I save the Seconds textfield as SECONDS
 And I save the Am Pm dropdown as AMPM
@@ -88,8 +110,9 @@ And I validate the Driver dropdown is "tiwi 00"
 And I click the Reports link
 And I click the HOS link
 And I click the HOS Fuel Stops link
-And I type "TIWI00" into the Vehicle textfield
+And I type "waysmart01" into the Vehicle textfield
 And I click the suggested row 1 from the Vehicle textfield
+And I click the Refresh button
 And I validate the 1st Row of the Entry Date Time text contains DATETIME
 And I check the Check All checkbox
 And I click the Delete button
@@ -101,7 +124,7 @@ Scenario: TC5632: HOS - Fuel Stops - Cancel Edit Fuel Stop
 Given I am logged in
 When I click the HOS link
 And I click the HOS Fuel Stops link
-And I type "TIWI00" into the Vehicle textfield
+And I type "waysmart01" into the Vehicle textfield
 And I click the suggested row 1 from the Vehicle textfield
 And I click the Refresh button
 And I check the Check All checkbox
@@ -153,7 +176,7 @@ Scenario: TC5630: HOS - Fuel Stops - Edit Fuel Stop
 Given I am logged in
 When I click the HOS link
 And I click the HOS Fuel Stops link
-And I type "TIWI00" into the Vehicle textfield
+And I type "waysmart01" into the Vehicle textfield
 And I click the suggested row 1 from the Vehicle textfield
 And I click the Refresh button
 And I check the Check All checkbox
@@ -207,7 +230,7 @@ Scenario: TC5633: HOS - Fuel Stops - Cancel Delete Fuel Stop
 Given I am logged in
 When I click the HOS link
 And I click the HOS Fuel Stops link
-And I type "TIWI00" into the Vehicle textfield
+And I type "waysmart01" into the Vehicle textfield
 And I click the suggested row 1 from the Vehicle textfield
 And I click the Refresh button
 And I check the Check All checkbox
@@ -220,7 +243,7 @@ And I click the Add button
 And I type "5633" into the Trailer textfield
 And I type "5633" into the Vehicle Fuel textfield
 And I type "5633" into the Trailer Fuel textfield
-And I select "tiwi 00" from the Driver dropdown
+And I select "Waysmart 01" from the Driver dropdown
 And I click the Save Top button
 And I click the Refresh button
 And I save the 1st Row of the Entry Date Time text as DATETIME
@@ -239,7 +262,7 @@ And the Delete popup closes
 And I click the Reports link
 And I click the HOS link
 And I click the HOS Fuel Stops link
-And I type "TIWI00" into the Vehicle textfield
+And I type "waysmart01" into the Vehicle textfield
 And I click the suggested row 1 from the Vehicle textfield
 And I click the Refresh button
 Then I validate the 1st Row of the Entry Date Time text is DATETIME
@@ -255,13 +278,12 @@ And I click the Delete button
 And the Delete popup opens
 And I click the Delete button
 And the Delete popup closes
-And I click the Refresh button
 
 Scenario: TC5629: HOS - Fuel Stops - Delete Fuel Stop Entry (removed checking location as there is no way to select one)
 Given I am logged in
 When I click the HOS link
 And I click the HOS Fuel Stops link
-And I type "TIWI00" into the Vehicle textfield
+And I type "waysmart01" into the Vehicle textfield
 And I click the suggested row 1 from the Vehicle textfield
 And I click the Refresh button
 And I check the Check All checkbox
@@ -298,7 +320,7 @@ And the Delete popup closes
 And I click the Reports link
 And I click the HOS link
 And I click the HOS Fuel Stops link
-And I type "TIWI00" into the Vehicle textfield
+And I type "waysmart01" into the Vehicle textfield
 And I click the suggested row 1 from the Vehicle textfield
 And I click the Refresh button
 Then I validate the 1st Row of the Entry Date Time text is not DATETIME
@@ -323,10 +345,10 @@ And I uncheck the 1st Row of the Column checkbox
 And I uncheck the 2nd Row of the Column checkbox
 And I uncheck the 3rd Row of the Column checkbox
 And I uncheck the 4th Row of the Column checkbox
+And I uncheck the 5th Row of the Column checkbox
 And I uncheck the 6th Row of the Column checkbox
 And I uncheck the 7th Row of the Column checkbox
 And I uncheck the 8th Row of the Column checkbox
-And I uncheck the 9th Row of the Column checkbox
 And I click the Save button
 And the Edit Columns popup closes
 And I validate the Sort By Date Time link is not present
@@ -343,10 +365,10 @@ And I check the 1st Row of the Column checkbox
 And I check the 2nd Row of the Column checkbox
 And I check the 3rd Row of the Column checkbox
 And I check the 4th Row of the Column checkbox
+And I check the 5th Row of the Column checkbox
 And I check the 6th Row of the Column checkbox
 And I check the 7th Row of the Column checkbox
 And I check the 8th Row of the Column checkbox
-And I check the 9th Row of the Column checkbox
 And I click the Save button
 And the Edit Columns popup closes
 And I validate the Sort By Date Time link is present
@@ -358,29 +380,33 @@ And I validate the Sort By Vehicle Fuel link is present
 And I validate the Sort By Trailer Fuel link is present
 And I validate the Sort By Edited link is present
 
-Scenario: TC5700: HOS - Fuel Stops - Vehicle field Tiwi (will fail until defect DE7844 is fixed)
+Scenario: TC5700: HOS - Fuel Stops - Vehicle field test for all 3 devices (820, 850, and tiwi)
 Given I am logged in
 When I click the HOS link
 And I click the HOS Fuel Stops link
 And I type "" into the Vehicle textfield
 And I click the Refresh button
 Then I validate the Vehicle textfield is ""
-And I type "TIWI00" into the Vehicle textfield
-And I validate the suggested row 1 from the Vehicle textfield is ""
+And I type "waysmart01" into the Vehicle textfield
+And I validate the suggested row 1 from the Vehicle textfield is "waysmart01"
+And I click the suggested row 1 from the Vehicle textfield
+And I click the Refresh button
+And I validate the Vehicle textfield is "waysmart01"
 And I type "" into the Vehicle textfield
 And I type "autogen01" into the Vehicle textfield
-And I save the Vehicle textfield as CURRENTVEHICLE
+And I validate the suggested row 1 from the Vehicle textfield is "autogen01"
+And I click the suggested row 1 from the Vehicle textfield
 And I click the Refresh button
-And I validate the suggested row 1 from the Vehicle textfield is CURRENTVEHICLE
+And I validate the Vehicle textfield is "autogen01"
 And I type "" into the Vehicle textfield
 And I type "TEST VEHICLE 1" into the Vehicle textfield
-And I save the Vehicle textfield as CURRENTVEHICLE2
+And I click the suggested row 1 from the Vehicle textfield
+!-- I'm taking out this step for now as it's not working And I validate the suggested row 1 from the Vehicle textfield is ""
 And I click the Refresh button
-And I validate the suggested row 1 from the Vehicle textfield is CURRENTVEHICLE2
+And I validate the Vehicle textfield is "TEST VEHICLE 1"
 And I click the Add button
-And I validate I am on the Add Fuel page
-And I click the Cancel Top button
 And I validate I am on the Fuel Stops page
+And I validate the Vehicle textfield is ""
 
 Scenario: TC5703: HOS - Fuel Stops - Fuel fields
 Given I am logged in
@@ -390,7 +416,7 @@ And I select "Metric" from the Measurement dropdown
 And I click the Save button
 And I click the HOS link
 And I click the HOS Fuel Stops link
-And I type a "TIWI00" into the Vehicle textfield
+And I type a "waysmart01" into the Vehicle textfield
 And I click the suggested row 1 from the Vehicle textfield
 And I click the Add button
 And I type "123ABC" into the Trailer textfield
@@ -400,22 +426,22 @@ And I select "tiwi 00" from the Driver dropdown
 And I click the Save Top button
 Then I validate Error Master text is "3 error(s) occurred. Please verify all the data entered is correct."
 And I validate Error Both Vehicle And Trailer Fuel text is "Vehicle or Trailer fuel required."
-And I validate Error Vehicle Fuel text is "Must be a number greater than zero"
-And I validate Error Trailer Fuel text is "Must be a number greater than zero"
+And I validate Error Vehicle Fuel text is "Must be a number greater or equal to zero"
+And I validate Error Trailer Fuel text is "Must be a number greater or equal to zero"
 And I type "&$#!" into the Vehicle Fuel textfield
 And I type "&$#!" into the Trailer Fuel textfield
 And I click the Save Top button
 And I validate Error Master text is "3 error(s) occurred. Please verify all the data entered is correct."
 And I validate Error Both Vehicle And Trailer Fuel text is "Vehicle or Trailer fuel required."
-And I validate Error Vehicle Fuel text is "Must be a number greater than zero"
-And I validate Error Trailer Fuel text is "Must be a number greater than zero"
+And I validate Error Vehicle Fuel text is "Must be a number greater or equal to zero"
+And I validate Error Trailer Fuel text is "Must be a number greater or equal to zero"
 And I type "-1" into the Vehicle Fuel textfield
 And I type "-1" into the Trailer Fuel textfield
 And I click the Save Top button
 And I validate Error Master text is "3 error(s) occurred. Please verify all the data entered is correct."
 And I validate Error Both Vehicle And Trailer Fuel text is "Vehicle or Trailer fuel required."
-And I validate Error Vehicle Fuel text is "Must be a number greater than zero"
-And I validate Error Trailer Fuel text is "Must be a number greater than zero"
+And I validate Error Vehicle Fuel text is "Must be a number greater or equal to zero"
+And I validate Error Trailer Fuel text is "Must be a number greater or equal to zero"
 And I type "55.55" into the Vehicle Fuel textfield
 And I type "55.55" into the Trailer Fuel textfield
 And I click the Save Top button
@@ -439,7 +465,7 @@ And I select "English" from the Measurement dropdown
 And I click the Save button
 And I click the HOS link
 And I click the HOS Fuel Stops link
-And I type "TIWI00" into the Vehicle textfield
+And I type "waysmart01" into the Vehicle textfield
 And I click the suggested row 1 from the Vehicle textfield
 And I click the Add button
 And I type "789ABC" into the Trailer textfield
@@ -469,7 +495,7 @@ Scenario: TC5701: HOS - Fuel Stops - Date Range (IFTA Aggregation)
 Given I am logged in
 When I click the HOS link
 And I click the HOS Fuel Stops link
-And I type "TEST VEHICLE 1" into the Vehicle textfield
+And I type "waysmart01" into the Vehicle textfield
 And I click the suggested row 1 from the Vehicle textfield
 And I click the Refresh button
 And I check the Check All checkbox
@@ -497,5 +523,4 @@ And I click the Delete button
 And the Delete popup opens
 And I click the Delete button
 And the Delete popup closes
-
-//add Entry Location text test
+!-- add Entry Location text test

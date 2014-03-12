@@ -143,7 +143,7 @@ public class PageMyAccountEdit extends NavigationBar {
 			return new TextFieldError(MyAccountEditEnum.TEXT_MESSAGES1_TEXTFIELD);
 		}
 
-		public Text errorText2() {
+		public Text errorTextTwo() {
 			return new TextFieldError(MyAccountEditEnum.TEXT_MESSAGES2_TEXTFIELD);
 		}
 		

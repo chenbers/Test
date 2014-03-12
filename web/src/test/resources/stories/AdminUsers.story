@@ -1,796 +1,864 @@
-Test Cases for TF420/TF421/TF447/TF469
+Login Test Cases for TF391
 
 Meta:
 @page login
-@testFolder TF420
+@testFolder TF391
 
-Narrative: 
+Narrative: Test the admin users page
 
-Scenario: TC147: Admin - UI
-Given I am logged in as a "Admin" user
-When I am on the Admin page
-Then I confirm the Admin page contains all necessary elements
-
-Scenario: TC759: Admin - Users - Bookmark Entry
+Scenario: Check all the edit columns links to make sure they are present for all the tests in this suite
 Given I am logged in
 When I click the Admin link
-When I bookmark the page
-And I click the Logout link
-And I click the bookmark I just added
-Given I am logged in
-Then the Admin Users page is displayed
-
-Scenario: TC762: Admin - Users - Edit link
-Given I am logged in
-When I click the Admin link
-When I save the 1st Row of the Name link as FULLNAME
-And I split FULLNAME with " " and save it again as FIRSTNAME, MIDDLENAME, LASTNAME, SUFFIXNAME
-And I click the 1st Row of the Edit link
-Then I validate I am on the Admin Add Edit User page
-And I validate the First Name textfield is FIRSTNAME
-And I validate the Middle Name textfield is MIDDLENAME
-And I validate the Last Name textfield is LASTNAME
-And I validate the Suffix textfield is SUFFIXNAME
-
-Scenario: TC764: Admin - Users - Name link 
-Given I am logged in
-When I click the Admin link
-And I save the 1st Row of the Name link as FULLNAME
-And I split FULLNAME with " " and save it again as FIRSTNAME, MIDDLENAME, LASTNAME, SUFFIXNAME
-And I click the 1st Row of the Name link
-Then I validate I am on the Admin Add Edit User page
-And I validate the First Name textfield is FIRSTNAME
-And I validate the Middle Name textfield is MIDDLENAME
-And I validate the Last Name textfield is LASTNAME
-And I validate the Suffix textfield is SUFFIXNAME
-And I validate the DOB text is not clickable
-And I validate the Gender text is not clickable
-And I validate the Driver License text is not clickable
-And I validate the Class text is not clickable
-And I validate the State text is not clickable
-And I validate the Expiration text is not clickable
-And I validate the Certifications text is not clickable
-And I validate the DOT text is not clickable
-And I validate the Team text is not clickable
-And I validate the Status text is not clickable
-And I validate the Employee ID text is not clickable
-And I validate the Reports To text is not clickable
-And I validate the Title text is not clickable
-And I validate the Locale text is not clickable
-And I validate the Time Zone text is not clickable
-And I validate the Measurement text is not clickable
-And I validate the Fuel Efficiency Ratio text is not clickable
-And I validate the User Name text is not clickable
-And I validate the Group text is not clickable
-And I validate the Roles text is not clickable
-And I validate the Email 1 text is clickable
-And I validate the Email 2 text is clickable
-And I validate the Text Message 1 text is not clickable
-And I validate the Text Message 2 text is not clickable
-And I validate the Phone 1 text is not clickable
-And I validate the Phone 2 text is not clickable
-And I validate the Information text is not clickable
-And I validate the Warning text is not clickable
-And I validate the Critical text is not clickable
-
-Scenario: TC766: Admin - Users - Search
-Given I am logged in
-When I click the Admin link
-When I type "tiwi" into the Name Search textfield
-And I press the enter key
-Then I validate the 1st Row of the Name link contains "tiwi"
-And I validate the 2nd Row of the Name link contains "tiwi"
-And I validate the 3rd Row of the Name link contains "tiwi"
-And I validate the 4th Row of the Name link contains "tiwi"
-When I type "AG0" into the Employee ID textfield
-And I press the enter key
-Then I validate the 1st Row of the Name link contains "AG0"
-And I validate the 2nd Row of the Name link contains "AG0"
-And I validate the 3rd Row of the Name link contains "AG0"
-And I validate the 4th Row of the Name link contains "AG0"
-
-
-Scenario: TC767: Admin - Users - Table Properties
-Given I am logged in
-When I click the Admin link
-And I click the Edit Columns link
-And I the Edit Columns popup opens
-And I check the 1st Row of the Edit Columns checkbox
-And I check the 2nd Row of the Edit Columns checkbox
-And I check the 3rd Row of the Edit Columns checkbox
-And I check the 4th Row of the Edit Columns checkbox
-And I check the 5th Row of the Edit Columns checkbox
-And I check the 6th Row of the Edit Columns checkbox
-And I check the 7th Row of the Edit Columns checkbox
-And I check the 8th Row of the Edit Columns checkbox
-And I check the 9th Row of the Edit Columns checkbox
-And I check the 10th Row of the Edit Columns checkbox
-And I click the Save Button
-And I the Edit Columns popup closes
-Then I validate the table columns are sorted correctly
-
-Scenario: TC768: Admin - Users - UI
-Given I am logged in
-When I click the Admin link
-And I validate the Admin Users page renders correctly
-
-Scenario: TC769: Admin - Users - Edit Columns - Cancel Button (Changes)
-Given I am logged in
-When I click the Admin link
-When I click the Edit Columns link
-And the Edit Columns popup opens
-And I uncheck the 3rd Row of the Edit Columns checkbox
-Then I validate the 3rd Row of the Edit Columns checkbox is unchecked
-And I check the 10th Row of the Edit Columns checkbox
-And I validate the 10th Row of the Edit Columns checkbox is checked
-And I click the Cancel Button
-And the Edit Columns popup closes 
-And I validate the Sort By IMEI link is present
-And I validate the Sort By Product link is not present
-And I click the Edit Columns link
-And I validate the Edit Columns popup opens
-And I validate my changes were not saved
-
-Scenario: TC770: Admin - Users - Edit Columns - Cancel Button (No Changes)
-Given I am logged in
-When I click the Admin link
-And I click the Edit Columns link
-And I validate the Edit Columns popup opens
-And I click the Cancel Button
-Then I validate the Edit Columns popup closes 
-And I validate no message appears
-
-Scenario: TC771: Admin - Users - Edit Columns - Check Box Selection via Mouse
-Given I am logged in
-When I click the Admin link 
-And I click the Edit Columns link
-And I validate the Edit Columns popup opens
-And I check the 1st Row of the Edit Columns checkbox
-And I validate the 1st Row of the Edit Columns checkbox is checked
-And I uncheck the 1st Row of the Edit Columns checkbox
-And I validate the 1st Row of the Edit Columns checkbox is not checked
-And I check the 2nd Row of the Edit Columns checkbox
-And I validate the 2nd Row of the Edit Columns checkbox is checked
-And I uncheck the 2nd Row of the Edit Columns checkbox
-And I validate the 2nd Row of the Edit Columns checkbox is not checked
-And I check the 3rd Row of the Edit Columns checkbox
-And I validate the 3rd Row of the Edit Columns checkbox is checked
-And I uncheck the 3rd Row of the Edit Columns checkbox
-And I validate the 3rd Row of the Edit Columns checkbox is not checked
-And I check the 4th Row of the Edit Columns checkbox
-And I validate the 4th Row of the Edit Columns checkbox is checked
-And I uncheck the 4th Row of the Edit Columns checkbox
-And I validate the 4th Row of the Edit Columns checkbox is not checked
-And I check the 5th Row of the Edit Columns checkbox
-And I validate the 5th Row of the Edit Columns checkbox is checked
-And I uncheck the 5th Row of the Edit Columns checkbox
-And I validate the 5th Row of the Edit Columns checkbox is not checked
-And I check the 6th Row of the Edit Columns checkbox
-And I validate the 6th Row of the Edit Columns checkbox is checked
-And I uncheck the 6th Row of the Edit Columns checkbox
-And I validate the 6th Row of the Edit Columns checkbox is not checked
-And I check the 7th Row of the Edit Columns checkbox
-And I validate the 7th Row of the Edit Columns checkbox is checked
-And I uncheck the 7th Row of the Edit Columns checkbox
-And I validate the 7th Row of the Edit Columns checkbox is not checked
-And I check the 8th Row of the Edit Columns checkbox
-And I validate the 8th Row of the Edit Columns checkbox is checked
-And I uncheck the 8th Row of the Edit Columns checkbox
-And I validate the 8th Row of the Edit Columns checkbox is not checked
-And I check the 9th Row of the Edit Columns checkbox
-And I validate the 9th Row of the Edit Columns checkbox is checked
-And I uncheck the 9th Row of the Edit Columns checkbox
-And I validate the 9th Row of the Edit Columns checkbox is not checked
-And I check the 10th Row of the Edit Columns checkbox
-And I validate the 10th Row of the Edit Columns checkbox is checked
-And I uncheck the 10th Row of the Edit Columns checkbox
-And I validate the 10th Row of the Edit Columns checkbox is not checked
-
-Scenario: TC773: Admin - Users - Edit Columns - Current Session Retention
-Given I am logged in
-When I click the Admin link 
+And I click the Admin Users link
 And I click the Edit Columns link
 And the Edit Columns popup opens
-And I uncheck the 3rd Row of the Edit Columns checkbox
-And I check the 10th Row of the Edit Columns checkbox
-And I click the Save Button
+And I check the 1st Row of the Column checkbox
+And I check the 2nd Row of the Column checkbox
+And I check the 3rd Row of the Column checkbox
+And I check the 4th Row of the Column checkbox
+And I check the 5th Row of the Column checkbox
+And I check the 6th Row of the Column checkbox
+And I check the 7th Row of the Column checkbox
+And I check the 8th Row of the Column checkbox
+And I check the 9th Row of the Column checkbox
+And I check the 10th Row of the Column checkbox
+And I check the 11th Row of the Column checkbox
+And I check the 12th Row of the Column checkbox
+And I check the 13th Row of the Column checkbox
+And I check the 14th Row of the Column checkbox
+And I check the 15th Row of the Column checkbox
+And I check the 16th Row of the Column checkbox
+And I check the 17th Row of the Column checkbox
+And I check the 18th Row of the Column checkbox
+And I check the 19th Row of the Column checkbox
+And I check the 20th Row of the Column checkbox
+And I check the 21st Row of the Column checkbox
+And I check the 22nd Row of the Column checkbox
+And I check the 23rd Row of the Column checkbox
+And I check the 24th Row of the Column checkbox
+And I check the 25th Row of the Column checkbox
+And I check the 26th Row of the Column checkbox
+And I check the 27th Row of the Column checkbox
+And I check the 28th Row of the Column checkbox
+And I check the 29th Row of the Column checkbox
+And I check the 30th Row of the Column checkbox
+And I check the 31st Row of the Column checkbox
+And I check the 32nd Row of the Column checkbox
+And I check the 33rd Row of the Column checkbox
+And I check the 34th Row of the Column checkbox
+And I check the 35th Row of the Column checkbox
+And I click the Save button
 And the Edit Columns popup closes
-And I click the Live Fleet link
-And I click the Admin link
-Then I validate the Sort By IMEI link is not present
-And I validate the Sort By Product link is present
 
-Scenario: TC775: Admin - Users - Edit Columns - Save Button
+Scenario: TC14033: Admin - UI
 Given I am logged in
 When I click the Admin link
+And I click the Admin Users link
+Then I validate I am on the Admin Users page
+And I validate the Title text is present
+And I validate the Admin Users link is present
+And I validate the Admin Add User link is present
+And I validate the Admin Vehicles link is present
+And I validate the Admin Devices link is present
+And I validate the Admin Zones link is present
+And I validate the Admin Road Hazards link is present
+And I validate the Admin Red Flags link is present
+And I validate the Admin Reports link is present
+And I validate the Admin Organization link is present
+And I validate the Admin Custom Roles link is present
+And I validate the Admin Speed By Street link is present
+And I validate the Admin Account link is present
+And I validate the Delete button is present
+And I validate the Batch Edit button is present
+And I validate the Edit Columns link is present
+And I validate the Records text is present
+And I validate the Check All checkbox is present
+And I validate the Sort By Name link is present
+And I validate the User Status Header text is present
+And I validate the Sort By User Name link is present
+And I validate the User Group Header text is present
+And I validate the Roles Header text is present
+And I validate the Sort By Phone One link is present
+And I validate the Sort By Phone Two link is present
+And I validate the Sort By Email One link is present
+And I validate the Sort By Email Two link is present
+And I validate the Sort By Text Message One link is present
+And I validate the Sort By Text Message Two link is present
+And I validate the Information Alerts Header text is present
+And I validate the Warning Alerts Header text is present
+And I validate the Critical Alerts Header text is present
+And I validate the Sort By Time Zone link is present
+And I validate the Sort By Employee ID link is present
+And I validate the Sort By Reports To link is present
+And I validate the Sort By Title link is present
+And I validate the Sort By DOB link is present
+And I validate the Sort By Gender link is present
+And I validate the Sort By Bar Code link is present
+And I validate the Sort By RFID One link is present
+And I validate the Sort By RFID Two link is present
+And I validate the Sort By One Wire ID link is present
+And I validate the Sort By Locale link is present
+And I validate the Measurement Type Header text is present
+And I validate the Fuel Efficiency Ratio Header text is present
+And I validate the Driver Status Header text is present
+And I validate the Sort By Driver License Number link is present
+And I validate the Sort By License Class link is present
+And I validate the Sort By License State link is present
+And I validate the Sort By License Expiration link is present
+And I validate the Sort By Certifications link is present
+And I validate the DOT Header text is present
+And I validate the Driver Team Header text is present
+And I validate the Admin Add Vehicle link is not present
+And I validate the Admin Add Hazard link is not present
+And I validate the Admin Route Hazards link is not present
+And I validate the Admin Add Red Flag link is not present
+And I validate the Admin Add Report link is not present
+And I validate the Admin Add Custom Role link is not present
+
+Scenario: Admin - User Details UI
+Given I am logged in
+When I click the Admin link
+And I click the Admin Users link
+Then I validate I am on the Admin Users page
+And I click the 1st Row of the Name link
+And I validate I am on the Admin User Details page
+And I validate the Title text is present
+And I validate the Back To Users link is present
+And I validate the Delete button is present
+And I validate the Edit button is present
+And I validate the User Information Header text is present
+And I validate the First Name Header text is present
+And I validate the Middle Name Header text is present
+And I validate the Last Name Header text is present
+And I validate the Suffix Header text is present
+And I validate the DOB Header text is present
+And I validate the Gender Header text is present
+And I validate the Driver Information Header text is present
+And I validate the Driver License Number Header text is present
+And I validate the Class Header text is present
+And I validate the State Header text is present
+And I validate the Expiration Header text is present
+And I validate the Certifications Header text is present
+And I validate the DOT Header text is present
+And I validate the Team Header text is present
+And I validate the Driver Status Header text is present
+And I validate the Driver Identification Header text is present
+And I validate the RFID Bar Code Header text is present
+And I validate the RFID One Header text is present
+And I validate the RFID Two Header text is present
+And I validate the One Wire ID Header text is present
+And I validate the Employee Information Header text is present
+And I validate the Employee ID Header text is present
+And I validate the Reports To Header text is present
+And I validate the Title Header text is present
+And I validate the Locale Header text is present
+And I validate the Time Zone Header text is present
+And I validate the Measurement Header text is present
+And I validate the Fuel Efficiency Ratio Header text is present
+And I validate the User Name Header text is present
+And I validate the Group Header text is present
+And I validate the Roles Header text is present
+And I validate the User Status Header text is present
+And I validate the Notifications Header text is present
+And I validate the Email One Header text is present
+And I validate the Email Two Header text is present
+And I validate the Text Message One Header text is present
+And I validate the Text Message Two Header text is present
+And I validate the Phone One Header text is present
+And I validate the Phone Two Header text is present
+And I validate the Information Header text is present
+And I validate the Warning Header text is present
+And I validate the Critical Header text is present
+And I validate the Admin Users link is present
+And I validate the Admin Add User link is present
+And I validate the Admin Vehicles link is present
+And I validate the Admin Devices link is present
+And I validate the Admin Zones link is present
+And I validate the Admin Road Hazards link is present
+And I validate the Admin Red Flags link is present
+And I validate the Admin Reports link is present
+And I validate the Admin Organization link is present
+And I validate the Admin Custom Roles link is present
+And I validate the Admin Speed By Street link is present
+And I validate the Admin Account link is present
+
+Scenario: Admin - Add Edit User UI
+Given I am logged in
+When I click the Admin link
+And I click the Admin Users link
+Then I validate I am on the Admin Users page
+And I click the 1st Row of the Edit link
+And I validate I am on the Admin Add Edit User page
+And I validate the Title text is present
+And I validate the Save Top button is present
+And I validate the Cancel Top button is present
+And I validate the Save Bottom button is present
+And I validate the Cancel Bottom button is present
+And I validate the User Information Header text is present
+And I validate the First Name Header text is present
+And I validate the First Name field is present
+And I validate the Middle Name Header text is present
+And I validate the Middle Name field is present
+And I validate the Last Name Header text is present
+And I validate the Last Name field is present
+And I validate the Suffix Header text is present
+And I validate the Suffix dropdown is present
+And I validate the DOB Header text is present
+And I validate the DOB field is present
+And I validate the Gender Header text is present
+And I validate the Gender dropdown is present
+And I validate the Driver Information Header text is present
+And I validate the Driver Information checkbox is present
+And I validate the Driver License Number Header text is present
+And I validate the Driver License Number field is present
+And I validate the Class Header text is present
+And I validate the Class field is present
+And I validate the State Header text is present
+And I validate the State dropdown is present
+And I validate the Expiration Header text is present
+And I validate the Expiration field is present
+And I validate the Certifications Header text is present
+And I validate the Certifications field is present
+And I validate the DOT Header text is present
+And I validate the DOT dropdown is present
+And I validate the Team Header text is present
+And I validate the Team dropdown is present
+And I validate the Driver Status Header text is present
+And I validate the Driver Status dropdown is present
+And I validate the Driver Identification Header text is present
+And I validate the RFID Bar Code Header text is present
+And I validate the RFID Bar Code field is present
+And I validate the RFID One Header text is present
+And I validate the RFID One text is present
+And I validate the RFID Two Header text is present
+And I validate the RFID Two text is present
+And I validate the One Wire ID Header text is present
+And I validate the One Wire ID field is present
+And I validate the Employee Information Header text is present
+And I validate the Employee ID Header text is present
+And I validate the Employee ID field is present
+And I validate the Reports To Header text is present
+And I validate the Reports To field is present
+And I validate the Title Header text is present
+And I validate the Title field is present
+And I validate the Locale Header text is present
+And I validate the Locale dropdown is present
+And I validate the Time Zone Header text is present
+And I validate the Time Zone dropdown is present
+And I validate the Measurement Header text is present
+And I validate the Measurement dropdown is present
+And I validate the Fuel Efficiency Ratio Header text is present
+And I validate the Fuel Efficiency Ratio dropdown is present
+And I validate the User Name Header text is present
+And I validate the Group Header text is present
+And I validate the Roles Header text is present
+And I validate the User Status Header text is present
+And I validate the Notifications Header text is present
+And I validate the Email One Header text is present
+And I validate the Email Two Header text is present
+And I validate the Text Message One Header text is present
+And I validate the Text Message Two Header text is present
+And I validate the Phone One Header text is present
+And I validate the Phone Two Header text is present
+And I validate the Information Header text is present
+And I validate the Warning Header text is present
+And I validate the Critical Header text is present
+And I validate the Admin Users link is present
+And I validate the Admin Add User link is present
+And I validate the Admin Vehicles link is present
+And I validate the Admin Devices link is present
+And I validate the Admin Zones link is present
+And I validate the Admin Road Hazards link is present
+And I validate the Admin Red Flags link is present
+And I validate the Admin Reports link is present
+And I validate the Admin Organization link is present
+And I validate the Admin Custom Roles link is present
+And I validate the Admin Speed By Street link is present
+And I validate the Admin Account link is present
+
+Scenario: Admin - Edit Columns UI
+Given I am logged in
+When I click the Admin link
+And I click the Admin Users link
 And I click the Edit Columns link
 And the Edit Columns popup opens
-And I uncheck the 3rd Row of the Edit Columns checkbox
-Then I validate the 3rd Row of the Edit Columns checkbox is unchecked
-And I check the 10th Row of the Edit Columns checkbox
-And I validate the 10th Row of the Edit Columns checkbox is checked
-And I click the Save Button
-And the Edit Columns popup closes 
-And I validate the Sort By IMEI link is not present
-And I validate the Sort By Product link is present
-And I click the Edit Columns link
-And I validate the Edit Columns popup opens
-And I validate the 3rd Row of the Edit Columns checkbox is unchecked
-And I validate the 10th Row of the Edit Columns checkbox is checked
-
-Scenario: TC776: Admin - Users - Edit Columns - Subsequent Session Retention
-Given I am logged in
-When I click the Admin link
-And I click the Edit Columns link
-And the Edit Columns popup opens
-And I uncheck the 3rd Row of the Edit Columns checkbox
-Then I validate the 3rd Row of the Edit Columns checkbox is unchecked
-And I check the 10th Row of the Edit Columns checkbox
-And I validate the 10th Row of the Edit Columns checkbox is checked
-And I click the Save Button
-And the Edit Columns popup closes 
-And I click the Logout Button
-Given I am logged in
-When I click the Admin link
-Then I validate the 3rd Row of the Edit Columns checkbox is unchecked
-And I validate the 10th Row of the Edit Columns checkbox is checked
-
-Scenario: TC778: Admin - Users - Edit Columns - UI
-Given I am logged in
-When I click the Admin link
-And I click the Edit Columns link
-Then I validate the Edit Columns popup opens
-nd I check the 1st Row of the Edit Columns checkbox
-And I validate the 1st Row of the Edit Columns checkbox is present
-And I validate the 2nd Row of the Edit Columns checkbox is present
-And I validate the 3rd Row of the Edit Columns checkbox is present
-And I validate the 4th Row of the Edit Columns checkbox is present
-And I validate the 5th Row of the Edit Columns checkbox is present
-And I validate the 6th Row of the Edit Columns checkbox is present
-And I validate the 7th Row of the Edit Columns checkbox is present
-And I validate the 8th Row of the Edit Columns checkbox is present
-And I validate the 9th Row of the Edit Columns checkbox is present
-And I validate the 10th Row of the Edit Columns checkbox is present
+Then I validate the 1st Row of the Column checkbox is present
+And I validate the 2nd Row of the Column checkbox is present
+And I validate the 3rd Row of the Column checkbox is present
+And I validate the 4th Row of the Column checkbox is present
+And I validate the 5th Row of the Column checkbox is present
+And I validate the 6th Row of the Column checkbox is present
+And I validate the 7th Row of the Column checkbox is present
+And I validate the 8th Row of the Column checkbox is present
+And I validate the 9th Row of the Column checkbox is present
+And I validate the 10th Row of the Column checkbox is present
+And I validate the 11th Row of the Column checkbox is present
+And I validate the 12th Row of the Column checkbox is present
+And I validate the 13th Row of the Column checkbox is present
+And I validate the 14th Row of the Column checkbox is present
+And I validate the 15th Row of the Column checkbox is present
+And I validate the 16th Row of the Column checkbox is present
+And I validate the 17th Row of the Column checkbox is present
+And I validate the 18th Row of the Column checkbox is present
+And I validate the 19th Row of the Column checkbox is present
+And I validate the 20th Row of the Column checkbox is present
+And I validate the 21st Row of the Column checkbox is present
+And I validate the 22nd Row of the Column checkbox is present
+And I validate the 23rd Row of the Column checkbox is present
+And I validate the 24th Row of the Column checkbox is present
+And I validate the 25th Row of the Column checkbox is present
+And I validate the 26th Row of the Column checkbox is present
+And I validate the 27th Row of the Column checkbox is present
+And I validate the 28th Row of the Column checkbox is present
+And I validate the 29th Row of the Column checkbox is present
+And I validate the 30th Row of the Column checkbox is present
+And I validate the 31st Row of the Column checkbox is present
+And I validate the 32nd Row of the Column checkbox is present
+And I validate the 33rd Row of the Column checkbox is present
+And I validate the 34th Row of the Column checkbox is present
+And I validate the 35th Row of the Column checkbox is present
+And I uncheck the 1st Row of the Column checkbox
+And I uncheck the 2nd Row of the Column checkbox
+And I uncheck the 3rd Row of the Column checkbox
+And I uncheck the 4th Row of the Column checkbox
+And I uncheck the 5th Row of the Column checkbox
+And I uncheck the 6th Row of the Column checkbox
+And I uncheck the 7th Row of the Column checkbox
+And I uncheck the 8th Row of the Column checkbox
+And I uncheck the 9th Row of the Column checkbox
+And I uncheck the 10th Row of the Column checkbox
+And I uncheck the 11th Row of the Column checkbox
+And I uncheck the 12th Row of the Column checkbox
+And I uncheck the 13th Row of the Column checkbox
+And I uncheck the 14th Row of the Column checkbox
+And I uncheck the 15th Row of the Column checkbox
+And I uncheck the 16th Row of the Column checkbox
+And I uncheck the 17th Row of the Column checkbox
+And I uncheck the 18th Row of the Column checkbox
+And I uncheck the 19th Row of the Column checkbox
+And I uncheck the 20th Row of the Column checkbox
+And I uncheck the 21st Row of the Column checkbox
+And I uncheck the 22nd Row of the Column checkbox
+And I uncheck the 23rd Row of the Column checkbox
+And I uncheck the 24th Row of the Column checkbox
+And I uncheck the 25th Row of the Column checkbox
+And I uncheck the 26th Row of the Column checkbox
+And I uncheck the 27th Row of the Column checkbox
+And I uncheck the 28th Row of the Column checkbox
+And I uncheck the 29th Row of the Column checkbox
+And I uncheck the 30th Row of the Column checkbox
+And I uncheck the 31st Row of the Column checkbox
+And I uncheck the 32nd Row of the Column checkbox
+And I uncheck the 33rd Row of the Column checkbox
+And I uncheck the 34th Row of the Column checkbox
+And I uncheck the 35th Row of the Column checkbox
+And I validate the 1st Row of the Column checkbox is not checked
+And I validate the 2nd Row of the Column checkbox is not checked
+And I validate the 3rd Row of the Column checkbox is not checked
+And I validate the 4th Row of the Column checkbox is not checked
+And I validate the 5th Row of the Column checkbox is not checked
+And I validate the 6th Row of the Column checkbox is not checked
+And I validate the 7th Row of the Column checkbox is not checked
+And I validate the 8th Row of the Column checkbox is not checked
+And I validate the 9th Row of the Column checkbox is not checked
+And I validate the 10th Row of the Column checkbox is not checked
+And I validate the 11th Row of the Column checkbox is not checked
+And I validate the 12th Row of the Column checkbox is not checked
+And I validate the 13th Row of the Column checkbox is not checked
+And I validate the 14th Row of the Column checkbox is not checked
+And I validate the 15th Row of the Column checkbox is not checked
+And I validate the 16th Row of the Column checkbox is not checked
+And I validate the 17th Row of the Column checkbox is not checked
+And I validate the 18th Row of the Column checkbox is not checked
+And I validate the 19th Row of the Column checkbox is not checked
+And I validate the 20th Row of the Column checkbox is not checked
+And I validate the 21st Row of the Column checkbox is not checked
+And I validate the 22nd Row of the Column checkbox is not checked
+And I validate the 23rd Row of the Column checkbox is not checked
+And I validate the 24th Row of the Column checkbox is not checked
+And I validate the 25th Row of the Column checkbox is not checked
+And I validate the 26th Row of the Column checkbox is not checked
+And I validate the 27th Row of the Column checkbox is not checked
+And I validate the 28th Row of the Column checkbox is not checked
+And I validate the 29th Row of the Column checkbox is not checked
+And I validate the 30th Row of the Column checkbox is not checked
+And I validate the 31st Row of the Column checkbox is not checked
+And I validate the 32nd Row of the Column checkbox is not checked
+And I validate the 33rd Row of the Column checkbox is not checked
+And I validate the 34th Row of the Column checkbox is not checked
+And I validate the 35th Row of the Column checkbox is not checked
+And I check the 1st Row of the Column checkbox
+And I check the 2nd Row of the Column checkbox
+And I check the 3rd Row of the Column checkbox
+And I check the 4th Row of the Column checkbox
+And I check the 5th Row of the Column checkbox
+And I check the 6th Row of the Column checkbox
+And I check the 7th Row of the Column checkbox
+And I check the 8th Row of the Column checkbox
+And I check the 9th Row of the Column checkbox
+And I check the 10th Row of the Column checkbox
+And I check the 11th Row of the Column checkbox
+And I check the 12th Row of the Column checkbox
+And I check the 13th Row of the Column checkbox
+And I check the 14th Row of the Column checkbox
+And I check the 15th Row of the Column checkbox
+And I check the 16th Row of the Column checkbox
+And I check the 17th Row of the Column checkbox
+And I check the 18th Row of the Column checkbox
+And I check the 19th Row of the Column checkbox
+And I check the 20th Row of the Column checkbox
+And I check the 21st Row of the Column checkbox
+And I check the 22nd Row of the Column checkbox
+And I check the 23rd Row of the Column checkbox
+And I check the 24th Row of the Column checkbox
+And I check the 25th Row of the Column checkbox
+And I check the 26th Row of the Column checkbox
+And I check the 27th Row of the Column checkbox
+And I check the 28th Row of the Column checkbox
+And I check the 29th Row of the Column checkbox
+And I check the 30th Row of the Column checkbox
+And I check the 31st Row of the Column checkbox
+And I check the 32nd Row of the Column checkbox
+And I check the 33rd Row of the Column checkbox
+And I check the 34th Row of the Column checkbox
+And I check the 35th Row of the Column checkbox
+And I validate the 1st Row of the Column checkbox is checked
+And I validate the 2nd Row of the Column checkbox is checked
+And I validate the 3rd Row of the Column checkbox is checked
+And I validate the 4th Row of the Column checkbox is checked
+And I validate the 5th Row of the Column checkbox is checked
+And I validate the 6th Row of the Column checkbox is checked
+And I validate the 7th Row of the Column checkbox is checked
+And I validate the 8th Row of the Column checkbox is checked
+And I validate the 9th Row of the Column checkbox is checked
+And I validate the 10th Row of the Column checkbox is checked
+And I validate the 11th Row of the Column checkbox is checked
+And I validate the 12th Row of the Column checkbox is checked
+And I validate the 13th Row of the Column checkbox is checked
+And I validate the 14th Row of the Column checkbox is checked
+And I validate the 15th Row of the Column checkbox is checked
+And I validate the 16th Row of the Column checkbox is checked
+And I validate the 17th Row of the Column checkbox is checked
+And I validate the 18th Row of the Column checkbox is checked
+And I validate the 19th Row of the Column checkbox is checked
+And I validate the 20th Row of the Column checkbox is checked
+And I validate the 21st Row of the Column checkbox is checked
+And I validate the 22nd Row of the Column checkbox is checked
+And I validate the 23rd Row of the Column checkbox is checked
+And I validate the 24th Row of the Column checkbox is checked
+And I validate the 25th Row of the Column checkbox is checked
+And I validate the 26th Row of the Column checkbox is checked
+And I validate the 27th Row of the Column checkbox is checked
+And I validate the 28th Row of the Column checkbox is checked
+And I validate the 29th Row of the Column checkbox is checked
+And I validate the 30th Row of the Column checkbox is checked
+And I validate the 31st Row of the Column checkbox is checked
+And I validate the 32nd Row of the Column checkbox is checked
+And I validate the 33rd Row of the Column checkbox is checked
+And I validate the 34th Row of the Column checkbox is checked
+And I validate the 35th Row of the Column checkbox is checked
 And I validate the Save button is present
 And I validate the Cancel button is present
 
-Scenario: TC4957: Admin - Users - DOT Rule Set for Driver
+Scenario: Admin - Edit Columns - Cancel Button (Changes)
 Given I am logged in
 When I click the Admin link
-And I click the Add User link 
-Then I validate the Dot dropdown exists
+And I click the Admin Users link
+And I click the Edit Columns link
+And the Edit Columns popup opens
+And I uncheck the 1st Row of the Column checkbox
+And I uncheck the 2nd Row of the Column checkbox
+And I uncheck the 3rd Row of the Column checkbox
+And I uncheck the 4th Row of the Column checkbox
+And I uncheck the 5th Row of the Column checkbox
+And I uncheck the 6th Row of the Column checkbox
+And I uncheck the 7th Row of the Column checkbox
+And I uncheck the 8th Row of the Column checkbox
+And I uncheck the 9th Row of the Column checkbox
+And I uncheck the 10th Row of the Column checkbox
+And I uncheck the 11th Row of the Column checkbox
+And I uncheck the 12th Row of the Column checkbox
+And I uncheck the 13th Row of the Column checkbox
+And I uncheck the 14th Row of the Column checkbox
+And I uncheck the 15th Row of the Column checkbox
+And I uncheck the 16th Row of the Column checkbox
+And I uncheck the 17th Row of the Column checkbox
+And I uncheck the 18th Row of the Column checkbox
+And I uncheck the 19th Row of the Column checkbox
+And I uncheck the 20th Row of the Column checkbox
+And I uncheck the 21st Row of the Column checkbox
+And I uncheck the 22nd Row of the Column checkbox
+And I uncheck the 23rd Row of the Column checkbox
+And I uncheck the 24th Row of the Column checkbox
+And I uncheck the 25th Row of the Column checkbox
+And I uncheck the 26th Row of the Column checkbox
+And I uncheck the 27th Row of the Column checkbox
+And I uncheck the 28th Row of the Column checkbox
+And I uncheck the 29th Row of the Column checkbox
+And I uncheck the 30th Row of the Column checkbox
+And I uncheck the 31st Row of the Column checkbox
+And I uncheck the 32nd Row of the Column checkbox
+And I uncheck the 33rd Row of the Column checkbox
+And I uncheck the 34th Row of the Column checkbox
+And I uncheck the 35th Row of the Column checkbox
+And I click the Cancel button
+And the Edit Columns popup closes
+Then I validate the Sort By Name link is present
+And I validate the User Status Header text is present
+And I validate the Sort By User Name link is present
+And I validate the User Group Header text is present
+And I validate the Roles Header text is present
+And I validate the Sort By Phone One link is present
+And I validate the Sort By Phone Two link is present
+And I validate the Sort By Email One link is present
+And I validate the Sort By Email Two link is present
+And I validate the Sort By Text Message One link is present
+And I validate the Sort By Text Message Two link is present
+And I validate the Information Alerts Header text is present
+And I validate the Warning Alerts Header text is present
+And I validate the Critical Alerts Header text is present
+And I validate the Sort By Time Zone link is present
+And I validate the Sort By Employee ID link is present
+And I validate the Sort By Reports To link is present
+And I validate the Sort By Title link is present
+And I validate the Sort By DOB link is present
+And I validate the Sort By Gender link is present
+And I validate the Sort By Bar Code link is present
+And I validate the Sort By RFID One link is present
+And I validate the Sort By RFID Two link is present
+And I validate the Sort By One Wire ID link is present
+And I validate the Sort By Locale link is present
+And I validate the Measurement Type Header text is present
+And I validate the Fuel Efficiency Ratio Header text is present
+And I validate the Driver Status Header text is present
+And I validate the Sort By Driver License Number link is present
+And I validate the Sort By License Class link is present
+And I validate the Sort By License State link is present
+And I validate the Sort By License Expiration link is present
+And I validate the Sort By Certifications link is present
+And I validate the DOT Header text is present
+And I validate the Driver Team Header text is present
 
-Scenario: TC5676-TC5691 Admin - Users - Set DOT US 7 day Rule Set for Driver (REST OF THE STEPS CANNOT BE IMPLEMENTED BECAUSE YOU HAVE TO USE THE EXTERNAL TOUCHSCREEN)
+Scenario: Admin - Edit Columns - Save Button (Changes)
 Given I am logged in
 When I click the Admin link
-And I type "tiwi 02" into the Name Search textfield
-And I press the Enter key
-And I click on the 1st Row of the Edit link
-And I select "US 7 Day" from the Dot dropdown
-And I click the Save Button
+And I click the Admin Users link
+And I click the Edit Columns link
+And the Edit Columns popup opens
+And I uncheck the 1st Row of the Column checkbox
+And I uncheck the 2nd Row of the Column checkbox
+And I uncheck the 3rd Row of the Column checkbox
+And I uncheck the 4th Row of the Column checkbox
+And I uncheck the 5th Row of the Column checkbox
+And I uncheck the 6th Row of the Column checkbox
+And I uncheck the 7th Row of the Column checkbox
+And I uncheck the 8th Row of the Column checkbox
+And I uncheck the 9th Row of the Column checkbox
+And I uncheck the 10th Row of the Column checkbox
+And I uncheck the 11th Row of the Column checkbox
+And I uncheck the 12th Row of the Column checkbox
+And I uncheck the 13th Row of the Column checkbox
+And I uncheck the 14th Row of the Column checkbox
+And I uncheck the 15th Row of the Column checkbox
+And I uncheck the 16th Row of the Column checkbox
+And I uncheck the 17th Row of the Column checkbox
+And I uncheck the 18th Row of the Column checkbox
+And I uncheck the 19th Row of the Column checkbox
+And I uncheck the 20th Row of the Column checkbox
+And I uncheck the 21st Row of the Column checkbox
+And I uncheck the 22nd Row of the Column checkbox
+And I uncheck the 23rd Row of the Column checkbox
+And I uncheck the 24th Row of the Column checkbox
+And I uncheck the 25th Row of the Column checkbox
+And I uncheck the 26th Row of the Column checkbox
+And I uncheck the 27th Row of the Column checkbox
+And I uncheck the 28th Row of the Column checkbox
+And I uncheck the 29th Row of the Column checkbox
+And I uncheck the 30th Row of the Column checkbox
+And I uncheck the 31st Row of the Column checkbox
+And I uncheck the 32nd Row of the Column checkbox
+And I uncheck the 33rd Row of the Column checkbox
+And I uncheck the 34th Row of the Column checkbox
+And I uncheck the 35th Row of the Column checkbox
+And I click the Save button
+And the Edit Columns popup closes
+Then I validate the Sort By Name link is not present
+And I validate the User Status Header text is not present
+And I validate the Sort By User Name link is not present
+And I validate the User Group Header text is not present
+And I validate the Roles Header text is not present
+And I validate the Sort By Phone One link is not present
+And I validate the Sort By Phone Two link is not present
+And I validate the Sort By Email One link is not present
+And I validate the Sort By Email Two link is not present
+And I validate the Sort By Text Message One link is not present
+And I validate the Sort By Text Message Two link is not present
+And I validate the Information Alerts Header text is not present
+And I validate the Warning Alerts Header text is not present
+And I validate the Critical Alerts Header text is not present
+And I validate the Sort By Time Zone link is not present
+And I validate the Sort By Employee ID link is not present
+And I validate the Sort By Reports To link is not present
+And I validate the Sort By Title link is not present
+And I validate the Sort By DOB link is not present
+And I validate the Sort By Gender link is not present
+And I validate the Sort By Bar Code link is not present
+And I validate the Sort By RFID One link is not present
+And I validate the Sort By RFID Two link is not present
+And I validate the Sort By One Wire ID link is not present
+And I validate the Sort By Locale link is not present
+And I validate the Measurement Type Header text is not present
+And I validate the Fuel Efficiency Ratio Header text is not present
+And I validate the Driver Status Header text is not present
+And I validate the Sort By Driver License Number link is not present
+And I validate the Sort By License Class link is not present
+And I validate the Sort By License State link is not present
+And I validate the Sort By License Expiration link is not present
+And I validate the Sort By Certifications link is not present
+And I validate the DOT Header text is not present
+And I validate the Driver Team Header text is not present
+And I click the Edit Columns link
+And the Edit Columns popup opens
+And I check the 1st Row of the Column checkbox
+And I check the 2nd Row of the Column checkbox
+And I check the 3rd Row of the Column checkbox
+And I check the 4th Row of the Column checkbox
+And I check the 5th Row of the Column checkbox
+And I check the 6th Row of the Column checkbox
+And I check the 7th Row of the Column checkbox
+And I check the 8th Row of the Column checkbox
+And I check the 9th Row of the Column checkbox
+And I check the 10th Row of the Column checkbox
+And I check the 11th Row of the Column checkbox
+And I check the 12th Row of the Column checkbox
+And I check the 13th Row of the Column checkbox
+And I check the 14th Row of the Column checkbox
+And I check the 15th Row of the Column checkbox
+And I check the 16th Row of the Column checkbox
+And I check the 17th Row of the Column checkbox
+And I check the 18th Row of the Column checkbox
+And I check the 19th Row of the Column checkbox
+And I check the 20th Row of the Column checkbox
+And I check the 21st Row of the Column checkbox
+And I check the 22nd Row of the Column checkbox
+And I check the 23rd Row of the Column checkbox
+And I check the 24th Row of the Column checkbox
+And I check the 25th Row of the Column checkbox
+And I check the 26th Row of the Column checkbox
+And I check the 27th Row of the Column checkbox
+And I check the 28th Row of the Column checkbox
+And I check the 29th Row of the Column checkbox
+And I check the 30th Row of the Column checkbox
+And I check the 31st Row of the Column checkbox
+And I check the 32nd Row of the Column checkbox
+And I check the 33rd Row of the Column checkbox
+And I check the 34th Row of the Column checkbox
+And I check the 35th Row of the Column checkbox
+And I click the Save button
+And the Edit Columns popup closes
+Then I validate the Sort By Name link is present
+And I validate the User Status Header text is present
+And I validate the Sort By User Name link is present
+And I validate the User Group Header text is present
+And I validate the Roles Header text is present
+And I validate the Sort By Phone One link is present
+And I validate the Sort By Phone Two link is present
+And I validate the Sort By Email One link is present
+And I validate the Sort By Email Two link is present
+And I validate the Sort By Text Message One link is present
+And I validate the Sort By Text Message Two link is present
+And I validate the Information Alerts Header text is present
+And I validate the Warning Alerts Header text is present
+And I validate the Critical Alerts Header text is present
+And I validate the Sort By Time Zone link is present
+And I validate the Sort By Employee ID link is present
+And I validate the Sort By Reports To link is present
+And I validate the Sort By Title link is present
+And I validate the Sort By DOB link is present
+And I validate the Sort By Gender link is present
+And I validate the Sort By Bar Code link is present
+And I validate the Sort By RFID One link is present
+And I validate the Sort By RFID Two link is present
+And I validate the Sort By One Wire ID link is present
+And I validate the Sort By Locale link is present
+And I validate the Measurement Type Header text is present
+And I validate the Fuel Efficiency Ratio Header text is present
+And I validate the Driver Status Header text is present
+And I validate the Sort By Driver License Number link is present
+And I validate the Sort By License Class link is present
+And I validate the Sort By License State link is present
+And I validate the Sort By License Expiration link is present
+And I validate the Sort By Certifications link is present
+And I validate the DOT Header text is present
+And I validate the Driver Team Header text is present
 
-Meta:
-@testFolder TF421
-
-Scenario: TC822: Admin - Users - View User - Back to Users link
+Scenario: Admin - Add User with all fields filled out and then navigate to all pages where it's used to make sure the info is correct.
 Given I am logged in
 When I click the Admin link
-And I click the 1st Row of the Name link
-And I click the Back To Users link
-Then I validate I am on the Admin Users page
-
-Scenario: TC823: Admin - Users - View User - Bookmark Entry
-Given I am logged in
-When I click the Admin link
-And I validate I am on the Admin Users page
-And I bookmark the page
-And I click the Logout link
-And I click the bookmark I just added
-And I validate I am on the Login page
-Given I am logged in
-Then I validate I am on the Admin Users page
-
-Scenario: TC826: Admin - Users - View User - Cancel Button
-Given I am logged in
-When I click the Admin link
-And I save the 1st Row of the Name link as SAVEDNAME
-And I split SAVEDNAME with " " and save it again as FIRSTNAME, MIDDLENAME, LASTNAME, SUFFIXNAME
-And I click the 1st Row of the Name link
-And I click the Edit Button
-And I click the Cancel Button
-Then I validate I am on the User Details page
-And I verify "SAVEDNAME details" is on the page
+And I click the Admin Add User link
+And I type "Add" into the First Name field
+And I type "All" into the Middle Name field
+And I type "Fields" into the Last Name field
+And I select "Jr." from the Suffix dropdown
+And I type "Jan 1, 1980" into the DOB field
+And I select "Male" from the Gender dropdown
+Then I validate the Driver Information checkbox is checked
+And I type "AllFieldsDriversLi1" into the Driver License Number field
+And I type "A" into the Class field
+And I select "Utah" from the Driver State dropdown
+And I type "Jan 1, 2015" into the Expiration field
+And I type "Test Certification" into the Certifications field
+And I select "Texas" from the DOT dropdown
+And I select "Top - Automation Test Team" from the Team dropdown
+And I select "Top - Automation Test Team" from the Group dropdown
+And I select "Active" from the Driver Status dropdown
+And I type "" into the RFID Bar Code field
+And I type "2" into the One Wire ID field
+And I type "ADDALLFIEL" into the Employee ID field
+And I type "The Man" into the Reports To field
+And I type "Runt" into the Title field
+And I validate the Locale dropdown is "English (United States)"
+And I select "US/Mountain (GMT-7:0)" from the Time Zone dropdown
+And I validate the Measurement dropdown is "English"
+And I validate the Fuel Efficiency Ratio dropdown is "Miles Per Gallon (US)"
+And I validate the Login Information checkbox is checked
+And I type "AddAllFieldsUser" into the User Name field
+And I type "password" into the Password field
+And I type "password" into the Password Again field
+And I select "Active" from the User Status dropdown
+And I type "fakeemail@fakeemailadd.com" into the Email One field
+And I type "fakeemail2@fakeemailadd.com" into the Email Two field
+And I type "1111111111@fakeemailadd.com" into the Text Message One field
+And I type "2222222222@fakeemailadd.com" into the Text Message Two field
+And I type "1111111111" into the Phone One field
+And I type "2222222222" into the Phone Two field
+And I validate the Information dropdown is "None"
+And I validate the Warning dropdown is "None"
+And I validate the Critical dropdown is "None"
+And I click the Save Bottom button
+And I validate I am on the Admin User Details Page
+And I validate the First Name text is "Add"
+And I validate the Middle Name text is "All"
+And I validate the Last Name text is "Fields"
+And I validate the Suffix text is "Jr."
+And I validate the DOB text is "Jan 1, 1980"
+And I validate the Gender text is "Male"
+And I validate the Driver License Number text is "AllFieldsDriversLi1"
+And I validate the Class text is "A"
+And I validate the State text is "Utah"
+And I validate the Expiration text is "Jan 1, 2015"
+And I validate the Certifications text is "Test Certification"
+And I validate the DOT text is "Texas"
+And I validate the Team text is "Top - Automation Test Team"
+And I validate the Driver Status text is "Active"
+And I validate the RFID Bar Code text is ""
+And I validate the RFID One text is ""
+And I validate the RFID Two text is ""
+And I validate the One Wire ID text is "2"
+And I validate the Employee ID text is "ADDALLFIEL"
+And I validate the Reports To text is "The Man"
+And I validate the Title text is "Runt"
+And I validate the Locale text is "English (United States)"
+And I validate the Time Zone text is "US/Mountain (GMT-7:0)"
+And I validate the Measurement text is "English"
+And I validate the Fuel Efficiency Ratio text is "Miles Per Gallon (US)"
+And I validate the User Name text is "AddAllFieldsUser"
+And I validate the Group text is "Top - Automation Test Team"
+And I validate the Roles text is "Normal"
+And I validate the User Status text is "Active"
+And I validate the Email One link is "fakeemail@fakeemailadd.com"
+And I validate the Email Two link is "fakeemail2@fakeemailadd.com"
+And I validate the Text Message One text is "1111111111@fakeemailadd.com"
+And I validate the Text Message Two text is ""2222222222@fakeemailadd.com"
+And I validate the Phone One text is "1111111111"
+And I validate the Phone Two text is "2222222222"
+And I validate the Information text is "None"
+And I validate the Warning text is "None"
+And I validate the Critical text is "None"
+And I click the Edit button
 And I validate I am on the Admin Add Edit User page
-And I validate the First Name textfield is FIRSTNAME
-And I validate the Middle Name textfield is MIDDLENAME
-And I validate the Last Name textfield is LASTNAME
-And I validate the Suffix textfield is SUFFIXNAME
-And I validate the DOB text is not clickable
-And I validate the Gender text is not clickable
-And I validate the Driver License text is not clickable
-And I validate the Class text is not clickable
-And I validate the State text is not clickable
-And I validate the Expiration text is not clickable
-And I validate the Certifications text is not clickable
-And I validate the DOT text is not clickable
-And I validate the Team text is not clickable
-And I validate the Status text is not clickable
-And I validate the Employee ID text is not clickable
-And I validate the Reports To text is not clickable
-And I validate the Title text is not clickable
-And I validate the Locale text is not clickable
-And I validate the Time Zone text is not clickable
-And I validate the Measurement text is not clickable
-And I validate the Fuel Efficiency Ratio text is not clickable
-And I validate the User Name text is not clickable
-And I validate the Group text is not clickable
-And I validate the Roles text is not clickable
-And I validate the Email 1 text is clickable
-And I validate the Email 2 text is clickable
-And I validate the Text Message 1 text is not clickable
-And I validate the Text Message 2 text is not clickable
-And I validate the Phone 1 text is not clickable
-And I validate the Phone 2 text is not clickable
-And I validate the Information text is not clickable
-And I validate the Warning text is not clickable
-And I validate the Critical text is not clickable
-
-Scenario: TC827: Admin - Users - View User - Delete Button
-Given I am logged in
-When I click the Admin link
-And I click the Add User link
-And I type TC827 into the First Name textfield
-And I type TC827 into the Last Name textfield
-And I select "Top - Test Group RW" from the Team dropdown
-And I select "US/Samoa (GMT-11:00)" from the Time Zone dropdown
-And I uncheck the Login Information checkbox
-And I click the Bottom Save button
+And I validate the First Name field is "Add"
+And I validate the Middle Name field is "All"
+And I validate the Last Name field is "Fields"
+And I validate the Suffix dropdown is "Jr."
+And I validate the DOB field is "Jan 1, 1980"
+And I validate the Gender dropdown is "Male"
+And I validate the Driver License Number field is "AllFieldsDriversLi1"
+And I validate the Class field is "A"
+And I validate the State dropdown is "Utah"
+And I validate the Expiration field is "Jan 1, 2015"
+And I validate the Certifications field is "Test Certification"
+And I validate the DOT dropdown is "Texas"
+And I validate the Team dropdown is "Top - Automation Test Team"
+And I validate the Driver Status dropdown is "Active"
+And I validate the RFID Bar Code field is ""
+And I validate the RFID One text is ""
+And I validate the RFID Two text is ""
+And I validate the One Wire ID field is "2"
+And I validate the Employee ID field is "ADDALLFIEL"
+And I validate the Reports To field is "The Man"
+And I validate the Title field is "Runt"
+And I validate the Locale dropdown is "English (United States)"
+And I validate the Time Zone dropdown is "US/Mountain (GMT-7:0)"
+And I validate the Measurement dropdown is "English"
+And I validate the Fuel Efficiency Ratio dropdown is "Miles Per Gallon (US)"
+And I validate the User Name field is "AddAllFieldsUser"
+And I validate the Password field is not ""
+And I validate the Password Again field is not ""
+And I validate the Group dropdown is "Top - Automation Test Team"
+And I validate the User Status dropdown is "Active"
+And I validate the Email One field is "fakeemail@fakeemailadd.com"
+And I validate the Email Two field is "fakeemail2@fakeemailadd.com"
+And I validate the Text Message One field is "1111111111@fakeemailadd.com"
+And I validate the Text Message Two field is ""2222222222@fakeemailadd.com"
+And I validate the Phone One field is "1111111111"
+And I validate the Phone Two field is "2222222222"
+And I validate the Information dropdown is "None"
+And I validate the Warning dropdown is "None"
+And I validate the Critical dropdown is "None"
+And I click the Cancel Top button
 And I click the Back To Users link
-And I save the Records text as SAVEDRECORDS
-And I type "TC827" into the Name textfield
-And I press the Enter key
-And I save the 1st Row of the Name link as SAVEDNAME
-And I click the 1st Row of the Name link
-And I click the Delete Button
-And the Delete User pop up opens
+And I validate I am on the Admin Users page
+And I type "Add All Fields Jr." into the Name textfield
+And I validate the 1st Row of the Name link is "Add All Fields Jr."
+And I validate the 1st Row of the User Status text is "Active"
+And I validate the 1st Row of the User Name text is "AddAllFieldsUser"
+And I validate the 1st Row of the User Group text is "Automation Test Team"
+And I validate the 1st Row of the Roles text is "Normal"
+And I validate the 1st Row of the Phone One text is "1111111111"
+And I validate the 1st Row of the Phone Two text is "2222222222"
+And I validate the 1st Row of the Email One link is "fakeemail@fakeemailadd.com"
+And I validate the 1st Row of the Email Two link is "fakeemail2@fakeemailadd.com"
+And I validate the 1st Row of the Text Message One text is "1111111111@fakeemailadd.com"
+And I validate the 1st Row of the Text Message Two text is ""2222222222@fakeemailadd.com"
+And I validate the 1st Row of the Information Alerts text is "None"
+And I validate the 1st Row of the Warning Alerts text is "None"
+And I validate the 1st Row of the Critical Alerts text is "None"
+And I validate the 1st Row of the Time Zone text is "US/Mountain (GMT-7:0)"
+And I validate the 1st Row of the Employee ID text is "ADDALLFIEL"
+And I validate the 1st Row of the Reports To text is "The Man"
+And I validate the 1st Row of the Title text is "Runt"
+And I validate the 1st Row of the DOB text is "Jan 1, 1980"
+And I validate the 1st Row of the Gender text is "Male"
+And I validate the 1st Row of the Bar Code text is ""
+And I validate the 1st Row of the RFID One text is ""
+And I validate the 1st Row of the RFID Two text is ""
+And I validate the 1st Row of the One Wire ID text is "2"
+And I validate the 1st Row of the Locale text is "English (United States)"
+And I validate the 1st Row of the Measurement Type text is "English"
+And I validate the 1st Row of the Fuel Efficiency Ratio text is "Miles Per Gallon (US)"
+And I validate the 1st Row of the Driver Status text is "Active"
+And I validate the 1st Row of the Driver License Number text is "AllFieldsDriversLi1"
+And I validate the 1st Row of the License Class text is "A"
+And I validate the 1st Row of the License State text is "Utah"
+And I validate the 1st Row of the License Expiration text is "Jan 1, 2015"
+And I validate the 1st Row of the Certifications text is "Test Certification"
+And I validate the 1st Row of the DOT text is "Texas"
+And I validate the 1st Row of the Driver Team text is "Automation Test Team"
+And I check the 1st Row of the Check checkbox
 And I click the Delete button
-And the Delete User pop up closes
-Then I validate the Message text is "A User SAVEDNAME deleted"
-And I type "TC827" into the Name textfield
-And I press the Enter key
-And I validate the 1st Row of the Name link is not present
-And I validate the Records text is not SAVEDRECORDS
-
-Scenario: TC828: Admin - Users - View User - Edit Button
-Given I am logged in
-When I click the Admin link
-And I click the Add User link
-And I type TC828 into the First Name textfield
-And I type TC828 into the Last Name textfield
-And I select "Top - Test Group RW" from the Team dropdown
-And I select "US/Samoa (GMT-11:00)" from the Time Zone dropdown
-And I uncheck the Login Information checkbox
-And I click the Bottom Save button
-And I click the Back To Users link
-And I type TC828 into the Name textfield
-And I press the Enter key
-And I click the 1st Row of the Name link
-And I click the Edit Button
-Then I validate I am on the Admin Edit User page
-And I validate the First Name textfield is TC828
-And I validate the Last Name textfield is TC828
-And I validate the DOB text is not clickable
-And I validate the Gender text is not clickable
-And I validate the Driver License text is not clickable
-And I validate the Class text is not clickable
-And I validate the State text is not clickable
-And I validate the Expiration text is not clickable
-And I validate the Certifications text is not clickable
-And I validate the DOT text is not clickable
-And I validate the Team text is not clickable
-And I validate the Status text is not clickable
-And I validate the Employee ID text is not clickable
-And I validate the Reports To text is not clickable
-And I validate the Title text is not clickable
-And I validate the Locale text is not clickable
-And I validate the Time Zone text is not clickable
-And I validate the Measurement text is not clickable
-And I validate the Fuel Efficiency Ratio text is not clickable
-And I validate the User Name text is not clickable
-And I validate the Group text is not clickable
-And I validate the Roles text is not clickable
-And I validate the Email 1 text is clickable
-And I validate the Email 2 text is clickable
-And I validate the Text Message 1 text is not clickable
-And I validate the Text Message 2 text is not clickable
-And I validate the Phone 1 text is not clickable
-And I validate the Phone 2 text is not clickable
-And I validate the Information text is not clickable
-And I validate the Warning text is not clickable
-And I validate the Critical text is not clickable
-
-Scenario: TC829: Admin - Users - View User - UI
-Given I am logged in
-When I click the Admin link
-And I click the Add User link
-And I type TC829 into the First Name textfield
-And I type TC829 into the Last Name textfield
-And I select "Top - Test Group RW" from the Team dropdown
-And I select "US/Samoa (GMT-11:00)" from the Time Zone dropdown
-And I uncheck the Login Information checkbox
-And I click the Bottom Save button
-And I click the Back To Users link
-And I type TC829 into the Name textfield
-And I press the Enter key
-And I click the 1st Row of the Name link
-Then I validate I am on the User Details page
-And I validate the First Name textfield is TC829
-And I validate the Last Name textfield is TC829
-And I validate the DOB text is not clickable
-And I validate the Gender text is not clickable
-And I validate the Driver License text is not clickable
-And I validate the Class text is not clickable
-And I validate the State text is not clickable
-And I validate the Expiration text is not clickable
-And I validate the Certifications text is not clickable
-And I validate the DOT text is not clickable
-And I validate the Team text is not clickable
-And I validate the Status text is not clickable
-And I validate the Employee ID text is not clickable
-And I validate the Reports To text is not clickable
-And I validate the Title text is not clickable
-And I validate the Locale text is not clickable
-And I validate the Time Zone text is not clickable
-And I validate the Measurement text is not clickable
-And I validate the Fuel Efficiency Ratio text is not clickable
-And I validate the User Name text is not clickable
-And I validate the Group text is not clickable
-And I validate the Roles text is not clickable
-And I validate the Email 1 text is clickable
-And I validate the Email 2 text is clickable
-And I validate the Text Message 1 text is not clickable
-And I validate the Text Message 2 text is not clickable
-And I validate the Phone 1 text is not clickable
-And I validate the Phone 2 text is not clickable
-And I validate the Information text is not clickable
-And I validate the Warning text is not clickable
-And I validate the Critical text is not clickable
-
-Meta:
-@testFolder TF447
-
-Scenario: TC477: Admin - Users - Delete User - Cancel Button
-Given I am logged in
-When I click the Admin link
-And I click the Add User link
-And I type TC477A into the First Name textfield
-And I type TC477A into the Last Name textfield
-And I select "Top - Test Group RW" from the Team dropdown
-And I select "US/Samoa (GMT-11:00)" from the Time Zone dropdown
-And I uncheck the Login Information checkbox
-And I click the Bottom Save button
-And I click the Back To Users link
-And I click the Add User link
-And I type TC477B into the First Name textfield
-And I type TC477B into the Last Name textfield
-And I select "Top - Test Group RW" from the Team dropdown
-And I select "US/Samoa (GMT-11:00)" from the Time Zone dropdown
-And I uncheck the Login Information checkbox
-And I click the Bottom Save button
-And I click the Back To Users link
-And I click the Add User link
-And I type TC477C into the First Name textfield
-And I type TC477C into the Last Name textfield
-And I select "Top - Test Group RW" from the Team dropdown
-And I select "US/Samoa (GMT-11:00)" from the Time Zone dropdown
-And I uncheck the Login Information checkbox
-And I click the Bottom Save button
-And I click the Back To Users link
-And I click the Add User link
-And I type TC477D into the First Name textfield
-And I type TC477D into the Last Name textfield
-And I select "Top - Test Group RW" from the Team dropdown
-And I select "US/Samoa (GMT-11:00)" from the Time Zone dropdown
-And I uncheck the Login Information checkbox
-And I click the Bottom Save button
-And I click the Back To Users link
-And I save the Records text as SAVEDRECORDS
-And I type TC477 into the Name textfield
-And I press the Enter key
-And I click the 1st Row of the Entry Check Row checkbox
-And I click the 2nd Row of the Entry Check Row checkbox
-And I click the 3rd Row of the Entry Check Row checkbox
-And I click the 4th Row of the Entry Check Row checkbox
-And I click the Delete Button
 And the Delete popup opens
-And I click the Cancel Button
-Then the Delete Users popup closes
-And I validate the 1st Row of the Entry Check Row checkbox is checked
-And I validate the 2nd Row of the Entry Check Row checkbox is checked
-And I validate the 3rd Row of the Entry Check Row checkbox is checked
-And I validate the 4th Row of the Entry Check Row checkbox is checked
-And I validate the Records text is SAVEDRECORDS
-And I click the Delete Button
-And the Delete popup opens
-And I click the Delete Button
-
-Scenario: TC478: Admin - Users - Delete User - Delete Button
-Given I am logged in
-When I click the Admin link
-And I click the Add User link
-And I type TC478A into the First Name textfield
-And I type TC478A into the Last Name textfield
-And I select "Top - Test Group RW" from the Team dropdown
-And I select "US/Samoa (GMT-11:00)" from the Time Zone dropdown
-And I uncheck the Login Information checkbox
-And I click the Bottom Save button
-And I click the Back To Users link
-And I click the Add User link
-And I type TC478B into the First Name textfield
-And I type TC478B into the Last Name textfield
-And I select "Top - Test Group RW" from the Team dropdown
-And I select "US/Samoa (GMT-11:00)" from the Time Zone dropdown
-And I uncheck the Login Information checkbox
-And I click the Bottom Save button
-And I click the Back To Users link
-And I click the Add User link
-And I type TC478C into the First Name textfield
-And I type TC478C into the Last Name textfield
-And I select "Top - Test Group RW" from the Team dropdown
-And I select "US/Samoa (GMT-11:00)" from the Time Zone dropdown
-And I uncheck the Login Information checkbox
-And I click the Bottom Save button
-And I click the Back To Users link
-And I click the Add User link
-And I type TC478D into the First Name textfield
-And I type TC478D into the Last Name textfield
-And I select "Top - Test Group RW" from the Team dropdown
-And I select "US/Samoa (GMT-11:00)" from the Time Zone dropdown
-And I uncheck the Login Information checkbox
-And I click the Bottom Save button
-And I click the Back To Users link
-And I save the Records text as SAVEDRECORDS
-And I type TC478 into the Name textfield
-And I press the Enter key
-And I click the 1st Row of the Entry Check Row checkbox
-And I click the 2nd Row of the Entry Check Row checkbox
-And I click the 3rd Row of the Entry Check Row checkbox
-And I click the 4th Row of the Entry Check Row checkbox
-And I click the Delete Button
-And the Delete popup opens
-And I click the Delete Button
-And the Delete Users popup closes
-Then I validate the Message text "A User TC478A deleted" is present
-And I validate the Message text "A User TC478B deleted" is present
-And I validate the Message text "A User TC478C deleted" is present
-And I validate the Message text "A User TC478D deleted" is present
-And I type TC478 into the Name textfield
-And I press the Enter key
-And I validate the 1st row of the Name link is not present
-And I validate the Records text is SAVEDRECORDS
-
-Scenario: TC481: Admin - Users - Delete User - No Selection Error
-Given I am logged in
-When I click the Admin link
-And I save the Records text as SAVEDRECORDS
-And I click the Delete Button
-And I validate the Delete popup opens
-And I click the Delete Button
-Then I validate the Delete popup closes 
-And I validate the Error Message text is "No items were selected"
-And I validate the Records text is SAVEDRECORDS
-
-Scenario: TC482: Admin - Users - Delete User - Red Flags Interaction (Assign To)
-Given I am logged in
-When I click the Admin link
-And I click the Add User link
-And I type "TC482" into the First Name textfield
-And I type "TC482" into the Last Name textfield
-And I select "Top - Test Group RW" from the Team dropdown
-And I select "US/Mountain (GMT-7:00)" from the Time Zone dropdown
-And I uncheck the Login Information checkbox
-And I click the Bottom Save button
-And I type "TC482" into the Name texfield
-And I press the Enter key
-And I check the 1st Row of the Entry checkbox
-And I click the Delete Button
-And the Delete popup opens
-And I validate the User text contains "TC482"
-And I click the Delete Button
-And the Delete popup closes 
-And I click on the Red Flag link
-And I click on the Add Red Flag link
-And I select Drivers from the Assign dropdown
-Then I validate the Users list does not contain "TC482"
-And I validate the Alert Owner dropdown does not contain "TC482"
-
-Scenario: TC484: Admin - Users - Delete User - Red Flags Interaction (Notifications By Name)
-Given I am logged in
-When I click the Admin link
-And I click on the Red Flags link
-And I record the name of a user
-And I checkmark the recorded user
-And I click the Delete Button
-And I validate the Delete Users popup opens
-And I click the Delete Button
-And I validate the Delete Users popup closes
-And I click on the Red Flags link
-And I click the "All speeding" Edit link
-Then I type the recored user into the Notifications by Name box
-And I validate the name does not appear
-
-Scenario: TC485: Admin - Users - Delete User - UI
-Given I am logged in
-When I click the Admin link
-And I checkmark several users
-And I record the names of those users
-And I click the Delete Button
-Then I validate the Delete Users popup opens
-And I validate the recorded users names appear in the pop up
-And I validate the Delete Users popup renders correctly
-
-Scenario: TC487: Admin - Users - Delete User - Zone Interaction (Notifications By Name)
-Given I am logged in
-When I click the Admin link
-And I click on the Red Flags link
-And I record the name of a user
-And I checkmark the recorded user
-And I click the Delete Button
-And I validate the Delete Users popup opens
-And I click the Delete Button
-And I validate the Delete Users popup closes
-And I click on the Zones link
-And I click on the Add Alert Button
-And I click the corresponding Zone Edit link
-Then I type the recored user into the Notifications by Name box
-And I validate the name does not appear
-
-Meta:
-@testFolder TF469
-
-Scenario: TC163: Admin - Users - Add User - Default Command Button
-Given I am logged in
-When I click the Admin link
-And I click the Add User link
-And I type data in all the required fields
-And I type data in some of the nonrequired fields
-And I press the Enter Key
-Then I validate the Admin User Name Details Page appears
-And I validate the text string "User [user name] added." appears below the toolbar
-And I validate all the text on the page is static
-And I click the Add User link
-And I validate all the fields where data was entered are blank
-
-Scenario: TC164: Admin - Users - Add User - Save Button
-Given I am logged in
-When I click the Admin link
-And I click the Add User link
-And I type data in all the required fields
-And I type data in some of the nonrequired fields
-And I click the Save Button
-Then I am on the Admin Details page
-And I validate the user name matches the user just entered
-And I validate the text string "User [user name] added." appears below the toolbar
-And I validate all the text on the page is static
-And I click the Add User link
-And I validate all the fields where data was entered are blank
-
-Scenario: TC264: Admin - Users - Add User - Assign Driver to Vehicle Interaction
-Given I am logged in
-When I click the Admin link
-And I click the Add User link
-And I type data in all the required fields
-And I click the Save Button
-And I click the Vehicles link
-And I record the name of a vehicle that has a device
-And I click the Edit link of that vehicle
-And I click the Assign link
-Then I validate the user appears in the table
-
-Scenario: TC265: Admin - Users - Add User - Bookmark Entry
-Given I am logged in
-When I click the Admin link
-And I click the Add User link
-And I bookmark the page
-And I click the Logout Button
-And I click the bookmark I just added
-And I am logged in as a "Admin" user
-Then I validate I am on the Add User page
-And the Add User page renders correctly
-
-Scenario: TC268: Admin - Users - Add User - Cancel Button (Changes)
-Given I am logged in
-When I click the Admin link
-And I click the Add User link
-And I type data in some of the nonrequired fields
-And I click the Cancel Button
-Then I validate the Admin User page appears 
-And I validate a text string does not appear
-And I validate none of the entered data is in the Admin Users table
-And I click the Add User link
-And I validate the Add User page renders correctly
-
-Scenario: TC269: Admin - Users - Add User - Cancel Button (No Changes)
-Given I am logged in
-When I click the Admin link
-And I click the Zones link
-And I click on the Users link
-And I click on the Add User link
-And I click the Cancel Button
-When I click the Admin link
-And I validate a text string does not appear
-
-Scenario: TC270: Admin - Users - Add User - Collapse Driver Information Section
-Given I am logged in
-When I click the Admin link
-And I click the Add User link
-And I click the Driver Information Checkbox
-Then I validate the fields in Driver Information are hidden
-
-Scenario: TC271: Admin - Users - Add User - Collapse Log In Information Section
-Given I am logged in
-When I click the Admin link
-And I click the Add User link
-And I click the Log In Information Checkbox
-Then I validate the fields in Log In Information are hidden
-
-Scenario: TC272: Admin - Users - Add User - validate Password Upper Case Error
-Given I am logged in
-When I click the Admin link
-And I click the Add User link
-And I type data in all the required fields
-And I type a lower case password in the Password textfield
-And I type a upper case password in the Password Again textfield
-And I click the Save button
-Then I validate the text 'Does not match password' is present
-
-Scenario: TC273: Admin - Users - Add User - DOB Format Error
-Given I am logged in
-When I click the Admin link
-And I click the Add User link
-And I type data in all the required fields
-And I type a invalid date into the Date textfield
-And I click the Save button
-Then I validate the text 'Incorrect format (Mar 7, 2000)' is present
-
-Scenario: TC274: Admin - Users - Add User - Driver License # Max Character Limitation
-Given I am logged in
-When I click the Admin link
-And I click the Add User link
-And I type more than 20 characters into the Driver License textfield
-Then I validate the Driver License textfield has 20 characters
-
-Scenario: TC275: Admin - Users - Add User - E-mail Address Format Error
-Given I am logged in
-When I click the Admin link
-And I click the Add User link
-And I type an invalid email address into the E-mail 1 textfield
-And I click the Save button
-Then I validate the text 'Incorrect format (jdoe@tiwipro.com)' is present
-
-Scenario: TC276: Admin - Users - Add User - Employee ID Max Character Limitation
-Given I am logged in
-When I click the Admin link
-And I click the Add User link
-And I type more than 20 characters into the Driver License textfield
-Then I validate the Employee ID textfield has 20 characters
-
-Scenario: TC277: Admin - Users - Add User - Expand Driver Information Section
-Given I am logged in
-When I click the Admin link
-And I click the Add User link
-And I check the Driver Information checkbox
-Then I validate the Driver Information fields are visible
-
-Scenario: TC278: Admin - Users - Add User - Expand Log In Information Section
-Given I am logged in
-When I click the Admin link
-And I click the Add User link
-And I check the Login Information checkbox
-Then I validate the Login Information fields are visible
-
-Scenario: TC279: Admin - Users - Add User - Expand/Collapse Section via Spacebar
-Given I am logged in
-When I click the Admin link
-And I click the Add User link
-
+And I click the Delete button
+And the Delete popup closes
+And I type "Add All Fields Jr." into the Name textfield
+And I validate the 1st Row of the Name link is not "Add All Fields Jr."

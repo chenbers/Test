@@ -27,18 +27,19 @@ public enum FormsSubmissionsEnum implements SeleniumEnums {
     EDITED_DROPDOWN(null, "//th[@id='column-filter-submission-edited']/span/select"),  
     APPROVED_DROPDOWN(null, "//th[@id='column-filter-submission-status']/span/select"),
 
-    GROUP_FIELD(null, "column-filter-submission-group"),
-    DRIVER_FIELD(null, "column-filter-submission-driver"),
-    VEHICLE_FIELD(null, "column-filter-submission-vehicle"),
-    
-    LOCATION_ENTRY(null, "//table[@id='submissions-table']/tbody/tr[###]/td[1]"),
-    DATE_TIME_TEXT_ENTRY(null, "//table[@id='submissions-table']/tbody/tr[###]/td[2]"),
-    GROUP_LINK_ENTRY(null, "//table[@id='submissions-table']/tbody/tr[###]/td[3]"),
-    DRIVER_LINK_ENTRY(null, "//table[@id='submissions-table']/tbody/tr[###]/td[4]"),
-    VEHICLE_LINK_ENTRY(null, "//table[@id='submissions-table']/tbody/tr[###]/td[5]"),
-    FORM_TEXT_ENTRY(null, "//table[@id='submissions-table']/tbody/tr[###]/td[6]"),
+    GROUP_FIELD(null, "//th[3]/span/input"),
+    DRIVER_FIELD(null, "//th[4]/span/input"),
+    VEHICLE_FIELD(null, "//th[5]/span/input"),
+        
+    LOCATION_ENTRY(null, "//tr[###]/td[contains(@class,'location')]"),
+    DATE_TIME_TEXT_ENTRY(null, "//tr[###]/td[contains(@class,'submissionDate sorting_1')]"),
+    GROUP_LINK_ENTRY(null, "//tr[###]/td[contains(@class,'groupName')]"),
+    DRIVER_LINK_ENTRY(null, "//tr[###]/td[contains(@class,'driverName')]"),
+    VEHICLE_LINK_ENTRY(null, "//tr[###]/td[contains(@class,'vehicleName')]"),
+    FORM_TEXT_ENTRY(null, "//tr[###]/td[contains(@class,'formName')]"),
     EDITED_TEXT_ENTRY(null, "//tr[###]/td[contains(@class,'edited')]"),
     APPROVED_CHECKBOX_ENTRY(null, "//tr[###]/td[contains(@class,'status')]/input[@type='checkbox']"),
+    EDIT_ROW_BUTTON(null, "//tr[###]/td[contains(@class,'trigger')]"),
 
     //INLINE EDIT ELEMENTS
     TEXT_ENTRY(null, "//tr[###]/td[@class='editable string']"),
@@ -47,8 +48,8 @@ public enum FormsSubmissionsEnum implements SeleniumEnums {
     NUMERIC_TEXTFIELD_ENTRY(null, "//td[@class='editable integer']/form/input[@name='value']"),
     DECIMAL_ENTRY(null, "//tr[###]/td[@class='editable decimal']"),
     DECIMAL_TEXTFIELD_ENTRY(null, "//td[@class='editable decimal']/form/input[@name='value']"),
-    DATE_ENTRY(null, "//tr[###]/td[@class='editable jrdate']"),
-    DATE_DROPDOWN_ENTRY(null, "//td[@class='editable jrdate']/form/input[@name='value']"),
+    DATE_ENTRY(null, "//tr[###]/td[@class='editable date']"),
+    DATE_DROPDOWN_ENTRY(null, "//td[@class='editable date']/form/input[@name='value']"),
     CHOOSEONE_ENTRY(null, "//tr[###]/td[@class='editable select1']"),
     CHOOSEONE_DROPDOWN_ENTRY(null, "//td[@class='editable select1']/form/select[@name='value']"),
     CHOOSEMANY_ENTRY(null, "//tr[###]/td[@class='editable selectn']"),
@@ -62,10 +63,10 @@ public enum FormsSubmissionsEnum implements SeleniumEnums {
     
     NO_RECORDS_ERROR("No matching records found", "//td[@class='dataTables_empty']"),
     
-    INVALID_TEXT_ERROR("Invalid", "//td[8]/span[@class='label label-important invalid']"),
-    INVALID_NUMERIC_ERROR("Invalid", "//td[9]/span[@class='label label-important invalid']"),
-    INVALID_DECIMAL_ERROR("Invalid", "//td[10]/span[@class='label label-important invalid']"),
-    INVALID_DATE_ERROR("Invalid", "//td[11]/span[@class='label label-important invalid']"),
+    INVALID_TEXT_ERROR("Invalid", "//td[@class='editable string']/div[@class='label label-important']"),
+    INVALID_NUMERIC_ERROR("Invalid", "//td[@class='editable integer']/div[@class='label label-important']"),
+    INVALID_DECIMAL_ERROR("Invalid", "//td[@class='editable decimal']/div[@class='label label-important']"),
+    INVALID_DATE_ERROR("Invalid", "//td[@class='editable date']/div[@class='label label-important']"),
     
     ENTRIES_TEXT("Showing #### to #### of #### entries", "//div[@id='submissions-table_info']"),
     

@@ -11,6 +11,7 @@ import org.jbehave.core.annotations.Given;
 import org.jbehave.core.annotations.Named;
 import org.jbehave.core.annotations.Then;
 import org.jbehave.core.annotations.When;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 
 import com.inthinc.pro.automation.AutomationPropertiesBean;
@@ -70,14 +71,14 @@ public class AutoCustomSteps {
     
     @AfterScenario
     public void afterScenario(){
-        if (loginAccount.get() == null || loginUser.get() == null || rest.get() == null){
-            Log.info("The default login info was not set");
-            return;
-        }
-        
-        rest.get().putObject(Account.class, loginAccount.get(), null);
-        rest.get().putObject(User.class, loginUser.get(), null);
-        
+//        if (loginAccount.get() == null || loginUser.get() == null || rest.get() == null){
+//            Log.info("The default login info was not set");
+//            return;
+//        }
+//        
+//        rest.get().putObject(Account.class, loginAccount.get(), null);
+//        rest.get().putObject(User.class, loginUser.get(), null);
+        Log.info("END OF SCENARIO");
     }
     
     @Then("I assert \"$lookfor\" is on the page")
@@ -147,12 +148,18 @@ public class AutoCustomSteps {
         return loginUser.get();
     }
 
-    @Given("I am logged in")
-    @Composite(steps = {
-            "Given I am using as the default user for my user",
-            "Given I log in"})
-    public void givenIAmLoggedIn(){}
+//    @Given("I am logged in")
+//    @Composite(steps = {
+//            "Given I am using as the default user for my user",
+//            "Given I log in"})
+//    public void givenIAmLoggedIn(){}
 
+//    @When("I am logged in")
+//    @Composite(steps = {
+//            "When I type my user name into the Username field",
+//            "When I type my password into the Password field",
+//            "When I click the Login button"})
+//    public void whenIAmLoggedIn(){}
 
     @Given("I am logged in $params")
     @Composite(steps = {

@@ -6,6 +6,7 @@ public enum ReportsBarEnum implements SeleniumEnums {
 
     DRIVERS("Drivers", "subNavForm:drivers-driversReport"),
     VEHICLES("Vehicles", "subNavForm:drivers-vehiclesReport"),
+    TRAILERS("Trailers", "subNavForm:drivers-trailersReport"),
     IDLING_DRIVERS("Idling Drivers", "subNavForm:drivers-idlingReport"),
     IDLING_VEHICLES("Idling Vehicles","subNavForm:drivers-idlingVehicleReport"),
     DEVICES("Devices", "subNavForm:drivers-devicesReport"),
@@ -17,6 +18,8 @@ public enum ReportsBarEnum implements SeleniumEnums {
     STYLE_SCORE_DHX(null, "***-form:***:styleScoreFilter"),
     SEATBELT_SCORE_DHX(null, "***-form:***:seatbeltScoreFilter"),
     STATUS_SCORE_DHX(null, "***-form:***:statusFilter"),
+    ASSIGNED_STATUS_DHX(null, "***-form:***:assignedStatusFilter"),
+    ENTRY_METHOD_DHX(null, "***-form:***:entryMethodFilter"),
 
     OVERALL_SCORE_SORT(null, "***-form:***:overallScoreheader:sortDiv"),
     SPEED_SCORE_SORT(null, "***-form:***:speedScoreheader:sortDiv"),
@@ -27,7 +30,7 @@ public enum ReportsBarEnum implements SeleniumEnums {
     TOOL_PDF("Export To PDF", "***-form:***-export_menu_item:anchor"),
     TOOL_EXCEL("Export To Excel", "***-form:***-exportExcelMEnuItem:icon"),
     
-    COUNTER("Showing XXX to YYY of ZZZ records", "***-form:header"), 
+    RECORDS("Showing XXX to YYY of ZZZ records", "***-form:header"), 
 
     ;
 

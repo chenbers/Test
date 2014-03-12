@@ -302,7 +302,7 @@ public class Person extends BaseEntity implements Comparable<Person> {
 
     @JsonProperty("dob")
     public void setDob(String dob) {
-        this.dob.setDate(dob);
+        this.dob.setDate(this.dob);
     }
     
     @JsonSerialize(include = Inclusion.NON_NULL)

@@ -30,6 +30,8 @@ public enum FormsPublishedEnum implements SeleniumEnums {
     TRIGGER_ENTRY("Trigger", "//table[@id='published-forms-table']/tbody/tr[###]/td[5]"),
 
     NO_RECORDS_FOUND_ERROR("No matching records found", "//table[@id='published-forms-table']/tbody/tr/td[@class='dataTables_empty']"),
+    SUCCESSFULLY_PUBLISHED_MESSAGE("Form Form TCXXXXAdd11, version 1 was successfully  published.", "//div[@id='#success-alert']"),
+    CLOSE_SUCCESSFULLY_PUBLISHED_BUTTON(null, "//button[@class='close']"),
 
     ENTRIES_TEXT("Showing ### to ### of ### entries", "//div[@id='published-forms-table_info']"),
     

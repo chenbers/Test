@@ -12,7 +12,6 @@ import com.inthinc.pro.automation.utils.Xpath;
 public enum MastheadEnum implements SeleniumEnums {
     
     /* Paging elements */
-    
     FORWARD_ONE(null,Xpath.start().td(Id.text(StringEscapeUtils.unescapeHtml("&#187;"))).toString()),
     FORWARD_ALL(null,Xpath.start().td(Id.text(StringEscapeUtils.unescapeHtml("&#187;&#187;"))).toString()),
     BACK_ONE(null,Xpath.start().td(Id.text(StringEscapeUtils.unescapeHtml("&#171;"))).toString()),
@@ -20,20 +19,21 @@ public enum MastheadEnum implements SeleniumEnums {
     CHOOSE_PAGE(null,Xpath.start().td(Id.text("###")).toString()),
 
     /* Login Logo */
-    LOGIN(null, "login_logo", "//body/div[1]/div/img"),
-    LOGO(null, "headerForm:headerInitDashboard", "//form[@id='headerForm']/div[@id='logo']/a/img"),
+    LOGO_IFRAME(null, "//a[@class='logo']"),
 
     /* Header Elements */
-    HELP("Help", "headerForm:contextSensitiveHelp", "//a[@class='tb-help']", "//div[@id='horz_nav']/ul/li[1]/span/a"),
-    LOGOUT("Log Out", "//div[@id='horz_nav']/ul/li[4]/a", "//a[@class='tb-logout']"),
-    MY_ACCOUNT("My Account", "headerForm:headerMyAccount", "//div[@id='horz_nav']/ul/li[3]/span/a"),
-    MY_MESSAGES("My Messages", "headerForm:headerMyMessages", "//form[@id='headerForm']/ul/li[2]/span/a"),
+    FLEET_IFRAME("Fleet", "//a[@id='headerInitDashboard']"),
+    FORMS_IFRAME("Forms", "//a[@href='https://qa.inthinc.com/forms']"),
+    TOP_TRAILERS_IFRAME("Trailers", "//a[@href='https://qa.inthinc.com/assets/trailers']"),
+    MY_MESSAGES_IFRAME("My Messages", "//a[@id='headerMyMessages']"),
+    MY_ACCOUNT_IFRAME("My Account", "//a[@id='headerMyAccount']"),
+    LOGOUT_IFRAME("Log Out", "//a[@id='template-settings-logout']"),
 
     /* Footer Elements */
-    COPYRIGHT("&#169;" + String.valueOf(Calendar.getInstance().get(Calendar.YEAR)) + " inthinc", "//li[@class='first']", "//form[@id='footerForm']/ul/li[1]"),
-    LEGAL("Legal Notice", "footerForm:legal", "//form[@id='footerForm']/ul/li[5]/a", "link=Legal Notice"),
-    PRIVACY("Privacy Policy", "footerForm:privacy", "//form[@id='footerForm']/ul/li[3]/a", "//div/div[2]/div[1]/span[3]/a"),
-    SUPPORT("Support", "footerForm:customerSupport", "//form[@id='footerForm']/ul/li[7]"),
+    COPYRIGHT("&#169;" + String.valueOf(Calendar.getInstance().get(Calendar.YEAR)) + " inthinc", "//li[@class='first']", "//form[@id='footerForm']/ul/li[1]", "//div[2]/div/span", "//div[3]/div/span", "//div[4]/div/span"),
+    LEGAL("Legal Notice", "footerForm:legal", "//form[@id='footerForm']/ul/li[5]/a", "link=Legal Notice", "//a[@href='https://s3.amazonaws.com/resources.inthinc.com/html/inthincCustomerTermsOfService.html']"),
+    PRIVACY("Privacy Policy", "footerForm:privacy", "//form[@id='footerForm']/ul/li[3]/a", "//div/div[2]/div[1]/span[3]/a", "//a[@href='https://s3.amazonaws.com/resources.inthinc.com/html/inthincPrivacyPolicy.html']"),
+    SUPPORT("Support", "footerForm:customerSupport", "//form[@id='footerForm']/ul/li[7]", "//a[@href='https://s3.amazonaws.com/resources.inthinc.com/html/inthincCustomerSupport.html']"),
     VERSION(null, "footerForm:version", "//form[@id='footerForm']/ul/li[2]", "//li[@class='last']"),
 
     /* HTML Pages */

@@ -47,7 +47,7 @@ public enum HOSFuelStopsEnum implements SeleniumEnums {
     ENTRY_EDITED(null, "fuelStops-table-form:fuelStopsTable:###:edited"),
     
     TITLE("Fuel Stops", "//span[@id='fuelStops-table-region:status']/../span[@class='fuelStops']"),
-    COUNTER("Showing XXX to YYY of ZZZ records", "fuelStops-table-form:header"),
+    RECORDS("Showing XXX to YYY of ZZZ records", "fuelStops-table-form:header"),
     
     START_DATE_BOX("Date Range:", "fuelStops-table-form:fuelStopsTable_startCalendar"),
     END_DATE_BOX("Date Range:", "fuelStops-table-form:fuelStopsTable_endCalendar"),    

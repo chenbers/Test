@@ -97,10 +97,11 @@ public class AutoPageRunner {
             location = start + end;
         }
         // dbean 2013/01/25 -- added following check for short-circuiting multiple pageObject validations and speed tests
-        if(formerLocation.equalsIgnoreCase(location)) {
-        	return;
-        }
-        formerLocation=location;
+        // mweiss 2013/10/31 The problem with this is it breaks popups, they can't find what pageobject they are in, taking out for now
+//        if(formerLocation.equalsIgnoreCase(location)) {
+//        	return;
+//        }
+//        formerLocation=location;
         
         if (pageMap.containsKey(location) && pageMap.get(location).isOnPage()){
             currentPage = pageMap.get(location);    
@@ -329,18 +330,19 @@ public class AutoPageRunner {
                 }
                 
                 if (methods.containsKey(elementName)){
-                    return tryElementName(elementClass, methods.get(elementName));
-                } else {
-                    for (Map.Entry<String, Method> entry : methods.entrySet()){
-                        if (entry.getKey().contains("column")){
-                            try {
-                                return tryElementName(elementClass, entry.getValue()); 
-                            } catch (Exception e){
-                                continue;
-                            }
-                        }
-                    }
-                }
+                    return tryElementName(elementClass, methods.get(elementName)); }
+                //I'm taking this out since I'm not using the find a column by name method
+//                } else {
+//                    for (Map.Entry<String, Method> entry : methods.entrySet()){
+//                        if (entry.getKey().contains("column")){
+//                            try {
+//                                return tryElementName(elementClass, entry.getValue()); 
+//                            } catch (Exception e){
+//                                continue;
+//                            }
+//                        }
+//                    }
+//                }
             }
             throw new NoSuchMethodException("Could not find Element for " + workingOnStep);
     

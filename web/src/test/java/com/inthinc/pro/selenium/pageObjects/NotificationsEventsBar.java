@@ -31,7 +31,7 @@ public abstract class NotificationsEventsBar extends NotificationsBar {
             return new Button(NotificationsBarEnum.EXPORT_TO_PDF, page);
         }
 
-        public Button emailReport() {
+        public Button emailThisReport() {
             return new Button(NotificationsBarEnum.EMAIL_REPORT, page);
         }
 
@@ -39,7 +39,7 @@ public abstract class NotificationsEventsBar extends NotificationsBar {
             return new Button(NotificationsBarEnum.EXPORT_TO_EXCEL, page);
         }
 
-        public ButtonTable eventLocation() {
+        public ButtonTable entryLocation() {
             return new ButtonTable(NotificationsBarEnum.LOCATION_ENTRY, page);
         }
 	}
@@ -83,8 +83,8 @@ public abstract class NotificationsEventsBar extends NotificationsBar {
             return new TextTable(NotificationsBarEnum.DETAIL_ENTRY, page);
         }
 
-        public Text counter() {
-            return new Text(NotificationsBarEnum.COUNTER, page);
+        public Text records() {
+            return new Text(NotificationsBarEnum.RECORDS, page);
         }
 	}
 	
