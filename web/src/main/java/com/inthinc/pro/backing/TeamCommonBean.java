@@ -74,7 +74,6 @@ public class TeamCommonBean extends BaseBean {
 		}
 		this.groupID = groupID;
 
-//<<<<<<< HEAD
         if (dayLabels.isEmpty()) {
 //            Interval interval = new Interval(Days.SEVEN, new DateMidnight());
             Interval interval = new Interval(Days.SEVEN, new DateMidnight(DateTimeZone.forTimeZone(getPerson().getTimeZone())));
@@ -82,9 +81,7 @@ public class TeamCommonBean extends BaseBean {
                 dayLabels.add(interval.getEnd().minusDays(i).dayOfWeek().getAsShortText(getLocale()));
             }
         }
-//=======
 	}
-//>>>>>>> branch 'feature/US7836' of git@github.com:inthinc/portal.git
 
 	public Group getGroup() {
 		return group;
