@@ -12,7 +12,6 @@ import java.util.Map;
 import java.util.TimeZone;
 
 import com.inthinc.pro.model.TimeFrame;
-import com.inthinc.pro.model.TimeFrameWHP;
 import org.ajax4jsf.model.KeepAlive;
 import org.apache.log4j.Logger;
 import org.joda.time.DateMidnight;
@@ -327,7 +326,7 @@ public class TripsBean extends BaseBean {
                 startDate = new DateMidnight(new DateTime().minusDays(6), DateTimeZone.forTimeZone(getTimeZoneFromEntity())).toDate();
                 startDatePrev = startDate;
             } else {
-                startDate = TimeFrameWHP.valueOf(timeFrameString).getInterval(DateTimeZone.forTimeZone(getTimeZoneFromEntity())).getStart().toDate();
+                startDate = TimeFrame.valueOf(timeFrameString).getInterval(DateTimeZone.forTimeZone(getTimeZoneFromEntity())).getStart().toDate();
                 startDatePrev = startDate;
             }
 
@@ -354,7 +353,7 @@ public class TripsBean extends BaseBean {
                 endDatePrev = endDate;
             } else {
                 //setEndDate(TimeFrame.valueOf(timeFrameString).getInterval(getDateTimeZone()).getEnd().toDate());
-                endDate = TimeFrameWHP.valueOf(timeFrameString).getInterval(DateTimeZone.forTimeZone(getTimeZoneFromEntity())).getEnd().toDate();
+                endDate = TimeFrame.valueOf(timeFrameString).getInterval(DateTimeZone.forTimeZone(getTimeZoneFromEntity())).getEnd().toDate();
                 endDatePrev = endDate;
             }
         }
@@ -861,11 +860,11 @@ public class TripsBean extends BaseBean {
         }
     }
 
-    public String getTimeFrameBean() {
+    public String getTimeFrameString() {
         return timeFrameString;
     }
 
-    public void setTimeFrameBean(String timeFrameBean) {
-        this.timeFrameString = timeFrameBean;
+    public void setTimeFrameString(String timeFrameString) {
+        this.timeFrameString = timeFrameString;
     }
 }
