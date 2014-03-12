@@ -113,7 +113,7 @@
 		<view-id>/secured/driverTrips.faces</view-id>
 	</url-mapping>
     <url-mapping id="driverTripsWHP">
-        <pattern>/app/driver/trips/#{driverTripsBean.identifiableEntityBean.id}/#{driverTripsBean.timeFrameBean}</pattern>
+        <pattern>/app/driver/trips/#{driverTripsBean.identifiableEntityBean.id}/#{driverTripsBean.timeFrameString}</pattern>
         <view-id>/secured/driverTrips.faces</view-id>
     </url-mapping>
 	<url-mapping id="vehiclePerformance">
@@ -137,7 +137,7 @@
 		<view-id>/secured/vehicleTrips.faces</view-id>
 	</url-mapping>
     <url-mapping id="vehicleTripsWHP">
-        <pattern>/app/vehicle/trips/#{vehicleTripsBean.identifiableEntityBean.id}/#{vehicleTripsBean.timeFrameBean}</pattern>
+        <pattern>/app/vehicle/trips/#{vehicleTripsBean.identifiableEntityBean.id}/#{vehicleTripsBean.timeFrameString}</pattern>
         <view-id>/secured/vehicleTrips.faces</view-id>
     </url-mapping>
 	
