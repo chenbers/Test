@@ -115,6 +115,167 @@ And I validate the Admin Add Red Flag link is not present
 And I validate the Admin Add Report link is not present
 And I validate the Admin Add Custom Role link is not present
 
+Scenario: Admin - User Details UI
+Given I am logged in
+When I click the Admin link
+And I click the Admin Users link
+Then I validate I am on the Admin Users page
+And I click the 1st Row of the Name link
+And I validate I am on the Admin User Details page
+And I validate the Title text is present
+And I validate the Back To Users link is present
+And I validate the Delete button is present
+And I validate the Edit button is present
+And I validate the User Information Header text is present
+And I validate the First Name Header text is present
+And I validate the Middle Name Header text is present
+And I validate the Last Name Header text is present
+And I validate the Suffix Header text is present
+And I validate the DOB Header text is present
+And I validate the Gender Header text is present
+And I validate the Driver Information Header text is present
+And I validate the Driver License Number Header text is present
+And I validate the Class Header text is present
+And I validate the State Header text is present
+And I validate the Expiration Header text is present
+And I validate the Certifications Header text is present
+And I validate the DOT Header text is present
+And I validate the Team Header text is present
+And I validate the Driver Status Header text is present
+And I validate the Driver Identification Header text is present
+And I validate the RFID Bar Code Header text is present
+And I validate the RFID One Header text is present
+And I validate the RFID Two Header text is present
+And I validate the One Wire ID Header text is present
+And I validate the Employee Information Header text is present
+And I validate the Employee ID Header text is present
+And I validate the Reports To Header text is present
+And I validate the Title Header text is present
+And I validate the Locale Header text is present
+And I validate the Time Zone Header text is present
+And I validate the Measurement Header text is present
+And I validate the Fuel Efficiency Ratio Header text is present
+And I validate the User Name Header text is present
+And I validate the Group Header text is present
+And I validate the Roles Header text is present
+And I validate the User Status Header text is present
+And I validate the Notifications Header text is present
+And I validate the Email One Header text is present
+And I validate the Email Two Header text is present
+And I validate the Text Message One Header text is present
+And I validate the Text Message Two Header text is present
+And I validate the Phone One Header text is present
+And I validate the Phone Two Header text is present
+And I validate the Information Header text is present
+And I validate the Warning Header text is present
+And I validate the Critical Header text is present
+And I validate the Admin Users link is present
+And I validate the Admin Add User link is present
+And I validate the Admin Vehicles link is present
+And I validate the Admin Devices link is present
+And I validate the Admin Zones link is present
+And I validate the Admin Road Hazards link is present
+And I validate the Admin Red Flags link is present
+And I validate the Admin Reports link is present
+And I validate the Admin Organization link is present
+And I validate the Admin Custom Roles link is present
+And I validate the Admin Speed By Street link is present
+And I validate the Admin Account link is present
+
+Scenario: Admin - Add Edit User UI
+Given I am logged in
+When I click the Admin link
+And I click the Admin Users link
+Then I validate I am on the Admin Users page
+And I click the 1st Row of the Edit link
+And I validate I am on the Admin Add Edit User page
+And I validate the Title text is present
+And I validate the Save Top button is present
+And I validate the Cancel Top button is present
+And I validate the Save Bottom button is present
+And I validate the Cancel Bottom button is present
+And I validate the User Information Header text is present
+And I validate the First Name Header text is present
+And I validate the First Name field is present
+And I validate the Middle Name Header text is present
+And I validate the Middle Name field is present
+And I validate the Last Name Header text is present
+And I validate the Last Name field is present
+And I validate the Suffix Header text is present
+And I validate the Suffix dropdown is present
+And I validate the DOB Header text is present
+And I validate the DOB field is present
+And I validate the Gender Header text is present
+And I validate the Gender dropdown is present
+And I validate the Driver Information Header text is present
+And I validate the Driver Information checkbox is present
+And I validate the Driver License Number Header text is present
+And I validate the Driver License Number field is present
+And I validate the Class Header text is present
+And I validate the Class field is present
+And I validate the State Header text is present
+And I validate the State dropdown is present
+And I validate the Expiration Header text is present
+And I validate the Expiration field is present
+And I validate the Certifications Header text is present
+And I validate the Certifications field is present
+And I validate the DOT Header text is present
+And I validate the DOT dropdown is present
+And I validate the Team Header text is present
+And I validate the Team dropdown is present
+And I validate the Driver Status Header text is present
+And I validate the Driver Status dropdown is present
+And I validate the Driver Identification Header text is present
+And I validate the RFID Bar Code Header text is present
+And I validate the RFID Bar Code field is present
+And I validate the RFID One Header text is present
+And I validate the RFID One text is present
+And I validate the RFID Two Header text is present
+And I validate the RFID Two text is present
+And I validate the One Wire ID Header text is present
+And I validate the One Wire ID field is present
+And I validate the Employee Information Header text is present
+And I validate the Employee ID Header text is present
+And I validate the Employee ID field is present
+And I validate the Reports To Header text is present
+And I validate the Reports To field is present
+And I validate the Title Header text is present
+And I validate the Title field is present
+And I validate the Locale Header text is present
+And I validate the Locale dropdown is present
+And I validate the Time Zone Header text is present
+And I validate the Time Zone dropdown is present
+And I validate the Measurement Header text is present
+And I validate the Measurement dropdown is present
+And I validate the Fuel Efficiency Ratio Header text is present
+And I validate the Fuel Efficiency Ratio dropdown is present
+And I validate the User Name Header text is present
+And I validate the Group Header text is present
+And I validate the Roles Header text is present
+And I validate the User Status Header text is present
+And I validate the Notifications Header text is present
+And I validate the Email One Header text is present
+And I validate the Email Two Header text is present
+And I validate the Text Message One Header text is present
+And I validate the Text Message Two Header text is present
+And I validate the Phone One Header text is present
+And I validate the Phone Two Header text is present
+And I validate the Information Header text is present
+And I validate the Warning Header text is present
+And I validate the Critical Header text is present
+And I validate the Admin Users link is present
+And I validate the Admin Add User link is present
+And I validate the Admin Vehicles link is present
+And I validate the Admin Devices link is present
+And I validate the Admin Zones link is present
+And I validate the Admin Road Hazards link is present
+And I validate the Admin Red Flags link is present
+And I validate the Admin Reports link is present
+And I validate the Admin Organization link is present
+And I validate the Admin Custom Roles link is present
+And I validate the Admin Speed By Street link is present
+And I validate the Admin Account link is present
+
 Scenario: Admin - Edit Columns UI
 Given I am logged in
 When I click the Admin link
@@ -531,7 +692,7 @@ And I validate the Sort By Certifications link is present
 And I validate the DOT Header text is present
 And I validate the Driver Team Header text is present
 
-Scenario: Admin - Add User with all fields filled out (first half of this test works, I'm working on the other half in the currentstory file)
+Scenario: Admin - Add User with all fields filled out and then navigate to all pages where it's used to make sure the info is correct.
 Given I am logged in
 When I click the Admin link
 And I click the Admin Add User link
@@ -614,6 +775,48 @@ And I validate the Phone Two text is "2222222222"
 And I validate the Information text is "None"
 And I validate the Warning text is "None"
 And I validate the Critical text is "None"
+And I click the Edit button
+And I validate I am on the Admin Add Edit User page
+And I validate the First Name field is "Add"
+And I validate the Middle Name field is "All"
+And I validate the Last Name field is "Fields"
+And I validate the Suffix dropdown is "Jr."
+And I validate the DOB field is "Jan 1, 1980"
+And I validate the Gender dropdown is "Male"
+And I validate the Driver License Number field is "AllFieldsDriversLi1"
+And I validate the Class field is "A"
+And I validate the State dropdown is "Utah"
+And I validate the Expiration field is "Jan 1, 2015"
+And I validate the Certifications field is "Test Certification"
+And I validate the DOT dropdown is "Texas"
+And I validate the Team dropdown is "Top - Automation Test Team"
+And I validate the Driver Status dropdown is "Active"
+And I validate the RFID Bar Code field is ""
+And I validate the RFID One text is ""
+And I validate the RFID Two text is ""
+And I validate the One Wire ID field is "2"
+And I validate the Employee ID field is "ADDALLFIEL"
+And I validate the Reports To field is "The Man"
+And I validate the Title field is "Runt"
+And I validate the Locale dropdown is "English (United States)"
+And I validate the Time Zone dropdown is "US/Mountain (GMT-7:0)"
+And I validate the Measurement dropdown is "English"
+And I validate the Fuel Efficiency Ratio dropdown is "Miles Per Gallon (US)"
+And I validate the User Name field is "AddAllFieldsUser"
+And I validate the Password field is not ""
+And I validate the Password Again field is not ""
+And I validate the Group dropdown is "Top - Automation Test Team"
+And I validate the User Status dropdown is "Active"
+And I validate the Email One field is "fakeemail@fakeemailadd.com"
+And I validate the Email Two field is "fakeemail2@fakeemailadd.com"
+And I validate the Text Message One field is "1111111111@fakeemailadd.com"
+And I validate the Text Message Two field is ""2222222222@fakeemailadd.com"
+And I validate the Phone One field is "1111111111"
+And I validate the Phone Two field is "2222222222"
+And I validate the Information dropdown is "None"
+And I validate the Warning dropdown is "None"
+And I validate the Critical dropdown is "None"
+And I click the Cancel Top button
 And I click the Back To Users link
 And I validate I am on the Admin Users page
 And I type "Add All Fields Jr." into the Name textfield
