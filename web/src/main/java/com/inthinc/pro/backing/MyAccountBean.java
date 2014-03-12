@@ -73,6 +73,7 @@ public class MyAccountBean extends BaseBean {
     {
     	String result = null;
     	restorePerson();
+    	restoreMapPref();
     	result = "pretty:myAccount";
        return result;
     }
@@ -80,6 +81,11 @@ public class MyAccountBean extends BaseBean {
     private void restorePerson() {
         getUser().setPerson(personDAO.findByID(getUser().getPerson().getPersonID()));
     }
+    
+    private void restoreMapPref() {
+    	getUser().setMapType(getPerson().getUser().getMapType());
+    	getUser().setSelectedMapLayerIDs(getPerson().getUser().getSelectedMapLayerIDs());
+    }    
 
     public String getRegionName() {
         final Group group = getGroupHierarchy().getGroup(getUser().getGroupID());
