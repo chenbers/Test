@@ -132,7 +132,7 @@ public class FormsGenerationSteps extends LoginSteps {
         System.out.println("PublishFormGeneric" + i + " created successfully.");
         i++;
         
-        while (i < 90) {
+        while (i < 100) {
             manage._button().gear().row(1).click();
             manage._link().copy().row(1).click();
             add._textField().name().type("PublishFormGeneric" + i);
