@@ -1,6 +1,7 @@
 package com.inthinc.pro.dao.jdbc;
 
 import com.inthinc.pro.dao.ReportDAO;
+import com.inthinc.pro.dao.hessian.mapper.DriverPerformanceMapper;
 import com.inthinc.pro.model.DeviceReportItem;
 import com.inthinc.pro.model.DeviceStatus;
 import com.inthinc.pro.model.DriverReportItem;
@@ -10,6 +11,7 @@ import com.inthinc.pro.model.VehicleReportItem;
 import com.inthinc.pro.model.configurator.ProductType;
 import com.inthinc.pro.model.pagination.FilterOp;
 import com.inthinc.pro.model.pagination.PageParams;
+import com.inthinc.pro.model.pagination.Range;
 import com.inthinc.pro.model.pagination.SortOrder;
 import com.inthinc.pro.model.pagination.TableFilterField;
 import org.apache.log4j.Logger;
@@ -28,6 +30,7 @@ import java.util.Map;
 
 
 public class ReportJDBCDAO extends SimpleJdbcDaoSupport implements ReportDAO {
+    private DriverPerformanceMapper driverPerformanceMapper;
     private static final Logger logger = Logger.getLogger(ReportJDBCDAO.class);
     private SimpleDateFormat dbFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 
@@ -67,6 +70,7 @@ public class ReportJDBCDAO extends SimpleJdbcDaoSupport implements ReportDAO {
         pagedColumnMapVehicle.put("groupName", "vp.groupName");
         pagedColumnMapVehicle.put("groupID", "vp.groupID");
         pagedColumnMapVehicle.put("driverID", "vp.driverID");
+        pagedColumnMapVehicle.put("driverName", "vp.driverName");
         pagedColumnMapVehicle.put("vehicleYMM", "vp.vehicleYMM");
         pagedColumnMapVehicle.put("milesDriven", "vp.milesDriven");
         pagedColumnMapVehicle.put("odometer", "vp.odometer");
@@ -171,7 +175,7 @@ public class ReportJDBCDAO extends SimpleJdbcDaoSupport implements ReportDAO {
         String reportSelectDriver = SELECT_DRIVERS + WHERE_DRIVERS;
 
         /***FILTERING***/
-        StringBuilder reportSelect = new StringBuilder(addFiltersToQuery(pageParams.getFilterList(), reportSelectDriver, params, pagedColumnMapDevice));
+        StringBuilder reportSelect = new StringBuilder(addFiltersToQuery(pageParams.getFilterList(), reportSelectDriver, params, pagedColumnMapDriver));
 
         /***SORTING***/
         if (pageParams.getSort() != null && !pageParams.getSort().getField().isEmpty())
@@ -553,6 +557,7 @@ public class ReportJDBCDAO extends SimpleJdbcDaoSupport implements ReportDAO {
                 filter = treatCustomFilters(filter);
 
                 if (filter.getField() != null && pagedColumnMap.containsKey(filter.getField()) && filter.getFilter() != null) {
+                    Range range = new Range();
                     String paramName = "filter_" + filter.getField();
                     if (filter.getFilter().toString().isEmpty())
                         continue;
@@ -565,8 +570,13 @@ public class ReportJDBCDAO extends SimpleJdbcDaoSupport implements ReportDAO {
                         params.put(paramName, filter.getFilter());
 
                     } else {
-                        countFilter.append(" AND " + pagedColumnMap.get(filter.getField()) + " LIKE :" + paramName);
-                        params.put(paramName, "%" + filter.getFilter().toString() + "%");
+                        if (filter.getFilter().getClass().isInstance(range)) {
+                            range = (Range) filter.getFilter();
+                            countFilter.append(" AND " + pagedColumnMap.get(filter.getField()) + " BETWEEN " + range.getMin() + " and " + range.getMax());
+                        } else {
+                            countFilter.append(" AND " + pagedColumnMap.get(filter.getField()) + " LIKE :" + paramName);
+                            params.put(paramName, "%" + filter.getFilter().toString() + "%");
+                        }
                     }
 
                 }
@@ -649,5 +659,12 @@ public class ReportJDBCDAO extends SimpleJdbcDaoSupport implements ReportDAO {
 
     private Integer getIntOrNullFromRS(ResultSet rs, String columnName) throws SQLException {
         return rs.getObject(columnName) == null ? null : (int) rs.getLong(columnName);
+    }
+    public DriverPerformanceMapper getDriverPerformanceMapper() {
+        return driverPerformanceMapper;
+    }
+
+    public void setDriverPerformanceMapper(DriverPerformanceMapper driverPerformanceMapper) {
+        this.driverPerformanceMapper = driverPerformanceMapper;
     }
 }
