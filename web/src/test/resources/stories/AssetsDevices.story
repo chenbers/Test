@@ -1,6 +1,5 @@
 Scenario: Assets - Devices - Main UI
-Given I am logged in
-When I click the Top Devices link
+Given I navigate to the Assets Devices page
 Then I validate I am on the Assets Devices page
 And I validate the Records Per Page Label text is present
 And I validate the Records Per Page dropdown is present
@@ -56,8 +55,7 @@ And I validate the Activated text is ""
 And I validate the Assigned Vehicle text is ""
 
 Scenario: Assets - Devices - Edit button UI
-Given I am logged in
-When I click the Top Devices link
+Given I navigate to the Assets Devices page
 Then I validate I am on the Assets Devices page
 And I click the 1st Row of the Device Entry link
 And I validate the Edit button is visible
@@ -81,8 +79,7 @@ And I validate the Status dropdown is not visible
 And I validate the Assigned Vehicle dropdown is not visible
 
 Scenario: Assets - Devices - Show Hide Columns link UI
-Given I am logged in
-When I click the Top Devices link
+Given I navigate to the Assets Devices page
 Then I validate I am on the Assets Devices page
 And I click the Show Hide Columns link
 And I validate the Vehicle ID Checkbox Label text is present
@@ -115,14 +112,12 @@ And I validate the MCM ID checkbox is not checked
 And I validate the Restore Original link is present
 
 Scenario: Assets - Devices - Default Records dropdowns are set to 10
-Given I am logged in
-When I click the Top Devices link
+Given I navigate to the Assets Devices page
 Then I validate the Records Per Page dropdown is "10"
 
 Scenario: Assets - Devices - Records per page test
-Given I am logged in
-When I click the Top Devices link
-And I select "10" from the Records Per Page dropdown 
+Given I navigate to the Assets Devices page
+When I select "10" from the Records Per Page dropdown 
 Then I validate the 11th Row of the Device Entry link is not present
 And I validate the Entries text contains "Showing 1 to 10 of"
 And I select "25" from the Records Per Page dropdown 
@@ -136,9 +131,8 @@ And I validate the 101st Row of the Device Entry link is not present
 And I validate the Entries text contains "Showing 1 to 100 of"
 
 Scenario: Assets - Devices - Select All checkbox functionality
-Given I am logged in
-When I click the Top Devices link
-And I click the Select All checkbox
+Given I navigate to the Assets Devices page
+When I click the Select All checkbox
 Then I validate the 1st Row of the Entry checkbox is checked
 And I validate the 2nd Row of the Entry checkbox is checked
 And I validate the 3rd Row of the Entry checkbox is checked
@@ -352,9 +346,8 @@ And I validate the 99th Row of the Entry checkbox is checked
 And I validate the 100th Row of the Entry checkbox is checked
 
 Scenario: Assets - Devices - Empty Search
-Given I am logged in
-When I click the Top Devices link
-And I type "randomstringthatwillnotcomeup" into the Search textfield
+Given I navigate to the Assets Devices page
+When I type "randomstringthatwillnotcomeup" into the Search textfield
 Then I validate the No Matching Records text is "No matching records found"
 And I validate the Entries text contains "Showing 0 to 0 of 0 entries"
 And I validate the Previous link is not present
@@ -363,24 +356,21 @@ And I validate the Previous Disabled link is present
 And I validate the Next Disabled link is present
 
 Scenario: Assets - Devices - Filtered Entries Text Functions Correctly
-Given I am logged in
-When I click the Top Devices link
-And I type "FilteredEntry" into the Search textfield
+Given I navigate to the Assets Devices page
+When I type "FilteredEntry" into the Search textfield
 Then I validate the Entries text contains "Showing 1 to 3 of 3 entries"
 And I validate the Entries text contains "filtered from"
 And I validate the Entries text contains "total entries"
 
 Scenario: Assets - Devices - Search Filter
-Given I am logged in
-When I click the Top Devices link
-And I type "SEARCHTEXT" into the Search textfield
+Given I navigate to the Assets Devices page
+When I type "SEARCHTEXT" into the Search textfield
 And I click the Top Devices link
 Then I validate the Search textfield is "SEARCHTEXT"
 
 Scenario: Assets - Devices - Search All Fields (requires specific devices are present in the table)
-Given I am logged in
-When I click the Top Devices link
-And I click the Show Hide Columns link
+Given I navigate to the Assets Devices page
+When I click the Show Hide Columns link
 And I check the Vehicle ID checkbox
 And I check the Product checkbox
 And I check the IMEI checkbox
@@ -438,9 +428,8 @@ And I click the Sort By MCM ID link
 And I validate the 1st Row of the MCM ID Entry link is "AUTOMATION850"
 
 Scenario: Assets - Devices - Show Hide Columns UI Interaction
-Given I am logged in
-When I click the Top Devices link
-And I click the Show Hide Columns link
+Given I navigate to the Assets Devices page
+When I click the Show Hide Columns link
 And I uncheck the Vehicle ID checkbox
 Then I validate the Sort By Vehicle ID link is not present
 And I check the Vehicle ID checkbox
@@ -506,18 +495,16 @@ And I validate the Sort By Status link is present
 And I validate the Sort By MCM ID link is present
 
 Scenario: Assets - Devices - Bookmark Entry 
-Given I am logged in
-When I click the Top Devices link
-And I bookmark the page
+Given I navigate to the Assets Devices page
+When I bookmark the page
 And I click the Logout link
 And I click the bookmark I just added
 And I log back in
 Then I validate I am on the Assets Devices page
 
 Scenario: Assets - Devices - Table Properties (Removing test till it's implemented)
-!-- Given I am logged in
-!-- When I click the Top Devices link
-!-- And I click the Show Hide Columns link
+!-- Given I navigate to the Assets Devices page
+!-- When I click the Show Hide Columns link
 !-- And I check the Vin checkbox
 !-- And I check the License checkbox
 !-- And I check the State checkbox
@@ -544,15 +531,14 @@ Scenario: Assets - Devices - Table Properties (Removing test till it's implement
 !-- And I click the Sort By Odometer link
 
 Scenario: Assets - Devices - Show/Hide Columns - Subsequent Session Retention
-Given I am logged in
-When I click the Top Devices link
-And I click the Show Hide Columns link
+Given I navigate to the Assets Devices page
+When I click the Show Hide Columns link
 And I uncheck the Vehicle ID checkbox
 And I click the Show Hide Columns link
 Then I validate the Sort By Vehicle ID link is not present
 And I click the Logout link
-Given I am logged in
-And I click the Top Devices link
+Given I navigate to the Assets Devices page
+When I click the Top Devices link
 Then I validate the Sort By Vehicle ID link is not present
 And I click the Show Hide Columns link
 And I check the Vehicle ID checkbox
@@ -560,9 +546,8 @@ And I click the Show Hide Columns link
 And I validate the Sort By Vehicle ID link is present
 
 Scenario: Assets - Devices - Select A Row, Click Edit, Then Select Another Row
-Given I am logged in
-When I click the Top Devices link
-And I click the Show Hide Columns link
+Given I navigate to the Assets Devices page
+When I click the Show Hide Columns link
 And I check the Vehicle ID checkbox
 And I check the Product checkbox
 And I check the IMEI checkbox
@@ -589,9 +574,8 @@ And I validate the Activated text is ""
 And I validate the Assigned Vehicle dropdown is disabled
 
 Scenario: Assets - Devices - Select And Deselect A Row
-Given I am logged in
-When I click the Top Devices link
-And I click the 1st Row of the Device Entry link
+Given I navigate to the Assets Devices page
+When I click the 1st Row of the Device Entry link
 And I control click the 1st Row of the Device Entry link
 Then I validate the Device text is ""
 And I validate the Product text is ""
@@ -606,9 +590,8 @@ And I validate the Activated text is ""
 And I validate the Assigned Vehicle text is ""
 
 Scenario: Assets - Devices - Select A Row, Select Edit, Then Cancel
-Given I am logged in
-When I click the Top Devices link
-And I click the Show Hide Columns link
+Given I navigate to the Assets Devices page
+When I click the Show Hide Columns link
 And I check the Vehicle ID checkbox
 And I check the Product checkbox
 And I check the IMEI checkbox
@@ -644,9 +627,8 @@ And I validate the 1st Row of the Status Entry link is SAVEDSTATUS
 And I validate the 1st Row of the MCM ID Entry link is SAVEDMCMID
 
 Scenario: Assets - Devices - Select A Row, Select Edit, Deselect The Row
-Given I am logged in
-When I click the Top Devices link
-And I click the 1st Row of the Device Entry link
+Given I navigate to the Assets Devices page
+When I click the 1st Row of the Device Entry link
 And I click the Edit button
 And I control click the 1st Row of the Device Entry link
 Then I validate the Save button is not visible
@@ -666,9 +648,8 @@ And I validate the Activated text is ""
 And I validate the Assigned Vehicle text is ""
 
 Scenario: Assets - Devices - Delete Device Test (cancel button) (need to use DeviceRestController to create the device that will be deleted)
-!-- Given I am logged in
-!-- When I click the Top Devices link
-!-- And I click the Show Hide Columns link
+!-- Given I navigate to the Assets Devices page
+!-- When I click the Show Hide Columns link
 !-- And I check the Vehicle ID checkbox
 !-- And I check the Product checkbox
 !-- And I check the IMEI checkbox
@@ -688,9 +669,8 @@ Scenario: Assets - Devices - Delete Device Test (cancel button) (need to use Dev
 !-- Then I validate the 1st Row of the Device Entry link is SAVEDDEVICE
 
 Scenario: Assets - Devices - Delete Device Test (save button) (need to use DeviceRestController to create the device that will be deleted)
-!-- Given I am logged in
-!-- When I click the Top Devices link
-!-- And I click the Show Hide Columns link
+!-- Given I navigate to the Assets Devices page
+!-- When I click the Show Hide Columns link
 !-- And I check the Vehicle ID checkbox
 !-- And I check the Product checkbox
 !-- And I check the IMEI checkbox
@@ -710,9 +690,8 @@ Scenario: Assets - Devices - Delete Device Test (save button) (need to use Devic
 !-- Then I validate the 1st Row of the Device Entry link is SAVEDDEVICE
 
 Scenario: Assets - Devices - Delete two devices back to back (need to use DeviceRestController to create the device that will be deleted)
-!-- Given I am logged in
-!-- When I click the Top Devices link
-!-- And I type "ASSETDELDEVICETEST1" into the Search textfield
+!-- Given I navigate to the Assets Devices page
+!-- When I type "ASSETDELDEVICETEST1" into the Search textfield
 !-- And I click the 1st Row of the Device Entry link
 !-- And I click the Edit button
 !-- And I select "DELETED" from the Status dropdown
@@ -726,9 +705,8 @@ Scenario: Assets - Devices - Delete two devices back to back (need to use Device
 !-- And I validate the 1st Row of the Device Entry link is not present
 
 Scenario: Assets - Devices - Delete entry then edit an entry (need to use DeviceRestController to create the device that will be deleted)
-!-- Given I am logged in
-!-- When I click the Top Devices link
-!-- And I click the Show Hide Columns link
+!-- Given I navigate to the Assets Devices page
+!-- When I click the Show Hide Columns link
 !-- And I check the Vehicle ID checkbox
 !-- And I check the Product checkbox
 !-- And I check the IMEI checkbox
@@ -782,9 +760,8 @@ Scenario: Assets - Devices - Delete entry then edit an entry (need to use Device
 !-- And I validate the Assigned Vehicle dropdown is SAVEDVEHICLE
 
 Scenario: Assets - Devices - Edit Device (save button - no changes)
-Given I am logged in
-When I click the Top Devices link
-And I click the Show Hide Columns link
+Given I navigate to the Assets Devices page
+When I click the Show Hide Columns link
 And I check the Vehicle ID checkbox
 And I check the Product checkbox
 And I check the IMEI checkbox
@@ -825,9 +802,8 @@ And I validate the Activated text is ""
 And I validate the Assigned Vehicle text is ""
 
 Scenario: Assets - Devices - Edit Device (save button - changes)
-Given I am logged in
-When I click the Top Devices link
-And I click the Show Hide Columns link
+Given I navigate to the Assets Devices page
+When I click the Show Hide Columns link
 And I check the Vehicle ID checkbox
 And I check the Product checkbox
 And I check the IMEI checkbox
@@ -871,9 +847,8 @@ And I select SAVEDVEHICLE from the Vehicle ID dropdown
 And I click the Save button
 
 Scenario: Assets - Devices - Batch Edit Test (cancel button, no changes)
-Given I am logged in
-When I click the Top Devices link
-And I click the Show Hide Columns link
+Given I navigate to the Assets Devices page
+When I click the Show Hide Columns link
 And I check the Vehicle ID checkbox
 And I check the Product checkbox
 And I check the IMEI checkbox
@@ -952,9 +927,8 @@ And I validate the 2nd Row of the Status Entry link is SAVEDSTATUS
 And I validate the 2nd Row of the MCM ID Entry link is SAVEDMCMID
 
 Scenario: Assets - Devices - Batch Edit Test (save button, no changes)
-Given I am logged in
-When I click the Top Devices link
-And I click the Show Hide Columns link
+Given I navigate to the Assets Devices page
+When I click the Show Hide Columns link
 And I check the Vehicle ID checkbox
 And I check the Product checkbox
 And I check the IMEI checkbox
@@ -1032,9 +1006,8 @@ And I validate the 2nd Row of the Status Entry link is SAVEDSTATUS
 And I validate the 2nd Row of the MCM ID Entry link is SAVEDMCMID
 
 Scenario: Assets - Devices - Batch Edit Test (cancel button, changes)
-Given I am logged in
-When I click the Top Devices link
-And I click the Show Hide Columns link
+Given I navigate to the Assets Devices page
+When I click the Show Hide Columns link
 And I check the Vehicle ID checkbox
 And I check the Product checkbox
 And I check the IMEI checkbox
@@ -1114,9 +1087,8 @@ And I validate the 2nd Row of the Status Entry link is SAVEDSTATUS
 And I validate the 2nd Row of the MCM ID Entry link is SAVEDMCMID
 
 Scenario: Assets - Devices - Batch Edit and Batch Delete Test (save button, changes) (will need to use the DeviceRouteController to create devices specifically for this test)
-!-- Given I am logged in
-!-- When I click the Top Devices link
-!-- And I click the Show Hide Columns link
+!-- Given I navigate to the Assets Devices page
+!-- When I click the Show Hide Columns link
 !-- And I check the Vehicle ID checkbox
 !-- And I check the Product checkbox
 !-- And I check the IMEI checkbox
@@ -1128,56 +1100,56 @@ Scenario: Assets - Devices - Batch Edit and Batch Delete Test (save button, chan
 !-- And I check the MCM ID checkbox
 !-- And I click the Top Devices link
 !-- And I type "BATCHDEVICE" into the Search textfield
-And I click the 1st Row of the Device Entry link
-And I save the 1st Row of the Device Entry link as SAVEDDEVICE
-And I save the 1st Row of the Vehicle ID Entry link as SAVEDVEHICLE
-And I save the 1st Row of the Product Entry link as SAVEDPRODUCT
-And I save the 1st Row of the IMEI Entry link as SAVEDIMEI
-And I save the 1st Row of the Alternate IMEI Entry link as SAVEDALTERNATEIMEI
-And I save the 1st Row of the SIM Card Entry link as SAVEDSIMCARD
-And I save the 1st Row of the Serial Number Entry link as SAVEDSERIALNUMBER
-And I save the 1st Row of the Phone Entry link as SAVEDPHONE
-And I save the 1st Row of the Status Entry link as SAVEDSTATUS
-And I save the 1st Row of the MCM ID Entry link as SAVEDMCMID
-And I control click the 2nd Row of the Device Entry link
-And I save the 2nd Row of the Device Entry link as SAVEDDEVICE
-And I save the 2nd Row of the Vehicle ID Entry link as SAVEDVEHICLE
-And I save the 2nd Row of the Product Entry link as SAVEDPRODUCT
-And I save the 2nd Row of the IMEI Entry link as SAVEDIMEI
-And I save the 2nd Row of the Alternate IMEI Entry link as SAVEDALTERNATEIMEI
-And I save the 2nd Row of the SIM Card Entry link as SAVEDSIMCARD
-And I save the 2nd Row of the Serial Number Entry link as SAVEDSERIALNUMBER
-And I save the 2nd Row of the Phone Entry link as SAVEDPHONE
-And I save the 2nd Row of the Status Entry link as SAVEDSTATUS
-And I save the 2nd Row of the MCM ID Entry link as SAVEDMCMID
-And I click the Edit button
-And I select "INACTIVE" from the Status dropdown
-And I click the Save button
-Then I validate the 1st Row of the Device Entry link is SAVEDDEVICE
-And I validate the 1st Row of the Vehicle ID Entry link is SAVEDVEHICLE
-And I validate the 1st Row of the Product Entry link is SAVEDPRODUCT
-And I validate the 1st Row of the IMEI Entry link is SAVEDIMEI
-And I validate the 1st Row of the Alternate IMEI Entry link is SAVEDALTERNATEIMEI
-And I validate the 1st Row of the SIM Card Entry link is SAVEDSIMCARD
-And I validate the 1st Row of the Serial Number Entry link is SAVEDSERIALNUMBER
-And I validate the 1st Row of the Phone Entry link is SAVEDPHONE
-And I validate the 1st Row of the Status Entry link is SAVEDSTATUS
-And I validate the 1st Row of the MCM ID Entry link is SAVEDMCMID
-And I validate the 2nd Row of the Device Entry link is SAVEDDEVICE
-And I validate the 2nd Row of the Vehicle ID Entry link is SAVEDVEHICLE
-And I validate the 2nd Row of the Product Entry link is SAVEDPRODUCT
-And I validate the 2nd Row of the IMEI Entry link is SAVEDIMEI
-And I validate the 2nd Row of the Alternate IMEI Entry link is SAVEDALTERNATEIMEI
-And I validate the 2nd Row of the SIM Card Entry link is SAVEDSIMCARD
-And I validate the 2nd Row of the Serial Number Entry link is SAVEDSERIALNUMBER
-And I validate the 2nd Row of the Phone Entry link is SAVEDPHONE
-And I validate the 2nd Row of the Status Entry link is SAVEDSTATUS
-And I validate the 2nd Row of the MCM ID Entry link is SAVEDMCMID
+!-- And I click the 1st Row of the Device Entry link
+!-- And I save the 1st Row of the Device Entry link as SAVEDDEVICE
+!-- And I save the 1st Row of the Vehicle ID Entry link as SAVEDVEHICLE
+!-- And I save the 1st Row of the Product Entry link as SAVEDPRODUCT
+!-- And I save the 1st Row of the IMEI Entry link as SAVEDIMEI
+!-- And I save the 1st Row of the Alternate IMEI Entry link as SAVEDALTERNATEIMEI
+!-- And I save the 1st Row of the SIM Card Entry link as SAVEDSIMCARD
+!-- And I save the 1st Row of the Serial Number Entry link as SAVEDSERIALNUMBER
+!-- And I save the 1st Row of the Phone Entry link as SAVEDPHONE
+!-- And I save the 1st Row of the Status Entry link as SAVEDSTATUS
+!-- And I save the 1st Row of the MCM ID Entry link as SAVEDMCMID
+!-- And I control click the 2nd Row of the Device Entry link
+!-- And I save the 2nd Row of the Device Entry link as SAVEDDEVICE
+!-- And I save the 2nd Row of the Vehicle ID Entry link as SAVEDVEHICLE
+!-- And I save the 2nd Row of the Product Entry link as SAVEDPRODUCT
+!-- And I save the 2nd Row of the IMEI Entry link as SAVEDIMEI
+!-- And I save the 2nd Row of the Alternate IMEI Entry link as SAVEDALTERNATEIMEI
+!-- And I save the 2nd Row of the SIM Card Entry link as SAVEDSIMCARD
+!-- And I save the 2nd Row of the Serial Number Entry link as SAVEDSERIALNUMBER
+!-- And I save the 2nd Row of the Phone Entry link as SAVEDPHONE
+!-- And I save the 2nd Row of the Status Entry link as SAVEDSTATUS
+!-- And I save the 2nd Row of the MCM ID Entry link as SAVEDMCMID
+!-- And I click the Edit button
+!-- And I select "INACTIVE" from the Status dropdown
+!-- And I click the Save button
+!-- Then I validate the 1st Row of the Device Entry link is SAVEDDEVICE
+!-- And I validate the 1st Row of the Vehicle ID Entry link is SAVEDVEHICLE
+!-- And I validate the 1st Row of the Product Entry link is SAVEDPRODUCT
+!-- And I validate the 1st Row of the IMEI Entry link is SAVEDIMEI
+!-- And I validate the 1st Row of the Alternate IMEI Entry link is SAVEDALTERNATEIMEI
+!-- And I validate the 1st Row of the SIM Card Entry link is SAVEDSIMCARD
+!-- And I validate the 1st Row of the Serial Number Entry link is SAVEDSERIALNUMBER
+!-- And I validate the 1st Row of the Phone Entry link is SAVEDPHONE
+!-- And I validate the 1st Row of the Status Entry link is SAVEDSTATUS
+!-- And I validate the 1st Row of the MCM ID Entry link is SAVEDMCMID
+!-- And I validate the 2nd Row of the Device Entry link is SAVEDDEVICE
+!-- And I validate the 2nd Row of the Vehicle ID Entry link is SAVEDVEHICLE
+!-- And I validate the 2nd Row of the Product Entry link is SAVEDPRODUCT
+!-- And I validate the 2nd Row of the IMEI Entry link is SAVEDIMEI
+!-- And I validate the 2nd Row of the Alternate IMEI Entry link is SAVEDALTERNATEIMEI
+!-- And I validate the 2nd Row of the SIM Card Entry link is SAVEDSIMCARD
+!-- And I validate the 2nd Row of the Serial Number Entry link is SAVEDSERIALNUMBER
+!-- And I validate the 2nd Row of the Phone Entry link is SAVEDPHONE
+!-- And I validate the 2nd Row of the Status Entry link is SAVEDSTATUS
+!-- And I validate the 2nd Row of the MCM ID Entry link is SAVEDMCMID
 !-- Now I delete the entries so it will run just fine on the next run through
-And I click the Top Devices link
-And I click the 1st Row of the Device Entry link
-And I click the 2nd Row of the Device Entry link
-And I click the Edit button
-And I select "DELETED" from the Status dropdown
-And I click the Save button
-And I validate the Entries text contains "Showing 0 to 0 of 0 entries"
+!-- And I click the Top Devices link
+!-- And I click the 1st Row of the Device Entry link
+!-- And I click the 2nd Row of the Device Entry link
+!-- And I click the Edit button
+!-- And I select "DELETED" from the Status dropdown
+!-- And I click the Save button
+!-- And I validate the Entries text contains "Showing 0 to 0 of 0 entries"
