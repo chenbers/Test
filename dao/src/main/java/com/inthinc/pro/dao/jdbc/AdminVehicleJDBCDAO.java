@@ -72,7 +72,7 @@ public class AdminVehicleJDBCDAO extends SimpleJdbcDaoSupport{
         PAGED_VEHICLE_COLUMNS_STRING = 
                 "v.vehicleID, v.groupID, v.status, v.name, v.make, v.model, v.year, v.color, v.vtype, v.vin, v.weight, v.license, v.stateID, v.odometer, v.ifta, v.absOdometer, "+
                 "d.deviceID, d.acctID, d.status, d.name, d.imei, d.sim, d.serialNum, d.phone, d.activated, d.baseID, d.productVer, d.firmVer, d.witnessVer, d.emuMd5, d.mcmid, d.altImei," +
-                "vdd.deviceID, vdd.driverID, CONCAT(p.first, ' ', p.last), g.name";
+                "vdd.deviceID, vdd.driverID, CONCAT(p.first, ' ', p.last), g.name, p.first, p.middle, p.last, p.suffix";
                 
     };
     private static final String VEHICLE_PLUS_LASTLOC_SELECT_BY_ACCOUNT = //
@@ -236,7 +236,7 @@ public class AdminVehicleJDBCDAO extends SimpleJdbcDaoSupport{
             vehicle.setModel(rs.getString("v.model"));
 //            vehicle.setModified(rs.getDate("v.modified"));
             vehicle.setName(rs.getString("v.name"));
-            vehicle.setDriverName(rs.getString("CONCAT(p.first, ' ', p.last)"));
+            vehicle.setDriverName(getDriverName(rs));
 
             Long absOdometer = rs.getObject("v.absOdometer") == null ? null : (rs.getLong("v.absOdometer"));
             Long odometer = rs.getObject("v.odometer") == null ? null : rs.getLong("v.odometer");
@@ -281,6 +281,28 @@ public class AdminVehicleJDBCDAO extends SimpleJdbcDaoSupport{
             return vehicle;
         }
     };
+
+    private String getDriverName(ResultSet rs) throws SQLException {
+        StringBuilder result = new StringBuilder();
+        if (rs.getObject("p.first") != null)
+            result.append(rs.getString("p.first"));
+        if (rs.getObject("p.middle") != null && !rs.getString("p.middle").isEmpty()) {
+            if (result.length() > 0)
+                result.append(' ');
+            result.append(rs.getString("p.middle"));
+        }
+        if (rs.getObject("p.last")!=null && !rs.getString("p.last").isEmpty()) {
+            if (result.length() > 0)
+                result.append(' ');
+            result.append(rs.getString("p.last"));
+        }
+        if (rs.getObject("p.suffix") != null && !rs.getString("p.suffix").isEmpty()) {
+            if (result.length() > 0)
+                result.append(' ');
+            result.append(rs.getString("p.suffix"));
+        }
+        return result.toString();
+    }
 
     private ParameterizedRowMapper<VehiclePlusLastLoc> vehiclePlusLastLocRowMapper = new ParameterizedRowMapper<VehiclePlusLastLoc>(){
 
