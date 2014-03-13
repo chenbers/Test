@@ -168,13 +168,26 @@ public abstract class BaseITData {
         VehicleHessianDAO vehicleDAO = new VehicleHessianDAO();
         vehicleDAO.setSiloService(siloService);
 
-        String name = ((idx == null) ? "" : idx) + "Vehicle" + (driverID == null ? "NO_DRIVER" : group.getName());
-        Vehicle vehicle = new Vehicle(0, group.getGroupID(), Status.ACTIVE, name, "Make", "Model", 2000, "Red", 
-                    VehicleType.LIGHT, "VIN_" + (deviceID==null? Util.randomInt(1000, 30000) : deviceID), 1000, "UT " + group.getGroupID(), 
-                    States.getStateByAbbrev("UT"));
-        Integer vehicleID = vehicleDAO.create(group.getGroupID(), vehicle);
-        vehicle.setVehicleID(vehicleID);
-
+        Integer vehicleID = null;
+        Vehicle vehicle = null;
+        for (int cnt = 0; cnt < 10; cnt++) {
+            try {
+                String name = ((idx == null) ? "" : idx) + "Vehicle" + (driverID == null ? "NO_DRIVER" : group.getName());
+                vehicle = new Vehicle(0, group.getGroupID(), Status.ACTIVE, name, "Make", "Model", 2000, "Red", 
+                            VehicleType.LIGHT, "VIN_" + (deviceID==null? Util.randomInt(1000, 30000) : deviceID), 1000, "UT " + group.getGroupID(), 
+                            States.getStateByAbbrev("UT"));
+                vehicleID = vehicleDAO.create(group.getGroupID(), vehicle);
+                vehicle.setVehicleID(vehicleID);
+                break;
+            } catch (DuplicateEntryException ex) {
+                if (cnt == 9)
+                    throw ex;
+            }
+            catch (HessianException ex) {
+                if (cnt == 9)
+                    throw ex;
+            }
+        }
         if (deviceID != null) {
             DeviceHessianDAO deviceDAO = new DeviceHessianDAO();
             deviceDAO.setSiloService(siloService);

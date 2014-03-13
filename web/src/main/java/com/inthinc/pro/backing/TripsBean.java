@@ -1,5 +1,6 @@
 package com.inthinc.pro.backing;
 
+import java.sql.Time;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -10,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
 
+import com.inthinc.pro.model.TimeFrame;
 import org.ajax4jsf.model.KeepAlive;
 import org.apache.log4j.Logger;
 import org.joda.time.DateMidnight;
@@ -77,6 +79,7 @@ public class TripsBean extends BaseBean {
     private Map<Integer, Driver> tripsDrivers = new HashMap<Integer, Driver>();
     private String dateStatus = MessageUtil.getMessageString("trip_valid_date_range",getLocale());
     private LatLng lastLocation;
+    private String timeFrameString = "";
     
 
     
@@ -318,9 +321,15 @@ public class TripsBean extends BaseBean {
     // DATE PROPERTIES
     public Date getStartDate() {
         if (startDate == null) {
-            // Set start date to 7 days ago, apply driver's time zone (set to six to get a net seven days)
-            startDate = new DateMidnight(new DateTime().minusDays(6), DateTimeZone.forTimeZone(getTimeZoneFromEntity())).toDate();
-            startDatePrev = startDate;
+            if (timeFrameString.equals("")){
+                // Set start date to 7 days ago, apply driver's time zone (set to six to get a net seven days)
+                startDate = new DateMidnight(new DateTime().minusDays(6), DateTimeZone.forTimeZone(getTimeZoneFromEntity())).toDate();
+                startDatePrev = startDate;
+            } else {
+                startDate = TimeFrame.valueOf(timeFrameString).getInterval(DateTimeZone.forTimeZone(getTimeZoneFromEntity())).getStart().toDate();
+                startDatePrev = startDate;
+            }
+
         }        
         return startDate;
     }
@@ -339,8 +348,14 @@ public class TripsBean extends BaseBean {
 
     public Date getEndDate() {
         if (endDate == null) {
-            setEndDate(new Date());
-            endDatePrev = endDate;
+            if (timeFrameString.equals("")){
+                setEndDate(new Date());
+                endDatePrev = endDate;
+            } else {
+                //setEndDate(TimeFrame.valueOf(timeFrameString).getInterval(getDateTimeZone()).getEnd().toDate());
+                endDate = TimeFrame.valueOf(timeFrameString).getInterval(DateTimeZone.forTimeZone(getTimeZoneFromEntity())).getEnd().toDate();
+                endDatePrev = endDate;
+            }
         }
         return endDate;
     }
@@ -843,5 +858,13 @@ public class TripsBean extends BaseBean {
                 selectedTrip.addLocations(driverDAO.getLocationsForTrip(selectedTrip.getTrip().getDriverID(), selectedTrip.getTrip().getStartTime(), selectedTrip.getTrip().getEndTime()));
             
         }
+    }
+
+    public String getTimeFrameString() {
+        return timeFrameString;
+    }
+
+    public void setTimeFrameString(String timeFrameString) {
+        this.timeFrameString = timeFrameString;
     }
 }

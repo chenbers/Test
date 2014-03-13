@@ -19,6 +19,7 @@ import org.joda.time.DateMidnight;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeConstants;
 import org.joda.time.DateTimeZone;
+import org.joda.time.Days;
 import org.joda.time.Interval;
 import org.joda.time.PeriodType;
 import org.junit.AfterClass;
@@ -947,7 +948,8 @@ public class ReportServiceTest {
                 Score vscore = vehicleScoreList.get(0).getScore();
 
                 if (teamType == ITData.BAD && timeFrame != TimeFrame.YEAR) {
-                    int expectedDays = Long.valueOf(timeFrame.getInterval(dateTimeZone).toDurationMillis()/DateTimeConstants.MILLIS_PER_DAY).intValue();
+                    Interval interval = timeFrame.getInterval(dateTimeZone);
+                    int expectedDays = Days.daysBetween(interval.getStart().toDateMidnight(), interval.getEnd().plusSeconds(1)).getDays();
                     assertEquals("Bad group should have one Backing per day " + timeFrame, expectedDays, dscore.getBackingEvents());
 
                 }

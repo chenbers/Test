@@ -2,7 +2,6 @@ package com.inthinc.pro.dao.jdbc;
 
 import com.inthinc.pro.model.Device;
 import com.inthinc.pro.model.DeviceStatus;
-import com.inthinc.pro.model.Status;
 import com.inthinc.pro.model.configurator.ProductType;
 import com.inthinc.pro.model.pagination.FilterOp;
 import com.inthinc.pro.model.pagination.PageParams;
@@ -103,7 +102,7 @@ public class AdminDeviceJDBCDAO extends SimpleJdbcDaoSupport {
 
         // status
         if (filter.getField().equals("status") && !isNumeric(filterVal)) {
-            filter.setFilter(Status.valueOf(filterVal).getCode());
+            filter.setFilter(DeviceStatus.valueOf(filterVal).getCode());
         }
 
         //product version
