@@ -118,21 +118,21 @@ Scenario: Assets - Devices - Default Records dropdowns are set to 10
 Given I am logged in
 When I click the Top Devices link
 Then I validate the Records Per Page dropdown is "10"
-//START HERE
+
 Scenario: Assets - Devices - Records per page test
 Given I am logged in
 When I click the Top Devices link
 And I select "10" from the Records Per Page dropdown 
-Then I validate the 11th Row of the Trailer Entry link is not present
+Then I validate the 11th Row of the Device Entry link is not present
 And I validate the Entries text contains "Showing 1 to 10 of"
 And I select "25" from the Records Per Page dropdown 
-And I validate the 26th Row of the Trailer Entry link is not present
+And I validate the 26th Row of the Device Entry link is not present
 And I validate the Entries text contains "Showing 1 to 25 of"
 And I select "50" from the Records Per Page dropdown 
-And I validate the 51st Row of the Trailer Entry link is not present
+And I validate the 51st Row of the Device Entry link is not present
 And I validate the Entries text contains "Showing 1 to 50 of"
 And I select "100" from the Records Per Page dropdown 
-And I validate the 101st Row of the Trailer Entry link is not present
+And I validate the 101st Row of the Device Entry link is not present
 And I validate the Entries text contains "Showing 1 to 100 of"
 
 Scenario: Assets - Devices - Select All checkbox functionality
@@ -374,216 +374,136 @@ Scenario: Assets - Devices - Search Filter
 Given I am logged in
 When I click the Top Devices link
 And I type "SEARCHTEXT" into the Search textfield
-And I click the Top Trailers link
+And I click the Top Devices link
 Then I validate the Search textfield is "SEARCHTEXT"
 
-Scenario: Assets - Devices - Search All Fields
+Scenario: Assets - Devices - Search All Fields (requires specific devices are present in the table)
 Given I am logged in
 When I click the Top Devices link
 And I click the Show Hide Columns link
-And I check the Vin checkbox
-And I check the License checkbox
-And I check the State checkbox
-And I check the Year checkbox
-And I check the Make checkbox
-And I check the Model checkbox
-And I check the Color checkbox
-And I check the Weight checkbox
-And I check the Odometer checkbox
-And I click the Top Trailers link
-And I click the New_ button
-And I type "SEARCHVEH1" into the Trailer textfield
-And I type "SEARCHVIN1" into the Vin textfield
-And I type "SEARCHMAKE1" into the Make textfield
-And I type "SEARCHMODEL1" into the Model textfield
-And I type "333555" into the Odometer textfield
-And I type "3055" into the Year textfield
-And I type "SEARCHCOLO1" into the Color textfield
-And I type "987654321" into the Weight textfield
-And I type "SEARCHLIC1" into the License textfield
-And I select "Federated States of Micronesia" from the State dropdown
-And I select "MCM990075" from the Assigned Device dropdown
-And I click the Save button
-And I type "SEARCHVEH1" into the Search textfield
-And I click the Sort By Trailer link
-Then I validate the 1st Row of the Trailer Entry link is "SEARCHVEH1"
-And I click the Sort By Trailer link
-And I validate the 1st Row of the Trailer Entry link is "SEARCHVEH1"
-And I type "Test Group WR" into the Search textfield
-And I click the Sort By Team link
-And I validate the 1st Row of the Team Entry link is "Test Group WR"
-And I click the Sort By Team link
-And I validate the 1st Row of the Team Entry link is "Test Group WR"
-And I type "MCM990075" into the Search textfield
+And I check the Vehicle ID checkbox
+And I check the Product checkbox
+And I check the IMEI checkbox
+And I check the Alternate IMEI checkbox
+And I check the SIM Card checkbox
+And I check the Serial Number checkbox
+And I check the Phone checkbox
+And I check the Status checkbox
+And I check the MCM ID checkbox
+And I click the Top Devices link
+And I type "MCM990098" into the Search textfield
 And I click the Sort By Device link
-And I validate the 1st Row of the Device Entry link is "MCM990075"
+Then I validate the 1st Row of the Device Entry link is "MCM990098"
 And I click the Sort By Device link
-And I validate the 1st Row of the Device Entry link is "MCM990075"
-And I type "autogen75" into the Search textfield
-And I click the Sort By Vehicle link
-And I validate the 1st Row of the Vehicle Entry link is "autogen75"
-And I click the Sort By Vehicle link
-And I validate the 1st Row of the Vehicle Entry link is "autogen75"
-And I type "Automatically  Generated75" into the Search textfield
-And I click the Sort By Driver link
-And I validate the 1st Row of the Driver Entry link is "Automatically Generated75"
-And I click the Sort By Driver link
-And I validate the 1st Row of the Driver Entry link is "Automatically Generated75"
-And I type "SEARCHVIN1" into the Search textfield
-And I click the Sort By Vin link
-And I validate the 1st Row of the Vin Entry link is "SEARCHVIN1"
-And I click the Sort By Vin link
-And I validate the 1st Row of the Vin Entry link is "SEARCHVIN1"
-And I type "SEARCHLIC1" into the Search textfield
-And I click the Sort By License link
-And I validate the 1st Row of the License Entry link is "SEARCHLIC1"
-And I click the Sort By License link
-And I validate the 1st Row of the License Entry link is "SEARCHLIC1"
-And I type "Federated States of Micronesia" into the Search textfield
-And I click the Sort By State link
-And I validate the 1st Row of the State Entry link is "Federated States of Micronesia"
-And I click the Sort By State link
-And I validate the 1st Row of the State Entry link is "Federated States of Micronesia"
-And I type "3055" into the Search textfield
-And I click the Sort By Year link
-And I validate the 1st Row of the Year Entry link is "3055"
-And I click the Sort By Year link
-And I validate the 1st Row of the Year Entry link is "3055"
-And I type "SEARCHMAKE1" into the Search textfield
-And I click the Sort By Make link
-And I validate the 1st Row of the Make Entry link is "SEARCHMAKE1"
-And I click the Sort By Make link
-And I validate the 1st Row of the Make Entry link is "SEARCHMAKE1"
-And I type "SEARCHMODEL1" into the Search textfield
-And I click the Sort By Model link
-And I validate the 1st Row of the Model Entry link is "SEARCHMODEL1"
-And I click the Sort By Model link
-And I validate the 1st Row of the Model Entry link is "SEARCHMODEL1"
-And I type "SEARCHCOLO1" into the Search textfield
-And I click the Sort By Color link
-And I validate the 1st Row of the Color Entry link is "SEARCHCOLO1"
-And I click the Sort By Color link
-And I validate the 1st Row of the Color Entry link is "SEARCHCOLO1"
-And I type "987654321" into the Search textfield
-And I click the Sort By Weight link
-And I validate the 1st Row of the Weight Entry link is "987654321"
-And I click the Sort By Weight link
-And I validate the 1st Row of the Weight Entry link is "987654321"
-And I type "333555" into the Search textfield
-And I click the Sort By Odometer link
-And I validate the 1st Row of the Odometer Entry link is "333555"
-And I click the Sort By Odometer link
-And I validate the 1st Row of the Odometer Entry link is "333555"
-!-- Now I delete the entries so it will run just fine on the next run through
-And I click the 1st Row of the Trailer Entry link
-And I click the Edit button
-And I select "DELETED" from the Status dropdown
-And I click the Save button
-And I validate the Entries text contains "Showing 0 to 0 of 0 entries"
+And I validate the 1st Row of the Device Entry link is "MCM990098"
+And I type "autogen68" into the Search textfield
+And I click the Sort By Vehicle ID link
+And I validate the 1st Row of the Vehicle ID Entry link is "autogen68"
+And I click the Sort By Vehicle ID link
+And I validate the 1st Row of the Vehicle ID Entry link is "autogen68"
+And I type "WAYSMART" into the Search textfield
+And I click the Sort By Product link
+And I validate the 1st Row of the Product Entry link is "WAYSMART"
+And I click the Sort By Product link
+And I validate the 1st Row of the Product Entry link is "WAYSMART"
+And I type "999900000000008" into the Search textfield
+And I click the Sort By IMEI link
+And I validate the 1st Row of the IMEI Entry link is "999900000000008"
+And I click the Sort By IMEI link
+And I validate the 1st Row of the IMEI Entry link is "999900000000008"
+And I type "Alternate IMEI" into the Search textfield
+And I click the Sort By Alternate IMEI link
+And I validate the 1st Row of the Alternate IMEI Entry link is "Alternate IMEI"
+And I click the Sort By Alternate IMEI link
+And I validate the 1st Row of the Alternate IMEI Entry link is "Alternate IMEI"
+And I type "9999069911201002944" into the Search textfield
+And I click the Sort By SIM Card link
+And I validate the 1st Row of the SIM Card Entry link is "9999069911201002944"
+And I click the Sort By SIM Card link
+And I validate the 1st Row of the SIM Card Entry link is "9999069911201002944"
+And I type "WATERWELLD" into the Search textfield
+And I click the Sort By Serial Number link
+And I validate the 1st Row of the Serial Number Entry link is "WATERWELLD"
+And I click the Sort By Serial Number link
+And I validate the 1st Row of the Serial Number Entry link is "WATERWELLD"
+And I type "8885559999" into the Search textfield
+And I click the Sort By Phone link
+And I validate the 1st Row of the Phone Entry link is "8885559999"
+And I click the Sort By Phone link
+And I validate the 1st Row of the Phone Entry link is "8885559999"
+And I type "AUTOMATION850" into the Search textfield
+And I click the Sort By MCM ID link
+And I validate the 1st Row of the MCM ID Entry link is "AUTOMATION850"
+And I click the Sort By MCM ID link
+And I validate the 1st Row of the MCM ID Entry link is "AUTOMATION850"
 
 Scenario: Assets - Devices - Show Hide Columns UI Interaction
 Given I am logged in
 When I click the Top Devices link
 And I click the Show Hide Columns link
-And I uncheck the Team checkbox
-Then I validate the Sort By Team link is not present
-And I check the Team checkbox
-And I validate the Sort By Team link is present
+And I uncheck the Vehicle ID checkbox
+Then I validate the Sort By Vehicle ID link is not present
+And I check the Vehicle ID checkbox
+And I validate the Sort By Vehicle ID link is present
 When I click the Show Hide Columns link
-And I uncheck the Device checkbox
-Then I validate the Sort By Device link is not present
-And I check the Device checkbox
-And I validate the Sort By Device link is present
+And I uncheck the Product checkbox
+Then I validate the Sort By Product link is not present
+And I check the Product checkbox
+And I validate the Sort By Product link is present
 When I click the Show Hide Columns link
-And I uncheck the Vehicle checkbox
-Then I validate the Sort By Vehicle link is not present
-And I check the Vehicle checkbox
-And I validate the Sort By Vehicle link is present
+And I uncheck the IMEI checkbox
+Then I validate the Sort By IMEI link is not present
+And I check the IMEI checkbox
+And I validate the Sort By IMEI link is present
 When I click the Show Hide Columns link
-And I uncheck the Driver checkbox
-Then I validate the Sort By Driver link is not present
-And I check the Driver checkbox
-And I validate the Sort By Driver link is present
+And I uncheck the Alternate IMEI checkbox
+Then I validate the Sort By Alternate IMEI link is not present
+And I check the Alternate IMEI checkbox
+And I validate the Sort By Alternate IMEI link is present
+When I click the Show Hide Columns link
+And I uncheck the SIM Card checkbox
+Then I validate the Sort By SIM Card link is not present
+And I check the SIM Card checkbox
+And I validate the Sort By SIM Card link is present
+When I click the Show Hide Columns link
+And I uncheck the Serial Number checkbox
+Then I validate the Sort By Serial Number link is not present
+And I check the Serial Number checkbox
+And I validate the Sort By Serial Number link is present
+When I click the Show Hide Columns link
+And I uncheck the Phone checkbox
+Then I validate the Sort By Phone link is not present
+And I check the Phone checkbox
+And I validate the Sort By Phone link is present
 When I click the Show Hide Columns link
 And I uncheck the Status checkbox
 Then I validate the Sort By Status link is not present
 And I check the Status checkbox
 And I validate the Sort By Status link is present
 When I click the Show Hide Columns link
-And I uncheck the Vin checkbox
-Then I validate the Sort By Vin link is not present
-And I check the Vin checkbox
-And I validate the Sort By Vin link is present
-When I click the Show Hide Columns link
-And I uncheck the License checkbox
-Then I validate the Sort By License link is not present
-And I check the License checkbox
-And I validate the Sort By License link is present
-When I click the Show Hide Columns link
-And I uncheck the State checkbox
-Then I validate the Sort By State link is not present
-And I check the State checkbox
-And I validate the Sort By State link is present
-When I click the Show Hide Columns link
-And I uncheck the Year checkbox
-Then I validate the Sort By Year link is not present
-And I check the Year checkbox
-And I validate the Sort By Year link is present
-When I click the Show Hide Columns link
-And I uncheck the Make checkbox
-Then I validate the Sort By Make link is not present
-And I check the Make checkbox
-And I validate the Sort By Make link is present
-When I click the Show Hide Columns link
-And I uncheck the Model checkbox
-Then I validate the Sort By Model link is not present
-And I check the Model checkbox
-And I validate the Sort By Model link is present
-When I click the Show Hide Columns link
-And I uncheck the Color checkbox
-Then I validate the Sort By Color link is not present
-And I check the Color checkbox
-And I validate the Sort By Color link is present
-When I click the Show Hide Columns link
-And I uncheck the Weight checkbox
-Then I validate the Sort By Weight link is not present
-And I check the Weight checkbox
-And I validate the Sort By Weight link is present
-When I click the Show Hide Columns link
-And I uncheck the Odometer checkbox
-Then I validate the Sort By Odometer link is not present
-And I check the Odometer checkbox
-And I validate the Sort By Odometer link is present
-And I uncheck the Team checkbox
-And I uncheck the Device checkbox
-And I uncheck the Vehicle checkbox
-And I uncheck the Driver checkbox
+And I uncheck the MCM ID checkbox
+Then I validate the Sort By MCM ID link is not present
+And I check the MCM ID checkbox
+And I validate the Sort By MCM ID link is present
+And I uncheck the Vehicle ID checkbox
+And I uncheck the Product checkbox
+And I uncheck the IMEI checkbox
+And I uncheck the Alternate IMEI checkbox
+And I uncheck the SIM Card checkbox
+And I uncheck the Serial Number checkbox
+And I uncheck the Phone checkbox
 And I uncheck the Status checkbox
-And I uncheck the Vin checkbox
-And I uncheck the License checkbox
-And I uncheck the State checkbox
-And I uncheck the Year checkbox
-And I uncheck the Make checkbox
-And I uncheck the Model checkbox
-And I uncheck the Color checkbox
-And I uncheck the Weight checkbox
-And I uncheck the Odometer checkbox
+And I uncheck the MCM ID checkbox
 And I click the Restore Original link
-And I validate the Sort By Trailer link is present
-And I validate the Sort By Team link is present
-And I validate the Sort By Device link is present
-And I validate the Sort By Vehicle link is present
-And I validate the Sort By Driver link is present
+And I validate the Sort By Vehicle ID link is present
+And I validate the Sort By Product link is present
+And I validate the Sort By IMEI link is present
+And I validate the Sort By Alternate IMEI link is present
+And I validate the Sort By SIM Card link is present
+And I validate the Sort By Serial Number link is present
+And I validate the Sort By Phone link is present
 And I validate the Sort By Status link is present
-And I validate the Sort By Vin link is not present
-And I validate the Sort By License link is not present
-And I validate the Sort By State link is not present
-And I validate the Sort By Year link is not present
-And I validate the Sort By Make link is not present
-And I validate the Sort By Model link is not present
-And I validate the Sort By Color link is not present
-And I validate the Sort By Weight link is not present
-And I validate the Sort By Odometer link is not present
+And I validate the Sort By MCM ID link is present
 
 Scenario: Assets - Devices - Bookmark Entry 
 Given I am logged in
@@ -594,1947 +514,670 @@ And I click the bookmark I just added
 And I log back in
 Then I validate I am on the Assets Devices page
 
-Scenario: Assets - Devices - Table Properties NEED TO IMPLEMENT CHECKING ALPHABETICAL ORDER
-Given I am logged in
-When I click the Top Devices link
-And I click the Show Hide Columns link
-And I check the Vin checkbox
-And I check the License checkbox
-And I check the State checkbox
-And I check the Year checkbox
-And I check the Make checkbox
-And I check the Model checkbox
-And I check the Color checkbox
-And I check the Weight checkbox
-And I check the Odometer checkbox
-And I click the Sort By Trailer link
-And I click the Sort By Team link
-And I click the Sort By Device link
-And I click the Sort By Vehicle link
-And I click the Sort By Driver link
-And I click the Sort By Status link
-And I click the Sort By Vin link
-And I click the Sort By License link
-And I click the Sort By State link
-And I click the Sort By Year link
-And I click the Sort By Make link
-And I click the Sort By Model link
-And I click the Sort By Color link
-And I click the Sort By Weight link
-And I click the Sort By Odometer link
+Scenario: Assets - Devices - Table Properties (Removing test till it's implemented)
+!-- Given I am logged in
+!-- When I click the Top Devices link
+!-- And I click the Show Hide Columns link
+!-- And I check the Vin checkbox
+!-- And I check the License checkbox
+!-- And I check the State checkbox
+!-- And I check the Year checkbox
+!-- And I check the Make checkbox
+!-- And I check the Model checkbox
+!-- And I check the Color checkbox
+!-- And I check the Weight checkbox
+!-- And I check the Odometer checkbox
+!-- And I click the Sort By Trailer link
+!-- And I click the Sort By Team link
+!-- And I click the Sort By Device link
+!-- And I click the Sort By Vehicle link
+!-- And I click the Sort By Driver link
+!-- And I click the Sort By Status link
+!-- And I click the Sort By Vin link
+!-- And I click the Sort By License link
+!-- And I click the Sort By State link
+!-- And I click the Sort By Year link
+!-- And I click the Sort By Make link
+!-- And I click the Sort By Model link
+!-- And I click the Sort By Color link
+!-- And I click the Sort By Weight link
+!-- And I click the Sort By Odometer link
 
 Scenario: Assets - Devices - Show/Hide Columns - Subsequent Session Retention
 Given I am logged in
 When I click the Top Devices link
 And I click the Show Hide Columns link
-And I uncheck the Team checkbox
+And I uncheck the Vehicle ID checkbox
 And I click the Show Hide Columns link
-Then I validate the Sort By Team link is not present
+Then I validate the Sort By Vehicle ID link is not present
 And I click the Logout link
 Given I am logged in
-And I click the Top Trailers link
-Then I validate the Sort By Team link is not present
+And I click the Top Devices link
+Then I validate the Sort By Vehicle ID link is not present
 And I click the Show Hide Columns link
-And I check the Team checkbox
+And I check the Vehicle ID checkbox
 And I click the Show Hide Columns link
-And I validate the Sort By Team link is present
-
-Scenario: Assets - Devices - Click New Button, Then Try And Select A Row In The Table
-Given I am logged in
-When I click the Top Devices link
-And I click the Show Hide Columns link
-And I check the Vin checkbox
-And I check the License checkbox
-And I check the State checkbox
-And I check the Year checkbox
-And I check the Make checkbox
-And I check the Model checkbox
-And I check the Color checkbox
-And I check the Weight checkbox
-And I check the Odometer checkbox
-And I click the Top Trailers link
-And I save the 1st Row of the Trailer Entry link as SAVEDTRAILER
-And I save the 1st Row of the Team Entry link as SAVEDTEAM
-And I save the 1st Row of the Device Entry link as SAVEDDEVICE
-And I save the 1st Row of the Vehicle Entry link as SAVEDVEHICLE
-And I save the 1st Row of the Driver Entry link as SAVEDDRIVER
-And I save the 1st Row of the Status Entry link as SAVEDSTATUS
-And I save the 1st Row of the Vin Entry link as SAVEDVIN
-And I save the 1st Row of the License Entry link as SAVEDLICENSE
-And I save the 1st Row of the State Entry link as SAVEDSTATE
-And I save the 1st Row of the Year Entry link as SAVEDYEAR
-And I save the 1st Row of the Make Entry link as SAVEDMAKE
-And I save the 1st Row of the Model Entry link as SAVEDMODEL
-And I save the 1st Row of the Color Entry link as SAVEDCOLOR
-And I save the 1st Row of the Weight Entry link as SAVEDWEIGHT
-And I save the 1st Row of the Odometer Entry link as SAVEDODOMETER
-And I click the New_ button
-And I click the 1st Row of the Trailer Entry link
-Then I validate the Cancel button is not visible
-And I validate the Save button is not visible
-And I validate the Edit button is visible
-And I validate the Vin text is SAVEDVIN
-And I validate the Make text is SAVEDMAKE
-And I validate the Model text is SAVEDMODEL
-And I validate the Odometer text is SAVEDODOMETER
-And I validate the Year text is SAVEDYEAR
-And I validate the Color text is SAVEDCOLOR
-And I validate the Weight text is SAVEDWEIGHT
-And I validate the License text is SAVEDLICENSE
-And I validate the State text is SAVEDSTATE
-And I validate the Trailer text is SAVEDTRAILER
-And I validate the Status text is SAVEDSTATUS
-And I validate the Assigned Team text is SAVEDTEAM
-And I validate the Assigned Device text is SAVEDDEVICE
-And I validate the Assigned Vehicle text is SAVEDVEHICLE
-And I validate the Assigned Driver text is SAVEDDRIVER
+And I validate the Sort By Vehicle ID link is present
 
 Scenario: Assets - Devices - Select A Row, Click Edit, Then Select Another Row
 Given I am logged in
 When I click the Top Devices link
 And I click the Show Hide Columns link
-And I check the Vin checkbox
-And I check the License checkbox
-And I check the State checkbox
-And I check the Year checkbox
-And I check the Make checkbox
-And I check the Model checkbox
-And I check the Color checkbox
-And I check the Weight checkbox
-And I check the Odometer checkbox
-And I click the Top Trailers link
-And I click the 1st Row of the Trailer Entry link
+And I check the Vehicle ID checkbox
+And I check the Product checkbox
+And I check the IMEI checkbox
+And I check the Alternate IMEI checkbox
+And I check the SIM Card checkbox
+And I check the Serial Number checkbox
+And I check the Phone checkbox
+And I check the Status checkbox
+And I check the MCM ID checkbox
+And I click the Top Devices link
+And I click the 1st Row of the Device Entry link
 And I click the Edit button
-And I click the 2nd Row of the Trailer Entry link
-Then I validate the Trailer textfield is ""
-And I validate the Status dropdown is "ACTIVE"
-And I validate the Vin textfield is ""
-And I validate the Make textfield is ""
-And I validate the Model textfield is ""
-And I validate the Odometer textfield is ""
-And I validate the Year textfield is ""
-And I validate the Color textfield is ""
-And I validate the Weight textfield is ""
-And I validate the License textfield is ""
-And I validate the State dropdown is "--- Select ---"
-And I validate the Assigned Device dropdown is ""
-And I validate the Assigned Vehicle text is ""
-And I validate the Assigned Team text is ""
-And I validate the Assigned Driver text is ""
+And I click the 2nd Row of the Device Entry link
+Then I validate the Device text is ""
+And I validate the Product text is ""
+And I validate the MCM ID text is ""
+And I validate the IMEI text is ""
+And I validate the SIM Card text is ""
+And I validate the Phone text is ""
+And I validate the Alternate IMEI text is ""
+And I validate the Serial Number text is ""
+And I validate the Status dropdown is "NEW"
+And I validate the Activated text is ""
+And I validate the Assigned Vehicle dropdown is disabled
 
 Scenario: Assets - Devices - Select And Deselect A Row
 Given I am logged in
 When I click the Top Devices link
-And I click the 1st Row of the Trailer Entry link
-And I control click the 1st Row of the Trailer Entry link
-Then I validate the Vin text is ""
-And I validate the Make text is ""
-And I validate the Year text is ""
-And I validate the Color text is ""
-And I validate the Weight text is ""
-And I validate the License text is ""
-And I validate the State text is ""
-And I validate the Trailer text is ""
-And I validate the Status text is ""
-And I validate the Assigned Team text is ""
-And I validate the Assigned Device text is ""
+And I click the 1st Row of the Device Entry link
+And I control click the 1st Row of the Device Entry link
+Then I validate the Device text is ""
+And I validate the Product text is ""
+And I validate the MCM ID text is ""
+And I validate the IMEI text is ""
+And I validate the SIM Card text is ""
+And I validate the Phone text is ""
+And I validate the Alternate IMEI text is ""
+And I validate the Serial Number text is ""
+And I validate the Status dropdown is ""
+And I validate the Activated text is ""
 And I validate the Assigned Vehicle text is ""
-And I validate the Assigned Driver text is ""
-
-Scenario: Assets - Devices - Select And Deselect A Row Then Click The New Button
-Given I am logged in
-When I click the Top Devices link
-And I click the 1st Row of the Trailer Entry link
-And I control click the 1st Row of the Trailer Entry link
-And I click the New_ button
-And I validate the Trailer textfield is ""
-And I validate the Status dropdown is "ACTIVE"
-Then I validate the Vin textfield is ""
-And I validate the Make textfield is ""
-And I validate the Model textfield is ""
-And I validate the Odometer textfield is ""
-And I validate the Year textfield is ""
-And I validate the Color textfield is ""
-And I validate the Weight textfield is ""
-And I validate the License textfield is ""
-And I validate the State dropdown contains "--- Select ---"
-And I validate the Assigned Device dropdown is ""
-And I validate the Assigned Team text is ""
-And I validate the Assigned Vehicle text is ""
-And I validate the Assigned Driver text is ""
 
 Scenario: Assets - Devices - Select A Row, Select Edit, Then Cancel
 Given I am logged in
 When I click the Top Devices link
 And I click the Show Hide Columns link
-And I check the Vin checkbox
-And I check the License checkbox
-And I check the State checkbox
-And I check the Year checkbox
-And I check the Make checkbox
-And I check the Model checkbox
-And I check the Color checkbox
-And I check the Weight checkbox
-And I check the Odometer checkbox
-And I click the Top Trailers link
-And I click the 1st Row of the Trailer Entry link
-And I save the 1st Row of the Trailer Entry link as SAVEDTRAILER
-And I save the 1st Row of the Team Entry link as SAVEDTEAM
+And I check the Vehicle ID checkbox
+And I check the Product checkbox
+And I check the IMEI checkbox
+And I check the Alternate IMEI checkbox
+And I check the SIM Card checkbox
+And I check the Serial Number checkbox
+And I check the Phone checkbox
+And I check the Status checkbox
+And I check the MCM ID checkbox
+And I click the Top Devices link
+And I click the 1st Row of the Device Entry link
 And I save the 1st Row of the Device Entry link as SAVEDDEVICE
-And I save the 1st Row of the Vehicle Entry link as SAVEDVEHICLE
-And I save the 1st Row of the Driver Entry link as SAVEDDRIVER
+And I save the 1st Row of the Vehicle ID Entry link as SAVEDVEHICLE
+And I save the 1st Row of the Product Entry link as SAVEDPRODUCT
+And I save the 1st Row of the IMEI Entry link as SAVEDIMEI
+And I save the 1st Row of the Alternate IMEI Entry link as SAVEDALTERNATEIMEI
+And I save the 1st Row of the SIM Card Entry link as SAVEDSIMCARD
+And I save the 1st Row of the Serial Number Entry link as SAVEDSERIALNUMBER
+And I save the 1st Row of the Phone Entry link as SAVEDPHONE
 And I save the 1st Row of the Status Entry link as SAVEDSTATUS
-And I save the 1st Row of the Vin Entry link as SAVEDVIN
-And I save the 1st Row of the License Entry link as SAVEDLICENSE
-And I save the 1st Row of the State Entry link as SAVEDSTATE
-And I save the 1st Row of the Year Entry link as SAVEDYEAR
-And I save the 1st Row of the Make Entry link as SAVEDMAKE
-And I save the 1st Row of the Model Entry link as SAVEDMODEL
-And I save the 1st Row of the Color Entry link as SAVEDCOLOR
-And I save the 1st Row of the Weight Entry link as SAVEDWEIGHT
-And I save the 1st Row of the Odometer Entry link as SAVEDODOMETER
+And I save the 1st Row of the MCM ID Entry link as SAVEDMCMID
 And I click the Edit button
 And I click the Cancel button
-Then I validate the Vin text is SAVEDVIN
-And I validate the Make text is SAVEDMAKE
-And I validate the Model text is SAVEDMODEL
-And I validate the Odometer text is SAVEDODOMETER
-And I validate the Year text is SAVEDYEAR
-And I validate the Color text is SAVEDCOLOR
-And I validate the Weight text is SAVEDWEIGHT
-And I validate the License text is SAVEDLICENSE
-And I validate the State text is SAVEDSTATE
-And I validate the Trailer text is SAVEDTRAILER
-And I validate the Status text is SAVEDSTATUS
-And I validate the Assigned Team text is SAVEDTEAM
-And I validate the Assigned Device text is SAVEDDEVICE
-And I validate the Assigned Vehicle text is SAVEDVEHICLE
-And I validate the Assigned Driver text is SAVEDDRIVER
+Then I validate the 1st Row of the Device Entry link is SAVEDDEVICE
+And I validate the 1st Row of the Vehicle ID Entry link is SAVEDVEHICLE
+And I validate the 1st Row of the Product Entry link is SAVEDPRODUCT
+And I validate the 1st Row of the IMEI Entry link is SAVEDIMEI
+And I validate the 1st Row of the Alternate IMEI Entry link is SAVEDALTERNATEIMEI
+And I validate the 1st Row of the SIM Card Entry link is SAVEDSIMCARD
+And I validate the 1st Row of the Serial Number Entry link is SAVEDSERIALNUMBER
+And I validate the 1st Row of the Phone Entry link is SAVEDPHONE
+And I validate the 1st Row of the Status Entry link is SAVEDSTATUS
+And I validate the 1st Row of the MCM ID Entry link is SAVEDMCMID
 
 Scenario: Assets - Devices - Select A Row, Select Edit, Deselect The Row
 Given I am logged in
 When I click the Top Devices link
-And I click the 1st Row of the Trailer Entry link
+And I click the 1st Row of the Device Entry link
 And I click the Edit button
-And I control click the 1st Row of the Trailer Entry link
-Then I validate the New_ button is visible
-And I validate the Save button is not visible
+And I control click the 1st Row of the Device Entry link
+Then I validate the Save button is not visible
 And I validate the Edit button is not visible
 And I validate the Cancel button is not visible
-And I validate the Vin text is ""
-And I validate the Make text is ""
-And I validate the Model text is ""
-And I validate the Odometer text is ""
-And I validate the Year text is ""
-And I validate the Color text is ""
-And I validate the Weight text is ""
-And I validate the License text is ""
-And I validate the State text is ""
-And I validate the Trailer text is ""
-And I validate the Status text is ""
-And I validate the Assigned Team text is ""
-And I validate the Assigned Device text is ""
+And I validate the Delete button is not visible
+And I validate the Device text is ""
+And I validate the Product text is ""
+And I validate the MCM ID text is ""
+And I validate the IMEI text is ""
+And I validate the SIM Card text is ""
+And I validate the Phone text is ""
+And I validate the Alternate IMEI text is ""
+And I validate the Serial Number text is ""
+And I validate the Status dropdown is ""
+And I validate the Activated text is ""
 And I validate the Assigned Vehicle text is ""
-And I validate the Assigned Driver text is ""
 
-Scenario: Assets - Devices - Delete Trailer Test (cancel button)
+Scenario: Assets - Devices - Delete Device Test (cancel button) (need to use DeviceRestController to create the device that will be deleted)
+!-- Given I am logged in
+!-- When I click the Top Devices link
+!-- And I click the Show Hide Columns link
+!-- And I check the Vehicle ID checkbox
+!-- And I check the Product checkbox
+!-- And I check the IMEI checkbox
+!-- And I check the Alternate IMEI checkbox
+!-- And I check the SIM Card checkbox
+!-- And I check the Serial Number checkbox
+!-- And I check the Phone checkbox
+!-- And I check the Status checkbox
+!-- And I check the MCM ID checkbox
+!-- And I click the Top Devices link
+!-- And I type "ASSETDELETEDEVICETEST" into the Search textfield
+!-- And I click the 1st Row of the Device Entry link
+!-- And I save the 1st Row of the Device Entry link as SAVEDDEVICE
+!-- And I click the Edit button
+!-- And I select "DELETED" from the Status dropdown
+!-- And I click the Cancel button
+!-- Then I validate the 1st Row of the Device Entry link is SAVEDDEVICE
+
+Scenario: Assets - Devices - Delete Device Test (save button) (need to use DeviceRestController to create the device that will be deleted)
+!-- Given I am logged in
+!-- When I click the Top Devices link
+!-- And I click the Show Hide Columns link
+!-- And I check the Vehicle ID checkbox
+!-- And I check the Product checkbox
+!-- And I check the IMEI checkbox
+!-- And I check the Alternate IMEI checkbox
+!-- And I check the SIM Card checkbox
+!-- And I check the Serial Number checkbox
+!-- And I check the Phone checkbox
+!-- And I check the Status checkbox
+!-- And I check the MCM ID checkbox
+!-- And I click the Top Devices link
+!-- And I type "ASSETDELETEDEVICETEST" into the Search textfield
+!-- And I click the 1st Row of the Device Entry link
+!-- And I save the 1st Row of the Device Entry link as SAVEDDEVICE
+!-- And I click the Edit button
+!-- And I select "DELETED" from the Status dropdown
+!-- And I click the Save button
+!-- Then I validate the 1st Row of the Device Entry link is SAVEDDEVICE
+
+Scenario: Assets - Devices - Delete two devices back to back (need to use DeviceRestController to create the device that will be deleted)
+!-- Given I am logged in
+!-- When I click the Top Devices link
+!-- And I type "ASSETDELDEVICETEST1" into the Search textfield
+!-- And I click the 1st Row of the Device Entry link
+!-- And I click the Edit button
+!-- And I select "DELETED" from the Status dropdown
+!-- And I click the Save button
+!-- Then I validate the 1st Row of the Device Entry link is not present
+!-- And I type "ASSETDELDEVICETEST2" into the Search textfield
+!-- And I click the 1st Row of the Device Entry link
+!-- And I click the Edit button
+!-- And I select "DELETED" from the Status dropdown
+!-- And I click the Save button
+!-- And I validate the 1st Row of the Device Entry link is not present
+
+Scenario: Assets - Devices - Delete entry then edit an entry (need to use DeviceRestController to create the device that will be deleted)
+!-- Given I am logged in
+!-- When I click the Top Devices link
+!-- And I click the Show Hide Columns link
+!-- And I check the Vehicle ID checkbox
+!-- And I check the Product checkbox
+!-- And I check the IMEI checkbox
+!-- And I check the Alternate IMEI checkbox
+!-- And I check the SIM Card checkbox
+!-- And I check the Serial Number checkbox
+!-- And I check the Phone checkbox
+!-- And I check the Status checkbox
+!-- And I check the MCM ID checkbox
+!-- And I click the Top Devices link
+!-- And I type "DELETEANDEDITDEVICE" into the Search textfield
+!-- And I click the 1st Row of the Device Entry link
+!-- And I click the Edit button
+!-- And I select "DELETED" from the Status dropdown
+!-- And I click the Save button
+!-- Then I validate the 1st Row of the Device Entry link is not present
+!-- And I type "" into the Search textfield
+!-- And I click the 1st Row of the Entry checkbox
+!-- And I save the 1st Row of the Device Entry link as SAVEDDEVICE
+!-- And I save the 1st Row of the Vehicle ID Entry link as SAVEDVEHICLE
+!-- And I save the 1st Row of the Product Entry link as SAVEDPRODUCT
+!-- And I save the 1st Row of the IMEI Entry link as SAVEDIMEI
+!-- And I save the 1st Row of the Alternate IMEI Entry link as SAVEDALTERNATEIMEI
+!-- And I save the 1st Row of the SIM Card Entry link as SAVEDSIMCARD
+!-- And I save the 1st Row of the Serial Number Entry link as SAVEDSERIALNUMBER
+!-- And I save the 1st Row of the Phone Entry link as SAVEDPHONE
+!-- And I save the 1st Row of the Status Entry link as SAVEDSTATUS
+!-- And I save the 1st Row of the MCM ID Entry link as SAVEDMCMID
+!-- And I validate the Device text is SAVEDDEVICE
+!-- And I validate the Product text is SAVEDPRODUCT
+!-- And I validate the MCM ID text is SAVEDMCMID
+!-- And I validate the IMEI text is SAVEDIMEI
+!-- And I validate the SIM Card text is SAVEDSIMCARD
+!-- And I validate the Phone text is SAVEDPHONE
+!-- And I validate the Alternate IMEI text is SAVEDALTERNATEIMEI
+!-- And I validate the Serial Number text is SAVEDSERIALNUMBER
+!-- And I validate the Status dropdown is SAVEDSTATUS
+!-- And I validate the Activated text is not ""
+!-- And I validate the Assigned Vehicle text is SAVEDVEHICLE
+!-- And I click the Edit button
+!-- And I validate the Device text is SAVEDDEVICE
+!-- And I validate the Product text is SAVEDPRODUCT
+!-- And I validate the MCM ID text is SAVEDMCMID
+!-- And I validate the IMEI text is SAVEDIMEI
+!-- And I validate the SIM Card text is SAVEDSIMCARD
+!-- And I validate the Phone text is SAVEDPHONE
+!-- And I validate the Alternate IMEI text is SAVEDALTERNATEIMEI
+!-- And I validate the Serial Number text is SAVEDSERIALNUMBER
+!-- And I validate the Status dropdown is SAVEDSTATUS
+!-- And I validate the Activated text is not ""
+!-- And I validate the Assigned Vehicle dropdown is SAVEDVEHICLE
+
+Scenario: Assets - Devices - Edit Device (save button - no changes)
 Given I am logged in
 When I click the Top Devices link
 And I click the Show Hide Columns link
-And I check the Vin checkbox
-And I check the License checkbox
-And I check the State checkbox
-And I check the Year checkbox
-And I check the Make checkbox
-And I check the Model checkbox
-And I check the Color checkbox
-And I check the Weight checkbox
-And I check the Odometer checkbox
-And I click the Top Trailers link
-And I click the 1st Row of the Trailer Entry link
-And I save the 1st Row of the Trailer Entry link as SAVEDTRAILER
-And I click the Edit button
-And I select "DELETED" from the Status dropdown
-And I click the Cancel button
-Then I validate the 1st Row of the Trailer Entry link is SAVEDTRAILER
-
-Scenario: Assets - Devices - Delete Trailer Test (save button)
-Given I am logged in
-When I click the Top Devices link
-And I click the New_ button
-And I type "DELETETRAILERNAME" into the Trailer textfield
-And I type "DELETEVIN" into the Vin textfield
-And I type "DELETEFord" into the Make textfield
-And I type "DELETEFocus" into the Model textfield
-And I type "999" into the Odometer textfield
-And I type "1961" into the Year textfield
-And I type "DELETE Red" into the Color textfield
-And I type "230519" into the Weight textfield
-And I type "DELETELIC" into the License textfield
-And I select "New York" from the State dropdown
-And I select "MCM990050" from the Assigned Device dropdown
-And I click the Save button
-And I type "DELETETRAILERNAME" into the Search textfield
-And I click the 1st Row of the Trailer Entry link
-And I click the Edit button
-And I select "DELETED" from the Status dropdown
-And I click the Save button
-Then I validate the 1st Row of the Trailer Entry link is not present
-
-Scenario: Assets - Devices - Delete two trailers back to back
-Given I am logged in
-When I click the Top Devices link
-And I click the New_ button
-And I type "DLETETRAILERNAME" into the Trailer textfield
-And I type "DLETEVIN" into the Vin textfield
-And I type "DLETEFord" into the Make textfield
-And I type "DLETEFocus" into the Model textfield
-And I type "997" into the Odometer textfield
-And I type "1964" into the Year textfield
-And I type "DLETE Red" into the Color textfield
-And I type "30519" into the Weight textfield
-And I type "DLETELIC" into the License textfield
-And I select "New Mexico" from the State dropdown
-And I select "MCM990052" from the Assigned Device dropdown
-And I click the Save button
-And I type "DLETETRAILERNAME" into the Search textfield
-And I click the 1st Row of the Trailer Entry link
-And I click the Edit button
-And I select "DELETED" from the Status dropdown
-And I click the Save button
-Then I validate the 1st Row of the Trailer Entry link is not present
-And I click the New_ button
-And I type "DLETETRAILERNAME" into the Trailer textfield
-And I type "DLETEVIN" into the Vin textfield
-And I type "DLETEFord" into the Make textfield
-And I type "DLETEFocus" into the Model textfield
-And I type "997" into the Odometer textfield
-And I type "1964" into the Year textfield
-And I type "DLETE Red" into the Color textfield
-And I type "30519" into the Weight textfield
-And I type "DLETELIC" into the License textfield
-And I select "New Mexico" from the State dropdown
-And I select "MCM990052" from the Assigned Device dropdown
-And I click the Save button
-And I type "DLETETRAILERNAME" into the Search textfield
-And I click the 1st Row of the Trailer Entry link
-And I click the Edit button
-And I select "DELETED" from the Status dropdown
-And I click the Save button
-And I validate the 1st Row of the Trailer Entry link is not present
-
-Scenario: Assets - Devices - Delete entry then try to edit an entry
-Given I am logged in
-When I click the Top Devices link
-And I click the Show Hide Columns link
-And I check the Vin checkbox
-And I check the License checkbox
-And I check the State checkbox
-And I check the Year checkbox
-And I check the Make checkbox
-And I check the Model checkbox
-And I check the Color checkbox
-And I check the Weight checkbox
-And I check the Odometer checkbox
-And I click the Top Trailers link
-And I click the New_ button
-And I type "DELETEANDCREATENAME" into the Trailer textfield
-And I type "DELTEVIN" into the Vin textfield
-And I type "DELTEFord" into the Make textfield
-And I type "DELTEFocus" into the Model textfield
-And I type "998" into the Odometer textfield
-And I type "1959" into the Year textfield
-And I type "DELTE Red" into the Color textfield
-And I type "23019" into the Weight textfield
-And I type "DELTELIC" into the License textfield
-And I select "New Jersey" from the State dropdown
-And I select "MCM990051" from the Assigned Device dropdown
-And I click the Save button
-And I type "DELETEANDCREATENAME" into the Search textfield
-And I click the 1st Row of the Trailer Entry link
-And I click the Edit button
-And I select "DELETED" from the Status dropdown
-And I click the Save button
-Then I validate the 1st Row of the Trailer Entry link is not present
-And I type "" into the Search textfield
-And I click the 1st Row of the Entry checkbox
-And I save the 1st Row of the Trailer Entry link as SAVEDTRAILER
-And I save the 1st Row of the Team Entry link as SAVEDTEAM
+And I check the Vehicle ID checkbox
+And I check the Product checkbox
+And I check the IMEI checkbox
+And I check the Alternate IMEI checkbox
+And I check the SIM Card checkbox
+And I check the Serial Number checkbox
+And I check the Phone checkbox
+And I check the Status checkbox
+And I check the MCM ID checkbox
+And I click the Top Devices link
+And I click the 1st Row of the Device Entry link
 And I save the 1st Row of the Device Entry link as SAVEDDEVICE
-And I save the 1st Row of the Vehicle Entry link as SAVEDVEHICLE
-And I save the 1st Row of the Driver Entry link as SAVEDDRIVER
+And I save the 1st Row of the Vehicle ID Entry link as SAVEDVEHICLE
+And I save the 1st Row of the Product Entry link as SAVEDPRODUCT
+And I save the 1st Row of the IMEI Entry link as SAVEDIMEI
+And I save the 1st Row of the Alternate IMEI Entry link as SAVEDALTERNATEIMEI
+And I save the 1st Row of the SIM Card Entry link as SAVEDSIMCARD
+And I save the 1st Row of the Serial Number Entry link as SAVEDSERIALNUMBER
+And I save the 1st Row of the Phone Entry link as SAVEDPHONE
 And I save the 1st Row of the Status Entry link as SAVEDSTATUS
-And I save the 1st Row of the Vin Entry link as SAVEDVIN
-And I save the 1st Row of the License Entry link as SAVEDLICENSE
-And I save the 1st Row of the State Entry link as SAVEDSTATE
-And I save the 1st Row of the Year Entry link as SAVEDYEAR
-And I save the 1st Row of the Make Entry link as SAVEDMAKE
-And I save the 1st Row of the Model Entry link as SAVEDMODEL
-And I save the 1st Row of the Color Entry link as SAVEDCOLOR
-And I save the 1st Row of the Weight Entry link as SAVEDWEIGHT
-And I save the 1st Row of the Odometer Entry link as SAVEDODOMETER
-And I validate the Trailer text is SAVEDTRAILER
-And I validate the Status text is SAVEDSTATUS
-And I validate the Vin text is SAVEDVIN
-And I validate the Make text is SAVEDMAKE
-And I validate the Model text is SAVEDMODEL
-And I validate the Odometer text is SAVEDODOMETER
-And I validate the Year text is SAVEDYEAR
-And I validate the Color text is SAVEDCOLOR
-And I validate the Weight text is SAVEDWEIGHT
-And I validate the License text is SAVEDLICENSE
-And I validate the State text is SAVEDSTATE
-And I validate the Assigned Team text is SAVEDTEAM
-And I validate the Assigned Device text is SAVEDDEVICE
-And I validate the Assigned Vehicle text is SAVEDVEHICLE
-And I validate the Assigned Driver text is SAVEDDRIVER
-And I click the Edit button
-And I validate the Trailer textfield is SAVEDTRAILER
-And I validate the Status dropdown is SAVEDSTATUS
-And I validate the Vin textfield is SAVEDVIN
-And I validate the Make textfield is SAVEDMAKE
-And I validate the Model textfield is SAVEDMODEL
-And I validate the Odometer textfield is SAVEDODOMETER
-And I validate the Year textfield is SAVEDYEAR
-And I validate the Color textfield is SAVEDCOLOR
-And I validate the Weight textfield is SAVEDWEIGHT
-And I validate the License textfield is SAVEDLICENSE
-And I validate the State dropdown is SAVEDSTATE
-And I validate the Assigned Device dropdown is SAVEDDEVICE
-And I validate the Assigned Vehicle text is SAVEDVEHICLE
-And I validate the Assigned Team text is SAVEDTEAM
-And I validate the Assigned Driver text is SAVEDDRIVER
-
-Scenario: Assets - Devices - New Trailer (cancel button - no changes)
-Given I am logged in
-When I click the Top Devices link
-And I click the New_ button
-Then I validate the Vin textfield is ""
-And I validate the Make textfield is ""
-And I validate the Model text is ""
-And I validate the Odometer text is ""
-And I validate the Year textfield is ""
-And I validate the Color textfield is ""
-And I validate the Weight textfield is ""
-And I validate the License textfield is ""
-And I validate the State dropdown contains "--- Select ---"
-And I validate the Trailer textfield is ""
-And I validate the Status dropdown is "ACTIVE"
-And I validate the Assigned Device dropdown is ""
-And I click the Cancel button
-And I click the New_ button
-And I validate the Vin textfield is ""
-And I validate the Make textfield is ""
-And I validate the Model text is ""
-And I validate the Odometer text is ""
-And I validate the Year textfield is ""
-And I validate the Color textfield is ""
-And I validate the Weight textfield is ""
-And I validate the License textfield is ""
-And I validate the State dropdown contains "--- Select ---"
-And I validate the Trailer textfield is ""
-And I validate the Status dropdown is "ACTIVE"
-And I validate the Assigned Device dropdown is ""
-
-Scenario: Assets - Devices - New Trailer (cancel button - changes)
-Given I am logged in
-When I click the Top Devices link
-And I click the New_ button
-And I type "FAKETRAILERNAME" into the Trailer textfield
-And I select "ACTIVE" from the Status dropdown
-And I type "FAKEVINNUMBER" into the Vin textfield
-And I type "Ford" into the Make textfield
-And I type "Focus" into the Model textfield
-And I type "129018" into the Odometer textfield
-And I type "1985" into the Year textfield
-And I type "Race Red" into the Color textfield
-And I type "21000" into the Weight textfield
-And I type "INTHINCLIC" into the License textfield
-And I select "Alabama" from the State dropdown
-And I select "MCM990000" from the Assigned Device dropdown
-And I click the Cancel button
-And I type "FAKETRAILERNAME" into the Search textfield
-Then I validate the No Matching Records text is present
-And I validate the Entries text contains "Showing 0 to 0 of 0 entries"
-And I validate the Vin text is ""
-And I validate the Make text is ""
-And I validate the Model text is ""
-And I validate the Odometer text is ""
-And I validate the Year text is ""
-And I validate the Color text is ""
-And I validate the Weight text is ""
-And I validate the License text is ""
-And I validate the State text is ""
-And I validate the Trailer text is ""
-And I validate the Status text is ""
-And I validate the Assigned Team text is ""
-And I validate the Assigned Device text is ""
-And I validate the Assigned Vehicle text is ""
-And I validate the Assigned Driver text is ""
-And I click the New_ button
-And I validate the Vin textfield is ""
-And I validate the Make textfield is ""
-And I validate the Model text is ""
-And I validate the Odometer text is ""
-And I validate the Year textfield is ""
-And I validate the Color textfield is ""
-And I validate the Weight textfield is ""
-And I validate the License textfield is ""
-And I validate the State dropdown contains "--- Select ---"
-And I validate the Trailer textfield is ""
-And I validate the Status dropdown is "ACTIVE"
-And I validate the Assigned Device dropdown is ""
-
-Scenario: Assets - Devices - New Trailer (save button - changes)
-Given I am logged in
-When I click the Top Devices link
-And I click the Show Hide Columns link
-And I check the Vin checkbox
-And I check the License checkbox
-And I check the State checkbox
-And I check the Year checkbox
-And I check the Make checkbox
-And I check the Model checkbox
-And I check the Color checkbox
-And I check the Weight checkbox
-And I check the Odometer checkbox
-And I click the Top Trailers link
-And I click the New_ button
-And I type "SAVECHANGESVIN" into the Vin textfield
-And I type "Kia" into the Make textfield
-And I type "SaveChangesModel" into the Model textfield
-And I type "1010" into the Odometer textfield
-And I type "2008" into the Year textfield
-And I type "Purple" into the Color textfield
-And I type "15000" into the Weight textfield
-And I type "INTHINCLI1" into the License textfield
-And I select "Vermont" from the State dropdown
-And I type "SAVECHANGESNAME" into the Trailer textfield
-And I select "ACTIVE" from the Status dropdown
-And I select "MCM990001" from the Assigned Device dropdown
-And I click the Save button
-Then I validate the New_ button is visible
-And I validate the Edit button is not visible
-And I validate the Cancel button is not visible
-And I validate the Save button is not visible
-And I type "SAVECHANGESNAME" into the Search textfield
-And I validate the Entries text contains "Showing 1 to 1 of 1 entries"
-And I validate the Trailer text is ""
-And I validate the Status text is ""
-And I validate the Vin text is ""
-And I validate the Make text is ""
-And I validate the Model text is ""
-And I validate the Odometer text is ""
-And I validate the Year text is ""
-And I validate the Color text is ""
-And I validate the Weight text is ""
-And I validate the License text is ""
-And I validate the State text is ""
-And I validate the Assigned Device text is ""
-And I validate the Assigned Vehicle text is ""
-And I validate the Assigned Team text is ""
-And I validate the Assigned Driver text is ""
-And I validate the 1st Row of the Trailer Entry link is "SAVECHANGESNAME"
-And I validate the 1st Row of the Team Entry link is "Test Group WR"
-And I validate the 1st Row of the Device Entry link is "MCM990001"
-And I validate the 1st Row of the Vehicle Entry link is "autogen01"
-And I validate the 1st Row of the Driver Entry link is "Automatically Generated01"
-And I validate the 1st Row of the Status Entry link is "ACTIVE"
-And I validate the 1st Row of the Vin Entry link is "SAVECHANGESVIN"
-And I validate the 1st Row of the License Entry link is "INTHINCLI1"
-And I validate the 1st Row of the State Entry link is "Vermont"
-And I validate the 1st Row of the Year Entry link is "2008"
-And I validate the 1st Row of the Make Entry link is "Kia"
-And I validate the 1st Row of the Model Entry link is "SaveChangesModel"
-And I validate the 1st Row of the Color Entry link is "Purple"
-And I validate the 1st Row of the Weight Entry link is "15000"
-And I validate the 1st Row of the Odometer Entry link is "1010"
-And I click the 1st Row of the Trailer Entry link
-And I validate the Trailer text is "SAVECHANGESNAME"
-And I validate the Status text is "ACTIVE"
-And I validate the Vin text is "SAVECHANGESVIN"
-And I validate the Make text is "Kia"
-And I validate the Model text is "SaveChangesModel"
-And I validate the Odometer text is "1010"
-And I validate the Year text is "2008"
-And I validate the Color text is "Purple"
-And I validate the Weight text is "15000"
-And I validate the License text is "INTHINCLI1"
-And I validate the State text is "Vermont"
-And I validate the Assigned Team text is "Test Group WR"
-And I validate the Assigned Device text is "MCM990001"
-And I validate the Assigned Vehicle text is "autogen01"
-And I validate the Assigned Driver text is "Automatically Generated01"
-!-- Now I delete the entry so it will run just fine on the next run through
-And I click the Edit button
-And I select "DELETED" from the Status dropdown
-And I click the Save button
-And I validate the Entries text contains "Showing 0 to 0 of 0 entries"
-
-Scenario: Assets - Devices - New Trailer (save button - no changes - error text)
-Given I am logged in
-When I click the Top Devices link
-And I click the New_ button
-And I validate the Trailer textfield is ""
-And I validate the Status dropdown is "ACTIVE"
-Then I validate the Vin textfield is ""
-And I validate the Make textfield is ""
-And I validate the Model textfield is ""
-And I validate the Odometer textfield is ""
-And I validate the Year textfield is ""
-And I validate the Color textfield is ""
-And I validate the Weight textfield is ""
-And I validate the License textfield is ""
-And I validate the State dropdown contains "--- Select ---"
-And I validate the Assigned Device dropdown is ""
-And I click the Save button
-And I validate the Trailer Error text is present
-And I validate the Trailer Error text is "The trailer name cannot be left blank."
-And I validate the Edit button is not visible
-And I validate the Cancel button is visible
-And I validate the Save button is visible
-And I validate the Trailer textfield is ""
-And I validate the Status dropdown is "ACTIVE"
-And I validate the Vin textfield is ""
-And I validate the Make textfield is ""
-And I validate the Model textfield is ""
-And I validate the Odometer textfield is ""
-And I validate the Year textfield is ""
-And I validate the Color textfield is ""
-And I validate the Weight textfield is ""
-And I validate the License textfield is ""
-And I validate the State dropdown contains "--- Select ---"
-And I validate the Assigned Device dropdown is ""
-
-Scenario: Assets - Devices - Edit Trailer (save button - no changes)
-Given I am logged in
-When I click the Top Devices link
-And I click the Show Hide Columns link
-And I check the Vin checkbox
-And I check the License checkbox
-And I check the State checkbox
-And I check the Year checkbox
-And I check the Make checkbox
-And I check the Model checkbox
-And I check the Color checkbox
-And I check the Weight checkbox
-And I check the Odometer checkbox
-And I click the Top Trailers link
-And I click the 1st Row of the Trailer Entry link
-And I save the 1st Row of the Trailer Entry link as SAVEDTRAILER
-And I save the 1st Row of the Team Entry link as SAVEDTEAM
-And I save the 1st Row of the Device Entry link as SAVEDDEVICE
-And I save the 1st Row of the Vehicle Entry link as SAVEDVEHICLE
-And I save the 1st Row of the Driver Entry link as SAVEDDRIVER
-And I save the 1st Row of the Status Entry link as SAVEDSTATUS
-And I save the 1st Row of the Vin Entry link as SAVEDVIN
-And I save the 1st Row of the License Entry link as SAVEDLICENSE
-And I save the 1st Row of the State Entry link as SAVEDSTATE
-And I save the 1st Row of the Year Entry link as SAVEDYEAR
-And I save the 1st Row of the Make Entry link as SAVEDMAKE
-And I save the 1st Row of the Model Entry link as SAVEDMODEL
-And I save the 1st Row of the Color Entry link as SAVEDCOLOR
-And I save the 1st Row of the Weight Entry link as SAVEDWEIGHT
-And I save the 1st Row of the Odometer Entry link as SAVEDODOMETER
+And I save the 1st Row of the MCM ID Entry link as SAVEDMCMID
 And I click the Edit button
 And I click the Save button
 And I validate the Edit button is not visible
 And I validate the Save button is not visible
 And I validate the Cancel button is not visible
-And I validate the Trailer text is ""
-And I validate the Status text is ""
-And I validate the Vin text is ""
-And I validate the Make text is ""
-And I validate the Model text is ""
-And I validate the Odometer text is ""
-And I validate the Year text is ""
-And I validate the Color text is ""
-And I validate the Weight text is ""
-And I validate the License text is ""
-And I validate the State text is ""
-And I validate the Assigned Team text is ""
-And I validate the Assigned Device text is ""
+And I validate the Delete button is not visible
+And I validate the Device text is ""
+And I validate the Product text is ""
+And I validate the MCM ID text is ""
+And I validate the IMEI text is ""
+And I validate the SIM Card text is ""
+And I validate the Phone text is ""
+And I validate the Alternate IMEI text is ""
+And I validate the Serial Number text is ""
+And I validate the Status dropdown is ""
+And I validate the Activated text is ""
 And I validate the Assigned Vehicle text is ""
-And I validate the Assigned Driver text is ""
 
-Scenario: Assets - Devices - Edit Trailer (save button - blank Trailer error message)
+Scenario: Assets - Devices - Edit Device (save button - changes)
 Given I am logged in
 When I click the Top Devices link
 And I click the Show Hide Columns link
-And I check the Vin checkbox
-And I check the License checkbox
-And I check the State checkbox
-And I check the Year checkbox
-And I check the Make checkbox
-And I check the Model checkbox
-And I check the Color checkbox
-And I check the Weight checkbox
-And I check the Odometer checkbox
-And I click the Top Trailers link
-And I click the 1st Row of the Trailer Entry link
-And I save the 1st Row of the Trailer Entry link as SAVEDTRAILER
-And I save the 1st Row of the Team Entry link as SAVEDTEAM
+And I check the Vehicle ID checkbox
+And I check the Product checkbox
+And I check the IMEI checkbox
+And I check the Alternate IMEI checkbox
+And I check the SIM Card checkbox
+And I check the Serial Number checkbox
+And I check the Phone checkbox
+And I check the Status checkbox
+And I check the MCM ID checkbox
+And I click the Top Devices link
+And I click the 1st Row of the Device Entry link
 And I save the 1st Row of the Device Entry link as SAVEDDEVICE
-And I save the 1st Row of the Vehicle Entry link as SAVEDVEHICLE
-And I save the 1st Row of the Driver Entry link as SAVEDDRIVER
+And I save the 1st Row of the Vehicle ID Entry link as SAVEDVEHICLE
+And I save the 1st Row of the Product Entry link as SAVEDPRODUCT
+And I save the 1st Row of the IMEI Entry link as SAVEDIMEI
+And I save the 1st Row of the Alternate IMEI Entry link as SAVEDALTERNATEIMEI
+And I save the 1st Row of the SIM Card Entry link as SAVEDSIMCARD
+And I save the 1st Row of the Serial Number Entry link as SAVEDSERIALNUMBER
+And I save the 1st Row of the Phone Entry link as SAVEDPHONE
 And I save the 1st Row of the Status Entry link as SAVEDSTATUS
-And I save the 1st Row of the Vin Entry link as SAVEDVIN
-And I save the 1st Row of the License Entry link as SAVEDLICENSE
-And I save the 1st Row of the State Entry link as SAVEDSTATE
-And I save the 1st Row of the Year Entry link as SAVEDYEAR
-And I save the 1st Row of the Make Entry link as SAVEDMAKE
-And I save the 1st Row of the Model Entry link as SAVEDMODEL
-And I save the 1st Row of the Color Entry link as SAVEDCOLOR
-And I save the 1st Row of the Weight Entry link as SAVEDWEIGHT
-And I save the 1st Row of the Odometer Entry link as SAVEDODOMETER
+And I save the 1st Row of the MCM ID Entry link as SAVEDMCMID
 And I click the Edit button
-And I type "" into the Trailer textfield
-And I click the Save button
-Then I validate the Trailer textfield is ""
-And I validate the Trailer Error text is "The trailer name cannot be left blank."
-And I validate the Vin textfield is SAVEDVIN
-And I validate the Make textfield is SAVEDMAKE
-And I validate the Model textfield is SAVEDMODEL
-And I validate the Odometer textfield is SAVEDODOMETER
-And I validate the Year textfield is SAVEDYEAR
-And I validate the Color textfield is SAVEDCOLOR
-And I validate the Weight textfield is SAVEDWEIGHT
-And I validate the License textfield is SAVEDLICENSE
-And I validate the State dropdown is SAVEDSTATE
-And I validate the Status dropdown is SAVEDSTATUS
-And I validate the Assigned Team text is SAVEDTEAM
-And I validate the Assigned Device dropdown is SAVEDDEVICE
-And I validate the Assigned Vehicle text is SAVEDVEHICLE
-And I validate the Assigned Driver text is SAVEDDRIVER
-
-Scenario: Assets - Devices - Edit Trailer (edit button - save changes)
-Given I am logged in
-When I click the Top Devices link
-And I click the Show Hide Columns link
-And I check the Vin checkbox
-And I check the License checkbox
-And I check the State checkbox
-And I check the Year checkbox
-And I check the Make checkbox
-And I check the Model checkbox
-And I check the Color checkbox
-And I check the Weight checkbox
-And I check the Odometer checkbox
-And I click the Top Trailers link
-And I click the New_ button
-And I type "EANDSTRAILERID" into the Trailer textfield
-And I type "EDITANDSAVE" into the Vin textfield
-And I type "EANDSMAKE" into the Make textfield
-And I type "EANDSMODEL" into the Model textfield
-And I type "505" into the Odometer textfield
-And I type "1952" into the Year textfield
-And I type "Puse" into the Color textfield
-And I type "15032" into the Weight textfield
-And I type "EANDSLN" into the License textfield
-And I select "Washington" from the State dropdown
-And I select "MCM990058" from the Assigned Device dropdown
-And I click the Save button
-And I type "EANDSTRAILERID" into the Search textfield
-And I click the 1st Row of the Trailer Entry link
-And I save the 1st Row of the Trailer Entry link as SAVEDTRAILER
-And I save the 1st Row of the Team Entry link as SAVEDTEAM
-And I save the 1st Row of the Device Entry link as SAVEDDEVICE
-And I save the 1st Row of the Vehicle Entry link as SAVEDVEHICLE
-And I save the 1st Row of the Driver Entry link as SAVEDDRIVER
-And I save the 1st Row of the Status Entry link as SAVEDSTATUS
-And I save the 1st Row of the Vin Entry link as SAVEDVIN
-And I save the 1st Row of the License Entry link as SAVEDLICENSE
-And I save the 1st Row of the State Entry link as SAVEDSTATE
-And I save the 1st Row of the Year Entry link as SAVEDYEAR
-And I save the 1st Row of the Make Entry link as SAVEDMAKE
-And I save the 1st Row of the Model Entry link as SAVEDMODEL
-And I save the 1st Row of the Color Entry link as SAVEDCOLOR
-And I save the 1st Row of the Weight Entry link as SAVEDWEIGHT
-And I save the 1st Row of the Odometer Entry link as SAVEDODOMETER
-Then I validate the Trailer text is SAVEDTRAILER
-And I validate the Status text is SAVEDSTATUS
-And I validate the Vin text is SAVEDVIN
-And I validate the Make text is SAVEDMAKE
-And I validate the Model text is SAVEDMODEL
-And I validate the Odometer text is SAVEDODOMETER
-And I validate the Year text is SAVEDYEAR
-And I validate the Color text is SAVEDCOLOR
-And I validate the Weight text is SAVEDWEIGHT
-And I validate the License text is SAVEDLICENSE
-And I validate the State text is SAVEDSTATE
-And I validate the Assigned Team text is SAVEDTEAM
-And I validate the Assigned Device text is SAVEDDEVICE
-And I validate the Assigned Vehicle text is SAVEDVEHICLE
-And I validate the Assigned Driver text is SAVEDDRIVER
-And I click the Edit button
-And I validate the Vin textfield is SAVEDVIN
-And I validate the Make textfield is SAVEDMAKE
-And I validate the Model textfield is SAVEDMODEL
-And I validate the Odometer textfield is SAVEDODOMETER
-And I validate the Year textfield is SAVEDYEAR
-And I validate the Color textfield is SAVEDCOLOR
-And I validate the Weight textfield is SAVEDWEIGHT
-And I validate the License textfield is SAVEDLICENSE
-And I validate the State dropdown is SAVEDSTATE
-And I validate the Trailer textfield is SAVEDTRAILER
-And I validate the Status dropdown is SAVEDSTATUS
-And I validate the Assigned Team text is SAVEDTEAM
-And I validate the Assigned Device dropdown is SAVEDDEVICE
-And I validate the Assigned Vehicle text is SAVEDVEHICLE
-And I validate the Assigned Driver text is SAVEDDRIVER
-And I type "ANEWTRAILER" into the Trailer textfield
 And I select "INACTIVE" from the Status dropdown
-And I type "ANEWVINNUMBER" into the Vin textfield
-And I type "ANEWMAKE" into the Make textfield
-And I type "ANEWMODEL" into the Model textfield
-And I type "1059753" into the Odometer textfield
-And I type "1900" into the Year textfield
-And I type "ANEWCOLOR" into the Color textfield
-And I type "55" into the Weight textfield
-And I type "ANEWLIS" into the License textfield
-And I select "Alaska" from the State dropdown
+And I select "003198" from the Vehicle ID dropdown
 And I click the Save button
-And I validate the Edit button is not visible
-And I validate the Save button is not visible
-And I validate the Cancel button is not visible
-And I validate the Trailer text is ""
-And I validate the Status text is ""
-And I validate the Vin text is ""
-And I validate the Make text is ""
-And I validate the Model text is ""
-And I validate the Odometer text is ""
-And I validate the Year text is ""
-And I validate the Color text is ""
-And I validate the Weight text is ""
-And I validate the License text is ""
-And I validate the State text is ""
-And I validate the Assigned Team text is ""
-And I validate the Assigned Device text is ""
-And I validate the Assigned Vehicle text is ""
-And I validate the Assigned Driver text is ""
-And I type "ANEWMAKE" into the Search textfield
-And I validate the 1st Row of the Trailer Entry link is "ANEWTRAILER"
+And I type SAVEDDEVICE into the Search textfield
+Then I validate the 1st Row of the Device Entry link is SAVEDDEVICE
+And I validate the 1st Row of the Vehicle ID Entry link is "003198"
+And I validate the 1st Row of the Product Entry link is SAVEDPRODUCT
+And I validate the 1st Row of the IMEI Entry link is SAVEDIMEI
+And I validate the 1st Row of the Alternate IMEI Entry link is SAVEDALTERNATEIMEI
+And I validate the 1st Row of the SIM Card Entry link is SAVEDSIMCARD
+And I validate the 1st Row of the Serial Number Entry link is SAVEDSERIALNUMBER
+And I validate the 1st Row of the Phone Entry link is SAVEDPHONE
 And I validate the 1st Row of the Status Entry link is "INACTIVE"
-And I validate the 1st Row of the Vin Entry link is "ANEWVINNUMBER"
-And I validate the 1st Row of the Make Entry link is "ANEWMAKE"
-And I validate the 1st Row of the Model Entry link is "ANEWMODEL"
-And I validate the 1st Row of the Odometer Entry link is "1059753"
-And I validate the 1st Row of the Year Entry link is "1900"
-And I validate the 1st Row of the Color Entry link is "ANEWCOLOR"
-And I validate the 1st Row of the Weight Entry link is "55"
-And I validate the 1st Row of the License Entry link is "ANEWLIS"
-And I validate the 1st Row of the State Entry link is "Alaska"
-And I validate the 1st Row of the Team Entry link is SAVEDTEAM
-And I validate the 1st Row of the Device Entry link is SAVEDDEVICE
-And I validate the 1st Row of the Vehicle Entry link is SAVEDVEHICLE
-And I validate the 1st Row of the Driver Entry link is SAVEDDRIVER
-!-- Now I delete the entry so it will run just fine on the next run through
-And I click the 1st Row of the Trailer Entry link
+And I validate the 1st Row of the MCM ID Entry link is SAVEDMCMID
+And I click the 1st Row of the Device Entry link
 And I click the Edit button
-And I select "DELETED" from the Status dropdown
-And I click the Save button
-And I validate the Entries text contains "Showing 0 to 0 of 0 entries"
-
-Scenario: Assets - Devices - New Trailer (new button - save changes, but changes are invalid)
-Given I am logged in
-When I click the Top Devices link
-And I click the Show Hide Columns link
-And I check the Vin checkbox
-And I check the License checkbox
-And I check the State checkbox
-And I check the Year checkbox
-And I check the Make checkbox
-And I check the Model checkbox
-And I check the Color checkbox
-And I check the Weight checkbox
-And I check the Odometer checkbox
-And I click the Top Trailers link
-And I click the New_ button
-And I type "PREINVALIDID" into the Trailer textfield
-And I type "INVALIDVIN" into the Vin textfield
-And I type "INVALIDNMAKE" into the Make textfield
-And I type "INVALIDMODEL" into the Model textfield
-And I type "516132" into the Odometer textfield
-And I type "1772" into the Year textfield
-And I type "Gurple" into the Color textfield
-And I type "116631" into the Weight textfield
-And I type "INVALIDLN" into the License textfield
-And I select "Pennsylvania" from the State dropdown
-And I select "MCM990066" from the Assigned Device dropdown
-And I click the Save button
-And I type "PREINVALIDID" into the Search textfield
-And I click the 1st Row of the Trailer Entry link
-And I save the 1st Row of the Trailer Entry link as SAVEDTRAILER
-And I save the 1st Row of the Team Entry link as SAVEDTEAM
-And I save the 1st Row of the Device Entry link as SAVEDDEVICE
-And I save the 1st Row of the Vehicle Entry link as SAVEDVEHICLE
-And I save the 1st Row of the Driver Entry link as SAVEDDRIVER
-And I save the 1st Row of the Status Entry link as SAVEDSTATUS
-And I save the 1st Row of the Vin Entry link as SAVEDVIN
-And I save the 1st Row of the License Entry link as SAVEDLICENSE
-And I save the 1st Row of the State Entry link as SAVEDSTATE
-And I save the 1st Row of the Year Entry link as SAVEDYEAR
-And I save the 1st Row of the Make Entry link as SAVEDMAKE
-And I save the 1st Row of the Model Entry link as SAVEDMODEL
-And I save the 1st Row of the Color Entry link as SAVEDCOLOR
-And I save the 1st Row of the Weight Entry link as SAVEDWEIGHT
-And I save the 1st Row of the Odometer Entry link as SAVEDODOMETER
-Then I validate the Vin text is SAVEDVIN
-And I validate the Make text is SAVEDMAKE
-And I validate the Model text is SAVEDMODEL
-And I validate the Odometer text is SAVEDODOMETER
-And I validate the Year text is SAVEDYEAR
-And I validate the Color text is SAVEDCOLOR
-And I validate the Weight text is SAVEDWEIGHT
-And I validate the License text is SAVEDLICENSE
-And I validate the State text is SAVEDSTATE
-And I validate the Trailer text is SAVEDTRAILER
-And I validate the Status text is SAVEDSTATUS
-And I validate the Assigned Team text is SAVEDTEAM
-And I validate the Assigned Device text is SAVEDDEVICE
-And I validate the Assigned Vehicle text is SAVEDVEHICLE
-And I validate the Assigned Driver text is SAVEDDRIVER
-And I click the Edit button
-And I type "" into the Trailer textfield
-And I type "ANINVALIDVINNUMBERTOOLONG" into the Vin textfield
-And I type "WAYTOOLONGMAKEFORVALIDITY" into the Make textfield
-And I type "WAYTOOLONGMODELFORVALIDITY" into the Model textfield
-And I type "a" into the Odometer textfield
-And I type "19101" into the Year textfield
-And I type "ATOOLONGCOLORNAME" into the Color textfield
-And I type "a" into the Weight textfield
-And I type "ATOOLONGLICENSENUMBER" into the License textfield
-And I click the Save button
-And I validate the Trailer textfield is ""
-And I validate the Status dropdown is "ACTIVE"
-And I validate the Vin textfield is "ANINVALIDVINNUMBERTOOLONG"
-And I validate the Make textfield is "WAYTOOLONGMAKEFORVALIDITY"
-And I validate the Model textfield is "WAYTOOLONGMODELFORVALIDITY"
-And I validate the Odometer textfield is "a"
-And I validate the Year textfield is "19101"
-And I validate the Color textfield is "ATOOLONGCOLORNAME"
-And I validate the Weight textfield is "a"
-And I validate the License textfield is "ATOOLONGLICENSENUMBER"
-And I validate the State dropdown is "Pennsylvania"
-And I validate the Assigned Device dropdown is SAVEDDEVICE
-And I validate the Assigned Vehicle text is SAVEDVEHICLE
-And I validate the Assigned Team text is SAVEDTEAM
-And I validate the Assigned Driver text is SAVEDDRIVER
-!-- Now I delete the entry so it will run just fine on the next run through
-And I click the 1st Row of the Trailer Entry link
-And I click the Edit button
-And I select "DELETED" from the Status dropdown
-And I click the Save button
-And I validate the Entries text contains "Showing 0 to 0 of 0 entries"
-
-Scenario: Assets - Devices - New Trailer (new button - save changes, but changes are invalid)
-Given I am logged in
-When I click the Top Devices link
-And I click the New_ button
-And I type "ANINVALIDVINNUMBERTOOLONG" into the Vin textfield
-And I type "WAYTOOLONGMAKEFORVALIDITY" into the Make textfield
-And I type "WAYTOOLONGMODELFORVALIDITY" into the Model textfield
-And I type "a" into the Odometer textfield
-And I type "19101" into the Year textfield
-And I type "ATOOLONGCOLORNAME" into the Color textfield
-And I type "a" into the Weight textfield
-And I type "ATOOLONGLICENSENUMBER" into the License textfield
-And I select "MCM990011" from the Assigned Device dropdown
-And I click the Save button
-Then I validate the Trailer textfield is ""
-And I validate the Trailer Error text is visible
-And I validate the Status dropdown is "ACTIVE"
-And I validate the Vin textfield is "ANINVALIDVINNUMBERTOOLONG"
-And I validate the Vin Error text is visible
-And I validate the Make textfield is "WAYTOOLONGMAKEFORVALIDITY"
-And I validate the Make Error text is visible
-And I validate the Model textfield is "WAYTOOLONGMODELFORVALIDITY"
-And I validate the Model Error text is visible
-And I validate the Odometer textfield is "a"
-And I validate the Odometer Error text is visible
-And I validate the Year textfield is "19101"
-And I validate the Year Error text is visible
-And I validate the Color textfield is "ATOOLONGCOLORNAME"
-And I validate the Color Error text is visible
-And I validate the Weight textfield is "a"
-And I validate the Weight Error text is visible
-And I validate the License textfield is "ATOOLONGLICENSENUMBER"
-And I validate the License Error text is visible
-And I validate the State dropdown is "--- Select ---"
-And I validate the Assigned Device dropdown is "MCM990011"
-And I validate the Assigned Vehicle text is ""
-And I validate the Assigned Team text is ""
-And I validate the Assigned Driver text is ""
-
-Scenario: Assets - Devices - Edit Trailer (edit button - save changes, but changes are invalid)
-Given I am logged in
-When I click the Top Devices link
-And I click the Show Hide Columns link
-And I check the Vin checkbox
-And I check the License checkbox
-And I check the State checkbox
-And I check the Year checkbox
-And I check the Make checkbox
-And I check the Model checkbox
-And I check the Color checkbox
-And I check the Weight checkbox
-And I check the Odometer checkbox
-And I click the Top Trailers link
-And I click the New_ button
-And I type "PREINVALIDID" into the Trailer textfield
-And I type "INVALIDVIN" into the Vin textfield
-And I type "INVALIDNMAKE" into the Make textfield
-And I type "INVALIDMODEL" into the Model textfield
-And I type "516132" into the Odometer textfield
-And I type "1772" into the Year textfield
-And I type "Gurple" into the Color textfield
-And I type "116631" into the Weight textfield
-And I type "INVALIDLN" into the License textfield
-And I select "Pennsylvania" from the State dropdown
-And I select "MCM990066" from the Assigned Device dropdown
-And I click the Save button
-And I type "PREINVALIDID" into the Search textfield
-And I click the 1st Row of the Trailer Entry link
-And I save the 1st Row of the Trailer Entry link as SAVEDTRAILER
-And I save the 1st Row of the Team Entry link as SAVEDTEAM
-And I save the 1st Row of the Device Entry link as SAVEDDEVICE
-And I save the 1st Row of the Vehicle Entry link as SAVEDVEHICLE
-And I save the 1st Row of the Driver Entry link as SAVEDDRIVER
-And I save the 1st Row of the Status Entry link as SAVEDSTATUS
-And I save the 1st Row of the Vin Entry link as SAVEDVIN
-And I save the 1st Row of the License Entry link as SAVEDLICENSE
-And I save the 1st Row of the State Entry link as SAVEDSTATE
-And I save the 1st Row of the Year Entry link as SAVEDYEAR
-And I save the 1st Row of the Make Entry link as SAVEDMAKE
-And I save the 1st Row of the Model Entry link as SAVEDMODEL
-And I save the 1st Row of the Color Entry link as SAVEDCOLOR
-And I save the 1st Row of the Weight Entry link as SAVEDWEIGHT
-And I save the 1st Row of the Odometer Entry link as SAVEDODOMETER
-Then I validate the Vin text is SAVEDVIN
-And I validate the Make text is SAVEDMAKE
-And I validate the Model text is SAVEDMODEL
-And I validate the Odometer text is SAVEDODOMETER
-And I validate the Year text is SAVEDYEAR
-And I validate the Color text is SAVEDCOLOR
-And I validate the Weight text is SAVEDWEIGHT
-And I validate the License text is SAVEDLICENSE
-And I validate the State text is SAVEDSTATE
-And I validate the Trailer text is SAVEDTRAILER
-And I validate the Status text is SAVEDSTATUS
-And I validate the Assigned Team text is SAVEDTEAM
-And I validate the Assigned Device text is SAVEDDEVICE
-And I validate the Assigned Vehicle text is SAVEDVEHICLE
-And I validate the Assigned Driver text is SAVEDDRIVER
-And I click the Edit button
-And I type "" into the Trailer textfield
-And I type "ANINVALIDVINNUMBERTOOLONG" into the Vin textfield
-And I type "WAYTOOLONGMAKEFORVALIDITY" into the Make textfield
-And I type "WAYTOOLONGMODELFORVALIDITY" into the Model textfield
-And I type "a" into the Odometer textfield
-And I type "19101" into the Year textfield
-And I type "ATOOLONGCOLORNAME" into the Color textfield
-And I type "a" into the Weight textfield
-And I type "ATOOLONGLICENSENUMBER" into the License textfield
-And I click the Save button
-And I validate the Trailer textfield is ""
-And I validate the Status dropdown is "ACTIVE"
-And I validate the Vin textfield is "ANINVALIDVINNUMBERTOOLONG"
-And I validate the Make textfield is "WAYTOOLONGMAKEFORVALIDITY"
-And I validate the Model textfield is "WAYTOOLONGMODELFORVALIDITY"
-And I validate the Odometer textfield is "a"
-And I validate the Year textfield is "19101"
-And I validate the Color textfield is "ATOOLONGCOLORNAME"
-And I validate the Weight textfield is "a"
-And I validate the License textfield is "ATOOLONGLICENSENUMBER"
-And I validate the State dropdown is "Pennsylvania"
-And I validate the Assigned Device dropdown is SAVEDDEVICE
-And I validate the Assigned Vehicle text is SAVEDVEHICLE
-And I validate the Assigned Team text is SAVEDTEAM
-And I validate the Assigned Driver text is SAVEDDRIVER
-!-- Now I delete the entry so it will run just fine on the next run through
-And I click the 1st Row of the Trailer Entry link
-And I click the Edit button
-And I select "DELETED" from the Status dropdown
-And I click the Save button
-And I validate the Entries text contains "Showing 0 to 0 of 0 entries"
-
-Scenario: Assets - Devices - Edit trailer then create a new trailer
-Given I am logged in
-When I click the Top Devices link
-And I click the Show Hide Columns link
-And I check the Vin checkbox
-And I check the License checkbox
-And I check the State checkbox
-And I check the Year checkbox
-And I check the Make checkbox
-And I check the Model checkbox
-And I check the Color checkbox
-And I check the Weight checkbox
-And I check the Odometer checkbox
-And I click the Top Trailers link
-And I click the New_ button
-And I type "EANDCNTRAILERID" into the Trailer textfield
-And I type "EANDCNVIN" into the Vin textfield
-And I type "EANDCNMAKE" into the Make textfield
-And I type "EANDCNMODEL" into the Model textfield
-And I type "115" into the Odometer textfield
-And I type "1852" into the Year textfield
-And I type "Parchment" into the Color textfield
-And I type "150632" into the Weight textfield
-And I type "EANDCNLN" into the License textfield
-And I select "Wisconsin" from the State dropdown
-And I select "MCM990061" from the Assigned Device dropdown
-And I click the Save button
-And I type "EANDCNTRAILERID" into the Search textfield
-And I click the 1st Row of the Trailer Entry link
-And I save the 1st Row of the Trailer Entry link as SAVEDTRAILER
-And I save the 1st Row of the Team Entry link as SAVEDTEAM
-And I save the 1st Row of the Device Entry link as SAVEDDEVICE
-And I save the 1st Row of the Vehicle Entry link as SAVEDVEHICLE
-And I save the 1st Row of the Driver Entry link as SAVEDDRIVER
-And I save the 1st Row of the Status Entry link as SAVEDSTATUS
-And I save the 1st Row of the Vin Entry link as SAVEDVIN
-And I save the 1st Row of the License Entry link as SAVEDLICENSE
-And I save the 1st Row of the State Entry link as SAVEDSTATE
-And I save the 1st Row of the Year Entry link as SAVEDYEAR
-And I save the 1st Row of the Make Entry link as SAVEDMAKE
-And I save the 1st Row of the Model Entry link as SAVEDMODEL
-And I save the 1st Row of the Color Entry link as SAVEDCOLOR
-And I save the 1st Row of the Weight Entry link as SAVEDWEIGHT
-And I save the 1st Row of the Odometer Entry link as SAVEDODOMETER
-Then I validate the Vin text is SAVEDVIN
-And I validate the Make text is SAVEDMAKE
-And I validate the Model text is SAVEDMODEL
-And I validate the Odometer text is SAVEDODOMETER
-And I validate the Year text is SAVEDYEAR
-And I validate the Color text is SAVEDCOLOR
-And I validate the Weight text is SAVEDWEIGHT
-And I validate the License text is SAVEDLICENSE
-And I validate the State text is SAVEDSTATE
-And I validate the Trailer text is SAVEDTRAILER
-And I validate the Status text is SAVEDSTATUS
-And I validate the Assigned Team text is SAVEDTEAM
-And I validate the Assigned Device text is SAVEDDEVICE
-And I validate the Assigned Vehicle text is SAVEDVEHICLE
-And I validate the Assigned Driver text is SAVEDDRIVER
-And I click the Edit button
-And I validate the Vin textfield is SAVEDVIN
-And I validate the Make textfield is SAVEDMAKE
-And I validate the Model textfield is SAVEDMODEL
-And I validate the Odometer textfield is SAVEDODOMETER
-And I validate the Year textfield is SAVEDYEAR
-And I validate the Color textfield is SAVEDCOLOR
-And I validate the Weight textfield is SAVEDWEIGHT
-And I validate the License textfield is SAVEDLICENSE
-And I validate the State dropdown is SAVEDSTATE
-And I validate the Trailer textfield is SAVEDTRAILER
-And I validate the Status dropdown is SAVEDSTATUS
-And I validate the Assigned Device dropdown is SAVEDDEVICE
-And I validate the Assigned Vehicle text is SAVEDVEHICLE
-And I validate the Assigned Team text is SAVEDTEAM
-And I validate the Assigned Driver text is SAVEDDRIVER
-And I type "ANEWTRAILER2" into the Trailer textfield
-And I select "INACTIVE" from the Status dropdown
-And I type "ANEWVINNUMBER2" into the Vin textfield
-And I type "ANEWMAKE2" into the Make textfield
-And I type "ANEWMODEL2" into the Model textfield
-And I type "102385" into the Odometer textfield
-And I type "1910" into the Year textfield
-And I type "ANEWERCOLOR" into the Color textfield
-And I type "60" into the Weight textfield
-And I type "NEWLICENS2" into the License textfield
-And I select "Texas" from the State dropdown
-And I click the Save button
-And I validate the Trailer text is ""
-And I validate the Status text is ""
-And I validate the Vin text is ""
-And I validate the Make text is ""
-And I validate the Model text is ""
-And I validate the Odometer text is ""
-And I validate the Year text is ""
-And I validate the Color text is ""
-And I validate the Weight text is ""
-And I validate the License text is ""
-And I validate the State text is ""
-And I validate the Assigned Team text is ""
-And I validate the Assigned Device text is ""
-And I validate the Assigned Vehicle text is ""
-And I validate the Assigned Driver text is ""
-And I type "ANEWMAKE2" into the Search textfield
-And I validate the 1st Row of the Trailer Entry link is "ANEWTRAILER2"
-And I validate the 1st Row of the Status Entry link is "INACTIVE"
-And I validate the 1st Row of the Vin Entry link is "ANEWVINNUMBER2"
-And I validate the 1st Row of the License Entry link is "NEWLICENS2"
-And I validate the 1st Row of the State Entry link is "Texas"
-And I validate the 1st Row of the Year Entry link is "1910"
-And I validate the 1st Row of the Make Entry link is "ANEWMAKE2"
-And I validate the 1st Row of the Model Entry link is "ANEWMODEL2"
-And I validate the 1st Row of the Odometer Entry link is "102385"
-And I validate the 1st Row of the Color Entry link is "ANEWERCOLOR"
-And I validate the 1st Row of the Weight Entry link is "60"
-And I validate the 1st Row of the Team Entry link is SAVEDTEAM
-And I validate the 1st Row of the Device Entry link is SAVEDDEVICE
-And I validate the 1st Row of the Vehicle Entry link is SAVEDVEHICLE
-And I validate the 1st Row of the Driver Entry link is SAVEDDRIVER
-!-- Now I delete the entry so it will run just fine on the next run through
-And I click the 1st Row of the Trailer Entry link
-And I click the Edit button
-And I select "DELETED" from the Status dropdown
-And I click the Save button
-And I validate the Entries text contains "Showing 0 to 0 of 0 entries"
-
-Scenario: Assets - Devices - Clear Device Association link
-Given I am logged in
-When I click the Top Devices link
-And I click the New_ button
-And I type "CLEARDEVICETEST" into the Trailer textfield
 And I select "ACTIVE" from the Status dropdown
-And I type "CLEARDEVICEVIN" into the Vin textfield
-And I type "CLEARDEVICEMAKE" into the Make textfield
-And I type "CLEARDEVICEMODEL" into the Model textfield
-And I type "159702" into the Odometer textfield
-And I type "2003" into the Year textfield
-And I type "CLEARDEVICECOL" into the Color textfield
-And I type "15003" into the Weight textfield
-And I type "CLEARDEVIC" into the License textfield
-And I select "Virginia" from the State dropdown
-And I select "MCM990098" from the Assigned Device dropdown
+And I select SAVEDVEHICLE from the Vehicle ID dropdown
 And I click the Save button
-And I type "CLEARDEVICETEST" into the Search textfield
-And I click the 1st Row of the Trailer Entry link
-And I click the Edit button
-And I select "Remove Device Assignment" from the Assigned Device dropdown
-And I click the Save button
-And I click the 1st Row of the Trailer Entry link
-Then I validate the Assigned Device text is ""
-And I validate the 1st Row of the Device Entry link is ""
-And I click the Edit button
-And I select "DELETED" from the Status dropdown
-And I click the Save button
-And I type "CLEARDEVICETEST" into the Search textfield
-And I validate the Entries text contains "Showing 0 to 0 of"
 
 Scenario: Assets - Devices - Batch Edit Test (cancel button, no changes)
 Given I am logged in
 When I click the Top Devices link
 And I click the Show Hide Columns link
-And I check the Vin checkbox
-And I check the License checkbox
-And I check the State checkbox
-And I check the Year checkbox
-And I check the Make checkbox
-And I check the Model checkbox
-And I check the Color checkbox
-And I check the Weight checkbox
-And I check the Odometer checkbox
-And I click the Top Trailers link
-And I click the 1st Row of the Trailer Entry link
-And I save the 1st Row of the Trailer Entry link as SAVEDTRAILER
-And I save the 1st Row of the Team Entry link as SAVEDTEAM
+And I check the Vehicle ID checkbox
+And I check the Product checkbox
+And I check the IMEI checkbox
+And I check the Alternate IMEI checkbox
+And I check the SIM Card checkbox
+And I check the Serial Number checkbox
+And I check the Phone checkbox
+And I check the Status checkbox
+And I check the MCM ID checkbox
+And I click the Top Devices link
+And I click the 1st Row of the Device Entry link
 And I save the 1st Row of the Device Entry link as SAVEDDEVICE
-And I save the 1st Row of the Vehicle Entry link as SAVEDVEHICLE
-And I save the 1st Row of the Driver Entry link as SAVEDDRIVER
+And I save the 1st Row of the Vehicle ID Entry link as SAVEDVEHICLE
+And I save the 1st Row of the Product Entry link as SAVEDPRODUCT
+And I save the 1st Row of the IMEI Entry link as SAVEDIMEI
+And I save the 1st Row of the Alternate IMEI Entry link as SAVEDALTERNATEIMEI
+And I save the 1st Row of the SIM Card Entry link as SAVEDSIMCARD
+And I save the 1st Row of the Serial Number Entry link as SAVEDSERIALNUMBER
+And I save the 1st Row of the Phone Entry link as SAVEDPHONE
 And I save the 1st Row of the Status Entry link as SAVEDSTATUS
-And I save the 1st Row of the Vin Entry link as SAVEDVIN
-And I save the 1st Row of the License Entry link as SAVEDLICENSE
-And I save the 1st Row of the State Entry link as SAVEDSTATE
-And I save the 1st Row of the Year Entry link as SAVEDYEAR
-And I save the 1st Row of the Make Entry link as SAVEDMAKE
-And I save the 1st Row of the Model Entry link as SAVEDMODEL
-And I save the 1st Row of the Color Entry link as SAVEDCOLOR
-And I save the 1st Row of the Weight Entry link as SAVEDWEIGHT
-And I save the 1st Row of the Odometer Entry link as SAVEDODOMETER
-And I control click the 2nd Row of the Trailer Entry link
-And I save the 2nd Row of the Trailer Entry link as SAVEDTRAILER2
-And I save the 2nd Row of the Team Entry link as SAVEDTEAM2
-And I save the 2nd Row of the Device Entry link as SAVEDDEVICE2
-And I save the 2nd Row of the Vehicle Entry link as SAVEDVEHICLE2
-And I save the 2nd Row of the Driver Entry link as SAVEDDRIVER2
-And I save the 2nd Row of the Status Entry link as SAVEDSTATUS2
-And I save the 2nd Row of the Vin Entry link as SAVEDVIN2
-And I save the 2nd Row of the License Entry link as SAVEDLICENSE2
-And I save the 2nd Row of the State Entry link as SAVEDSTATE2
-And I save the 2nd Row of the Year Entry link as SAVEDYEAR2
-And I save the 2nd Row of the Make Entry link as SAVEDMAKE2
-And I save the 2nd Row of the Model Entry link as SAVEDMODEL2
-And I save the 2nd Row of the Color Entry link as SAVEDCOLOR2
-And I save the 2nd Row of the Weight Entry link as SAVEDWEIGHT2
-And I save the 2nd Row of the Odometer Entry link as SAVEDODOMETER2
-Then I validate the Trailer text is ""
-And I validate the Status text is ""
-And I validate the Vin text is ""
-And I validate the Make text is ""
-And I validate the Model text is ""
-And I validate the Odometer text is ""
-And I validate the Year text is ""
-And I validate the Color text is ""
-And I validate the Weight text is ""
-And I validate the License text is ""
-And I validate the State text is ""
-And I validate the Assigned Device text is ""
+And I save the 1st Row of the MCM ID Entry link as SAVEDMCMID
+And I control click the 2nd Row of the Device Entry link
+And I save the 2nd Row of the Device Entry link as SAVEDDEVICE
+And I save the 2nd Row of the Vehicle ID Entry link as SAVEDVEHICLE
+And I save the 2nd Row of the Product Entry link as SAVEDPRODUCT
+And I save the 2nd Row of the IMEI Entry link as SAVEDIMEI
+And I save the 2nd Row of the Alternate IMEI Entry link as SAVEDALTERNATEIMEI
+And I save the 2nd Row of the SIM Card Entry link as SAVEDSIMCARD
+And I save the 2nd Row of the Serial Number Entry link as SAVEDSERIALNUMBER
+And I save the 2nd Row of the Phone Entry link as SAVEDPHONE
+And I save the 2nd Row of the Status Entry link as SAVEDSTATUS
+And I save the 2nd Row of the MCM ID Entry link as SAVEDMCMID
+Then I validate the Device text is ""
+And I validate the Product text is ""
+And I validate the MCM ID text is ""
+And I validate the IMEI text is ""
+And I validate the SIM Card text is ""
+And I validate the Phone text is ""
+And I validate the Alternate IMEI text is ""
+And I validate the Serial Number text is ""
+And I validate the Status dropdown is ""
+And I validate the Activated text is ""
 And I validate the Assigned Vehicle text is ""
-And I validate the Assigned Team text is ""
-And I validate the Assigned Driver text is ""
 When I click the Edit button
-Then I validate the Trailer textfield is disabled
-And I validate the Trailer textfield is ""
-And I validate the Status dropdown is "ACTIVE"
-And I validate the Vin textfield is disabled
-And I validate the Vin textfield is ""
-And I validate the Make textfield is ""
-And I validate the Model textfield is ""
-And I validate the Odometer textfield is ""
-And I validate the Year textfield is ""
-And I validate the Color textfield is ""
-And I validate the Weight textfield is ""
-And I validate the License textfield is disabled
-And I validate the License textfield is ""
-And I validate the State dropdown is "--- Select ---"
-And I validate the Assigned Device dropdown is disabled
-And I validate the Assigned Device dropdown is ""
+And I validate the Device text is ""
+And I validate the Product text is ""
+And I validate the MCM ID text is ""
+And I validate the IMEI text is ""
+And I validate the SIM Card text is ""
+And I validate the Phone text is ""
+And I validate the Alternate IMEI text is ""
+And I validate the Serial Number text is ""
+And I validate the Status dropdown is "NEW"
+And I validate the Activated text is ""
+And I validate the Assigned Vehicle text is disabled
 And I click the Cancel button
-And I validate the 1st Row of the Trailer Entry link is SAVEDTRAILER
-And I validate the 1st Row of the Team Entry link is SAVEDTEAM
-And I validate the 1st Row of the Device Entry link is SAVEDDEVICE
-And I validate the 1st Row of the Vehicle Entry link is SAVEDVEHICLE
-And I validate the 1st Row of the Driver Entry link is SAVEDDRIVER
+Then I validate the 1st Row of the Device Entry link is SAVEDDEVICE
+And I validate the 1st Row of the Vehicle ID Entry link is SAVEDVEHICLE
+And I validate the 1st Row of the Product Entry link is SAVEDPRODUCT
+And I validate the 1st Row of the IMEI Entry link is SAVEDIMEI
+And I validate the 1st Row of the Alternate IMEI Entry link is SAVEDALTERNATEIMEI
+And I validate the 1st Row of the SIM Card Entry link is SAVEDSIMCARD
+And I validate the 1st Row of the Serial Number Entry link is SAVEDSERIALNUMBER
+And I validate the 1st Row of the Phone Entry link is SAVEDPHONE
 And I validate the 1st Row of the Status Entry link is SAVEDSTATUS
-And I validate the 1st Row of the Vin Entry link is SAVEDVIN
-And I validate the 1st Row of the License Entry link is SAVEDLICENSE
-And I validate the 1st Row of the State Entry link is SAVEDSTATE
-And I validate the 1st Row of the Year Entry link is SAVEDYEAR
-And I validate the 1st Row of the Make Entry link is SAVEDMAKE
-And I validate the 1st Row of the Model Entry link is SAVEDMODEL
-And I validate the 1st Row of the Color Entry link is SAVEDCOLOR
-And I validate the 1st Row of the Weight Entry link is SAVEDWEIGHT
-And I validate the 1st Row of the Odometer Entry link is SAVEDODOMETER
-And I validate the 2nd Row of the Trailer Entry link is SAVEDTRAILER2
-And I validate the 2nd Row of the Team Entry link is SAVEDTEAM2
-And I validate the 2nd Row of the Device Entry link is SAVEDDEVICE2
-And I validate the 2nd Row of the Vehicle Entry link is SAVEDVEHICLE2
-And I validate the 2nd Row of the Driver Entry link is SAVEDDRIVER2
-And I validate the 2nd Row of the Status Entry link is SAVEDSTATUS2
-And I validate the 2nd Row of the Vin Entry link is SAVEDVIN2
-And I validate the 2nd Row of the License Entry link is SAVEDLICENSE2
-And I validate the 2nd Row of the State Entry link is SAVEDSTATE2
-And I validate the 2nd Row of the Year Entry link is SAVEDYEAR2
-And I validate the 2nd Row of the Make Entry link is SAVEDMAKE2
-And I validate the 2nd Row of the Model Entry link is SAVEDMODEL2
-And I validate the 2nd Row of the Color Entry link is SAVEDCOLOR2
-And I validate the 2nd Row of the Weight Entry link is SAVEDWEIGHT2
-And I validate the 2nd Row of the Odometer Entry link is SAVEDODOMETER2
+And I validate the 1st Row of the MCM ID Entry link is SAVEDMCMID
+And I validate the 2nd Row of the Device Entry link is SAVEDDEVICE
+And I validate the 2nd Row of the Vehicle ID Entry link is SAVEDVEHICLE
+And I validate the 2nd Row of the Product Entry link is SAVEDPRODUCT
+And I validate the 2nd Row of the IMEI Entry link is SAVEDIMEI
+And I validate the 2nd Row of the Alternate IMEI Entry link is SAVEDALTERNATEIMEI
+And I validate the 2nd Row of the SIM Card Entry link is SAVEDSIMCARD
+And I validate the 2nd Row of the Serial Number Entry link is SAVEDSERIALNUMBER
+And I validate the 2nd Row of the Phone Entry link is SAVEDPHONE
+And I validate the 2nd Row of the Status Entry link is SAVEDSTATUS
+And I validate the 2nd Row of the MCM ID Entry link is SAVEDMCMID
 
 Scenario: Assets - Devices - Batch Edit Test (save button, no changes)
 Given I am logged in
 When I click the Top Devices link
 And I click the Show Hide Columns link
-And I check the Vin checkbox
-And I check the License checkbox
-And I check the State checkbox
-And I check the Year checkbox
-And I check the Make checkbox
-And I check the Model checkbox
-And I check the Color checkbox
-And I check the Weight checkbox
-And I check the Odometer checkbox
-And I click the Top Trailers link
-And I click the 1st Row of the Trailer Entry link
-And I save the 1st Row of the Trailer Entry link as SAVEDTRAILER
-And I save the 1st Row of the Team Entry link as SAVEDTEAM
+And I check the Vehicle ID checkbox
+And I check the Product checkbox
+And I check the IMEI checkbox
+And I check the Alternate IMEI checkbox
+And I check the SIM Card checkbox
+And I check the Serial Number checkbox
+And I check the Phone checkbox
+And I check the Status checkbox
+And I check the MCM ID checkbox
+And I click the Top Devices link
+And I click the 1st Row of the Device Entry link
 And I save the 1st Row of the Device Entry link as SAVEDDEVICE
-And I save the 1st Row of the Vehicle Entry link as SAVEDVEHICLE
-And I save the 1st Row of the Driver Entry link as SAVEDDRIVER
+And I save the 1st Row of the Vehicle ID Entry link as SAVEDVEHICLE
+And I save the 1st Row of the Product Entry link as SAVEDPRODUCT
+And I save the 1st Row of the IMEI Entry link as SAVEDIMEI
+And I save the 1st Row of the Alternate IMEI Entry link as SAVEDALTERNATEIMEI
+And I save the 1st Row of the SIM Card Entry link as SAVEDSIMCARD
+And I save the 1st Row of the Serial Number Entry link as SAVEDSERIALNUMBER
+And I save the 1st Row of the Phone Entry link as SAVEDPHONE
 And I save the 1st Row of the Status Entry link as SAVEDSTATUS
-And I save the 1st Row of the Vin Entry link as SAVEDVIN
-And I save the 1st Row of the License Entry link as SAVEDLICENSE
-And I save the 1st Row of the State Entry link as SAVEDSTATE
-And I save the 1st Row of the Year Entry link as SAVEDYEAR
-And I save the 1st Row of the Make Entry link as SAVEDMAKE
-And I save the 1st Row of the Model Entry link as SAVEDMODEL
-And I save the 1st Row of the Color Entry link as SAVEDCOLOR
-And I save the 1st Row of the Weight Entry link as SAVEDWEIGHT
-And I save the 1st Row of the Odometer Entry link as SAVEDODOMETER
-And I control click the 2nd Row of the Trailer Entry link
-And I save the 2nd Row of the Trailer Entry link as SAVEDTRAILER2
-And I save the 2nd Row of the Team Entry link as SAVEDTEAM2
-And I save the 2nd Row of the Device Entry link as SAVEDDEVICE2
-And I save the 2nd Row of the Vehicle Entry link as SAVEDVEHICLE2
-And I save the 2nd Row of the Driver Entry link as SAVEDDRIVER2
-And I save the 2nd Row of the Status Entry link as SAVEDSTATUS2
-And I save the 2nd Row of the Vin Entry link as SAVEDVIN2
-And I save the 2nd Row of the License Entry link as SAVEDLICENSE2
-And I save the 2nd Row of the State Entry link as SAVEDSTATE2
-And I save the 2nd Row of the Year Entry link as SAVEDYEAR2
-And I save the 2nd Row of the Make Entry link as SAVEDMAKE2
-And I save the 2nd Row of the Model Entry link as SAVEDMODEL2
-And I save the 2nd Row of the Color Entry link as SAVEDCOLOR2
-And I save the 2nd Row of the Weight Entry link as SAVEDWEIGHT2
-And I save the 2nd Row of the Odometer Entry link as SAVEDODOMETER2
-Then I validate the Trailer text is ""
-And I validate the Status text is ""
-And I validate the Vin text is ""
-And I validate the Make text is ""
-And I validate the Model text is ""
-And I validate the Odometer text is ""
-And I validate the Year text is ""
-And I validate the Color text is ""
-And I validate the Weight text is ""
-And I validate the License text is ""
-And I validate the State text is ""
-And I validate the Assigned Device text is ""
+And I save the 1st Row of the MCM ID Entry link as SAVEDMCMID
+And I control click the 2nd Row of the Device Entry link
+And I save the 2nd Row of the Device Entry link as SAVEDDEVICE
+And I save the 2nd Row of the Vehicle ID Entry link as SAVEDVEHICLE
+And I save the 2nd Row of the Product Entry link as SAVEDPRODUCT
+And I save the 2nd Row of the IMEI Entry link as SAVEDIMEI
+And I save the 2nd Row of the Alternate IMEI Entry link as SAVEDALTERNATEIMEI
+And I save the 2nd Row of the SIM Card Entry link as SAVEDSIMCARD
+And I save the 2nd Row of the Serial Number Entry link as SAVEDSERIALNUMBER
+And I save the 2nd Row of the Phone Entry link as SAVEDPHONE
+And I save the 2nd Row of the Status Entry link as SAVEDSTATUS
+And I save the 2nd Row of the MCM ID Entry link as SAVEDMCMID
+Then I validate the Device text is ""
+And I validate the Product text is ""
+And I validate the MCM ID text is ""
+And I validate the IMEI text is ""
+And I validate the SIM Card text is ""
+And I validate the Phone text is ""
+And I validate the Alternate IMEI text is ""
+And I validate the Serial Number text is ""
+And I validate the Status dropdown is ""
+And I validate the Activated text is ""
 And I validate the Assigned Vehicle text is ""
-And I validate the Assigned Team text is ""
-And I validate the Assigned Driver text is ""
-When I click the Edit button
-Then I validate the Trailer textfield is disabled
-And I validate the Trailer textfield is ""
-And I validate the Status dropdown is "ACTIVE"
-And I validate the Vin textfield is disabled
-And I validate the Vin textfield is ""
-And I validate the Make textfield is ""
-And I validate the Model textfield is ""
-And I validate the Odometer textfield is ""
-And I validate the Year textfield is ""
-And I validate the Color textfield is ""
-And I validate the Weight textfield is ""
-And I validate the License textfield is disabled
-And I validate the License textfield is ""
-And I validate the State dropdown is "--- Select ---"
-And I validate the Assigned Device dropdown is disabled
-And I validate the Assigned Device dropdown is ""
-And I click the Save button
-And I validate the 1st Row of the Trailer Entry link is SAVEDTRAILER
-And I validate the 1st Row of the Team Entry link is SAVEDTEAM
-And I validate the 1st Row of the Device Entry link is SAVEDDEVICE
-And I validate the 1st Row of the Vehicle Entry link is SAVEDVEHICLE
-And I validate the 1st Row of the Driver Entry link is SAVEDDRIVER
+When I click the Save button
+And I validate the Device text is ""
+And I validate the Product text is ""
+And I validate the MCM ID text is ""
+And I validate the IMEI text is ""
+And I validate the SIM Card text is ""
+And I validate the Phone text is ""
+And I validate the Alternate IMEI text is ""
+And I validate the Serial Number text is ""
+And I validate the Status text is ""
+And I validate the Activated text is ""
+And I validate the Assigned Vehicle text is ""
+Then I validate the 1st Row of the Device Entry link is SAVEDDEVICE
+And I validate the 1st Row of the Vehicle ID Entry link is SAVEDVEHICLE
+And I validate the 1st Row of the Product Entry link is SAVEDPRODUCT
+And I validate the 1st Row of the IMEI Entry link is SAVEDIMEI
+And I validate the 1st Row of the Alternate IMEI Entry link is SAVEDALTERNATEIMEI
+And I validate the 1st Row of the SIM Card Entry link is SAVEDSIMCARD
+And I validate the 1st Row of the Serial Number Entry link is SAVEDSERIALNUMBER
+And I validate the 1st Row of the Phone Entry link is SAVEDPHONE
 And I validate the 1st Row of the Status Entry link is SAVEDSTATUS
-And I validate the 1st Row of the Vin Entry link is SAVEDVIN
-And I validate the 1st Row of the License Entry link is SAVEDLICENSE
-And I validate the 1st Row of the State Entry link is SAVEDSTATE
-And I validate the 1st Row of the Year Entry link is SAVEDYEAR
-And I validate the 1st Row of the Make Entry link is SAVEDMAKE
-And I validate the 1st Row of the Model Entry link is SAVEDMODEL
-And I validate the 1st Row of the Color Entry link is SAVEDCOLOR
-And I validate the 1st Row of the Weight Entry link is SAVEDWEIGHT
-And I validate the 1st Row of the Odometer Entry link is SAVEDODOMETER
-And I validate the 2nd Row of the Trailer Entry link is SAVEDTRAILER2
-And I validate the 2nd Row of the Team Entry link is SAVEDTEAM2
-And I validate the 2nd Row of the Device Entry link is SAVEDDEVICE2
-And I validate the 2nd Row of the Vehicle Entry link is SAVEDVEHICLE2
-And I validate the 2nd Row of the Driver Entry link is SAVEDDRIVER2
-And I validate the 2nd Row of the Status Entry link is SAVEDSTATUS2
-And I validate the 2nd Row of the Vin Entry link is SAVEDVIN2
-And I validate the 2nd Row of the License Entry link is SAVEDLICENSE2
-And I validate the 2nd Row of the State Entry link is SAVEDSTATE2
-And I validate the 2nd Row of the Year Entry link is SAVEDYEAR2
-And I validate the 2nd Row of the Make Entry link is SAVEDMAKE2
-And I validate the 2nd Row of the Model Entry link is SAVEDMODEL2
-And I validate the 2nd Row of the Color Entry link is SAVEDCOLOR2
-And I validate the 2nd Row of the Weight Entry link is SAVEDWEIGHT2
-And I validate the 2nd Row of the Odometer Entry link is SAVEDODOMETER2
+And I validate the 1st Row of the MCM ID Entry link is SAVEDMCMID
+And I validate the 2nd Row of the Device Entry link is SAVEDDEVICE
+And I validate the 2nd Row of the Vehicle ID Entry link is SAVEDVEHICLE
+And I validate the 2nd Row of the Product Entry link is SAVEDPRODUCT
+And I validate the 2nd Row of the IMEI Entry link is SAVEDIMEI
+And I validate the 2nd Row of the Alternate IMEI Entry link is SAVEDALTERNATEIMEI
+And I validate the 2nd Row of the SIM Card Entry link is SAVEDSIMCARD
+And I validate the 2nd Row of the Serial Number Entry link is SAVEDSERIALNUMBER
+And I validate the 2nd Row of the Phone Entry link is SAVEDPHONE
+And I validate the 2nd Row of the Status Entry link is SAVEDSTATUS
+And I validate the 2nd Row of the MCM ID Entry link is SAVEDMCMID
 
 Scenario: Assets - Devices - Batch Edit Test (cancel button, changes)
 Given I am logged in
 When I click the Top Devices link
 And I click the Show Hide Columns link
-And I check the Vin checkbox
-And I check the License checkbox
-And I check the State checkbox
-And I check the Year checkbox
-And I check the Make checkbox
-And I check the Model checkbox
-And I check the Color checkbox
-And I check the Weight checkbox
-And I check the Odometer checkbox
-And I click the 1st Row of the Trailer Entry link
-And I save the 1st Row of the Trailer Entry link as SAVEDTRAILER
-And I save the 1st Row of the Team Entry link as SAVEDTEAM
+And I check the Vehicle ID checkbox
+And I check the Product checkbox
+And I check the IMEI checkbox
+And I check the Alternate IMEI checkbox
+And I check the SIM Card checkbox
+And I check the Serial Number checkbox
+And I check the Phone checkbox
+And I check the Status checkbox
+And I check the MCM ID checkbox
+And I click the Top Devices link
+And I click the 1st Row of the Device Entry link
 And I save the 1st Row of the Device Entry link as SAVEDDEVICE
-And I save the 1st Row of the Vehicle Entry link as SAVEDVEHICLE
-And I save the 1st Row of the Driver Entry link as SAVEDDRIVER
+And I save the 1st Row of the Vehicle ID Entry link as SAVEDVEHICLE
+And I save the 1st Row of the Product Entry link as SAVEDPRODUCT
+And I save the 1st Row of the IMEI Entry link as SAVEDIMEI
+And I save the 1st Row of the Alternate IMEI Entry link as SAVEDALTERNATEIMEI
+And I save the 1st Row of the SIM Card Entry link as SAVEDSIMCARD
+And I save the 1st Row of the Serial Number Entry link as SAVEDSERIALNUMBER
+And I save the 1st Row of the Phone Entry link as SAVEDPHONE
 And I save the 1st Row of the Status Entry link as SAVEDSTATUS
-And I save the 1st Row of the Vin Entry link as SAVEDVIN
-And I save the 1st Row of the License Entry link as SAVEDLICENSE
-And I save the 1st Row of the State Entry link as SAVEDSTATE
-And I save the 1st Row of the Year Entry link as SAVEDYEAR
-And I save the 1st Row of the Make Entry link as SAVEDMAKE
-And I save the 1st Row of the Model Entry link as SAVEDMODEL
-And I save the 1st Row of the Color Entry link as SAVEDCOLOR
-And I save the 1st Row of the Weight Entry link as SAVEDWEIGHT
-And I save the 1st Row of the Odometer Entry link as SAVEDODOMETER
-And I control click the 2nd Row of the Trailer Entry link
-And I save the 2nd Row of the Trailer Entry link as SAVEDTRAILER2
-And I save the 2nd Row of the Team Entry link as SAVEDTEAM2
-And I save the 2nd Row of the Device Entry link as SAVEDDEVICE2
-And I save the 2nd Row of the Vehicle Entry link as SAVEDVEHICLE2
-And I save the 2nd Row of the Driver Entry link as SAVEDDRIVER2
-And I save the 2nd Row of the Status Entry link as SAVEDSTATUS2
-And I save the 2nd Row of the Vin Entry link as SAVEDVIN2
-And I save the 2nd Row of the License Entry link as SAVEDLICENSE2
-And I save the 2nd Row of the State Entry link as SAVEDSTATE2
-And I save the 2nd Row of the Year Entry link as SAVEDYEAR2
-And I save the 2nd Row of the Make Entry link as SAVEDMAKE2
-And I save the 2nd Row of the Model Entry link as SAVEDMODEL2
-And I save the 2nd Row of the Color Entry link as SAVEDCOLOR2
-And I save the 2nd Row of the Weight Entry link as SAVEDWEIGHT2
-And I save the 2nd Row of the Odometer Entry link as SAVEDODOMETER2
-And I click the Edit button
-And I select "INACTIVE" from the Status dropdown
-And I type "CLEARDEVICEMAKE" into the Make textfield
-And I type "CLEARDEVICEMODEL" into the Model textfield
-And I type "159702" into the Odometer textfield
-And I type "2003" into the Year textfield
-And I type "CLEARDEVICECOL" into the Color textfield
-And I type "15003" into the Weight textfield
-And I select "Idaho" from the State dropdown
+And I save the 1st Row of the MCM ID Entry link as SAVEDMCMID
+And I control click the 2nd Row of the Device Entry link
+And I save the 2nd Row of the Device Entry link as SAVEDDEVICE
+And I save the 2nd Row of the Vehicle ID Entry link as SAVEDVEHICLE
+And I save the 2nd Row of the Product Entry link as SAVEDPRODUCT
+And I save the 2nd Row of the IMEI Entry link as SAVEDIMEI
+And I save the 2nd Row of the Alternate IMEI Entry link as SAVEDALTERNATEIMEI
+And I save the 2nd Row of the SIM Card Entry link as SAVEDSIMCARD
+And I save the 2nd Row of the Serial Number Entry link as SAVEDSERIALNUMBER
+And I save the 2nd Row of the Phone Entry link as SAVEDPHONE
+And I save the 2nd Row of the Status Entry link as SAVEDSTATUS
+And I save the 2nd Row of the MCM ID Entry link as SAVEDMCMID
+Then I validate the Device text is ""
+And I validate the Product text is ""
+And I validate the MCM ID text is ""
+And I validate the IMEI text is ""
+And I validate the SIM Card text is ""
+And I validate the Phone text is ""
+And I validate the Alternate IMEI text is ""
+And I validate the Serial Number text is ""
+And I validate the Status dropdown is ""
+And I validate the Activated text is ""
+And I validate the Assigned Vehicle text is ""
+When I click the Edit button
+And I validate the Device text is ""
+And I validate the Product text is ""
+And I validate the MCM ID text is ""
+And I validate the IMEI text is ""
+And I validate the SIM Card text is ""
+And I validate the Phone text is ""
+And I validate the Alternate IMEI text is ""
+And I validate the Serial Number text is ""
+And I validate the Status dropdown is "NEW"
+And I validate the Activated text is ""
+And I validate the Assigned Vehicle text is disabled
+And I select "NEW" from the Status dropdown 
 And I click the Cancel button
-Then I validate the 1st Row of the Trailer Entry link is SAVEDTRAILER
-And I validate the 1st Row of the Team Entry link is SAVEDTEAM
-And I validate the 1st Row of the Device Entry link is SAVEDDEVICE
-And I validate the 1st Row of the Vehicle Entry link is SAVEDVEHICLE
-And I validate the 1st Row of the Driver Entry link is SAVEDDRIVER
+Then I validate the 1st Row of the Device Entry link is SAVEDDEVICE
+And I validate the 1st Row of the Vehicle ID Entry link is SAVEDVEHICLE
+And I validate the 1st Row of the Product Entry link is SAVEDPRODUCT
+And I validate the 1st Row of the IMEI Entry link is SAVEDIMEI
+And I validate the 1st Row of the Alternate IMEI Entry link is SAVEDALTERNATEIMEI
+And I validate the 1st Row of the SIM Card Entry link is SAVEDSIMCARD
+And I validate the 1st Row of the Serial Number Entry link is SAVEDSERIALNUMBER
+And I validate the 1st Row of the Phone Entry link is SAVEDPHONE
 And I validate the 1st Row of the Status Entry link is SAVEDSTATUS
-And I validate the 1st Row of the Vin Entry link is SAVEDVIN
-And I validate the 1st Row of the License Entry link is SAVEDLICENSE
-And I validate the 1st Row of the State Entry link is SAVEDSTATE
-And I validate the 1st Row of the Year Entry link is SAVEDYEAR
-And I validate the 1st Row of the Make Entry link is SAVEDMAKE
-And I validate the 1st Row of the Model Entry link is SAVEDMODEL
-And I validate the 1st Row of the Color Entry link is SAVEDCOLOR
-And I validate the 1st Row of the Weight Entry link is SAVEDWEIGHT
-And I validate the 1st Row of the Odometer Entry link is SAVEDODOMETER
-And I validate the 2nd Row of the Trailer Entry link is SAVEDTRAILER2
-And I validate the 2nd Row of the Team Entry link is SAVEDTEAM2
-And I validate the 2nd Row of the Device Entry link is SAVEDDEVICE2
-And I validate the 2nd Row of the Vehicle Entry link is SAVEDVEHICLE2
-And I validate the 2nd Row of the Driver Entry link is SAVEDDRIVER2
-And I validate the 2nd Row of the Status Entry link is SAVEDSTATUS2
-And I validate the 2nd Row of the Vin Entry link is SAVEDVIN2
-And I validate the 2nd Row of the License Entry link is SAVEDLICENSE2
-And I validate the 2nd Row of the State Entry link is SAVEDSTATE2
-And I validate the 2nd Row of the Year Entry link is SAVEDYEAR2
-And I validate the 2nd Row of the Make Entry link is SAVEDMAKE2
-And I validate the 2nd Row of the Model Entry link is SAVEDMODEL2
-And I validate the 2nd Row of the Color Entry link is SAVEDCOLOR2
-And I validate the 2nd Row of the Weight Entry link is SAVEDWEIGHT2
-And I validate the 2nd Row of the Odometer Entry link is SAVEDODOMETER2
+And I validate the 1st Row of the MCM ID Entry link is SAVEDMCMID
+And I validate the 2nd Row of the Device Entry link is SAVEDDEVICE
+And I validate the 2nd Row of the Vehicle ID Entry link is SAVEDVEHICLE
+And I validate the 2nd Row of the Product Entry link is SAVEDPRODUCT
+And I validate the 2nd Row of the IMEI Entry link is SAVEDIMEI
+And I validate the 2nd Row of the Alternate IMEI Entry link is SAVEDALTERNATEIMEI
+And I validate the 2nd Row of the SIM Card Entry link is SAVEDSIMCARD
+And I validate the 2nd Row of the Serial Number Entry link is SAVEDSERIALNUMBER
+And I validate the 2nd Row of the Phone Entry link is SAVEDPHONE
+And I validate the 2nd Row of the Status Entry link is SAVEDSTATUS
+And I validate the 2nd Row of the MCM ID Entry link is SAVEDMCMID
 
-Scenario: Assets - Devices - Batch Edit and Batch Delete Test (save button, changes)
-Given I am logged in
-When I click the Top Devices link
-And I click the Show Hide Columns link
-And I check the Vin checkbox
-And I check the License checkbox
-And I check the State checkbox
-And I check the Year checkbox
-And I check the Make checkbox
-And I check the Model checkbox
-And I check the Color checkbox
-And I check the Weight checkbox
-And I check the Odometer checkbox
-And I click the New_ button
-And I type "BATCHSAVE1" into the Trailer textfield
-And I type "BATCHVIN1" into the Vin textfield
-And I type "BATCHMAKE1" into the Make textfield
-And I type "BATCHMODEL1" into the Model textfield
-And I type "666" into the Odometer textfield
-And I type "1955" into the Year textfield
-And I type "BATCHCOLO1" into the Color textfield
-And I type "100001" into the Weight textfield
-And I type "BATCHLIC1" into the License textfield
-And I select "New York" from the State dropdown
-And I select "MCM990030" from the Assigned Device dropdown
-And I click the Save button
-When I click the New_ button
-And I type "BATCHSAVE2" into the Trailer textfield
-And I type "BATCHVIN2" into the Vin textfield
-And I type "BATCHMAKE2" into the Make textfield
-And I type "BATCHMODEL2" into the Model textfield
-And I type "777" into the Odometer textfield
-And I type "1956" into the Year textfield
-And I type "BATCHCOLO2" into the Color textfield
-And I type "100002" into the Weight textfield
-And I type "BATCHLIC2" into the License textfield
-And I select "New Jersey" from the State dropdown
-And I select "MCM990031" from the Assigned Device dropdown
-And I click the Save button
-And I type "BATCHSAVE" into the Search textfield
-And I click the 1st Row of the Trailer Entry link
-And I save the 1st Row of the Trailer Entry link as SAVEDTRAILER
-And I save the 1st Row of the Team Entry link as SAVEDTEAM
+Scenario: Assets - Devices - Batch Edit and Batch Delete Test (save button, changes) (will need to use the DeviceRouteController to create devices specifically for this test)
+!-- Given I am logged in
+!-- When I click the Top Devices link
+!-- And I click the Show Hide Columns link
+!-- And I check the Vehicle ID checkbox
+!-- And I check the Product checkbox
+!-- And I check the IMEI checkbox
+!-- And I check the Alternate IMEI checkbox
+!-- And I check the SIM Card checkbox
+!-- And I check the Serial Number checkbox
+!-- And I check the Phone checkbox
+!-- And I check the Status checkbox
+!-- And I check the MCM ID checkbox
+!-- And I click the Top Devices link
+!-- And I type "BATCHDEVICE" into the Search textfield
+And I click the 1st Row of the Device Entry link
 And I save the 1st Row of the Device Entry link as SAVEDDEVICE
-And I save the 1st Row of the Vehicle Entry link as SAVEDVEHICLE
-And I save the 1st Row of the Driver Entry link as SAVEDDRIVER
-And I save the 1st Row of the Vin Entry link as SAVEDVIN
-And I save the 1st Row of the License Entry link as SAVEDLICENSE
-And I control click the 2nd Row of the Trailer Entry link
-And I save the 2nd Row of the Trailer Entry link as SAVEDTRAILER2
-And I save the 2nd Row of the Team Entry link as SAVEDTEAM2
-And I save the 2nd Row of the Device Entry link as SAVEDDEVICE2
-And I save the 2nd Row of the Vehicle Entry link as SAVEDVEHICLE2
-And I save the 2nd Row of the Driver Entry link as SAVEDDRIVER2
-And I save the 2nd Row of the Vin Entry link as SAVEDVIN2
-And I save the 2nd Row of the License Entry link as SAVEDLICENSE2
+And I save the 1st Row of the Vehicle ID Entry link as SAVEDVEHICLE
+And I save the 1st Row of the Product Entry link as SAVEDPRODUCT
+And I save the 1st Row of the IMEI Entry link as SAVEDIMEI
+And I save the 1st Row of the Alternate IMEI Entry link as SAVEDALTERNATEIMEI
+And I save the 1st Row of the SIM Card Entry link as SAVEDSIMCARD
+And I save the 1st Row of the Serial Number Entry link as SAVEDSERIALNUMBER
+And I save the 1st Row of the Phone Entry link as SAVEDPHONE
+And I save the 1st Row of the Status Entry link as SAVEDSTATUS
+And I save the 1st Row of the MCM ID Entry link as SAVEDMCMID
+And I control click the 2nd Row of the Device Entry link
+And I save the 2nd Row of the Device Entry link as SAVEDDEVICE
+And I save the 2nd Row of the Vehicle ID Entry link as SAVEDVEHICLE
+And I save the 2nd Row of the Product Entry link as SAVEDPRODUCT
+And I save the 2nd Row of the IMEI Entry link as SAVEDIMEI
+And I save the 2nd Row of the Alternate IMEI Entry link as SAVEDALTERNATEIMEI
+And I save the 2nd Row of the SIM Card Entry link as SAVEDSIMCARD
+And I save the 2nd Row of the Serial Number Entry link as SAVEDSERIALNUMBER
+And I save the 2nd Row of the Phone Entry link as SAVEDPHONE
+And I save the 2nd Row of the Status Entry link as SAVEDSTATUS
+And I save the 2nd Row of the MCM ID Entry link as SAVEDMCMID
 And I click the Edit button
 And I select "INACTIVE" from the Status dropdown
-And I type "BATCHMAKE" into the Make textfield
-And I type "BATCHMODEL" into the Model textfield
-And I type "999999" into the Odometer textfield
-And I type "1111" into the Year textfield
-And I type "BATCHCOLOR" into the Color textfield
-And I type "1111" into the Weight textfield
-And I select "Indiana" from the State dropdown
 And I click the Save button
-Then I validate the 1st Row of the Trailer Entry link is SAVEDTRAILER
-And I validate the 1st Row of the Team Entry link is SAVEDTEAM
-And I validate the 1st Row of the Device Entry link is SAVEDDEVICE
-And I validate the 1st Row of the Vehicle Entry link is SAVEDVEHICLE
-And I validate the 1st Row of the Driver Entry link is SAVEDDRIVER
-And I validate the 1st Row of the Status Entry link is "INACTIVE"
-And I validate the 1st Row of the Vin Entry link is SAVEDVIN
-And I validate the 1st Row of the License Entry link is SAVEDLICENSE
-And I validate the 1st Row of the State Entry link is "Indiana"
-And I validate the 1st Row of the Year Entry link is "1111"
-And I validate the 1st Row of the Make Entry link is "BATCHMAKE"
-And I validate the 1st Row of the Model Entry link is "BATCHMODEL"
-And I validate the 1st Row of the Color Entry link is "BATCHCOLOR"
-And I validate the 1st Row of the Weight Entry link is "1111"
-And I validate the 1st Row of the Odometer Entry link is "999999"
-And I validate the 2nd Row of the Trailer Entry link is SAVEDTRAILER2
-And I validate the 2nd Row of the Team Entry link is SAVEDTEAM2
-And I validate the 2nd Row of the Device Entry link is SAVEDDEVICE2
-And I validate the 2nd Row of the Vehicle Entry link is SAVEDVEHICLE2
-And I validate the 2nd Row of the Driver Entry link is SAVEDDRIVER2
-And I validate the 2nd Row of the Status Entry link is "INACTIVE"
-And I validate the 2nd Row of the Vin Entry link is SAVEDVIN2
-And I validate the 2nd Row of the License Entry link is SAVEDLICENSE2
-And I validate the 2nd Row of the State Entry link is "Indiana"
-And I validate the 2nd Row of the Year Entry link is "1111"
-And I validate the 2nd Row of the Make Entry link is "BATCHMAKE"
-And I validate the 2nd Row of the Model Entry link is "BATCHMODEL"
-And I validate the 2nd Row of the Color Entry link is "BATCHCOLOR"
-And I validate the 2nd Row of the Weight Entry link is "1111"
-And I validate the 2nd Row of the Odometer Entry link is "999999"
+Then I validate the 1st Row of the Device Entry link is SAVEDDEVICE
+And I validate the 1st Row of the Vehicle ID Entry link is SAVEDVEHICLE
+And I validate the 1st Row of the Product Entry link is SAVEDPRODUCT
+And I validate the 1st Row of the IMEI Entry link is SAVEDIMEI
+And I validate the 1st Row of the Alternate IMEI Entry link is SAVEDALTERNATEIMEI
+And I validate the 1st Row of the SIM Card Entry link is SAVEDSIMCARD
+And I validate the 1st Row of the Serial Number Entry link is SAVEDSERIALNUMBER
+And I validate the 1st Row of the Phone Entry link is SAVEDPHONE
+And I validate the 1st Row of the Status Entry link is SAVEDSTATUS
+And I validate the 1st Row of the MCM ID Entry link is SAVEDMCMID
+And I validate the 2nd Row of the Device Entry link is SAVEDDEVICE
+And I validate the 2nd Row of the Vehicle ID Entry link is SAVEDVEHICLE
+And I validate the 2nd Row of the Product Entry link is SAVEDPRODUCT
+And I validate the 2nd Row of the IMEI Entry link is SAVEDIMEI
+And I validate the 2nd Row of the Alternate IMEI Entry link is SAVEDALTERNATEIMEI
+And I validate the 2nd Row of the SIM Card Entry link is SAVEDSIMCARD
+And I validate the 2nd Row of the Serial Number Entry link is SAVEDSERIALNUMBER
+And I validate the 2nd Row of the Phone Entry link is SAVEDPHONE
+And I validate the 2nd Row of the Status Entry link is SAVEDSTATUS
+And I validate the 2nd Row of the MCM ID Entry link is SAVEDMCMID
 !-- Now I delete the entries so it will run just fine on the next run through
-And I click the Top Trailers link
-And I click the 1st Row of the Trailer Entry link
-And I click the 2nd Row of the Trailer Entry link
+And I click the Top Devices link
+And I click the 1st Row of the Device Entry link
+And I click the 2nd Row of the Device Entry link
 And I click the Edit button
 And I select "DELETED" from the Status dropdown
 And I click the Save button
 And I validate the Entries text contains "Showing 0 to 0 of 0 entries"
-
-Scenario: Assets - Devices - Trailer is more than 30 characters (new button)
-Given I am logged in
-When I click the Top Devices link
-And I click the New_ button
-And I type "1234567890123456789012345678901" into the Trailer textfield
-Then I validate the Trailer Error text is present
-And I validate the Trailer Error text is "The trailer name exceeds 30 characters."
-And I click the Cancel button
-And I click the New_ button
-And I validate the Trailer Error text is not visible
-
-Scenario: Assets - Devices - Trailer is more than 30 characters (edit button)
-Given I am logged in
-When I click the Top Devices link
-And I click the 1st Row of the Trailer Entry link
-And I click the Edit button
-And I type "1234567890123456789012345678901" into the Trailer textfield
-Then I validate the Trailer Error text is present
-And I validate the Trailer Error text is "The trailer name exceeds 30 characters."
-And I click the Cancel button
-And I click the Edit button
-And I validate the Trailer Error text is not visible
-
-Scenario: Assets - Devices - Vin exceeds 17 characters (new button)
-Given I am logged in
-When I click the Top Devices link
-And I click the New_ button
-And I type "1" into the Vin textfield
-Then I validate the Vin Error text is not present
-And I type "12" into the Vin textfield
-And I validate the Vin Error text is not present
-And I type "123" into the Vin textfield
-And I validate the Vin Error text is not present
-And I type "1234" into the Vin textfield
-And I validate the Vin Error text is not present
-And I type "12345" into the Vin textfield
-And I validate the Vin Error text is not present
-And I type "123456" into the Vin textfield
-And I validate the Vin Error text is not present
-And I type "1234567" into the Vin textfield
-And I validate the Vin Error text is not present
-And I type "12345678" into the Vin textfield
-And I validate the Vin Error text is not present
-And I type "123456789" into the Vin textfield
-And I validate the Vin Error text is not present
-And I type "0123456789" into the Vin textfield
-And I validate the Vin Error text is not present
-And I type "00123456789" into the Vin textfield
-And I validate the Vin Error text is not present
-And I type "000123456789" into the Vin textfield
-And I validate the Vin Error text is not present
-And I type "0000123456789" into the Vin textfield
-And I validate the Vin Error text is not present
-And I type "00000123456789" into the Vin textfield
-And I validate the Vin Error text is not present
-And I type "000000123456789" into the Vin textfield
-And I validate the Vin Error text is not present
-And I type "0000000123456789" into the Vin textfield
-And I validate the Vin Error text is not present
-And I type "00000000123456789" into the Vin textfield
-And I validate the Vin Error text is not present
-And I type "000000000123456789" into the Vin textfield
-And I validate the Vin Error text is present
-And I validate the Vin Error text is "The trailer vin exceeds 17 characters."
-And I click the Cancel button
-And I click the New_ button
-And I validate the Vin Error text is not visible
-
-Scenario: Assets - Devices - Vin exceeds 17 characters (edit button)
-Given I am logged in
-When I click the Top Devices link
-And I click the 1st Row of the Trailer Entry link
-And I click the Edit button
-And I type "1" into the Vin textfield
-Then I validate the Vin Error text is not present
-And I type "12" into the Vin textfield
-And I validate the Vin Error text is not present
-And I type "123" into the Vin textfield
-And I validate the Vin Error text is not present
-And I type "1234" into the Vin textfield
-And I validate the Vin Error text is not present
-And I type "12345" into the Vin textfield
-And I validate the Vin Error text is not present
-And I type "123456" into the Vin textfield
-And I validate the Vin Error text is not present
-And I type "1234567" into the Vin textfield
-And I validate the Vin Error text is not present
-And I type "12345678" into the Vin textfield
-And I validate the Vin Error text is not present
-And I type "123456789" into the Vin textfield
-And I validate the Vin Error text is not present
-And I type "0123456789" into the Vin textfield
-And I validate the Vin Error text is not present
-And I type "00123456789" into the Vin textfield
-And I validate the Vin Error text is not present
-And I type "000123456789" into the Vin textfield
-And I validate the Vin Error text is not present
-And I type "0000123456789" into the Vin textfield
-And I validate the Vin Error text is not present
-And I type "00000123456789" into the Vin textfield
-And I validate the Vin Error text is not present
-And I type "000000123456789" into the Vin textfield
-And I validate the Vin Error text is not present
-And I type "0000000123456789" into the Vin textfield
-And I validate the Vin Error text is not present
-And I type "00000000123456789" into the Vin textfield
-And I validate the Vin Error text is not present
-And I type "000000000123456789" into the Vin textfield
-And I validate the Vin Error text is present
-And I validate the Vin Error text is "The trailer vin exceeds 17 characters."
-And I click the Cancel button
-And I click the Edit button
-And I validate the Vin Error text is not visible
-
-Scenario: Assets - Devices - Make is more than 22 characters (new button)
-Given I am logged in
-When I click the Top Devices link
-And I click the New_ button
-And I type "abcdefghijklmn123456789" into the Make textfield
-Then I validate the Make Error text is present
-And I validate the Make Error text is "The trailer make exceeds 22 characters."
-And I click the Cancel button
-And I click the New_ button
-And I validate the Make Error text is not visible
-
-Scenario: Assets - Devices - Make is more than 22 characters (edit button)
-Given I am logged in
-When I click the Top Devices link
-And I click the 1st Row of the Trailer Entry link
-And I click the Edit button
-And I type "abcdefghijklmn123456789" into the Make textfield
-Then I validate the Make Error text is present
-And I validate the Make Error text is "The trailer make exceeds 22 characters."
-And I click the Cancel button
-And I click the Edit button
-And I validate the Make Error text is not visible
-
-Scenario: Assets - Devices - Model is more than 22 characters (new button)
-Given I am logged in
-When I click the Top Devices link
-And I click the New_ button
-And I type "abcdefghijklmn123456789" into the Model textfield
-Then I validate the Model Error text is present
-And I validate the Model Error text is "The trailer model exceeds 22 characters."
-And I click the Cancel button
-And I click the New_ button
-And I validate the Model Error text is not visible
-
-Scenario: Assets - Devices - Model is more than 22 characters (edit button)
-Given I am logged in
-When I click the Top Devices link
-And I click the 1st Row of the Trailer Entry link
-And I click the Edit button
-And I type "abcdefghijklmn123456789" into the Model textfield
-Then I validate the Model Error text is present
-And I validate the Model Error text is "The trailer model exceeds 22 characters."
-And I click the Cancel button
-And I click the Edit button
-And I validate the Model Error text is not visible
-
-Scenario: Assets - Devices - Odometer is non-numeric characters (new button)
-Given I am logged in
-When I click the Top Devices link
-And I click the New_ button
-And I type "a" into the Odometer textfield
-Then I validate the Odometer Error text is present
-And I validate the Odometer Error text is "The trailer odometer can be empty or contain only numbers."
-And I click the Cancel button
-And I click the New_ button
-And I validate the Odometer Error text is not visible
-
-Scenario: Assets - Devices - Odometer is non-numeric characters (edit button)
-Given I am logged in
-When I click the Top Devices link
-And I click the 1st Row of the Trailer Entry link
-And I click the Edit button
-And I type "a" into the Odometer textfield
-Then I validate the Odometer Error text is present
-And I validate the Odometer Error text is "The trailer odometer can be empty or contain only numbers."
-And I click the Cancel button
-And I click the Edit button
-And I validate the Odometer Error text is not visible
-
-Scenario: Assets - Devices - Year is not 4 characters (new button)
-Given I am logged in
-When I click the Top Devices link
-And I click the New_ button
-And I type "0" into the Year textfield
-Then I validate the Year Error text is present
-And I validate the Year Error text is "The trailer year can be empty or contain 4 numbers."
-And I type "01" into the Year textfield
-And I validate the Year Error text is present
-And I type "012" into the Year textfield
-And I validate the Year Error text is present
-And I type "0123" into the Year textfield
-And I validate the Year Error text is not visible
-And I type "01234" into the Year textfield
-And I validate the Year Error text is present
-And I click the Cancel button
-And I click the New_ button
-And I validate the Year Error text is not visible
-
-Scenario: Assets - Devices - Year is not 4 characters (edit button)
-Given I am logged in
-When I click the Top Devices link
-And I click the 1st Row of the Trailer Entry link
-And I click the Edit button
-And I type "0" into the Year textfield
-Then I validate the Year Error text is present
-And I validate the Year Error text is "The trailer year can be empty or contain 4 numbers."
-And I type "01" into the Year textfield
-And I validate the Year Error text is present
-And I type "012" into the Year textfield
-And I validate the Year Error text is present
-And I type "0123" into the Year textfield
-And I validate the Year Error text is not visible
-And I type "01234" into the Year textfield
-And I validate the Year Error text is present
-And I click the Cancel button
-And I click the Edit button
-And I validate the Year Error text is not visible
-
-Scenario: Assets - Devices - Year is alpha characters (new button)
-Given I am logged in
-When I click the Top Devices link
-And I click the New_ button
-And I type "a" into the Year textfield
-Then I validate the Year Error text is present
-And I validate the Year Error text is "The trailer year can be empty or contain 4 numbers."
-And I click the Cancel button
-And I click the New_ button
-And I validate the Year Error text is not visible
-
-Scenario: Assets - Devices - Year is alpha characters (edit button)
-Given I am logged in
-When I click the Top Devices link
-And I click the 1st Row of the Trailer Entry link
-And I click the Edit button
-And I type "a" into the Year textfield
-Then I validate the Year Error text is present
-And I validate the Year Error text is "The trailer year can be empty or contain 4 numbers."
-And I click the Cancel button
-And I click the Edit button
-And I validate the Year Error text is not visible
-
-Scenario: Assets - Devices - Color exceeds 14 characters (new button)
-Given I am logged in
-When I click the Top Devices link
-And I click the New_ button
-And I type "abcdef123456789" into the Color textfield
-Then I validate the Color Error text is present
-And I validate the Color Error text is "The trailer color exceeds 14 characters."
-And I click the Cancel button
-And I click the New_ button
-And I validate the Color Error text is not visible
-
-Scenario: Assets - Devices - Color exceeds 14 characters (edit button)
-Given I am logged in
-When I click the Top Devices link
-And I click the 1st Row of the Trailer Entry link
-And I click the Edit button
-And I type "abcdef123456789" into the Color textfield
-Then I validate the Color Error text is present
-And I validate the Color Error text is "The trailer color exceeds 14 characters."
-And I click the Cancel button
-And I click the Edit button
-And I validate the Color Error text is not visible
-
-Scenario: Assets - Devices - Weight is not numerical (new button)
-Given I am logged in
-When I click the Top Devices link
-And I click the New_ button
-And I type "a" into the Weight textfield
-Then I validate the Weight Error text is present
-And I validate the Weight Error text is "The trailer weight can be empty or contain only numbers."
-And I click the Cancel button
-And I click the New_ button
-And I validate the Weight Error text is not visible
-
-Scenario: Assets - Devices - Weight is not numerical (edit button)
-Given I am logged in
-When I click the Top Devices link
-And I click the 1st Row of the Trailer Entry link
-And I click the Edit button
-And I type "a" into the Weight textfield
-Then I validate the Weight Error text is present
-And I validate the Weight Error text is "The trailer weight can be empty or contain only numbers."
-And I click the Cancel button
-And I click the Edit button
-And I validate the Weight Error text is not visible
-
-Scenario: Assets - Devices - License exceeds 10 characters (new button)
-Given I am logged in
-When I click the Top Devices link
-And I click the New_ button
-And I type "a0123456789" into the License textfield
-Then I validate the License Error text is present
-And I validate the License Error text is "The trailer license exceeds 10 characters."
-And I click the Cancel button
-And I click the New_ button
-And I validate the License Error text is not visible
-
-Scenario: Assets - Devices - License exceeds 10 characters (edit button)
-Given I am logged in
-When I click the Top Devices link
-And I click the 1st Row of the Trailer Entry link
-And I click the Edit button
-And I type "a0123456789" into the License textfield
-Then I validate the License Error text is present
-And I validate the License Error text is "The trailer license exceeds 10 characters."
-And I click the Cancel button
-And I click the Edit button
-And I validate the License Error text is not visible
