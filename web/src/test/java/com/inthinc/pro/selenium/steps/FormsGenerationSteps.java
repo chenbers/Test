@@ -46,13 +46,13 @@ public class FormsGenerationSteps extends LoginSteps {
         
         while (i < 13) {
             manage._button().newForm().click();
-            add._textField().name().type("FormInactive" + i);
+            add._textField().name().type("ManageFormInactive" + i);
             add._dropDown().status().selectTheOptionContaining("Inactive", 1);
             add._textField().description().type("Required");
             add._checkBox().groups().check();
             add._link().text().click();
             add._button().saveTop().click();
-            System.out.println("FormInactive" + i + " created successfully.");
+            System.out.println("ManageFormInactive" + i + " created successfully.");
             i++;
         }
 //        
