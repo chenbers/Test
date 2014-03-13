@@ -23,7 +23,7 @@ And I validate the Copyright text is present
 
 Scenario: TC1247: Log In - Log In Button
 Given I am logged in
-Then I validate I am on the Executive Dashboard page
+Then I validate I am on the Login page
 
 Scenario: TC1241: Log In - Blank User Name and Password Error
 Given I am on the Login page
