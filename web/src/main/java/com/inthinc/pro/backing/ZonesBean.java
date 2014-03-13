@@ -583,7 +583,7 @@ public class ZonesBean extends BaseBean
      * Transforms an item's speed limit back to mph
      * in case the current measurement type is set to kph.
      */
-    private void transformItemSpeedLimit(){
+    protected void transformItemSpeedLimit(){
         MeasurementType measurementType = getPerson().getMeasurementType();
 
         // currently in mph - return
@@ -611,8 +611,8 @@ public class ZonesBean extends BaseBean
         MeasurementType measurementType = getPerson().getMeasurementType();
 
         switch(measurementType){
-            case METRIC: return MAX_SPEED_IN_MPH;
-            case ENGLISH: return MAX_SPEED_IN_KPH;
+            case METRIC: return MAX_SPEED_IN_KPH;
+            case ENGLISH: return MAX_SPEED_IN_MPH;
             default: return 100;
         }
     }
@@ -622,7 +622,7 @@ public class ZonesBean extends BaseBean
      * Setter for editZone.
      */
     public void setMeasurementTypeSpeedLimit(int speedLimit){
-        Map<ZoneAvailableOption, OptionValue> optionsMap =item.getOptionsMap();
+        Map<ZoneAvailableOption, OptionValue> optionsMap = item.getOptionsMap();
         optionsMap.put(ZoneAvailableOption.SPEED_LIMIT, new SpeedValue(speedLimit));
         item.setOptionsMap(optionsMap);
     }
@@ -657,5 +657,13 @@ public class ZonesBean extends BaseBean
             case ENGLISH: return "mph";
             default: return measurementType.toString();
         }
+    }
+
+    /**
+     * Used for tests only.
+     * @param zone item to set
+     */
+    protected void setTestZone(Zone zone){
+       this.item = zone;
     }
 }
