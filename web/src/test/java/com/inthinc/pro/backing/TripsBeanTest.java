@@ -178,6 +178,12 @@ public class TripsBeanTest extends BaseBeanTest {
         testList3.add(event4);
         testList3.add(event6);
 
+        List<Event> testList4 =new ArrayList <Event>();
+        testList4.add(event2);
+        testList4.add(event3);
+        testList4.add(event5);
+        testList4.add(event1);
+
         // team level login
         loginUser("custom101");
 
@@ -187,12 +193,16 @@ public class TripsBeanTest extends BaseBeanTest {
         testList1=tripsBean.removeDuplicateEvents(testList1);
         testList2=tripsBean.removeDuplicateEvents(testList2);
         testList3=tripsBean.removeDuplicateEvents(testList3);
+        testList3=tripsBean.removeDuplicateEvents(testList4);
 
         assertEquals(4,testList1.size());
 
         assertEquals(4,testList2.size());
 
         assertEquals(4,testList3.size());
+
+        //and for list without duplicates
+        assertEquals(4,testList4.size());
 
     }
 
