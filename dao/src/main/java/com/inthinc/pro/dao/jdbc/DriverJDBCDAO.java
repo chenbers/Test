@@ -169,30 +169,4 @@ public class DriverJDBCDAO extends SimpleJdbcDaoSupport implements DriverDAO{
     public Integer deleteByID(Integer integer) {
         throw new NotImplementedException();
     }
-
-    public void createTestDriver(int testAcctId, int testGroupId, int testDriverId) {
-        Map<String, String> params = new HashMap<String, String>();
-        params.put("personID", String.valueOf(testDriverId));
-        params.put("acctID", String.valueOf(testAcctId));
-        getSimpleJdbcTemplate().update("insert into person (personID, acctID, tzID, modified, status, measureType, fuelEffType) " +
-                " values (:personID, :acctID, 1, NOW(), 1, 1, 1)", params);
-
-       params = new HashMap<String, String>();
-        params.put("driverID", String.valueOf(testDriverId));
-        params.put("personID", String.valueOf(testDriverId));
-        params.put("groupID", String.valueOf(testGroupId));
-        getSimpleJdbcTemplate().update("insert into driver (driverID, groupID, personID, groupPath, rfid1, rfid2, barcode, modified) " +
-                " values (:driverID, :groupID, :personID, 'fleet', 12345, 56789, 'abc123', NOW())", params);
-    }
-
-
-    public void deleteTestDriver(int testDriverId) {
-        Map<String, String> params = new HashMap<String, String>();
-        params.put("driverID", String.valueOf(testDriverId));
-        getSimpleJdbcTemplate().update("delete from driver where driverID = :driverID", params);
-
-        params = new HashMap<String, String>();
-        params.put("personID", String.valueOf(testDriverId));
-        getSimpleJdbcTemplate().update("delete from person where personID = :personID", params);
-    }
 }
