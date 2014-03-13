@@ -121,27 +121,27 @@ public class FormsGenerationSteps extends LoginSteps {
         }
         
         manage._button().newForm().click();
-        add._textField().name().type("FormGeneric" + i);
+        add._textField().name().type("PublishFormGeneric" + i);
         add._checkBox().groups().check();
         add._link().text().click();
         add._button().saveTop().click();
-        manage._textField().search().type("FormGeneric" + i);
+        manage._textField().search().type("PublishFormGeneric" + i);
         manage._button().gear().row(1).click();
         manage._link().publish().row(1).click();
         manage._link().manage().click();
-        System.out.println("FormGeneric" + i + " created successfully.");
+        System.out.println("PublishFormGeneric" + i + " created successfully.");
         i++;
         
         while (i < 90) {
             manage._button().gear().row(1).click();
             manage._link().copy().row(1).click();
-            add._textField().name().type("FormGeneric" + i);
+            add._textField().name().type("PublishFormGeneric" + i);
             add._button().saveTop().click();
-            manage._textField().search().type("FormGeneric" + i);
+            manage._textField().search().type("PublishFormGeneric" + i);
             manage._button().gear().row(1).click();
             manage._link().publish().row(1).click();
             manage._link().manage().click();
-            System.out.println("FormGeneric" + i + " created successfully.");
+            System.out.println("PublishFormGeneric" + i + " created successfully.");
             i++;
         }
         

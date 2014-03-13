@@ -174,7 +174,7 @@ Given I am logged in
 When I click the Forms link
 And I click the Submissions link
 Then I validate the 1st Row of the Form Entry text is present
-And I select "FormGeneric10 (1)" from the Form dropdown
+And I select "PublishFormGeneric10 (1)" from the Form dropdown
 And I click the Refresh button
 And I validate the 1st Row of the Form Entry text is not present
 
