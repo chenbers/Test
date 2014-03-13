@@ -649,7 +649,7 @@ And I click the bookmark I just added
 And I log back in
 Then I validate I am on the Assets Trailers page
 
-Scenario: Assets - Trailers - Table Properties NEED TO IMPLEMENT CHECKING ALPHABETICAL ORDER
+Scenario: Assets - Trailers - (Removing test till it's implemented)
 Given I am logged in
 When I click the Top Trailers link
 And I click the Show Hide Columns link
