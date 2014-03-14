@@ -3,7 +3,7 @@ Given I am logged in
 When I click the Forms link
 And I click the New Form button
 And I check the 1st Row of the Groups checkbox
-And I type "Submissions Form TCXXXX Pre-Trip Required" in the Name textfield
+And I type "Submissions Form Pre-Trip Required" in the Name textfield
 And I type "Submissions Form Description" in the Description textfield
 And I select the option containing "Pre-Trip" from the Trigger dropdown
 And I click the Date link
@@ -91,11 +91,11 @@ And I click the Add Option link
 And I type "Option 4" into the 4th Row of the Option English textfield
 And I type "optionfour" into the 4th Row of the Option Underlying Value textfield
 And I click the Save Top button
-And I type "Submissions Form TCXXXX Pre-Trip Required" into the Search field
-Then I validate the 1st Row of the Entry Name text is "Submissions Form TCXXXX Pre-Trip Required"
+And I type "Submissions Form Pre-Trip Required" into the Search field
+Then I validate the 1st Row of the Entry Name text is "Submissions Form Pre-Trip Required"
 And I click the 1st Row of the Gear button
 And I click the 1st Row of the Publish link
-And I type "Submissions Form TCXXXX Pre-Trip Required" into the Search field
-And I validate the 1st Row of the Entry Name text is "Submissions Form TCXXXX Pre-Trip Required"
+And I type "Submissions Form Pre-Trip Required" into the Search field
+And I validate the 1st Row of the Entry Name text is "Submissions Form Pre-Trip Required"
 
 !-- Need to add a step to generate the submissions once the form has been created and published
