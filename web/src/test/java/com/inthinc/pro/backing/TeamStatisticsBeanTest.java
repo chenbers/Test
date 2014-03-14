@@ -144,11 +144,11 @@ public class TeamStatisticsBeanTest extends BaseBeanTest  {
         //pacify compiler
         pu.getClass();
         
-        TeamStatisticsBean bean = new TeamStatisticsBean();
+        TeamStatisticsBean bean = (TeamStatisticsBean)applicationContext.getBean("teamStatisticsBean");
         TeamMockData mockData = new TeamMockData();
         bean.setGroupReportDAO(mockData.getMockGroupReportDAO());
         
-        TeamCommonBean commonBean = new TeamCommonBean();
+        TeamCommonBean commonBean = (TeamCommonBean)applicationContext.getBean("teamCommonBean");
         
         commonBean.setGroupID(TeamMockData.TEAM_GROUP_ID);
         commonBean.setGroup(mockData.getGroup());
@@ -171,6 +171,7 @@ public class TeamStatisticsBeanTest extends BaseBeanTest  {
         commonBean.setTimeFrame(TimeFrame.ONE_DAY_AGO);
         mockData.setListSwitch(SEListSwitch.DAY_30);
         // clear the cache
+        bean.getTeamCommonBean().getCachedResults().clear();
         bean.getTeamCommonBean().getCachedTrendResults().clear();
         dvswList = bean.getDriverTotals();
         assertNotNull(dvswList);
