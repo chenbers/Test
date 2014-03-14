@@ -150,6 +150,10 @@ public class PageNotificationsCrashHistoryAddEdit extends NotificationsBar {
         public TextField timeOfDay() {
             return new TextField(NotificationsCrashHistoryAddEditEnum.TIME_OF_DAY_FIELD);
         }
+        
+        public TextField dateTime() {
+            return new TextField(NotificationsCrashHistoryAddEditEnum.DATE_TIME);
+        }
 
     }
 
