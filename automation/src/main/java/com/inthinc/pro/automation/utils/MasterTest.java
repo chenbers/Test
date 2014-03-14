@@ -119,7 +119,7 @@ public abstract class MasterTest {
         } else {
             results = actual.equals(expected);
         }
-        Log.info("Expected: " + expected + " == Actual: " + actual + " is " + results);
+        Log.info("\n\nExpected: " + expected + " == Actual: " + actual + " is " + results);
         return results;
     }
 
