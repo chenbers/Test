@@ -86,12 +86,12 @@ public class TeamOverallBeanTest extends BaseBeanTest {
         //pacify compiler
         pu.getClass();
         
-        TeamOverallBean bean = new TeamOverallBean();
+        TeamOverallBean bean = (TeamOverallBean)applicationContext.getBean("teamOverallBean");
         TeamMockData mockData = new TeamMockData();
         bean.setGroupReportDAO(mockData.getMockGroupReportDAO());
         
-        TeamCommonBean commonBean = new TeamCommonBean();
-        
+        TeamCommonBean commonBean = (TeamCommonBean)applicationContext.getBean("teamCommonBean");
+              
         commonBean.setGroupID(TeamMockData.TEAM_GROUP_ID);
         commonBean.setGroup(mockData.getGroup());
        
