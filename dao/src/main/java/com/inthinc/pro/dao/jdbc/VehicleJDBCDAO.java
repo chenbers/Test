@@ -9,7 +9,11 @@ import com.inthinc.pro.model.app.States;
 import com.inthinc.pro.model.configurator.ProductType;
 import com.mysql.jdbc.Statement;
 import org.apache.log4j.Logger;
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
 import org.joda.time.Interval;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.simple.ParameterizedRowMapper;
@@ -18,12 +22,12 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import javax.swing.text.DateFormatter;
+import java.sql.*;
 import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.Date;
 
 /**
  * JDBC Vehicle DAO.
@@ -31,6 +35,9 @@ import java.util.*;
 public class VehicleJDBCDAO extends SimpleJdbcDaoSupport implements VehicleDAO {
     private static final Logger logger = Logger.getLogger(DriverHessianDAO.class);
     private LocationDAO locationDAO;
+
+    private static final SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    private static final DateTimeFormatter dateFormatterAgg = DateTimeFormat.forPattern("yyyy-MM-dd");
 
     private static String VEHICLE_COLUMNS_STRING =
             " v.vehicleID, v.groupID, v.status, v.name, v.make, v.model, v.year, v.color, v.vtype, v.vin, v.weight, v.license, v.stateID, v.odometer, v.ifta, v.absOdometer, " +
@@ -71,12 +78,14 @@ public class VehicleJDBCDAO extends SimpleJdbcDaoSupport implements VehicleDAO {
     private static final String GROUP_ID_DEEP = FIND_BY +"where v.groupID=:groupID and v.status <> 3";
     private static final String DEL_VEHICLE_BY_ID = "DELETE FROM vehicle WHERE vehicleID = ?";
 
-    private static final String GET_LAST_LOCATION = "SELECT * FROM lastLocDriver where vehicleID = :vehicleID";
+    private static final String GET_GROUP_PATH = "select g.groupPath from groups g where g.groupID= :groupID";
 
     private static final String TRIP_LIST = "SELECT * FROM trip where vehicleID=:vehicleID and startTime like :startTime and endTime like :endTime";
 
-    private static final String INSERT_VEHICLE = "insert into vehicle (VIN, color, deviceID, driverID, groupID, license, make, model, name, state, status, vehicleID, vtype, weight, year, ifta)" +
-                                                 "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    private static final String INSERT_VEHICLE = "insert into vehicle (VIN, color, groupID, groupPath, modified, license, make, model, name, stateID, status, weight, year, ifta)" +
+                                                 "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+    private static final String UPDATE_VEHICLE = "UPDATE vehicle SET VIN= ?, color=?, groupID=?, groupPath=?, modified=?, license=?, make=?, model=?, name=?, stateID=?, status=?, weight=?, year=?, ifta=? where vehicleID= ?";
 
 
     private ParameterizedRowMapper<Vehicle> pagedVehicleRowMapper = new ParameterizedRowMapper<Vehicle>() {
@@ -265,7 +274,7 @@ public class VehicleJDBCDAO extends SimpleJdbcDaoSupport implements VehicleDAO {
         return getSimpleJdbcTemplate().queryForObject(findByDriverIn.toString(), pagedVehicleRowMapper, params);
     }
 
-    //TODO: see what to do
+
     @Override
     public LastLocation getLastLocation(Integer vehicleID) {
         Map<String, Object> params = new HashMap<String, Object>();
@@ -300,7 +309,7 @@ public class VehicleJDBCDAO extends SimpleJdbcDaoSupport implements VehicleDAO {
         return locationDAO.getLocationsForVehicleTrip(vehicleID, startTime, endTime);
     }
 
-    //TODO: see how can take
+
     @Override
     public List<LatLng> getLocationsForTrip(Integer vehicleID, Interval interval) {
         Map<String, Object> params = new HashMap<String, Object>();
@@ -310,7 +319,7 @@ public class VehicleJDBCDAO extends SimpleJdbcDaoSupport implements VehicleDAO {
         throw new NotImplementedException();
     }
 
-         //TODO: am ramas aici vezi ce ii faci CZ
+
     @Override
     public List<DriverLocation> getVehiclesNearLoc(Integer groupID, Integer numof, Double lat, Double lng) {
         Map<String, Object> params = new HashMap<String, Object>();
@@ -342,22 +351,60 @@ public class VehicleJDBCDAO extends SimpleJdbcDaoSupport implements VehicleDAO {
             @Override
             public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
                 PreparedStatement ps = con.prepareStatement(INSERT_VEHICLE, Statement.RETURN_GENERATED_KEYS);
+//                VIN*, color, deviceID, driverID, team groupID*, license, make*, model*, name* - vehicleID, state, status*, vtype, weight, year*, ifta
+                ps.setString(1, entity.getVIN());
 
+                if (entity.getColor() == null) {
+                    ps.setNull(2, Types.NULL);
+                } else {
+                    ps.setString(2, entity.getColor());
+                }
 
+                ps.setInt(3, entity.getGroupID());
 
+                ps.setString(4, getPathByGroupId(entity.getGroupID()));
 
+                DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                df.setTimeZone(TimeZone.getTimeZone("UTC"));
+                String modified = df.format(toUTC(new Date()));
 
+                ps.setString(5, modified);
 
+                if (entity.getLicense() == null) {
+                    ps.setNull(6, Types.NULL);
+                } else {
+                    ps.setString(6, entity.getLicense());
+                }
+                ps.setString(7, entity.getMake());
+                ps.setString(8, entity.getModel());
+                ps.setString(9,entity.getName());
+
+                if (entity.getState() == null) {
+                    ps.setNull(10, Types.NULL);
+                } else {
+                    ps.setInt(10, entity.getState().getStateID());
+                }
+
+                ps.setInt(11, entity.getStatus().getCode());
+
+                if (entity.getWeight() == null) {
+                    ps.setNull(12, Types.NULL);
+                } else {
+                    ps.setInt(12, entity.getWeight());
+                }
+
+                ps.setInt(13, entity.getYear());
+
+                if (entity.getIfta() == null) {
+                    ps.setNull(14, Types.NULL);
+                } else {
+                    ps.setBoolean(14, entity.getIfta());
+                }
 
 
                 logger.debug(ps.toString());
                 return ps;
             }
-
-
-
-
-
         };
 
         jdbcTemplate.update(psc, keyHolder);
@@ -365,8 +412,76 @@ public class VehicleJDBCDAO extends SimpleJdbcDaoSupport implements VehicleDAO {
     }
 
     @Override
-    public Integer update(Vehicle entity) {
-        throw new NotImplementedException();
+    public Integer update(final Vehicle entity) {
+        JdbcTemplate jdbcTemplate = getJdbcTemplate();
+        PreparedStatementCreator psc = new PreparedStatementCreator() {
+
+            @Override
+            public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
+                if (entity.getVehicleID() == null)
+                    throw new SQLException("Cannot update vehicle with null id.");
+                PreparedStatement ps = con.prepareStatement(UPDATE_VEHICLE);
+
+                ps.setString(1, entity.getVIN());
+
+                if (entity.getColor() == null) {
+                    ps.setNull(2, Types.NULL);
+                } else {
+                    ps.setString(2, entity.getColor());
+                }
+
+                ps.setInt(3, entity.getGroupID());
+
+                ps.setString(4, getPathByGroupId(entity.getGroupID()));
+
+                DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                df.setTimeZone(TimeZone.getTimeZone("UTC"));
+                String modified = df.format(toUTC(new Date()));
+
+                ps.setString(5, modified);
+
+                if (entity.getLicense() == null) {
+                    ps.setNull(6, Types.NULL);
+                } else {
+                    ps.setString(6, entity.getLicense());
+                }
+                ps.setString(7, entity.getMake());
+                ps.setString(8, entity.getModel());
+                ps.setString(9,entity.getName());
+
+                if (entity.getState() == null) {
+                    ps.setNull(10, Types.NULL);
+                } else {
+                    ps.setInt(10, entity.getState().getStateID());
+                }
+
+                ps.setInt(11, entity.getStatus().getCode());
+
+                if (entity.getWeight() == null) {
+                    ps.setNull(12, Types.NULL);
+                } else {
+                    ps.setInt(12, entity.getWeight());
+                }
+
+                ps.setInt(13, entity.getYear());
+
+                if (entity.getIfta() == null) {
+                    ps.setNull(14, Types.NULL);
+                } else {
+                    ps.setBoolean(14, entity.getIfta());
+                }
+
+                ps.setInt(15, entity.getVehicleID());
+
+                logger.debug(ps.toString());
+                return ps;
+            };
+
+
+        };
+
+        jdbcTemplate.update(psc);
+        return entity.getVehicleID();
     }
 
     @Override
@@ -417,5 +532,20 @@ public class VehicleJDBCDAO extends SimpleJdbcDaoSupport implements VehicleDAO {
         return (Integer) map.get("id");
     }
 
+    private Date toUTC(Date date){
+        DateTime dt = new DateTime(date.getTime()).toDateTime(DateTimeZone.UTC);
+        return dt.toDate();
+    }
+
+    private String getPathByGroupId(Integer groupID){
+        Map<String, Object> args = new HashMap<String, Object>();
+        args.put("groupID", groupID);
+
+        String groupPath = new String (GET_GROUP_PATH);
+
+        String grPath = getSimpleJdbcTemplate().queryForObject(groupPath, String.class, args);
+
+        return grPath;
+    }
 
 }
