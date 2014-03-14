@@ -4,6 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.EnumSet;
 import java.util.HashMap;
@@ -366,6 +367,13 @@ public class TeamTripsBean extends BaseBean {
 	       List<Event> tampers = loadTampers();
 	       
 		   List<Trip> tripsList = driverDAO.getTrips(driverID, teamCommonBean.getTimeFrame().getInterval(getDateTimeZone()), true);
+           Collections.sort(tripsList, new Comparator<Trip>() {
+               @Override
+               public int compare(Trip t1, Trip t2) {
+                   return (int)(t1.getStartTime().getTime() - t2.getStartTime().getTime());
+               }
+           });
+
 	       trips = new ArrayList<TeamTrip>();
 	
 	       for (Trip trip : tripsList) {
