@@ -6,13 +6,13 @@ import com.inthinc.pro.automation.elements.TextLink;
 import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 import com.inthinc.pro.selenium.pageEnums.NotificationsCrashReportEnum;
 
-public class PageNotificationsCrashReport extends NotificationsBar {
+public class PageNotificationsCrashReport extends NavigationBar {
 
     public PageNotificationsCrashReport() {
         // TODO Auto-generated constructor stub
     }
 
-    public class NotificationsCrashHistoryAddEditLinks extends NotificationsBarLinks {
+    public class NotificationsCrashReportLinks extends NavigationBarLinks {
     	
     	public TextLink back() {
     		return new TextLink(NotificationsCrashReportEnum.BACK);
@@ -27,7 +27,7 @@ public class PageNotificationsCrashReport extends NotificationsBar {
         }
     }
 
-    public class NotificationsCrashHistoryAddEditTexts extends NotificationsBarTexts {
+    public class NotificationsCrashReportTexts extends NavigationBarTexts {
 
         public Text headerCrashDetails() {
             return new Text(NotificationsCrashReportEnum.CRASH_DETAILS_HEADER);
@@ -90,9 +90,9 @@ public class PageNotificationsCrashReport extends NotificationsBar {
         }
     }
 
-    public class NotificationsCrashHistoryAddEditTextFields extends NotificationsBarTextFields {}
+    public class NotificationsCrashReportTextFields  extends NavigationBarTextFields {}
 
-    public class NotificationsCrashHistoryAddEditButtons extends NotificationsBarButtons {
+    public class NotificationsCrashReportButtons  extends NavigationBarButtons {
 
         public TextButton edit() {
             return new TextButton(NotificationsCrashReportEnum.EDIT);
@@ -100,53 +100,47 @@ public class PageNotificationsCrashReport extends NotificationsBar {
 
     }
 
-    public class NotificationsCrashHistoryAddEditDropDowns extends NotificationsBarDropDowns {}
+    public class NotificationsCrashReportDropDowns  extends NavigationBarDropDowns {}
 
-    public class NotificationsCrashHistoryAddEditPopUps extends MastheadPopUps {}
+    public class NotificationsCrashReportPopUps extends MastheadPopUps {}
 
-    public class NotificationsCrashHistoryAddEditPager {
+    public class NotificationsCrashReportPager {
         public Paging pageIndex() {
             return new Paging();
         }
     }
 
-    public NotificationsCrashHistoryAddEditPager _page() {
-        return new NotificationsCrashHistoryAddEditPager();
+    public NotificationsCrashReportPager _page() {
+        return new NotificationsCrashReportPager();
     }
 
-    public NotificationsCrashHistoryAddEditLinks _link() {
-        return new NotificationsCrashHistoryAddEditLinks();
+    public NotificationsCrashReportLinks _link() {
+        return new NotificationsCrashReportLinks();
     }
 
-    public NotificationsCrashHistoryAddEditTexts _text() {
-        return new NotificationsCrashHistoryAddEditTexts();
+    public NotificationsCrashReportTexts _text() {
+        return new NotificationsCrashReportTexts();
     }
 
-    public NotificationsCrashHistoryAddEditButtons _button() {
-        return new NotificationsCrashHistoryAddEditButtons();
+    public NotificationsCrashReportButtons _button() {
+        return new NotificationsCrashReportButtons();
     }
 
-    public NotificationsCrashHistoryAddEditTextFields _textField() {
-        return new NotificationsCrashHistoryAddEditTextFields();
+    public NotificationsCrashReportTextFields _textField() {
+        return new NotificationsCrashReportTextFields();
     }
 
-    public NotificationsCrashHistoryAddEditDropDowns _dropDown() {
-        return new NotificationsCrashHistoryAddEditDropDowns();
+    public NotificationsCrashReportDropDowns _dropDown() {
+        return new NotificationsCrashReportDropDowns();
     }
 
-    public NotificationsCrashHistoryAddEditPopUps _popUp() {
-        return new NotificationsCrashHistoryAddEditPopUps();
-    }
-
-    @Override
     public SeleniumEnums setUrl() {
         return NotificationsCrashReportEnum.DEFAULT_URL;
     }
 
-    @Override
     protected boolean checkIsOnPage() {
-        return _link().back().isPresent(); // &&
-               // _text().occupantCount().isPresent();
+        return _link().back().isPresent()  &&
+                _text().occupantCount().isPresent();
     }
 
 }
