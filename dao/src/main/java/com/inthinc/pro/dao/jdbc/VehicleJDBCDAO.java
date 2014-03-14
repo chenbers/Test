@@ -1,34 +1,37 @@
 package com.inthinc.pro.dao.jdbc;
 
+import com.inthinc.pro.dao.LocationDAO;
 import com.inthinc.pro.dao.VehicleDAO;
-import com.inthinc.pro.model.Device;
-import com.inthinc.pro.model.DeviceStatus;
-import com.inthinc.pro.model.DriverLocation;
-import com.inthinc.pro.model.LastLocation;
-import com.inthinc.pro.model.LatLng;
-import com.inthinc.pro.model.Status;
-import com.inthinc.pro.model.Trip;
-import com.inthinc.pro.model.Vehicle;
-import com.inthinc.pro.model.VehicleName;
-import com.inthinc.pro.model.VehicleType;
+import com.inthinc.pro.dao.hessian.DriverHessianDAO;
+import com.inthinc.pro.dao.hessian.exceptions.EmptyResultSetException;
+import com.inthinc.pro.model.*;
 import com.inthinc.pro.model.app.States;
 import com.inthinc.pro.model.configurator.ProductType;
+import com.mysql.jdbc.Statement;
+import org.apache.log4j.Logger;
 import org.joda.time.Interval;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.simple.ParameterizedRowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.text.DateFormat;
+import java.util.*;
 
 /**
  * JDBC Vehicle DAO.
  */
 public class VehicleJDBCDAO extends SimpleJdbcDaoSupport implements VehicleDAO {
+    private static final Logger logger = Logger.getLogger(DriverHessianDAO.class);
+    private LocationDAO locationDAO;
+
     private static String VEHICLE_COLUMNS_STRING =
             " v.vehicleID, v.groupID, v.status, v.name, v.make, v.model, v.year, v.color, v.vtype, v.vin, v.weight, v.license, v.stateID, v.odometer, v.ifta, v.absOdometer, " +
                     " d.deviceID, d.acctID, d.status, d.name, d.imei, d.sim, d.serialNum, d.phone, d.activated, d.baseID, d.productVer, d.firmVer, d.witnessVer, d.emuMd5, d.mcmid, d.altImei," +
@@ -49,6 +52,33 @@ public class VehicleJDBCDAO extends SimpleJdbcDaoSupport implements VehicleDAO {
     private static final String MILES_DRIVEN =
             "SELECT MAX(vs.endingOdometer) milesDriven FROM vehicleScoreByDay vs where vs.vehicleID = :vehicleID";
 
+    private static final String FIND_BY = "SELECT * FROM vehicle v " +
+            "LEFT JOIN groups g USING (groupID) " +
+            "LEFT OUTER JOIN vddlog vdd ON (v.vehicleID = vdd.vehicleID and vdd.stop is null) " +
+            "LEFT OUTER JOIN device d ON (d.deviceID = vdd.deviceID and vdd.stop is null) " +
+            "LEFT OUTER JOIN driver dr ON (dr.driverID = vdd.driverID and vdd.stop is null) " +
+            "LEFT OUTER JOIN person p ON (dr.personID = p.personID) " +
+            "LEFT OUTER JOIN driverPerformance dp ON (dr.driverID = dp.driverID)";
+
+    private static final String GET_VEHICLE = "select * FROM vehicle v where v.groupID= :groupID";
+
+    private static final String GET_VEHICLE_NAME="select vehicleID, name from vehicle where groupID = :groupID";
+
+    private static final String FIND_BY_DRIVER_ID = FIND_BY + "where dr.driverID = :driverID";
+    private static final String FIND_BY_DRIVER_IN_GROUP = FIND_BY + "where dr.driverID = :driverID and v.groupID = :groupID";
+    private static final String FIND_BY_VIN = FIND_BY +"where v.vin like :vin";
+    private static final String FIND_BY_VEHICLEID = FIND_BY +"where v.vehicleID=:vehicleID";
+    private static final String GROUP_ID_DEEP = FIND_BY +"where v.groupID=:groupID and v.status <> 3";
+    private static final String DEL_VEHICLE_BY_ID = "DELETE FROM vehicle WHERE vehicleID = ?";
+
+    private static final String GET_LAST_LOCATION = "SELECT * FROM lastLocDriver where vehicleID = :vehicleID";
+
+    private static final String TRIP_LIST = "SELECT * FROM trip where vehicleID=:vehicleID and startTime like :startTime and endTime like :endTime";
+
+    private static final String INSERT_VEHICLE = "insert into vehicle (VIN, color, deviceID, driverID, groupID, license, make, model, name, state, status, vehicleID, vtype, weight, year, ifta)" +
+                                                 "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+
     private ParameterizedRowMapper<Vehicle> pagedVehicleRowMapper = new ParameterizedRowMapper<Vehicle>() {
         @Override
         public Vehicle mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -60,7 +90,7 @@ public class VehicleJDBCDAO extends SimpleJdbcDaoSupport implements VehicleDAO {
             vehicle.setDriverID(rs.getObject("vdd.driverID") == null ? null : rs.getInt("vdd.driverID"));
             vehicle.setGroupID(rs.getObject("v.groupID") == null ? null : rs.getInt("v.groupID"));
             vehicle.setFullName(rs.getString("v.name"));
-            vehicle.setName(rs.getString("v.name"));
+            vehicle.setName(vehicle.getFullName());
             vehicle.setMake(rs.getString("v.make"));
             vehicle.setModel(rs.getString("v.model"));
             vehicle.setDriverName(rs.getString("driverName"));
@@ -136,17 +166,38 @@ public class VehicleJDBCDAO extends SimpleJdbcDaoSupport implements VehicleDAO {
 
     @Override
     public List<Vehicle> getVehiclesInGroupHierarchy(Integer groupID) {
-        throw new NotImplementedException();
+        try {
+            Map<String, Object> params = new HashMap<String, Object>();
+            params.put("groupID", groupID);
+            StringBuilder vehiclesIn = new StringBuilder(GROUP_ID_DEEP);
+
+            List <Vehicle> vehicleList = getVehiclesByGroupIDDeep(groupID);
+
+            return vehicleList;
+
+              } catch (EmptyResultSetException e) {
+                 return Collections.emptyList();
+    }
     }
 
     @Override
     public List<Vehicle> getVehiclesInGroup(Integer groupID) {
-        throw new NotImplementedException();
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("groupID", groupID);
+        StringBuilder vehicleSelectAcct = new StringBuilder(GET_VEHICLE);
+
+        List<Vehicle> vehiclesIn = getSimpleJdbcTemplate().query(vehicleSelectAcct.toString(), pagedVehicleRowMapper, params);
+        return vehiclesIn;
     }
 
     @Override
     public List<VehicleName> getVehicleNames(Integer groupID) {
-        throw new NotImplementedException();
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("groupID", groupID);
+        StringBuilder vehicleSelectName = new StringBuilder(GET_VEHICLE_NAME);
+
+        List<VehicleName> vehiclesName = getSimpleJdbcTemplate().query(vehicleSelectName.toString(), vehicleNameParameterizedRowMapper, params);
+        return vehiclesName;
     }
 
     @Override
@@ -176,57 +227,141 @@ public class VehicleJDBCDAO extends SimpleJdbcDaoSupport implements VehicleDAO {
 
     @Override
     public Vehicle findByVIN(String vin) {
-        throw new NotImplementedException();
+
+        try{
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("vin", "" + vin + "");
+        StringBuilder vehicleFindByVin = new StringBuilder(FIND_BY_VIN);
+            Vehicle veh=null;
+        List<Vehicle> vehic =  getSimpleJdbcTemplate().query(vehicleFindByVin.toString(), pagedVehicleRowMapper, params);
+            if(vehic.isEmpty()){
+
+            }else{
+            veh = vehic.get(0);
+            }
+        return veh;
+
+        } catch (EmptyResultSetException e) {
+            return null;
+        }
     }
 
     @Override
     public Vehicle findByDriverID(Integer driverID) {
-        throw new NotImplementedException();
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("driverID", driverID);
+        StringBuilder vehicleFindByDriver = new StringBuilder(FIND_BY_DRIVER_ID);
+
+        return getSimpleJdbcTemplate().queryForObject(vehicleFindByDriver.toString(), pagedVehicleRowMapper, params);
     }
 
     @Override
     public Vehicle findByDriverInGroup(Integer driverID, Integer groupID) {
-        throw new NotImplementedException();
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("driverID", driverID);
+        params.put("groupID", groupID);
+        StringBuilder findByDriverIn = new StringBuilder(FIND_BY_DRIVER_IN_GROUP);
+
+        return getSimpleJdbcTemplate().queryForObject(findByDriverIn.toString(), pagedVehicleRowMapper, params);
     }
 
+    //TODO: see what to do
     @Override
     public LastLocation getLastLocation(Integer vehicleID) {
-        throw new NotImplementedException();
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("vehicleID", vehicleID);
+
+        LastLocation lastLocation = new LastLocation();
+
+        return  lastLocation;
     }
 
     @Override
-    public List<Trip> getTrips(Integer vehicleID, Date startDate, Date endDate) {
-        throw new NotImplementedException();
+    public List<Trip> getTrips(Integer vehicleID, Date startTime, Date endTime) {
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("vehicleID", vehicleID);
+        params.put("startTime", "" + startTime + "%");
+        params.put("endTime", "" + endTime + "%");
+
+        StringBuilder vehicleSelectAcct = new StringBuilder(TRIP_LIST);
+
+        List<Trip> trips = getSimpleJdbcTemplate().query(vehicleSelectAcct.toString(), tripParameterizedRowMapper, params);
+
+        return trips;
     }
 
     @Override
     public Trip getLastTrip(Integer driverID) {
-        throw new NotImplementedException();
+        return locationDAO.getLastTripForVehicle(driverID);
     }
 
     @Override
     public List<LatLng> getLocationsForTrip(Integer vehicleID, Date startTime, Date endTime) {
-        throw new NotImplementedException();
+        return locationDAO.getLocationsForVehicleTrip(vehicleID, startTime, endTime);
     }
 
+    //TODO: see how can take
     @Override
-    public List<LatLng> getLocationsForTrip(Integer vehicleD, Interval interval) {
+    public List<LatLng> getLocationsForTrip(Integer vehicleID, Interval interval) {
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("vehicleID", vehicleID);
+
+
         throw new NotImplementedException();
     }
 
+         //TODO: am ramas aici vezi ce ii faci CZ
     @Override
     public List<DriverLocation> getVehiclesNearLoc(Integer groupID, Integer numof, Double lat, Double lng) {
+        Map<String, Object> params = new HashMap<String, Object>();
+
+        params.put("groupID", groupID);
+        params.put("numof",  10 );
+        params.put("latitude", lat );
+        params.put("longitude", lng );
+
+        StringBuilder vehicleNearLocation = new StringBuilder(TRIP_LIST);
+
         throw new NotImplementedException();
     }
 
     @Override
-    public Vehicle findByID(Integer integer) {
-        throw new NotImplementedException();
+    public Vehicle findByID(Integer vehicleID) {
+        Map<String, Object> args = new HashMap<String, Object>();
+        args.put("vehicleID", vehicleID);
+        StringBuilder vehicleFindByID = new StringBuilder(FIND_BY_VEHICLEID);
+        return getSimpleJdbcTemplate().queryForObject(vehicleFindByID.toString(), pagedVehicleRowMapper, args);
+
     }
 
     @Override
-    public Integer create(Integer integer, Vehicle entity) {
-        throw new NotImplementedException();
+    public Integer create(Integer integer, final Vehicle entity) {
+        JdbcTemplate jdbcTemplate = getJdbcTemplate();
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+        PreparedStatementCreator psc = new PreparedStatementCreator() {
+            @Override
+            public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
+                PreparedStatement ps = con.prepareStatement(INSERT_VEHICLE, Statement.RETURN_GENERATED_KEYS);
+
+
+
+
+
+
+
+
+                logger.debug(ps.toString());
+                return ps;
+            }
+
+
+
+
+
+        };
+
+        jdbcTemplate.update(psc, keyHolder);
+        return keyHolder.getKey().intValue();
     }
 
     @Override
@@ -235,7 +370,52 @@ public class VehicleJDBCDAO extends SimpleJdbcDaoSupport implements VehicleDAO {
     }
 
     @Override
-    public Integer deleteByID(Integer integer) {
-        throw new NotImplementedException();
+    public Integer deleteByID(Integer vehicleID) {
+        return getJdbcTemplate().update(DEL_VEHICLE_BY_ID, new Object[]{vehicleID});
     }
+
+
+    private ParameterizedRowMapper<VehicleName> vehicleNameParameterizedRowMapper = new ParameterizedRowMapper<VehicleName>() {
+        @Override
+        public VehicleName mapRow(ResultSet rs, int rowNum) throws SQLException {
+            VehicleName vehicle = new VehicleName();
+            vehicle.setVehicleID(rs.getInt("vehicleID"));
+            vehicle.setVehicleName(rs.getString("name"));
+            return vehicle;
+        }
+    };
+
+    private ParameterizedRowMapper<Trip> tripParameterizedRowMapper = new ParameterizedRowMapper<Trip>() {
+        @Override
+        public Trip mapRow(ResultSet rs, int rowNum) throws SQLException {
+            Trip trip = new Trip();
+
+            trip.setTripID(rs.getLong("tripID"));
+            trip.setDriverID(rs.getInt("driverID"));
+            trip.setVehicleID(rs.getInt("vehicleID"));
+            trip.setModified(rs.getDate("modified"));
+            trip.setStartTime(rs.getDate("startTime"));
+            trip.setEndTime(rs.getDate("endTime"));
+            trip.setMileage(rs.getInt("mileage"));
+            trip.setStatus(rs.getObject("status") == null ? null : TripStatus.valueOf(rs.getInt("status")));
+            trip.setQuality(rs.getObject("quality") == null ? null : TripQuality.valueOf(rs.getInt("quality")));
+
+            return trip;
+        }
+    };
+
+    private List <Vehicle> getVehiclesByGroupIDDeep (Integer groupID) {
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("groupID", groupID);
+        StringBuilder groupIdDeep = new StringBuilder(GROUP_ID_DEEP);
+        List<Vehicle> vehiclesIn = getSimpleJdbcTemplate().query(groupIdDeep.toString(), pagedVehicleRowMapper, params);
+
+        return  vehiclesIn;
+    }
+
+    protected Integer getCentralId(Map<String, Object> map) {
+        return (Integer) map.get("id");
+    }
+
+
 }
