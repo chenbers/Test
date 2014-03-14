@@ -273,7 +273,8 @@ public class ReportJDBCDAO extends SimpleJdbcDaoSupport implements ReportDAO {
         params.put("intervalEnd", dbFormat.format(interval.getEnd().toDate()));
 
         StringBuilder idlingReportCountSelect = new StringBuilder(addIdlingFilter(filters, SELECT_IDLING_DRIVERS, params, pagedColumnMapIdleReport));
-        String idlingQueryCount = "SELECT count(*) as nr from (" + idlingReportCountSelect.toString() + " GROUP BY di.driverID ORDER BY driverName asc ) as x;";
+        String idlingHaving = new String(addIdlingHaving(filters, params, pagedColumnMapIdleReport));
+        String idlingQueryCount = "SELECT count(*) as nr from (" + idlingReportCountSelect.toString() + " GROUP BY di.driverID " + idlingHaving + " ORDER BY driverName asc ) as x;";
 
         List<Integer> cntDevice = getSimpleJdbcTemplate().query(idlingQueryCount, idlingReportRowMapperCount, params);
         Integer cnt = 0;
@@ -293,14 +294,18 @@ public class ReportJDBCDAO extends SimpleJdbcDaoSupport implements ReportDAO {
         idlingReportPageSelect.append(SELECT_IDLING_DRIVERS);
 
         /***FILTERING***/
-        idlingReportPageSelect = new StringBuilder(addFiltersToQuery(pageParams.getFilterList(), idlingReportPageSelect.toString(), params, pagedColumnMapIdleReport));
+        idlingReportPageSelect = new StringBuilder(addIdlingFilter(pageParams.getFilterList(), idlingReportPageSelect.toString(), params, pagedColumnMapIdleReport));
 
         /***GROUP***/
         idlingReportPageSelect.append(" GROUP BY di.driverID ");
 
+        /***HAVING***/
+        String idlingHaving = new String(addIdlingHaving(pageParams.getFilterList(), params, pagedColumnMapIdleReport));
+        idlingReportPageSelect.append(idlingHaving);
+
         /***SORTING***/
         if (pageParams.getSort() != null && !pageParams.getSort().getField().isEmpty())
-        idlingReportPageSelect.append(" ORDER BY " + pagedColumnMapIdleReport.get(pageParams.getSort().getField()) + " " + (pageParams.getSort().getOrder() == SortOrder.ASCENDING ? "ASC" : "DESC"));
+            idlingReportPageSelect.append(" ORDER BY " + pagedColumnMapIdleReport.get(pageParams.getSort().getField()) + " " + (pageParams.getSort().getOrder() == SortOrder.ASCENDING ? "ASC" : "DESC"));
 
         /***PAGING***/
         if (pageParams.getStartRow() != null && pageParams.getEndRow() != null)
@@ -345,7 +350,7 @@ public class ReportJDBCDAO extends SimpleJdbcDaoSupport implements ReportDAO {
 
         /***SORTING***/
         if (pageParams.getSort() != null && !pageParams.getSort().getField().isEmpty())
-        idlingVehiclePageSelect.append(" ORDER BY " + pagedColumnMapIdleVehicleReport.get(pageParams.getSort().getField()) + " " + (pageParams.getSort().getOrder() == SortOrder.ASCENDING ? "ASC" : "DESC"));
+            idlingVehiclePageSelect.append(" ORDER BY " + pagedColumnMapIdleVehicleReport.get(pageParams.getSort().getField()) + " " + (pageParams.getSort().getOrder() == SortOrder.ASCENDING ? "ASC" : "DESC"));
 
         /***PAGING***/
         if (pageParams.getStartRow() != null && pageParams.getEndRow() != null)
@@ -511,6 +516,23 @@ public class ReportJDBCDAO extends SimpleJdbcDaoSupport implements ReportDAO {
         }
     };
 
+    // idling having
+    private String addIdlingHaving(final List<TableFilterField> filters, Map<String, Object> params, Map<String, String> pagedIdleColumnMap) {
+        String having = new String();
+        if (filters != null && !filters.isEmpty()) {
+            StringBuilder countFilter = new StringBuilder();
+            for (TableFilterField filter : filters) {
+                Range range = new Range();
+                if (filter.getFilter().getClass().isInstance(range)) {
+                    range = (Range) filter.getFilter();
+                    countFilter.append(" HAVING " + pagedIdleColumnMap.get(filter.getField()) + " BETWEEN " + range.getMin() + " and " + range.getMax());
+                }
+            }
+            having = having + countFilter.toString();
+        }
+        return having;
+    }
+
     //IDLING FILTERS
     private String addIdlingFilter(final List<TableFilterField> filters, String queryStr, Map<String, Object> params, Map<String, String> pagedIdleColumnMap) {
         if (filters != null && !filters.isEmpty()) {
@@ -518,6 +540,7 @@ public class ReportJDBCDAO extends SimpleJdbcDaoSupport implements ReportDAO {
             for (TableFilterField filter : filters) {
                 filter = treatCustomFilters(filter);
                 String paramName = "filter_" + filter.getField();
+                Range range = new Range();
                 if (filter.getField().equals("hasRPM")) {
                     if (filter.getFilter().toString().equals("1")) {
                         countFilter.append(" AND (agg.emuFeatureMask & 4) != 0");
@@ -535,6 +558,8 @@ public class ReportJDBCDAO extends SimpleJdbcDaoSupport implements ReportDAO {
                         countFilter.append(" AND (" + pagedIdleColumnMap.get(filter.getField()) + " in (:" + paramName + ") OR " + pagedIdleColumnMap.get(filter.getField()) + " IS NULL)");
                         params.put(paramName, filter.getFilter());
 
+                    } else if (filter.getFilter().getClass().isInstance(range)) {
+                        countFilter.append("");
                     } else {
                         countFilter.append(" AND " + pagedIdleColumnMap.get(filter.getField()) + " LIKE :" + paramName);
                         params.put(paramName, "%" + filter.getFilter().toString() + "%");

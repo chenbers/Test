@@ -125,11 +125,8 @@ public class ReportPaginationJDBCTest {
     		new TestFilterParams("groupName", badGroupName, countPerGroup),
     		new TestFilterParams("driverName", "XXX", 0),
     		new TestFilterParams("driverName", badGroupName, countPerGroup),
-    		new TestFilterParams("driveTime", new Range(0,0), 0),
     		new TestFilterParams("driveTime", new Range(0,Long.MAX_VALUE), countPerGroup),
-    		new TestFilterParams("lowIdleTime", new Range(0,0), 0),
     		new TestFilterParams("lowIdleTime", new Range(0,Long.MAX_VALUE), countPerGroup),
-    		new TestFilterParams("highIdleTime", new Range(0,0), 0),
     		new TestFilterParams("highIdleTime", new Range(0,Long.MAX_VALUE), countPerGroup),
     };
     
@@ -440,10 +437,10 @@ public class ReportPaginationJDBCTest {
 	}
 
     @Test
-    @Ignore //TODO: jwimmer: test ignored until it is clear how to handle the idling time for "unknown Driver" on the reports page.
+//    @Ignore //TODO: jwimmer: test ignored until it is clear how to handle the idling time for "unknown Driver" on the reports page.
     public void idling() {
-    	ReportHessianDAO reportDAO = new ReportHessianDAO();
-    	reportDAO.setSiloService(siloService);
+        ReportJDBCDAO reportJDBCDAO = new ReportJDBCDAO();
+        reportJDBCDAO.setDataSource(new ITDataSource().getRealDataSource());
 
 	    DateTimeZone dateTimeZone = DateTimeZone.forID(ReportTestConst.TIMEZONE_STR);
         Interval interval = new Interval(new DateMidnight(new DateTime().minusDays(7), dateTimeZone), new DateMidnight(new DateTime(), dateTimeZone));
@@ -453,17 +450,17 @@ public class ReportPaginationJDBCTest {
     	for (int teamIdx = ITData.GOOD; teamIdx <= ITData.BAD; teamIdx++) {
 
     		GroupListData team = itData.teamGroupListData.get(teamIdx);
-    		Integer idlingCount = reportDAO.getIdlingReportCount(team.group.getGroupID(), interval, null);
+    		Integer idlingCount = reportJDBCDAO.getIdlingReportCount(team.group.getGroupID(), interval, null);
     		assertEquals("Unexpected idling count for team " + teamIdx, countPerGroup, idlingCount);
 
-    		Integer idlingSupportCount = reportDAO.getIdlingReportSupportsIdleStatsCount(team.group.getGroupID(), interval, null);
-    		assertEquals("Unexpected idling support stats count for team " + teamIdx, countPerGroup, idlingSupportCount);
+//    		Integer idlingSupportCount = reportJDBCDAO.getIdlingReportSupportsIdleStatsCount(team.group.getGroupID(), interval, null);
+//    		assertEquals("Unexpected idling support stats count for team " + teamIdx, countPerGroup, idlingSupportCount);
 
     		// get all
     		PageParams pageParams = new PageParams();
     		pageParams.setStartRow(0);
     		pageParams.setEndRow(idlingCount-1);
-    		List<IdlingReportItem> idlingList = reportDAO.getIdlingReportPage(team.group.getGroupID(), interval, pageParams);
+    		List<IdlingReportItem> idlingList = reportJDBCDAO.getIdlingReportPage(team.group.getGroupID(), interval, pageParams);
     		assertEquals("Unexpected idling count for team " + teamIdx, countPerGroup, Integer.valueOf(idlingList.size()));
     		// check some of the field values
     		for (IdlingReportItem item : idlingList) {
@@ -475,13 +472,13 @@ public class ReportPaginationJDBCTest {
     		if (idlingCount > 1) {
 	    		pageParams.setStartRow(1);
 	    		pageParams.setEndRow(1);
-	    		idlingList = reportDAO.getIdlingReportPage(team.group.getGroupID(), interval, pageParams);
+	    		idlingList = reportJDBCDAO.getIdlingReportPage(team.group.getGroupID(), interval, pageParams);
 	    		assertEquals("Unexpected partial idling list count for team " + teamIdx, 1, idlingList.size());
     		}
     	}
 		// filter
 		GroupListData team = itData.teamGroupListData.get(ITData.BAD);
-		Integer allIdleCount = reportDAO.getIdlingReportCount(team.group.getGroupID(), interval, null);
+		Integer allIdleCount = reportJDBCDAO.getIdlingReportCount(team.group.getGroupID(), interval, null);
 		for (TestFilterParams testFilterParams : idlingFilterTestList) {
 			PageParams pageParams = new PageParams();
 			pageParams.setStartRow(0);
@@ -489,20 +486,20 @@ public class ReportPaginationJDBCTest {
 			List<TableFilterField> filterList = new ArrayList<TableFilterField>();
 			filterList.add(new TableFilterField(testFilterParams.field, testFilterParams.value));
 			pageParams.setFilterList(filterList);
-			Integer idlingCount = reportDAO.getIdlingReportCount(team.group.getGroupID(), interval, filterList);
+			Integer idlingCount = reportJDBCDAO.getIdlingReportCount(team.group.getGroupID(), interval, filterList);
 			assertEquals("Unexpected idling count for " +  testFilterParams.field + "=" + testFilterParams.value + " filter", testFilterParams.expectedCount, idlingCount);
-			List<IdlingReportItem> list = reportDAO.getIdlingReportPage(team.group.getGroupID(), interval, pageParams);
+			List<IdlingReportItem> list = reportJDBCDAO.getIdlingReportPage(team.group.getGroupID(), interval, pageParams);
 			assertEquals("Unexpected vehicle count for " +  testFilterParams.field + "=" + testFilterParams.value + " filter", testFilterParams.expectedCount, Integer.valueOf(list.size()));
 		}
 
     	// sort
-		Integer idlingCount = reportDAO.getIdlingReportCount(itData.fleetGroup.getGroupID(), interval, null);
+		Integer idlingCount = reportJDBCDAO.getIdlingReportCount(itData.fleetGroup.getGroupID(), interval, null);
 		PageParams pageParams = new PageParams();
 		pageParams.setStartRow(0);
 		pageParams.setEndRow(idlingCount-1);
 		pageParams.setSort(new TableSortField(SortOrder.ASCENDING, "driverName"));
 
-		List<IdlingReportItem> idlingList = reportDAO.getIdlingReportPage(itData.fleetGroup.getGroupID(), interval, pageParams);
+		List<IdlingReportItem> idlingList = reportJDBCDAO.getIdlingReportPage(itData.fleetGroup.getGroupID(), interval, pageParams);
 		String lastDriverName = null;
 		for (IdlingReportItem item : idlingList) {
 			if (lastDriverName == null) {
