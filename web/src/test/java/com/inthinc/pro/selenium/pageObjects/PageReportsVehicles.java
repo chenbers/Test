@@ -223,6 +223,6 @@ public class PageReportsVehicles extends ReportsBar {
 
     @Override
     protected boolean checkIsOnPage() {
-        return _link().editColumns().isPresent();
+        return _text().title().isPresent();
     }
 }

@@ -148,6 +148,8 @@ Scenario: Reports - Vehicles - Driver Link
 Given I am logged in
 When I click the Reports link
 And I click the Vehicles link
+And I click the Sort By Driver link
+And I click the Sort By Driver link
 And I save the 1st Row of the Driver Value link as SAVEDREPORTSVEHICLESDRIVER7
 And I click the 1st Row of the Driver Value link
 Then I validate I am on the Driver Performance page
