@@ -1,30 +1,27 @@
 package com.inthinc.pro.selenium.pageObjects;
 
 import com.inthinc.pro.automation.elements.Button;
-import com.inthinc.pro.automation.elements.CalendarObject;
 import com.inthinc.pro.automation.elements.DropDown;
-import com.inthinc.pro.automation.elements.SortHeader;
 import com.inthinc.pro.automation.elements.Text;
 import com.inthinc.pro.automation.elements.TextButton;
-import com.inthinc.pro.automation.elements.TextButtonTable;
 import com.inthinc.pro.automation.elements.TextDateFieldLabel;
 import com.inthinc.pro.automation.elements.TextDropDownLabel;
 import com.inthinc.pro.automation.elements.TextField;
 import com.inthinc.pro.automation.elements.TextFieldLabel;
-import com.inthinc.pro.automation.elements.TextFieldWithSpinner;
 import com.inthinc.pro.automation.elements.TextLabel;
 import com.inthinc.pro.automation.elements.TextLink;
 import com.inthinc.pro.automation.elements.TextRadioButtonLabel;
+import com.inthinc.pro.automation.elements.TextTableLink;
 import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 import com.inthinc.pro.selenium.pageEnums.NotificationsCrashHistoryAddEditEnum;
 
-public class PageNotificationsCrashHistoryAddEdit extends NotificationsBar {
+public class PageNotificationsCrashHistoryAddEdit extends NavigationBar {
 
     public PageNotificationsCrashHistoryAddEdit() {
         // TODO Auto-generated constructor stub
     }
 
-    public class NotificationsCrashHistoryAddEditLinks extends NotificationsBarLinks {
+    public class NotificationsCrashHistoryAddEditLinks extends NavigationBarLinks {
     	
     	public TextLink clean() {
     		return new TextLink(NotificationsCrashHistoryAddEditEnum.CLEAN_LINK);
@@ -37,10 +34,22 @@ public class PageNotificationsCrashHistoryAddEdit extends NotificationsBar {
     	public TextLink today() {
     		return new TextLink(NotificationsCrashHistoryAddEditEnum.TODAY_LINK);
     	}
+    	
+        public TextLink sortByStartTime() {
+            return new TextLink(NotificationsCrashHistoryAddEditEnum.SORT_BY_START_TIME);
+        }
+
+        public TextTableLink entryStartTime() {
+            return new TextTableLink(NotificationsCrashHistoryAddEditEnum.START_TIME);
+        }
+
+        public TextTableLink entryEndTime() {
+            return new TextTableLink(NotificationsCrashHistoryAddEditEnum.END_TIME);
+        }
 
     }
 
-    public class NotificationsCrashHistoryAddEditTexts extends NotificationsBarTexts {
+    public class NotificationsCrashHistoryAddEditTexts extends NavigationBarTexts {
         public Text title() {
             return new Text(NotificationsCrashHistoryAddEditEnum.TITLE);
         }
@@ -125,10 +134,10 @@ public class PageNotificationsCrashHistoryAddEdit extends NotificationsBar {
         }
     }
 
-    public class NotificationsCrashHistoryAddEditTextFields extends NotificationsBarTextFields {
+    public class NotificationsCrashHistoryAddEditTextFields extends NavigationBarTextFields {
 
-        public TextFieldWithSpinner occupantCount() {
-            return new TextFieldWithSpinner(NotificationsCrashHistoryAddEditEnum.OCCUPANT_COUNT);
+        public TextField occupantCount() {
+            return new TextField(NotificationsCrashHistoryAddEditEnum.OCCUPANT_COUNT);
         }
 
         public TextField description() {
@@ -154,10 +163,14 @@ public class PageNotificationsCrashHistoryAddEdit extends NotificationsBar {
         public TextField dateTime() {
             return new TextField(NotificationsCrashHistoryAddEditEnum.DATE_TIME);
         }
+        
+        public TextField weather() {
+            return new TextField(NotificationsCrashHistoryAddEditEnum.WEATHER);
+        }
 
     }
 
-    public class NotificationsCrashHistoryAddEditButtons extends NotificationsBarButtons {
+    public class NotificationsCrashHistoryAddEditButtons extends NavigationBarButtons {
 
         public TextButton saveTop() {
             return new TextButton(NotificationsCrashHistoryAddEditEnum.TOP_SAVE);
@@ -202,21 +215,6 @@ public class PageNotificationsCrashHistoryAddEdit extends NotificationsBar {
             return new Button(
                     NotificationsCrashHistoryAddEditEnum.FIND_BY_VEHICLE);
         }
-
-        public TextButtonTable entryStartTime() {
-            return new TextButtonTable(
-                    NotificationsCrashHistoryAddEditEnum.START_TIME);
-        }
-
-        public TextButtonTable entryEndTime() {
-            return new TextButtonTable(
-                    NotificationsCrashHistoryAddEditEnum.END_TIME);
-        }
-
-        public SortHeader sortByStartTime() {
-            return new SortHeader(
-                    NotificationsCrashHistoryAddEditEnum.START_TIME);
-        }
         
         public Button hoursUp() {
             return new Button(NotificationsCrashHistoryAddEditEnum.HOURS_BUTTON_UP);
@@ -249,10 +247,14 @@ public class PageNotificationsCrashHistoryAddEdit extends NotificationsBar {
         public Button cancel() {
             return new Button(NotificationsCrashHistoryAddEditEnum.TIME_CANCEL_BUTTON);
         }
+        
+        public Button dateTime() {
+            return new Button(NotificationsCrashHistoryAddEditEnum.DATE_TIME_BUTTON);
+        }
 
     }
 
-    public class NotificationsCrashHistoryAddEditDropDowns extends NotificationsBarDropDowns {
+    public class NotificationsCrashHistoryAddEditDropDowns  extends NavigationBarDropDowns {
 
         public DropDown crashReportStatus() {
             return new DropDown(
@@ -265,10 +267,6 @@ public class PageNotificationsCrashHistoryAddEdit extends NotificationsBar {
 
         public DropDown driver() {
             return new DropDown(NotificationsCrashHistoryAddEditEnum.DRIVER);
-        }
-        
-        public DropDown dateTime() {
-            return new CalendarObject(NotificationsCrashHistoryAddEditEnum.DATE_TIME);
         }
     }
 
@@ -316,7 +314,7 @@ public class PageNotificationsCrashHistoryAddEdit extends NotificationsBar {
     @Override
     protected boolean checkIsOnPage() {
         return _dropDown().crashReportStatus().isPresent() &&
-               _dropDown().driver().isPresent();
+               _dropDown().crashReportStatus().isPresent();
     }
 
 }

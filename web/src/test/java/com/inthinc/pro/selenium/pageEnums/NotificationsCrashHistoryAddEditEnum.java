@@ -12,10 +12,11 @@ public enum NotificationsCrashHistoryAddEditEnum implements SeleniumEnums {
     
     CRASH_REPORT_STATUS("Crash Report Status", "edit-form:editCrashReport-statusSelectOne"),
     DATE_TIME("Date/Time", "edit-form:editCrashReport-dateCalendarInputDate"),
+    DATE_TIME_BUTTON("Date/Time", "edit-form:editCrashReport-dateCalendarPopupButton"),
     VEHICLE("Vehicle", "edit-form:editCrashReport-vehicle"),
     DRIVER("Driver", "edit-form:editCrashReport-driver"),
     WEATHER("Weather", "edit-form:editCrashReport-weather"),
-    OCCUPANT_COUNT("Occupant Count", "edit-form:editCrashReport-occupantCount***"),
+    OCCUPANT_COUNT("Occupant Count", "//input[@name='edit-form:editCrashReport-occupantCount']"),
     
     //buttons and links inside the calendar
     CLEAN_LINK("Clean", "//td[2][@class='rich-calendar-toolfooter']"),    
@@ -44,9 +45,10 @@ public enum NotificationsCrashHistoryAddEditEnum implements SeleniumEnums {
     FIND_BY_DRIVER("Driver", "edit-form:editCrashReport-findTrips:0"),
     FIND_BY_VEHICLE("Vehicle", "edit-form:editCrashReport-findTrips:0"),
     
-    START_TIME("Start Time", "edit-form:trips:0:editCrashReport-startTime"),
-    END_TIME(null, "//td[2]/div[@class='extdt-cell-div']"),
-    END_TIME_HEADER("End Time", "//div[@id='edit-form:trips:editCrashReport-startTime']/../td[2]"),
+    SORT_BY_START_TIME("Start Time", "edit-form:trips:editCrashReport-startTime:sortDiv"),
+    START_TIME(null, "edit-form:trips:###:editCrashReport-startTime"),
+    END_TIME(null, "//td[2]/div[@class='extdt-cell-div']"), 
+    END_TIME_HEADER("End Time", "//thead/tr/th[2]"),
 
     ADDRESS_TEXT_FIELD(null, "editCrashReport-addressTextBox"),
     LOCATE("Locate", "edit-form:editCrashReport-search"),
@@ -56,9 +58,7 @@ public enum NotificationsCrashHistoryAddEditEnum implements SeleniumEnums {
     TOP_CANCEL(cancel, "edit-form:editCrashReportCancel1"),
     BOTTOM_CANCEL(cancel, "edit-form:editCrashReportCancel2"), 
     
-    TITLE("ADD/EDIT Crash Report", "//span[@class='email']"),
-    
-    
+    TITLE("ADD/EDIT Crash Report", "//span[@class='email']")
 
     ;
     private String text, url;
