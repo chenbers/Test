@@ -122,10 +122,15 @@ public class CoreMethodLib extends WebDriverBackedSelenium implements CoreMethod
         //Some of the items on the Submissions page can take a while to load after making changes, adding a wait.
         if(myEnum.toString().contains("APPROVED_DROPDOWN")  || myEnum.toString().contains("TEXT_ENTRY") || myEnum.toString().contains("NUMERIC_ENTRY")
                         || myEnum.toString().contains("DECIMAL_ENTRY") || myEnum.toString().contains("DATE_ENTRY") || myEnum.toString().contains("CHOOSEONE_ENTRY")
-                        || myEnum.toString().contains("CHOOSEMANY_ENTRY") || myEnum.toString().contains("APPROVED_CHECKBOX_ENTRY")) {
-            AutomationThread.pause(7);
+                        || myEnum.toString().contains("CHOOSEMANY_ENTRY") || myEnum.toString().contains("APPROVED_CHECKBOX_ENTRY") || myEnum.toString().contains("DATE_SORT") 
+                        || myEnum.toString().contains("GROUP_SORT") || myEnum.toString().contains("DRIVER_SORT") || myEnum.toString().contains("VEHICLE_SORT")
+                        || myEnum.toString().contains("FORM_SORT") || myEnum.toString().contains("EDITED_SORT") || myEnum.toString().contains("APPROVED_SORT")) {
+            AutomationThread.pause(15);
         }
         click(element);
+        if(element.contains("button[@class='btn']")) {
+            AutomationThread.pause(20);
+        }
         AutomationThread.pause(2, "click(" + myEnum + ")");
         loadPause();
         return this;

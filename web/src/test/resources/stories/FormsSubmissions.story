@@ -235,7 +235,7 @@ And I double click the 1st Row of the Edited Entry text
 And I type "New Text" into the 1st Row of the Text Entry textfield
 And I type "2" into the 1st Row of the Numeric Entry textfield
 And I type "99.99" into the 1st Row of the Decimal Entry textfield
-And I select 457 days in the past from the 1st Row of the Date Entry dropdown
+And I select 2 days in the past from the 1st Row of the Date Entry dropdown
 And I select row 4 from the Chooseone Entry dropdown
 And I click the 2nd Row of the Choosemany Entry checkbox
 And I click the 1st Row of the Save button
