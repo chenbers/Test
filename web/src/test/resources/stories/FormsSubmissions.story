@@ -1,4 +1,4 @@
-Scenario:Forms Submissions Page - UI Test
+Scenario: Forms Submissions Page - UI Test
 Given I am logged in
 When I click the Forms link
 And I click the Submissions link
@@ -22,18 +22,18 @@ And I validate the Edited dropdown is present
 And I validate the Approved dropdown is present
 And I validate the Entries text is present
 
-Scenario:  Forms Submissions Page - Forms No Data Available In Table Message
+Scenario: Forms Submissions Page - Forms No Data Available In Table Message
 Given I am logged in
 When I click the Forms link
 And I click the Submissions link
-And I select "Form TCXXXXAdd1 (1)" from the Form dropdown
+And I select "PublishFormGeneric1 (1)" from the Form dropdown
 And I click the Refresh button
 Then I validate the 1st Row of the Form Entry text is not present
 And I validate the No Records Found Error text is present
 And I validate the No Records Found Error text is "No data available in table"
 And I validate the Entries text contains "Showing 0 to 0 of 0 entries"
 
-Scenario:Forms Submissions Page - Forms No Records Found Table Message
+Scenario: Forms Submissions Page - Forms No Records Found Table Message
 Given I am logged in
 When I click the Forms link
 And I click the Submissions link
@@ -44,7 +44,7 @@ And I validate the No Records Found Error text is present
 And I validate the No Records Found Error text is "No matching records found"
 And I validate the Entries text contains "Showing 0 to 0 of 0 entries"
 
-Scenario:Forms Submissions Page - Make sure dates are showing correctly in the grid (REQUIRES DATA GENERATION FOR THIS DATE)
+Scenario: Forms Submissions Page - Make sure dates are showing correctly in the grid (REQUIRES DATA GENERATION FOR THIS DATE)
 Given I am logged in
 When I click the Forms link
 And I click the Submissions link
@@ -61,7 +61,7 @@ And I validate the 8th Row of the Date Time Entry text contains "2014-01-01"
 And I validate the 9th Row of the Date Time Entry text contains "2014-01-01"
 And I validate the 10th Row of the Date Time Entry text contains "2014-01-01"
 
-Scenario:Forms Submissions Page - Click on Group Name link
+Scenario: Forms Submissions Page - Click on Group Name link
 Given I am logged in
 When I click the Forms link
 And I click the Submissions link
@@ -71,7 +71,7 @@ And I click the 1st Row of the Group Entry link
 Then I validate I am on the Team Driver Statistics page
 And I validate the Driver Team Value text is GROUP
 
-Scenario:Forms Submissions Page - Click on Driver Name link
+Scenario: Forms Submissions Page - Click on Driver Name link
 Given I am logged in
 When I click the Forms link
 And I click the Submissions link
@@ -81,7 +81,7 @@ And I click the 1st Row of the Driver Entry link
 Then I validate I am on the Driver Performance page
 And I validate the Driver Name link is DRIVER
 
-Scenario:Forms Submissions Page - Click on Vehicle name link
+Scenario: Forms Submissions Page - Click on Vehicle name link
 Given I am logged in
 When I click the Forms link
 And I click the Submissions link
@@ -91,7 +91,7 @@ And I click the 1st Row of the Vehicle Entry link
 Then I validate I am on the Vehicle Performance page
 And I validate the Vehicle Name link is VEHICLE
 
-Scenario:Forms Submissions Page - Approve a Form checkbox
+Scenario: Forms Submissions Page - Approve a Form checkbox
 Given I am logged in
 When I click the Forms link
 And I click the Submissions link
@@ -188,7 +188,7 @@ And I validate the 1st Row of the Numeric Entry textfield is not present
 And I validate the 1st Row of the Decimal Entry textfield is not present
 And I validate the 1st Row of the Date Entry dropdown is not present
 
-Scenario: Forms Submissions Page - Inline Edit - Cancel Changes (Requires Form TCXXX Pre-Trip Required (1) is published and submitted)
+Scenario: Forms Submissions Page - Inline Edit - Cancel Changes (Requires Submissions Form Pre-Trip Required is published and submitted)
 Given I am logged in
 When I click the Forms link
 And I click the Submissions link
@@ -327,6 +327,7 @@ Scenario: Forms Submissions Page - Records per page test
 Given I am logged in
 When I click the Forms link
 And I click the Submissions link
+And I select 365 days in the past from the Date dropdown
 Then I validate the 11th Row of the Date Time Entry text is not present
 And I validate the Entries text contains "Showing 1 to 10"
 And I select "25" from the Records Per Page dropdown
