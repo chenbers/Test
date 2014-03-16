@@ -182,7 +182,7 @@
                                 <exclude>**/selenium/testSuites/**/CurrentStoryTest.java</exclude>
                             </excludes>
                             <includes>
-                                <include>**/selenium/testSuites/**/**Test.java</include>
+                                <include>**/selenium/testSuites/**/FormsSubmissionsTest.java</include>
                             </includes>
                             <systemProperties>
                                 <property>
