@@ -328,6 +328,7 @@ Given I am logged in
 When I click the Forms link
 And I click the Submissions link
 And I select 365 days in the past from the Date dropdown
+And I click the Refresh button
 Then I validate the 11th Row of the Date Time Entry text is not present
 And I validate the Entries text contains "Showing 1 to 10"
 And I select "25" from the Records Per Page dropdown
