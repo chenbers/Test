@@ -327,7 +327,7 @@ Scenario: Forms Submissions Page - Records per page test
 Given I am logged in
 When I click the Forms link
 And I click the Submissions link
-And I select 365 days in the past from the Date dropdown
+And I type "2013-03-16 to 2025-03-16" into the Date textfield
 And I click the Refresh button
 Then I validate the 11th Row of the Date Time Entry text is not present
 And I validate the Entries text contains "Showing 1 to 10"

@@ -145,6 +145,10 @@ public class PageFormsSubmissions extends FormsTables {
     }
 
     public class FormsSubmissionsTextFields {
+        
+        public TextField date() {
+            return new TextField(FormsSubmissionsEnum.DATE_DROPDOWN);
+        }
     	
     	public TextField group() {
     		return new TextField(FormsSubmissionsEnum.GROUP_FIELD);
