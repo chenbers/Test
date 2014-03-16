@@ -119,6 +119,12 @@ public class CoreMethodLib extends WebDriverBackedSelenium implements CoreMethod
         if(myEnum.toString().contains("NEW_FORM_BUTTON")  || myEnum.toString().contains("NAME_FIELD") || myEnum.toString().contains("PUBLISH_ENTRY_LINK")) {
             AutomationThread.pause(7);
         }
+        //Some of the items on the Submissions page can take a while to load after making changes, adding a wait.
+        if(myEnum.toString().contains("APPROVED_DROPDOWN")  || myEnum.toString().contains("TEXT_ENTRY") || myEnum.toString().contains("NUMERIC_ENTRY")
+                        || myEnum.toString().contains("DECIMAL_ENTRY") || myEnum.toString().contains("DATE_ENTRY") || myEnum.toString().contains("CHOOSEONE_ENTRY")
+                        || myEnum.toString().contains("CHOOSEMANY_ENTRY") || myEnum.toString().contains("APPROVED_CHECKBOX_ENTRY")) {
+            AutomationThread.pause(7);
+        }
         click(element);
         AutomationThread.pause(2, "click(" + myEnum + ")");
         loadPause();
