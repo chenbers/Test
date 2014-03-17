@@ -9,7 +9,7 @@ import com.inthinc.pro.selenium.pageObjects.PageFormsManage;
 import com.inthinc.pro.selenium.pageObjects.PageFormsSubmissions;
 
 public class FormsGenerationSteps extends LoginSteps {
-    
+    //TODO: Make it so you don't have to use the web interface to create the needed forms US7923
     PageFormsManage manage = new PageFormsManage();
     PageFormsAdd add = new PageFormsAdd();
     PageFormsSubmissions submissions = new PageFormsSubmissions();
@@ -114,7 +114,7 @@ public class FormsGenerationSteps extends LoginSteps {
     
     @Given("I generate submissions")
     public void givenIGenerateSubmissions() {
-        // TODO: Call SubmissionsGen class
+        // TODO: Call SubmissionsGen class linked to US7827
     }
     
 }
