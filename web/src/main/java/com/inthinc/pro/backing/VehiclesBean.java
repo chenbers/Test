@@ -1066,4 +1066,12 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
     public void setDriverJDBCDAO(DriverJDBCDAO driverJDBCDAO) {
         this.driverJDBCDAO = driverJDBCDAO;
     }
+
+    public Map<Integer, Driver> getDriverMap() {
+        return driverMap;
+    }
+
+    public void setDriverMap(Map<Integer, Driver> driverMap) {
+        this.driverMap = driverMap;
+    }
 }
