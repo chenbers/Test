@@ -13,59 +13,23 @@ public class FormsGenerationSteps extends LoginSteps {
     PageFormsManage manage = new PageFormsManage();
     PageFormsAdd add = new PageFormsAdd();
     PageFormsSubmissions submissions = new PageFormsSubmissions();
+    String publishedSuccessfully = " published successfully.";
+    String createdSuccessfully = " created successfully.";
+    String publishFailed = " publish failed.";
     
     @Given("I clean the forms database")
     public void cleanup() {
         // TODO: Call the DeleteAllAccountsFormsClass
     }
     
-    @Then("I generate 100 forms for the manage page test")
+    @Then("I generate 13 forms for the manage page test")
     public void thenIGenerateOneHundredFormsForTheManagePageTest() {
         int i = 1;
         
-        while (i < 5) {
-            manage._button().newForm().click();
-            add._textField().name().type("FormPreTrip" + i);
-            add._dropDown().trigger().selectTheOptionContaining("Pre-Trip", 1);
-            add._checkBox().groups().check();
-            add._link().text().click();
-            add._button().saveTop().click();
-            System.out.println("FormPreTrip" + i + " created successfully.");
-            i++;
-        }
-        
-        while (i < 9) {
-            manage._button().newForm().click();
-            add._textField().name().type("FormPostTrip" + i);
-            add._dropDown().trigger().selectTheOptionContaining("Post-Trip", 1);
-            add._checkBox().groups().check();
-            add._link().text().click();
-            add._button().saveTop().click();
-            System.out.println("FormPostTrip" + i + " created successfully.");
-            i++;
-        }
-        
         while (i < 13) {
-            manage._button().newForm().click();
-            add._textField().name().type("ManageFormInactive" + i);
-            add._dropDown().status().selectTheOptionContaining("Inactive", 1);
-            add._textField().description().type("Required");
-            add._checkBox().groups().check();
-            add._link().text().click();
-            add._button().saveTop().click();
-            System.out.println("ManageFormInactive" + i + " created successfully.");
+            createForm(i, "No Trigger", "ManageFormInactive", "Inactive", "Required");
             i++;
         }
-//        
-//        while (i < 19) {
-//            manage._button().gear().row(1).click();
-//            manage._link().copy().row(1).click();
-//            add._textField().name().type("FormMGeneric" + i);
-//            add._button().saveTop().click();
-//            System.out.println("FormMGeneric" + i + " created successfully.");
-//            i++;
-//        }
-        
         System.out.println("FORMS MANAGE GENERATION SUCCESS!");
     }
     
@@ -77,106 +41,75 @@ public class FormsGenerationSteps extends LoginSteps {
         int l = 1;
         
         while (l < 5) {
-            manage._button().newForm().click();
-            add._textField().name().type("FormPublish" + l);
-            add._textField().description().type("Required");
-            add._checkBox().groups().check();
-            add._link().text().click();
-            add._button().saveTop().click();
+            createForm(l, "No Trigger", "FormPublish", "Active", "Required");
             manage._textField().search().type("FormPublish" + l);
             manage._button().gear().row(1).click();
-            if ((manage._link().publish().row(1).getAttribute("disabled") == "disabled")) {
-                manage._link().manage().click();
-                System.out.println("FormPublish" + l + " publish failed.");
-            }
-            else {
-                manage._link().publish().row(1).click();
-                manage._link().manage().click();
-                System.out.println("FormPublish" + l + " published successfully.");
-            }
+            publishLinkCheck(l, "FormPublish");
             l++;
         }
         
         while (j < 5) {
-            manage._button().newForm().click();
-            add._textField().name().type("FormPostTrip" + j);
-            add._dropDown().trigger().selectTheOptionContaining("Post-Trip", 1);
-            add._checkBox().groups().check();
-            add._link().text().click();
-            add._button().saveTop().click();
+            createForm(j, "Post-Trip", "FormPostTrip", "Active", "");
             manage._textField().search().type("FormPostTrip" + j);
             manage._button().gear().row(1).click();
-            if ((manage._link().publish().row(1).getAttribute("disabled") == "disabled")) {
-                manage._link().manage().click();
-                System.out.println("FormPostTrip" + j + " publish failed.");
-            }
-            else {
-                manage._link().publish().row(1).click();
-                manage._link().manage().click();
-                System.out.println("FormPostTrip" + j + " published successfully.");
-            }
+            publishLinkCheck(j, "FormPostTrip");
             j++;
         }
         
         while (k < 5) {
-            manage._button().newForm().click();
-            add._textField().name().type("FormPreTrip" + k);
-            add._dropDown().trigger().selectTheOptionContaining("Pre-Trip", 1);
-            add._checkBox().groups().check();
-            add._link().text().click();
-            add._button().saveTop().click();
+            createForm(k, "Pre-Trip", "FormPreTrip", "Active", "");
             manage._textField().search().type("FormPreTrip" + k);
             manage._button().gear().row(1).click();
-            if ((manage._link().publish().row(1).getAttribute("disabled") == "disabled")) {
-                manage._link().manage().click();
-                System.out.println("FormPreTrip" + k + " publish failed.");
-            }
-            else {
-                manage._link().publish().row(1).click();
-                manage._link().manage().click();
-                System.out.println("FormPreTrip" + k + " published successfully.");
-            }
+            publishLinkCheck(k, "FormPreTrip");
             k++;
         }
         
-        manage._button().newForm().click();
-        add._textField().name().type("PublishFormGeneric" + i);
-        add._checkBox().groups().check();
-        add._link().text().click();
-        add._button().saveTop().click();
+        createForm(i, "No Trigger", "PublishFormGeneric", "Active", "");
         manage._textField().search().type("PublishFormGeneric" + i);
         manage._button().gear().row(1).click();
-        if ((manage._link().publish().row(1).getAttribute("disabled") == "disabled")) {
-            manage._link().manage().click();
-            System.out.println("PublishFormGeneric" + i + " publish failed.");
-        }
-        else {
-            manage._link().publish().row(1).click();
-            manage._link().manage().click();
-            System.out.println("PublishFormGeneric" + i + " published successfully.");
-        }
+        publishLinkCheck(i, "PublishFormGeneric");
         i++;
         
         while (i < 100) {
-            manage._button().gear().row(1).click();
-            manage._link().copy().row(1).click();
-            add._textField().name().type("PublishFormGeneric" + i);
-            add._button().saveTop().click();
-            manage._textField().search().type("PublishFormGeneric" + i);
-            manage._button().gear().row(1).click();
-            if ((manage._link().publish().row(1).getAttribute("disabled") == "disabled")) {
-                manage._link().manage().click();
-                System.out.println("PublishFormGeneric" + i + " publish failed.");
-            }
-            else {
-                manage._link().publish().row(1).click();
-                manage._link().manage().click();
-                System.out.println("PublishFormGeneric" + i + " published successfully.");
-            }
+            copyForm(i, "");
+            publishLinkCheck(i, "PublishFormGeneric");
             i++;
         }
         
         System.out.println("FORMS PUBLISHED GENERATION SUCCESS!");
+    }
+    
+    public void createForm(int formNumber, String formTrigger, String formName, String formStatus, String formDescription) {
+        manage._button().newForm().click();
+        add._textField().name().type(formName + formNumber);
+        add._textField().description().type(formDescription);
+        add._dropDown().trigger().selectTheOptionContaining(formTrigger, 1);
+        add._dropDown().status().selectTheOptionContaining(formStatus, 1);
+        add._checkBox().groups().check();
+        add._link().text().click();
+        add._button().saveTop().click();
+        System.out.println(formName + formNumber + createdSuccessfully);
+    }
+    
+    public void copyForm(int formNumber, String formName) {
+        manage._button().gear().row(1).click();
+        manage._link().copy().row(1).click();
+        add._textField().name().type(formName + formNumber);
+        add._button().saveTop().click();
+        manage._textField().search().type(formName + formNumber);
+        manage._button().gear().row(1).click();
+    }
+    
+    public void publishLinkCheck(int formNumber, String formName) {
+        if ((manage._link().publish().row(1).getAttribute("disabled") == "disabled")) {
+            manage._link().manage().click();
+            System.out.println(formName + formNumber + publishFailed);
+        }
+        else {
+            manage._link().publish().row(1).click();
+            manage._link().manage().click();
+            System.out.println(formName + formNumber + publishedSuccessfully);
+        }
     }
     
     @Given("I generate submissions")
