@@ -3,7 +3,6 @@ package com.inthinc.pro.selenium.steps;
 import org.jbehave.core.annotations.Given;
 import org.jbehave.core.annotations.Then;
 
-import com.inthinc.pro.automation.utils.Xpath;
 import com.inthinc.pro.selenium.pageObjects.PageFormsAdd;
 import com.inthinc.pro.selenium.pageObjects.PageFormsManage;
 import com.inthinc.pro.selenium.pageObjects.PageFormsSubmissions;
