@@ -144,11 +144,11 @@ public class TeamStatisticsBeanTest extends BaseBeanTest  {
         //pacify compiler
         pu.getClass();
         
-        TeamStatisticsBean bean = new TeamStatisticsBean();
+        TeamStatisticsBean bean = (TeamStatisticsBean)applicationContext.getBean("teamStatisticsBean");
         TeamMockData mockData = new TeamMockData();
         bean.setGroupReportDAO(mockData.getMockGroupReportDAO());
         
-        TeamCommonBean commonBean = new TeamCommonBean();
+        TeamCommonBean commonBean = (TeamCommonBean)applicationContext.getBean("teamCommonBean");
         
         commonBean.setGroupID(TeamMockData.TEAM_GROUP_ID);
         commonBean.setGroup(mockData.getGroup());
@@ -165,19 +165,20 @@ public class TeamStatisticsBeanTest extends BaseBeanTest  {
         assertEquals(1, dvswList.size());
         assertNotNull(dvswList.get(0).getScore());
         assertNotNull(dvswList.get(0).getScore().getOverall());
-        assertEquals(TeamMockData.TREND_SCORE_TODAY, dvswList.get(0).getScore().getOverall());
+        assertEquals(TeamMockData.TREND_SCORE_TODAY_UT, dvswList.get(0).getScore().getOverall());
         
         //Test One day ago
         commonBean.setTimeFrame(TimeFrame.ONE_DAY_AGO);
         mockData.setListSwitch(SEListSwitch.DAY_30);
         // clear the cache
+        bean.getTeamCommonBean().getCachedResults().clear();
         bean.getTeamCommonBean().getCachedTrendResults().clear();
         dvswList = bean.getDriverTotals();
         assertNotNull(dvswList);
         assertEquals(1, dvswList.size());
         assertNotNull(dvswList.get(0).getScore());
         assertNotNull(dvswList.get(0).getScore().getOverall());
-        assertEquals(TeamMockData.TREND_SCORE_ONE_DAY_AGO, dvswList.get(0).getScore().getOverall());
+        assertEquals(TeamMockData.TREND_SCORE_ONE_DAY_AGO_UT, dvswList.get(0).getScore().getOverall());
         
         //Test empty scorable entity list
         commonBean.setTimeFrame(TimeFrame.ONE_DAY_AGO);
@@ -189,7 +190,7 @@ public class TeamStatisticsBeanTest extends BaseBeanTest  {
         assertEquals(1, dvswList.size());
         assertNotNull(dvswList.get(0).getScore());
         assertNotNull(dvswList.get(0).getScore().getOverall());
-        assertEquals(TeamMockData.SCORE_NA, dvswList.get(0).getScore().getOverall());
+        assertEquals(TeamMockData.TREND_SCORE_ONE_DAY_AGO_UT,dvswList.get(0).getScore().getOverall());
         
        //Test null scorable entity list
         commonBean.setTimeFrame(TimeFrame.ONE_DAY_AGO);
@@ -201,7 +202,7 @@ public class TeamStatisticsBeanTest extends BaseBeanTest  {
         assertEquals(1, dvswList.size());
         assertNotNull(dvswList.get(0).getScore());
         assertNotNull(dvswList.get(0).getScore().getOverall());
-        assertEquals(TeamMockData.SCORE_NA, dvswList.get(0).getScore().getOverall());
+        assertEquals(TeamMockData.TREND_SCORE_ONE_DAY_AGO_UT, dvswList.get(0).getScore().getOverall());
         
         //Test Two day ago
         commonBean.setTimeFrame(TimeFrame.TWO_DAYS_AGO);
@@ -213,7 +214,7 @@ public class TeamStatisticsBeanTest extends BaseBeanTest  {
         assertEquals(1, dvswList.size());
         assertNotNull(dvswList.get(0).getScore());
         assertNotNull(dvswList.get(0).getScore().getOverall());
-        assertEquals(TeamMockData.TREND_SCORE_TWO_DAY_AGO, dvswList.get(0).getScore().getOverall());
+        assertEquals(TeamMockData.TREND_SCORE_TWO_DAY_AGO_UT, dvswList.get(0).getScore().getOverall());
         
         //Test Three day ago
         commonBean.setTimeFrame(TimeFrame.THREE_DAYS_AGO);
@@ -225,7 +226,7 @@ public class TeamStatisticsBeanTest extends BaseBeanTest  {
         assertEquals(1, dvswList.size());
         assertNotNull(dvswList.get(0).getScore());
         assertNotNull(dvswList.get(0).getScore().getOverall());
-        assertEquals(TeamMockData.TREND_SCORE_THREE_DAY_AGO, dvswList.get(0).getScore().getOverall());
+        assertEquals(TeamMockData.TREND_SCORE_THREE_DAY_AGO_UT, dvswList.get(0).getScore().getOverall());
         
         //Test Four day ago
         commonBean.setTimeFrame(TimeFrame.FOUR_DAYS_AGO);
@@ -237,7 +238,7 @@ public class TeamStatisticsBeanTest extends BaseBeanTest  {
         assertEquals(1, dvswList.size());
         assertNotNull(dvswList.get(0).getScore());
         assertNotNull(dvswList.get(0).getScore().getOverall());
-        assertEquals(TeamMockData.TREND_SCORE_FOUR_DAY_AGO, dvswList.get(0).getScore().getOverall());
+        assertEquals(TeamMockData.TREND_SCORE_FOUR_DAY_AGO_UT, dvswList.get(0).getScore().getOverall());
        
         //Test Five day ago
         commonBean.setTimeFrame(TimeFrame.FIVE_DAYS_AGO);
@@ -249,7 +250,7 @@ public class TeamStatisticsBeanTest extends BaseBeanTest  {
         assertEquals(1, dvswList.size());
         assertNotNull(dvswList.get(0).getScore());
         assertNotNull(dvswList.get(0).getScore().getOverall());
-        assertEquals(TeamMockData.TREND_SCORE_FIVE_DAY_AGO, dvswList.get(0).getScore().getOverall());
+        assertEquals(TeamMockData.TREND_SCORE_FIVE_DAY_AGO_UT, dvswList.get(0).getScore().getOverall());
         
         //Test Month
         commonBean.setTimeFrame(TimeFrame.MONTH);
@@ -261,7 +262,7 @@ public class TeamStatisticsBeanTest extends BaseBeanTest  {
         assertEquals(1, dvswList.size());
         assertNotNull(dvswList.get(0).getScore());
         assertNotNull(dvswList.get(0).getScore().getOverall());
-        assertEquals(TeamMockData.TREND_SCORE_MONTH, dvswList.get(0).getScore().getOverall());
+        assertEquals(TeamMockData.TREND_SCORE_MONTH_UT, dvswList.get(0).getScore().getOverall());
     }
 
 

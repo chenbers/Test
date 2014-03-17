@@ -40,7 +40,7 @@
       </h:panelGroup>
 
 
-      <a4j:form id="#{context}_editColumnsForm">
+      <a4j:form id="#{context}_editColumnsForm" styleClass="editColumnNoGrid">
 
         <rich:dataGrid id="#{context}-editColumnsGrid" columns="3" value="#{bean.availableColumns}" var="col" width="100%" style="border:0">
           <h:outputLabel rendered="#{bean.tableColumns[col].canHide}">

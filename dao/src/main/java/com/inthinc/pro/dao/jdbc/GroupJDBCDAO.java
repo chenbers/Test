@@ -27,6 +27,23 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.PreparedStatementCreator;
+import org.springframework.jdbc.core.simple.ParameterizedRowMapper;
+import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
+
+import com.inthinc.pro.dao.GroupDAO;
+import com.inthinc.pro.model.Address;
+import com.inthinc.pro.model.DOTOfficeType;
+import com.inthinc.pro.model.Group;
+import com.inthinc.pro.model.GroupStatus;
+import com.inthinc.pro.model.GroupType;
+import com.mysql.jdbc.Statement;
+
 
 public class GroupJDBCDAO extends SimpleJdbcDaoSupport implements GroupDAO {
 
@@ -300,19 +317,6 @@ public class GroupJDBCDAO extends SimpleJdbcDaoSupport implements GroupDAO {
     @Override
     public Integer deleteByID(Integer groupID) {
         return getJdbcTemplate().update(DEL_GROUP_BY_ID, new Object[]{groupID});
-    }
-
-    public void createTestGroup(int testAccountId, int testGroupId) {
-        deleteByID(testGroupId);
-        Map<String, String> params = new HashMap<String, String>();
-        params.put("groupID", String.valueOf(testGroupId));
-        params.put("acctID", String.valueOf(testAccountId));
-        getSimpleJdbcTemplate().update("insert into groups (groupID, acctID, name, `desc`, parentID, status, groupPath, addrID, mapZoom, zoneRev, mapLat, mapLng) values (:groupID, :acctID, 'test-group-name', 'test-group-desc', 4, 1, '/1/2/3/', 972, 17, 2, '28.065', '-82.3664')", params);
-        updateGroupPathById(testGroupId);
-    }
-
-    public void deleteTestGroup(int testGroupId) {
-        deleteByID(testGroupId);
     }
 
     private void addChildren(List<Group> allGroups, List<Group> groupHierarchy, Integer parentID) {
