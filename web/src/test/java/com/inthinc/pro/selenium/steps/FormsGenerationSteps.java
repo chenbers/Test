@@ -18,7 +18,7 @@ public class FormsGenerationSteps extends LoginSteps {
     
     @Given("I clean the forms database")
     public void cleanup() {
-        // TODO: Call the DeleteAllAccountsFormsClass
+        // TODO: Create something to call the DeleteAllAccountsFormsClass US7826
     }
     
     @Then("I generate 13 forms for the manage page test")
