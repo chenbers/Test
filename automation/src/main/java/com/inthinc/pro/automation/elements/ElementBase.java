@@ -7,6 +7,7 @@ import com.inthinc.pro.automation.enums.ErrorLevel;
 import com.inthinc.pro.automation.enums.SeleniumEnumWrapper;
 import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 import com.inthinc.pro.automation.logging.Log;
+import com.inthinc.pro.automation.utils.AutomationThread;
 import com.inthinc.pro.automation.utils.MasterTest;
 
 public abstract class ElementBase extends MasterTest implements ElementInterface {
@@ -23,6 +24,11 @@ public abstract class ElementBase extends MasterTest implements ElementInterface
     }
 
     public ElementBase(SeleniumEnums anEnum, Object ...objects){
+        if (myEnum.toString().contains("TEXT_ENTRY") || myEnum.toString().contains("NUMERIC_ENTRY")
+        || myEnum.toString().contains("DECIMAL_ENTRY") || myEnum.toString().contains("DATE_ENTRY") || myEnum.toString().contains("CHOOSEONE_ENTRY")
+        || myEnum.toString().contains("CHOOSEMANY_ENTRY")) {
+            AutomationThread.pause(7);
+        }
     	setMyEnum(anEnum);
     	myEnum.makeReplacements(objects);
     }

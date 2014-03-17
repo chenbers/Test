@@ -120,9 +120,7 @@ public class CoreMethodLib extends WebDriverBackedSelenium implements CoreMethod
             AutomationThread.pause(7);
         }
         //Some of the items on the Submissions page can take a while to load after making changes, adding a wait.
-        if(myEnum.toString().contains("APPROVED_DROPDOWN")  || myEnum.toString().contains("TEXT_ENTRY") || myEnum.toString().contains("NUMERIC_ENTRY")
-                        || myEnum.toString().contains("DECIMAL_ENTRY") || myEnum.toString().contains("DATE_ENTRY") || myEnum.toString().contains("CHOOSEONE_ENTRY")
-                        || myEnum.toString().contains("CHOOSEMANY_ENTRY") || myEnum.toString().contains("APPROVED_CHECKBOX_ENTRY") || myEnum.toString().contains("DATE_SORT") 
+        if(myEnum.toString().contains("APPROVED_CHECKBOX_ENTRY") || myEnum.toString().contains("DATE_SORT") 
                         || myEnum.toString().contains("GROUP_SORT") || myEnum.toString().contains("DRIVER_SORT") || myEnum.toString().contains("VEHICLE_SORT")
                         || myEnum.toString().contains("FORM_SORT") || myEnum.toString().contains("EDITED_SORT") || myEnum.toString().contains("APPROVED_SORT")) {
             AutomationThread.pause(15);
@@ -653,7 +651,9 @@ public class CoreMethodLib extends WebDriverBackedSelenium implements CoreMethod
     @Override
     public CoreMethodLib select(SeleniumEnumWrapper myEnum, String label) {
         String element = getLocator(myEnum);
-
+        if(myEnum.toString().contains("APPROVED_DROPDOWN")) {
+            AutomationThread.pause(7);
+        }
         select(element, label);
 //        AutomationThread.pause(5, "Pausing so browser has a chance to catch up");
         AutomationThread.pause(1, "Pausing so browser has a chance to catch up");
@@ -794,6 +794,15 @@ public class CoreMethodLib extends WebDriverBackedSelenium implements CoreMethod
         String tryAgainButton = "//*[@id='errorTryAgain']";
         try {
             waitForPageToLoad(timeout.toString());
+            int y = 1;
+            while (verifyIsTextOnPage("Something went wrong while trying to display the web page")) {
+                AutomationThread.pause(60);
+                y++;
+                if (y == 5) {
+                    Log.error("Unable to re-establish a connection, ending test.");
+                    getSeleniumThread().stop();
+                }
+            }
         } catch (WaitTimedOutException e) {
             while(verifyIsTextOnPage("Unable to connect")) {
                     Log.warning("There may have been a page timeout during this test.");
