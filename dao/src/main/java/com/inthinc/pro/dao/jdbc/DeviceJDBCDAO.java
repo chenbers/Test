@@ -87,19 +87,6 @@ public class DeviceJDBCDAO extends SimpleJdbcDaoSupport implements DeviceDAO{
         return getSimpleJdbcTemplate().queryForObject(deviceSelect, deviceMapper, params);
     }
 
-    public void createTestDevice(int testAccountId, int testDeviceId) {
-        Map<String, String> params = new HashMap<String, String>();
-        params.put("deviceID", String.valueOf(testDeviceId));
-        params.put("acctID", String.valueOf(testAccountId));
-        getSimpleJdbcTemplate().update("insert into device (deviceID, acctID, imei, name, modified, activated, serialNum) values (:deviceID, :acctID, 'test-imei', 'test-name', NOW(), NOW(), 1234)", params);
-    }
-
-    public void deleteTestDevice(int testDeviceId) {
-        Map<String, String> params = new HashMap<String, String>();
-        params.put("deviceID", String.valueOf(testDeviceId));
-        getSimpleJdbcTemplate().update("delete from device where deviceID = :deviceID", params);
-    }
-
     @Override
     public List<Device> getDevicesByAcctID(Integer accountID) {
         throw new NotImplementedException();

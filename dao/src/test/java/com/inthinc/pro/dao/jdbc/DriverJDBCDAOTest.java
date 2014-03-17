@@ -23,7 +23,7 @@ public class DriverJDBCDAOTest {
     static int TEST_DRIVER_ID;
     static int TEST_PERSON_ID;
     static int TEST_ACCT_ID = 1;
-    static int TEST_GROUP_ID = 999999999;
+    static int TEST_GROUP_ID = 1;
 
 
     static String TEST_DRIVER_first = "test-name";
@@ -52,8 +52,16 @@ public class DriverJDBCDAOTest {
         List<Driver> drivers = driverJDBCDAO.getDriversInGroupIDList(Arrays.asList(TEST_GROUP_ID));
         assertFalse(drivers == null);
         assertFalse(drivers.isEmpty());
-        Driver driver = drivers.get(0);
-        assertTrue(driver.getDriverID() == TEST_DRIVER_ID);
+
+        boolean found = false;
+
+        for (Driver driver: drivers){
+            if(driver.getDriverID() == TEST_DRIVER_ID){
+                found = true;
+                break;
+            }
+        }
+        assertTrue(found);
     }
 
     private static void createTestDriver() {

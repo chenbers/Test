@@ -10,7 +10,9 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static junit.framework.Assert.assertEquals;
 
@@ -19,8 +21,8 @@ import static junit.framework.Assert.assertEquals;
  */
 public class DeviceJDBCDAOTest {
     static DeviceJDBCDAO deviceJDBCDAO;
-    static int TEST_DEVICE_ID = 999999999;
-    static int TEST_ACCOUNT_ID = 999999999;
+    static int TEST_DEVICE_ID = 1;
+    static int TEST_ACCOUNT_ID = 1;
     static String TEST_DEVICE_NAME = "test-name";
 
     @BeforeClass
@@ -29,13 +31,13 @@ public class DeviceJDBCDAOTest {
         deviceJDBCDAO = new DeviceJDBCDAO();
         deviceJDBCDAO.setDataSource(new ITDataSource().getRealDataSource());
         // ensure that at least one device is in the system before the test
-        deviceJDBCDAO.createTestDevice(TEST_ACCOUNT_ID, TEST_DEVICE_ID);
+        createTestDevice();
     }
 
     @AfterClass
     public static void tearDownOnce() {
         try {
-            deviceJDBCDAO.deleteTestDevice(TEST_DEVICE_ID);
+            deleteTestDevice();
         } catch (Throwable t) {/*ignore*/}
     }
 
@@ -46,5 +48,19 @@ public class DeviceJDBCDAOTest {
     public void testFindById() {
         Device retrievedDevice = deviceJDBCDAO.findByID(TEST_DEVICE_ID);
         assertEquals(retrievedDevice.getName(), TEST_DEVICE_NAME);
+    }
+
+    private static void createTestDevice() {
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("deviceID", String.valueOf(TEST_DEVICE_ID));
+        params.put("acctID", String.valueOf(TEST_ACCOUNT_ID));
+        deviceJDBCDAO.getSimpleJdbcTemplate().update("insert into device (acctID, imei, name, modified, activated, serialNum) values (:acctID, 'test-imei', 'test-name', NOW(), NOW(), 1234)", params);
+        TEST_DEVICE_ID = deviceJDBCDAO.getSimpleJdbcTemplate().queryForInt("select LAST_INSERT_ID()");
+    }
+
+    private static void deleteTestDevice() {
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("deviceID", String.valueOf(TEST_DEVICE_ID));
+        deviceJDBCDAO.getSimpleJdbcTemplate().update("delete from device where deviceID = :deviceID", params);
     }
 }
