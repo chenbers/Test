@@ -24,11 +24,6 @@ public abstract class ElementBase extends MasterTest implements ElementInterface
     }
 
     public ElementBase(SeleniumEnums anEnum, Object ...objects){
-        if (myEnum.toString().contains("TEXT_ENTRY") || myEnum.toString().contains("NUMERIC_ENTRY")
-        || myEnum.toString().contains("DECIMAL_ENTRY") || myEnum.toString().contains("DATE_ENTRY") || myEnum.toString().contains("CHOOSEONE_ENTRY")
-        || myEnum.toString().contains("CHOOSEMANY_ENTRY")) {
-            AutomationThread.pause(7);
-        }
     	setMyEnum(anEnum);
     	myEnum.makeReplacements(objects);
     }

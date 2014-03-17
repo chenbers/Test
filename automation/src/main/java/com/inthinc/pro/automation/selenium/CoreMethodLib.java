@@ -351,6 +351,11 @@ public class CoreMethodLib extends WebDriverBackedSelenium implements CoreMethod
     @Override
     public String getText(SeleniumEnumWrapper myEnum) {
         Log.debug(" getText(" + myEnum.toString() + "\n" + myEnum.getLocatorsAsString() + ")");
+        if (myEnum.toString().contains("TEXT_ENTRY") || myEnum.toString().contains("NUMERIC_ENTRY")
+            || myEnum.toString().contains("DECIMAL_ENTRY") || myEnum.toString().contains("DATE_ENTRY") || myEnum.toString().contains("CHOOSEONE_ENTRY")
+            || myEnum.toString().contains("CHOOSEMANY_ENTRY")) {
+          AutomationThread.pause(7);
+      }
         String element = getLocator(myEnum);
         
         WebElement parent = getWrappedDriver().findElement(By.xpath(idToXpath(element)));
