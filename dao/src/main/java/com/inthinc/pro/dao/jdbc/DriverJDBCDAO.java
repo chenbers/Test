@@ -56,17 +56,17 @@ public class DriverJDBCDAO extends SimpleJdbcDaoSupport implements DriverDAO {
             "    p.title,p.dept,p.empid, p.first, p.middle, p.last,p.suffix, p.gender, p.height, p.weight, p.dob, p.info, p.warn, p.crit, p.priEmail, p.secEmail, p.priPhone," +
             "    p.secPhone, p.priText, p.secText, d.personID, d.driverid, d.groupid, d.barcode, d.rfid1, d.rfid2, d.fobID, d.license, d.stateid, d.expiration,  d.certs,d.dot," +
             "    d.grouppath, d.class from driver d, person p,timezone t where d.driverId = :driverId and p.personID = d.personID and p.tzID=t.tzID; ";
-    private static final String SELECT_DRIVERS_BY_GROUPID ="Select  d.driverid,d.groupid,d.barcode, d.rfid1, d.rfid2, d.fobID, d.license, d.stateid, d.expiration," +
+    private static final String SELECT_DRIVERS_BY_GROUPID ="Select  t.tzName,d.driverid,d.groupid,d.barcode, d.rfid1, d.rfid2, d.fobID, d.license, d.stateid, d.expiration," +
             "    d.certs,d.dot,d.grouppath, d.class, p.personid,p.acctid, p.tzid,p.modified, p.status,p.measuretype,p.fuelefftype,p.addrid,p.locale,p.reportsto," +
             "    p.title,p.dept,p.empid,p.first,p.middle, p.last, p.suffix, p.gender, p.height, p.weight,  p.dob, p.info,p.warn, p.crit, p.priemail, p.secemail," +
-            "    p.priphone, p.secphone,p.pritext,p.sectext from driver d, person p" +
-            "    where  d.personID = p.personID and d.status <>3 and d.groupID like :groupId ;";
+            "    p.priphone, p.secphone,p.pritext,p.sectext from driver d, person p,timezone t" +
+            "    where  d.personID = p.personID and d.status <>3 and p.tzID=t.tzID and d.groupID like :groupId ;";
     private static final String SELECT_FIND_BY_PERSONID ="select d.driverid,d.groupid,d.barcode, d.rfid1, d.rfid2, d.fobID, d.license, d.stateid, d.expiration," +
             "     d.certs,d.dot,d.grouppath, d.class from driver d where d.personId = :personID and d.status <>3";
     private static final String SELECT_RFID="select rfid  from rfid where barcode like :barcode order by rfid";
     private static final String SELECT_DRIVERS_BY_BARCODE = "Select driverId from driver where barcode like :barcode";
     private static final String SELECT_DRIVER_NAMES = "SELECT d.driverID,concat_ws(' ', IF(p.first='',NULL,p.first),IF(p.middle='',NULL,p.middle)," +
-            "IF(p.last='',NULL,p.last),IF(p.suffix='',NULL,p.suffix)) FROM driver d, person p WHERE d.status!=3 " +
+            "IF(p.last='',NULL,p.last),IF(p.suffix='',NULL,p.suffix)) as driverName FROM driver d, person p WHERE d.status!=3 " +
             "AND  d.groupPath IN (SELECT groupPath from groups where groupId like :groupId ) AND d.personID=p.personID";
     private static final String INSERT_DRIVER = "INSERT INTO driver(groupID, certs, status, rfid1, rfid2, class, barcode, license, fobID, dot,personID))" +
             "VALUES (?,?,?,?,?,?,?,?,?,?,?)";
@@ -413,6 +413,9 @@ public class DriverJDBCDAO extends SimpleJdbcDaoSupport implements DriverDAO {
         @Override
         public DriverName mapRow(ResultSet rs, int rowNum) throws SQLException {
             //addd
+            DriverName driverName= new DriverName();
+            driverName.setDriverID(rs.getInt("d.driverID"));
+            driverName.setDriverName(rs.getString("driverName"));
             return null;
         }
     };
