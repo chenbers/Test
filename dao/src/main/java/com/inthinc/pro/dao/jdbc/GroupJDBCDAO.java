@@ -27,23 +27,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.PreparedStatementCreator;
-import org.springframework.jdbc.core.simple.ParameterizedRowMapper;
-import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
-import org.springframework.jdbc.support.GeneratedKeyHolder;
-import org.springframework.jdbc.support.KeyHolder;
-
-import com.inthinc.pro.dao.GroupDAO;
-import com.inthinc.pro.model.Address;
-import com.inthinc.pro.model.DOTOfficeType;
-import com.inthinc.pro.model.Group;
-import com.inthinc.pro.model.GroupStatus;
-import com.inthinc.pro.model.GroupType;
-import com.mysql.jdbc.Statement;
-
 
 public class GroupJDBCDAO extends SimpleJdbcDaoSupport implements GroupDAO {
 
