@@ -22,6 +22,30 @@ And I validate the Edited dropdown is present
 And I validate the Approved dropdown is present
 And I validate the Entries text is present
 
+Scenario: Forms Submissions Page - Bookmark Entry
+Given I am logged in
+When I click the Forms link
+And I click the Submissions link
+And I validate I am on the Forms Submissions page
+And I bookmark the page
+And I click the Logout link
+And I click the bookmark I just added
+Then I validate I am on the Login page
+When I log back in
+Then I validate I am on the Forms Submissions page
+
+Scenario: Forms Submissions Page - Bookmark Entry to Different Account
+Given I am logged in
+When I click the Forms link
+And I click the Submissions link
+And I validate I am on the Forms Submissions page
+And I bookmark the page
+And I click the Logout link
+And I click the bookmark I just added
+Then I validate I am on the Login page
+When I log back in under the editable account
+Then I validate I am on the Forms Submissions page
+
 Scenario: Forms Submissions Page - Forms No Data Available In Table Message
 Given I am logged in
 When I click the Forms link
@@ -99,30 +123,6 @@ And I check the 1st Row of the Approved Entry checkbox
 Then I validate the 1st Row of the Approved Entry checkbox is checked
 And I uncheck the 1st Row of the Approved Entry checkbox
 And I validate the 1st Row of the Approved Entry checkbox is not checked
-
-Scenario: Forms Submissions Page - Bookmark Entry
-Given I am logged in
-When I click the Forms link
-And I click the Submissions link
-And I validate I am on the Forms Submissions page
-And I bookmark the page
-And I click the Logout link
-And I click the bookmark I just added
-Then I validate I am on the Login page
-When I log back in
-Then I validate I am on the Forms Submissions page
-
-Scenario: Forms Submissions Page - Bookmark Entry to Different Account
-Given I am logged in
-When I click the Forms link
-And I click the Submissions link
-And I validate I am on the Forms Submissions page
-And I bookmark the page
-And I click the Logout link
-And I click the bookmark I just added
-Then I validate I am on the Login page
-When I log back in under the editable account
-Then I validate I am on the Forms Submissions page
 
 Scenario: Forms Submissions Page - Edit Approved check (No change to Edited column)
 Given I am logged in
