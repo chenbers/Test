@@ -47,6 +47,7 @@ public class SQLDateToUtilDateConverter extends BaseConverter {
 	private String getDateTimeZone(final UIComponent uiComponent, final Object value, final TimeZone timeZone) {
 		final Calendar instance = Calendar.getInstance(timeZone);
         instance.setTimeZone(timeZone);
+        instance.getTime(); // to fix documented bug in jdk : http://bugs.java.com/bugdatabase/view_bug.do?bug_id=4827490
 		instance.setTime((Date) value);
 		final String pattern = (String) uiComponent.getAttributes().get("pattern");
 		if ((pattern != null) && (!pattern.isEmpty())) {
