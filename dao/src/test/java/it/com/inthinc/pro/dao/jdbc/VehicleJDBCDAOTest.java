@@ -60,81 +60,81 @@ public class VehicleJDBCDAOTest extends SimpleJdbcDaoSupport {
     }
 
 
-//    @Test
-//    public void getVehiclesInGroupHierarchyTest() throws Exception {
-//        List<Vehicle> vehiclesList = vehicleJDBCDAO.getVehiclesInGroupHierarchy(GROUP_ID);
-//        boolean found = false;
-//        for (Vehicle vh : vehiclesList) {
-//            if (vh.getGroupID().equals(GROUP_ID)) {
-//                found = true;
-//                break;
-//            }
-//        }
-//        assertTrue(found);
-//
-//    }
-//
-//    @Test
-//    public void getVehiclesInGroupTest() throws Exception {
-//        List<Vehicle> vehicleListByAccount = vehicleJDBCDAO.getVehiclesInGroup(GROUP_ID);
-//        assertTrue(vehicleListByAccount.size() > 0);
-//        boolean found = false;
-//        for (Vehicle gr : vehicleListByAccount) {
-//            if (gr.getGroupID().equals(GROUP_ID)) {
-//                found = true;
-//                break;
-//            }
-//        }
-//        assertTrue(found);
-//    }
-//
-//    @Test
-//    public void getMilesDrivenTest() throws Exception {
-//        Integer milesdriven = vehicleJDBCDAO.getMilesDriven(VEHICLE_ID);
-//
-//        assertTrue(milesdriven >= 0);
-//    }
-//
-//    @Test
-//    public void getVehicleNamesTest() throws Exception {
-//        List<VehicleName> vehiclesList = vehicleJDBCDAO.getVehicleNames(GROUP_ID);
-//
-//        assertTrue(vehiclesList.size() > 0);
-//
-//    }
-//
-//    @Test
-//    public void findByIDTest() throws Exception {
-//        Vehicle findByID = vehicleJDBCDAO.findByID(VEHICLE_ID);
-//
-//        assertNotNull(findByID);
-//
-//    }
-//
-//    @Test
-//    public void findByDriverInGroupTest() throws Exception {
-//        Vehicle findByDriverInGroup = vehicleJDBCDAO.findByDriverInGroup(DRIVER_ID, GROUP_ID);
-//
-//        assertNotNull(findByDriverInGroup);
-//    }
-//
-//    @Test
-//    public void findByVINTest() throws Exception {
-//        Vehicle findByVIN = vehicleJDBCDAO.findByVIN(VIN);
-//        assertNotNull(findByVIN);
-//    }
-//        @Test
-//    public void findByDriverID() throws Exception {
-//        Vehicle findByDriverID = vehicleJDBCDAO.findByDriverID(DRIVER_ID);
-//        assertNotNull(findByDriverID);
-//    }
-
     @Test
-    public void getVehiclesNearLocTest() throws Exception {
-        List<DriverLocation> getTripsList = vehicleJDBCDAO.getVehiclesNearLoc(5276, 10, 32.960300, -117.210678);
-
-        assertNotNull(getTripsList);
+    public void getVehiclesInGroupHierarchyTest() throws Exception {
+        List<Vehicle> vehiclesList = vehicleJDBCDAO.getVehiclesInGroupHierarchy(GROUP_ID);
+        boolean found = false;
+        for (Vehicle vh : vehiclesList) {
+            if (vh.getGroupID().equals(GROUP_ID)) {
+                found = true;
+                break;
+            }
+        }
+        assertTrue(found);
 
     }
+
+    @Test
+    public void getVehiclesInGroupTest() throws Exception {
+        List<Vehicle> vehicleListByAccount = vehicleJDBCDAO.getVehiclesInGroup(GROUP_ID);
+        assertTrue(vehicleListByAccount.size() > 0);
+        boolean found = false;
+        for (Vehicle gr : vehicleListByAccount) {
+            if (gr.getGroupID().equals(GROUP_ID)) {
+                found = true;
+                break;
+            }
+        }
+        assertTrue(found);
+    }
+
+    @Test
+    public void getMilesDrivenTest() throws Exception {
+        Integer milesdriven = vehicleJDBCDAO.getMilesDriven(VEHICLE_ID);
+
+        assertTrue(milesdriven >= 0);
+    }
+
+    @Test
+    public void getVehicleNamesTest() throws Exception {
+        List<VehicleName> vehiclesList = vehicleJDBCDAO.getVehicleNames(GROUP_ID);
+
+        assertTrue(vehiclesList.size() > 0);
+
+    }
+
+    @Test
+    public void findByIDTest() throws Exception {
+        Vehicle findByID = vehicleJDBCDAO.findByID(VEHICLE_ID);
+
+        assertNotNull(findByID);
+
+    }
+
+    @Test
+    public void findByDriverInGroupTest() throws Exception {
+        Vehicle findByDriverInGroup = vehicleJDBCDAO.findByDriverInGroup(DRIVER_ID, GROUP_ID);
+
+        assertNotNull(findByDriverInGroup);
+    }
+
+    @Test
+    public void findByVINTest() throws Exception {
+        Vehicle findByVIN = vehicleJDBCDAO.findByVIN(VIN);
+        assertNotNull(findByVIN);
+    }
+        @Test
+    public void findByDriverID() throws Exception {
+        Vehicle findByDriverID = vehicleJDBCDAO.findByDriverID(DRIVER_ID);
+        assertNotNull(findByDriverID);
+    }
+
+//    @Test
+//    public void getVehiclesNearLocTest() throws Exception {
+//        List<DriverLocation> getTripsList = vehicleJDBCDAO.getVehiclesNearLoc(5276, 10, 32.960300, -117.210678);
+//
+//        assertNotNull(getTripsList);
+//
+//    }
 
 }
