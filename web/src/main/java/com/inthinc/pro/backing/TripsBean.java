@@ -1,23 +1,5 @@
 package com.inthinc.pro.backing;
 
-import java.sql.Time;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.TimeZone;
-
-import com.inthinc.pro.model.TimeFrame;
-import org.ajax4jsf.model.KeepAlive;
-import org.apache.log4j.Logger;
-import org.joda.time.DateMidnight;
-import org.joda.time.DateTime;
-import org.joda.time.DateTimeZone;
-
 import com.inthinc.pro.backing.model.GroupTreeNodeImpl;
 import com.inthinc.pro.backing.ui.TripDisplay;
 import com.inthinc.pro.dao.DriverDAO;
@@ -30,6 +12,7 @@ import com.inthinc.pro.model.EntityType;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.LastLocation;
 import com.inthinc.pro.model.LatLng;
+import com.inthinc.pro.model.TimeFrame;
 import com.inthinc.pro.model.Trip;
 import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.model.event.Event;
@@ -38,6 +21,21 @@ import com.inthinc.pro.model.event.IdleEvent;
 import com.inthinc.pro.model.event.NoteType;
 import com.inthinc.pro.util.MessageUtil;
 import com.inthinc.pro.util.MiscUtil;
+import org.ajax4jsf.model.KeepAlive;
+import org.apache.log4j.Logger;
+import org.joda.time.DateMidnight;
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
+
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.TimeZone;
 
 @KeepAlive
 public class TripsBean extends BaseBean {
@@ -203,6 +201,7 @@ public class TripsBean extends BaseBean {
             allEvents.addAll(trip.getViolationEvents());
             allEvents.addAll(trip.getIdleEvents());
             allEvents.addAll(trip.getTamperEvents());
+            allEvents=removeDuplicateEvents(allEvents);
             Collections.sort(allEvents);
             Collections.reverse(allEvents);
             allEventsMap = new LinkedHashMap<Long,Event>();
@@ -253,6 +252,7 @@ public class TripsBean extends BaseBean {
             allEvents.addAll(violationEvents);
             allEvents.addAll(idleEvents);
             allEvents.addAll(tamperEvents);
+            allEvents=removeDuplicateEvents(allEvents);
             Collections.sort(allEvents);
             Collections.reverse(allEvents);
             allEventsMap = new LinkedHashMap<Long,Event>();
@@ -866,5 +866,25 @@ public class TripsBean extends BaseBean {
 
     public void setTimeFrameString(String timeFrameString) {
         this.timeFrameString = timeFrameString;
+    }
+
+    //function to compare the final event list to be able to remove possible duplicates - to be removed if the cause is found
+    protected List<Event> removeDuplicateEvents(List<Event> events) {
+        List<Event> retList = new ArrayList<Event>();
+         int uniqueCount=0;
+        for (int i = 0; i < events.size(); i++) {
+            boolean unique=true;
+            for (int j=0; j<uniqueCount&& unique; j++) {
+                if (events.get(i).equalsWithoutID(retList.get(j))) {
+                    unique=false;
+                }
+            }
+        if(unique){
+            retList.add(events.get(i));
+            uniqueCount+=1;
+        }
+        }
+        return retList;
+
     }
 }

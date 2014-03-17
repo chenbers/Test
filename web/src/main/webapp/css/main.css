@@ -3534,3 +3534,7 @@ hr.minorSeparator{
 	width: 100px;
 	margin-top: 0px;
 }
+/*to remove row separators in editcolumnspopup   */
+.editColumnNoGrid td {
+	border-bottom: 0px;
+}
