@@ -2,6 +2,7 @@ package it.com.inthinc.pro.dao.model;
 
 import static org.junit.Assert.assertNotNull;
 import it.com.inthinc.pro.dao.Util;
+import it.config.ITDataSource;
 import it.config.ReportTestConst;
 
 import java.beans.XMLDecoder;
@@ -14,6 +15,7 @@ import java.util.List;
 import java.util.Locale;
 
 import com.inthinc.hos.model.RuleSetType;
+import com.inthinc.pro.dao.ZoneDAO;
 import com.inthinc.pro.dao.hessian.AccountHessianDAO;
 import com.inthinc.pro.dao.hessian.AddressHessianDAO;
 import com.inthinc.pro.dao.hessian.DeviceHessianDAO;
@@ -30,6 +32,7 @@ import com.inthinc.pro.dao.hessian.exceptions.DuplicateEmpIDException;
 import com.inthinc.pro.dao.hessian.exceptions.DuplicateEntryException;
 import com.inthinc.pro.dao.hessian.exceptions.HessianException;
 import com.inthinc.pro.dao.hessian.proserver.SiloService;
+import com.inthinc.pro.dao.jdbc.ZonePublishJDBCDAO;
 import com.inthinc.pro.model.Account;
 import com.inthinc.pro.model.AccountAttributes;
 import com.inthinc.pro.model.AccountHOSType;
@@ -57,6 +60,9 @@ import com.inthinc.pro.model.app.States;
 import com.inthinc.pro.model.configurator.ProductType;
 import com.inthinc.pro.model.security.AccessPoint;
 import com.inthinc.pro.model.security.Role;
+import com.inthinc.pro.model.zone.ZonePublish;
+import com.inthinc.pro.model.zone.ZonePublisher;
+import com.inthinc.pro.model.zone.option.type.ZoneVehicleType;
 
 public abstract class BaseITData {
 
@@ -519,8 +525,30 @@ public abstract class BaseITData {
         Integer zoneID = zoneDAO.create(account.getAccountID(), zone);
         zone.setZoneID(zoneID);
         xml.writeObject(zone);
+        
+        List<Zone> zoneList = new ArrayList<Zone>();
+        zoneList.add(zone);
+        publishZones(account, zoneList, zoneDAO);
 
     }
+    
+    private void publishZones(Account account, List<Zone> zoneList, ZoneDAO zoneDAO ) {
+        ZonePublishJDBCDAO zonePublishDAO = new ZonePublishJDBCDAO();
+        zonePublishDAO.setDataSource(new ITDataSource().getRealDataSource());
+
+        ZonePublisher zonePublisher = new ZonePublisher();
+
+        for (ZoneVehicleType zoneVehicleType : ZoneVehicleType.values()) {
+            
+            ZonePublish zonePublish = new ZonePublish();
+            zonePublish.setAcctID(account.getAccountID());
+            zonePublish.setZoneVehicleType(zoneVehicleType);
+            zonePublish.setPublishZoneData(zonePublisher.publish(zoneList,  zoneVehicleType));
+            zonePublishDAO.publishZone(zonePublish);
+        }
+        zoneDAO.publishZones(account.getAccountID());
+    }
+
 
     protected List<Boolean> anyDay() {
         List<Boolean> dayOfWeek = new ArrayList<Boolean>();
