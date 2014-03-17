@@ -128,7 +128,7 @@ public class CoreMethodLib extends WebDriverBackedSelenium implements CoreMethod
             AutomationThread.pause(15);
         }
         click(element);
-        if(element.contains("button[@class='btn']")) {
+        if(element.contains("button[@class='btn']") || myEnum.toString().contains("TIME_FRAME_")) {
             AutomationThread.pause(20);
         }
         AutomationThread.pause(2, "click(" + myEnum + ")");
