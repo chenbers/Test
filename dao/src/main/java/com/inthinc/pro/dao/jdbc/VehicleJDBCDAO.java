@@ -2,6 +2,7 @@ package com.inthinc.pro.dao.jdbc;
 
 import com.inthinc.pro.dao.LocationDAO;
 import com.inthinc.pro.dao.VehicleDAO;
+import com.inthinc.pro.dao.cassandra.LocationCassandraDAO;
 import com.inthinc.pro.dao.hessian.DriverHessianDAO;
 import com.inthinc.pro.dao.hessian.exceptions.EmptyResultSetException;
 import com.inthinc.pro.model.*;
@@ -34,7 +35,9 @@ import java.util.Date;
  */
 public class VehicleJDBCDAO extends SimpleJdbcDaoSupport implements VehicleDAO {
     private static final Logger logger = Logger.getLogger(DriverHessianDAO.class);
-    private LocationDAO locationDAO;
+
+    //2014-03-17 Use LocationCassandraDAO instead of LocationDAO
+    private LocationCassandraDAO locationDAO;
 
     private static final SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     private static final DateTimeFormatter dateFormatterAgg = DateTimeFormat.forPattern("yyyy-MM-dd");
@@ -67,7 +70,7 @@ public class VehicleJDBCDAO extends SimpleJdbcDaoSupport implements VehicleDAO {
             "LEFT OUTER JOIN person p ON (dr.personID = p.personID) " +
             "LEFT OUTER JOIN driverPerformance dp ON (dr.driverID = dp.driverID)";
 
-    private static final String GET_VEHICLE = "select * FROM vehicle v where v.groupID= :groupID";
+    private static final String GET_VEHICLE = FIND_BY + "where v.groupID= :groupID";
 
     private static final String GET_VEHICLE_NAME="select vehicleID, name from vehicle where groupID = :groupID";
 
@@ -244,7 +247,6 @@ public class VehicleJDBCDAO extends SimpleJdbcDaoSupport implements VehicleDAO {
             Vehicle veh=null;
         List<Vehicle> vehic =  getSimpleJdbcTemplate().query(vehicleFindByVin.toString(), pagedVehicleRowMapper, params);
             if(vehic.isEmpty()){
-
             }else{
             veh = vehic.get(0);
             }
@@ -314,7 +316,7 @@ public class VehicleJDBCDAO extends SimpleJdbcDaoSupport implements VehicleDAO {
     public List<LatLng> getLocationsForTrip(Integer vehicleID, Interval interval) {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("vehicleID", vehicleID);
-
+//        locationDAO.getLocationsForVehicleTrip()
 
         throw new NotImplementedException();
     }
@@ -329,7 +331,10 @@ public class VehicleJDBCDAO extends SimpleJdbcDaoSupport implements VehicleDAO {
         params.put("latitude", lat );
         params.put("longitude", lng );
 
+//        locationDAO.getLastLocationForVehicle()
+
         StringBuilder vehicleNearLocation = new StringBuilder(TRIP_LIST);
+
 
         throw new NotImplementedException();
     }
