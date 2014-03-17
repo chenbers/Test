@@ -3,6 +3,7 @@ package com.inthinc.pro.selenium.steps;
 import org.jbehave.core.annotations.Given;
 import org.jbehave.core.annotations.Then;
 
+import com.inthinc.pro.automation.utils.Xpath;
 import com.inthinc.pro.selenium.pageObjects.PageFormsAdd;
 import com.inthinc.pro.selenium.pageObjects.PageFormsManage;
 import com.inthinc.pro.selenium.pageObjects.PageFormsSubmissions;
@@ -84,9 +85,15 @@ public class FormsGenerationSteps extends LoginSteps {
             add._button().saveTop().click();
             manage._textField().search().type("FormPublish" + l);
             manage._button().gear().row(1).click();
-            manage._link().publish().row(1).click();
-            manage._link().manage().click();
-            System.out.println("FormPublish" + l + " created successfully.");
+            if ((manage._link().publish().row(1).getAttribute("disabled") == "disabled")) {
+                manage._link().manage().click();
+                System.out.println("FormPublish" + l + " publish failed.");
+            }
+            else {
+                manage._link().publish().row(1).click();
+                manage._link().manage().click();
+                System.out.println("FormPublish" + l + " published successfully.");
+            }
             l++;
         }
         
@@ -99,9 +106,15 @@ public class FormsGenerationSteps extends LoginSteps {
             add._button().saveTop().click();
             manage._textField().search().type("FormPostTrip" + j);
             manage._button().gear().row(1).click();
-            manage._link().publish().row(1).click();
-            manage._link().manage().click();
-            System.out.println("FormPostTrip" + j + " created successfully.");
+            if ((manage._link().publish().row(1).getAttribute("disabled") == "disabled")) {
+                manage._link().manage().click();
+                System.out.println("FormPostTrip" + j + " publish failed.");
+            }
+            else {
+                manage._link().publish().row(1).click();
+                manage._link().manage().click();
+                System.out.println("FormPostTrip" + j + " published successfully.");
+            }
             j++;
         }
         
@@ -114,9 +127,15 @@ public class FormsGenerationSteps extends LoginSteps {
             add._button().saveTop().click();
             manage._textField().search().type("FormPreTrip" + k);
             manage._button().gear().row(1).click();
-            manage._link().publish().row(1).click();
-            manage._link().manage().click();
-            System.out.println("FormPreTrip" + k + " created successfully.");
+            if ((manage._link().publish().row(1).getAttribute("disabled") == "disabled")) {
+                manage._link().manage().click();
+                System.out.println("FormPreTrip" + k + " publish failed.");
+            }
+            else {
+                manage._link().publish().row(1).click();
+                manage._link().manage().click();
+                System.out.println("FormPreTrip" + k + " published successfully.");
+            }
             k++;
         }
         
@@ -127,9 +146,15 @@ public class FormsGenerationSteps extends LoginSteps {
         add._button().saveTop().click();
         manage._textField().search().type("PublishFormGeneric" + i);
         manage._button().gear().row(1).click();
-        manage._link().publish().row(1).click();
-        manage._link().manage().click();
-        System.out.println("PublishFormGeneric" + i + " created successfully.");
+        if ((manage._link().publish().row(1).getAttribute("disabled") == "disabled")) {
+            manage._link().manage().click();
+            System.out.println("PublishFormGeneric" + i + " publish failed.");
+        }
+        else {
+            manage._link().publish().row(1).click();
+            manage._link().manage().click();
+            System.out.println("PublishFormGeneric" + i + " published successfully.");
+        }
         i++;
         
         while (i < 100) {
@@ -139,9 +164,15 @@ public class FormsGenerationSteps extends LoginSteps {
             add._button().saveTop().click();
             manage._textField().search().type("PublishFormGeneric" + i);
             manage._button().gear().row(1).click();
-            manage._link().publish().row(1).click();
-            manage._link().manage().click();
-            System.out.println("PublishFormGeneric" + i + " created successfully.");
+            if ((manage._link().publish().row(1).getAttribute("disabled") == "disabled")) {
+                manage._link().manage().click();
+                System.out.println("PublishFormGeneric" + i + " publish failed.");
+            }
+            else {
+                manage._link().publish().row(1).click();
+                manage._link().manage().click();
+                System.out.println("PublishFormGeneric" + i + " published successfully.");
+            }
             i++;
         }
         
