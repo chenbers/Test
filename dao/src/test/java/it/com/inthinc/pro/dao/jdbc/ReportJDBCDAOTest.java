@@ -1,10 +1,11 @@
-package com.inthinc.pro.dao.jdbc;
+package it.com.inthinc.pro.dao.jdbc;
 
 import com.inthinc.pro.dao.hessian.DriverHessianDAO;
 import com.inthinc.pro.dao.hessian.ReportHessianDAO;
 import com.inthinc.pro.dao.hessian.mapper.DriverPerformanceMapper;
 import com.inthinc.pro.dao.hessian.proserver.SiloService;
 import com.inthinc.pro.dao.hessian.proserver.SiloServiceCreator;
+import com.inthinc.pro.dao.jdbc.ReportJDBCDAO;
 import com.inthinc.pro.model.DeviceReportItem;
 import com.inthinc.pro.model.DriverReportItem;
 import com.inthinc.pro.model.IdlingReportItem;
@@ -14,7 +15,6 @@ import com.inthinc.pro.model.pagination.TableFilterField;
 import it.config.ITDataSource;
 import it.config.IntegrationConfig;
 import it.config.ReportTestConst;
-import jxl.write.DateTime;
 import org.joda.time.DateMidnight;
 import org.joda.time.DateTimeZone;
 import org.joda.time.Interval;
@@ -22,7 +22,6 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import static junit.framework.Assert.assertEquals;
@@ -30,7 +29,7 @@ import static junit.framework.Assert.assertTrue;
 
 public class ReportJDBCDAOTest {
     static ReportJDBCDAO reportJDBCDAO;
-//for testdev.inthink test_group_id = 35
+    //for testdev.inthink test_group_id = 35
 //    static int TEST_GROUP_ID = 35;
     static int TEST_GROUP_ID = 1;
     private static SiloService siloService;
@@ -68,8 +67,8 @@ public class ReportJDBCDAOTest {
         int count = reportJDBCDAO.getDriverReportCount(TEST_GROUP_ID, filterList);
         //hessian
         int countHesian = reportDAO.getDriverReportCount(TEST_GROUP_ID, filterList);
-       // Compare count for ReportJDBCDAO and  ReportHessianDAO
-        assertEquals(count,countHesian);
+        // Compare count for ReportJDBCDAO and  ReportHessianDAO
+        assertEquals("expected the getDriverReportCount for JDBC impl to match Hessian Impl", count, countHesian);
 
         PageParams pp = new PageParams();
         pp.setStartRow(0);
@@ -78,13 +77,13 @@ public class ReportJDBCDAOTest {
 
         List<DriverReportItem> driverReportList = reportJDBCDAO.getDriverReportPage(TEST_GROUP_ID, pp);
         int driverReportListCount = driverReportList.size();
-        assertTrue(!driverReportList.isEmpty());
+        assertTrue("expected not to be empty", !driverReportList.isEmpty());
         //HESSIAN
         List<DriverReportItem> driverReportListHessian = reportDAO.getDriverReportPage(TEST_GROUP_ID, pp);
         int driverReportListHessianCount = driverReportListHessian.size();
-        assertTrue(!driverReportListHessian.isEmpty());
-        // Compare sixe lists for ReportJDBCDAO and  ReportHessianDAO
-        assertEquals(driverReportListCount,driverReportListHessianCount);
+        assertTrue("expected not to be empty", !driverReportListHessian.isEmpty());
+        // Compare lists for ReportJDBCDAO and  ReportHessianDAO
+        assertEquals("expected the getDriverReportCount for JDBC impl to match Hessian Impl", driverReportListCount, driverReportListHessianCount);
 
     }
 
@@ -103,7 +102,7 @@ public class ReportJDBCDAOTest {
         pp.setFilterList(filterList);
 
         List<VehicleReportItem> driverReportList = reportJDBCDAO.getVehicleReportPage(TEST_GROUP_ID, pp);
-        assertTrue(!driverReportList.isEmpty());
+        assertTrue("expected not to be empty", !driverReportList.isEmpty());
     }
 
     @Test
@@ -114,7 +113,7 @@ public class ReportJDBCDAOTest {
         filterList.add(new TableFilterField("devicePhone", "8011"));
         filterList.add(new TableFilterField("deviceName", "MIKE"));
         int count = reportJDBCDAO.getDeviceReportCount(TEST_GROUP_ID, filterList);
-        assertTrue(count > 0);
+        assertTrue("expected to be 1 or >1", count > 0);
 
         PageParams pp = new PageParams();
         pp.setStartRow(0);
@@ -122,7 +121,7 @@ public class ReportJDBCDAOTest {
         pp.setFilterList(filterList);
 
         List<DeviceReportItem> driverReportList = reportJDBCDAO.getDeviceReportPage(TEST_GROUP_ID, pp);
-        assertTrue(!driverReportList.isEmpty());
+        assertTrue("expected not to be empty", !driverReportList.isEmpty());
 
     }
 
@@ -130,15 +129,14 @@ public class ReportJDBCDAOTest {
     public void testIdleDriverCountAndList() {
         List<TableFilterField> filterList = new ArrayList<TableFilterField>();
 // for testdev.inthinc d 011596000035091
- //      filterList.add(new TableFilterField("driverName", "d 011"));
+        //      filterList.add(new TableFilterField("driverName", "d 011"));
         filterList.add(new TableFilterField("driverName", "MIKE"));
-//      filterList.add(new TableFilterField("hasRPM","1"));
 
         DateTimeZone dateTimeZone = DateTimeZone.forID(ReportTestConst.TIMEZONE_STR);
         Interval interval = new Interval(new DateMidnight(new org.joda.time.DateTime().minusDays(7), dateTimeZone), new DateMidnight(new org.joda.time.DateTime(), dateTimeZone));
 
         int count = reportJDBCDAO.getIdlingReportCount(TEST_GROUP_ID, interval, filterList);
-        assertTrue(count > 0);
+        assertTrue("expected to be 1 or >1", count > 0);
 
         PageParams pp = new PageParams();
         pp.setStartRow(0);
@@ -146,7 +144,7 @@ public class ReportJDBCDAOTest {
         pp.setFilterList(filterList);
 
         List<IdlingReportItem> driverReportList = reportJDBCDAO.getIdlingReportPage(TEST_GROUP_ID, interval, pp);
-        assertTrue(!driverReportList.isEmpty());
+        assertTrue("expected not to be empty", !driverReportList.isEmpty());
     }
 
     @Test
@@ -157,7 +155,7 @@ public class ReportJDBCDAOTest {
         Interval interval = new Interval(new DateMidnight(new org.joda.time.DateTime().minusYears(1), dateTimeZone), new DateMidnight(new org.joda.time.DateTime(), dateTimeZone));
 
         int count = reportJDBCDAO.getIdlingVehicleReportCount(TEST_GROUP_ID, interval, filterList);
-        assertTrue(count > 0);
+        assertTrue("expected to be 1 or >1", count > 0);
 
         PageParams pp = new PageParams();
         pp.setStartRow(0);
@@ -165,7 +163,7 @@ public class ReportJDBCDAOTest {
         pp.setFilterList(filterList);
 
         List<IdlingReportItem> driverReportList = reportJDBCDAO.getIdlingVehicleReportPage(TEST_GROUP_ID, interval, pp);
-        assertTrue(!driverReportList.isEmpty());
+        assertTrue("expected not to be empty", !driverReportList.isEmpty());
 
     }
 
@@ -177,7 +175,7 @@ public class ReportJDBCDAOTest {
         Interval interval = new Interval(new DateMidnight(new org.joda.time.DateTime().minusDays(10), dateTimeZone), new DateMidnight(new org.joda.time.DateTime(), dateTimeZone));
 
         int count = reportJDBCDAO.getIdlingReportSupportsIdleStatsCount(TEST_GROUP_ID, interval, filterList);
-        assertTrue(count > 0);
+        assertTrue("expected to be 1 or >1", count > 0);
     }
 
     @Test
@@ -188,6 +186,6 @@ public class ReportJDBCDAOTest {
         Interval interval = new Interval(new DateMidnight(new org.joda.time.DateTime().minusDays(10), dateTimeZone), new DateMidnight(new org.joda.time.DateTime(), dateTimeZone));
 
         int count = reportJDBCDAO.getIdlingReportSupportsIdleStatsCount(TEST_GROUP_ID, interval, filterList);
-        assertTrue(count > 0);
+        assertTrue("expected to be 1 or >1", count > 0);
     }
 }

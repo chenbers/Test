@@ -1,4 +1,4 @@
-package com.inthinc.pro.dao.jdbc;
+package it.com.inthinc.pro.dao.jdbc;
 
 import com.inthinc.pro.dao.hessian.AccountHessianDAO;
 import com.inthinc.pro.dao.hessian.DeviceHessianDAO;
@@ -8,6 +8,7 @@ import com.inthinc.pro.dao.hessian.StateHessianDAO;
 import com.inthinc.pro.dao.hessian.mapper.DriverPerformanceMapper;
 import com.inthinc.pro.dao.hessian.proserver.SiloService;
 import com.inthinc.pro.dao.hessian.proserver.SiloServiceCreator;
+import com.inthinc.pro.dao.jdbc.ReportJDBCDAO;
 import com.inthinc.pro.model.Account;
 import com.inthinc.pro.model.DeviceReportItem;
 import com.inthinc.pro.model.DeviceStatus;
@@ -51,7 +52,6 @@ public class ReportPaginationJDBCTest {
     private static ITDataExt itData;
     
     private static final String PAGINATION_BASE_DATA_XML = "ReportPageTest.xml";
-//    private static final String PAGINATION_BASE_DATA_XML = "ReportPageTest34.xml";
     private static Integer countPerGroup;
     private static Integer goodGroupID;
     private static String goodGroupName;
