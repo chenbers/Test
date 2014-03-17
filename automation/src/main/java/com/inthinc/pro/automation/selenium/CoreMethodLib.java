@@ -116,7 +116,7 @@ public class CoreMethodLib extends WebDriverBackedSelenium implements CoreMethod
             AutomationThread.pause(20);
         }
         //Some of the forms elements can take a while to load, adding in a wait before they click.
-        if(myEnum.toString().contains("NEW_FORM_BUTTON")  || myEnum.toString().contains("NAME_FIELD") || myEnum.toString().contains("PUBLISH_ENTRY_LINK")) {
+        if(myEnum.toString().contains("NEW_FORM_BUTTON") || myEnum.toString().contains("PUBLISH_ENTRY_LINK")) {
             AutomationThread.pause(7);
         }
         //Some of the items on the Submissions page can take a while to load after making changes, adding a wait.
@@ -711,6 +711,9 @@ public class CoreMethodLib extends WebDriverBackedSelenium implements CoreMethod
      */
     @Override
     public CoreMethodLib type(SeleniumEnumWrapper myEnum, String text) {
+        if (myEnum.toString().contains("NAME_FIELD")) {
+            AutomationThread.pause(7);
+        }
         String element = getLocator(myEnum);
 
         fireEvent(element, "keydown");
