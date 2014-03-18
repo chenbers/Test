@@ -146,6 +146,10 @@
    					<ui:param name="index" value="#{index}" />
 				</ui:include>
             </rich:column>
+
+            <rich:column id="hazardID"  style="display: hidden;">
+                <h:outputText value="#{item.hazardID}" style="display: none;"/>
+            </rich:column>
             
             <rich:column id="location" sortBy="#{item.location}" >
                 <f:facet name="header">
@@ -316,12 +320,31 @@
 					google.maps.event.addListener(marker, "click", function() {
 						bubbleMarker = marker;
 						fillBubbleMarker(marker.itemID);
+                        addSelectedRowClass(marker.itemID);
 					});
 				}
+
+                function addSelectedRowClass(hazardId){
+                    jQuery('#hazards-form\\:hazards tbody tr').each(function() {
+                        jQuery(this).removeClass('selected-row');
+                        jQuery(this).children().removeClass('selected-row');
+                        if ($(this).cells[1].firstChild.textContent == hazardId ){
+                              jQuery(this).addClass('selected-row');
+                              jQuery(this).children().addClass('selected-row');
+                          }
+                    });
+                }
+
 				function showBubble() {
                     inthincMap.clearInfoWindow(map);
-					inthincMap.infoWindowAtMarker(map, 'hazardBubble', bubbleMarker);
-					
+                    var infowindow = new google.maps.InfoWindow();
+					infowindow = inthincMap.infoWindowAtMarker(map, 'hazardBubble', bubbleMarker);
+                    google.maps.event.addListener(infowindow, 'closeclick', (function(){
+                        jQuery('#hazards-form\\:hazards tbody tr').each(function() {
+                            jQuery(this).removeClass('selected-row');
+                            jQuery(this).children().removeClass('selected-row');
+                        });
+                    }));
 				}
 	</script>
     
