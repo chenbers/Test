@@ -182,6 +182,7 @@
                                 <exclude>**/selenium/testSuites/**/AAFormsGenerationForManageTest.java</exclude>
                                 <exclude>**/selenium/testSuites/**/AAFormsGenerationForPublishTest.java</exclude>
 								<exclude>**/selenium/testSuites/**/AdminVehicle850Test.java</exclude>
+								<exclude>**/selenium/testSuites/**/AssetsDevicesTest.java</exclude>
 								<exclude>**/selenium/testSuites/**/CurrentStoryTest.java</exclude>
 								<exclude>**/selenium/testSuites/**/RouteGetEndpointTest.java</exclude>
 								<exclude>**/selenium/testSuites/**/StressTest**.java</exclude>
