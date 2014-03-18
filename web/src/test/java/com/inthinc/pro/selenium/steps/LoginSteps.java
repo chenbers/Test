@@ -69,9 +69,9 @@ public class LoginSteps extends WebSteps {
         loginPage._button().logIn().click();
     }
     
-    @Given("I navigate to the Assets Devices page")
+    @Given("I navigate to the assets devices page")
     public void whenINavigateToTheAssetsDevicesPage() {
-        loginPage.open("https://qa.inthinc.com/assets/devices");
+        loginPage.open("https://localhost:8443/assets/devices");
         loginPage._textField().username().type(secondPrime);
         loginPage._textField().password().type(secondPrimePassword);
         loginPage._button().logIn().click();
