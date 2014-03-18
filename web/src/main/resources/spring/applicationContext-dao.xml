@@ -81,8 +81,8 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
     <bean id="accountDAO" class="com.inthinc.pro.dao.hessian.AccountHessianDAO"></bean>
     <bean id="userDAO" class="com.inthinc.pro.dao.hessian.UserHessianDAO"></bean>
     <bean id="personDAO" class="com.inthinc.pro.dao.hessian.PersonHessianDAO"></bean>
-    <bean id="groupDAO" class="com.inthinc.pro.dao.hessian.GroupHessianDAO" parent="genericDAO"></bean>
     <bean id="vehicleDAO" class="com.inthinc.pro.dao.hessian.VehicleHessianDAO" />
+    <bean id="groupDAO" class="com.inthinc.pro.dao.hessian.GroupHessianDAO"></bean>
     <bean id="vehicleJDBCDAO" class="com.inthinc.pro.dao.jdbc.VehicleJDBCDAO" />
     <bean id="deviceDAO" class="com.inthinc.pro.dao.hessian.DeviceHessianDAO" />
     <bean id="deviceJDBCDAO" class="com.inthinc.pro.dao.jdbc.DeviceJDBCDAO" >
@@ -99,7 +99,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
     <bean id="stateDAO" class="com.inthinc.pro.dao.hessian.StateHessianDAO"></bean>
     <bean id="timeZoneDAO" class="com.inthinc.pro.dao.hessian.TimeZoneHessianDAO"></bean>
     <bean id="reportScheduleDAO" class="com.inthinc.pro.dao.hessian.ReportScheduleHessianDAO"></bean>
-    <bean id="addressDAO" class="com.inthinc.pro.dao.hessian.AddressHessianDAO"></bean>
+    <bean id="addressDAO" class="com.inthinc.pro.dao.jdbc.AddressJDBCDAO"></bean>
     <bean id="crashReportDAO" class="com.inthinc.pro.dao.hessian.CrashReportHessianDAO" />
     <bean id="textMsgAlertDAO" class="com.inthinc.pro.dao.hessian.TextMsgAlertHessianDAO" />
     <bean id="configuratorDAO" class="com.inthinc.pro.dao.hessian.ConfiguratorHessianDAO" />
