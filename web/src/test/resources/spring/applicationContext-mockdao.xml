@@ -82,9 +82,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
     </bean>
     <bean id="latLngFormatterBean" class="com.inthinc.pro.map.LatLngFormatterBean" />
 
-
-    <bean id="reportDAO" class="com.inthinc.pro.dao.jdbc.ReportJDBCDAO">
-        <property name="dataSource" ref="dataSource" />
+    <bean id="reportDAO" class="com.inthinc.pro.dao.mock.MockReportDAO">
     </bean>
     <bean id="driverPerformanceMapper" class="com.inthinc.pro.dao.hessian.mapper.DriverPerformanceMapper">
         <property name="driverDAO" ref="driverDAO" />
