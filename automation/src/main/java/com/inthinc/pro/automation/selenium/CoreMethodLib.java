@@ -110,13 +110,8 @@ public class CoreMethodLib extends WebDriverBackedSelenium implements CoreMethod
             WebElement frame = getWrappedDriver().findElement(By.tagName("iframe"));
             getWrappedDriver().switchTo().frame(frame);
         }
-        String element = getClickable(getLocator(myEnum));
-        //Adding in this method for the time duration links on the team pages, they need a longer wait time for the page to load, otherwise an error gets thrown
-        if (element.contains("timeFrameForm:")) {
-            AutomationThread.pause(20);
-        }
         //Some of the forms elements can take a while to load, adding in a wait before they click.
-        if(myEnum.toString().contains("NEW_FORM_BUTTON") || myEnum.toString().contains("PUBLISH_ENTRY_LINK")) {
+        if(myEnum.toString().contains("NEW_FORM_BUTTON") || myEnum.toString().contains("GEAR") || myEnum.toString().contains("MANAGE")) {
             AutomationThread.pause(7);
         }
         //Some of the items on the Submissions page can take a while to load after making changes, adding a wait.
@@ -125,6 +120,13 @@ public class CoreMethodLib extends WebDriverBackedSelenium implements CoreMethod
                         || myEnum.toString().contains("FORM_SORT") || myEnum.toString().contains("EDITED_SORT") || myEnum.toString().contains("APPROVED_SORT")) {
             AutomationThread.pause(15);
         }
+        
+        String element = getClickable(getLocator(myEnum));
+        //Adding in this method for the time duration links on the team pages, they need a longer wait time for the page to load, otherwise an error gets thrown
+        if (element.contains("timeFrameForm:")) {
+            AutomationThread.pause(20);
+        }
+
         click(element);
         if(element.contains("button[@class='btn']") || myEnum.toString().contains("TIME_FRAME_")) {
             AutomationThread.pause(20);
@@ -353,7 +355,7 @@ public class CoreMethodLib extends WebDriverBackedSelenium implements CoreMethod
         Log.debug(" getText(" + myEnum.toString() + "\n" + myEnum.getLocatorsAsString() + ")");
         if (myEnum.toString().contains("TEXT_ENTRY") || myEnum.toString().contains("NUMERIC_ENTRY")
             || myEnum.toString().contains("DECIMAL_ENTRY") || myEnum.toString().contains("DATE_ENTRY") || myEnum.toString().contains("CHOOSEONE_ENTRY")
-            || myEnum.toString().contains("CHOOSEMANY_ENTRY")) {
+            || myEnum.toString().contains("CHOOSEMANY_ENTRY") || myEnum.toString().contains("PRODUCT_TEXT")) {
           AutomationThread.pause(7);
       }
         String element = getLocator(myEnum);
