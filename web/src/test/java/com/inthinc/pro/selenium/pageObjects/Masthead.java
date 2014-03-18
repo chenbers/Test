@@ -143,6 +143,10 @@ public abstract class Masthead extends AbstractPage {
         public TextLink topTrailers() {
             return new TextLink(MastheadEnum.TOP_TRAILERS_IFRAME);
         }
+//      TODO: THIS NEEDS TO BE IMPLEMENTED ONCE THE Devices link is live in the top menu bar on QA         
+//        public TextLink topDevices() {
+//            return new TextLink(MastheadEnum.TOP_DEVICES_IFRAME);
+//        }
         
         public TextLink myMessages() {
             return new TextLink(MastheadEnum.MY_MESSAGES_IFRAME);

@@ -65,7 +65,7 @@ public class PageAssetsDevices extends Masthead {
             return new TextLink(AssetsDevicesEnum.SORT_BY_DEVICE_LINK);
         }
         
-        public TextLink sortByVehicleID() {
+        public TextLink sortByVehicle() {
             return new TextLink(AssetsDevicesEnum.SORT_BY_VEHICLE_LINK);
         }
         
@@ -181,8 +181,8 @@ public class PageAssetsDevices extends Masthead {
         }
 
         //SHOW/HIDE COLUMNS LABELS               
-        public Text vehicleIDCheckboxLabel() {
-            return new Text(AssetsDevicesEnum.VEHICLE_ID_CHECKBOX_LABEL);
+        public Text vehicleCheckboxLabel() {
+            return new Text(AssetsDevicesEnum.VEHICLE_CHECKBOX_LABEL);
         }
         
         public Text productCheckboxLabel() {
@@ -217,9 +217,13 @@ public class PageAssetsDevices extends Masthead {
             return new Text(AssetsDevicesEnum.MCM_ID_CHECKBOX_LABEL);
         }
 
-        //DETAILS SECTION        
+        //DEVICE SECTION        
         public Text deviceLabel() {
             return new Text(AssetsDevicesEnum.DEVICE_LABEL);
+        }
+        
+        public Text productLabel() {
+            return new Text(AssetsDevicesEnum.PRODUCT_LABEL);
         }
         
         public Text statusLabel() {
@@ -250,6 +254,10 @@ public class PageAssetsDevices extends Masthead {
             return new Text(AssetsDevicesEnum.SERIAL_NUMBER_LABEL);
         }
         
+        public Text profileLabel() {
+            return new Text(AssetsDevicesEnum.PROFILE_LABEL);
+        }
+        
         public Text activatedLabel() {
             return new Text(AssetsDevicesEnum.ACTIVATED_LABEL);
         }
@@ -264,6 +272,10 @@ public class PageAssetsDevices extends Masthead {
         
         public Text device() {
             return new Text(AssetsDevicesEnum.DEVICE_TEXT);
+        }
+        
+        public Text product() {
+            return new Text(AssetsDevicesEnum.PRODUCT_TEXT);
         }
         
         public Text status() {
@@ -318,43 +330,43 @@ public class PageAssetsDevices extends Masthead {
             return new CheckBox(AssetsDevicesEnum.SELECT_ALL_CHECKBOX);
         }
         
-        public CheckBoxTable entry() {
+        public CheckBoxTable deviceEntry() {
             return new CheckBoxTable(AssetsDevicesEnum.DEVICE_ENTRY_CHECKBOX);
         }
     
-        public CheckBox team() {
-            return new CheckBox(AssetsDevicesEnum.VEHICLE_ID_CHECKBOX);
+        public CheckBox vehicle() {
+            return new CheckBox(AssetsDevicesEnum.VEHICLE_CHECKBOX);
         }
         
-        public CheckBox device() {
+        public CheckBox product() {
             return new CheckBox(AssetsDevicesEnum.PRODUCT_CHECKBOX);
         }
         
-        public CheckBox vehicle() {
+        public CheckBox imei() {
             return new CheckBox(AssetsDevicesEnum.IMEI_CHECKBOX);
         }
         
-        public CheckBox driver() {
+        public CheckBox alternateImei() {
             return new CheckBox(AssetsDevicesEnum.ALTERNATE_IMEI_CHECKBOX);
         }
         
-        public CheckBox status() {
+        public CheckBox simCard() {
             return new CheckBox(AssetsDevicesEnum.SIM_CARD_CHECKBOX);
         }
                 
-        public CheckBox vin() {
+        public CheckBox serialNumber() {
             return new CheckBox(AssetsDevicesEnum.SERIAL_NUMBER_CHECKBOX);
         }
         
-        public CheckBox license() {
+        public CheckBox phone() {
             return new CheckBox(AssetsDevicesEnum.PHONE_CHECKBOX);
         }
                 
-        public CheckBox state() {
+        public CheckBox status() {
             return new CheckBox(AssetsDevicesEnum.STATUS_CHECKBOX);
         }
         
-        public CheckBox year() {
+        public CheckBox mcmId() {
             return new CheckBox(AssetsDevicesEnum.MCM_ID_CHECKBOX);
         }
         
@@ -403,6 +415,6 @@ public class PageAssetsDevices extends Masthead {
     
     @Override
     protected boolean checkIsOnPage() {
-        return _text().productCheckboxLabel().isPresent();
+        return _text().device().isPresent() && _text().profileLabel().isPresent();
     }
 }

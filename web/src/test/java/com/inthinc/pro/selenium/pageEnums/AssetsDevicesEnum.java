@@ -15,8 +15,8 @@ public enum AssetsDevicesEnum implements SeleniumEnums {
 	SELECT_ALL_CHECKBOX(null, "//i[contains(@class,'selectColumnButton')]"),
 	//SHOW/HIDE COLUMNS SECTION
 	SHOW_HIDE_COLUMNS_LINK("Show / Hide Columns", "//button[@class='ColVis_Button TableTools_Button ColVis_MasterButton']"),
-	VEHICLE_ID_CHECKBOX(null, "//button[1]/span/span[1]/input"),
-	VEHICLE_ID_CHECKBOX_LABEL("Vehicle ID", "//button[1]/span/span[2]"),
+	VEHICLE_CHECKBOX(null, "//button[1]/span/span[1]/input"),
+	VEHICLE_CHECKBOX_LABEL("Vehicle ID", "//button[1]/span/span[2]"),
 	PRODUCT_CHECKBOX(null, "//button[2]/span/span[1]/input"),
 	PRODUCT_CHECKBOX_LABEL("Product", "//button[2]/span/span[2]"),
     IMEI_CHECKBOX(null, "//button[3]/span/span[1]/input"),
@@ -63,9 +63,9 @@ public enum AssetsDevicesEnum implements SeleniumEnums {
 	SIM_CARD_TEXT(null, "sim"),   
 	PHONE_LABEL("Phone", "//div[7]/label"),
 	PHONE_TEXT(null, "phone"),
-	ALTERNATE_IMEI_LABEL("Alternate IMEI", "//div[8]/label"),
+	ALTERNATE_IMEI_LABEL("Alternate IMEI", "//div[8]/nobr/label"),
 	ALTERNATE_IMEI_TEXT(null, "altimei"), 
-	SERIAL_NUMBER_LABEL("Serial Number", "//div[9]/label"),
+	SERIAL_NUMBER_LABEL("Serial Number", "//div[9]/nobr/label"),
 	SERIAL_NUMBER_TEXT(null, "serialNum"),
 	//PROFILE SECTION
 	PROFILE_LABEL("Profile", "//form/div[10]/h4"),
@@ -91,15 +91,8 @@ public enum AssetsDevicesEnum implements SeleniumEnums {
     PHONE_ENTRY(null, "//tr[###]/td[9]"),
     STATUS_ENTRY(null, "//tr[###]/td[10]"),    
     MCM_ID_ENTRY(null, "//tr[###]/td[11]"),
-	
-    //I'M LEAVING THESE HERE TILL I CAN SEE IF THIS TABLE HAS FILTERS
-    GROUP_FILTER(null,"trailers-form:trailers:groupfsp"),
-    TRAILER_FILTER(null, "trailers-form:trailers:namefsp"),
-    VEHICLE_FILTER(null,"trailers-form:trailers:vehicle_namefsp"),
-    YEAR_MAKE_MODEL_FILTER(null,"trailers-form:trailers:makeModelYearfsp"),
-    DRIVER_FILTER(null,"trailers-form:trailers:fullNamefsp"), 
     
-    ENTRIES_TEXT("Showing # to ### of ### enetries (filtered from 1 total entries", "trailerTable_info"),
+    ENTRIES_TEXT("Showing # to ### of ### enetries (filtered from 1 total entries", "deviceTable_info"),
     PREVIOUS_DISABLED("Previous", "//li[@class='prev disabled']"),
     PREVIOUS("Previous", "//li[@class='prev']"),
     PAGE_NUMBER(null, "//li[###]/a[@href='#']"),
