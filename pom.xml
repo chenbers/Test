@@ -180,6 +180,7 @@
                                 <exclude>**/selenium/testSuites/**/WebTest.java</exclude>
                                 <exclude>**/selenium/testSuites/**/StressTest**.java</exclude>
                                 <exclude>**/selenium/testSuites/**/CurrentStoryTest.java</exclude>
+                                <exclude>**/selenium/testSuites/**/AssetsDevicesTest.java</exclude>
                             </excludes>
                             <includes>
                                 <include>**/selenium/testSuites/**/**Test.java</include>
