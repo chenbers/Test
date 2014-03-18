@@ -3,6 +3,7 @@ package com.inthinc.pro.dao.jdbc;
 import com.inthinc.pro.dao.LocationDAO;
 import com.inthinc.pro.dao.VehicleDAO;
 import com.inthinc.pro.dao.cassandra.LocationCassandraDAO;
+import com.inthinc.pro.dao.hessian.DeviceHessianDAO;
 import com.inthinc.pro.dao.hessian.DriverHessianDAO;
 import com.inthinc.pro.dao.hessian.exceptions.EmptyResultSetException;
 import com.inthinc.pro.model.*;
@@ -38,6 +39,8 @@ public class VehicleJDBCDAO extends SimpleJdbcDaoSupport implements VehicleDAO {
 
     //2014-03-17 Use LocationCassandraDAO instead of LocationDAO
     private LocationCassandraDAO locationDAO;
+
+    private DeviceHessianDAO deviceDAO;
 
     private static final SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     private static final DateTimeFormatter dateFormatterAgg = DateTimeFormat.forPattern("yyyy-MM-dd");
@@ -89,6 +92,51 @@ public class VehicleJDBCDAO extends SimpleJdbcDaoSupport implements VehicleDAO {
                                                  "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
     private static final String UPDATE_VEHICLE = "UPDATE vehicle SET VIN= ?, color=?, groupID=?, groupPath=?, modified=?, license=?, make=?, model=?, name=?, stateID=?, status=?, weight=?, year=?, ifta=? where vehicleID= ?";
+
+    private static final String VEHICLE_SET_DEVICE = "select count(*) from vddlog where deviceID=:deviceID and stop is null";
+
+    private static final String SET_DRIVER = "select count(*) from vddlog where driverID=:driverID and stop is null";
+
+    private static final String UPDATE_DEVICE_VEHICLE = "UPDATE vddlog set stop=? where deviceID= ? and stop is null";
+
+    private static final String UPDATE_DEVICE_DRIVER = "UPDATE vddlog set stop=? where driverID= ? and stop is null";
+
+    private static final String UPDATE_DEVICE_VEHICLE_NEW = "INSERT into vddlog (start, deviceID, vehicleID, imei, acctID, baseID, emuFeatureMask, vgroupID, vtype, driverID, dgroupID, tzID)" +
+                                                            "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+    private static final String NEW_DEVICE_VEHICLE_NEW = "INSERT into vddlog (start, deviceID, vehicleID, imei, acctID, driverID, tzID)" +
+                                                            "VALUES (?, ?, ?, ?, ?, ?, ?)";
+
+
+     //imei, acctID, baseID, emuFeatureMask, vgroupID, vtype, driverID, dgroupID, tzID
+    private static final String GET_IMEI = "select imei from vddlog where deviceID=:deviceID and stop is null";
+    private static final String GET_ACCTID = "select acctID from vddlog where deviceID=:deviceID and stop is null";
+    private static final String GET_BASEID = "select baseID from vddlog where deviceID=:deviceID and stop is null";
+    private static final String GET_EMUMASK  = "select emuFeatureMask from vddlog where deviceID=:deviceID and stop is null";
+    private static final String GET_VGROUPID = "select vgroupID from vddlog where deviceID=:deviceID and stop is null";
+    private static final String GET_VTYPE = "select vtype from vddlog where deviceID=:deviceID and stop is null";
+    private static final String GET_DRIVERID = "select driverID from vddlog where deviceID=:deviceID and stop is null";
+    private static final String GET_DGROUPID = "select dgroupID from vddlog where deviceID=:deviceID and stop is null";
+    private static final String GET_TZID = "select tzID from vddlog where deviceID=:deviceID and stop is null";
+
+
+    //select max
+    private static final String GET_MAX_IMEI = "SELECT imei FROM vddlog WHERE vddlogid=(SELECT max(vddlogid) FROM vddlog)";
+    private static final String GET_MAX_ACCTID = "SELECT acctID FROM vddlog WHERE vddlogid=(SELECT max(vddlogid) FROM vddlog)";
+    private static final String GET_MAX_DRIVERID = "SELECT driverID FROM vddlog WHERE vddlogid=(SELECT max(vddlogid) FROM vddlog)";
+    private static final String GET_MAX_TZID = "SELECT tzID FROM vddlog WHERE vddlogid=(SELECT max(vddlogid) FROM vddlog)";
+
+
+    //select for driver
+    private static final String GET_IMEI_DRIVER = "select imei from vddlog where driverID=:driverID and stop is null";
+    private static final String GET_ACCTID_DRIVER = "select acctID from vddlog where driverID=:driverID and stop is null";
+    private static final String GET_BASEID_DRIVER = "select baseID from vddlog where driverID=:driverID and stop is null";
+    private static final String GET_EMUMASK_DRIVER  = "select emuFeatureMask from vddlog where driverID=:driverID and stop is null";
+    private static final String GET_VGROUPID_DRIVER = "select vgroupID from vddlog where driverID=:driverID and stop is null";
+    private static final String GET_VTYPE_DRIVER = "select vtype from vddlog where driverID=:driverID and stop is null";
+    private static final String GET_DGROUPID_DRIVER= "select dgroupID from vddlog where driverID=:driverID and stop is null";
+    private static final String GET_TZID_DRIVER = "select tzID from vddlog where driverID=:driverID and stop is null";
+    private static final String GET_DEVICE_ID = "select deviceID from vddlog where driverID=:driverID and stop is null";
 
 
     private ParameterizedRowMapper<Vehicle> pagedVehicleRowMapper = new ParameterizedRowMapper<Vehicle>() {
@@ -214,22 +262,158 @@ public class VehicleJDBCDAO extends SimpleJdbcDaoSupport implements VehicleDAO {
 
     @Override
     public void setVehicleDriver(Integer vehicleID, Integer driverID) {
-        throw new NotImplementedException();
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        df.setTimeZone(TimeZone.getTimeZone("UTC"));
+
+        String stopDate = df.format(toUTC(new Date()));
+        String startDate = df.format(toUTC(new Date()));
+        String device = getDeviceID(driverID);
+
+        if(!getDriverCount(driverID).equals("0")){
+
+            String imei = getImeiDriver(driverID);
+            String acctID = getAcctidDriver(driverID);
+            String baseID = getBaseIdDriver(driverID);
+            String emuMask = getEmuFeatureDriver(driverID);
+            String vGroupID = getVgroupIdDriver(driverID);
+            String vtype = getGetVtypeDriver(driverID);
+            String dgroupID = getGetDgroupidDriver(driverID);
+            String tzID = getGetTzidDriver(driverID);
+
+            getJdbcTemplate().update(UPDATE_DEVICE_DRIVER, new Object[]{stopDate, driverID});
+
+            getJdbcTemplate().update(UPDATE_DEVICE_VEHICLE_NEW, new Object[]{startDate, device, vehicleID, imei, acctID, baseID, emuMask, vGroupID, vtype, driverID, dgroupID, tzID});
+
+        }
+
+        if(getDriverCount(driverID).equals("0")){
+
+            String maxImei = getMaxImei();
+            String maxAcctID = getMaxAcctID();
+            String maxDriver = getMaxDriverID();
+            String maxTz = getGetMaxTzid();
+
+
+            getJdbcTemplate().update(NEW_DEVICE_VEHICLE_NEW, new Object[]{startDate, device, vehicleID, maxImei, maxAcctID, maxDriver, maxTz});
+
+        }
+
     }
 
     @Override
     public void setVehicleDriver(Integer vehicleID, Integer driverID, Date assignDate) {
-        throw new NotImplementedException();
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        df.setTimeZone(TimeZone.getTimeZone("UTC"));
+
+        String stopDate = df.format(toUTC(new Date()));
+        String startDate = df.format(toUTC(new Date()));
+        String deviceID = getDeviceID(driverID);
+
+        if(!getDriverCount(driverID).equals("0")){
+
+            String imei = getImeiDriver(driverID);
+            String acctID = getAcctidDriver(driverID);
+            String baseID = getBaseIdDriver(driverID);
+            String emuMask = getEmuFeatureDriver(driverID);
+            String vGroupID = getVgroupIdDriver(driverID);
+            String vtype = getGetVtypeDriver(driverID);
+            String dgroupID = getGetDgroupidDriver(driverID);
+            String tzID = getGetTzidDriver(driverID);
+
+            getJdbcTemplate().update(UPDATE_DEVICE_DRIVER, new Object[]{stopDate, driverID});
+
+            getJdbcTemplate().update(UPDATE_DEVICE_VEHICLE_NEW, new Object[]{startDate, deviceID, vehicleID, imei, acctID, baseID, emuMask, vGroupID, vtype, driverID, dgroupID, tzID});
+
+        }
+
+        if(getDriverCount(driverID).equals("0")){
+
+            String maxImei = getMaxImei();
+            String maxAcctID = getMaxAcctID();
+            String maxDriver = getMaxDriverID();
+            String maxTz = getGetMaxTzid();
+
+            getJdbcTemplate().update(NEW_DEVICE_VEHICLE_NEW, new Object[]{startDate, deviceID, vehicleID, maxImei, maxAcctID, maxDriver, maxTz});
+
+        }
     }
 
     @Override
     public void setVehicleDevice(Integer vehicleID, Integer deviceID, Date assignDate) {
-        throw new NotImplementedException();
+
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        df.setTimeZone(TimeZone.getTimeZone("UTC"));
+
+        String stopDate = df.format(toUTC(new Date()));
+        String startDate = df.format(toUTC(new Date()));
+
+        if (getVegicleCount(deviceID).equals("1")) {
+            String imei = getImei(deviceID);
+            String acctID = getAcctid(deviceID);
+            String baseID = getBaseId(deviceID);
+            String emuMask = getEmuFeature(deviceID);
+            String vGroupID = getVgroupID(deviceID);
+            String vtype = getvtype(deviceID);
+            String driverID = geDriverID(deviceID);
+            String dgroupID = getDgroupID(deviceID);
+            String tzID = getTzID(deviceID);
+
+            getJdbcTemplate().update(UPDATE_DEVICE_VEHICLE, new Object[]{stopDate, deviceID});
+
+            getJdbcTemplate().update(UPDATE_DEVICE_VEHICLE_NEW, new Object[]{startDate, deviceID, vehicleID, imei, acctID, baseID, emuMask, vGroupID, vtype, driverID, dgroupID, tzID});
+        }
+
+        if(getVegicleCount(deviceID).equals("0")){
+
+            String maxImei = getMaxImei();
+            String maxAcctID = getMaxAcctID();
+            String maxDriver = getMaxDriverID();
+            String maxTz = getGetMaxTzid();
+
+            getJdbcTemplate().update(NEW_DEVICE_VEHICLE_NEW, new Object[]{startDate, deviceID, vehicleID, maxImei, maxAcctID, maxDriver, maxTz});
+
+        }
+
     }
 
     @Override
     public void setVehicleDevice(Integer vehicleID, Integer deviceID) {
-        throw new NotImplementedException();
+
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        df.setTimeZone(TimeZone.getTimeZone("UTC"));
+        String stopDate = df.format(toUTC(new Date()));
+        String startDate = df.format(toUTC(new Date()));
+
+
+
+        if (!getVegicleCount(deviceID).equals("0")) {
+
+            String imei = getImei(deviceID);
+            String acctID = getAcctid(deviceID);
+            String baseID = getBaseId(deviceID);
+            String emuMask = getEmuFeature(deviceID);
+            String vGroupID = getVgroupID(deviceID);
+            String vtype = getvtype(deviceID);
+            String driverID = geDriverID(deviceID);
+            String dgroupID = getDgroupID(deviceID);
+            String tzID = getTzID(deviceID);
+
+            getJdbcTemplate().update(UPDATE_DEVICE_VEHICLE, new Object[]{stopDate, deviceID});
+
+            getJdbcTemplate().update(UPDATE_DEVICE_VEHICLE_NEW, new Object[]{startDate, deviceID, vehicleID, imei, acctID, baseID, emuMask, vGroupID, vtype, driverID, dgroupID, tzID});
+            }
+
+        if(getVegicleCount(deviceID).equals("0")){
+
+            String maxImei = getMaxImei();
+            String maxAcctID = getMaxAcctID();
+            String maxDriver = getMaxDriverID();
+            String maxTz = getGetMaxTzid();
+
+            getJdbcTemplate().update(NEW_DEVICE_VEHICLE_NEW, new Object[]{startDate, deviceID, vehicleID, maxImei, maxAcctID, maxDriver, maxTz});
+
+        }
+
     }
 
     @Override
@@ -524,6 +708,8 @@ public class VehicleJDBCDAO extends SimpleJdbcDaoSupport implements VehicleDAO {
         }
     };
 
+
+
     private List <Vehicle> getVehiclesByGroupIDDeep (Integer groupID) {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("groupID", groupID);
@@ -551,6 +737,209 @@ public class VehicleJDBCDAO extends SimpleJdbcDaoSupport implements VehicleDAO {
         String grPath = getSimpleJdbcTemplate().queryForObject(groupPath, String.class, args);
 
         return grPath;
+    }
+
+    private String getVegicleCount(Integer deviceID){
+        Map<String, Object> args = new HashMap<String, Object>();
+        args.put("deviceID", deviceID);
+
+        String getCount = new String (VEHICLE_SET_DEVICE);
+
+        String getCounting = getSimpleJdbcTemplate().queryForObject(getCount, String.class, args);
+
+        return getCounting;
+    }
+
+    private String getDriverCount(Integer driverID){
+        Map<String, Object> args = new HashMap<String, Object>();
+        args.put("driverID", driverID);
+
+        String getCountDriver = new String (SET_DRIVER);
+
+        String getCountingDriver = getSimpleJdbcTemplate().queryForObject(getCountDriver, String.class, args);
+
+        return getCountingDriver;
+    }
+
+    //imei, acctID, baseID, emuFeatureMask, vgroupID, vtype, driverID, dgroupID, tzID
+    private String getImei(Integer deviceID){
+        Map<String, Object> args = new HashMap<String, Object>();
+        args.put("deviceID", deviceID);
+        String getImei = new String (GET_IMEI);
+        String getImeiColumns = getSimpleJdbcTemplate().queryForObject(getImei, String.class, args);
+        return getImeiColumns;
+    }
+
+    private String getAcctid(Integer deviceID){
+        Map<String, Object> args = new HashMap<String, Object>();
+        args.put("deviceID", deviceID);
+        String getAcct = new String (GET_ACCTID);
+        String getImeiColumn = getSimpleJdbcTemplate().queryForObject(getAcct, String.class, args);
+        return getImeiColumn;
+
+    }
+
+    private String getBaseId(Integer deviceID){
+        Map<String, Object> args = new HashMap<String, Object>();
+        args.put("deviceID", deviceID);
+        String getbaseID = new String (GET_BASEID);
+        String getBaseColumn = getSimpleJdbcTemplate().queryForObject(getbaseID, String.class, args);
+        return getBaseColumn;
+
+    }
+
+    private String getEmuFeature(Integer deviceID){
+        Map<String, Object> args = new HashMap<String, Object>();
+        args.put("deviceID", deviceID);
+        String getEmuID = new String (GET_EMUMASK);
+        String getEmuColumn = getSimpleJdbcTemplate().queryForObject(getEmuID, String.class, args);
+        return getEmuColumn;
+    }
+
+
+    private String getVgroupID(Integer deviceID){
+        Map<String, Object> args = new HashMap<String, Object>();
+        args.put("deviceID", deviceID);
+        String getVgroupID = new String (GET_VGROUPID);
+        String getVgroupColumn = getSimpleJdbcTemplate().queryForObject(getVgroupID, String.class, args);
+        return getVgroupColumn;
+    }
+
+    private String getvtype(Integer deviceID){
+        Map<String, Object> args = new HashMap<String, Object>();
+        args.put("deviceID", deviceID);
+        String getVtype = new String (GET_VTYPE);
+        String getVtypeColumn = getSimpleJdbcTemplate().queryForObject(getVtype, String.class, args);
+        return getVtypeColumn;
+    }
+
+    private String geDriverID(Integer deviceID){
+        Map<String, Object> args = new HashMap<String, Object>();
+        args.put("deviceID", deviceID);
+        String getDriverId = new String (GET_DRIVERID);
+        String getDriverIDColumn = getSimpleJdbcTemplate().queryForObject(getDriverId, String.class, args);
+        return getDriverIDColumn;
+    }
+
+    private String getDgroupID(Integer deviceID){
+        Map<String, Object> args = new HashMap<String, Object>();
+        args.put("deviceID", deviceID);
+        String getDgroupID = new String (GET_DGROUPID);
+        String getDgroupIDColumn = getSimpleJdbcTemplate().queryForObject(getDgroupID, String.class, args);
+        return getDgroupIDColumn;
+    }
+
+    private String getTzID(Integer deviceID){
+        Map<String, Object> args = new HashMap<String, Object>();
+        args.put("deviceID", deviceID);
+        String getTz = new String (GET_TZID);
+        String getTzColumn = getSimpleJdbcTemplate().queryForObject(getTz, String.class, args);
+        return getTzColumn;
+    }
+
+    private String getDeviceID(Integer driverID){
+        Map<String, Object> args = new HashMap<String, Object>();
+        args.put("driverID", driverID);
+        String getDriverId = new String (GET_DEVICE_ID);
+        String getDriverColumn = getSimpleJdbcTemplate().queryForObject(getDriverId, String.class, args);
+        return getDriverColumn;
+    }
+
+
+    //For Max Values
+    private String getMaxImei(){
+        String getMaxImei = new String (GET_MAX_IMEI);
+        String getMaxImeiColumns = getSimpleJdbcTemplate().queryForObject(getMaxImei, String.class);
+        return getMaxImeiColumns;
+    }
+
+    private String getMaxAcctID(){
+        String getMaxAcctID = new String (GET_MAX_ACCTID);
+        String getMaxAcctIDColumns = getSimpleJdbcTemplate().queryForObject(getMaxAcctID, String.class);
+        return getMaxAcctIDColumns;
+    }
+
+    private String getMaxDriverID(){
+        String getMaxDriverID = new String (GET_MAX_DRIVERID);
+        String getMaxDriverIDColumns = getSimpleJdbcTemplate().queryForObject(getMaxDriverID, String.class);
+        return getMaxDriverIDColumns;
+    }
+
+    private String getGetMaxTzid(){
+        String getMaxTzid = new String (GET_MAX_TZID);
+        String getMaxTzidColumns = getSimpleJdbcTemplate().queryForObject(getMaxTzid, String.class);
+        return getMaxTzidColumns;
+    }
+
+
+
+    //imei, acctID, baseID, emuFeatureMask, vgroupID, vtype, driverID, dgroupID, tzID
+    private String getImeiDriver (Integer driverID){
+        Map<String, Object> args = new HashMap<String, Object>();
+        args.put("driverID", driverID);
+        String getImei = new String (GET_IMEI_DRIVER);
+        String getImeiColumnD = getSimpleJdbcTemplate().queryForObject(getImei, String.class, args);
+        return getImeiColumnD;
+    }
+
+    private String getAcctidDriver(Integer driverID){
+        Map<String, Object> args = new HashMap<String, Object>();
+        args.put("driverID", driverID);
+        String getAcctD = new String (GET_ACCTID_DRIVER);
+        String getAcctColumnD = getSimpleJdbcTemplate().queryForObject(getAcctD, String.class, args);
+        return getAcctColumnD;
+
+    }
+
+    private String getBaseIdDriver(Integer driverID){
+        Map<String, Object> args = new HashMap<String, Object>();
+        args.put("driverID", driverID);
+        String getbaseIdDriver = new String (GET_BASEID_DRIVER);
+        String getBaseIdColumnD = getSimpleJdbcTemplate().queryForObject(getbaseIdDriver, String.class, args);
+        return getBaseIdColumnD;
+
+    }
+
+    private String getEmuFeatureDriver(Integer driverID){
+        Map<String, Object> args = new HashMap<String, Object>();
+        args.put("driverID", driverID);
+        String getEmuIdDriver = new String (GET_EMUMASK_DRIVER);
+        String getEmuColumnD = getSimpleJdbcTemplate().queryForObject(getEmuIdDriver, String.class, args);
+        return getEmuColumnD;
+    }
+
+
+    private String getVgroupIdDriver(Integer driverID){
+        Map<String, Object> args = new HashMap<String, Object>();
+        args.put("driverID", driverID);
+        String getVgroupIdDriver = new String (GET_VGROUPID_DRIVER);
+        String getVgroupColumnD = getSimpleJdbcTemplate().queryForObject(getVgroupIdDriver, String.class, args);
+        return getVgroupColumnD;
+    }
+
+    private String getGetVtypeDriver(Integer driverID){
+        Map<String, Object> args = new HashMap<String, Object>();
+        args.put("driverID", driverID);
+        String getVtypeD = new String (GET_VTYPE_DRIVER);
+        String getVtypeColumnD = getSimpleJdbcTemplate().queryForObject(getVtypeD, String.class, args);
+        return getVtypeColumnD;
+    }
+
+
+    private String getGetDgroupidDriver(Integer driverID){
+        Map<String, Object> args = new HashMap<String, Object>();
+        args.put("driverID", driverID);
+        String getDgroupIdDr = new String (GET_DGROUPID_DRIVER);
+        String getDgroupIDColumnD = getSimpleJdbcTemplate().queryForObject(getDgroupIdDr, String.class, args);
+        return getDgroupIDColumnD;
+    }
+
+    private String getGetTzidDriver(Integer driverID){
+        Map<String, Object> args = new HashMap<String, Object>();
+        args.put("driverID", driverID);
+        String getTzD = new String (GET_TZID_DRIVER);
+        String getTzColumnD = getSimpleJdbcTemplate().queryForObject(getTzD, String.class, args);
+        return getTzColumnD;
     }
 
 }
