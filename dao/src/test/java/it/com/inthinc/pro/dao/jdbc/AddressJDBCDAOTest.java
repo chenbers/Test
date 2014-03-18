@@ -49,7 +49,6 @@ public class AddressJDBCDAOTest extends SimpleJdbcDaoSupport {
 
     }
 
-
       @Test
       public void findByIDTest() {
           AddressJDBCDAO addressDAO = new AddressJDBCDAO();
@@ -58,7 +57,12 @@ public class AddressJDBCDAOTest extends SimpleJdbcDaoSupport {
 
           Address address = addressDAO.findByID(addrID);
 
+          assertTrue(address.getAddr1().equals("831 Street"));
+          assertTrue(address.getCity().equals("City 70"));
+          assertTrue(address.getZip().equals("12345"));
+
           assertNotNull(address);
+
       }
 
 
