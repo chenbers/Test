@@ -1,6 +1,20 @@
 package com.inthinc.pro.backing;
 
 
+import com.inthinc.pro.backing.ui.EventReportItem;
+import com.inthinc.pro.backing.ui.ScoreBox;
+import com.inthinc.pro.backing.ui.ScoreBoxSizes;
+import com.inthinc.pro.dao.hessian.EventHessianDAO;
+import com.inthinc.pro.model.Driver;
+import com.inthinc.pro.model.MeasurementType;
+import com.inthinc.pro.model.Person;
+import com.inthinc.pro.model.ScoreType;
+import com.inthinc.pro.model.event.SpeedingEvent;
+import com.inthinc.pro.util.MessageUtil;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import org.junit.Test;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -10,25 +24,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
 
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.Test;
-
-import com.inthinc.pro.backing.ui.EventReportItem;
-import com.inthinc.pro.backing.ui.ScoreBox;
-import com.inthinc.pro.backing.ui.ScoreBoxSizes;
-import com.inthinc.pro.model.Driver;
-import com.inthinc.pro.model.MeasurementType;
-import com.inthinc.pro.model.Person;
-import com.inthinc.pro.model.ScoreType;
-import com.inthinc.pro.model.event.SpeedingEvent;
-import com.inthinc.pro.util.MessageUtil;
-
 public class DriverSpeedBeanTest extends BaseBeanTest
 {
     private Map<String, Integer> scoreMap;
     private Map<String, String>  styleMap;
-    
+    private EventHessianDAO eventHessianDAO;
+
     @BeforeClass
     public static void setUpBeforeClass() throws Exception
     {
@@ -46,7 +47,7 @@ public class DriverSpeedBeanTest extends BaseBeanTest
         
         // team level login
         loginUser("custom101");
-        
+
         // get the bean from the applicationContext (initialized by Spring injection)
         DriverSpeedBean driverSpeedBean = (DriverSpeedBean)applicationContext.getBean("driverSpeedBean");
         NavigationBean nav = (NavigationBean)applicationContext.getBean("navigationBean");
@@ -95,11 +96,11 @@ public class DriverSpeedBeanTest extends BaseBeanTest
         Integer score = driverSpeedBean.getScoreMap().get( ScoreType.SCORE_SPEEDING_21_30.toString());        
         assertEquals( score.toString(), "8");
         assertEquals( driverSpeedBean.getStyleMap().get( ScoreType.SCORE_SPEEDING_21_30.toString() ) , "score_med_1" );
-        
+
         score = driverSpeedBean.getScoreMap().get( ScoreType.SCORE_SPEEDING_65_80.toString()); 
         assertEquals( score.toString(), "48");
         assertEquals( driverSpeedBean.getStyleMap().get( ScoreType.SCORE_SPEEDING_65_80.toString() ) , "score_med_5" );
-        
+
         // Test Event Sorting
         List<EventReportItem> speedingEvents = new ArrayList<EventReportItem>();
         
@@ -114,7 +115,11 @@ public class DriverSpeedBeanTest extends BaseBeanTest
         driverSpeedBean.setEvents(speedingEvents);
         driverSpeedBean.setSelectedBreakdown("FOURTYONE");
         assertTrue(driverSpeedBean.getEvents().size() > 0);
-        
+//        EventHessianMapper eventHessianMapper = new EventHessianMapper();
+        //test buildReport
+        driverSpeedBean.initEvents();
+//        eventHessianDAO.setMapper(eventHessianMapper);
+        assertNotNull(driverSpeedBean.buildReport());
 
     }
 }
