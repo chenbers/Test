@@ -69,8 +69,8 @@ public class PageReportsVehicles extends ReportsBar {
 			return new TextLink(ReportsVehiclesEnum.DRIVER_SORT);
 		}
 
-		public TextLink driverValue() {
-			return new TextLink(ReportsVehiclesEnum.DRIVER_VALUE);
+		public TextTableLink driverValue() {
+			return new TextTableLink(ReportsVehiclesEnum.DRIVER_VALUE);
 		}
 
 		public TextLink sortByGroup() {
