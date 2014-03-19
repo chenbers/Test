@@ -31,19 +31,26 @@ public class AddressJDBCDAOTest extends SimpleJdbcDaoSupport {
     //AddressJDBCDAOTest
 
     private static SiloService siloService;
-    private static final String BASE_DATA_XML = "TeamStops.xml";
+    private static final String XML_DATA_FILE = "ReportTest.xml";
     private static ITData itData = new ITData();
     private Integer addrID;
 
 
     @Before
     public void setUpBeforeTest() throws Exception {
+        IntegrationConfig config = new IntegrationConfig();
 
+        String host = config.get(IntegrationConfig.SILO_HOST).toString();
+        Integer port = Integer.valueOf(config.get(IntegrationConfig.SILO_PORT).toString());
+
+        siloService = new SiloServiceCreator(host, port).getService();
+
+        initApp();
         itData = new ITData();
 
-        InputStream stream = Thread.currentThread().getContextClassLoader().getResourceAsStream(BASE_DATA_XML);
+        InputStream stream = Thread.currentThread().getContextClassLoader().getResourceAsStream(XML_DATA_FILE);
 
-        if (itData.parseTestData(stream, siloService, false, false)) {
+        if (!itData.parseTestData(stream, siloService, false, false)) {
             throw new Exception("Error parsing Test data xml file");
         }
 
@@ -59,14 +66,16 @@ public class AddressJDBCDAOTest extends SimpleJdbcDaoSupport {
 
         //findById method
         Address address = addressDAO.findByID(addrID);
-        assertTrue(address.getAddr1().equals("831 Street"));
-        assertTrue(address.getCity().equals("City 70"));
+        assertTrue(address.getAddr1().equals("316 Street"));
+        assertTrue(address.getCity().equals("City 10"));
         assertTrue(address.getZip().equals("12345"));
         assertTrue(address.getState().getName().equals("Utah"));
         assertNotNull(address);
 
     }
 
+    private static void initApp() throws Exception {
+    }
 
     @Test
     public void createTest() {
