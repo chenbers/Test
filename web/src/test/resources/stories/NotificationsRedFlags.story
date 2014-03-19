@@ -417,7 +417,7 @@ And the Exclude Event popup closes
 Then I validate the 1st Row of the Entry Date Time text is SAVEDREDFLAGSDATETIME
 And I validate the 1st Row of the Entry Detail text is SAVEDREDFLAGSDETAIL
 
-Scenario: TC1469: Notifications - Red Flags - Exclude and Include links - Yes Button (will not pass till DE9371 is fixed)
+Scenario: TC1469: Notifications - Red Flags - Exclude and Include links - Yes Button
 Given I am logged in
 When I click the Notifications link
 And I click the Red Flags link
