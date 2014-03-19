@@ -149,10 +149,10 @@ When I click the Reports link
 And I click the Drivers link
 And I click the Sort By Vehicle link
 And I click the Sort By Vehicle link
-And I save the 1st Row of the Vehicle Value link as SAVEDREPORTSDRIVERSENTRY8
+And I save the 1st Row of the Vehicle Value link as SAVEDREPORTSVEHICLESENTRY8
 And I click the 1st Row of the Vehicle Value link
 Then I validate I am on the Vehicle Performance page
-And I validate the Vehicle Name link contains SAVEDREPORTSDRIVERSENTRY8
+And I validate the Vehicle Name link contains SAVEDREPORTSVEHICLESENTRY8
 
 Scenario: TC1571: Reports - Drivers - Edit Columns - Cancel Button (Changes)
 Given I am logged in
