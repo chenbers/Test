@@ -814,7 +814,7 @@ public class CoreMethodLib extends WebDriverBackedSelenium implements CoreMethod
             while(verifyIsTextOnPage("Unable to connect")) {
                     Log.warning("There may have been a page timeout during this test.");
                         click(tryAgainButton);
-                        AutomationThread.pause(10);
+                        AutomationThread.pause(30);
                         z++;
                         if (z == 15) {
                             Log.error("Unable to re-establish a connection, ending test.");
