@@ -367,8 +367,8 @@ And I click the Zones link
 And I select "Top" from the Team dropdown
 And I select "Past 30 Days" from the Time Frame dropdown
 And I click the Refresh button
-And I save the Records text as ZONESTABLECOUNT
 And I select "Zone Arrival" from the Category dropdown
+And I save the Records text as ZONESTABLECOUNT
 And I click the Refresh button
 And I save the 1st Row of the Entry Date Time text as SAVEDZONESDATETIME
 And I save the 1st Row of the Entry Detail text as SAVEDZONESDETAIL
@@ -401,6 +401,7 @@ And I select "Top" from the Team dropdown
 And I select "Past 30 Days" from the Time Frame dropdown
 And I click the Refresh button
 And I select "Zone Departure" from the Category dropdown
+And I save the Records text as ZONESTABLECOUNT
 And I click the Refresh button
 And I save the 1st Row of the Entry Date Time text as SAVEDZONESDATETIME
 And I save the 1st Row of the Entry Detail text as SAVEDZONESDETAIL
