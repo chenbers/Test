@@ -364,44 +364,30 @@ public class GroupJDBCDAO extends SimpleJdbcDaoSupport implements GroupDAO {
         return newAddress;
     }
 
+    /**
+     * Calculates the group path by id (recursive).
+     *
+     * @param groupID group id
+     * @return path
+     */
+    public String determineGroupPathById(Integer groupID){
+        if (groupID.equals(0)){
+            return "/0/";
+        } else {
+            Group group = findFastById(groupID);
+            return determineGroupPathById(group.getParentID()) + groupID +"/";
+        }
+    }
+
+    /**
+     * Updates a group's path by id.
+     *
+     * @param groupID group id
+     */
     public void updateGroupPathById(Integer groupID) {
         try {
-            boolean more = true;
-            String path = "";
-            Group group = null;
-
-            while (more) {
-                try {
-                    group = findFastById(groupID);
-                } catch (EmptyResultDataAccessException t) {
-                    more = false;
-                }
-                if (group == null || group.getGroupID() == null || group.getParentID() == null) {
-                    more = false;
-                }
-
-                if (more) {
-                    path = "/" + groupID + "/";
-                    while (more) {
-                        path = "/" + group.getParentID() + path;
-
-                        try {
-                            Group innerGroup = findFastGroupByParentIdAndPath(group.getParentID(), path);
-
-                            if (innerGroup == null || innerGroup.getParentID() == null) {
-                                more = false;
-                            } else {
-                                group.setParentID(innerGroup.getParentID());
-                            }
-                        } catch (EmptyResultDataAccessException e) {
-                            more = false;
-                        }
-                    }
-
-                    updateGroupPath(groupID, path);
-                    more = false;
-                }
-            }
+            String path = determineGroupPathById(groupID);
+            updateGroupPath(groupID, path);
         } catch (Throwable t) {
             logger.error("Unable to update group path for id: " + groupID);
         }
@@ -447,24 +433,13 @@ public class GroupJDBCDAO extends SimpleJdbcDaoSupport implements GroupDAO {
      * @param path    new path
      */
     public void updateGroupPath(final Integer groupID, final String path) {
-        final String updateGroupPath = "update groups set groupPath = ? where groupID = ? and(groupPath != ? OR groupPath is null)";
+        final String updateGroupPath = "update groups set groupPath = :groupPath where groupID = :groupID and(groupPath != :groupPath OR groupPath is null)";
 
-        JdbcTemplate jdbcTemplate = getJdbcTemplate();
-        PreparedStatementCreator psc = new PreparedStatementCreator() {
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("groupPath", path);
+        params.put("groupID", String.valueOf(groupID));
 
-            @Override
-            public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
-
-                PreparedStatement ps = con.prepareStatement(updateGroupPath);
-                ps.setString(1, path);
-                ps.setInt(2, groupID);
-                ps.setString(3, path);
-                logger.debug(ps.toString());
-                return ps;
-            }
-        };
-
-        jdbcTemplate.update(psc);
+        getSimpleJdbcTemplate().update(updateGroupPath, params);
     }
 }
 
