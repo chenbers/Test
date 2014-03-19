@@ -34,4 +34,8 @@ default-autowire="byName">
   <bean id="reportIdlingDAO" class="com.inthinc.pro.dao.jdbc.ReportIdlingJDBCDAO">
           <property name="dataSource" ref="tiwiJDBCDataSource"/>
   </bean>
+      <bean id="reportDAO" class="com.inthinc.pro.dao.jdbc.ReportJDBCDAO">
+        <property name="dataSource" ref="tiwiJDBCDataSource" />
+    </bean>
+  
 </beans>
