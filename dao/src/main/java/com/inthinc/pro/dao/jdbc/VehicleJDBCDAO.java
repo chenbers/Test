@@ -349,6 +349,7 @@ public class VehicleJDBCDAO extends SimpleJdbcDaoSupport implements VehicleDAO {
         String startDate = df.format(toUTC(new Date()));
 
         if (getVegicleCount(deviceID).equals("1")) {
+
             String imei = getImei(deviceID);
             String acctID = getAcctid(deviceID);
             String baseID = getBaseId(deviceID);
