@@ -149,7 +149,7 @@ public class RedFlagJDBCDAO extends SimpleJdbcDaoSupport implements RedFlagDAO {
         StringBuilder redFlagSelectCount = new StringBuilder(addFiltersToQuery(filterList, RED_FLAG_QUERY_COUNT, params, pagedColumnMapRedFlagCount));
         if (includeForgiven == 1||includeForgiven==0) {
             params.put("forgiven", 0);
-            redFlagSelectCount.append("and forgiven=:forgiven");
+            redFlagSelectCount.append(" and forgiven=:forgiven");
         }
 
         List<Integer> cntRedFlag = getSimpleJdbcTemplate().query(redFlagSelectCount.toString(), redFlagCountRowMapper, params);
@@ -175,7 +175,7 @@ public class RedFlagJDBCDAO extends SimpleJdbcDaoSupport implements RedFlagDAO {
         StringBuilder redFlagSelect = new StringBuilder(addFiltersToQuery(pageParams.getFilterList(), RED_FLAG_QUERY, params, pagedColumnMapRedFlag));
         if (includeForgiven == 1||includeForgiven==0) {
             params.put("forgiven", 0);
-            redFlagSelect.append("and forgiven=:forgiven");
+            redFlagSelect.append(" and forgiven=:forgiven");
         }
 
         /***SORTING***/
