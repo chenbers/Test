@@ -20,7 +20,7 @@ import java.util.Map;
 
 public class AddressJDBCDAO extends SimpleJdbcDaoSupport implements AddressDAO {
 
-    private static final String GET_ADDRESS = "SELECT a.addrID, a.acctID, a.addr1, a.addr2, a.city, a.stateID, zip FROM address a";
+    private static final String GET_ADDRESS = "SELECT * FROM address a JOIN state s ON a.stateID=s.stateID";
     private static final String FIND_ADDRESS_BY_ID = GET_ADDRESS + " where a.addrID=:addrID";
     private static final String DEL_ADDRESS_BY_ID = "DELETE FROM address WHERE addrID = ?";
 
@@ -33,14 +33,19 @@ public class AddressJDBCDAO extends SimpleJdbcDaoSupport implements AddressDAO {
         @Override
         public Address mapRow(ResultSet rs, int rowNum) throws SQLException {
             Address addressItem = new Address();
+            addressItem.setAddrID(rs.getInt("a.addrID"));
             addressItem.setAccountID(rs.getInt("a.acctID"));
             addressItem.setAddr1(rs.getString("a.addr1"));
             addressItem.setAddr2(rs.getString("a.addr2"));
             addressItem.setCity(rs.getString("a.city"));
             addressItem.setZip(rs.getString("a.zip"));
-            State state = new State();
-            addressItem.setState(state);
 
+            State state = new State();
+            state.setAbbrev(rs.getString("s.abbrev"));
+            state.setName(rs.getString("s.name"));
+            state.setStateID(rs.getInt("s.stateID"));
+
+            addressItem.setState(state);
 
             return addressItem;
         }
