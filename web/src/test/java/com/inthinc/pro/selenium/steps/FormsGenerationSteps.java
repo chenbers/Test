@@ -15,17 +15,18 @@ public class FormsGenerationSteps extends LoginSteps {
     String publishedSuccessfully = " published successfully.";
     String createdSuccessfully = " created successfully.";
     String publishFailed = " publish failed.";
+    String createFailed = " create failed.";
     
     @Given("I clean the forms database")
     public void cleanup() {
-        // TODO: Create something to call the DeleteAllAccountsFormsClass US7826
+        // TODO: Create something to call the DeleteAllAccountsFormsClass, maybe implement a Jenkins job to do it? US7826
     }
-    
-    @Then("I generate 13 forms for the manage page test")
+    //This can eventually be merged into the publish page creation method below and eventually need to be run without using the UI to improve speed of creation
+    @Then("I generate 100 forms for the manage page test")
     public void thenIGenerateOneHundredFormsForTheManagePageTest() {
         int i = 1;
         
-        while (i < 13) {
+        while (i < 101) {
             createForm(i, "No Trigger", "ManageFormInactive", "Inactive", "Required");
             i++;
         }
@@ -41,43 +42,35 @@ public class FormsGenerationSteps extends LoginSteps {
         
         while (l < 5) {
             createForm(l, "No Trigger", "FormPublish", "Active", "Required");
-            manage._textField().search().type("FormPublish" + l);
-            manage._button().gear().row(1).click();
             publishLinkCheck(l, "FormPublish");
             l++;
         }
         
         while (j < 5) {
             createForm(j, "Post-Trip", "FormPostTrip", "Active", "");
-            manage._textField().search().type("FormPostTrip" + j);
-            manage._button().gear().row(1).click();
             publishLinkCheck(j, "FormPostTrip");
             j++;
         }
         
         while (k < 5) {
             createForm(k, "Pre-Trip", "FormPreTrip", "Active", "");
-            manage._textField().search().type("FormPreTrip" + k);
-            manage._button().gear().row(1).click();
             publishLinkCheck(k, "FormPreTrip");
             k++;
         }
         
         createForm(i, "No Trigger", "PublishFormGeneric", "Active", "");
-        manage._textField().search().type("PublishFormGeneric" + i);
-        manage._button().gear().row(1).click();
         publishLinkCheck(i, "PublishFormGeneric");
         i++;
         
         while (i < 100) {
-            copyForm(i, "");
+            copyForm(i, "PublishFormGeneric");
             publishLinkCheck(i, "PublishFormGeneric");
             i++;
         }
         
         System.out.println("FORMS PUBLISHED GENERATION SUCCESS!");
     }
-    
+    //use the create function to create a new form
     public void createForm(int formNumber, String formTrigger, String formName, String formStatus, String formDescription) {
         manage._button().newForm().click();
         add._textField().name().type(formName + formNumber);
@@ -86,19 +79,16 @@ public class FormsGenerationSteps extends LoginSteps {
         add._dropDown().status().selectTheOptionContaining(formStatus, 1);
         add._checkBox().groups().check();
         add._link().text().click();
-        add._button().saveTop().click();
-        System.out.println(formName + formNumber + createdSuccessfully);
+        searchForFormAndConfirmCreated(formNumber, formName);
     }
-    
+    //use the copy function to create a new form
     public void copyForm(int formNumber, String formName) {
         manage._button().gear().row(1).click();
         manage._link().copy().row(1).click();
         add._textField().name().type(formName + formNumber);
-        add._button().saveTop().click();
-        manage._textField().search().type(formName + formNumber);
-        manage._button().gear().row(1).click();
+        searchForFormAndConfirmCreated(formNumber, formName);
     }
-    
+    //Confirm the publish link is visible in the gear dropdown and publish the form
     public void publishLinkCheck(int formNumber, String formName) {
         if ((manage._link().publish().row(1).getAttribute("disabled") == "disabled")) {
             manage._link().manage().click();
@@ -108,6 +98,20 @@ public class FormsGenerationSteps extends LoginSteps {
             manage._link().publish().row(1).click();
             manage._link().manage().click();
             System.out.println(formName + formNumber + publishedSuccessfully);
+        }
+    }
+    
+    public void searchForFormAndConfirmCreated(int formNumber, String formName) {
+        String formCombined = formName + formNumber;
+        add._button().saveTop().click();
+        manage._textField().search().type(formCombined);
+        if (manage._text().entryName().row(1).getText().equals(formCombined)) {
+            System.out.println(formCombined + createdSuccessfully);
+            manage._button().gear().row(1).click();
+        }
+        else {
+            System.out.println(formCombined + createFailed);
+            manage._link().manage().click();
         }
     }
     
