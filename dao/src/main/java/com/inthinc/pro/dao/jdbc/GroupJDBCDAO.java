@@ -409,24 +409,6 @@ public class GroupJDBCDAO extends SimpleJdbcDaoSupport implements GroupDAO {
     }
 
     /**
-     * Finds a group by parent id and path but only binds the group id and parent id.
-     * It's used to speed up {@link #updateGroupPathById}
-     *
-     * @param parentID parent id for group
-     * @param path     path for group
-     * @return group with id and parent id bound
-     */
-    public Group findFastGroupByParentIdAndPath(Integer parentID, String path) {
-        String curGroupSqlParent = "SELECT groupID, parentID FROM siloDB.groups where groupID = :parentID and :path not like concat('%/',parentID,'/%')";
-
-        Map<String, String> params = new HashMap<String, String>();
-        params.put("parentID", String.valueOf(parentID));
-        params.put("path", path);
-
-        return getSimpleJdbcTemplate().queryForObject(curGroupSqlParent, groupPathParameterizedRow, params);
-    }
-
-    /**
      * Updates a group's path by group id.
      *
      * @param groupID group id
