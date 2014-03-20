@@ -124,7 +124,7 @@ Then I validate the 1st Row of the Approved Entry checkbox is checked
 And I uncheck the 1st Row of the Approved Entry checkbox
 And I validate the 1st Row of the Approved Entry checkbox is not checked
 
-Scenario: Forms Submissions Page - Edit Approved check (No change to Edited column)
+Scenario: Forms Submissions Page - Edit Approved check then uncheck (No change to Edited column)
 Given I am logged in
 When I click the Forms link
 And I click the Submissions link
@@ -147,26 +147,6 @@ And I validate the 1st Row of the Approved Entry checkbox is checked
 And I validate the 1st Row of the Edited Entry text is "no"
 And I uncheck the 1st Row of the Approved Entry checkbox
 And I validate the 1st Row of the Approved Entry checkbox is not checked
-
-Scenario: Forms Submissions Page - Edit Approved uncheck (No change to Edited column)
-Given I am logged in
-When I click the Forms link
-And I click the Submissions link
-And I click the Refresh button
-And I check the 1st Row of the Approved Entry checkbox
-And I select "yes" from the Approved dropdown
-Then I validate the 1st Row of the Edited Entry text is "no"
-When I click the Refresh button
-Then I validate the 1st Row of the Approved Entry checkbox is checked
-And I validate the 1st Row of the Edited Entry text is "no"
-When I uncheck the 1st Row of the Approved Entry checkbox
-Then I validate the 1st Row of the Approved Entry checkbox is not checked
-And I validate the 1st Row of the Edited Entry text is "no"
-When I click the Refresh button
-Then I validate the 1st Row of the Approved Entry checkbox is not checked
-When I select "no" from the Approved dropdown
-And I click the Refresh button
-Then I validate the 1st Row of the Approved Entry checkbox is not checked
 And I validate the 1st Row of the Edited Entry text is "no"
 
 Scenario: Forms Submissions Page - Inline Edit - Forms link disappears (Requires there be form data)
