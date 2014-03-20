@@ -205,69 +205,68 @@ public void setUpBeforeTest() throws Exception {
 //
 //    }
 
-//    @Test
-//    public void createTest_updateTest() {
-//
-//        //create  method  test
-//        boolean returnsVehicleID = false;
-//        VehicleJDBCDAO vehicleDAO = new VehicleJDBCDAO();
-//        DataSource dataSource = new ITDataSource().getRealDataSource();
-//        vehicleDAO.setDataSource(dataSource);
-//
-//        Vehicle vehicle = new Vehicle();
-//        vehicle.setGroupID(2);
-//        vehicle.setColor("Black");
-//        vehicle.setMake("Toyota");
-//        vehicle.setModel("Tacoma");
-//        vehicle.setName("IT" + randomInt);
-//
-//        State state = new State();
-//        state.setAbbrev("UT");
-//        state.setName("Utah");
-//        state.setStateID(45);
-//
-//        vehicle.setState(state);
-//        vehicle.setStatus(Status.INACTIVE);
-//        vehicle.setVIN("VIN" + randomInt);
-//        vehicle.setVtype(VehicleType.LIGHT);
-//        vehicle.setYear(2007);
-//
-//
-//        Integer vehicleID = vehicleDAO.create(vehicle.getVehicleID(), vehicle);
-//        returnsVehicleID = (vehicleID != null);
-//        assertTrue(returnsVehicleID);
-//
-//        //update  method   test
-//        Vehicle vehicleUpdate = new Vehicle();
-//        vehicleUpdate.setGroupID(2);
-//        vehicleUpdate.setColor("Red");
-//        vehicleUpdate.setMake("Toyota");
-//        vehicleUpdate.setModel("Celica");
-//        vehicleUpdate.setName("NAME" + randomInt);
-//
-//        State stateUpdate = new State();
-//        stateUpdate.setAbbrev("GA");
-//        stateUpdate.setName("Georgia");
-//        stateUpdate.setStateID(11);
-//
-//        vehicleUpdate.setState(stateUpdate);
-//        vehicleUpdate.setStatus(Status.ACTIVE);
-//        vehicleUpdate.setVIN("VIN" + randomInt);
-//        vehicleUpdate.setVtype(VehicleType.MEDIUM);
-//        vehicleUpdate.setYear(2008);
-//        vehicleUpdate.setVehicleID(vehicleID);
-//
-//        vehicleDAO.update(vehicleUpdate);
-//
-//         //find vehicle by ID  test
-//        vehicleDAO.findByID(vehicleID);
-//
-//        //delete vehicle  when finish
-//        vehicleDAO.deleteByID(vehicleID);
-//
-//    }
+
+    @Test
+    public void createTest_updateTest() {
+
+        //create  method  test
+        boolean returnsVehicleID = false;
+        VehicleJDBCDAO vehicleDAO = new VehicleJDBCDAO();
+        DataSource dataSource = new ITDataSource().getRealDataSource();
+        vehicleDAO.setDataSource(dataSource);
+
+        Vehicle vehicle = new Vehicle();
+        vehicle.setGroupID(2);
+        vehicle.setColor("Black");
+        vehicle.setMake("Toyota");
+        vehicle.setModel("Tacoma");
+        vehicle.setName("IT" + randomInt);
+
+        State state = new State();
+        state.setAbbrev("UT");
+        state.setName("Utah");
+        state.setStateID(45);
+
+        vehicle.setState(state);
+        vehicle.setStatus(Status.INACTIVE);
+        vehicle.setVIN("VIN" + randomInt);
+        vehicle.setVtype(VehicleType.LIGHT);
+        vehicle.setYear(2007);
 
 
+        Integer vehicleID = vehicleDAO.create(vehicle.getVehicleID(), vehicle);
+        returnsVehicleID = (vehicleID != null);
+        assertTrue(returnsVehicleID);
+
+        //update  method   test
+        Vehicle vehicleUpdate = new Vehicle();
+        vehicleUpdate.setGroupID(2);
+        vehicleUpdate.setColor("Red");
+        vehicleUpdate.setMake("Toyota");
+        vehicleUpdate.setModel("Celica");
+        vehicleUpdate.setName("NAME" + randomInt);
+
+        State stateUpdate = new State();
+        stateUpdate.setAbbrev("GA");
+        stateUpdate.setName("Georgia");
+        stateUpdate.setStateID(11);
+
+        vehicleUpdate.setState(stateUpdate);
+        vehicleUpdate.setStatus(Status.ACTIVE);
+        vehicleUpdate.setVIN("VIN" + randomInt);
+        vehicleUpdate.setVtype(VehicleType.MEDIUM);
+        vehicleUpdate.setYear(2008);
+        vehicleUpdate.setVehicleID(vehicleID);
+
+        vehicleDAO.update(vehicleUpdate);
+
+         //find vehicle by ID  test
+        vehicleDAO.findByID(vehicleID);
+
+        //delete vehicle  when finish
+        vehicleDAO.deleteByID(vehicleID);
+
+    }
 
 
 }
