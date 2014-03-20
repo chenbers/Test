@@ -6,6 +6,7 @@ import org.jbehave.core.annotations.When;
 
 import com.inthinc.pro.automation.logging.Log;
 import com.inthinc.pro.automation.models.AutomationUser;
+import com.inthinc.pro.automation.utils.AutomationThread;
 import com.inthinc.pro.selenium.pageObjects.PageAdminVehicles;
 import com.inthinc.pro.selenium.pageObjects.PageErrorPage;
 import com.inthinc.pro.selenium.pageObjects.PageFormsManage;
@@ -384,14 +385,8 @@ public class LoginSteps extends WebSteps {
     //I've added this method to handle when QA times out and displays the Connection Problem page
     public void timeout() {
     if(!loginPage._textField().username().isPresent()) {
-        int time = 0;
-        while (time < 30) {
-            errorPage._button().tryAgain().click();
-            time++;
-            if(loginPage._textField().username().isPresent()) {
-                break;
-            }
+        AutomationThread.pause(20);
+        errorPage._button().tryAgain().click();
         }
-    }
     }
 }
