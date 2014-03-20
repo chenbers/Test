@@ -28,9 +28,12 @@ import com.inthinc.pro.automation.enums.Browsers;
 import com.inthinc.pro.automation.enums.ErrorLevel;
 import com.inthinc.pro.automation.enums.SeleniumEnumWrapper;
 import com.inthinc.pro.automation.logging.Log;
+import com.inthinc.pro.automation.test.BrowserTest;
+import com.inthinc.pro.automation.test.Test;
 import com.inthinc.pro.automation.utils.AutoServers;
 import com.inthinc.pro.automation.utils.AutomationStringUtil;
 import com.inthinc.pro.automation.utils.AutomationThread;
+import com.inthinc.pro.automation.utils.MasterTest;
 import com.thoughtworks.selenium.DefaultSelenium;
 import com.thoughtworks.selenium.SeleniumException;
 import com.thoughtworks.selenium.Wait.WaitTimedOutException;
@@ -799,8 +802,8 @@ public class CoreMethodLib extends WebDriverBackedSelenium implements CoreMethod
                 y++;
                 if (y == 5) {
                     Log.error("Unable to re-establish a connection, ending test.");
-                    getSeleniumThread().stop();
-                }
+                    BrowserTest browserTest = new BrowserTest(myEnum);
+                    browserTest.killSelenium();                }
             }
         } catch (WaitTimedOutException e) {
             while(verifyIsTextOnPage("Unable to connect")) {
@@ -808,9 +811,13 @@ public class CoreMethodLib extends WebDriverBackedSelenium implements CoreMethod
                         click(tryAgainButton);
                         AutomationThread.pause(60);
                         z++;
+                        //TODO: This is really dirty, there's got to be a better way to close the browser if there's a connection timeout,
+                        //but given the time I have left to work on this it will have to do for now.
                         if (z == 15) {
                             Log.error("Unable to re-establish a connection, ending test.");
-                            getSeleniumThread().stop();
+                            Test browserTest = new Test();
+                            browserTest.killSelenium();
+                            return null;
                         }
                 }
             }
