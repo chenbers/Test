@@ -61,7 +61,6 @@ public class CoreMethodLib extends WebDriverBackedSelenium implements CoreMethod
     private ErrorCatcher errors;
     private SeleniumEnumWrapper myEnum;
     private final Browsers browser;
-	int counter = 2;
     int z = 0;
     
     private static ThreadLocal<CoreMethodInterface> instance = new ThreadLocal<CoreMethodInterface>();
@@ -847,8 +846,8 @@ public class CoreMethodLib extends WebDriverBackedSelenium implements CoreMethod
     private WebElement getMatches(String select, String option, Integer matchNumber){
     	//MWEISS - I've added this catFilter method to handle the nested drop downs in the Notifications section
     	if (select.contains("catFilter")) {
-        	String xpath = select+"/optgroup[2]/option["+option+"]";
-            return selectNested(select, xpath, option, matchNumber);
+        	String xpath = select+"/optgroup[*]/option["+option+"]";
+            return getMatches(xpath, matchNumber);
     	}
     	
     	else {
@@ -859,7 +858,6 @@ public class CoreMethodLib extends WebDriverBackedSelenium implements CoreMethod
     }
     
     private WebElement getMatches(String xpath, Integer matchNumber){
-//        waitForElementPresent(xpath, 10);
         waitForElementPresent(xpath, 5);
         List<WebElement> allMatches= getWrappedDriver().findElements(By.xpath(xpath));
         if(matchNumber < allMatches.size())
@@ -869,28 +867,14 @@ public class CoreMethodLib extends WebDriverBackedSelenium implements CoreMethod
         errors.addError("getMatches insufficient matches found", "There is no matchNumber at index "+matchNumber+", there were only "+allMatches.size()+" matches found", ErrorLevel.ERROR);
         throw new SeleniumException("There is no matchNumber at index "+matchNumber+", there were only "+allMatches.size()+" matches found");
     }
-    
-    private WebElement selectNested(String select, String xpath, String option, Integer matchNumber) {
-        waitForElementPresent(xpath, 15);
-        List<WebElement> allMatches= getWrappedDriver().findElements(By.xpath(xpath));
-        if(matchNumber < allMatches.size()) {
-            AutomationThread.pause(10, "Pausing so browser has a chance to catch up");
-        	return allMatches.get(matchNumber);
-        }
-        	while (counter < 14) {
-            	counter++;        		
-            	xpath = select+"/optgroup["+counter+"]/option["+option+"]";
-            	return selectNested(select, xpath, option, matchNumber);
-    		}
-
-        errors.addError("getMatches insufficient matches found", "There is no matchNumber at index "+matchNumber+", there were only "+allMatches.size()+" matches found", ErrorLevel.ERROR);
-        throw new SeleniumException("There is no matchNumber at index "+matchNumber+", there were only "+allMatches.size()+" matches found");	
-
-    }
 
     @Override
     public CoreMethodInterface click(String xpath, String desiredOption, Integer matchNumber) {
         getMatches(xpath, desiredOption, matchNumber).click();
+        //Added this pause to avoid the "Element is no longer attached to the DOM" message that appears in Selenium
+        //If that message comes back, just increase the time by 1 second then run it again to see if it solves the
+        //problem
+        AutomationThread.pause(1);
         return this;
     }
 
