@@ -57,6 +57,7 @@ public class LoginSteps extends WebSteps {
     
     @When("I log back in under the editable account")
     public void whenILogBackInUnderTheEditableAccount() {
+        timeout();
         loginPage._textField().username().type(secondPrime);
         loginPage._textField().password().type(secondPrimePassword);
         loginPage._button().logIn().click();
@@ -65,6 +66,7 @@ public class LoginSteps extends WebSteps {
     @Given("I navigate to the assets trailers page")
     public void givenINavigateToTheAssetsTrailersPage() {
         loginPage.open("https://qa.inthinc.com/assets/trailers");
+        timeout();
         loginPage._textField().username().type(secondPrime);
         loginPage._textField().password().type(secondPrimePassword);
         loginPage._button().logIn().click();
@@ -81,7 +83,6 @@ public class LoginSteps extends WebSteps {
     @Given("I navigate to localhost")
     public void givenINavigateToLocalhost() {
         loginPage.open("https://localhost:8443/tiwipro/");
-        timeout();
         loginPage._textField().username().type(secondPrime);
         loginPage._textField().password().type(secondPrimePassword);
         loginPage._button().logIn().click();
