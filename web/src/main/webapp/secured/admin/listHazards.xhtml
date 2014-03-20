@@ -349,13 +349,13 @@
 	</script>
     
     <!-- map bubbles -->
-	<rich:panel id="mapPopups" rendered="#{hazardsBean.selectedHazardID ne null}">
-		<ui:param name="hazard" value="#{hazardsBean.hazards[hazardsBean.selectedHazardID]}"/>
+	<rich:panel id="mapPopups">
+		<ui:param name="hazard" value="#{hazardsBean.selectedHazardID ne nulll ? hazardsBean.hazards[hazardsBean.selectedHazardID] : null}"/>
 		<ui:include src="/includes/hazardBubble.xhtml">
-			<ui:param name="hazard" value="#{hazard}" />
-			<ui:param name="timeZone" value="#{hazardsBean.user.person.timeZone}"/>
-            <ui:param name="unitName" value="#{hazardsBean.unitName}"/>
-            <ui:param name="unitValue" value="#{hazardsBean.unitValue}"/>
+			<ui:param name="hazard" value="#{hazard != null ? hazard : null}" />
+			<ui:param name="timeZone" value="#{hazardsBean != null ? hazardsBean.user.person.timeZone : null}"/>
+            <ui:param name="unitName" value="#{hazardsBean != null ? hazardsBean.unitName : null}"/>
+            <ui:param name="unitValue" value="#{hazardsBean != null ? hazardsBean.unitValue : null}"/>
         </ui:include>
 	</rich:panel>
 	<a4j:region id="jsFormRegion">
