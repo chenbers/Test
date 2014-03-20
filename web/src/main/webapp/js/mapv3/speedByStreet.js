@@ -139,8 +139,16 @@ var ROW_EVEN_COLOR = '#EBFFCA';
 	};
 
 	function setUnableToGeocodeError(){
-		document.getElementById("speedLimitChangeRequestTable:items:caption").innerHTML = "#{messages.sbs_badLatLng}"; 	  
-	}	
+
+		document.getElementById("speedLimitChangeRequestTable:items:caption").innerHTML =  sbsMessages[1];
+	}
+    function setUnableToGeocodeEmpty(){
+
+        document.getElementById("speedLimitChangeRequestTable:items:caption").innerHTML = sbsMessages[0];
+//        document.getElementById("speedLimitChangeRequestTable:items:caption").innerHTML =  document.getElementById("speedLimitChangeRequestTable:items:radu1").value;
+
+    }
+
 
   	function setPolyLineColor(polyline, color) {
   		polyline.setOptions( {
@@ -156,23 +164,26 @@ var ROW_EVEN_COLOR = '#EBFFCA';
 	}
 
   	function addAddressToMap(result, status) {
-		if (status != google.maps.GeocoderStatus.OK) {
-			setUnableToGeocodeError();
-		}
-		else {
+        if (document.getElementById('speedLimitChangeRequestTable:address').value=='' && status != google.maps.GeocoderStatus.OK) {
+            setUnableToGeocodeEmpty();
+        }
+        else if(status != google.maps.GeocoderStatus.OK){
+            setUnableToGeocodeError();
+        } else {
 			var fullAddress = result[0].formatted_address;
-    
+
 			// If a mouse click, use it, if an address entered, use what google returned
 			if ( preciseLat == null && preciseLng == null ) {
 				var point = result[0].geometry.location;
-				addSegment(point.lat(), point.lng(), fullAddress, mapsbs.getZoom(), limit);  
+				addSegment(point.lat(), point.lng(), fullAddress, mapsbs.getZoom(), limit);
 			} else {
 				addSegment(preciseLat, preciseLng, fullAddress, mapsbs.getZoom(), limit);
 				preciseLat = null;
 				preciseLng = null;
 			}
 		}
-	}
+        document.getElementById('speedLimitChangeRequestTable:address').value = '';
+    }
   	
   	function addMarker(lat, lng, markerImage) {
   		inthincMap.createMarker(mapsbs, {
