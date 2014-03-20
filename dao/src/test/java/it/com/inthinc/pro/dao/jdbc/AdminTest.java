@@ -258,8 +258,7 @@ public class AdminTest extends BaseJDBCTest {
         pageParams.setEndRow(cnt-1);
         List<Vehicle> jdbcVehicleList = adminVehicleJDBCDAO.getVehicles(groupIDList, pageParams);
         assertEquals("hessian vs jdbc Vehicle cnt", hessianVehicleList.size(), jdbcVehicleList.size());
-        String vehicleIgnoreFields[] = { "modified", "activated" 
-        };
+        String vehicleIgnoreFields[] = { "modified", "activated", "driverName"};
         for (Vehicle hessianVehicle : hessianVehicleList) {
             boolean found = false;
             for (Vehicle jdbcVehicle : jdbcVehicleList) {
