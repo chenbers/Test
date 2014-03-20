@@ -2,11 +2,8 @@ package com.inthinc.pro.automation.selenium;
 
 import java.io.IOException;
 import java.io.StringWriter;
-import java.lang.reflect.Method;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -30,14 +27,10 @@ import com.inthinc.pro.automation.AutomationPropertiesBean;
 import com.inthinc.pro.automation.enums.Browsers;
 import com.inthinc.pro.automation.enums.ErrorLevel;
 import com.inthinc.pro.automation.enums.SeleniumEnumWrapper;
-import com.inthinc.pro.automation.jbehave.AutoPageRunner;
-import com.inthinc.pro.automation.jbehave.AutoStepVariables;
 import com.inthinc.pro.automation.logging.Log;
-import com.inthinc.pro.automation.test.BrowserTest;
 import com.inthinc.pro.automation.utils.AutoServers;
 import com.inthinc.pro.automation.utils.AutomationStringUtil;
 import com.inthinc.pro.automation.utils.AutomationThread;
-import com.inthinc.pro.automation.utils.MasterTest;
 import com.thoughtworks.selenium.DefaultSelenium;
 import com.thoughtworks.selenium.SeleniumException;
 import com.thoughtworks.selenium.Wait.WaitTimedOutException;
