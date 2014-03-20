@@ -139,14 +139,10 @@ var ROW_EVEN_COLOR = '#EBFFCA';
 	};
 
 	function setUnableToGeocodeError(){
-
 		document.getElementById("speedLimitChangeRequestTable:items:caption").innerHTML =  sbsMessages[1];
 	}
     function setUnableToGeocodeEmpty(){
-
         document.getElementById("speedLimitChangeRequestTable:items:caption").innerHTML = sbsMessages[0];
-//        document.getElementById("speedLimitChangeRequestTable:items:caption").innerHTML =  document.getElementById("speedLimitChangeRequestTable:items:radu1").value;
-
     }
 
 
