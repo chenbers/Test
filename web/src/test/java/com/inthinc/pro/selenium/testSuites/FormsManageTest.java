@@ -16,10 +16,9 @@ import com.inthinc.pro.selenium.steps.FormsGenerationSteps;
 import com.inthinc.pro.selenium.steps.LoginSteps;
 
 @UsingSteps(instances={LoginSteps.class, FormsGenerationSteps.class})
-@PageObjects(list={PageLogin.class, 
-		PageExecutiveDashboard.class, PageExecutiveOverallExpansion.class, 
-        PageFormsManage.class, PageFormsAdd.class, PageFormsPublished.class,
-        PageFormsEdit.class})
+@PageObjects(list={PageLogin.class, PageFormsPublished.class,
+                PageExecutiveDashboard.class, PageExecutiveOverallExpansion.class, 
+                PageFormsManage.class, PageFormsAdd.class, PageFormsEdit.class })
 @StoryPath(path="FormsManage.story")
 public class FormsManageTest extends WebStories  {
 
