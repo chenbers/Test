@@ -17,6 +17,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 import javax.servlet.http.HttpServletResponse;
 
+import com.inthinc.pro.dao.util.MeasurementConversionUtil;
 import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.model.zone.option.type.SpeedValue;
 import org.ajax4jsf.model.KeepAlive;
@@ -53,7 +54,6 @@ public class ZonesBean extends BaseBean
     private ZonePublishDAO       zonePublishDAO;
     private ZoneVehicleType      downloadType;
     private String               message;
-    public static final Double   KPH_IN_MPH = 1.60934400061d;
     public static final Integer  MAX_SPEED_IN_MPH = 100;
     public static final Integer  MAX_SPEED_IN_KPH = 160;
     
@@ -593,8 +593,8 @@ public class ZonesBean extends BaseBean
         if (measurementType == MeasurementType.METRIC){
             Map<ZoneAvailableOption, OptionValue> optionsMap = item.getOptionsMap();
             Integer kphValue = optionsMap.get(ZoneAvailableOption.SPEED_LIMIT).getValue();
-            Integer mphValue = (int) (kphValue / KPH_IN_MPH);
-            optionsMap.put(ZoneAvailableOption.SPEED_LIMIT, new SpeedValue(mphValue));
+            Number mphValue = MeasurementConversionUtil.fromKPHtoMPH(kphValue);
+            optionsMap.put(ZoneAvailableOption.SPEED_LIMIT, new SpeedValue(mphValue.intValue()));
             item.setOptionsMap(optionsMap);
             item.setOptions(getOptionsFromMap());
         }
@@ -637,7 +637,7 @@ public class ZonesBean extends BaseBean
 
         //transform if necessary
         if (measurementType.equals(MeasurementType.METRIC))
-            value = (int) (value * KPH_IN_MPH);
+            value = MeasurementConversionUtil.fromMPHtoKPH(value).intValue();
 
         return value;
     }
