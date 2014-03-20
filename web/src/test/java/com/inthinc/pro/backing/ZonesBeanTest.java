@@ -207,7 +207,7 @@ public class ZonesBeanTest extends BaseBeanTest
 
         // metric should be transformed
         mockZoneBean = getMockZoneBean(MeasurementType.METRIC, 100);
-        assertEquals(mockZoneBean.getMeasurementTypeSpeedLimit(), 160);
+        assertEquals(mockZoneBean.getMeasurementTypeSpeedLimit(), 161);
     }
 
     @Test
