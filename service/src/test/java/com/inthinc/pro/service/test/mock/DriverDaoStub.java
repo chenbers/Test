@@ -4,6 +4,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
+import com.inthinc.pro.model.Vehicle;
 import org.joda.time.Interval;
 import org.springframework.stereotype.Component;
 
@@ -113,6 +114,11 @@ public class DriverDaoStub implements DriverDAO {
 
     @Override
     public List<Driver> getAllDrivers(Integer groupID) {
+        return Collections.emptyList();
+    }
+
+    @Override
+    public List<Driver> getDriversInGroupIDList(List<Integer> groupIDList) {
         return Collections.emptyList();
     }
 
