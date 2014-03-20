@@ -88,13 +88,12 @@ public class VehicleJDBCDAO extends SimpleJdbcDaoSupport implements VehicleDAO {
 
     private static final String TRIP_LIST = "SELECT * FROM trip where vehicleID=:vehicleID and startTime like :startTime and endTime like :endTime";
 
-    private static final String INSERT_VEHICLE = "insert into vehicle (VIN, color, groupID, groupPath, modified, license, make, model, name, stateID, status, weight, year, ifta)" +
-                                                 "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    private static final String INSERT_VEHICLE = "insert into vehicle (VIN, color, groupID, groupPath, modified, license, make, model, name, stateID, status, weight, year, ifta, odometer)" +
+                                                 "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-    private static final String UPDATE_VEHICLE = "UPDATE vehicle SET VIN= ?, color=?, groupID=?, groupPath=?, modified=?, license=?, make=?, model=?, name=?, stateID=?, status=?, weight=?, year=?, ifta=? where vehicleID= ?";
+    private static final String UPDATE_VEHICLE = "UPDATE vehicle SET VIN= ?, color=?, groupID=?, groupPath=?, modified=?, license=?, make=?, model=?, name=?, stateID=?, status=?, weight=?, year=?, ifta=?, odometer=? where vehicleID= ?";
 
     private static final String VEHICLE_SET_DEVICE = "select count(*) from vddlog where deviceID=:deviceID and stop is null";
-
     private static final String SET_DRIVER = "select count(*) from vddlog where vehicleID=:vehicleID and stop is null";
 
     private static final String UPDATE_DEVICE_VEHICLE = "UPDATE vddlog set stop=? where deviceID= ? and stop is null";
@@ -104,7 +103,7 @@ public class VehicleJDBCDAO extends SimpleJdbcDaoSupport implements VehicleDAO {
     private static final String UPDATE_DEVICE_VEHICLE_NEW = "INSERT into vddlog (start, deviceID, vehicleID, imei, acctID, baseID, emuFeatureMask, vgroupID, vtype, driverID, dgroupID, tzID)" +
                                                             "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-    private static final String NEW_DEVICE_VEHICLE_NEW = "INSERT into vddlog (start, deviceID, vehicleID, imei, acctID, driverID, tzID)" +
+    private static final String NEWDEVICE_VEHICLE = "INSERT into vddlog (start, deviceID, vehicleID, imei, acctID, driverID, tzID)" +
                                                             "VALUES (?, ?, ?, ?, ?, ?, ?)";
 
 
@@ -119,13 +118,11 @@ public class VehicleJDBCDAO extends SimpleJdbcDaoSupport implements VehicleDAO {
     private static final String GET_DGROUPID = "select dgroupID from vddlog where deviceID=:deviceID and stop is null";
     private static final String GET_TZID = "select tzID from vddlog where deviceID=:deviceID and stop is null";
 
-
     //select max
     private static final String GET_MAX_IMEI = "SELECT imei FROM vddlog WHERE vddlogid=(SELECT max(vddlogid) FROM vddlog)";
     private static final String GET_MAX_ACCTID = "SELECT acctID FROM vddlog WHERE vddlogid=(SELECT max(vddlogid) FROM vddlog)";
     private static final String GET_MAX_DRIVERID = "SELECT driverID FROM vddlog WHERE vddlogid=(SELECT max(vddlogid) FROM vddlog)";
     private static final String GET_MAX_TZID = "SELECT tzID FROM vddlog WHERE vddlogid=(SELECT max(vddlogid) FROM vddlog)";
-
 
     //select for driver
     private static final String GET_IMEI_DRIVER = "select imei from vddlog where vehicleID=:vehicleID and stop is null";
@@ -219,7 +216,6 @@ public class VehicleJDBCDAO extends SimpleJdbcDaoSupport implements VehicleDAO {
         StringBuilder vehicleSelect = new StringBuilder();
         vehicleSelect.append(VEHICLE_SELECT);
 
-
         List<Vehicle> vehicleList = getSimpleJdbcTemplate().query(vehicleSelect.toString(), pagedVehicleRowMapper, params);
         return vehicleList;
     }
@@ -294,7 +290,7 @@ public class VehicleJDBCDAO extends SimpleJdbcDaoSupport implements VehicleDAO {
             String maxTz = getGetMaxTzid();
 
 
-            getJdbcTemplate().update(NEW_DEVICE_VEHICLE_NEW, new Object[]{startDate, device, vehicleID, maxImei, maxAcctID, maxDriver, maxTz});
+            getJdbcTemplate().update(NEWDEVICE_VEHICLE, new Object[]{startDate, device, vehicleID, maxImei, maxAcctID, maxDriver, maxTz});
 
         }
 
@@ -333,7 +329,7 @@ public class VehicleJDBCDAO extends SimpleJdbcDaoSupport implements VehicleDAO {
             String maxDriver = getMaxDriverID();
             String maxTz = getGetMaxTzid();
 
-            getJdbcTemplate().update(NEW_DEVICE_VEHICLE_NEW, new Object[]{startDate, device, vehicleID, maxImei, maxAcctID, maxDriver, maxTz});
+            getJdbcTemplate().update(NEWDEVICE_VEHICLE, new Object[]{startDate, device, vehicleID, maxImei, maxAcctID, maxDriver, maxTz});
 
         }
     }
@@ -346,7 +342,6 @@ public class VehicleJDBCDAO extends SimpleJdbcDaoSupport implements VehicleDAO {
 
         String stopDate = df.format(toUTC(new Date()));
         String startDate = df.format(toUTC(new Date()));
-
 
         if (getVegicleCount(deviceID).equals("1")) {
 
@@ -372,7 +367,7 @@ public class VehicleJDBCDAO extends SimpleJdbcDaoSupport implements VehicleDAO {
             String maxDriver = getMaxDriverID();
             String maxTz = getGetMaxTzid();
 
-            getJdbcTemplate().update(NEW_DEVICE_VEHICLE_NEW, new Object[]{startDate, deviceID, vehicleID, maxImei, maxAcctID, maxDriver, maxTz});
+            getJdbcTemplate().update(NEWDEVICE_VEHICLE, new Object[]{startDate, deviceID, vehicleID, maxImei, maxAcctID, maxDriver, maxTz});
 
         }
 
@@ -401,6 +396,7 @@ public class VehicleJDBCDAO extends SimpleJdbcDaoSupport implements VehicleDAO {
             getJdbcTemplate().update(UPDATE_DEVICE_VEHICLE, new Object[]{stopDate, deviceID});
 
             getJdbcTemplate().update(UPDATE_DEVICE_VEHICLE_NEW, new Object[]{startDate, deviceID, vehicleID, imei, acctID, baseID, emuMask, vGroupID, vtype, driverID, dgroupID, tzID});
+
             }
 
         if(getVegicleCount(deviceID).equals("0")){
@@ -410,7 +406,7 @@ public class VehicleJDBCDAO extends SimpleJdbcDaoSupport implements VehicleDAO {
             String maxDriver = getMaxDriverID();
             String maxTz = getGetMaxTzid();
 
-            getJdbcTemplate().update(NEW_DEVICE_VEHICLE_NEW, new Object[]{startDate, deviceID, vehicleID, maxImei, maxAcctID, maxDriver, maxTz});
+            getJdbcTemplate().update(NEWDEVICE_VEHICLE, new Object[]{startDate, deviceID, vehicleID, maxImei, maxAcctID, maxDriver, maxTz});
 
         }
 
@@ -418,7 +414,16 @@ public class VehicleJDBCDAO extends SimpleJdbcDaoSupport implements VehicleDAO {
 
     @Override
     public void clearVehicleDevice(Integer vehicleID, Integer deviceID) {
-        throw new NotImplementedException();
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        df.setTimeZone(TimeZone.getTimeZone("UTC"));
+        String stopDate = df.format(toUTC(new Date()));
+
+        if (getVegicleCount(deviceID).equals("1")) {
+
+            getJdbcTemplate().update(UPDATE_DEVICE_VEHICLE, new Object[]{stopDate, deviceID});
+
+        }
+
     }
 
     @Override
@@ -515,9 +520,9 @@ public class VehicleJDBCDAO extends SimpleJdbcDaoSupport implements VehicleDAO {
         params.put("latitude", lat );
         params.put("longitude", lng );
 
-//        locationDAO.getLastLocationForVehicle()
+//        locationDAO.getVe
 
-        StringBuilder vehicleNearLocation = new StringBuilder(TRIP_LIST);
+//        StringBuilder vehicleNearLocation = new StringBuilder(TRIP_LIST);
 
 
         throw new NotImplementedException();
@@ -590,6 +595,13 @@ public class VehicleJDBCDAO extends SimpleJdbcDaoSupport implements VehicleDAO {
                     ps.setBoolean(14, entity.getIfta());
                 }
 
+                if (entity.getOdometer() == null) {
+                    ps.setNull(15, Types.NULL);
+                } else {
+                    ps.setInt(15, entity.getOdometer());
+                }
+
+
 
                 logger.debug(ps.toString());
                 return ps;
@@ -660,7 +672,13 @@ public class VehicleJDBCDAO extends SimpleJdbcDaoSupport implements VehicleDAO {
                     ps.setBoolean(14, entity.getIfta());
                 }
 
-                ps.setInt(15, entity.getVehicleID());
+                if (entity.getOdometer() == null) {
+                    ps.setNull(15, Types.NULL);
+                } else {
+                    ps.setInt(15, entity.getOdometer());
+                }
+
+                ps.setInt(16, entity.getVehicleID());
 
                 logger.debug(ps.toString());
                 return ps;
