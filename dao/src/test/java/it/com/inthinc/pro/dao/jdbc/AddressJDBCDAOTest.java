@@ -100,6 +100,13 @@ public class AddressJDBCDAOTest extends SimpleJdbcDaoSupport {
         returnAddressID = (addressID != null);
         assertTrue(returnAddressID);
 
+        //find by id test method
+        Address createdAddress = addressDAO.findByID(addressID);
+        assertEquals("832 Street", addressToInsert.getAddr1(), createdAddress.getAddr1());
+        assertEquals("City 71", addressToInsert.getCity(), createdAddress.getCity());
+        assertEquals("Utah", addressToInsert.getState().getName(), createdAddress.getState().getName());
+        assertEquals("10021", addressToInsert.getZip(), createdAddress.getZip());
+
         //now delete  using method deleteByID
         addressDAO.deleteByID(addressID);
 
@@ -144,6 +151,14 @@ public class AddressJDBCDAOTest extends SimpleJdbcDaoSupport {
 
         //update method
         addressDAO.update(addressToupdate);
+
+        //find by id - updated address
+        Address updatedAddress = addressDAO.findByID(addressID);
+        assertEquals("815 St", addressToupdate.getAddr1(), updatedAddress.getAddr1());
+        assertEquals("City 18", addressToupdate.getCity(), updatedAddress.getCity());
+        assertEquals("Alabama", addressToupdate.getState().getName(), updatedAddress.getState().getName());
+        assertEquals("10025", addressToupdate.getZip(), updatedAddress.getZip());
+
 
         //now delete using method deleteByID
         addressDAO.deleteByID(addressID);
