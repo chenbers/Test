@@ -2,30 +2,27 @@ package com.inthinc.pro.selenium.steps;
 
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.text.DecimalFormat;
-//import java.sql.Types;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-//import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
 import javax.sql.DataSource;
 
-import org.springframework.jdbc.core.JdbcTemplate;
-
-//import org.apache.log4j.Logger;
+import org.jbehave.core.annotations.Given;
 import org.jbehave.core.annotations.Then;
 import org.jbehave.core.annotations.When;
-import org.jbehave.core.annotations.Given;
-
 import org.junit.Assert;
+import org.springframework.jdbc.core.JdbcTemplate;
 
 import com.inthinc.pro.automation.models.Hazard;
 import com.inthinc.pro.automation.models.Hazard.HazardUrls;
 import com.inthinc.pro.automation.rest.RestCommands;
+//import java.sql.Types;
+//import java.util.Collections;
+//import org.apache.log4j.Logger;
 
 public class RoadHazardEndpointSteps {
 	RestCommands restServices;

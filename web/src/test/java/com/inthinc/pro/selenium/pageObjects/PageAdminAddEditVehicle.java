@@ -10,11 +10,9 @@ import com.inthinc.pro.automation.elements.TextField;
 import com.inthinc.pro.automation.elements.TextFieldError;
 import com.inthinc.pro.automation.elements.TextFieldLabel;
 import com.inthinc.pro.automation.elements.TextFieldWithSpinner;
-import com.inthinc.pro.automation.elements.TextLabel;
 import com.inthinc.pro.automation.elements.TextLink;
 import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 import com.inthinc.pro.selenium.pageEnums.AdminVehicleEditEnum;
-import com.inthinc.pro.selenium.pageObjects.PopUps.Email;
 
 
 public class PageAdminAddEditVehicle extends AdminBar {

@@ -11,7 +11,6 @@ import com.inthinc.pro.automation.elements.TextLink;
 import com.inthinc.pro.automation.elements.TextTableLink;
 import com.inthinc.pro.automation.utils.AutomationThread;
 import com.inthinc.pro.selenium.pageEnums.AdminBarEnum;
-import com.inthinc.pro.selenium.pageEnums.AdminVehiclesEnum;
 
 public abstract class AdminTables extends AdminBar {
 

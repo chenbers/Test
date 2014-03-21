@@ -1,7 +1,6 @@
 package com.inthinc.pro.selenium.steps;
 
 import org.jbehave.core.annotations.Then;
-import org.jbehave.core.annotations.When;
 
 import com.inthinc.pro.selenium.pageObjects.PageAdminAddEditVehicle;
 import com.inthinc.pro.selenium.pageObjects.PageAdminVehicleDetails;

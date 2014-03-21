@@ -11,7 +11,6 @@ import com.inthinc.pro.automation.elements.TextTableLink;
 import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 import com.inthinc.pro.selenium.pageEnums.FormsAddEnum;
 import com.inthinc.pro.selenium.pageEnums.FormsEditEnum;
-import com.inthinc.pro.selenium.pageEnums.FormsManageEnum;
 
 public class PageFormsAdd extends FormsTables {
     

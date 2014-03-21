@@ -13,7 +13,6 @@ import com.inthinc.pro.automation.elements.TextLink;
 import com.inthinc.pro.automation.elements.TextTable;
 import com.inthinc.pro.automation.elements.TextTableLink;
 import com.inthinc.pro.automation.interfaces.SeleniumEnums;
-import com.inthinc.pro.selenium.pageEnums.HOSDriverLogsEnum;
 import com.inthinc.pro.selenium.pageEnums.HOSFuelStopsEnum;
 
 public class PageHOSFuelStops extends HOSBar {

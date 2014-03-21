@@ -12,7 +12,6 @@ import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 import com.inthinc.pro.selenium.pageEnums.PopUpEnum;
 import com.inthinc.pro.selenium.pageEnums.ReportsBarEnum;
 import com.inthinc.pro.selenium.pageEnums.ReportsDevicesEnum;
-import com.inthinc.pro.selenium.pageEnums.ReportsDriversEnum;
 
 public class PageReportsDevices extends ReportsBar {
 	private String page = "devices";
