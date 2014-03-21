@@ -1,17 +1,20 @@
 package com.inthinc.pro.dao.jdbc;
 
 import com.inthinc.hos.model.RuleSetType;
+import com.inthinc.pro.dao.AccountDAO;
 import com.inthinc.pro.dao.DriverDAO;
+import com.inthinc.pro.dao.GroupDAO;
 import com.inthinc.pro.dao.LocationDAO;
 import com.inthinc.pro.dao.VehicleDAO;
-import com.inthinc.pro.model.Device;
-import com.inthinc.pro.model.DeviceStatus;
+import com.inthinc.pro.dao.mock.data.MockData;
+import com.inthinc.pro.dao.service.dto.Account;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.DriverLocation;
 import com.inthinc.pro.model.DriverName;
 import com.inthinc.pro.model.DriverStops;
 import com.inthinc.pro.model.FuelEfficiencyType;
 import com.inthinc.pro.model.Gender;
+import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.LastLocation;
 import com.inthinc.pro.model.LatLng;
 import com.inthinc.pro.model.MeasurementType;
@@ -19,8 +22,6 @@ import com.inthinc.pro.model.Person;
 import com.inthinc.pro.model.Status;
 import com.inthinc.pro.model.Trip;
 import com.inthinc.pro.model.app.States;
-import com.inthinc.pro.model.pagination.SortOrder;
-import com.mysql.jdbc.Statement;
 import org.apache.commons.lang.NotImplementedException;
 import org.joda.time.Interval;
 import org.joda.time.format.DateTimeFormat;
@@ -29,9 +30,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.simple.ParameterizedRowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
-import org.springframework.jdbc.support.GeneratedKeyHolder;
-import org.springframework.jdbc.support.KeyHolder;
-import sun.util.locale.LocaleUtils;
+import org.springframework.security.context.SecurityContextHolder;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -51,6 +50,7 @@ import java.util.TimeZone;
 public class DriverJDBCDAO extends SimpleJdbcDaoSupport implements DriverDAO {
     private LocationDAO locationDAO;
     private VehicleDAO vehicleDAO;
+
     final Calendar calendar = new GregorianCalendar(TimeZone.getTimeZone("UTC"));
     private static final String FIND_DRIVER_BY_ID="Select t.tzName,p.personID, p.acctID, p.tzID, p.modified, p.status, p.measureType, p.fuelEffType, p.addrID, p.locale, p.reportsTo," +
             "    p.title,p.dept,p.empid, p.first, p.middle, p.last,p.suffix, p.gender, p.height, p.weight, p.dob, p.info, p.warn, p.crit, p.priEmail, p.secEmail, p.priPhone," +
@@ -89,9 +89,35 @@ public class DriverJDBCDAO extends SimpleJdbcDaoSupport implements DriverDAO {
 
     @Override
     public List<Driver> getAllDrivers(Integer groupID) {
-        //getDriversByGroupIDDeep - din portal_rep + transformate groupId in lista de groupId
-        return null;
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("groupId", groupID);
+
+        List<Driver> driverList = new ArrayList<Driver>();
+        List<Driver> driverFinal= new ArrayList<Driver>();
+
+        List<Integer> allGroupId =getGroupIdDeep(groupID);
+        System.out.print(allGroupId);
+
+        for (Integer item :allGroupId){
+             driverList =   getDrivers(item);
+            for ( Driver driverItem :driverList) {
+                driverFinal.add(driverItem);
+            }
+        }
+        return driverFinal;
+
     }
+    public List<Integer> getGroupIdDeep(Integer groupId){
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("groupId", groupId);
+
+        List<String> groupPath = getSimpleJdbcTemplate().query("select groupPath from groups where groupID like :groupId ",pagedDriverPathMapper, params);
+
+        Map<String, Object> params1 = new HashMap<String, Object>();
+        params1.put("groupPath", groupPath.get(0)+"%");
+        return getSimpleJdbcTemplate().query("select groupId from groups where status<>3 and groupPath like :groupPath",pagedDriverIDMapper,params1);
+    }
+
 
     @Override
     public List<Driver> getDrivers(Integer groupID) {
@@ -213,31 +239,6 @@ public class DriverJDBCDAO extends SimpleJdbcDaoSupport implements DriverDAO {
 
     @Override
     public List<DriverName> getDriverNames(Integer groupID) {
-        /*  from python
-
-        * def getDriverNamesByGroupIDDeep(params):
-	"fetch driver names by groupID deep"
-	(result,errmsg) = checkParams('getDriverNamesByGroupIDDeep', (int,), params)
-	if result != TiwiErr.TSCodeSuccess:
-		syslog(LOG_ERR, errmsg)
-	else:
-		groupID = params[0]
-		try:
-			from siloAPI.tiwigroup import TiwiGroup
-			grp = TiwiGroup.objects.get(pk=groupID)
-			from django.db import connection
-			query = "SELECT d.driverID,concat_ws(' ', IF(p.first='',NULL,p.first),IF(p.middle='',NULL,p.middle),IF(p.last='',NULL,p.last),IF(p.suffix='',NULL,p.suffix)) FROM driver d, person p WHERE d.status!=3 AND d.groupPath LIKE '%s%%' AND d.personID=p.personID" % (grp.grouppath,)
-			cur = connection.cursor()
-			cur.execute(query)
-			rows = cur.fetchall()
-			result = [iConvertDriverNameRow(row)  for row in rows]      -- driverId si DriverName
-			cur.close()
-		except Exception, e:
-			result = TiwiErr.TSCodeExecute
-			syslog(LOG_ERR, 'getDriverNamesByGroupIDDeep: failed, groupID=%d, exception=%s' % (groupID, str(e)))
-	return result
-        * */
-        //            List<DriverName> driverList = getMapper().convertToModelObject(this.getSiloService().getDriverNamesByGroupIDDeep(groupID), DriverName.class);
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("groupId", groupID);
 
@@ -408,6 +409,23 @@ public class DriverJDBCDAO extends SimpleJdbcDaoSupport implements DriverDAO {
             return null;
         }
     };
+
+    private ParameterizedRowMapper<String> pagedDriverPathMapper = new ParameterizedRowMapper<String>() {
+
+        @Override
+        public String mapRow(ResultSet rs, int rowNum) throws SQLException {
+            String groupPath = "";
+            groupPath = groupPath+ rs.getString("groupPath");
+                return groupPath;
+        }
+    };
+    private ParameterizedRowMapper<Integer> pagedDriverIDMapper = new ParameterizedRowMapper<Integer>() {
+
+        @Override
+        public Integer mapRow(ResultSet rs, int rowNum) throws SQLException {
+           return getIntOrNullFromRS(rs, "groupId");
+        }
+    };
     private ParameterizedRowMapper<DriverName> pagedDriverNameRowMapper = new ParameterizedRowMapper<DriverName>() {
 
         @Override
@@ -434,4 +452,9 @@ public class DriverJDBCDAO extends SimpleJdbcDaoSupport implements DriverDAO {
     public void setLocationDAO(LocationDAO locationDAO) {
         this.locationDAO = locationDAO;
     }
+
+    private Integer getIntOrNullFromRS(ResultSet rs, String columnName) throws SQLException {
+        return rs.getObject(columnName) == null ? null : (int) rs.getLong(columnName);
+    }
+
 }
