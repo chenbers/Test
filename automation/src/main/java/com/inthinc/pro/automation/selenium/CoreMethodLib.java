@@ -802,9 +802,10 @@ public class CoreMethodLib extends WebDriverBackedSelenium implements CoreMethod
                 y++;
                 if (y == 5) {
                     Log.error("Unable to re-establish a connection, ending test.");
-                    BrowserTest browserTest = new BrowserTest(myEnum);
+                    Test browserTest = new Test();
                     browserTest.killSelenium();    
-                    return null;}
+                    return null;
+                    }
             }
         } catch (WaitTimedOutException e) {
             while(verifyIsTextOnPage("Unable to connect")) {
