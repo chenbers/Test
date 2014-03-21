@@ -146,6 +146,10 @@
    					<ui:param name="index" value="#{index}" />
 				</ui:include>
             </rich:column>
+
+            <rich:column id="hazardID"  style="display: hidden;">
+                <h:outputText value="#{item.hazardID}" style="display: none;"/>
+            </rich:column>
             
             <rich:column id="location" sortBy="#{item.location}" >
                 <f:facet name="header">
@@ -316,23 +320,42 @@
 					google.maps.event.addListener(marker, "click", function() {
 						bubbleMarker = marker;
 						fillBubbleMarker(marker.itemID);
+                        addSelectedRowClass(marker.itemID);
 					});
 				}
+
+                function addSelectedRowClass(hazardId){
+                    jQuery('#hazards-form\\:hazards tbody tr').each(function() {
+                        jQuery(this).removeClass('selected-row');
+                        jQuery(this).children().removeClass('selected-row');
+                        if ($(this).cells[1].firstChild.textContent == hazardId ){
+                              jQuery(this).addClass('selected-row');
+                              jQuery(this).children().addClass('selected-row');
+                          }
+                    });
+                }
+
 				function showBubble() {
                     inthincMap.clearInfoWindow(map);
-					inthincMap.infoWindowAtMarker(map, 'hazardBubble', bubbleMarker);
-					
+                    var infowindow = new google.maps.InfoWindow();
+					infowindow = inthincMap.infoWindowAtMarker(map, 'hazardBubble', bubbleMarker);
+                    google.maps.event.addListener(infowindow, 'closeclick', (function(){
+                        jQuery('#hazards-form\\:hazards tbody tr').each(function() {
+                            jQuery(this).removeClass('selected-row');
+                            jQuery(this).children().removeClass('selected-row');
+                        });
+                    }));
 				}
 	</script>
     
     <!-- map bubbles -->
-	<rich:panel id="mapPopups" rendered="#{hazardsBean.selectedHazardID ne null}">
-		<ui:param name="hazard" value="#{hazardsBean.hazards[hazardsBean.selectedHazardID]}"/>
+	<rich:panel id="mapPopups">
+		<ui:param name="hazard" value="#{hazardsBean.selectedHazardID ne nulll ? hazardsBean.hazards[hazardsBean.selectedHazardID] : null}"/>
 		<ui:include src="/includes/hazardBubble.xhtml">
-			<ui:param name="hazard" value="#{hazard}" />
-			<ui:param name="timeZone" value="#{hazardsBean.user.person.timeZone}"/>
-            <ui:param name="unitName" value="#{hazardsBean.unitName}"/>
-            <ui:param name="unitValue" value="#{hazardsBean.unitValue}"/>
+			<ui:param name="hazard" value="#{hazard != null ? hazard : null}" />
+			<ui:param name="timeZone" value="#{hazardsBean != null ? hazardsBean.user.person.timeZone : null}"/>
+            <ui:param name="unitName" value="#{hazardsBean != null ? hazardsBean.unitName : null}"/>
+            <ui:param name="unitValue" value="#{hazardsBean != null ? hazardsBean.unitValue : null}"/>
         </ui:include>
 	</rich:panel>
 	<a4j:region id="jsFormRegion">

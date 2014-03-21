@@ -70,7 +70,7 @@
 						</table>
 					  </li>
 					  <li class="l">
-						<a4j:commandButton id="crashHistoryRefresh" styleClass="left" oncomplete="initializeTable()"
+						<a4j:commandButton id="#{context}_refresh" styleClass="left" oncomplete="initializeTable()"
 									reRender="header,crashHistory-form:crashHistory,crashHistory-form:crashHistory-bottomScroller" 
 									action="#{crashHistoryBean.refreshAction}">
 	           				<span class="refresh">
@@ -97,7 +97,7 @@
 		            		</a4j:commandButton>            								
 					   </li>
 					  <li class="l text">
-						<a4j:commandLink id="crashHistoryEditColumns" styleClass="ls_tab_edit_columns" title="#{messages.button_editColumns}" oncomplete="javascript:Richfaces.showModalPanel('editColumns')" 
+						<a4j:commandLink id="#{context}_editColumns" styleClass="ls_tab_edit_columns" title="#{messages.button_editColumns}" oncomplete="javascript:Richfaces.showModalPanel('#{context}_editColumns')" 
 							reRender="editColumnsForm:editColumnGrid">
 							#{messages.button_editColumns}
 						</a4j:commandLink>
@@ -111,25 +111,17 @@
 					  	</li>  					  
 					  </security:authorize>
 					  <li class="r grid_icon">
-						<h:panelGroup id="crashHistoryReportToolImageId">
+						<h:panelGroup id="#{context}_reportToolImageId">
 							<h:graphicImage title="#{messages.contextMenu_tools_menu}" style="cursor: pointer;" value="/images/ico_tools.png"/>
 						</h:panelGroup>
 					  </li>
 					  	<li class="r divider"><img src="#{facesContext.externalContext.request.contextPath}/images/grid_nav_divider.png" />
 					  </li>
 		              </ul>
-                    
-                      <div align="right" style="width: 100%"> 
-                         <h:outputFormat id="header" value="#{messages.notes_crashhistory_recordCountHeader}">
-							<a4j:actionparam value="#{crashHistoryBean.start}"/>
-							<a4j:actionparam value="#{crashHistoryBean.end}"/>
-							<a4j:actionparam value="#{crashHistoryBean.maxCount}"/>
-						 </h:outputFormat>
-                      </div>    
 		               	<ui:include src="/includes/reportsContextMenu.xhtml">	
-							<ui:param  name="emailModalPanelID" value="crashHistoryReportEmailModal" />
+							<ui:param  name="emailModalPanelID" value="#{context}_reportEmailModal" />
 							<ui:param  name="reportBean" value="#{crashHistoryBean}"/>
-							<ui:param  name="attachTo" value="crashHistoryReportToolImageId"/>
+							<ui:param  name="attachTo" value="#{context}_reportToolImageId"/>
 							<ui:param  name="exportExcel" value="TRUE"/>
     	 					<ui:param name="context" value="#{context}" />
 						</ui:include>
@@ -137,7 +129,7 @@
 		    		</a4j:region>
 		    		        
 					<div class="spacer"></div>
-		            <h:panelGroup id="crashHistoryTable" layout="block" styleClass="datagrid_panel">
+		            <h:panelGroup id="#{context}_table" layout="block" styleClass="datagrid_panel">
 						<ui:include src="/includes/crashHistoryTable.xhtml">	
 							<ui:param name="numRowsPerPg" value="#{crashHistoryBean.numRowsPerPg}"/>									
 		             		<ui:param name="tableData" value="#{crashHistoryBean.tableData}"/>             						
@@ -146,7 +138,7 @@
 <!--		             		<ui:param name="formId" value="crashHistory_Table_Form"/>-->
 		             		<ui:param name="clearTitle" value="#{messages.notes_crashhistory_clearTitle}"/>
 		             		<ui:param name="clearInst" value="#{messages.notes_crashhistory_clearInst}"/>
-		             		<ui:param name="clearRerender" value="#{context}_search:header,crashHistory-form:crashHistory"/>
+		             		<ui:param name="clearRerender" value="#{context}_search:header,#{context}-form:#{context}"/>
     	 					<ui:param name="context" value="#{context}" />
 		    			</ui:include>    							
 		            </h:panelGroup>					

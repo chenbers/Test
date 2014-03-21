@@ -3,6 +3,7 @@ package com.inthinc.pro.dao;
 import java.util.Date;
 import java.util.List;
 
+import com.inthinc.pro.model.Vehicle;
 import org.joda.time.Interval;
 
 import com.inthinc.pro.model.DriverName;
@@ -22,6 +23,14 @@ public interface DriverDAO extends GenericDAO<Driver, Integer> {
      * @return List of Drivers
      */
     List<Driver> getAllDrivers(Integer groupID);
+
+    /**
+     * Get all drivers in a specified list of group ids.
+     *
+     * @param groupIDList list of group ids
+     * @return List of Drivers
+     */
+    List<Driver> getDriversInGroupIDList(List<Integer> groupIDList);
 
     /**
      * Gets the drivers that are directly under the specified group

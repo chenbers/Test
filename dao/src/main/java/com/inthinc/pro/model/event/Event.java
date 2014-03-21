@@ -121,6 +121,17 @@ public class Event extends BaseEntity implements Comparable<Event>, Serializable
         return noteID.equals(e.noteID) && time.equals(e.time);
     }
 
+    public boolean equalsWithoutID(Object o) {
+        if (o == this)
+            return true;
+        if (!(o instanceof Event))
+            return false;
+
+        Event e = (Event) o;
+        // since the id is different on the doubled events we ignore the noteID and compare events that happen at the same time in the same place
+        return time.equals(e.time) && latitude.equals(e.latitude) && longitude.equals(e.longitude);
+    }
+
     public String getAddressStr() {
         return addressStr;
     }
