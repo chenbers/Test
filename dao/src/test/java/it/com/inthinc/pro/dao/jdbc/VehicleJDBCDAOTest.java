@@ -20,9 +20,13 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import javax.sql.DataSource;
 import javax.swing.text.DateFormatter;
+import javax.xml.stream.Location;
 import java.io.InputStream;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -35,7 +39,7 @@ import static org.junit.Assert.assertTrue;
 
 public class VehicleJDBCDAOTest extends SimpleJdbcDaoSupport {
 
-    private LocationCassandraDAO locationDAO;
+    private LocationDAO locationDAO;
     private Interval interval;
 
     public Interval getInterval() {
@@ -46,10 +50,19 @@ public class VehicleJDBCDAOTest extends SimpleJdbcDaoSupport {
         this.interval = interval;
     }
 
+    public LocationDAO getLocationDAO() {
+        return locationDAO;
+    }
+
+    public void setLocationDAO(LocationDAO locationDAO) {
+        this.locationDAO = locationDAO;
+    }
+
     private static SiloService siloService;
     private static final String XML_DATA_FILE = "ReportTest.xml";
     private static ITData itData = new ITData();
     private static int randomInt = RandomUtils.nextInt(99999);
+    private static Integer drivIDd= 10949;
 
     private Date toUTC(Date date){
         DateTime dt = new DateTime(date.getTime()).toDateTime(DateTimeZone.UTC);
@@ -105,9 +118,9 @@ public void setUpBeforeTest() throws Exception {
         for (int teamIdx = ITData.GOOD; teamIdx <= ITData.BAD; teamIdx++) {
         GroupData team = itData.teamGroupData.get(teamIdx);
         Integer groupID = team.group.getGroupID();
-        List<Vehicle> vehicleListByAccount = vehicleDAO.getVehiclesInGroup(groupID);
+        List<Vehicle> vehicleListInGroup = vehicleDAO.getVehiclesInGroup(groupID);
 
-            assertTrue(vehicleListByAccount.size() > 0);
+            assertTrue(vehicleListInGroup.size() > 0);
 
         }
     }
@@ -134,17 +147,13 @@ public void setUpBeforeTest() throws Exception {
         DataSource dataSource = new ITDataSource().getRealDataSource();
         vehicleDAO.setDataSource(dataSource);
 
-        for (int teamIdx = ITData.GOOD; teamIdx <= ITData.BAD; teamIdx++) {
-            GroupData team = itData.teamGroupData.get(teamIdx);
+            GroupData team = itData.teamGroupData.get(0);
             Integer groupID = team.group.getGroupID();
             List<VehicleName> vehicleNames = vehicleDAO.getVehicleNames(groupID);
 
-            assertTrue(vehicleNames.size() > 0);
-
-        }
+            assertTrue(vehicleNames.size()>0);
 
     }
-
 
     @Test
     public void findByDriverInGroupTest() throws Exception {
@@ -177,7 +186,6 @@ public void setUpBeforeTest() throws Exception {
             assertTrue(!findByVIN.equals("0"));
         }
 
-
     }
 
     @Test
@@ -196,15 +204,6 @@ public void setUpBeforeTest() throws Exception {
         }
 
     }
-
-//    @Test
-//    public void getVehiclesNearLocTest() throws Exception {
-//        List<DriverLocation> getTripsList = vehicleJDBCDAO.getVehiclesNearLoc(5276, 10, 32.960300, -117.210678);
-//
-//        assertNotNull(getTripsList);
-//
-//    }
-
 
     @Test
     public void createTest_updateTest() {
@@ -232,13 +231,26 @@ public void setUpBeforeTest() throws Exception {
         vehicle.setVIN("VIN" + randomInt);
         vehicle.setVtype(VehicleType.LIGHT);
         vehicle.setYear(2007);
+        vehicle.setOdometer(24526);
 
 
         Integer vehicleID = vehicleDAO.create(vehicle.getVehicleID(), vehicle);
         returnsVehicleID = (vehicleID != null);
         assertTrue(returnsVehicleID);
 
-        //update  method   test
+        //find by id test
+        Vehicle createdVehicle = vehicleDAO.findByID(vehicleID);
+
+        assertEquals("Toyota", vehicle.getMake(), createdVehicle.getMake());
+        assertEquals("Tacoma", vehicle.getModel(), createdVehicle.getModel());
+        assertEquals(2007, vehicle.getYear(), createdVehicle.getYear());
+        assertEquals(2, vehicle.getGroupID(), createdVehicle.getGroupID());
+        assertEquals("VIN" + randomInt, vehicle.getVIN(), createdVehicle.getVIN());
+        assertEquals(2, vehicle.getStatus().getCode(), createdVehicle.getStatus().getCode());
+        assertEquals(0, vehicle.getVtype().getCode(), createdVehicle.getVtype().getCode());
+
+
+        //update  method  test
         Vehicle vehicleUpdate = new Vehicle();
         vehicleUpdate.setGroupID(2);
         vehicleUpdate.setColor("Red");
@@ -260,13 +272,35 @@ public void setUpBeforeTest() throws Exception {
 
         vehicleDAO.update(vehicleUpdate);
 
-         //find vehicle by ID  test
-        vehicleDAO.findByID(vehicleID);
+        //find vehicle by ID  after update
+        Vehicle updatedVehicle = vehicleDAO.findByID(vehicleID);
 
-        //delete vehicle  when finish
+        assertEquals("Toyota", vehicleUpdate.getMake(), updatedVehicle.getMake());
+        assertEquals("Celica", vehicleUpdate.getModel(), updatedVehicle.getModel());
+        assertEquals(2008, vehicleUpdate.getYear(), updatedVehicle.getYear());
+        assertEquals(2, vehicle.getGroupID(), updatedVehicle.getGroupID());
+        assertEquals("VIN" + randomInt, vehicle.getVIN(), updatedVehicle.getVIN());
+        assertEquals(1, vehicle.getStatus().getCode(), updatedVehicle.getStatus().getCode());
+
+
+        //delete vehicle when finish
         vehicleDAO.deleteByID(vehicleID);
 
     }
+
+     @Test
+    public void latLngDistanceTest(){
+         VehicleJDBCDAO vehicleDAO = new VehicleJDBCDAO();
+         DataSource dataSource = new ITDataSource().getRealDataSource();
+         vehicleDAO.setDataSource(dataSource);
+         double distanceTest1=vehicleDAO.latLngDistance(44.433841, 26.137519, 44.438437, 26.118293);
+         double distanceTest2=vehicleDAO.latLngDistance(44.379516, 25.986233, 44.438437, 26.118293);
+         double dt1=Math.round(distanceTest1 * 100.0) / 100.0;
+         double dt2=Math.round(distanceTest2 * 100.0) / 100.0;
+         assertTrue(dt1==1.0);
+         assertTrue(dt2==7.68);
+
+     }
 
 
 }
