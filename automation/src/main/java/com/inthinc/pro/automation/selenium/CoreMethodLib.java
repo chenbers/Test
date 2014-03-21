@@ -809,7 +809,9 @@ public class CoreMethodLib extends WebDriverBackedSelenium implements CoreMethod
         } catch (WaitTimedOutException e) {
             while(verifyIsTextOnPage("Unable to connect")) {
                     Log.warning("There may have been a page timeout during this test.");
+                    if (isElementPresent(tryAgainButton)) {
                         click(tryAgainButton);
+                    }
                         AutomationThread.pause(60);
                         z++;
                         //TODO: This is really dirty, there's got to be a better way to close the browser if there's a connection timeout,
