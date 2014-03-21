@@ -5,8 +5,10 @@ import com.inthinc.pro.dao.VehicleDAO;
 import com.inthinc.pro.dao.cassandra.LocationCassandraDAO;
 import com.inthinc.pro.dao.hessian.DeviceHessianDAO;
 import com.inthinc.pro.dao.hessian.DriverHessianDAO;
+import com.inthinc.pro.dao.hessian.LocationHessianDAO;
 import com.inthinc.pro.dao.hessian.exceptions.EmptyResultSetException;
 import com.inthinc.pro.model.*;
+import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.app.States;
 import com.inthinc.pro.model.configurator.ProductType;
 import com.mysql.jdbc.Statement;
@@ -37,10 +39,15 @@ import java.util.Date;
 public class VehicleJDBCDAO extends SimpleJdbcDaoSupport implements VehicleDAO {
     private static final Logger logger = Logger.getLogger(DriverHessianDAO.class);
 
-    //2014-03-17 Use LocationCassandraDAO instead of LocationDAO
-    private LocationCassandraDAO locationDAO;
+    private LocationDAO locationDAO;
 
-    private DeviceHessianDAO deviceDAO;
+    public LocationDAO getLocationDAO() {
+        return locationDAO;
+    }
+
+    public void setLocationDAO(LocationDAO locationDAO) {
+        this.locationDAO = locationDAO;
+    }
 
     private static final SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     private static final DateTimeFormatter dateFormatterAgg = DateTimeFormat.forPattern("yyyy-MM-dd");
@@ -77,21 +84,20 @@ public class VehicleJDBCDAO extends SimpleJdbcDaoSupport implements VehicleDAO {
 
     private static final String GET_VEHICLE_NAME="select vehicleID, name from vehicle where groupID = :groupID";
 
-    private static final String FIND_BY_DRIVER_ID = FIND_BY + "where dr.driverID = :driverID";
-    private static final String FIND_BY_DRIVER_IN_GROUP = FIND_BY + "where dr.driverID = :driverID and v.groupID = :groupID";
-    private static final String FIND_BY_VIN = FIND_BY +"where v.vin like :vin";
-    private static final String FIND_BY_VEHICLEID = FIND_BY +"where v.vehicleID=:vehicleID";
-    private static final String GROUP_ID_DEEP = FIND_BY +"where v.groupID=:groupID and v.status <> 3";
+    private static final String FIND_BY_DRIVER_ID = FIND_BY + " where dr.driverID = :driverID";
+    private static final String FIND_BY_DRIVER_IN_GROUP = FIND_BY + " where dr.driverID = :driverID and v.groupID = :groupID";
+    private static final String FIND_BY_VIN = FIND_BY +" where v.vin like :vin";
+    private static final String FIND_BY_VEHICLEID = FIND_BY +" where v.vehicleID=:vehicleID";
+    private static final String GROUP_ID_DEEP = FIND_BY +" where v.groupID in (select groupID from groups where groupPath like :groupID) and v.status <> 3";
     private static final String DEL_VEHICLE_BY_ID = "DELETE FROM vehicle WHERE vehicleID = ?";
 
     private static final String GET_GROUP_PATH = "select g.groupPath from groups g where g.groupID= :groupID";
-
     private static final String TRIP_LIST = "SELECT * FROM trip where vehicleID=:vehicleID and startTime like :startTime and endTime like :endTime";
 
-    private static final String INSERT_VEHICLE = "insert into vehicle (VIN, color, groupID, groupPath, modified, license, make, model, name, stateID, status, weight, year, ifta, odometer)" +
-                                                 "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    private static final String INSERT_VEHICLE = "insert into vehicle (VIN, color, groupID, groupPath, modified, license, make, model, name, stateID, status, weight, year, ifta, odometer, aggDate)" +
+                                                 "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-    private static final String UPDATE_VEHICLE = "UPDATE vehicle SET VIN= ?, color=?, groupID=?, groupPath=?, modified=?, license=?, make=?, model=?, name=?, stateID=?, status=?, weight=?, year=?, ifta=?, odometer=? where vehicleID= ?";
+    private static final String UPDATE_VEHICLE = "UPDATE vehicle SET VIN= ?, color=?, groupID=?, groupPath=?, modified=?, license=?, make=?, model=?, name=?, stateID=?, status=?, weight=?, year=?, ifta=?, odometer=?, newAggDate=? where vehicleID= ?";
 
     private static final String VEHICLE_SET_DEVICE = "select count(*) from vddlog where deviceID=:deviceID and stop is null";
     private static final String SET_DRIVER = "select count(*) from vddlog where vehicleID=:vehicleID and stop is null";
@@ -118,11 +124,15 @@ public class VehicleJDBCDAO extends SimpleJdbcDaoSupport implements VehicleDAO {
     private static final String GET_DGROUPID = "select dgroupID from vddlog where deviceID=:deviceID and stop is null";
     private static final String GET_TZID = "select tzID from vddlog where deviceID=:deviceID and stop is null";
 
+    //select device imei and acctID when count is 0
+    private static final String GET_MAX_IMEI = "SELECT imei FROM device WHERE deviceID=:deviceID";
+    private static final String GET_MAX_ACCTID = "SELECT acctID FROM device WHERE deviceID=:deviceID";
     //select max
-    private static final String GET_MAX_IMEI = "SELECT imei FROM vddlog WHERE vddlogid=(SELECT max(vddlogid) FROM vddlog)";
-    private static final String GET_MAX_ACCTID = "SELECT acctID FROM vddlog WHERE vddlogid=(SELECT max(vddlogid) FROM vddlog)";
     private static final String GET_MAX_DRIVERID = "SELECT driverID FROM vddlog WHERE vddlogid=(SELECT max(vddlogid) FROM vddlog)";
     private static final String GET_MAX_TZID = "SELECT tzID FROM vddlog WHERE vddlogid=(SELECT max(vddlogid) FROM vddlog)";
+    //select max for vehicle
+    private static final String GET_MAX_IMEI_VEHICLE = "SELECT imei FROM vddlog WHERE vddlogid=(SELECT max(vddlogid) FROM vddlog)";
+    private static final String GET_MAX_ACCTID_VEHICLE = "SELECT acctID FROM vddlog WHERE vddlogid=(SELECT max(vddlogid) FROM vddlog)";
 
     //select for driver
     private static final String GET_IMEI_DRIVER = "select imei from vddlog where vehicleID=:vehicleID and stop is null";
@@ -134,7 +144,6 @@ public class VehicleJDBCDAO extends SimpleJdbcDaoSupport implements VehicleDAO {
     private static final String GET_DGROUPID_DRIVER= "select dgroupID from vddlog where vehicleID=:vehicleID and stop is null";
     private static final String GET_TZID_DRIVER = "select tzID from vddlog where vehicleID=:vehicleID and stop is null";
     private static final String GET_DEVICE_ID = "select deviceID from vddlog where vehicleID=:vehicleID and stop is null";
-
 
     private ParameterizedRowMapper<Vehicle> pagedVehicleRowMapper = new ParameterizedRowMapper<Vehicle>() {
         @Override
@@ -284,16 +293,14 @@ public class VehicleJDBCDAO extends SimpleJdbcDaoSupport implements VehicleDAO {
 
         if(getDriverCount(vehicleID).equals("0")){
 
-            String maxImei = getMaxImei();
-            String maxAcctID = getMaxAcctID();
+            String maxImei = getMaxImeiVehicle();
+            String maxAcctID = getMaxAcctIDVehicle();
             String maxDriver = getMaxDriverID();
             String maxTz = getGetMaxTzid();
 
-
-            getJdbcTemplate().update(NEWDEVICE_VEHICLE, new Object[]{startDate, device, vehicleID, maxImei, maxAcctID, maxDriver, maxTz});
+            getJdbcTemplate().update(NEWDEVICE_VEHICLE, new Object[]{startDate, device, vehicleID, maxImei, maxAcctID, 0, maxTz});
 
         }
-
     }
 
     @Override
@@ -324,12 +331,12 @@ public class VehicleJDBCDAO extends SimpleJdbcDaoSupport implements VehicleDAO {
 
         if(getDriverCount(vehicleID).equals("0")){
 
-            String maxImei = getMaxImei();
-            String maxAcctID = getMaxAcctID();
+            String maxImei = getMaxImeiVehicle();
+            String maxAcctID = getMaxAcctIDVehicle();
             String maxDriver = getMaxDriverID();
             String maxTz = getGetMaxTzid();
 
-            getJdbcTemplate().update(NEWDEVICE_VEHICLE, new Object[]{startDate, device, vehicleID, maxImei, maxAcctID, maxDriver, maxTz});
+            getJdbcTemplate().update(NEWDEVICE_VEHICLE, new Object[]{startDate, device, vehicleID, maxImei, maxAcctID, 0, maxTz});
 
         }
     }
@@ -362,15 +369,14 @@ public class VehicleJDBCDAO extends SimpleJdbcDaoSupport implements VehicleDAO {
 
         if(getVegicleCount(deviceID).equals("0")){
 
-            String maxImei = getMaxImei();
-            String maxAcctID = getMaxAcctID();
+            String maxImei = getMaxImei(deviceID);
+            String maxAcctID = getMaxAcctID(deviceID);
             String maxDriver = getMaxDriverID();
             String maxTz = getGetMaxTzid();
 
-            getJdbcTemplate().update(NEWDEVICE_VEHICLE, new Object[]{startDate, deviceID, vehicleID, maxImei, maxAcctID, maxDriver, maxTz});
+            getJdbcTemplate().update(NEWDEVICE_VEHICLE, new Object[]{startDate, deviceID, vehicleID, maxImei, maxAcctID, 0, maxTz});
 
         }
-
     }
 
     @Override
@@ -401,15 +407,14 @@ public class VehicleJDBCDAO extends SimpleJdbcDaoSupport implements VehicleDAO {
 
         if(getVegicleCount(deviceID).equals("0")){
 
-            String maxImei = getMaxImei();
-            String maxAcctID = getMaxAcctID();
+            String deviceImei = getMaxImei(deviceID);
+            String acctIDdev = getMaxAcctID(deviceID);
             String maxDriver = getMaxDriverID();
             String maxTz = getGetMaxTzid();
 
-            getJdbcTemplate().update(NEWDEVICE_VEHICLE, new Object[]{startDate, deviceID, vehicleID, maxImei, maxAcctID, maxDriver, maxTz});
+            getJdbcTemplate().update(NEWDEVICE_VEHICLE, new Object[]{startDate, deviceID, vehicleID, deviceImei, acctIDdev, 0, maxTz});
 
         }
-
     }
 
     @Override
@@ -423,23 +428,21 @@ public class VehicleJDBCDAO extends SimpleJdbcDaoSupport implements VehicleDAO {
             getJdbcTemplate().update(UPDATE_DEVICE_VEHICLE, new Object[]{stopDate, deviceID});
 
         }
-
     }
 
     @Override
     public Vehicle findByVIN(String vin) {
-
-        try{
-        Map<String, Object> params = new HashMap<String, Object>();
-        params.put("vin", "" + vin + "");
-        StringBuilder vehicleFindByVin = new StringBuilder(FIND_BY_VIN);
-            Vehicle veh=null;
-        List<Vehicle> vehic =  getSimpleJdbcTemplate().query(vehicleFindByVin.toString(), pagedVehicleRowMapper, params);
-            if(vehic.isEmpty()){
-            }else{
-            veh = vehic.get(0);
+        try {
+            Map<String, Object> params = new HashMap<String, Object>();
+            params.put("vin", "" + vin + "");
+            StringBuilder vehicleFindByVin = new StringBuilder(FIND_BY_VIN);
+            Vehicle veh = null;
+            List<Vehicle> vehic = getSimpleJdbcTemplate().query(vehicleFindByVin.toString(), pagedVehicleRowMapper, params);
+            if (vehic.isEmpty()) {
+            } else {
+                veh = vehic.get(0);
             }
-        return veh;
+            return veh;
 
         } catch (EmptyResultSetException e) {
             return null;
@@ -465,15 +468,9 @@ public class VehicleJDBCDAO extends SimpleJdbcDaoSupport implements VehicleDAO {
         return getSimpleJdbcTemplate().queryForObject(findByDriverIn.toString(), pagedVehicleRowMapper, params);
     }
 
-
     @Override
     public LastLocation getLastLocation(Integer vehicleID) {
-        Map<String, Object> params = new HashMap<String, Object>();
-        params.put("vehicleID", vehicleID);
-
-        LastLocation lastLocation = locationDAO.getLastLocationForVehicle(vehicleID);
-
-        return  lastLocation;
+        return locationDAO.getLastLocationForVehicle(vehicleID);
     }
 
     @Override
@@ -500,32 +497,41 @@ public class VehicleJDBCDAO extends SimpleJdbcDaoSupport implements VehicleDAO {
         return locationDAO.getLocationsForVehicleTrip(vehicleID, startTime, endTime);
     }
 
-
     @Override
     public List<LatLng> getLocationsForTrip(Integer vehicleID, Interval interval) {
-        Map<String, Object> params = new HashMap<String, Object>();
-        params.put("vehicleID", vehicleID);
-//        locationDAO.getLocationsForVehicleTrip()
-
-        throw new NotImplementedException();
+        java.util.Date startTime = interval.getStart().toDate();
+        java.util.Date endTime = interval.getEnd().toDate();
+        return locationDAO.getLocationsForVehicleTrip(vehicleID, startTime, endTime);
     }
-
 
     @Override
     public List<DriverLocation> getVehiclesNearLoc(Integer groupID, Integer numof, Double lat, Double lng) {
-        Map<String, Object> params = new HashMap<String, Object>();
-
-        params.put("groupID", groupID);
-        params.put("numof",  10 );
-        params.put("latitude", lat );
-        params.put("longitude", lng );
-
-//        locationDAO.getVe
-
-//        StringBuilder vehicleNearLocation = new StringBuilder(TRIP_LIST);
+//        Map<String, Object> params = new HashMap<String, Object>();
+//        params.put("groupID", 5858);
+//        params.put("numof",  10 );
+//        params.put("latitude", lat );
+//        params.put("longitude", lng );
 
 
-        throw new NotImplementedException();
+        List <Vehicle> veh = getVehiclesByGroupIDDeep(groupID);
+        List<DriverLocation> ret =new ArrayList<DriverLocation>();
+        for(int i = 0; i < veh.size(); i++) {
+            Integer vehicleID = veh.get(i).getVehicleID();
+            Double latitude = lastLatVehicle(vehicleID);
+            Double longitude = lastLngVehicle(vehicleID);
+
+            Double dist = latLngDistance(lat, lng, latitude, longitude);
+
+            Map<String, Object> paramsl = new HashMap<String, Object>();
+            paramsl.put("vehicleID", 2);
+            StringBuilder locationSelect = new StringBuilder("SELECT * FROM lastLocVehicle where vehicleID=:vehicleID");
+            List<DriverLocation> vehiclesIn = getSimpleJdbcTemplate().query(locationSelect.toString(), driverLocationParameterizedRowMapper, paramsl);
+            ret.add(vehiclesIn.get(0));
+
+        }
+//        List<DriverLocation> driversLocation =  getD(groupID);
+
+        return ret;
     }
 
     @Override
@@ -545,7 +551,7 @@ public class VehicleJDBCDAO extends SimpleJdbcDaoSupport implements VehicleDAO {
             @Override
             public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
                 PreparedStatement ps = con.prepareStatement(INSERT_VEHICLE, Statement.RETURN_GENERATED_KEYS);
-//                VIN*, color, deviceID, driverID, team groupID*, license, make*, model*, name* - vehicleID, state, status*, vtype, weight, year*, ifta
+
                 ps.setString(1, entity.getVIN());
 
                 if (entity.getColor() == null) {
@@ -601,13 +607,16 @@ public class VehicleJDBCDAO extends SimpleJdbcDaoSupport implements VehicleDAO {
                     ps.setInt(15, entity.getOdometer());
                 }
 
+                DateFormat dfm = new SimpleDateFormat("yyyy-MM-dd");
+                df.setTimeZone(TimeZone.getTimeZone("UTC"));
+                String aggDate = dfm.format(toUTC(new Date()));
 
+                ps.setString(16, aggDate);
 
                 logger.debug(ps.toString());
                 return ps;
             }
         };
-
         jdbcTemplate.update(psc, keyHolder);
         return keyHolder.getKey().intValue();
     }
@@ -678,7 +687,13 @@ public class VehicleJDBCDAO extends SimpleJdbcDaoSupport implements VehicleDAO {
                     ps.setInt(15, entity.getOdometer());
                 }
 
-                ps.setInt(16, entity.getVehicleID());
+                DateFormat dfNew = new SimpleDateFormat("yyyy-MM-dd");
+                df.setTimeZone(TimeZone.getTimeZone("UTC"));
+                String newAggDate = dfNew.format(toUTC(new Date()));
+
+                ps.setString(16, newAggDate);
+
+                ps.setInt(17, entity.getVehicleID());
 
                 logger.debug(ps.toString());
                 return ps;
@@ -686,7 +701,6 @@ public class VehicleJDBCDAO extends SimpleJdbcDaoSupport implements VehicleDAO {
 
 
         };
-
         jdbcTemplate.update(psc);
         return entity.getVehicleID();
     }
@@ -696,7 +710,6 @@ public class VehicleJDBCDAO extends SimpleJdbcDaoSupport implements VehicleDAO {
         return getJdbcTemplate().update(DEL_VEHICLE_BY_ID, new Object[]{vehicleID});
     }
 
-
     private ParameterizedRowMapper<VehicleName> vehicleNameParameterizedRowMapper = new ParameterizedRowMapper<VehicleName>() {
         @Override
         public VehicleName mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -704,6 +717,44 @@ public class VehicleJDBCDAO extends SimpleJdbcDaoSupport implements VehicleDAO {
             vehicle.setVehicleID(rs.getInt("vehicleID"));
             vehicle.setVehicleName(rs.getString("name"));
             return vehicle;
+        }
+    };
+
+    private ParameterizedRowMapper<DriverLocation> driverLocationParameterizedRowMapper = new ParameterizedRowMapper<DriverLocation>() {
+        @Override
+        public DriverLocation mapRow(ResultSet rs, int rowNum) throws SQLException {
+            DriverLocation driverLocation = new DriverLocation();
+            Driver dr = new Driver();
+            dr.setDriverID(rs.getInt("driverID"));
+
+            driverLocation.setDriver(dr);
+
+            Vehicle veh = new Vehicle();
+            veh.setVehicleID(rs.getInt("vehicleID"));
+            veh.setDeviceID(rs.getObject("deviceID") == null ? null : rs.getInt("deviceID"));
+            veh.setDriverID(rs.getObject("driverID") == null ? null : rs.getInt("driverID"));
+
+            driverLocation.setVehicle(veh);
+
+            LatLng ln = new LatLng();
+            ln.setLat(rs.getDouble("latitude"));
+            ln.setLongitude(rs.getDouble("longitude"));
+            ln.setLatitude(rs.getDouble("latitude"));
+            ln.setLng(rs.getDouble("longitude"));
+
+            driverLocation.setLoc(ln);
+
+            Device dv = new Device();
+            dv.setDeviceID(rs.getInt("deviceID"));
+
+            driverLocation.setDevice(dv);
+
+//            Group gr = new Group();
+//            gr.setGroupID(rs.getInt("g.groupID"));
+//
+//            driverLocation.setGroup(gr);
+
+            return driverLocation;
         }
     };
 
@@ -726,11 +777,10 @@ public class VehicleJDBCDAO extends SimpleJdbcDaoSupport implements VehicleDAO {
         }
     };
 
-
-
     private List <Vehicle> getVehiclesByGroupIDDeep (Integer groupID) {
+
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("groupID", groupID);
+        params.put("groupID", "%/" + groupID + "/%");
         StringBuilder groupIdDeep = new StringBuilder(GROUP_ID_DEEP);
         List<Vehicle> vehiclesIn = getSimpleJdbcTemplate().query(groupIdDeep.toString(), pagedVehicleRowMapper, params);
 
@@ -855,14 +905,30 @@ public class VehicleJDBCDAO extends SimpleJdbcDaoSupport implements VehicleDAO {
 
 
     //For Max Values
-    private String getMaxImei(){
-        String getMaxImei = new String (GET_MAX_IMEI);
+    private String getMaxImei(Integer deviceID){
+        Map<String, Object> args = new HashMap<String, Object>();
+        args.put("deviceID", deviceID);
+        String getMaxImeiV = new String (GET_MAX_IMEI);
+        String getMaxImeiColum = getSimpleJdbcTemplate().queryForObject(getMaxImeiV, String.class, args);
+        return getMaxImeiColum;
+    }
+
+    private String getMaxAcctID(Integer deviceID){
+        Map<String, Object> args = new HashMap<String, Object>();
+        args.put("deviceID", deviceID);
+        String getMaxAcctIDV = new String (GET_MAX_ACCTID);
+        String getMaxAcctIDColum = getSimpleJdbcTemplate().queryForObject(getMaxAcctIDV, String.class, args);
+        return getMaxAcctIDColum;
+    }
+
+    private String getMaxImeiVehicle(){
+        String getMaxImei = new String (GET_MAX_IMEI_VEHICLE);
         String getMaxImeiColumns = getSimpleJdbcTemplate().queryForObject(getMaxImei, String.class);
         return getMaxImeiColumns;
     }
 
-    private String getMaxAcctID(){
-        String getMaxAcctID = new String (GET_MAX_ACCTID);
+    private String getMaxAcctIDVehicle(){
+        String getMaxAcctID = new String (GET_MAX_ACCTID_VEHICLE);
         String getMaxAcctIDColumns = getSimpleJdbcTemplate().queryForObject(getMaxAcctID, String.class);
         return getMaxAcctIDColumns;
     }
@@ -878,8 +944,6 @@ public class VehicleJDBCDAO extends SimpleJdbcDaoSupport implements VehicleDAO {
         String getMaxTzidColumns = getSimpleJdbcTemplate().queryForObject(getMaxTzid, String.class);
         return getMaxTzidColumns;
     }
-
-
 
     //imei, acctID, baseID, emuFeatureMask, vgroupID, vtype, driverID, dgroupID, tzID
     private String getImeiDriver (Integer vehicleID){
@@ -950,4 +1014,34 @@ public class VehicleJDBCDAO extends SimpleJdbcDaoSupport implements VehicleDAO {
         return getTzColumnD;
     }
 
+    public double latLngDistance(double latA, double lngA, double latB, double lngB){
+
+        double rLatA = latA / 57.2957795786;
+        double rLngA = lngA / 57.2957795786;
+        double rLatB = latB / 57.2957795786;
+        double rLngB = lngB / 57.2957795786;
+        double dlat = rLatB - rLatA;
+        double dlng = rLngB - rLngA;
+        double aa = (Math.sin(dlat/2) * Math.sin(dlat/2)) + Math.cos(rLatA) * Math.cos(rLatB) * (Math.sin(dlng/2) * Math.sin(dlng/2));
+        double cc = 2 * Math.atan2(Math.sqrt(aa), Math.sqrt(1-aa));
+        // Approximate radius of earth in miles
+        double d= cc * 3956.0;
+     return d;
+    }
+
+    private Double lastLatVehicle(Integer vehicleID){
+        Map<String, Object> args = new HashMap<String, Object>();
+        args.put("vehicleID", vehicleID);
+        String getLastLat = new String ("SELECT latitude FROM lastLocVehicle where vehicleID=:vehicleID");
+        Double getLastLatitude = getSimpleJdbcTemplate().queryForObject(getLastLat, Double.class, args);
+        return getLastLatitude;
+    }
+
+    private Double lastLngVehicle(Integer vehicleID){
+        Map<String, Object> args = new HashMap<String, Object>();
+        args.put("vehicleID", vehicleID);
+        String getLastLng = new String ("SELECT longitude FROM lastLocVehicle where vehicleID=:vehicleID");
+        Double getLastLong = getSimpleJdbcTemplate().queryForObject(getLastLng, Double.class, args);
+        return getLastLong;
+    }
 }
