@@ -8,6 +8,7 @@ import com.inthinc.pro.automation.elements.TextTable;
 import com.inthinc.pro.automation.elements.TextTableLink;
 import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 import com.inthinc.pro.selenium.pageEnums.NotificationsCrashHistoryEnum;
+import com.inthinc.pro.selenium.pageObjects.Masthead.Paging;
 
 public class PageNotificationsCrashHistory extends NotificationsEventsBar {
     
@@ -98,6 +99,12 @@ public class PageNotificationsCrashHistory extends NotificationsEventsBar {
             return new Text(NotificationsCrashHistoryEnum.TITLE);
         }
 
+    }
+    
+    public class NotificationsCrashHistoryPager{
+        public Paging pageIndex(){
+            return new Paging();
+        }
     }
     
     public NotificationsCrashHistoryLinks _link() {
