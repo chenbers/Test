@@ -387,7 +387,10 @@ public class LoginSteps extends WebSteps {
     public void timeout() {
     if(!loginPage._textField().username().isPresent()) {
         AutomationThread.pause(20);
-        errorPage._button().tryAgain().click();
+        if(errorPage._button().tryAgain().isPresent()) {
+            errorPage._button().tryAgain().click();
+        }
+        else System.out.println("neither the Try Again Button nor the login page loaded.");
         }
     }
 }
