@@ -216,10 +216,7 @@
 			}
 			
 			function getValidLatLng(lat, lng){
-				if((lat > 0.005 || lat < -0.005) && (lng > 0.005 || lng < -0.005))
-					return true;
-				else
-					return false;
+				return ((lat > 0.005 || lat < -0.005) && (lng > 0.005 || lng < -0.005));
 			}
 			
 			/*]]>*/
