@@ -25,7 +25,7 @@ import com.inthinc.pro.model.TimeFrame;
 import com.inthinc.pro.model.aggregation.GroupTrendWrapper;
 import com.inthinc.pro.model.aggregation.Trend;
 
-public class TeamCommonBeanTest {
+public class TeamCommonBeanTest extends BaseBeanTest {
     @Test
     public void getOverallScoreUsingTrendScore_nullSubGroupsAggregateDriverTrends_noNPE() throws SecurityException, NoSuchMethodException {
         Group mockGroup = EasyMock.createNiceMock(Group.class);
@@ -63,8 +63,10 @@ public class TeamCommonBeanTest {
 	
     @Test
     public void testPopulateDateGaps() {
-        TeamCommonBean teamCommonBean = new TeamCommonBean();
-        teamCommonBean.setTimeFrame(TimeFrame.TODAY);
+        TeamCommonBean teamCommonBean = (TeamCommonBean)applicationContext.getBean("teamCommonBean");
+        TeamCommonBeanTimeFrame teamCommonBeanTimeFrame = (TeamCommonBeanTimeFrame)applicationContext.getBean("teamCommonBeanTimeFrameBean");
+        teamCommonBean.setTeamCommonBeanTimeFrame(teamCommonBeanTimeFrame);
+        teamCommonBeanTimeFrame.setTimeFrame(TimeFrame.TODAY);
         
         DateTime trendEndingDate = new DateTime();
         trendEndingDate = trendEndingDate.minusDays(30);

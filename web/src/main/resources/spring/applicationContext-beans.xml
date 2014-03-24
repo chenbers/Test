@@ -74,7 +74,6 @@
   <bean id="dashBoardDetailBean" class="com.inthinc.pro.backing.DashBoardDetailBean" scope="request" parent="baseBean">
   </bean>
 
-
   <bean id="teamCommonBeanTimeFrameBean" class="com.inthinc.pro.backing.TeamCommonBeanTimeFrame" scope="session"/>
   <bean id="teamCommonBean" class="com.inthinc.pro.backing.TeamCommonBean" scope="request" parent="baseBean" init-method="init">
   	<property name="teamCommonBeanTimeFrame" ref="teamCommonBeanTimeFrameBean"/>
@@ -293,8 +292,13 @@
     </property>
   </bean>
 
-  <bean id="vehiclesBean" class="com.inthinc.pro.backing.VehiclesBean" scope="session" init-method="initBean"/>
-  <bean id="vehicleSettingsFactory" class="com.inthinc.pro.backing.model.VehicleSettingsFactory" scope="session"/>
+  <bean id="vehiclesBean" class="com.inthinc.pro.backing.VehiclesBean" scope="session" init-method="initBean">
+      <property name="driverJDBCDAO" ref="driverJDBCDAO"></property>
+      <property name="groupDAO" ref="groupDAO"></property>
+  </bean>
+  <bean id="vehicleSettingsFactory" class="com.inthinc.pro.backing.model.VehicleSettingsFactory" scope="session">
+      <property name="deviceDAO" ref="deviceJDBCDAO"></property>
+  </bean>
 
   <bean id="devicesBean" class="com.inthinc.pro.backing.DevicesBean" scope="session" init-method="initBean">
       <property name="vehicleDAO" ref="vehicleDAO"></property>

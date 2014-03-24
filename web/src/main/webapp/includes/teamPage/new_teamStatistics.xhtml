@@ -240,7 +240,11 @@
 						#{messages.team_trips}
 					</f:facet>
 
-					#{item.score.trips}
+                    <pretty:link id="driverPerformanceDriverTripsWHP" mappingId="driverTripsWHP" rendered="#{item.driver ne null and item.driver.driverID ne null}">
+                        <h:outputText value="#{item.score.trips}"/>
+                        <f:param value="#{item.driver.driverID}"/>
+                        <f:param value="#{teamCommonBean.timeFrame}"/>
+                    </pretty:link>
 				</rich:column>
 				<rich:column rendered="#{tableColumns['stops'].visible}" sortBy="#{item.score.idleHiEvents+item.score.trips}" id="newTeamStatsTab-tripStops">
 					<f:facet name="header">

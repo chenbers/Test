@@ -86,19 +86,21 @@ public class TeamOverallBeanTest extends BaseBeanTest {
         //pacify compiler
         pu.getClass();
         
-        TeamOverallBean bean = new TeamOverallBean();
+        TeamOverallBean bean = (TeamOverallBean)applicationContext.getBean("teamOverallBean");
         TeamMockData mockData = new TeamMockData();
         bean.setGroupReportDAO(mockData.getMockGroupReportDAO());
         
-        TeamCommonBean commonBean = new TeamCommonBean();
-        
+        TeamCommonBean commonBean = (TeamCommonBean)applicationContext.getBean("teamCommonBean");
+        TeamCommonBeanTimeFrame teamCommonBeanTimeFrame = (TeamCommonBeanTimeFrame)applicationContext.getBean("teamCommonBeanTimeFrameBean");
+        commonBean.setTeamCommonBeanTimeFrame(teamCommonBeanTimeFrame);
+        teamCommonBeanTimeFrame.setTimeFrame(TimeFrame.TODAY);
         commonBean.setGroupID(TeamMockData.TEAM_GROUP_ID);
         commonBean.setGroup(mockData.getGroup());
        
         bean.setTeamCommonBean(commonBean);
         
         // Test Today
-        commonBean.setTimeFrame(TimeFrame.TODAY);
+//        commonBean.setTimeFrame(TimeFrame.TODAY);
         mockData.setListSwitch(SEListSwitch.DAY_30);
         // clear the cache
         bean.getTeamCommonBean().getCachedTrendResults().clear();

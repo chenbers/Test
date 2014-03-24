@@ -444,7 +444,7 @@ public class ReportPaginationTest {
 	}
     
     @Test
-    @Ignore //TODO: jwimmer: test ignored until it is clear how to handle the idling time for "unknown Driver" on the reports page.
+//    @Ignore //TODO: jwimmer: test ignored until it is clear how to handle the idling time for "unknown Driver" on the reports page.
     public void idling() {
     	ReportHessianDAO reportDAO = new ReportHessianDAO();
     	reportDAO.setSiloService(siloService);
