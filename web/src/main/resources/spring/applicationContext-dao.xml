@@ -78,7 +78,8 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
     <bean id="vehicleReportDAO" class="${vehicleReportDAO}" />
     <bean id="groupReportDAO" class="${groupReportDAO}" />
 
-    <bean id="accountDAO" class="com.inthinc.pro.dao.hessian.AccountHessianDAO"></bean>
+    <bean id="accountDAO" class="com.inthinc.pro.dao.jdbc.AccountJDBCDAO"></bean>
+    <!--web-->
     <bean id="userDAO" class="com.inthinc.pro.dao.hessian.UserHessianDAO"></bean>
     <bean id="personDAO" class="com.inthinc.pro.dao.hessian.PersonHessianDAO"></bean>
     <bean id="groupDAO" class="com.inthinc.pro.dao.hessian.GroupHessianDAO"></bean>
