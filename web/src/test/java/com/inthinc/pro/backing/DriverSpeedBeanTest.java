@@ -28,7 +28,6 @@ public class DriverSpeedBeanTest extends BaseBeanTest
 {
     private Map<String, Integer> scoreMap;
     private Map<String, String>  styleMap;
-    private EventHessianDAO eventHessianDAO;
 
     @BeforeClass
     public static void setUpBeforeClass() throws Exception
@@ -43,15 +42,12 @@ public class DriverSpeedBeanTest extends BaseBeanTest
     @Test
     public void bean()
     {
-        // just test the bean successfully creates all of the required pies
-        
         // team level login
         loginUser("custom101");
 
         // get the bean from the applicationContext (initialized by Spring injection)
         DriverSpeedBean driverSpeedBean = (DriverSpeedBean)applicationContext.getBean("driverSpeedBean");
-        NavigationBean nav = (NavigationBean)applicationContext.getBean("navigationBean");
-        
+
         LocaleBean localeBean = new LocaleBean();
         localeBean.getLocale();
        
@@ -115,10 +111,8 @@ public class DriverSpeedBeanTest extends BaseBeanTest
         driverSpeedBean.setEvents(speedingEvents);
         driverSpeedBean.setSelectedBreakdown("FOURTYONE");
         assertTrue(driverSpeedBean.getEvents().size() > 0);
-//        EventHessianMapper eventHessianMapper = new EventHessianMapper();
         //test buildReport
         driverSpeedBean.initEvents();
-//        eventHessianDAO.setMapper(eventHessianMapper);
         assertNotNull(driverSpeedBean.buildReport());
 
     }
