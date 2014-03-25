@@ -14,25 +14,22 @@ import org.apache.commons.lang.math.RandomUtils;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.Interval;
+import org.joda.time.Months;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import javax.sql.DataSource;
-import javax.swing.text.DateFormatter;
-import javax.xml.stream.Location;
 import java.io.InputStream;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-import java.util.TimeZone;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
@@ -58,36 +55,37 @@ public class VehicleJDBCDAOTest extends SimpleJdbcDaoSupport {
         this.locationDAO = locationDAO;
     }
 
+    private static final DateTimeFormatter dateFormatterAgg = DateTimeFormat.forPattern("yyyy-MM-dd");
+
     private static SiloService siloService;
     private static final String XML_DATA_FILE = "ReportTest.xml";
     private static ITData itData = new ITData();
     private static int randomInt = RandomUtils.nextInt(99999);
-    private static Integer drivIDd= 10949;
 
-    private Date toUTC(Date date){
+    private Date toUTC(Date date) {
         DateTime dt = new DateTime(date.getTime()).toDateTime(DateTimeZone.UTC);
         return dt.toDate();
     }
 
-@Before
-public void setUpBeforeTest() throws Exception {
-    IntegrationConfig config = new IntegrationConfig();
-    String host = config.get(IntegrationConfig.SILO_HOST).toString();
-    Integer port = Integer.valueOf(config.get(IntegrationConfig.SILO_PORT).toString());
+    @Before
+    public void setUpBeforeTest() throws Exception {
+        IntegrationConfig config = new IntegrationConfig();
+        String host = config.get(IntegrationConfig.SILO_HOST).toString();
+        Integer port = Integer.valueOf(config.get(IntegrationConfig.SILO_PORT).toString());
 
-    siloService = new SiloServiceCreator(host, port).getService();
+        siloService = new SiloServiceCreator(host, port).getService();
 
-    initApp();
-    itData = new ITData();
+        initApp();
+        itData = new ITData();
 
 
-    InputStream stream = Thread.currentThread().getContextClassLoader().getResourceAsStream(XML_DATA_FILE);
+        InputStream stream = Thread.currentThread().getContextClassLoader().getResourceAsStream(XML_DATA_FILE);
 
-    if (!itData.parseTestData(stream, siloService, false, false)) {
-        throw new Exception("Error parsing Test data xml file");
+        if (!itData.parseTestData(stream, siloService, false, false)) {
+            throw new Exception("Error parsing Test data xml file");
+        }
+
     }
-
-}
 
     private static void initApp() throws Exception {
     }
@@ -104,8 +102,8 @@ public void setUpBeforeTest() throws Exception {
             Integer groupID = team.group.getGroupID();
             List<Vehicle> vehiclesList = vehicleDAO.getVehiclesInGroupHierarchy(groupID);
 
-        assertTrue(!vehiclesList.equals("0"));
-      }
+            assertTrue(!vehiclesList.equals("0"));
+        }
 
     }
 
@@ -116,9 +114,9 @@ public void setUpBeforeTest() throws Exception {
         vehicleDAO.setDataSource(dataSource);
 
         for (int teamIdx = ITData.GOOD; teamIdx <= ITData.BAD; teamIdx++) {
-        GroupData team = itData.teamGroupData.get(teamIdx);
-        Integer groupID = team.group.getGroupID();
-        List<Vehicle> vehicleListInGroup = vehicleDAO.getVehiclesInGroup(groupID);
+            GroupData team = itData.teamGroupData.get(teamIdx);
+            Integer groupID = team.group.getGroupID();
+            List<Vehicle> vehicleListInGroup = vehicleDAO.getVehiclesInGroup(groupID);
 
             assertTrue(vehicleListInGroup.size() > 0);
 
@@ -147,11 +145,11 @@ public void setUpBeforeTest() throws Exception {
         DataSource dataSource = new ITDataSource().getRealDataSource();
         vehicleDAO.setDataSource(dataSource);
 
-            GroupData team = itData.teamGroupData.get(0);
-            Integer groupID = team.group.getGroupID();
-            List<VehicleName> vehicleNames = vehicleDAO.getVehicleNames(groupID);
+        GroupData team = itData.teamGroupData.get(0);
+        Integer groupID = team.group.getGroupID();
+        List<VehicleName> vehicleNames = vehicleDAO.getVehicleNames(groupID);
 
-            assertTrue(vehicleNames.size()>0);
+        assertTrue(vehicleNames.size() > 0);
 
     }
 
@@ -164,7 +162,7 @@ public void setUpBeforeTest() throws Exception {
             Driver driverID = testGroupData.driver;
             Group groupID = testGroupData.group;
 
-            Vehicle findByDriverInGroup = vehicleDAO.findByDriverInGroup(driverID.getDriverID() ,groupID.getGroupID());
+            Vehicle findByDriverInGroup = vehicleDAO.findByDriverInGroup(driverID.getDriverID(), groupID.getGroupID());
 
             assertTrue(!findByDriverInGroup.equals("0"));
 
@@ -278,9 +276,10 @@ public void setUpBeforeTest() throws Exception {
         assertEquals("Toyota", vehicleUpdate.getMake(), updatedVehicle.getMake());
         assertEquals("Celica", vehicleUpdate.getModel(), updatedVehicle.getModel());
         assertEquals(2008, vehicleUpdate.getYear(), updatedVehicle.getYear());
-        assertEquals(2, vehicle.getGroupID(), updatedVehicle.getGroupID());
-        assertEquals("VIN" + randomInt, vehicle.getVIN(), updatedVehicle.getVIN());
-        assertEquals(1, vehicle.getStatus().getCode(), updatedVehicle.getStatus().getCode());
+        assertEquals(2, vehicleUpdate.getGroupID(), updatedVehicle.getGroupID());
+        assertEquals("VIN" + randomInt, vehicleUpdate.getVIN(), updatedVehicle.getVIN());
+        assertEquals(1, vehicleUpdate.getStatus().getCode(), updatedVehicle.getStatus().getCode());
+        assertEquals("Red", vehicleUpdate.getColor(), updatedVehicle.getColor());
 
 
         //delete vehicle when finish
@@ -288,19 +287,18 @@ public void setUpBeforeTest() throws Exception {
 
     }
 
-     @Test
-    public void latLngDistanceTest(){
-         VehicleJDBCDAO vehicleDAO = new VehicleJDBCDAO();
-         DataSource dataSource = new ITDataSource().getRealDataSource();
-         vehicleDAO.setDataSource(dataSource);
-         double distanceTest1=vehicleDAO.latLngDistance(44.433841, 26.137519, 44.438437, 26.118293);
-         double distanceTest2=vehicleDAO.latLngDistance(44.379516, 25.986233, 44.438437, 26.118293);
-         double dt1=Math.round(distanceTest1 * 100.0) / 100.0;
-         double dt2=Math.round(distanceTest2 * 100.0) / 100.0;
-         assertTrue(dt1==1.0);
-         assertTrue(dt2==7.68);
+    @Test
+    public void latLngDistanceTest() {
+        VehicleJDBCDAO vehicleDAO = new VehicleJDBCDAO();
+        DataSource dataSource = new ITDataSource().getRealDataSource();
+        vehicleDAO.setDataSource(dataSource);
+        double distanceTest1 = vehicleDAO.latLngDistance(44.433841, 26.137519, 44.438437, 26.118293);
+        double distanceTest2 = vehicleDAO.latLngDistance(44.379516, 25.986233, 44.438437, 26.118293);
+        double dt1 = Math.round(distanceTest1 * 100.0) / 100.0;
+        double dt2 = Math.round(distanceTest2 * 100.0) / 100.0;
+        assertTrue(dt1 == 1.0);
+        assertTrue(dt2 == 7.68);
 
-     }
-
+    }
 
 }
