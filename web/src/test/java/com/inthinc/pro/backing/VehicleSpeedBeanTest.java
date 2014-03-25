@@ -7,9 +7,13 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.TimeZone;
 
+import com.inthinc.pro.map.AddressLookup;
+import com.inthinc.pro.map.GoogleAddressLookup;
+import com.inthinc.pro.model.event.SeatBeltEvent;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -99,6 +103,8 @@ public class VehicleSpeedBeanTest extends BaseBeanTest
         SpeedingEvent se = new SpeedingEvent();
         se.setSpeedLimit(45);
         se.setTime(new Date());
+        se.setLatitude(32.96453094482422);
+        se.setLongitude(-117.12944793701172);
         
         DateFormat dateFormatter = new SimpleDateFormat(MessageUtil.getMessageString("dateTimeFormat"),LocaleBean.getCurrentLocale());
         EventReportItem eri = new EventReportItem(se, TimeZone.getTimeZone("MST"),MeasurementType.ENGLISH, dateFormatter);
@@ -107,6 +113,24 @@ public class VehicleSpeedBeanTest extends BaseBeanTest
         vehicleSpeedBean.setEvents(speedingEvents);
         vehicleSpeedBean.setSelectedBreakdown("FOURTYONE");
         assertTrue(vehicleSpeedBean.getEvents().size() > 0);
+
+        //buildReport with event manually added because date is null for scoreList for the specific vehicle
+        Vehicle veh = new Vehicle();
+
+        veh.setDriverID(999994999);
+        veh.setVehicleID(999994999);
+        veh.setGroupID(999994999);
+
+        vehicleSpeedBean.setVehicle(veh);
+
+        Locale locale = new Locale("en", "US");
+        AddressLookup addressLookup  = new GoogleAddressLookup();
+        addressLookup.setLocale(locale);
+        vehicleSpeedBean.setReportAddressLookupBean(addressLookup);
+        vehicleSpeedBean.setDisabledGoogleMapsInReportsAddressLookupBean(addressLookup);
+
+        assertNotNull(vehicleSpeedBean.buildReport());
+
 
     }
 }
