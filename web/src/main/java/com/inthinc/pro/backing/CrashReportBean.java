@@ -574,7 +574,7 @@ public class CrashReportBean extends BaseBean {
         return crashReportTrip;
     }
     
-    private void populateAddresses(List<Event> crashEvents) {
+    public void populateAddresses(List<Event> crashEvents) {
     	DateTime crashTime = new DateTime(crashReport.getDate());
     	long absTimeDiff;
     	long diff=0;
