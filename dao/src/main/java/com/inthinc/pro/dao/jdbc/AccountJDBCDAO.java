@@ -2,6 +2,8 @@ package com.inthinc.pro.dao.jdbc;
 
 import com.inthinc.pro.dao.AccountDAO;
 import com.inthinc.pro.model.Account;
+import com.inthinc.pro.model.Address;
+import com.inthinc.pro.model.State;
 import com.inthinc.pro.model.Status;
 import com.mysql.jdbc.Statement;
 import org.apache.commons.lang.NotImplementedException;
@@ -29,7 +31,7 @@ public class AccountJDBCDAO extends SimpleJdbcDaoSupport implements AccountDAO {
     private static final String FIND_ALL_ACCOUNT_IDS = "SELECT acctID FROM  account ";
     private static final String DEL_ACCOUNT_BY_ID = "delete from account where acctID = ?";
     private static final String INSERT_ACCOUNT="INSERT INTO account() values()";
-    private static final String FIND_BY_ID = "select * from account ac where ac.acctID= :acctID" ;
+    private static final String FIND_BY_ID = "select * from account ac, address ad where ac.mailId= ad.addrId and ac.acctID= :acctID" ;
     private static final String UPDATE_ACCOUNT_1 = "UPDATE account set zonePublishDate=?, status=?, billID=?, mailID=?, name=?, hos=?, unkDriverID=? where acctID = ?";
     //zonePublishDate=1395295237, status=1, billID=1, mailID=1, name=acct of racers, hos=1, acctID=1, serialVersionUID=2388000038869935798, unkDriverID=1
 
@@ -160,6 +162,18 @@ updateAcct( 1, {zonePublishDate=1395295237, status=1, billID=1, mailID=1, name=a
             account.setAcctName(rs.getString("ac.name"));
             account.setUnkDriverID(rs.getInt("ac.unkDriverID"));
             account.setBillID(rs.getInt("ac.billID"));
+            account.setAddressID(rs.getInt("ac.mailId"));
+            account.setZonePublishDate(rs.getDate("ac.zonePublishDate"));
+            Address addres =new Address ();
+            addres.setAccountID(rs.getInt("ad.acctID"));
+            addres.setAddr1(rs.getString("ad.addr1"));
+            addres.setAddr2(rs.getString("ad.addr2"));
+            addres.setAddrID(rs.getInt("ad.addrID"));
+            addres.setCity(rs.getString("ad.city"));
+            addres.setState(State.valueOf(rs.getInt("ad.stateID")));
+            addres.setZip(rs.getString("ad.zip"));
+
+            account.setAddress(addres);
             return account;
         }
     };
