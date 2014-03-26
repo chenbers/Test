@@ -33,7 +33,7 @@ public class AccountJDBCDAO extends SimpleJdbcDaoSupport implements AccountDAO {
     private static final String FIND_ALL_ACCOUNT_IDS = "SELECT acctID FROM  account ";
     private static final String DEL_ACCOUNT_BY_ID = "delete from account where acctID = ?";
     private static final String INSERT_ACCOUNT="INSERT INTO account() values()";
-    private static final String FIND_BY_ID = "select * from account ac, address ad where ac.mailId= ad.addrId and ac.acctID= :acctID" ;
+    private static final String FIND_BY_ID = "select * from account ac LEFT JOIN address ad on ac.mailId= ad.addrId where  ac.acctID= :acctID" ;
     private static final String UPDATE_ACCOUNT_1 = "UPDATE account set zonePublishDate=?, status=?, billID=?, mailID=?, name=?, hos=?, unkDriverID=? where acctID = ?";
     private static final String UPDATE_ACCOUNT_SUPPORT_PHONE1 = "UPDATE accountProp set value=? where acctID = ? and name like 'supportPhone1'";
     private static final String UPDATE_ACCOUNT_SUPPORT_PHONE2 = "UPDATE accountProp set value=? where acctID = ? and name like 'supportPhone2'";
@@ -100,20 +100,7 @@ public class AccountJDBCDAO extends SimpleJdbcDaoSupport implements AccountDAO {
 
     @Override
     public Integer create(Integer id, final Account account) {
-        JdbcTemplate jdbcTemplate = getJdbcTemplate();
-        KeyHolder keyHolder = new GeneratedKeyHolder();
-        PreparedStatementCreator psc = new PreparedStatementCreator() {
-            @Override
-            public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
-                PreparedStatement ps = con.prepareStatement(INSERT_ACCOUNT, Statement.RETURN_GENERATED_KEYS);
-
-                return ps;
-            }
-
-        };
-        jdbcTemplate.update(psc, keyHolder);
-        return keyHolder.getKey().intValue();
-//        throw new NotImplementedException();
+        throw new NotImplementedException();
     }
 
     @Override
@@ -217,7 +204,6 @@ public class AccountJDBCDAO extends SimpleJdbcDaoSupport implements AccountDAO {
     @Override
     public Integer deleteByID(Integer id) {
         return getJdbcTemplate().update(DEL_ACCOUNT_BY_ID, new Object[]{id});
-//        throw new NotImplementedException();
     }
     private ParameterizedRowMapper<Account> accountParameterizedRowMapper = new ParameterizedRowMapper<Account>() {
         @Override
