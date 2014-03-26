@@ -4,25 +4,19 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import org.joda.time.DateTime;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 import com.inthinc.pro.dao.CrashReportDAO;
-import com.inthinc.pro.dao.EventDAO;
 import com.inthinc.pro.model.CrashReport;
 import com.inthinc.pro.model.Trip;
 import com.inthinc.pro.model.event.Event;
-import com.inthinc.pro.model.event.EventSubCategory;
-import com.inthinc.pro.model.event.NoteType;
 
 
 public class CrashReportBeanTest extends  BaseBeanTest{
 	
 	private CrashReportDAO crashReportDAO;
-	
-	private EventDAO eventDAO;
 	
 	private Trip crashReportTrip;
 
@@ -42,11 +36,7 @@ public class CrashReportBeanTest extends  BaseBeanTest{
 						
 		crashReportBean.setCrashReport(getCrashReport());
 		crashReport = crashReportBean.getCrashReport();
-		assertNotNull(crashReport);
-				
-		crashReportBean.setEventDAO(getEventDAO());
-		eventDAO = crashReportBean.getEventDAO();
-		assertNotNull(eventDAO);
+		assertNotNull(crashReport);		
 	}
 
 	@After
@@ -58,11 +48,6 @@ public class CrashReportBeanTest extends  BaseBeanTest{
 		return crashReportDAO;
 	}
 	
-	public EventDAO getEventDAO() {
-		eventDAO = (EventDAO)applicationContext.getBean("eventDAO");
-		return eventDAO;
-	}
-	
 	public CrashReport getCrashReport() {
 		CrashReport crashReport = new CrashReport();
 		crashReport.setDriverID(1627);
@@ -71,26 +56,6 @@ public class CrashReportBeanTest extends  BaseBeanTest{
 		crashReport.setLat(0.0);
 		crashReport.setLng(0.0);
 		return crashReport;		
-	}
-	
-	public List<NoteType> getCrashEventTypeList() {
-
-		// Crash Event Type List to retrieve it from eventDao
-		List<NoteType> crashEventTypeList = new ArrayList<NoteType>();
-		crashEventTypeList.add(NoteType.CRASH_DATA);
-		crashEventTypeList.add(NoteType.FULLEVENT);
-		crashEventTypeList.add(NoteType.SEATBELT);
-		crashEventTypeList.addAll(EventSubCategory.SPEED
-				.getNoteTypesInSubCategory());
-		crashEventTypeList.add(NoteType.ACCELERATION);
-		crashEventTypeList.add(NoteType.LOCATION);
-		crashEventTypeList.add(NoteType.PARKING_BRAKE);
-		crashEventTypeList.addAll(EventSubCategory.DRIVING_STYLE
-				.getNoteTypesInSubCategory());
-		crashEventTypeList.add(NoteType.DSS_MICROSLEEP);
-		crashEventTypeList.add(NoteType.BACKING);
-
-		return crashEventTypeList;
 	}
 	
 	@Test
