@@ -6,6 +6,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import com.inthinc.pro.dao.DriverDAO;
+import com.inthinc.pro.dao.VehicleDAO;
 import org.apache.log4j.Logger;
 
 import com.inthinc.pro.dao.FindByKey;
@@ -22,6 +24,8 @@ public class PersonHessianDAO extends GenericHessianDAO<Person, Integer> impleme
     private static final Logger logger = Logger.getLogger(PersonHessianDAO.class);
 
     private static final String CENTRAL_ID_KEY = "priEmail";
+    private DriverDAO driverDAO;
+
 
     @Override
     public Integer create(Integer acctID, Person person)
@@ -45,7 +49,7 @@ public class PersonHessianDAO extends GenericHessianDAO<Person, Integer> impleme
         if (person.getDriver() != null && (person.getDriver().getDriverID() == null || person.getDriver().getDriverID().intValue() == 0))
         {
             person.getDriver().setPersonID(personID);
-            Integer driverID = getReturnKey(getSiloService().createDriver(personID, getMapper().convertToMap(person.getDriver())), Driver.class);
+            Integer driverID = driverDAO.create(person.getDriver().getDriverID(), person.getDriver());
             person.getDriver().setDriverID(driverID);
         }
 
@@ -308,5 +312,13 @@ public class PersonHessianDAO extends GenericHessianDAO<Person, Integer> impleme
     @Override
     public List<Person> getPeopleInAccount(Integer acctID) {
         return getMapper().convertToModelObject(getSiloService().getPersonsByAcctID(acctID), Person.class);
+    }
+
+    public DriverDAO getDriverDAO() {
+        return driverDAO;
+    }
+
+    public void setDriverDAO(DriverDAO driverDAO) {
+        this.driverDAO = driverDAO;
     }
 }
