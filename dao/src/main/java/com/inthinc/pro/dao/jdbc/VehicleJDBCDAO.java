@@ -14,6 +14,7 @@ import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.Interval;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.dao.IncorrectResultSizeDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
@@ -79,20 +80,12 @@ public class VehicleJDBCDAO extends SimpleJdbcDaoSupport implements VehicleDAO {
 
     private static final String GET_VEHICLE_NAME="select vehicleID, name from vehicle where groupID = :groupID";
 
-    private static final String FIND_BY_D = "SELECT * FROM vehicle v " +
-            "LEFT JOIN groups g USING (groupID) " +
-            "LEFT OUTER JOIN vddlog vdd ON (v.vehicleID = vdd.vehicleID) " +
-            "LEFT OUTER JOIN device d ON (d.deviceID = vdd.deviceID) " +
-            "LEFT OUTER JOIN driver dr ON (dr.driverID = vdd.driverID) " +
-            "LEFT OUTER JOIN person p ON (dr.personID = p.personID) " +
-            "LEFT OUTER JOIN driverPerformance dp ON (dr.driverID = dp.driverID)";
+    private static final String GET_VEHICLE = FIND_BY + " where v.groupID= :groupID";
 
-    private static final String GET_VEHICLE = FIND_BY_D + " where v.groupID= :groupID";
+    private static final String FIND_BY_DRIVER_ID = FIND_BY + " where dr.driverID = :driverID";
 
-    private static final String FIND_BY_DRIVER_ID = FIND_BY_D + " where dr.driverID = :driverID order by vdd.stop is null limit 1";
-
-    private static final String FIND_BY_DRIVER_IN_GROUP = FIND_BY_D + " where dr.driverID = :driverID and v.groupID = :groupID";
-    private static final String FIND_BY_VIN = FIND_BY_D +" where v.vin like :vin";
+    private static final String FIND_BY_DRIVER_IN_GROUP = FIND_BY + " where dr.driverID = :driverID and v.groupID = :groupID";
+    private static final String FIND_BY_VIN = FIND_BY +" where v.vin like :vin";
     private static final String FIND_BY_VEHICLEID ="select * from vehicle where vehicleID=:vehicleID";
     private static final String GROUP_ID_DEEP = FIND_BY +" where v.groupID in (select groupID from groups where groupPath like :groupID) and v.status <> 3";
     private static final String DEL_VEHICLE_BY_ID = "DELETE FROM vehicle WHERE vehicleID = ?";
@@ -116,7 +109,6 @@ public class VehicleJDBCDAO extends SimpleJdbcDaoSupport implements VehicleDAO {
 
     private static final String NEWDEVICE_VEHICLE = "INSERT into vddlog (start, deviceID, vehicleID, imei, acctID, driverID, tzID)" +
                                                             "VALUES (?, ?, ?, ?, ?, ?, ?)";
-
 
      //imei, acctID, baseID, emuFeatureMask, vgroupID, vtype, driverID, dgroupID, tzID
     private static final String GET_IMEI = "select imei from vddlog where deviceID=:deviceID and stop is null";
@@ -240,7 +232,7 @@ public class VehicleJDBCDAO extends SimpleJdbcDaoSupport implements VehicleDAO {
 
             return vehicleList;
 
-        } catch (EmptyResultSetException e) {
+        } catch (EmptyResultDataAccessException e) {
             return Collections.emptyList();
         }
     }
@@ -308,7 +300,6 @@ public class VehicleJDBCDAO extends SimpleJdbcDaoSupport implements VehicleDAO {
         df.setTimeZone(TimeZone.getTimeZone("UTC"));
 
         String stopDate = df.format(toUTC(new Date()));
-        String startDate = df.format(toUTC(new Date()));
         String device = getDeviceID(vehicleID);
 
         if(!getDriverCount(vehicleID).equals("0")){
@@ -346,7 +337,6 @@ public class VehicleJDBCDAO extends SimpleJdbcDaoSupport implements VehicleDAO {
         df.setTimeZone(TimeZone.getTimeZone("UTC"));
 
         String stopDate = df.format(toUTC(new Date()));
-        String startDate = df.format(toUTC(new Date()));
 
         if (getVegicleCount(deviceID).equals("1")) {
 
@@ -447,22 +437,30 @@ public class VehicleJDBCDAO extends SimpleJdbcDaoSupport implements VehicleDAO {
 
     @Override
     public Vehicle findByDriverID(Integer driverID) {
+        try {
             Map<String, Object> params = new HashMap<String, Object>();
             params.put("driverID", driverID);
             StringBuilder vehicleFindByDriver = new StringBuilder(FIND_BY_DRIVER_ID);
             Vehicle veh = getSimpleJdbcTemplate().queryForObject(vehicleFindByDriver.toString(), pagedVehicleRowMapper, params);
-
             return veh;
+        } catch(EmptyResultDataAccessException e){
+            return null;
+        }
+
     }
 
     @Override
     public Vehicle findByDriverInGroup(Integer driverID, Integer groupID) {
+       try {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("driverID", driverID);
         params.put("groupID", groupID);
         StringBuilder findByDriverIn = new StringBuilder(FIND_BY_DRIVER_IN_GROUP);
 
         return getSimpleJdbcTemplate().queryForObject(findByDriverIn.toString(), pagedVehicleRowMapper, params);
+       } catch (EmptyResultDataAccessException e){
+           return null;
+       }
     }
 
     @Override
@@ -494,6 +492,7 @@ public class VehicleJDBCDAO extends SimpleJdbcDaoSupport implements VehicleDAO {
 
     @Override
     public List<DriverLocation> getVehiclesNearLoc(Integer groupID, Integer numof, Double lat, Double lng) {
+        try {
         List <Vehicle> veh = getVehiclesByGroupIDDeep(groupID);
         List<DriverLocation> driverLocations = new ArrayList<DriverLocation>();
 
@@ -535,6 +534,10 @@ public class VehicleJDBCDAO extends SimpleJdbcDaoSupport implements VehicleDAO {
         }
 
         return driverLocations;
+        }
+             catch (EmptyResultDataAccessException e) {
+            return Collections.emptyList();
+        }
     }
 
 
@@ -795,25 +798,6 @@ public class VehicleJDBCDAO extends SimpleJdbcDaoSupport implements VehicleDAO {
             veh.setStatus(Status.valueOf(rs.getInt("status")));
             veh.setVtype(VehicleType.valueOf(rs.getInt("vtype")));
             return veh;
-        }
-    };
-
-    private ParameterizedRowMapper<Trip> tripParameterizedRowMapper = new ParameterizedRowMapper<Trip>() {
-        @Override
-        public Trip mapRow(ResultSet rs, int rowNum) throws SQLException {
-            Trip trip = new Trip();
-
-            trip.setTripID(rs.getLong("tripID"));
-            trip.setDriverID(rs.getInt("driverID"));
-            trip.setVehicleID(rs.getInt("vehicleID"));
-            trip.setModified(rs.getDate("modified"));
-            trip.setStartTime(rs.getDate("startTime"));
-            trip.setEndTime(rs.getDate("endTime"));
-            trip.setMileage(rs.getInt("mileage"));
-            trip.setStatus(rs.getObject("status") == null ? null : TripStatus.valueOf(rs.getInt("status")));
-            trip.setQuality(rs.getObject("quality") == null ? null : TripQuality.valueOf(rs.getInt("quality")));
-
-            return trip;
         }
     };
 
