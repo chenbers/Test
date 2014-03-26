@@ -2,6 +2,8 @@ package com.inthinc.pro.dao.jdbc;
 
 import com.inthinc.pro.dao.AccountDAO;
 import com.inthinc.pro.model.Account;
+import com.inthinc.pro.model.AccountAttributes;
+import com.inthinc.pro.model.AccountHOSType;
 import com.inthinc.pro.model.Address;
 import com.inthinc.pro.model.State;
 import com.inthinc.pro.model.Status;
@@ -33,7 +35,16 @@ public class AccountJDBCDAO extends SimpleJdbcDaoSupport implements AccountDAO {
     private static final String INSERT_ACCOUNT="INSERT INTO account() values()";
     private static final String FIND_BY_ID = "select * from account ac, address ad where ac.mailId= ad.addrId and ac.acctID= :acctID" ;
     private static final String UPDATE_ACCOUNT_1 = "UPDATE account set zonePublishDate=?, status=?, billID=?, mailID=?, name=?, hos=?, unkDriverID=? where acctID = ?";
-    //zonePublishDate=1395295237, status=1, billID=1, mailID=1, name=acct of racers, hos=1, acctID=1, serialVersionUID=2388000038869935798, unkDriverID=1
+    private static final String UPDATE_ACCOUNT_SUPPORT_PHONE1 = "UPDATE accountProp set value=? where acctID = ? and name like 'supportPhone1'";
+    private static final String UPDATE_ACCOUNT_SUPPORT_PHONE2 = "UPDATE accountProp set value=? where acctID = ? and name like 'supportPhone2'";
+    private static final String UPDATE_ACCOUNT_SUPPORT_PHONE3 = "UPDATE accountProp set value=? where acctID = ? and name like 'supportContact3'";
+    private static final String UPDATE_ACCOUNT_SUPPORT_PHONE4 = "UPDATE accountProp set value=? where acctID = ? and name like 'supportContact4'";
+    private static final String UPDATE_ACCOUNT_SUPPORT_PHONE5 = "UPDATE accountProp set value=? where acctID = ? and name like 'supportContact5'";
+    private static final String FIND_PHONE1 = "select ap.value from accountProp ap where   ap.name like 'supportPhone1' and ap.acctId =:acctID";
+    private static final String FIND_PHONE2 = "select  ap.value from accountProp ap where   ap.name like 'supportPhone2' and ap.acctId =:acctID";
+    private static final String FIND_CONTACT3 = "select ap.value from accountProp ap where   ap.name like 'supportContact3' and ap.acctId =:acctID";
+    private static final String FIND_CONTACT4 = "select  ap.value from accountProp ap where   ap.name like 'supportContact4' and ap.acctId =:acctID";
+    private static final String FIND_CONTACT5 = "select  ap.value from accountProp ap where   ap.name like 'supportContact5' and ap.acctId =:acctID";
 
     @Override
     public List<Long> getAllValidAcctIDs() {
@@ -85,7 +96,6 @@ public class AccountJDBCDAO extends SimpleJdbcDaoSupport implements AccountDAO {
         StringBuilder findAccount = new StringBuilder(FIND_BY_ID);
         Account account = getSimpleJdbcTemplate().queryForObject(findAccount.toString(), accountParameterizedRowMapper, args);
         return account;
-//        throw new NotImplementedException();
     }
 
     @Override
@@ -108,16 +118,8 @@ public class AccountJDBCDAO extends SimpleJdbcDaoSupport implements AccountDAO {
 
     @Override
     public Integer update(final Account account) {
-        /*
-updateAcct( 1, {zonePublishDate=1395295237, status=1, billID=1, mailID=1, name=acct of racers, hos=1, acctID=1, serialVersionUID=2388000038869935798, unkDriverID=1,
- props={formsEnabled=true, driveTimeViolationsReportEnabled=false, supportContact3=, supportContact4=, eventQueueEnabled=false, supportContact5=, trailersEnabled=true,
- passwordChange=0, waySmart=true, rhaEnabled=true, noReplyEmail=, phoneAlertsActive=1, supportPhone1=, supportPhone2=, serialVersionUID=1, passwordStrength=0}})
-
-"UPDATE account set zonePublishDate=?, status=?, billID=?, mailID=?, name=?, hos=?, unkDriverID=? where acctID = ?";
-        * */
 
         JdbcTemplate jdbcTemplate = getJdbcTemplate();
-        KeyHolder keyHolder = new GeneratedKeyHolder();
         PreparedStatementCreator psc = new PreparedStatementCreator() {
             @Override
             public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
@@ -131,10 +133,9 @@ updateAcct( 1, {zonePublishDate=1395295237, status=1, billID=1, mailID=1, name=a
                 }
 
                 ps.setInt(3, account.getBillID());
-                //mailId ?
-                ps.setInt(4, 1);
+                ps.setInt(4, account.getAddressID());
                 ps.setString(5, account.getAcctName());
-                ps.setObject(6, account.getHos());
+                ps.setInt(6, account.getHos().getCode());
                 ps.setInt(7,account.getUnkDriverID());
                 ps.setInt(8, account.getAccountID());
 
@@ -143,9 +144,74 @@ updateAcct( 1, {zonePublishDate=1395295237, status=1, billID=1, mailID=1, name=a
             }
 
         };
-        jdbcTemplate.update(psc, keyHolder);
-        return keyHolder.getKey().intValue();
-//        throw new NotImplementedException();
+        PreparedStatementCreator psc_contact1 = new PreparedStatementCreator() {
+            @Override
+            public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
+                PreparedStatement ps = con.prepareStatement(UPDATE_ACCOUNT_SUPPORT_PHONE1, Statement.RETURN_GENERATED_KEYS);
+                ps.setString(1,account.getProps().getSupportContact1());
+                ps.setInt(2,account.getAccountID() );
+
+                logger.debug(ps.toString());
+                return ps;
+            }
+
+        };
+        PreparedStatementCreator psc_contact2 = new PreparedStatementCreator() {
+            @Override
+            public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
+                PreparedStatement ps = con.prepareStatement(UPDATE_ACCOUNT_SUPPORT_PHONE2, Statement.RETURN_GENERATED_KEYS);
+                ps.setString(1,account.getProps().getSupportContact2());
+                ps.setInt(2,account.getAccountID() );
+
+                logger.debug(ps.toString());
+                return ps;
+            }
+
+        };
+        PreparedStatementCreator psc_contact3 = new PreparedStatementCreator() {
+            @Override
+            public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
+                PreparedStatement ps = con.prepareStatement(UPDATE_ACCOUNT_SUPPORT_PHONE3, Statement.RETURN_GENERATED_KEYS);
+                ps.setString(1,account.getProps().getSupportContact3());
+                ps.setInt(2,account.getAccountID() );
+
+                logger.debug(ps.toString());
+                return ps;
+            }
+
+        };
+
+        PreparedStatementCreator psc_contact4 = new PreparedStatementCreator() {
+            @Override
+            public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
+                PreparedStatement ps = con.prepareStatement(UPDATE_ACCOUNT_SUPPORT_PHONE4, Statement.RETURN_GENERATED_KEYS);
+                ps.setString(1,account.getProps().getSupportContact4());
+                ps.setInt(2,account.getAccountID() );
+
+                logger.debug(ps.toString());
+                return ps;
+            }
+
+        };PreparedStatementCreator psc_contact5 = new PreparedStatementCreator() {
+            @Override
+            public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
+                PreparedStatement ps = con.prepareStatement(UPDATE_ACCOUNT_SUPPORT_PHONE5, Statement.RETURN_GENERATED_KEYS);
+                ps.setString(1,account.getProps().getSupportContact5());
+                ps.setInt(2,account.getAccountID() );
+
+                logger.debug(ps.toString());
+                return ps;
+            }
+
+        };
+        jdbcTemplate.update(psc);
+        jdbcTemplate.update(psc_contact1);
+        jdbcTemplate.update(psc_contact2);
+        jdbcTemplate.update(psc_contact3);
+        jdbcTemplate.update(psc_contact4);
+        jdbcTemplate.update(psc_contact5);
+
+        return account.getAccountID();
     }
 
     @Override
@@ -164,6 +230,21 @@ updateAcct( 1, {zonePublishDate=1395295237, status=1, billID=1, mailID=1, name=a
             account.setBillID(rs.getInt("ac.billID"));
             account.setAddressID(rs.getInt("ac.mailId"));
             account.setZonePublishDate(rs.getDate("ac.zonePublishDate"));
+
+            AccountAttributes accountAttributes= new AccountAttributes();
+            Map<String, Object> args = new HashMap<String, Object>();
+            args.put("acctID", 1);
+            String accountPhone1 = getSimpleJdbcTemplate().queryForObject(FIND_PHONE1,String.class, args);
+            String accountPhone2 = getSimpleJdbcTemplate().queryForObject(FIND_PHONE2,String.class, args);
+            String accountContact3 = getSimpleJdbcTemplate().queryForObject(FIND_CONTACT3,String.class, args);
+            String accountContact4 = getSimpleJdbcTemplate().queryForObject(FIND_CONTACT4,String.class, args);
+            String accountContact5 = getSimpleJdbcTemplate().queryForObject(FIND_CONTACT5,String.class, args);
+            accountAttributes.setSupportContact1(accountPhone1);
+            accountAttributes.setSupportContact2(accountPhone2);
+            accountAttributes.setSupportContact3(accountContact3);
+            accountAttributes.setSupportContact4(accountContact4);
+            accountAttributes.setSupportContact5(accountContact5);
+
             Address addres =new Address ();
             addres.setAccountID(rs.getInt("ad.acctID"));
             addres.setAddr1(rs.getString("ad.addr1"));
@@ -174,6 +255,8 @@ updateAcct( 1, {zonePublishDate=1395295237, status=1, billID=1, mailID=1, name=a
             addres.setZip(rs.getString("ad.zip"));
 
             account.setAddress(addres);
+            account.setProps(accountAttributes);
+            account.setHos(AccountHOSType.valueOf(rs.getInt("ac.hos")));
             return account;
         }
     };
@@ -185,4 +268,5 @@ updateAcct( 1, {zonePublishDate=1395295237, status=1, billID=1, mailID=1, name=a
             return accountList;
         }
     };
+
 }
