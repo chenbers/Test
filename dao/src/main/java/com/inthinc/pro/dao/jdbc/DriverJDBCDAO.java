@@ -98,6 +98,43 @@ public class DriverJDBCDAO extends SimpleJdbcDaoSupport implements DriverDAO {
 
     private static final DateTimeFormatter dateFormatter = DateTimeFormat.forPattern(" yyyy-MM-dd HH:mm:ss.SZ");
 
+    private ParameterizedRowMapper<Driver> driverMapper = new ParameterizedRowMapper<Driver>(){
+        @Override
+        public Driver mapRow(ResultSet rs, int rowNum) throws SQLException {
+            Driver driver = new Driver();
+            driver.setDriverID(rs.getInt("d.driverID"));
+            driver.setGroupID(rs.getInt("d.groupID"));
+            driver.setStatus(Status.valueOf(rs.getInt("d.status")));
+            driver.setLicense(rs.getString("d.license"));
+            driver.setLicenseClass(rs.getString("d.class"));
+            driver.setState(States.getStateById(rs.getInt("d.stateID")));
+            driver.setExpiration(rs.getDate("d.expiration", calendar));
+            driver.setCertifications(rs.getString("d.certs"));
+            driver.setDot(RuleSetType.valueOf(rs.getInt("d.dot")));
+            driver.setBarcode(rs.getString("d.barcode"));
+            driver.setRfid1(rs.getObject("d.rfid1") == null ? null : rs.getLong("d.rfid1"));
+            driver.setRfid2(rs.getObject("d.rfid2")== null ? null : rs.getLong("d.rfid2"));
+            driver.setFobID(rs.getString("d.fobID"));
+
+            Person person = new Person();
+            person.setPersonID(rs.getInt("d.personID"));
+            person.setFirst(rs.getString("p.first"));
+            person.setLast(rs.getString("p.last"));
+            person.setDriver(driver);
+            driver.setPerson(person);
+            return driver;
+        }
+    };
+
+    @Override
+    public List<Driver> getDriversInGroupIDList(List<Integer> groupIDList) {
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("group_list", groupIDList);
+        String select = "select d.*, p.first,p.last from driver d left outer join person p on d.personID = p.personID where d.status != 3 and d.groupID in (:group_list)";
+        List<Driver> driverList = getSimpleJdbcTemplate().query(select, driverMapper, params);
+        return driverList;
+    }
+
     @Override
     public List<Driver> getAllDrivers(Integer groupID) {
         Map<String, Object> params = new HashMap<String, Object>();
