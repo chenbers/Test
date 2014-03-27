@@ -95,7 +95,7 @@ public class DriverCoachingReportCriteriaTest extends BaseUnitTest {
 
     @Test
     public void testGetCustomInterval() throws IllegalAccessException, InstantiationException {
-        DateTime today = new DateTime();
+        DateTime today = new DateTime(DateTimeZone.UTC);
         Interval baseInterval = new Interval(new DateMidnight(today.minusDays(3)).getMillis(), new DateMidnight(today.plusDays(1)).getMillis(), DateTimeZone.UTC); //delta = 4 days
 
         // minimal builder
@@ -130,9 +130,9 @@ public class DriverCoachingReportCriteriaTest extends BaseUnitTest {
             Interval interval = entry.getKey();
             CustomExpectation exp = entry.getValue();
 
-            System.out.println("Testing for "+exp.timeFrameName);
-            assertEquals(interval.getStart().toDateMidnight(), exp.start.toDateMidnight());
-            assertEquals(interval.getEnd().toDateMidnight(), exp.end.toDateMidnight());
+            System.out.println("Testing for "+exp.timeFrameName + " " + interval);
+            assertEquals("Start " + exp.timeFrameName, interval.getStart().toDateMidnight(), exp.start.toDateMidnight());
+            assertEquals("End " + exp.timeFrameName, interval.getEnd().toDateMidnight(), exp.end.toDateMidnight());
         }
     }
 }

@@ -1,5 +1,22 @@
 package com.inthinc.pro.dao.jdbc;
 
+import com.inthinc.pro.dao.GroupDAO;
+import com.inthinc.pro.model.Address;
+import com.inthinc.pro.model.DOTOfficeType;
+import com.inthinc.pro.model.Group;
+import com.inthinc.pro.model.GroupStatus;
+import com.inthinc.pro.model.GroupType;
+import com.mysql.jdbc.Statement;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
+import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.PreparedStatementCreator;
+import org.springframework.jdbc.core.simple.ParameterizedRowMapper;
+import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -9,23 +26,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.PreparedStatementCreator;
-import org.springframework.jdbc.core.simple.ParameterizedRowMapper;
-import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
-import org.springframework.jdbc.support.GeneratedKeyHolder;
-import org.springframework.jdbc.support.KeyHolder;
-
-import com.inthinc.pro.dao.GroupDAO;
-import com.inthinc.pro.model.Address;
-import com.inthinc.pro.model.DOTOfficeType;
-import com.inthinc.pro.model.Group;
-import com.inthinc.pro.model.GroupStatus;
-import com.inthinc.pro.model.GroupType;
-import com.mysql.jdbc.Statement;
 
 
 public class GroupJDBCDAO extends SimpleJdbcDaoSupport implements GroupDAO {
@@ -84,6 +84,17 @@ public class GroupJDBCDAO extends SimpleJdbcDaoSupport implements GroupDAO {
             groupItem.setAddress(address);
             groupItem.setAddressID(address.getAddrID());
             groupItem.setType(rs.getObject("level") == null ? null : GroupType.valueOf(rs.getInt("level")));
+
+            return groupItem;
+        }
+    };
+
+    private ParameterizedRowMapper<Group> groupPathParameterizedRow = new ParameterizedRowMapper<Group>() {
+        @Override
+        public Group mapRow(ResultSet rs, int rowNum) throws SQLException {
+            Group groupItem = new Group();
+            groupItem.setGroupID(rs.getInt("groupID"));
+            groupItem.setParentID(getIntOrNullFromRs(rs, "parentID"));
 
             return groupItem;
         }
@@ -353,14 +364,64 @@ public class GroupJDBCDAO extends SimpleJdbcDaoSupport implements GroupDAO {
         return newAddress;
     }
 
-    private void updateGroupPathById(Integer groupID) {
+    /**
+     * Calculates the group path by id (recursive).
+     *
+     * @param groupID group id
+     * @return path
+     */
+    public String determineGroupPathById(Integer groupID){
+        if (groupID.equals(0)){
+            return "/0/";
+        } else {
+            Group group = findFastById(groupID);
+            return determineGroupPathById(group.getParentID()) + groupID +"/";
+        }
+    }
+
+    /**
+     * Updates a group's path by id.
+     *
+     * @param groupID group id
+     */
+    public void updateGroupPathById(Integer groupID) {
         try {
-            Map<String, String> params = new HashMap<String, String>();
-            params.put("groupID", String.valueOf(groupID));
-            getSimpleJdbcTemplate().update("call updateGroupPathById(:groupID)",params);
+            String path = determineGroupPathById(groupID);
+            updateGroupPath(groupID, path);
         } catch (Throwable t) {
             logger.error("Unable to update group path for id: " + groupID);
         }
+    }
+
+    /**
+     * Finds a group by id but only binds the group id and parent id.
+     * It's used to speed up {@link #updateGroupPathById}
+     *
+     * @param groupID group id
+     * @return group with id and parent id bound
+     */
+    public Group findFastById(Integer groupID) {
+        String curGroupsSql = "select groupID, parentID from siloDB.groups where groupID = :groupID";
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("groupID", String.valueOf(groupID));
+
+        return getSimpleJdbcTemplate().queryForObject(curGroupsSql, groupPathParameterizedRow, params);
+    }
+
+    /**
+     * Updates a group's path by group id.
+     *
+     * @param groupID group id
+     * @param path    new path
+     */
+    public void updateGroupPath(final Integer groupID, final String path) {
+        final String updateGroupPath = "update groups set groupPath = :groupPath where groupID = :groupID and(groupPath != :groupPath OR groupPath is null)";
+
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("groupPath", path);
+        params.put("groupID", String.valueOf(groupID));
+
+        getSimpleJdbcTemplate().update(updateGroupPath, params);
     }
 }
 

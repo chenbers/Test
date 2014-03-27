@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
 
+import com.inthinc.pro.model.Vehicle;
 import org.joda.time.DateMidnight;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
@@ -114,6 +115,11 @@ public class BasePerformanceUnitTest extends BaseUnitTest {
             List<Driver> retVal = new ArrayList<Driver>();
             retVal.add(MockData.createMockDriver(ACCOUNT_ID, DRIVER_ID, GROUP_ID, "L1", "F1", Status.ACTIVE));
             return retVal;
+        }
+
+        @Override
+        public List<Driver> getDriversInGroupIDList(List<Integer> groupIDList) {
+            return null;
         }
 
         @Override

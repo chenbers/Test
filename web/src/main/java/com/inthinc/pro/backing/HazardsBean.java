@@ -290,6 +290,7 @@ public class HazardsBean extends BaseBean {
             item.setHazardID(adminHazardJDBCDAO.create(item.getAccountID(),item));
 
             Hazard newItem = adminHazardJDBCDAO.findByID(item.getHazardID());
+            newItem.setRadiusUnits(item.getRadiusUnits());
             hazards.put(newItem.getHazardID(), newItem);
         } else {
             adminHazardJDBCDAO.update(item);

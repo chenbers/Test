@@ -23,6 +23,7 @@ import com.inthinc.pro.model.LastLocation;
 import com.inthinc.pro.model.LatLng;
 import com.inthinc.pro.model.Trip;
 import com.inthinc.pro.model.Vehicle;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 public class DriverHessianDAO extends GenericHessianDAO<Driver, Integer> implements DriverDAO
 {
@@ -74,6 +75,12 @@ public class DriverHessianDAO extends GenericHessianDAO<Driver, Integer> impleme
         
         return driverList;
     }
+
+    @Override
+    public List<Driver> getDriversInGroupIDList(List<Integer> groupIDList) {
+        throw new NotImplementedException();
+    }
+
     @Override
     public List<DriverName> getDriverNames(Integer groupID)
     {
