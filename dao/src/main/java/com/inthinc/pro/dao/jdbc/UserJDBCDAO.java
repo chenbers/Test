@@ -14,6 +14,7 @@ import com.inthinc.pro.model.security.AccessPoint;
 import com.mysql.jdbc.Statement;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.simple.ParameterizedRowMapper;
@@ -21,10 +22,12 @@ import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 
+import java.lang.reflect.Type;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Types;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -32,19 +35,14 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.TimeZone;
 
 public class UserJDBCDAO extends SimpleJdbcDaoSupport implements UserDAO {
 
-    //    private static final String SELECT_USER_STRING ="Select t.tzName,p.personID, p.acctID, p.tzID, p.modified, p.status, p.measureType, p.fuelEffType, p.addrID, p.locale, p.reportsTo," +
-//            "    p.title,p.dept,p.empid, p.first, p.middle, p.last,p.suffix, p.gender, p.height, p.weight, p.dob, p.info, p.warn, p.crit, p.priEmail, p.secEmail, p.priPhone," +
-//            "    p.secPhone, p.priText, p.secText, u.userID, u.groupID, u.personID, u.status, u.modified, u.lastLogin, u.passwordDT, u.password, u.username, u.mapType " +
-//            "    from user u, person p,timezone t  where d.driverID = :driverID and p.personID = d.personID and p.tzID=t.tzID; ";
-    //    private static final String SELECT_USER_STRING = "select u.userID, u.groupID, u.personID, u.status, u.modified, u.lastLogin, u.passwordDT, u.password, u.username, u.mapType from user u where 1=1 ";
-
     private static final String ROLE_ACCESS_SELECT = "SELECT DISTINCT ra.mode, ra.accessPtID, mode FROM roleAccess ra WHERE roleID IN (:roleID)";
-    private static final String ROLE_SELECT = "SELECT u.userID, u.roleID FROM role as r JOIN userRole as u USING (roleID) WHERE u.userID IN (:userID)";
+    private static final String ROLE_SELECT = "SELECT u.userID, u.roleID FROM role as r JOIN userRole as u USING (roleID) WHERE u.userID = :userID";
     private static final String MAP_LAYERS_SELECT = "SELECT uml.customMapID FROM userMapLayer uml where uml.userID = :userID";
     private static final String SELECT_USER_STRING = "Select t.tzName,p.personID, p.acctID, p.tzID, p.modified, p.status, p.measureType, p.fuelEffType, p.addrID, p.locale," +
             " p.reportsTo, p.title,p.dept,p.empid, p.first, p.middle, p.last,p.suffix, p.gender, p.height, p.weight, p.dob, p.info, p.warn, p.crit, p.priEmail, p.secEmail, p.priPhone," +
@@ -52,10 +50,12 @@ public class UserJDBCDAO extends SimpleJdbcDaoSupport implements UserDAO {
             " timezone t where p.personID = u.personID and p.tzID=t.tzID ";
     private static final String SELECT_USER_STRING_BY_NAME = " and u.username like :username and u.status <> 3";
     private static final String SELECT_USER_STRING_BY_PERSONID = " and u.personID like :personID and u.status <> 3";
-    private static final String SELECT_USER_STRING_BY_ID = " and u.userID like :userID and u.status <> 3";
+    private static final String SELECT_USER_STRING_BY_ID = " and u.userID = :userID";
     private static final String GROUP_ID_DEEP = SELECT_USER_STRING + " and u.groupID in (select groupID from groups where groupPath like :groupID) and u.status <> 3";
-    private static final String INSERT_USER = "insert into user (groupID, personID, status, passwordDT, username, password, mapType)" +
-                                              "VALUES (?, ?, ?, ?, ?, ?, ?)";
+    private static final String INSERT_USER = "INSERT into user (groupID, personID, status, passwordDT, username, password, mapType, modified)" +
+            "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+    private static final String UPDATE_USER = "UPDATE user SET groupID=?, personID=?, status=?, passwordDT=?, username=?, password=?, mapType=?, modified=? WHERE userID=?";
+    private static final String DEL_USER_BY_ID = "DELETE FROM user where userID=?";
 
 
     private ParameterizedRowMapper<User> userParameterizedRow = new ParameterizedRowMapper<User>() {
@@ -63,32 +63,34 @@ public class UserJDBCDAO extends SimpleJdbcDaoSupport implements UserDAO {
         public User mapRow(ResultSet rs, int rowNum) throws SQLException {
 
             Person person = new Person();
+
             person.setPersonID(rs.getInt("p.personID"));
-            person.setAcctID(rs.getInt("p.acctID"));
-            person.setStatus(Status.valueOf(rs.getInt("p.status")));
-            person.setMeasurementType(MeasurementType.valueOf(rs.getInt("p.measureType")));
-            person.setFuelEfficiencyType(FuelEfficiencyType.valueOf(rs.getInt("p.fuelEffType")));
-            person.setAddressID(rs.getInt("p.addrID"));
-            person.setReportsTo(rs.getString("p.reportsTo"));
-            person.setTitle(rs.getString("p.title"));
-            person.setDept(rs.getString("p.dept"));
-            person.setEmpid(rs.getString("p.empid"));
-            person.setFirst(rs.getString("p.first"));
-            person.setMiddle(rs.getString("p.middle"));
-            person.setLast(rs.getString("p.last"));
-            person.setSuffix(rs.getString("p.suffix"));
-            person.setGender(Gender.valueOf(rs.getInt("p.gender")));
-            person.setHeight(rs.getInt("p.height"));
-            person.setDob(rs.getDate("p.dob"));
-            person.setInfo(rs.getInt("p.info"));
-            person.setWarn(rs.getInt("p.warn"));
-            person.setCrit(rs.getInt("p.crit"));
-            person.setPriEmail(rs.getString("p.priEmail"));
-            person.setSecEmail(rs.getString("p.secEmail"));
-            person.setPriPhone(rs.getString("p.priPhone"));
-            person.setSecPhone(rs.getString("p.secPhone"));
-            person.setPriText(rs.getString("p.priText"));
-            person.setSecText(rs.getString("p.secText"));
+            person.setAcctID(getIntOrNullFromRS(rs, "p.acctID"));
+            person.setStatus(rs.getObject("p.status") == null ? null : Status.valueOf(rs.getInt("u.status")));
+            person.setMeasurementType(rs.getObject("p.measureType") == null ? null : MeasurementType.valueOf(rs.getInt("p.measureType")));
+            person.setFuelEfficiencyType(rs.getObject("p.fuelEffType") == null ? null : FuelEfficiencyType.valueOf(rs.getInt("p.fuelEffType")));
+            person.setAddressID(getIntOrNullFromRS(rs, "p.addrID"));
+            person.setLocale(rs.getObject("p.locale") == null ? null : getLocale(rs.getString("p.locale")));
+            person.setReportsTo(getStringOrNullFromRS(rs, "p.reportsTo"));
+            person.setTitle(getStringOrNullFromRS(rs, "p.title"));
+            person.setDept(getStringOrNullFromRS(rs, "p.dept"));
+            person.setEmpid(getStringOrNullFromRS(rs, "p.empid"));
+            person.setFirst(getStringOrNullFromRS(rs, "p.first"));
+            person.setMiddle(getStringOrNullFromRS(rs, "p.middle"));
+            person.setLast(getStringOrNullFromRS(rs, "p.last"));
+            person.setSuffix(getStringOrNullFromRS(rs, "p.suffix"));
+            person.setGender(rs.getObject("p.gender") == null ? null : Gender.valueOf(rs.getInt("p.gender")));
+            person.setHeight(getIntOrNullFromRS(rs, "p.height"));
+            person.setDob(rs.getObject("p.dob") == null ? null : rs.getDate("p.dob"));
+            person.setInfo(getIntOrNullFromRS(rs, "p.info"));
+            person.setWarn(getIntOrNullFromRS(rs, "p.warn"));
+            person.setCrit(getIntOrNullFromRS(rs, "p.crit"));
+            person.setPriEmail(getStringOrNullFromRS(rs, "p.priEmail"));
+            person.setSecEmail(getStringOrNullFromRS(rs, "p.secEmail"));
+            person.setPriPhone(getStringOrNullFromRS(rs, "p.priPhone"));
+            person.setSecPhone(getStringOrNullFromRS(rs, "p.secPhone"));
+            person.setPriText(getStringOrNullFromRS(rs, "p.priText"));
+            person.setSecText(getStringOrNullFromRS(rs, "p.secText"));
             person.setTimeZone(TimeZone.getTimeZone(rs.getString("t.tzName")));
 
             User userItem = new User();
@@ -103,12 +105,16 @@ public class UserJDBCDAO extends SimpleJdbcDaoSupport implements UserDAO {
 
             userItem.setMapType(rs.getObject("u.status") == null ? null : GoogleMapType.valueOf(rs.getInt("u.mapType")));
             userItem.setPerson(person);
-
-            userItem.setRoles(getUserRoles(rs.getInt("u.userID")));
+            List<Integer> roleIds=getUserRoles(rs.getInt("u.userID"));
+            userItem.setRoles(roleIds);
             userItem.setSelectedMapLayerIDs(getUserMapLayers(rs.getInt("u.userID")));
-
+            if(roleIds.isEmpty()){
+                List<AccessPoint> accessPoints = new ArrayList<AccessPoint>();
+                userItem.setAccessPoints(accessPoints);
+            }else
+            {
             userItem.setAccessPoints(getUserAccessPoint(getUserRoles(rs.getInt("u.userID"))));
-
+            }
             return userItem;
         }
     };
@@ -151,9 +157,13 @@ public class UserJDBCDAO extends SimpleJdbcDaoSupport implements UserDAO {
 
         StringBuilder userSelect = new StringBuilder(SELECT_USER_STRING);
         userSelect.append(SELECT_USER_STRING_BY_NAME);
+        try {
+            User userRet = getSimpleJdbcTemplate().queryForObject(userSelect.toString(), userParameterizedRow, params);
+            return userRet;
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
 
-        User userRet = getSimpleJdbcTemplate().queryForObject(userSelect.toString(), userParameterizedRow, params);
-        return userRet;
 
     }
 
@@ -167,7 +177,7 @@ public class UserJDBCDAO extends SimpleJdbcDaoSupport implements UserDAO {
 
             return userList;
 
-        } catch (EmptyResultSetException e) {
+        } catch (EmptyResultDataAccessException e) {
             return Collections.emptyList();
         }
     }
@@ -179,21 +189,23 @@ public class UserJDBCDAO extends SimpleJdbcDaoSupport implements UserDAO {
 
         StringBuilder userSelect = new StringBuilder(SELECT_USER_STRING);
         userSelect.append(SELECT_USER_STRING_BY_PERSONID);
-
+        try{
         User userRet = getSimpleJdbcTemplate().queryForObject(userSelect.toString(), userParameterizedRow, params);
-        return userRet;
+            return userRet;
+        }catch (EmptyResultDataAccessException e) {
+            return null;
+        }
     }
 
     @Override
-    public User findByID(Integer integer) {
+    public User findByID(Integer userID) {
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("userID", integer);
+        params.put("userID", userID);
 
         StringBuilder userSelect = new StringBuilder(SELECT_USER_STRING);
         userSelect.append(SELECT_USER_STRING_BY_ID);
 
-        User userRet = getSimpleJdbcTemplate().queryForObject(userSelect.toString(), userParameterizedRow, params);
-        return userRet;
+        return getSimpleJdbcTemplate().queryForObject(userSelect.toString(), userParameterizedRow, params);
     }
 
     @Override
@@ -204,7 +216,6 @@ public class UserJDBCDAO extends SimpleJdbcDaoSupport implements UserDAO {
             @Override
             public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
                 PreparedStatement ps = con.prepareStatement(INSERT_USER, Statement.RETURN_GENERATED_KEYS);
-//                groupID, personID, status, passwordDT, username, password, mapType
                 ps.setInt(1, entity.getGroupID());
                 ps.setInt(2, entity.getPersonID());
                 ps.setInt(3, entity.getStatus().getCode());
@@ -214,23 +225,64 @@ public class UserJDBCDAO extends SimpleJdbcDaoSupport implements UserDAO {
                 ps.setString(4, passwordDT);
                 ps.setString(5, entity.getUsername());
                 ps.setString(6, entity.getPassword());
+                if(entity.getMapType()==null){
+                    ps.setInt(7, Types.NULL);
+                }else{
                 ps.setInt(7, entity.getMapType().getCode());
+                }
 
+                String modified = df.format(toUTC(new Date()));
+                ps.setString(8, modified);
+
+                logger.debug(ps.toString());
                 return ps;
             }
-            };
+        };
         jdbcTemplate.update(psc, keyHolder);
         return keyHolder.getKey().intValue();
     }
 
     @Override
-    public Integer update(User entity) {
-        return null;
-    }
+    public Integer update(final User entity) {
+        JdbcTemplate jdbcTemplate = getJdbcTemplate();
+        PreparedStatementCreator psc = new PreparedStatementCreator() {
+
+            @Override
+            public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
+                if (entity.getUserID() == null)
+                    throw new SQLException("Cannot update user with null id.");
+                PreparedStatement ps = con.prepareStatement(UPDATE_USER);
+
+                ps.setInt(1, entity.getGroupID());
+                ps.setInt(2, entity.getPersonID());
+                ps.setInt(3, entity.getStatus().getCode());
+                DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                df.setTimeZone(TimeZone.getTimeZone("UTC"));
+                String passwordDT = df.format(toUTC(new Date()));
+                ps.setString(4, passwordDT);
+                ps.setString(5, entity.getUsername());
+                ps.setString(6, entity.getPassword());
+                if(entity.getMapType()==null){
+                    ps.setInt(7, Types.NULL);
+                }else{
+                    ps.setInt(7, entity.getMapType().getCode());
+                }
+                String modified = df.format(toUTC(new Date()));
+                ps.setString(8, modified);
+
+                ps.setInt(9, entity.getUserID());
+                logger.debug(ps.toString());
+                return ps;
+            };
+
+        };
+        jdbcTemplate.update(psc);
+        return entity.getUserID();
+        }
 
     @Override
-    public Integer deleteByID(Integer integer) {
-        return null;
+    public Integer deleteByID(Integer userID) {
+        return getJdbcTemplate().update(DEL_USER_BY_ID, new Object[]{userID});
     }
 
     private String getStringOrNullFromRS(ResultSet rs, String columnName) throws SQLException {
@@ -245,7 +297,7 @@ public class UserJDBCDAO extends SimpleJdbcDaoSupport implements UserDAO {
         return rs.getObject(columnName) == null ? null : rs.getDate(columnName);
     }
 
-    private Date toUTC(Date date){
+    private Date toUTC(Date date) {
         DateTime dt = new DateTime(date.getTime()).toDateTime(DateTimeZone.UTC);
         return dt.toDate();
     }
@@ -285,9 +337,15 @@ public class UserJDBCDAO extends SimpleJdbcDaoSupport implements UserDAO {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("groupID", "%/" + groupID + "/%");
         StringBuilder groupIdDeep = new StringBuilder(GROUP_ID_DEEP);
-        List<User> vehiclesIn = getSimpleJdbcTemplate().query(groupIdDeep.toString(), userParameterizedRow, params);
+        List<User> userIn = getSimpleJdbcTemplate().query(groupIdDeep.toString(), userParameterizedRow, params);
 
-        return vehiclesIn;
+        return userIn;
+    }
+
+    private Locale getLocale(String strLocale) {
+        if (strLocale == null || strLocale.trim().isEmpty())
+            return null;
+        return new Locale(strLocale.trim());
     }
 
 }
