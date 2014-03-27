@@ -3,7 +3,10 @@ package it.com.inthinc.pro.dao.jdbc;
 import com.inthinc.pro.dao.hessian.proserver.SiloService;
 import com.inthinc.pro.dao.hessian.proserver.SiloServiceCreator;
 import com.inthinc.pro.dao.jdbc.UserJDBCDAO;
+import com.inthinc.pro.model.Person;
+import com.inthinc.pro.model.Status;
 import com.inthinc.pro.model.User;
+import com.inthinc.pro.model.security.AccessPoint;
 import it.com.inthinc.pro.dao.model.ITData;
 import it.config.ITDataSource;
 import it.config.IntegrationConfig;
@@ -15,7 +18,9 @@ import javax.sql.DataSource;
 import java.io.InputStream;
 import java.util.List;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Created by infrasoft05 on 3/26/14.
@@ -31,6 +36,9 @@ public class UserJDBCDAOTest extends SimpleJdbcDaoSupport {
     private Integer groupId;
     private Integer personId;
     private Integer userId;
+    private List<Integer> roleId;
+    private List<AccessPoint> accessPoints;
+    private List<Integer> mapLayers;
 
 
 
@@ -54,9 +62,11 @@ public class UserJDBCDAOTest extends SimpleJdbcDaoSupport {
 
         userName = itData.fleetUser.getUsername();
         groupId = itData.fleetGroup.getGroupID();
-//        accountId= itData.fleetUser.getPersonID()
         personId = itData.fleetUser.getPersonID();
         userId = itData.fleetUser.getUserID();
+        roleId = itData.fleetUser.getRoles();
+        accessPoints = itData.fleetUser.getAccessPoints();
+        mapLayers = itData.fleetUser.getSelectedMapLayerIDs();
 
 
 
@@ -97,14 +107,70 @@ public class UserJDBCDAOTest extends SimpleJdbcDaoSupport {
 //        assertNotNull(user);
 //    }
 
+//    @Test
+//    public void findByIDTest() {
+//        UserJDBCDAO userDAO = new UserJDBCDAO();
+//        DataSource dataSource = new ITDataSource().getRealDataSource();
+//        userDAO.setDataSource(dataSource);
+//
+//        //findById method
+//        User user = userDAO.findByID(userId);
+//        assertNotNull(user);
+//    }
+
     @Test
-    public void findByIDTest() {
+    public void createUpdateDeleteTest(){
+
+        //create  method  test
+        boolean returnsUserID = false;
         UserJDBCDAO userDAO = new UserJDBCDAO();
         DataSource dataSource = new ITDataSource().getRealDataSource();
         userDAO.setDataSource(dataSource);
 
-        //findById method
-        User user = userDAO.findByID(userId);
-        assertNotNull(user);
+        User user = new User();
+        user.setGroupID(6509);
+        user.setUsername("TestCreate");
+        user.setPassword("create");
+        user.setStatus(Status.INACTIVE);
+
+
+        user.setRoles(roleId);
+        user.setAccessPoints(accessPoints);
+        user.setSelectedMapLayerIDs(mapLayers);
+
+
+        user.setPersonID(personId);
+        Integer userID = userDAO.create(user.getUserID(), user);
+        returnsUserID = (userID != null);
+        assertTrue(returnsUserID);
+
+        //find by id test
+        User createdUser = userDAO.findByID(userID);
+
+        assertEquals("TestCreate", user.getUsername(), createdUser.getUsername());
+        assertEquals(6509, user.getGroupID(), createdUser.getGroupID());
+        assertEquals("create", user.getPassword(), createdUser.getPassword());
+
+        //update  method  test
+        User userUpdate = new User();
+        userUpdate.setUserID(userID);
+        userUpdate.setGroupID(6509);
+        userUpdate.setUsername("TestUpdate");
+        userUpdate.setPassword("update");
+        userUpdate.setStatus(Status.ACTIVE);
+
+        userUpdate.setPersonID(personId);
+        userDAO.update(userUpdate);
+
+        //find vehicle by ID  after update
+        User updatedUser = userDAO.findByID(userID);
+
+        assertEquals("TestUpdate", userUpdate.getUsername(), updatedUser.getUsername());
+        assertEquals(6509, user.getGroupID(), createdUser.getGroupID());
+        assertEquals("update", user.getPassword(), createdUser.getPassword());
+
+        //delete vehicle when finish
+        userDAO.deleteByID(userID);
     }
+
 }
