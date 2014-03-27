@@ -93,8 +93,7 @@ public class AccountJDBCDAOTest extends BaseJDBCTest {
     @Test
     public void testUpdate(){
         Account accountUpdate = new Account();
-        /*
-        * UPDATE account set zonePublishDate=?, status=?, billID=?, mailID=?, name=?, hos=?, unkDriverID=? where acctID = ? */
+
         accountUpdate.setZonePublishDate(new DateTime(1969, 1, 1, 1, 1, 1, 1).toDate());
         accountUpdate.setStatus(Status.valueOf(1));
         accountUpdate.setBillID(2);
