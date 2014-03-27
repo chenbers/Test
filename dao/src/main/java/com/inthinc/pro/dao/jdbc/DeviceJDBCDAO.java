@@ -1,21 +1,20 @@
 package com.inthinc.pro.dao.jdbc;
 
 import com.inthinc.pro.dao.DeviceDAO;
+import com.inthinc.pro.dao.VehicleDAO;
 import com.inthinc.pro.model.Device;
 import com.inthinc.pro.model.DeviceStatus;
 import com.inthinc.pro.model.ForwardCommand;
 import com.inthinc.pro.model.ForwardCommandStatus;
 import com.inthinc.pro.model.pagination.SortOrder;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.simple.ParameterizedRowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Device jdbc dao.
@@ -30,6 +29,25 @@ public class DeviceJDBCDAO extends SimpleJdbcDaoSupport implements DeviceDAO{
             " LEFT OUTER JOIN vddlog vdd ON (d.deviceID = vdd.deviceID and vdd.stop is null)" +
             " LEFT OUTER JOIN vehicle veh on (veh.vehicleID = vdd.vehicleID)" +
             " ) d where d.deviceID = :deviceID ";
+
+    private static final String DEVICE_SECOND = "FROM (select d.*, vdd.vehicleID, veh.name vehicleName from device d " +
+            " LEFT OUTER JOIN vddlog vdd ON (d.deviceID = vdd.deviceID and vdd.stop is null)" +
+            " LEFT OUTER JOIN vehicle veh on (veh.vehicleID = vdd.vehicleID)" +
+            " ) d ";
+
+    private static final String GET_DEVICE_IN = "select " + DEVICE_COLUMNS_STRING + " " + DEVICE_SECOND + "where d.acctID=:acctID" ;
+
+    private static final String FIND_BY_IMEI = "select " + DEVICE_COLUMNS_STRING + " " + DEVICE_SECOND + "where imei like :imei";
+
+    private static final String FIND_BY_SERIALNUM = "select " + DEVICE_COLUMNS_STRING + " " + DEVICE_SECOND + " where serialNum like :serialNum";
+
+    private static final String DEL_DEVICE_BY_ID = "DELETE FROM device WHERE deviceID = ?";
+
+    //get ForwardCommand
+    private static final String GET_FWD = "select * from fwd ";
+    private static final String GET_FWD_LIST = GET_FWD + "where deviceID=:deviceID and status=:status";
+
+    private VehicleDAO vehicleDAO;
 
     private ParameterizedRowMapper<Device> deviceMapper = new ParameterizedRowMapper<Device>() {
         @Override
@@ -59,6 +77,7 @@ public class DeviceJDBCDAO extends SimpleJdbcDaoSupport implements DeviceDAO{
             device.setMcmid(getStringOrNullFromRS(rs, "mcmid"));
             device.setWitnessVersion(getIntOrNullFromRS(rs, "witnessVer"));
             device.setEmuMd5(getStringOrNullFromRS(rs, "emuMd5"));
+            device.setAltimei(getStringOrNullFromRS(rs, "altImei"));
 
             return device;
         }
@@ -80,7 +99,6 @@ public class DeviceJDBCDAO extends SimpleJdbcDaoSupport implements DeviceDAO{
     @Override
     public Device findByID(Integer deviceID) {
         String deviceSelect =  "select "+ DEVICE_COLUMNS_STRING +" " + DEVICE_SUFFIX;
-
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("deviceID", deviceID);
 
@@ -89,22 +107,61 @@ public class DeviceJDBCDAO extends SimpleJdbcDaoSupport implements DeviceDAO{
 
     @Override
     public List<Device> getDevicesByAcctID(Integer accountID) {
-        throw new NotImplementedException();
+        try {
+            Map<String, Object> params = new HashMap<String, Object>();
+            params.put("acctID", accountID);
+            StringBuilder deviceSelect = new StringBuilder(GET_DEVICE_IN);
+            List<Device> deviceList = getSimpleJdbcTemplate().query(deviceSelect.toString(), deviceMapper, params);
+
+            return  deviceList;
+        }
+        catch (EmptyResultDataAccessException e){
+         return Collections.emptyList();
+        }
     }
 
     @Override
     public Device findByIMEI(String imei) {
-        throw new NotImplementedException();
+        try {
+            Map<String, Object> params = new HashMap<String, Object>();
+            params.put("imei", ""+ imei +"");
+            StringBuilder findbyIMEI = new StringBuilder(FIND_BY_IMEI);
+            Device finByImei = getSimpleJdbcTemplate().queryForObject(findbyIMEI.toString(), deviceMapper, params);
+
+            return  finByImei;
+        }   catch(EmptyResultDataAccessException e) {
+            return null;
+        }
     }
 
     @Override
     public Device findBySerialNum(String serialNum) {
-        throw new NotImplementedException();
+        try {
+            Map<String, Object> params = new HashMap<String, Object>();
+            params.put("serialNum", ""+ serialNum +"");
+            StringBuilder serialNumber = new StringBuilder(FIND_BY_SERIALNUM);
+            Device findBySerialNum = getSimpleJdbcTemplate().queryForObject(serialNumber.toString(), deviceMapper, params);
+
+            return  findBySerialNum;
+        }   catch(EmptyResultDataAccessException e) {
+            return null;
+        }
     }
 
     @Override
     public List<ForwardCommand> getForwardCommands(Integer deviceID, ForwardCommandStatus status) {
-        throw new NotImplementedException();
+        try {
+            Map<String, Object> params = new HashMap<String, Object>();
+            params.put("deviceID", deviceID);
+            params.put("status", status.getCode());
+            StringBuilder fwdCommandList = new StringBuilder(GET_FWD_LIST);
+            List<ForwardCommand> fwdList = getSimpleJdbcTemplate().query(fwdCommandList.toString(), forwardCommandParameterizedRowMapper, params) ;
+
+            return  fwdList;
+        }
+        catch (EmptyResultDataAccessException e){
+            return Collections.emptyList();
+        }
     }
 
     @Override
@@ -123,7 +180,37 @@ public class DeviceJDBCDAO extends SimpleJdbcDaoSupport implements DeviceDAO{
     }
 
     @Override
-    public Integer deleteByID(Integer integer) {
-        throw new NotImplementedException();
+    public Integer deleteByID(Integer deviceID) {
+        Device device = findByID(deviceID);
+        if(device.getVehicleID() != null)
+            vehicleDAO.clearVehicleDevice(device.getVehicleID(), deviceID);
+
+        return getJdbcTemplate().update(DEL_DEVICE_BY_ID, new Object[]{deviceID});
+    }
+
+    private ParameterizedRowMapper<ForwardCommand> forwardCommandParameterizedRowMapper = new ParameterizedRowMapper<ForwardCommand>() {
+        @Override
+        public ForwardCommand mapRow(ResultSet rs, int rowNum) throws SQLException {
+
+            ForwardCommand fwdCommand = new ForwardCommand();
+            fwdCommand.setFwdID(rs.getInt("fwdID"));
+            fwdCommand.setCmd(rs.getInt("fwdCmd"));
+            fwdCommand.setStatus(rs.getObject("status") == null ? null : ForwardCommandStatus.valueOf(rs.getInt("status")));
+            fwdCommand.setPersonID(rs.getObject("personID") == null ? null : rs.getInt("personID"));
+            fwdCommand.setDriverID(rs.getObject("driverID") == null ? null : rs.getInt("driverID"));
+            fwdCommand.setVehicleID(rs.getObject("vehicleID") == null ? null : rs.getInt("vehicleID"));
+            fwdCommand.setCreated(rs.getObject("created") == null ? null : rs.getDate("created"));
+            fwdCommand.setModified(rs.getObject("modified") == null ? null : rs.getDate("modified"));
+
+            return fwdCommand;
+        }
+    };
+
+    public VehicleDAO getVehicleDAO() {
+        return vehicleDAO;
+    }
+
+    public void setVehicleDAO(VehicleDAO vehicleDAO) {
+        this.vehicleDAO = vehicleDAO;
     }
 }
