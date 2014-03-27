@@ -9,6 +9,8 @@ import com.inthinc.pro.model.State;
 import com.inthinc.pro.model.Status;
 import com.mysql.jdbc.Statement;
 import org.apache.commons.lang.NotImplementedException;
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.simple.ParameterizedRowMapper;
@@ -17,7 +19,9 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 
 import java.sql.Connection;
-import java.sql.Date;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -26,8 +30,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TimeZone;
 
 public class AccountJDBCDAO extends SimpleJdbcDaoSupport implements AccountDAO {
+    DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     private static final String ALL_VALID_ACCOUNTIDS = "select acctID from account where status=1";
     private static final String FIND_ALL_ACCOUNT_IDS = "SELECT acctID FROM  account ";
@@ -111,7 +117,9 @@ public class AccountJDBCDAO extends SimpleJdbcDaoSupport implements AccountDAO {
             @Override
             public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
                 PreparedStatement ps = con.prepareStatement(UPDATE_ACCOUNT_1, Statement.RETURN_GENERATED_KEYS);
-                ps.setDate(1, (Date) account.getZonePublishDate());
+                df.setTimeZone(TimeZone.getTimeZone("UTC"));
+                String ZonePublishDate = df.format(toUTC(new Date()));
+                ps.setString(1, ZonePublishDate );
 
                 if (account.getStatus() == null || account.getStatus().getCode() == null) {
                     ps.setNull(2, Types.NULL);
@@ -254,5 +262,8 @@ public class AccountJDBCDAO extends SimpleJdbcDaoSupport implements AccountDAO {
             return accountList;
         }
     };
-
+    private Date toUTC(Date date){
+         DateTime dt = new DateTime(date.getTime()).toDateTime(DateTimeZone.UTC);
+        return dt.toDate();
+    }
 }
