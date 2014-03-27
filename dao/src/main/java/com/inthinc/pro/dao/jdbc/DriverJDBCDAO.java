@@ -115,11 +115,11 @@ public class DriverJDBCDAO extends SimpleJdbcDaoSupport implements DriverDAO {
     DateFormat dfNew = new SimpleDateFormat("yyyy-MM-dd");
 
 
-    private static final String FIND_DRIVER_BY_ID="Select t.tzName,p.personID, p.acctID, p.tzID, p.modified, p.status, p.measureType, p.fuelEffType, p.addrID, p.locale, p.reportsTo," +
+    private static final String FIND_DRIVER_BY_ID="Select d.status, t.tzName,p.personID, p.acctID, p.tzID, p.modified, p.status, p.measureType, p.fuelEffType, p.addrID, p.locale, p.reportsTo," +
             "    p.title,p.dept,p.empid, p.first, p.middle, p.last,p.suffix, p.gender, p.height, p.weight, p.dob, p.info, p.warn, p.crit, p.priEmail, p.secEmail, p.priPhone," +
             "    p.secPhone, p.priText, p.secText, d.personID, d.driverid, d.groupid, d.barcode, d.rfid1, d.rfid2, d.fobID, d.license, d.stateid, d.expiration,  d.certs,d.dot," +
             "    d.grouppath, d.class from driver d, person p,timezone t where d.driverId = :driverId and p.personID = d.personID and p.tzID=t.tzID; ";
-    private static final String SELECT_DRIVERS_BY_GROUPID ="Select  t.tzName,d.driverid,d.groupid,d.barcode, d.rfid1, d.rfid2, d.fobID, d.license, d.stateid, d.expiration," +
+    private static final String SELECT_DRIVERS_BY_GROUPID ="Select d.status, t.tzName,d.driverid,d.groupid,d.barcode, d.rfid1, d.rfid2, d.fobID, d.license, d.stateid, d.expiration," +
             "    d.certs,d.dot,d.grouppath, d.class, p.personid,p.acctid, p.tzid,p.modified, p.status,p.measuretype,p.fuelefftype,p.addrid,p.locale,p.reportsto," +
             "    p.title,p.dept,p.empid,p.first,p.middle, p.last, p.suffix, p.gender, p.height, p.weight,  p.dob, p.info,p.warn, p.crit, p.priemail, p.secemail," +
             "    p.priphone, p.secphone,p.pritext,p.sectext from driver d, person p,timezone t" +
@@ -520,7 +520,7 @@ public class DriverJDBCDAO extends SimpleJdbcDaoSupport implements DriverDAO {
             driver.setRfid1(rs.getObject("d.rfid1") == null ? null : rs.getLong("d.rfid1"));
             driver.setRfid2(rs.getObject("d.rfid2")== null ? null : rs.getLong("d.rfid2"));
             driver.setFobID(rs.getString("d.fobID"));
-//            driver.setStatus(rs.getObject("status") == null ? null : Devi.valueOf(rs.getInt("status")));
+            driver.setStatus(Status.valueOf(rs.getInt("d.status")));
 //            driver.setPersonID(rs.getInt("d.personId"));
             driver.setPerson(person);
 
