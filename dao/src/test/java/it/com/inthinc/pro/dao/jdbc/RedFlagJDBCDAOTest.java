@@ -128,7 +128,7 @@ public class RedFlagJDBCDAOTest extends BaseJDBCTest{
 
          }
          //filters
-         //critical events
+         //Since there is no actual datagen for this i only tested for filters that return empty list otherwise a datagen with more data is required i think
              GroupData team = itData.teamGroupData.get(ITData.GOOD);
              Integer allDriverCount = redFlagJDBCDAO.getRedFlagCount(goodGroupID, today.minusDays(1).toDate() , today.toDate(), 0, null);
              for (TestFilterParams testFilterParams : redFlagFilterTestListFlag) {
