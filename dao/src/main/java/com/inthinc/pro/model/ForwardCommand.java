@@ -15,7 +15,9 @@ public class ForwardCommand extends BaseEntity implements Comparable<ForwardComm
     private Integer personID;
     private Integer driverID;
     private Integer vehicleID;
-    
+    private Integer tries;
+    private Integer deviceID;
+
     public ForwardCommand()
     {
         super();
@@ -93,4 +95,19 @@ public class ForwardCommand extends BaseEntity implements Comparable<ForwardComm
         this.vehicleID = vehicleID;
     }
 
+    public Integer getTries() {
+        return tries;
+    }
+
+    public void setTries(Integer tries) {
+        this.tries = tries;
+    }
+
+    public Integer getDeviceID() {
+        return deviceID;
+    }
+
+    public void setDeviceID(Integer deviceID) {
+        this.deviceID = deviceID;
+    }
 }
