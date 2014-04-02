@@ -74,49 +74,49 @@ public class UserJDBCDAOTest extends SimpleJdbcDaoSupport {
     private static void initApp() throws Exception {
     }
 
-//    @Test
-//    public void findByNameTest() {
-//        UserJDBCDAO userDAO = new UserJDBCDAO();
-//        DataSource dataSource = new ITDataSource().getRealDataSource();
-//        userDAO.setDataSource(dataSource);
-//
-//        //findByName method
-//        User user = userDAO.findByUserName(userName);
-//        assertNotNull(user);
-//    }
+    @Test
+    public void findByNameTest() {
+        UserJDBCDAO userDAO = new UserJDBCDAO();
+        DataSource dataSource = new ITDataSource().getRealDataSource();
+        userDAO.setDataSource(dataSource);
 
-//    @Test
-//    public void getUsersInGroupHierarchyTest() {
-//        UserJDBCDAO userDAO = new UserJDBCDAO();
-//        DataSource dataSource = new ITDataSource().getRealDataSource();
-//        userDAO.setDataSource(dataSource);
-//
-//        //getUsersInGroupHierarchy method
-//        List<User> user = userDAO.getUsersInGroupHierarchy(groupId);
-//        assertNotNull(user);
-//    }
+        //findByName method
+        User user = userDAO.findByUserName(userName);
+        assertNotNull(user);
+    }
 
-//    @Test
-//    public void getUserByPersonIDTest() {
-//        UserJDBCDAO userDAO = new UserJDBCDAO();
-//        DataSource dataSource = new ITDataSource().getRealDataSource();
-//        userDAO.setDataSource(dataSource);
-//
-//        //getUserByPersonID method
-//        User user = userDAO.getUserByPersonID(personId);
-//        assertNotNull(user);
-//    }
+    @Test
+    public void getUsersInGroupHierarchyTest() {
+        UserJDBCDAO userDAO = new UserJDBCDAO();
+        DataSource dataSource = new ITDataSource().getRealDataSource();
+        userDAO.setDataSource(dataSource);
 
-//    @Test
-//    public void findByIDTest() {
-//        UserJDBCDAO userDAO = new UserJDBCDAO();
-//        DataSource dataSource = new ITDataSource().getRealDataSource();
-//        userDAO.setDataSource(dataSource);
-//
-//        //findById method
-//        User user = userDAO.findByID(userId);
-//        assertNotNull(user);
-//    }
+        //getUsersInGroupHierarchy method
+        List<User> user = userDAO.getUsersInGroupHierarchy(groupId);
+        assertNotNull(user);
+    }
+
+    @Test
+    public void getUserByPersonIDTest() {
+        UserJDBCDAO userDAO = new UserJDBCDAO();
+        DataSource dataSource = new ITDataSource().getRealDataSource();
+        userDAO.setDataSource(dataSource);
+
+        //getUserByPersonID method
+        User user = userDAO.getUserByPersonID(personId);
+        assertNotNull(user);
+    }
+
+    @Test
+    public void findByIDTest() {
+        UserJDBCDAO userDAO = new UserJDBCDAO();
+        DataSource dataSource = new ITDataSource().getRealDataSource();
+        userDAO.setDataSource(dataSource);
+
+        //findById method
+        User user = userDAO.findByID(userId);
+        assertNotNull(user);
+    }
 
     @Test
     public void createUpdateDeleteTest(){
