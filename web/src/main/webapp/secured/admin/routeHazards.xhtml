@@ -38,7 +38,7 @@
         //<![CDATA[
         jQuery.noConflict();
         var map = null;
-        
+        var hazardIdSelectedOnmap = null;
         /* CreateMarker(google.maps.LatLng, divID, image or null)
          *  
          * Creates a marker using specified image or
@@ -64,6 +64,9 @@
                     var node = document.getElementById(divID).cloneNode(true);
                     node.style.display = 'block';
                     marker.openInfoWindow(node);
+                    //jQuery('#hazards-form\\:hazards-table\\:filterBoundsValue').val(buildLocFilter()).change();
+                    hazardIdSelectedOnmap = hazard.hazardID;
+                    //addSelectedRowClass(hazard.hazardID);
                 });
             } else {
                 google.maps.event.addListener(marker, 'click', (function(){
@@ -75,10 +78,28 @@
                     infowindow.setContent(content); 
                     infowindow.setPosition(hazard.point);
                     infowindow.open(map);
+                    //jQuery('#hazards-form\\:hazards-table\\:filterBoundsValue').val(buildLocFilter()).change();
+                    hazardIdSelectedOnmap = hazard.hazardID;
+                    //addSelectedRowClass(hazard.hazardID);
                 }));
+
+
            }
            return marker;
         }
+
+
+        function addSelectedRowClass(hazardID){
+            jQuery('#hazards-form\\:hazards-table tbody tr').each(function() {
+                jQuery(this).removeClass('selected-row');
+                jQuery(this).children().removeClass('selected-row');
+                if ($(this).cells[1].firstChild.textContent == hazardID ){
+                    jQuery(this).addClass('selected-row');
+                    jQuery(this).children().addClass('selected-row');
+                }
+            });
+        }
+
         function createCircle(point, radius, marker) {
             var circleOptions = {
                     map: map,
@@ -97,9 +118,16 @@
         var markers = [];
         var hazards = [];
         var infowindow = new google.maps.InfoWindow();
+        google.maps.event.addListener(infowindow, 'closeclick', (function(){
+            jQuery('#hazards-form\\:hazards-table tbody tr').each(function() {
+                hazardIdSelectedOnmap = null;
+                jQuery(this).removeClass('selected-row');
+                jQuery(this).children().removeClass('selected-row');
+            });
+        }));
         
         
-        function Hazard(lat, lng, radiusMeters, radiusInUnits, type, endTime, details, status){
+        function Hazard(lat, lng, radiusMeters, radiusInUnits, type, endTime, details, status, hazardID){
             this.point = new google.maps.LatLng(lat, lng);
             this.radiusMeters = radiusMeters;
             this.radiusInUnits = radiusInUnits;
@@ -107,6 +135,7 @@
             this.endTime = endTime;
             this.details = details;
             this.status = status;
+            this.hazardID = hazardID;
         }
         Hazard.prototype.drawRadius = function() {
             createCircle(this.point, this.radius);
@@ -145,7 +174,6 @@
 				inthincMap.zoom(map, 3);
 			}
 
-            
             directionsDisplay = new google.maps.DirectionsRenderer({
                 'map' : map,
                 'preserveViewport' : true,
@@ -177,8 +205,8 @@
                var markerLatLng = new google.maps.LatLng(#{hazard.lat}, #{hazard.lng});
                var testUnits = '<h:outputText  value="mile" converter="MeasurementTextConverter"></h:outputText>';
                var formattedEndTime = '<h:outputText value="#{hazard.endTime}"><f:convertDateTime pattern="#{messages.dateTimeFormat}" timeZone="#{hazardsBean.user.person.timeZone}" /></h:outputText>';
-               hazard = new Hazard(#{hazard.lat}, #{hazard.lng}, #{hazard.radiusMeters}, #{hazard.radiusInUnits}, '#{messages[hazard.type]}', formattedEndTime, '#{hazard.description}', '#{messages[hazard.status]}');
-               marker = createMarker(markerLatLng, null , '/tiwipro/images/ico_warning.png', hazard); //'hazard#{hazard.hazardID}' for divID 
+               hazard = new Hazard(#{hazard.lat}, #{hazard.lng}, #{hazard.radiusMeters}, #{hazard.radiusInUnits}, '#{messages[hazard.type]}', formattedEndTime, '#{hazard.description}', '#{messages[hazard.status]}', #{hazard.hazardID});
+               marker = createMarker(markerLatLng, null , "#{request.contextPath}/images/ico_warning.png", hazard); //'hazard#{hazard.hazardID}' for divID
                markers.push(marker);
                hazards.push(hazard); //todo: this might be unnecessary... since the hazard is in the marker???  
                createCircle(markerLatLng, #{hazard.radiusMeters}, marker); 
@@ -429,7 +457,7 @@
                                                             <f:facet name="header">
                                                                 <h:panelGroup>
                                                                     <h:inputText value="#{hazardsBean.filterBoundsValue}" id="filterBoundsValue" height="1px" width="1px" style="opacity:0.01; height: 1px; width: 1px;">
-                                                                    <a4j:support event="onchange" ignoreDupResponses="true" requestDelay="700" reRender="tablePanel" focus="input" />
+                                                                    <a4j:support event="onchange" ignoreDupResponses="true" requestDelay="700" reRender="tablePanel" focus="input" oncomplete="addSelectedRowClass(hazardIdSelectedOnmap);"/>
                                                                     </h:inputText>
                                                                 </h:panelGroup>
                                                             </f:facet>
@@ -448,6 +476,10 @@
                                                                 <h:inputHidden id="hazardLng" value="#{item.longitude}" />
                                                                 <h:outputText id="hazardAddress" />
                                                             </rich:toolTip>
+                                                        </rich:column>
+
+                                                        <rich:column id="hazardID"  style="display: hidden;">
+                                                            <h:outputText value="#{item.hazardID}" style="display: none;"/>
                                                         </rich:column>
 
                                                         <rich:column id="description" sortBy="#{item.description}">

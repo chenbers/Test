@@ -21,7 +21,7 @@
     </rich:column>
     <rich:column id="fullName" rendered="#{vehiclesBean.tableColumns['driverID'].visible}" sortBy="#{fullName}" filterBy="#{fullName}">
       <f:facet name="header"><h:outputText value="#{messages.vehiclesHeader_driverID}" /></f:facet>
-      <h:outputText value="#{item.driver.person.fullName}" />
+      <h:outputText value="#{item.driverName}" />
     </rich:column>
     <rich:column id="productVersion" rendered="#{vehiclesBean.tableColumns['productType'].visible}"
     			custFilterBy="#{productType}" custFilterValue="#{bean.productTypeFilter.filterValue}">

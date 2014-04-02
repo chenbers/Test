@@ -31,6 +31,10 @@ public class Vehicle extends BaseEntity
     @Column(updateable = false)
     private Integer           driverID;
     @Column(updateable = false)
+    private String           driverName;
+    @Column(updateable = false)
+    private String           groupName;
+    @Column(updateable = false)
     private Integer           deviceID;
     
     private Integer           odometer;
@@ -275,4 +279,19 @@ public class Vehicle extends BaseEntity
         this.device = device;
     }
 
+    public String getDriverName() {
+        return driverName;
+    }
+
+    public void setDriverName(String driverName) {
+        this.driverName = driverName;
+    }
+
+    public String getGroupName() {
+        return groupName;
+    }
+
+    public void setGroupName(String groupName) {
+        this.groupName = groupName;
+    }
 }
