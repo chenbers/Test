@@ -48,7 +48,7 @@
 			     <h:panelGroup style="float:right;padding:0 5px;">     				
 					<span title="#{messages.button_editColumns}">
 						<a4j:commandLink 
-	     					id="#{context}EditColumns" 
+	     					id="#{context}EditColumns"
 							reRender="editColumnsForm:editColumnGrid"
 	     					action="#"
 	     					onclick="Richfaces.showModalPanel('#{context}_editColumns');"> 
@@ -237,8 +237,11 @@
 					<f:facet name="header">
 						#{messages.team_trips}
 					</f:facet>
-
-					#{item.score.trips}
+                    <pretty:link id="vehiclePerformanceTripsWHP" mappingId="vehicleTripsWHP" rendered="#{item.vehicle.vehicleID ne null}">
+                        <h:outputText value="#{item.score.trips}"/>
+                        <f:param value="#{item.vehicle.vehicleID}"/>
+                        <f:param value="#{teamCommonBean.timeFrame}"/>
+                    </pretty:link>
 				</rich:column>
 				<rich:column rendered="#{tableColumns['stops'].visible}" sortBy="#{item.score.idleHiEvents+item.score.trips}" id="newTeamStatsTab-tripStops">
 					<f:facet name="header">

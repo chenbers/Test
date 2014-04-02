@@ -15,6 +15,8 @@ import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 import javax.faces.validator.ValidatorException;
 
+import com.inthinc.pro.dao.GroupDAO;
+import com.inthinc.pro.model.GroupHierarchy;
 import org.springframework.beans.BeanUtils;
 
 import com.inthinc.pro.backing.filtering.ColumnFiltering;
@@ -85,7 +87,9 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
     }
     private DeviceDAO   deviceDAO;
     private VehicleDAO  vehicleDAO;
+    private VehicleDAO  vehicleJDBCDAO;
     private DriverDAO   driverDAO;
+    private GroupDAO    groupDAO;
 
     private ColumnFiltering<Vehicle> chooseVehicleFiltering;
     private VehicleChoiceTableColumns vehicleChoiceTableColumns;
@@ -117,7 +121,22 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
             chooseVehicleFiltering.put(column, null);
         }
     }
-    
+
+    @Override
+    public List<DeviceView> getFilteredItems() {
+        filteredItems.clear();
+        filteredItems.addAll(items);
+        return filteredItems;
+    }
+
+    @Override
+    protected void applyFilter(int page)
+    {
+        filteredItems.clear();
+        filteredItems.addAll(items);
+    }
+
+
     public List<SelectItem> getProductTypesSelectItems(){
         
         return ProductTypeSelectItems.getSelectItems();
@@ -132,13 +151,7 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
             return getEditRedirect();
         }
     }
-    /**
-     * Creates a VehicleView object from the given Vehicle object.
-     * 
-     * @param vehicle
-     *            The vehicle.
-     * @return The new VehicleView object.
-     */
+
     private void loadGroups()
     {
         CacheItemMap<Group,Group> groupMap = new GroupMap(getUser().getPerson().getAcctID(),getUser().getGroupID());
@@ -163,20 +176,28 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
     }
 
     private void loadVehicles(){
-        CacheItemMap<Vehicle,Vehicle> vehicleMap = new VehicleMap(getUser().getGroupID());
-        vehicleMap.setDAO(vehicleDAO);
+        Integer groupID = getUser().getGroupID();
+        GroupHierarchy groupHierarchy = new GroupHierarchy(groupDAO.getGroupsByAcctID(getAccountID()));
+        List<Integer> groupIDList = groupHierarchy.getSubGroupIDList(groupID);
+
+        CacheItemMap<Vehicle,Vehicle> vehicleMap = new VehicleMap(groupIDList);
+        vehicleMap.setDAO(vehicleJDBCDAO);
         vehicleMap.buildMap();
         adminCacheBean.addAssetMap("vehicles",vehicleMap);
     }
     public List<Vehicle> getVehicles(){
         //filter on the filter item
+        loadSupportData();
+        if (adminCacheBean.getMap("vehicles") == null){
+          loadVehiclesAndAssociatedData();
+        }
+
         return vehicleChoiceTableColumns.getFilteredItems(adminCacheBean,chooseVehicleSearchKeyword,true);
     }
     
     @Override
     protected List<DeviceView> loadItems()
     {
-        
         // get the devices
         final List<Device> plainDevices = deviceDAO.getDevicesByAcctID(getAccountID());
         // convert the Devices to DeviceViews
@@ -184,11 +205,9 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
         for (final Device device : plainDevices){
             items.add(createDeviceView(device));
         }
-        loadSupportData();
         vehicleChoiceTableColumns = new VehicleChoiceTableColumns();
        
         return items;
-
 
        // for pagination version
 //        return null;
@@ -211,15 +230,17 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
 //    
     @SuppressWarnings("unchecked")
     private void loadSupportData(){
-        
-        adminCacheBean = new AdminCacheBean();
-        loadDevices();
-        loadGroups();
-        loadDrivers();
-        loadVehicles();
-        chooseVehicleItems = (List<Vehicle>) adminCacheBean.getAssets("vehicles");
-        
+        if (adminCacheBean == null)
+            adminCacheBean = new AdminCacheBean();
+
+        vehicleChoiceTableColumns = new VehicleChoiceTableColumns();
+        chooseVehicleItems = new ArrayList<Vehicle>();
     }
+
+    private void loadVehiclesAndAssociatedData(){
+        loadVehicles();
+    }
+
     /**
      * Creates a DeviceView object from the given Device object.
      * 
@@ -235,6 +256,7 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
         deviceView.setOldVehicleID(device.getVehicleID());
         deviceView.setSelected(false);
         deviceView.setFirmwareVersionDate();
+        deviceView.setVehicleName(device.getVehicleName());
         if (device.getPhone() != null)
             deviceView.setPhone(MiscUtil.formatPhone(device.getPhone()));
         
@@ -545,6 +567,8 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
         @Column(updateable = false)
         private Vehicle vehicle;
         @Column(updateable = false)
+        private String vehicleName;
+        @Column(updateable = false)
         private boolean selected;
         @Column(updateable = false)
         private Date firmwareVersionDate;
@@ -584,8 +608,9 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
 
         public Vehicle getVehicle()
         {
-            if (vehicle == null && getVehicleID() != null)
+            if (vehicle == null && getVehicleID() != null && bean.adminCacheBean != null){
                 vehicle = (Vehicle)bean.adminCacheBean.getAsset("vehicles", getVehicleID());
+            }
             return vehicle;
         }
 
@@ -635,6 +660,17 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
         public String getStatusName(){
         	return MessageUtil.getMessageString(getStatus().toString());
         }
+
+        public String getVehicleName() {
+            if (vehicleName == null)
+                return "";
+
+            return vehicleName;
+        }
+
+        public void setVehicleName(String vehicleName) {
+            this.vehicleName = vehicleName;
+        }
     }
     public boolean isBatchProductChoice(ProductType productType){
         
@@ -652,26 +688,12 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
         return deviceDAO;
     }
 
-    @SuppressWarnings("unchecked")
-    public CacheItemMap<Driver, Driver> getDriverMap() {
-        return (CacheItemMap<Driver, Driver>)adminCacheBean.getMap("drivers");
-    }
-
-    @SuppressWarnings("unchecked")
-    public CacheItemMap<Device, Device> getDeviceMap() {
-        return (CacheItemMap<Device, Device>)adminCacheBean.getMap("devices");
-    }
 
     @SuppressWarnings("unchecked")
     public CacheItemMap<Vehicle, Vehicle> getVehicleMap() {
         return (CacheItemMap<Vehicle, Vehicle>)adminCacheBean.getMap("vehicles");
     }
 
-    @SuppressWarnings("unchecked")
-    public CacheItemMap<Group, Group> getGroupMap() {
-        return (CacheItemMap<Group, Group>)adminCacheBean.getMap("groups");
-    }
-    
     @SuppressWarnings("unchecked")
     public CacheItemMap<DeviceSettingDefinition,VehicleSetting> getVehicleSettingMap() {
         return (CacheItemMap<DeviceSettingDefinition, VehicleSetting>)adminCacheBean.getMap("vehicleSettings");
@@ -699,5 +721,21 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
 
     public void setChosenVehicleID(String chosenVehicleID) {
         this.chosenVehicleID = chosenVehicleID;
+    }
+
+    public GroupDAO getGroupDAO() {
+        return groupDAO;
+    }
+
+    public void setGroupDAO(GroupDAO groupDAO) {
+        this.groupDAO = groupDAO;
+    }
+
+    public VehicleDAO getVehicleJDBCDAO() {
+        return vehicleJDBCDAO;
+    }
+
+    public void setVehicleJDBCDAO(VehicleDAO vehicleJDBCDAO) {
+        this.vehicleJDBCDAO = vehicleJDBCDAO;
     }
 }

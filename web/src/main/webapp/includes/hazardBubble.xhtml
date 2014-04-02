@@ -8,7 +8,7 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:h="http://java.sun.com/jsf/html">
 	<div id="hazardBubble" style="display:none">
-		<h:panelGrid columns="2" styleClass="google_popup" width="230" rowClasses="google_popups_rows" headerClass="google_popups_header" footerClass="google_popups_footer">
+		<h:panelGrid columns="2" styleClass="google_popup" width="230" rowClasses="google_popups_rows" headerClass="google_popups_header" footerClass="google_popups_footer" rendered="#{hazard ne null}">
 			<ui:fragment rendered="#{hazard.description}">
 				<h:outputText value="#{messages.hazard_description}:"/>
 				<h:outputText value="#{hazard.description}" />

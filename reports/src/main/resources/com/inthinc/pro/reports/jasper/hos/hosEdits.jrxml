@@ -31,9 +31,9 @@
 		<groupHeader>
 			<band height="21" splitType="Stretch">
 				<rectangle>
-					<reportElement key="rectangle-1" x="0" y="0" width="782" height="20" forecolor="#000000" backcolor="#000000"/>
+					<reportElement stretchType="RelativeToBandHeight" key="rectangle-1" x="0" y="0" width="782" height="20" forecolor="#000000" backcolor="#000000"/>
 				</rectangle>
-				<textField pattern="" isBlankWhenNull="false">
+				<textField  isStretchWithOverflow="true" pattern="" isBlankWhenNull="false">
 					<reportElement key="textField" mode="Opaque" x="0" y="0" width="782" height="20" forecolor="#FFFFFF" backcolor="#000000">
 						<printWhenExpression><![CDATA[new Boolean($F{groupName} != null)]]></printWhenExpression>
 					</reportElement>

@@ -33,9 +33,9 @@
 		<groupHeader>
 			<band height="20" splitType="Prevent">
 				<rectangle>
-					<reportElement key="rectangle-2" x="0" y="0" width="782" height="20" forecolor="#000000" backcolor="#000000"/>
+					<reportElement key="rectangle-2" stretchType="RelativeToBandHeight" x="0" y="0" width="782" height="20" forecolor="#000000" backcolor="#000000"/>
 				</rectangle>
-				<textField pattern="" isBlankWhenNull="true">
+				<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true">
 					<reportElement key="textField" mode="Opaque" x="110" y="0" width="672" height="20" forecolor="#FFFFFF" backcolor="#000000"/>
 					<box>
 						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -48,8 +48,8 @@
 					</textElement>
 					<textFieldExpression class="java.lang.String"><![CDATA[$F{groupName}]]></textFieldExpression>
 				</textField>
-				<textField isBlankWhenNull="false">
-					<reportElement key="textField-25" mode="Opaque" x="0" y="0" width="110" height="20" forecolor="#FFFFFF" backcolor="#000000"/>
+				<textField isStretchWithOverflow="true" isBlankWhenNull="false">
+					<reportElement key="textField-25" positionType="Float" stretchType="RelativeToTallestObject" mode="Opaque" x="0" y="0" width="110" height="20" forecolor="#FFFFFF" backcolor="#000000"/>
 					<box>
 						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>

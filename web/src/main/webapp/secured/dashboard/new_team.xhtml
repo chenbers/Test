@@ -276,7 +276,8 @@
     	<div class="panel_nw">    
 			<div class="panel_title">
 	    		<h:graphicImage value="/images/ico_line.png" /><rich:spacer width="10"></rich:spacer>#{messages.team_what_happened} 
-	    		
+	    		<rich:spacer width="6"></rich:spacer>
+	    		<h:outputText value="#{messages.team_what_happened_disclaimer}" class="team_what_happened_disclaimer"/>
                 <a4j:outputPanel ajaxRendered="true" layout="block" styleClass="panel_links">
 	                <h:form id="timeFrameForm" style="display: inline;">	                	
 	                        <a4j:status id="teamStatus">
