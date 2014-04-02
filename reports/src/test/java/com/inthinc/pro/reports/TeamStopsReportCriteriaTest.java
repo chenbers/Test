@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import com.inthinc.pro.model.Vehicle;
 import org.joda.time.DateTimeZone;
 import org.joda.time.Interval;
 import org.junit.Before;
@@ -170,6 +171,11 @@ public class TeamStopsReportCriteriaTest extends BaseUnitTest {
                 driverList.add(this.findByID(11771));
                 return driverList;
             }
+            return null;
+        }
+
+        @Override
+        public List<Driver> getDriversInGroupIDList(List<Integer> groupIDList) {
             return null;
         }
 

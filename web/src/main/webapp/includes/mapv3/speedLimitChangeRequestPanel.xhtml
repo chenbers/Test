@@ -25,7 +25,7 @@
 		}
 	</style>
         
-	<a4j:loadScript src="/js/mapv3/speedByStreet.js" />
+
 
 	<rich:panel id="script">
 		<script type="text/javascript">
@@ -117,8 +117,15 @@
 			error = false;
 			errorField = "";
 		}
+    sbsMessages = new Array();
+
+    sbsMessages[0] = "#{messages.sbs_noBlankAddress}";
+    sbsMessages[1] = "#{messages.sbs_noAddress}";
 	//]]>
 	</script>
+
+    <a4j:loadScript src="/js/mapv3/speedByStreet.js" />
+
 
 	<div class="panel_w">
 		<div class="panel_content">
@@ -136,7 +143,7 @@
             	</li>
   				<li class="l">
   					<a4j:commandButton id="slcrpFindAddress" styleClass="left" 
-  						onclick="showLocation(document.getElementById('speedLimitChangeRequestTable:address').value); document.getElementById('speedLimitChangeRequestTable:address').value = '';">
+  						onclick="showLocation(document.getElementById('speedLimitChangeRequestTable:address').value);">
   						<span class="search"><h:outputText value="#{messages.sbs_findAddress}" /></span>
 					</a4j:commandButton>
 				</li>

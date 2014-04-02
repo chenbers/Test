@@ -209,6 +209,8 @@ public enum NoteType {
     
     DIAGNOSTIC(220, new Attrib[]{}), // send general diagnostic info to server
     MAN_DOWN_EX(221, new Attrib[]{}),
+    STATS_2(222, new Attrib[]{}),
+    
     DVIR_DRIVEN_UNSAFE(223, new Attrib[]{}),
     DVIR_DRIVEN_NOPREINSPEC(224, new Attrib[]{}),
     DVIR_DRIVEN_NOPOSTINSPEC(225, new Attrib[]{}),
@@ -223,6 +225,7 @@ public enum NoteType {
     ONE_WIRE_PAIRING(230, new Attrib[]{Attrib.DRIVERSTR, Attrib.FOB_ID}),
     FOB_INFO(231, new Attrib[]{Attrib.FOB_ID}),
     DVIR_REPAIR(232, new Attrib[]{Attrib.DVIR_COMMENTS,Attrib.DVIR_MECHANIC_ID,Attrib.DVIR_INSPECTOR_ID,Attrib.DVIR_SIGNOFF_ID, Attrib.ATTR_DVIR_FORM_ID, Attrib.ATTR_DVIR_SUBMISSION_TIME}),
+    TRIP_REPORT_COMPLETE(233, new Attrib[]{}),
     ROUTE_STOP(234, new Attrib[]{Attrib.ROUTE_STOP_TYPE, Attrib.ROUTESTOPID, Attrib.ATTR_ROUTE_ID}),	
     BACKING(235, new Attrib[]{Attrib.TRIP_DURATION}),
     DEVICE_MODEM_PAIRING(236, new Attrib[]{Attrib.IMEI, Attrib.MCMID}),

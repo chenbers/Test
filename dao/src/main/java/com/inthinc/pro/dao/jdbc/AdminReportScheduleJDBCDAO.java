@@ -48,7 +48,7 @@ public class AdminReportScheduleJDBCDAO extends SimpleJdbcDaoSupport implements 
             ReportSchedule reportSchedule = new ReportSchedule();
             reportSchedule.setAccountID(ObjectToInteger(rs.getObject("acctID")));
             reportSchedule.setStartDate(rs.getDate("startDate"));
-            reportSchedule.setLastDate(rs.getDate("lastDate"));
+            reportSchedule.setLastDate(rs.getTimestamp("lastDate"));
             if(reportSchedule.getLastDate().before(reportSchedule.getStartDate())){
                 reportSchedule.setLastDate(null);
             }

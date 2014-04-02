@@ -29,7 +29,7 @@
         <h:commandButton id="editAccountSave" action="#{myAccountBean.saveFormAction}" styleClass="left" value="#{messages.button_save} "><h:outputText value="#{messages.button_save} " styleClass="save"/></h:commandButton>
         
         <pretty:urlbuffer var="myAccountLink" mappingId="myAccount"/>
-        <h:commandButton id="editAccountCancel" action="#{myAccountBean.cancel}" styleClass="left" value="#{messages.button_cancel} "><h:outputText value="#{messages.button_cancel} " styleClass="cancel"/></h:commandButton>
+        <h:commandButton id="editAccountCancel" action="#{myAccountBean.cancel}" styleClass="left" value="#{messages.button_cancel} " immediate="true"><h:outputText value="#{messages.button_cancel} " styleClass="cancel"/></h:commandButton>
       <!--   <button id="editAccountCancel" type="button" class="left" onclick="location.href = '#{requestScope.myAccountLink}';"><h:outputText styleClass="cancel" value="#{messages.button_cancel}"/></button>-->
       </li>
     </ul>

@@ -10,7 +10,7 @@ default-autowire="byName">
     <property name="siloService" ref="siloService" />
   </bean>
   <!-- DAO -->
-  <bean id="addressDAO" class="com.inthinc.pro.dao.hessian.AddressHessianDAO"></bean>
+  <bean id="addressDAO" class="com.inthinc.pro.dao.jdbc.AddressJDBCDAO"></bean>
   <bean id="accountDAO" class="com.inthinc.pro.dao.hessian.AccountHessianDAO"></bean>
   <bean id="userDAO" class="com.inthinc.pro.dao.hessian.UserHessianDAO"></bean>
   <bean id="personDAO" class="com.inthinc.pro.dao.hessian.PersonHessianDAO"></bean>

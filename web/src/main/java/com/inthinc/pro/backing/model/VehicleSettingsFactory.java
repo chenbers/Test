@@ -9,6 +9,7 @@ import com.inthinc.pro.backing.WS850SettingManager;
 import com.inthinc.pro.backing.WaySmartSettingManager;
 import com.inthinc.pro.dao.ConfiguratorDAO;
 import com.inthinc.pro.dao.DeviceDAO;
+import com.inthinc.pro.dao.jdbc.DeviceJDBCDAO;
 import com.inthinc.pro.model.Device;
 import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.model.app.SensitivitySliders;
