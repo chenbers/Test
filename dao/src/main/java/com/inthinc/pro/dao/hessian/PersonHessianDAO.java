@@ -6,8 +6,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import com.inthinc.pro.dao.UserDAO;
-import com.inthinc.pro.dao.jdbc.UserJDBCDAO;
 import org.apache.log4j.Logger;
 
 import com.inthinc.pro.dao.FindByKey;
@@ -24,7 +22,6 @@ public class PersonHessianDAO extends GenericHessianDAO<Person, Integer> impleme
     private static final Logger logger = Logger.getLogger(PersonHessianDAO.class);
 
     private static final String CENTRAL_ID_KEY = "priEmail";
-    private UserJDBCDAO userDAO = new UserJDBCDAO();
 
     @Override
     public Integer create(Integer acctID, Person person)
@@ -41,7 +38,7 @@ public class PersonHessianDAO extends GenericHessianDAO<Person, Integer> impleme
         if (person.getUser() != null && (person.getUser().getUserID() == null || person.getUser().getUserID().intValue() == 0))
         {
             person.getUser().setPersonID(personID);
-            Integer userID = userDAO.create(personID, person.getUser());
+            Integer userID = getReturnKey(getSiloService().createUser(personID, getMapper().convertToMap(person.getUser())), User.class);
             person.getUser().setUserID(userID);
         }
 
@@ -97,7 +94,7 @@ public class PersonHessianDAO extends GenericHessianDAO<Person, Integer> impleme
             }
             else
             {
-                userDAO.update(person.getUser());
+                getSiloService().updateUser(person.getUser().getUserID(), getMapper().convertToMap(person.getUser()));
             }
         }
 
@@ -263,7 +260,7 @@ public class PersonHessianDAO extends GenericHessianDAO<Person, Integer> impleme
     @Override
 	public Integer delete(final Person person) {
 		if ((person.getUser() != null) && (person.getUser().getUserID() != null)) {
-			userDAO.deleteByID(person.getUser().getUserID());
+			getSiloService().deleteUser(person.getUser().getUserID());
 			deleteAlertsByUserId(person.getUser().getUserID());
 			deleteReportsByUserId(person.getUser());
 		}
@@ -311,13 +308,5 @@ public class PersonHessianDAO extends GenericHessianDAO<Person, Integer> impleme
     @Override
     public List<Person> getPeopleInAccount(Integer acctID) {
         return getMapper().convertToModelObject(getSiloService().getPersonsByAcctID(acctID), Person.class);
-    }
-
-    public UserJDBCDAO getUserDAO() {
-        return userDAO;
-    }
-
-    public void setUserDAO(UserJDBCDAO userDAO) {
-        this.userDAO = userDAO;
     }
 }
