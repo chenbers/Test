@@ -60,8 +60,8 @@ public class DeviceJDBCDAO extends SimpleJdbcDaoSupport implements DeviceDAO{
     private static final Integer PRODVER_WSAND = 12;
     private Mapper mapper = new SimpleMapper();
 
-    private static final String INSERT_FWD = "INSERT INTO fwd (deviceID, driverID, vehicleID, personID, fwdCmd, tries, status, created, modified)"
-                                             + "VALUES(? ,? ,? ,? ,? ,? ,? ,?, ?)" ;
+    private static final String INSERT_FWD = "INSERT INTO fwd (deviceID, driverID, vehicleID, personID, fwdCmd, fwdint, fwdStr, tries, status, created, modified)"
+                                             + "VALUES(? ,? ,? ,? ,? ,? ,? ,? ,?, ?, ?)" ;
 
     private static final String INSERT_FWD_SIRIDIUM = "INSERT INTO Fwd_WSiridium"
                     + " (data, created, modified, processing, status, iridiumStatus, command, datatype, personID, driverID, vehicleID, deviceID)"
@@ -231,6 +231,10 @@ public class DeviceJDBCDAO extends SimpleJdbcDaoSupport implements DeviceDAO{
                 fwd.setPersonID((Integer) forwardCommandMap.get("personID"));
             if(forwardCommandMap.containsKey("cmd"))
                 fwd.setCmd((Integer) forwardCommandMap.get("cmd"));
+            if(forwardCommandMap.containsKey("fwdInt"))
+                fwd.setFwdInt((Integer) forwardCommandMap.get("fwdInt"));
+            if(forwardCommandMap.containsKey("fwdStr"))
+                fwd.setFwdStr((String) forwardCommandMap.get("fwdInt"));
             if(forwardCommandMap.containsKey("data"))
                 fwd.setData(forwardCommandMap.get("data"));
             if(forwardCommandMap.containsKey("tries"))
@@ -442,7 +446,6 @@ public class DeviceJDBCDAO extends SimpleJdbcDaoSupport implements DeviceDAO{
             @Override
             public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
                 PreparedStatement ps = con.prepareStatement(INSERT_FWD, Statement.RETURN_GENERATED_KEYS);
-                 //deviceID, driverID, vehicleID, personID, fwdCmd, tries, status, created
 
                 ps.setInt(1, fwd.getDeviceID());
 
@@ -471,24 +474,35 @@ public class DeviceJDBCDAO extends SimpleJdbcDaoSupport implements DeviceDAO{
                     ps.setInt(5, fwd.getCmd());
                 }
 
-                if (fwd.getTries() == null) {
+                if (fwd.getFwdInt() == null) {
                     ps.setNull(6, Types.NULL);
                 } else {
-                    ps.setInt(6, fwd.getTries());
+                    ps.setInt(6, fwd.getFwdInt());
+                }
+
+                if (fwd.getFwdStr() == null) {
+                    ps.setNull(7, Types.NULL);
+                } else {
+                    ps.setString(7, fwd.getFwdStr());
+                }
+                if (fwd.getTries() == null) {
+                    ps.setNull(8, Types.NULL);
+                } else {
+                    ps.setInt(8, fwd.getTries());
                 }
 
                 if (fwd.getStatus() == null) {
-                    ps.setNull(7, Types.NULL);
+                    ps.setNull(9, Types.NULL);
                 } else {
-                    ps.setInt(7, fwd.getStatus().getCode());
+                    ps.setInt(9, fwd.getStatus().getCode());
                 }
 
                 DateFormat dfa = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                 dfa.setTimeZone(TimeZone.getTimeZone("UTC"));
                 String created = dfa.format(toUTC(new Date()));
 
-                ps.setString(8, created);
-                ps.setString(9, created);
+                ps.setString(10, created);
+                ps.setString(11, created);
 
                 logger.debug(ps.toString());
                 return ps;
@@ -505,7 +519,6 @@ public class DeviceJDBCDAO extends SimpleJdbcDaoSupport implements DeviceDAO{
             @Override
             public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
                 PreparedStatement ps = con.prepareStatement(INSERT_FWD_SIRIDIUM, Statement.RETURN_GENERATED_KEYS);
-                //data, created, modified, processing, status, iridiumStatus, command, datatype, personID, driverID, vehicleID, deviceID
 
                 if (fwdSpool.getData() == null) {
                     ps.setNull(1, Types.NULL);
