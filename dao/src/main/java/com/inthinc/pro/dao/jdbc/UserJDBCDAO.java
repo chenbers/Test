@@ -113,7 +113,7 @@ public class UserJDBCDAO extends SimpleJdbcDaoSupport implements UserDAO {
                 userItem.setAccessPoints(accessPoints);
             }else
             {
-            userItem.setAccessPoints(getUserAccessPoint(getUserRoles(rs.getInt("u.userID"))));
+            userItem.setAccessPoints(getUserAccessPoint(roleIds));
             }
             return userItem;
         }
