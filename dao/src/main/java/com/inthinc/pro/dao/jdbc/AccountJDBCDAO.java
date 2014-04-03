@@ -7,6 +7,7 @@ import com.inthinc.pro.model.AccountHOSType;
 import com.inthinc.pro.model.Address;
 import com.inthinc.pro.model.State;
 import com.inthinc.pro.model.Status;
+import com.inthinc.pro.model.app.States;
 import com.mysql.jdbc.Statement;
 import org.apache.commons.lang.NotImplementedException;
 import org.joda.time.DateTime;
@@ -39,18 +40,20 @@ public class AccountJDBCDAO extends SimpleJdbcDaoSupport implements AccountDAO {
     private static final String FIND_ALL_ACCOUNT_IDS = "SELECT acctID FROM  account ";
     private static final String DEL_ACCOUNT_BY_ID = "delete from account where acctID = ?";
     private static final String INSERT_ACCOUNT="INSERT INTO account() values()";
-    private static final String FIND_BY_ID = "select * from account ac LEFT JOIN address ad on ac.mailId= ad.addrId where  ac.acctID= :acctID" ;
+    private static final String FIND_BY_ID = "select * from account ac LEFT JOIN address ad on ac.mailId= ad.addrId, state st where  ac.acctID= :acctID and ad.stateId=st.stateID  " ;
     private static final String UPDATE_ACCOUNT_1 = "UPDATE account set zonePublishDate=?, status=?, billID=?, mailID=?, name=?, hos=?, unkDriverID=? where acctID = ?";
     private static final String UPDATE_ACCOUNT_SUPPORT_PHONE1 = "UPDATE accountProp set value=? where acctID = ? and name like 'supportPhone1'";
     private static final String UPDATE_ACCOUNT_SUPPORT_PHONE2 = "UPDATE accountProp set value=? where acctID = ? and name like 'supportPhone2'";
     private static final String UPDATE_ACCOUNT_SUPPORT_PHONE3 = "UPDATE accountProp set value=? where acctID = ? and name like 'supportContact3'";
     private static final String UPDATE_ACCOUNT_SUPPORT_PHONE4 = "UPDATE accountProp set value=? where acctID = ? and name like 'supportContact4'";
     private static final String UPDATE_ACCOUNT_SUPPORT_PHONE5 = "UPDATE accountProp set value=? where acctID = ? and name like 'supportContact5'";
+    private static final String UPDATE_ACCOUNT_PHONE_ALERT = "UPDATE accountProp set value=? where acctID = ? and name like 'phoneAlertsActive'";
     private static final String FIND_PHONE1 = "select ap.value from accountProp ap where   ap.name like 'supportPhone1' and ap.acctId =:acctID";
     private static final String FIND_PHONE2 = "select  ap.value from accountProp ap where   ap.name like 'supportPhone2' and ap.acctId =:acctID";
     private static final String FIND_CONTACT3 = "select ap.value from accountProp ap where   ap.name like 'supportContact3' and ap.acctId =:acctID";
     private static final String FIND_CONTACT4 = "select  ap.value from accountProp ap where   ap.name like 'supportContact4' and ap.acctId =:acctID";
     private static final String FIND_CONTACT5 = "select  ap.value from accountProp ap where   ap.name like 'supportContact5' and ap.acctId =:acctID";
+    private static final String FIND_PHONE_ALERT = "select  ap.value from accountProp ap where   ap.name like 'phoneAlertsActive' and ap.acctId =:acctID";
 
     @Override
     public List<Long> getAllValidAcctIDs() {
@@ -187,11 +190,24 @@ public class AccountJDBCDAO extends SimpleJdbcDaoSupport implements AccountDAO {
                 return ps;
             }
 
-        };PreparedStatementCreator psc_contact5 = new PreparedStatementCreator() {
+        };
+        PreparedStatementCreator psc_contact5 = new PreparedStatementCreator() {
             @Override
             public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
                 PreparedStatement ps = con.prepareStatement(UPDATE_ACCOUNT_SUPPORT_PHONE5, Statement.RETURN_GENERATED_KEYS);
                 ps.setString(1,account.getProps().getSupportContact5());
+                ps.setInt(2,account.getAccountID() );
+
+                logger.debug(ps.toString());
+                return ps;
+            }
+
+        };
+        PreparedStatementCreator psc_phone_alert = new PreparedStatementCreator() {
+            @Override
+            public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
+                PreparedStatement ps = con.prepareStatement(UPDATE_ACCOUNT_PHONE_ALERT, Statement.RETURN_GENERATED_KEYS);
+                ps.setString(1,account.getProps().getPhoneAlertsActive());
                 ps.setInt(2,account.getAccountID() );
 
                 logger.debug(ps.toString());
@@ -205,6 +221,7 @@ public class AccountJDBCDAO extends SimpleJdbcDaoSupport implements AccountDAO {
         jdbcTemplate.update(psc_contact3);
         jdbcTemplate.update(psc_contact4);
         jdbcTemplate.update(psc_contact5);
+        jdbcTemplate.update(psc_phone_alert);
 
         return account.getAccountID();
     }
@@ -233,11 +250,18 @@ public class AccountJDBCDAO extends SimpleJdbcDaoSupport implements AccountDAO {
             String accountContact3 = getSimpleJdbcTemplate().queryForObject(FIND_CONTACT3,String.class, args);
             String accountContact4 = getSimpleJdbcTemplate().queryForObject(FIND_CONTACT4,String.class, args);
             String accountContact5 = getSimpleJdbcTemplate().queryForObject(FIND_CONTACT5,String.class, args);
+            String phoneActive = getSimpleJdbcTemplate().queryForObject(FIND_PHONE_ALERT,String.class, args);
             accountAttributes.setSupportContact1(accountPhone1);
             accountAttributes.setSupportContact2(accountPhone2);
             accountAttributes.setSupportContact3(accountContact3);
             accountAttributes.setSupportContact4(accountContact4);
             accountAttributes.setSupportContact5(accountContact5);
+            accountAttributes.setPhoneAlertsActive(phoneActive);
+
+            State state = new State();
+            state.setAbbrev(rs.getString("st.abbrev"));
+            state.setName(rs.getString("st.name"));
+            state.setStateID(rs.getInt("st.stateId"));
 
             Address addres =new Address ();
             addres.setAccountID(rs.getInt("ad.acctID"));
@@ -245,7 +269,8 @@ public class AccountJDBCDAO extends SimpleJdbcDaoSupport implements AccountDAO {
             addres.setAddr2(rs.getString("ad.addr2"));
             addres.setAddrID(rs.getInt("ad.addrID"));
             addres.setCity(rs.getString("ad.city"));
-            addres.setState(State.valueOf(rs.getInt("ad.stateID")));
+
+            addres.setState(state);
             addres.setZip(rs.getString("ad.zip"));
 
             account.setAddress(addres);
