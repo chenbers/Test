@@ -11,6 +11,7 @@ import org.quartz.JobExecutionException;
 import com.inthinc.pro.dao.util.PhoneNumberUtil;
 import com.inthinc.pro.model.AlertMessageBuilder;
 import com.inthinc.pro.model.AlertMessageDeliveryType;
+import com.inthinc.pro.scheduler.i18n.LocalizedMessage;
 
 public class PhoneAlertJob extends BaseAlertJob
 {
@@ -18,7 +19,7 @@ public class PhoneAlertJob extends BaseAlertJob
     
     protected void executeInternal(JobExecutionContext ctx) throws JobExecutionException
     {
-        logger.debug("PhoneAlertJob: START");
+        logger.info("PhoneAlertJob: START");
         List<AlertMessageBuilder> messageList = getMessageBuilders(AlertMessageDeliveryType.PHONE);
         
         if (messageList.isEmpty()) return;
@@ -33,6 +34,9 @@ public class PhoneAlertJob extends BaseAlertJob
         for (AlertMessageBuilder message : messageList)
         {
             if (message == null) continue;
+            
+            String text = LocalizedMessage.getStringWithValues(message.getAlertMessageType().toString(),message.getLocale(),(String[])message.getParamterList().toArray(new String[message.getParamterList().size()]));
+            logger.info("PHONE Message: " + message.getAddress() + " " + text);
             
             if (message.getAddress().equalsIgnoreCase(currentAddress)){
                 userList.add(message);
@@ -50,7 +54,7 @@ public class PhoneAlertJob extends BaseAlertJob
         if (!userList.isEmpty()){
             dispatchList(userList);
         }
-        logger.debug("PhoneAlertJob: END");
+        logger.info("PhoneAlertJob: END");
     }
     private void unformatPhoneNumbers(List<AlertMessageBuilder> messageList){
         for (AlertMessageBuilder message : messageList){
