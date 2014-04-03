@@ -52,7 +52,7 @@ import java.util.Properties;
 import java.util.Set;
 
 /**
- * Test that exports all reports to a specified disk location
+ * Test that exports all reports to a specified location on disk
  * in all available formats for visual inspection.
  */
 
@@ -63,7 +63,6 @@ import java.util.Set;
         "classpath:/applicationContext-reports.xml"
 })
 @RunWith(SpringJUnit4ClassRunner.class)
-@Ignore
 public class MassReportExporterTest {
     @Autowired
     ReportCriteriaService reportCriteriaService;

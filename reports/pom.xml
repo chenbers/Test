@@ -12,7 +12,7 @@
 	<name>Pro Portal - Reporting</name>
 	<packaging>jar</packaging>
 	<properties>
-		<jasperreports.version>3.7.1</jasperreports.version>
+		<jasperreports.version>5.5.0</jasperreports.version>
 	</properties>
 
 	<build>
@@ -45,7 +45,7 @@
 				</executions>
 				<dependencies>
 					<dependency>
-						<groupId>jasperreports</groupId>
+						<groupId>net.sf.jasperreports</groupId>
 						<artifactId>jasperreports</artifactId>
 						<version>${jasperreports.version}</version>
 					</dependency>
@@ -124,7 +124,7 @@
 			<artifactId>spring-context</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>jasperreports</groupId>
+			<groupId>net.sf.jasperreports</groupId>
 			<artifactId>jasperreports</artifactId>
 			<scope>compile</scope>
 		</dependency>
