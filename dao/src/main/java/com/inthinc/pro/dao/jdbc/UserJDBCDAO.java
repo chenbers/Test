@@ -209,7 +209,7 @@ public class UserJDBCDAO extends SimpleJdbcDaoSupport implements UserDAO {
     }
 
     @Override
-    public Integer create(Integer integer, final User entity) {
+    public Integer create(final Integer integer, final User entity) {
         JdbcTemplate jdbcTemplate = getJdbcTemplate();
         KeyHolder keyHolder = new GeneratedKeyHolder();
         PreparedStatementCreator psc = new PreparedStatementCreator() {
@@ -217,7 +217,7 @@ public class UserJDBCDAO extends SimpleJdbcDaoSupport implements UserDAO {
             public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
                 PreparedStatement ps = con.prepareStatement(INSERT_USER, Statement.RETURN_GENERATED_KEYS);
                 ps.setInt(1, entity.getGroupID());
-                ps.setInt(2, entity.getPersonID());
+                ps.setInt(2,integer);
                 ps.setInt(3, entity.getStatus().getCode());
                 DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                 df.setTimeZone(TimeZone.getTimeZone("UTC"));
