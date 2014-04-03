@@ -15,6 +15,10 @@ import com.inthinc.pro.model.User;
 import com.inthinc.pro.model.app.States;
 import com.inthinc.pro.model.security.AccessPoint;
 import com.mysql.jdbc.Statement;
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
@@ -29,6 +33,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
@@ -48,7 +54,9 @@ public class PersonJDBCDAO extends SimpleJdbcDaoSupport implements PersonDAO {
     private final Calendar calendar = new GregorianCalendar(TimeZone.getTimeZone("UTC"));
     UserJDBCDAO userDAO = new UserJDBCDAO();
     DriverJDBCDAO driverDAO = new DriverJDBCDAO();
-    GroupJDBCDAO groupDAO = new GroupJDBCDAO();
+    AddressJDBCDAO addressDAO = new AddressJDBCDAO();
+
+    private static final DateTimeFormatter dateFormatter = DateTimeFormat.forPattern("yyyy-MM-dd");
 
     private static final String SELECT_PERSON = "Select t.tzName,p.personID, p.acctID, p.tzID, p.modified, p.status, p.measureType, p.fuelEffType, p.addrID, p.locale, p.reportsTo," +
                     "    p.title,p.dept,p.empid, p.first, p.middle, p.last,p.suffix, p.gender, p.height, p.weight, p.dob, p.info, p.warn, p.crit, p.priEmail, p.secEmail, p.priPhone," +
@@ -61,17 +69,17 @@ public class PersonJDBCDAO extends SimpleJdbcDaoSupport implements PersonDAO {
     private static final String FIND_BY_ACCOUNT = SELECT_PERSON + " and p.acctID = :accountID";
     private static final String FIND_BY_EMPID = SELECT_PERSON + " and p.acctID = :accountID and p.empid = :empID";
     private static final String FIND_BY_ID = SELECT_PERSON + " and p.personID = :personID";
-    private static final String FIND_REPORT_PREF_BY_USER="select reportPrefID reportPref where userID = :userID";
-    private static final String FIND_ALERT_BY_USER="select alertID from alert where userID = :userID";
+    private static final String FIND_REPORT_PREF_BY_USER = "select reportPrefID reportPref where userID = :userID";
+    private static final String FIND_ALERT_BY_USER = "select alertID from alert where userID = :userID";
 
     private static final String DEL_PERSON_BY_ID = "DELETE FROM person WHERE personID=?";
     private static final String DEL_REPORT_PREF_BY_ID = "DELETE FROM reportPref WHERE reportPrefID=?";
-    private static final String DEL_ALERT_BY_ID="DELETE FROM alert WHERE alertID=?";
+    private static final String DEL_ALERT_BY_ID = "DELETE FROM alert WHERE alertID=?";
 
     private static final String INSERT_PERSON = "INSERT into person (acctID, tzID, status, measureType, fuelEffType, " +
                     "addrID, locale, reportsTo, title, dept, empid, first, middle, last, suffix, gender, height, weight, dob, info, warn, " +
-                    "crit, priEmail, secEmail, priPhone, secPhone, priText, secText )" +
-                    "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                    "crit, priEmail, secEmail, priPhone, secPhone, priText, secText, modified )" +
+                    "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
     private ParameterizedRowMapper<Person> personRowMapper = new ParameterizedRowMapper<Person>() {
         @Override
@@ -227,7 +235,7 @@ public class PersonJDBCDAO extends SimpleJdbcDaoSupport implements PersonDAO {
         }
 
         return deleteByID(person.getPersonID());
-//        getJdbcTemplate().update(DEL_PERSON_BY_ID, new Object[] { person.getPersonID() });
+        //        getJdbcTemplate().update(DEL_PERSON_BY_ID, new Object[] { person.getPersonID() });
     }
 
     @Override
@@ -274,13 +282,18 @@ public class PersonJDBCDAO extends SimpleJdbcDaoSupport implements PersonDAO {
     }
 
     @Override
-    public Integer create(Integer integer,final Person entity) {
+    public Integer create(Integer integer, final Person entity) {
         JdbcTemplate jdbcTemplate = getJdbcTemplate();
         KeyHolder keyHolder = new GeneratedKeyHolder();
-        entity.setAddress(groupDAO.createAddressIfNeeded(entity.getAccountID(), entity.getAddress()));
+
+        if (entity.getAddress() != null && entity.getAddressID() == null)
+        {
+            Integer addressID = addressDAO.create(entity.getAccountID(), entity.getAddress());
+            entity.getAddress().setAddrID(addressID);
+            entity.setAddressID(addressID);
+        }
 
         Integer personID;
-
 
         PreparedStatementCreator psc = new PreparedStatementCreator() {
             @Override
@@ -319,46 +332,65 @@ public class PersonJDBCDAO extends SimpleJdbcDaoSupport implements PersonDAO {
                     ps.setString(7, entity.getLocale().toString());
                 }
 
-                //                acctID, tzID, status, measureType, fuelEffType, addrID, locale, reportsTo, title, dept, empid, first, middle, last, suffix, gender, height, weight, dob, info, warn, crit, priEmail, secEmail, priPhone, secPhone, priText, secText
-
-
                 ps.setString(8, entity.getReportsTo());
                 ps.setString(9, entity.getTitle());
                 ps.setString(10, entity.getDept());
+                ps.setString(11, entity.getEmpid());
+                ps.setString(12, entity.getFirst());
+                ps.setString(13, entity.getMiddle());
+                ps.setString(14, entity.getLast());
+                ps.setString(15, entity.getSuffix());
 
-//                if (entity.getDotOfficeType() == null || entity.getDotOfficeType().getCode() == null) {
-//                    ps.setNull(7, Types.NULL);
-//                } else {
-//                    ps.setInt(7, entity.getDotOfficeType().getCode());
-//                }
-//
-//                if (entity.getType() == null || entity.getType().getCode() == null) {
-//                    ps.setNull(8, Types.NULL);
-//                } else {
-//                    ps.setInt(8, entity.getType().getCode());
-//                }
-//
-//                if (entity.getManagerID() == null) {
-//                    ps.setNull(9, Types.NULL);
-//                } else {
-//                    ps.setInt(9, entity.getManagerID());
-//                }
-//                ps.setInt(10, entity.getMapZoom());
-//                ps.setDouble(11, entity.getMapLat());
-//                ps.setDouble(12, entity.getMapLng());
-//
-//                if (entity.getZoneRev() == null) {
-//                    ps.setInt(13, Types.NULL);
-//                } else {
-//                    ps.setInt(13, entity.getZoneRev());
-//                }
-//
-//                if (entity.getAggDate() == null) {
-//                    ps.setNull(14, Types.NULL);
-//                } else {
-//                    ps.setDate(14, new java.sql.Date(dateFormatter.parseDateTime(entity.getAggDate()).getMillis()));
-//                }
+                if (entity.getGender() == null || entity.getGender().getCode() == null) {
+                    ps.setNull(16, Types.NULL);
+                } else {
+                    ps.setInt(16, entity.getGender().getCode());
+                }
 
+                if (entity.getHeight() == null) {
+                    ps.setNull(17, Types.NULL);
+                } else {
+                    ps.setInt(17, entity.getHeight());
+                }
+                if (entity.getWeight() == null) {
+                    ps.setNull(18, Types.NULL);
+                } else {
+                    ps.setInt(18, entity.getWeight());
+                }
+
+                if (entity.getDob() == null) {
+                    ps.setNull(19, Types.NULL);
+                } else {
+                    ps.setDate(19, new java.sql.Date(entity.getDob().getTime()));
+                }
+
+                if (entity.getInfo() == null) {
+                    ps.setNull(20, Types.NULL);
+                } else {
+                    ps.setInt(20, entity.getInfo());
+                }
+
+                if (entity.getWarn() == null) {
+                    ps.setNull(21, Types.NULL);
+                } else {
+                    ps.setInt(21, entity.getWarn());
+                }
+
+                if (entity.getCrit() == null) {
+                    ps.setNull(22, Types.NULL);
+                } else {
+                    ps.setInt(22, entity.getCrit());
+                }
+                ps.setString(23, entity.getPriEmail());
+                ps.setString(24, entity.getSecEmail());
+                ps.setString(25, entity.getPriPhone());
+                ps.setString(26, entity.getSecPhone());
+                ps.setString(27, entity.getPriText());
+                ps.setString(28, entity.getSecText());
+
+                DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                String modified = df.format(toUTC(new Date()));
+                ps.setString(29, modified);
 
                 logger.debug(ps.toString());
                 return ps;
@@ -368,24 +400,15 @@ public class PersonJDBCDAO extends SimpleJdbcDaoSupport implements PersonDAO {
         jdbcTemplate.update(psc, keyHolder);
         personID = keyHolder.getKey().intValue();
 
-
-
-
-
-
-
-
-        if (entity.getUser() != null && (entity.getUser().getUserID() == null || entity.getUser().getUserID().intValue() == 0))
-        {
+        if (entity.getUser() != null && (entity.getUser().getUserID() == null || entity.getUser().getUserID().intValue() == 0)) {
             entity.getUser().setPersonID(personID);
             Integer userID = userDAO.create(personID, entity.getUser());
             entity.getUser().setUserID(userID);
         }
 
-        if (entity.getDriver() != null && (entity.getDriver().getDriverID() == null || entity.getDriver().getDriverID().intValue() == 0))
-        {
+        if (entity.getDriver() != null && (entity.getDriver().getDriverID() == null || entity.getDriver().getDriverID().intValue() == 0)) {
             entity.getDriver().setPersonID(personID);
-            Integer driverID =driverDAO.create(personID, entity.getDriver());
+            Integer driverID = driverDAO.create(personID, entity.getDriver());
             entity.getDriver().setDriverID(driverID);
         }
 
@@ -393,13 +416,162 @@ public class PersonJDBCDAO extends SimpleJdbcDaoSupport implements PersonDAO {
     }
 
     @Override
-    public Integer update(Person entity) {
-        return null;
+    public Integer update(final Person entity) {
+
+
+        if ((entity.getAddress() != null) && !entity.getAddress().isEmpty() && entity.getAddress().getAddrID() != null)
+        {
+           addressDAO.update(entity.getAddress());
+        }
+        else if (entity.getAddress() != null && (entity.getAddressID() == null || entity.getAddressID().intValue() == 0))
+        {
+            Integer addressID = addressDAO.create(entity.getAccountID(), entity.getAddress());
+            entity.getAddress().setAddrID(addressID);
+            entity.setAddressID(addressID);
+        }
+
+        Integer changedID; 
+        JdbcTemplate jdbcTemplate = getJdbcTemplate();
+        PreparedStatementCreator psc = new PreparedStatementCreator() {
+            @Override
+            public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
+                PreparedStatement ps = con.prepareStatement(INSERT_PERSON, Statement.RETURN_GENERATED_KEYS);
+                ps.setInt(1, entity.getAccountID());
+                ps.setString(2, entity.getTimeZone().getID());
+
+                if (entity.getStatus() == null || entity.getStatus().getCode() == null) {
+                    ps.setNull(3, Types.NULL);
+                } else {
+                    ps.setInt(3, entity.getStatus().getCode());
+                }
+
+                if (entity.getMeasurementType() == null || entity.getMeasurementType().getCode() == null) {
+                    ps.setNull(4, Types.NULL);
+                } else {
+                    ps.setInt(4, entity.getMeasurementType().getCode());
+                }
+
+                if (entity.getFuelEfficiencyType() == null || entity.getFuelEfficiencyType().getCode() == null) {
+                    ps.setNull(5, Types.NULL);
+                } else {
+                    ps.setInt(5, entity.getFuelEfficiencyType().getCode());
+                }
+
+                if (entity.getAddress() == null) {
+                    ps.setNull(6, Types.NULL);
+                } else {
+                    ps.setInt(6, entity.getAddress().getAddrID());
+                }
+
+                if (entity.getLocale() == null) {
+                    ps.setNull(7, Types.NULL);
+                } else {
+                    ps.setString(7, entity.getLocale().toString());
+                }
+
+                ps.setString(8, entity.getReportsTo());
+                ps.setString(9, entity.getTitle());
+                ps.setString(10, entity.getDept());
+                ps.setString(11, entity.getEmpid());
+                ps.setString(12, entity.getFirst());
+                ps.setString(13, entity.getMiddle());
+                ps.setString(14, entity.getLast());
+                ps.setString(15, entity.getSuffix());
+
+                if (entity.getGender() == null || entity.getGender().getCode() == null) {
+                    ps.setNull(16, Types.NULL);
+                } else {
+                    ps.setInt(16, entity.getGender().getCode());
+                }
+
+                if (entity.getHeight() == null) {
+                    ps.setNull(17, Types.NULL);
+                } else {
+                    ps.setInt(17, entity.getHeight());
+                }
+                if (entity.getWeight() == null) {
+                    ps.setNull(18, Types.NULL);
+                } else {
+                    ps.setInt(18, entity.getWeight());
+                }
+
+                if (entity.getDob() == null) {
+                    ps.setNull(19, Types.NULL);
+                } else {
+                    ps.setDate(19, new java.sql.Date(entity.getDob().getTime()));
+                }
+
+                if (entity.getInfo() == null) {
+                    ps.setNull(20, Types.NULL);
+                } else {
+                    ps.setInt(20, entity.getInfo());
+                }
+
+                if (entity.getWarn() == null) {
+                    ps.setNull(21, Types.NULL);
+                } else {
+                    ps.setInt(21, entity.getWarn());
+                }
+
+                if (entity.getCrit() == null) {
+                    ps.setNull(22, Types.NULL);
+                } else {
+                    ps.setInt(22, entity.getCrit());
+                }
+                ps.setString(23, entity.getPriEmail());
+                ps.setString(24, entity.getSecEmail());
+                ps.setString(25, entity.getPriPhone());
+                ps.setString(26, entity.getSecPhone());
+                ps.setString(27, entity.getPriText());
+                ps.setString(28, entity.getSecText());
+
+                DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                String modified = df.format(toUTC(new Date()));
+                ps.setString(29, modified);
+
+                logger.debug(ps.toString());
+                return ps;
+            }
+        };
+
+        jdbcTemplate.update(psc);
+        changedID = entity.getPersonID();
+
+        if (entity.getDriver() != null)
+        {
+            if (entity.getDriver().getDriverID() == null || entity.getDriver().getDriverID().intValue() == 0)
+            {
+                entity.getDriver().setPersonID(entity.getPersonID());
+                Integer driverID = driverDAO.create(entity.getPersonID(),entity.getDriver());
+                entity.getDriver().setDriverID(driverID);
+            }
+            else
+            {
+                driverDAO.update(entity.getDriver());
+            }
+        }
+
+        if (entity.getUser() != null)
+        {
+            if (entity.getUser().getUserID() == null || entity.getUser().getUserID().intValue() == 0)
+            {
+                entity.getUser().setPersonID(entity.getPersonID());
+                Integer userID = userDAO.create(entity.getPersonID(),entity.getUser());
+                entity.getUser().setUserID(userID);
+            }
+            else
+            {
+                userDAO.update(entity.getUser());
+            }
+        }
+
+        return changedID;
+
     }
 
     @Override
     public Integer deleteByID(Integer integer) {
-        return getJdbcTemplate().update(DEL_PERSON_BY_ID, new Object[]{integer});
+        return getJdbcTemplate().update(DEL_PERSON_BY_ID, new Object[] { integer });
     }
 
     private String getStringOrNullFromRS(ResultSet rs, String columnName) throws SQLException {
@@ -439,11 +611,10 @@ public class PersonJDBCDAO extends SimpleJdbcDaoSupport implements PersonDAO {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("userID", user.getUserID());
 
-
         StringBuilder reportPrefByIDSelect = new StringBuilder();
         reportPrefByIDSelect.append(FIND_REPORT_PREF_BY_USER);
-           List<Integer> reportIDList = getSimpleJdbcTemplate().query(reportPrefByIDSelect.toString(), reportPrefIDRowMapper, params);
-        for (int i=0;i<reportIDList.size();i++){
+        List<Integer> reportIDList = getSimpleJdbcTemplate().query(reportPrefByIDSelect.toString(), reportPrefIDRowMapper, params);
+        for (int i = 0; i < reportIDList.size(); i++) {
             Integer reportPrefId = reportIDList.get(i);
             getJdbcTemplate().update(DEL_REPORT_PREF_BY_ID, new Object[] { reportPrefId });
         }
@@ -460,13 +631,17 @@ public class PersonJDBCDAO extends SimpleJdbcDaoSupport implements PersonDAO {
         StringBuilder alertByIDSelect = new StringBuilder();
         alertByIDSelect.append(FIND_ALERT_BY_USER);
         List<Integer> alertIDList = getSimpleJdbcTemplate().query(alertByIDSelect.toString(), alertIDRowMapper, params);
-        for (int i=0;i<alertIDList.size();i++){
+        for (int i = 0; i < alertIDList.size(); i++) {
             Integer alertId = alertIDList.get(i);
             getJdbcTemplate().update(DEL_ALERT_BY_ID, new Object[] { alertId });
         }
 
     }
 
+    private Date toUTC(Date date) {
+        DateTime dt = new DateTime(date.getTime()).toDateTime(DateTimeZone.UTC);
+        return dt.toDate();
+    }
 
     public UserJDBCDAO getUserDAO() {
         return userDAO;
@@ -484,5 +659,11 @@ public class PersonJDBCDAO extends SimpleJdbcDaoSupport implements PersonDAO {
         this.driverDAO = driverDAO;
     }
 
+    public AddressJDBCDAO getAddressDAO() {
+        return addressDAO;
+    }
 
+    public void setAddressDAO(AddressJDBCDAO addressDAO) {
+        this.addressDAO = addressDAO;
+    }
 }
