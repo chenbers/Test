@@ -58,14 +58,10 @@ public class PersonJDBCDAO extends SimpleJdbcDaoSupport implements PersonDAO {
 
     private static final DateTimeFormatter dateFormatter = DateTimeFormat.forPattern("yyyy-MM-dd");
 
-    private static final String SELECT_PERSON = "Select t.tzName,p.personID, p.acctID, p.tzID, p.modified, p.status, p.measureType, p.fuelEffType, p.addrID, p.locale, p.reportsTo," +
-                    "    p.title,p.dept,p.empid, p.first, p.middle, p.last,p.suffix, p.gender, p.height, p.weight, p.dob, p.info, p.warn, p.crit, p.priEmail, p.secEmail, p.priPhone," +
-                    "    p.secPhone, p.priText, p.secText, d.personID, d.driverid, d.groupid, d.barcode, d.rfid1, d.rfid2, d.fobID, d.license, d.stateid, d.expiration,  d.certs,d.dot," +
-                    "    d.grouppath, d.class, u.userID, u.groupID, u.personID, u.status, u.modified, u.lastLogin, u.passwordDT, u.password, u.username, u.mapType " +
-                    " from user u, driver d, person p,timezone t where p.driverID = d.driverID and p.userID = u.userID and p.personID = d.personID and p.tzID=t.tzID; ";
+    private static final String SELECT_PERSON = "select * from person p LEFT JOIN user u ON (p.personID=u.personID) LEFT JOIN driver d ON (p.personID=d.personID) LEFT JOIN timezone t ON (p.tzID=t.tzID) where 1=1 ";
 
     private static final String GROUP_ID_DEEP = SELECT_PERSON + " and u.groupID in (select groupID from groups where groupPath like :groupID) OR d.groupid in (select groupID from groups where groupPath like :groupID) and u.status <> 3";
-    private static final String FIND_BY_EMAIL = SELECT_PERSON + " and p.email = :email";
+    private static final String FIND_BY_EMAIL = SELECT_PERSON + " and p.priEmail = :email";
     private static final String FIND_BY_ACCOUNT = SELECT_PERSON + " and p.acctID = :accountID";
     private static final String FIND_BY_EMPID = SELECT_PERSON + " and p.acctID = :accountID and p.empid = :empID";
     private static final String FIND_BY_ID = SELECT_PERSON + " and p.personID = :personID";
@@ -110,7 +106,7 @@ public class PersonJDBCDAO extends SimpleJdbcDaoSupport implements PersonDAO {
             person.setSecEmail(getStringOrNullFromRS(rs, "p.secEmail"));
             person.setSecPhone(getStringOrNullFromRS(rs, "p.secEmail"));
             person.setSecText(getStringOrNullFromRS(rs, "p.secEmail"));
-            person.setMeasurementType(rs.getObject("p.measureType") == null ? null : MeasurementType.valueOf(rs.getString("p.measureType")));
+            person.setMeasurementType(rs.getObject("p.measureType") == null ? null : MeasurementType.valueOf(rs.getInt("p.measureType")));
             person.setTitle(getStringOrNullFromRS(rs, "p.title"));
             person.setMiddle(getStringOrNullFromRS(rs, "p.middle"));
             person.setSuffix(getStringOrNullFromRS(rs, "p.suffix"));
@@ -121,50 +117,54 @@ public class PersonJDBCDAO extends SimpleJdbcDaoSupport implements PersonDAO {
             address.setAddrID(getIntOrNullFromRS(rs, "addrID"));
             person.setAddress(address);
 
-            User userItem = new User();
-            userItem.setGroupID(getIntOrNullFromRS(rs, "u.groupID"));
-            userItem.setLastLogin(getDateOrNullFromRS(rs, "u.lastLogin"));
-            userItem.setPassword(getStringOrNullFromRS(rs, "u.password"));
-            userItem.setPasswordDT(getDateOrNullFromRS(rs, "u.passwordDT"));
-            userItem.setPersonID(getIntOrNullFromRS(rs, "u.personID"));
-            userItem.setUsername(getStringOrNullFromRS(rs, "u.username"));
-            userItem.setUserID(getIntOrNullFromRS(rs, "u.userID"));
-            userItem.setStatus(rs.getObject("u.status") == null ? null : Status.valueOf(rs.getInt("u.status")));
+            if (getIntOrNullFromRS(rs, "u.userID") != null) {
+                User userItem = new User();
+                userItem.setGroupID(getIntOrNullFromRS(rs, "u.groupID"));
+                userItem.setLastLogin(getDateOrNullFromRS(rs, "u.lastLogin"));
+                userItem.setPassword(getStringOrNullFromRS(rs, "u.password"));
+                userItem.setPasswordDT(getDateOrNullFromRS(rs, "u.passwordDT"));
+                userItem.setPersonID(getIntOrNullFromRS(rs, "u.personID"));
+                userItem.setUsername(getStringOrNullFromRS(rs, "u.username"));
+                userItem.setUserID(getIntOrNullFromRS(rs, "u.userID"));
+                userItem.setStatus(rs.getObject("u.status") == null ? null : Status.valueOf(rs.getInt("u.status")));
 
-            userItem.setMapType(rs.getObject("u.status") == null ? null : GoogleMapType.valueOf(rs.getInt("u.mapType")));
-            userItem.setPerson(person);
-            List<Integer> roleIds = userDAO.getUserRoles(rs.getInt("u.userID"));
-            userItem.setRoles(roleIds);
-            userItem.setSelectedMapLayerIDs(userDAO.getUserMapLayers(rs.getInt("u.userID")));
-            if (roleIds.isEmpty()) {
-                List<AccessPoint> accessPoints = new ArrayList<AccessPoint>();
-                userItem.setAccessPoints(accessPoints);
-            } else {
-                userItem.setAccessPoints(userDAO.getUserAccessPoint(roleIds));
+                userItem.setMapType(rs.getObject("u.status") == null ? null : GoogleMapType.valueOf(rs.getInt("u.mapType")));
+                userItem.setPerson(person);
+                List<Integer> roleIds = userDAO.getUserRoles(rs.getInt("u.userID"));
+                userItem.setRoles(roleIds);
+                userItem.setSelectedMapLayerIDs(userDAO.getUserMapLayers(rs.getInt("u.userID")));
+                if (roleIds.isEmpty()) {
+                    List<AccessPoint> accessPoints = new ArrayList<AccessPoint>();
+                    userItem.setAccessPoints(accessPoints);
+                } else {
+                    userItem.setAccessPoints(userDAO.getUserAccessPoint(roleIds));
+                }
+
+                person.setUser(userItem);
             }
 
-            person.setUser(userItem);
+            if (getIntOrNullFromRS(rs, "d.driverID") != null) {
+                Driver driverItem = new Driver();
 
-            Driver driverItem = new Driver();
+                driverItem.setDriverID(rs.getInt("d.driverID"));
+                driverItem.setGroupID(rs.getInt("d.groupID"));
+                //            driver.setStatus(status);
+                driverItem.setLicense(rs.getString("d.license"));
+                driverItem.setLicenseClass(rs.getString("d.class"));
+                driverItem.setState(States.getStateById(rs.getInt("d.stateID")));         //?
+                driverItem.setExpiration(rs.getDate("d.expiration", calendar));
+                driverItem.setCertifications(rs.getString("d.certs"));
+                driverItem.setDot(RuleSetType.valueOf(rs.getInt("d.dot")));         //?
+                driverItem.setBarcode(rs.getString("d.barcode"));
+                driverItem.setRfid1(rs.getObject("d.rfid1") == null ? null : rs.getLong("d.rfid1"));
+                driverItem.setRfid2(rs.getObject("d.rfid2") == null ? null : rs.getLong("d.rfid2"));
+                driverItem.setFobID(rs.getString("d.fobID"));
+                driverItem.setStatus(Status.valueOf(rs.getInt("d.status")));
+                //            driver.setPersonID(rs.getInt("d.personId"));
+                driverItem.setPerson(person);
 
-            driverItem.setDriverID(rs.getInt("d.driverID"));
-            driverItem.setGroupID(rs.getInt("d.groupID"));
-            //            driver.setStatus(status);
-            driverItem.setLicense(rs.getString("d.license"));
-            driverItem.setLicenseClass(rs.getString("d.class"));
-            driverItem.setState(States.getStateById(rs.getInt("d.stateID")));         //?
-            driverItem.setExpiration(rs.getDate("d.expiration", calendar));
-            driverItem.setCertifications(rs.getString("d.certs"));
-            driverItem.setDot(RuleSetType.valueOf(rs.getInt("d.dot")));         //?
-            driverItem.setBarcode(rs.getString("d.barcode"));
-            driverItem.setRfid1(rs.getObject("d.rfid1") == null ? null : rs.getLong("d.rfid1"));
-            driverItem.setRfid2(rs.getObject("d.rfid2") == null ? null : rs.getLong("d.rfid2"));
-            driverItem.setFobID(rs.getString("d.fobID"));
-            driverItem.setStatus(Status.valueOf(rs.getInt("d.status")));
-            //            driver.setPersonID(rs.getInt("d.personId"));
-            driverItem.setPerson(person);
-
-            person.setDriver(driverItem);
+                person.setDriver(driverItem);
+            }
 
             return person;
         }
@@ -191,7 +191,7 @@ public class PersonJDBCDAO extends SimpleJdbcDaoSupport implements PersonDAO {
     @Override
     public Person findByEmail(String email) {
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("p.email", email);
+        params.put("email", email);
 
         StringBuilder personByEmailSelect = new StringBuilder();
         personByEmailSelect.append(FIND_BY_EMAIL);
@@ -254,7 +254,7 @@ public class PersonJDBCDAO extends SimpleJdbcDaoSupport implements PersonDAO {
     public Person findByEmpID(Integer acctID, String empID) {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("accountID", acctID);
-        params.put("p.empID", empID);
+        params.put("empID", empID);
 
         StringBuilder personByEmpSelect = new StringBuilder();
         personByEmpSelect.append(FIND_BY_EMPID);
