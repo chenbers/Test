@@ -140,7 +140,7 @@ public class UserJDBCDAOTest extends SimpleJdbcDaoSupport {
 
 
         user.setPersonID(personId);
-        Integer userID = userDAO.create(user.getUserID(), user);
+        Integer userID = userDAO.create(user.getPersonID(), user);
         returnsUserID = (userID != null);
         assertTrue(returnsUserID);
 

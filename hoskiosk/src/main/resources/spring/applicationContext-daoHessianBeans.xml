@@ -13,10 +13,10 @@ default-autowire="byName">
   <bean id="addressDAO" class="com.inthinc.pro.dao.jdbc.AddressJDBCDAO"></bean>
   <bean id="accountDAO" class="com.inthinc.pro.dao.hessian.AccountHessianDAO"></bean>
   <bean id="userDAO" class="com.inthinc.pro.dao.jdbc.UserJDBCDAO"></bean>
-  <bean id="personDAO" class="com.inthinc.pro.dao.hessian.PersonHessianDAO"></bean>
+  <bean id="personDAO" class="com.inthinc.pro.dao.jdbc.PersonJDBCDAO"></bean>
   <bean id="groupDAO" class="com.inthinc.pro.dao.hessian.GroupHessianDAO"></bean>
   <bean id="vehicleDAO" class="com.inthinc.pro.dao.hessian.VehicleHessianDAO"/>
-  <bean id="driverDAO" class="com.inthinc.pro.dao.hessian.DriverHessianDAO"></bean>
+  <bean id="driverDAO" class="com.inthinc.pro.dao.jdbc.DriverJDBCDAO"></bean>
   <bean id="roleDAO" class="com.inthinc.pro.dao.hessian.RoleHessianDAO"></bean>
   <bean id="stateDAO" class="com.inthinc.pro.dao.hessian.StateHessianDAO"></bean>
   <bean id="timeZoneDAO" class="com.inthinc.pro.dao.hessian.TimeZoneHessianDAO"></bean>
