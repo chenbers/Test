@@ -26,8 +26,8 @@
         <property name="dataSource" ref="tiwiJDBCDataSource" />
     </bean>
     <bean id="groupDAO" class="com.inthinc.pro.dao.hessian.GroupHessianDAO" parent="genericDAO"></bean>
-    <bean id="personDAO" class="com.inthinc.pro.dao.hessian.PersonHessianDAO" parent="genericDAO"></bean>
-    <bean id="driverDAO" class="com.inthinc.pro.dao.hessian.DriverHessianDAO" parent="genericDAO"></bean>
+    <bean id="personDAO" class="com.inthinc.pro.dao.jdbc.PersonJDBCDAO" parent="genericDAO"></bean>
+    <bean id="driverDAO" class="com.inthinc.pro.dao.jdbc.DriverJDBCDAO" parent="genericDAO"></bean>
     <bean id="eventDAO" class="com.inthinc.pro.dao.hessian.EventHessianDAO" parent="genericDAO"></bean>
     <bean id="reportScheduleDAO" class="com.inthinc.pro.dao.hessian.ReportScheduleHessianDAO" parent="genericDAO"></bean>
     <bean id="userDAO" class="com.inthinc.pro.dao.jdbc.UserJDBCDAO"></bean>

@@ -1,10 +1,18 @@
 package it.com.inthinc.pro.dao.jdbc;
 
+import com.inthinc.hos.model.RuleSetType;
 import com.inthinc.pro.dao.hessian.proserver.SiloService;
 import com.inthinc.pro.dao.hessian.proserver.SiloServiceCreator;
+import com.inthinc.pro.dao.jdbc.DriverJDBCDAO;
 import com.inthinc.pro.dao.jdbc.PersonJDBCDAO;
 import com.inthinc.pro.dao.jdbc.UserJDBCDAO;
+import com.inthinc.pro.model.Address;
+import com.inthinc.pro.model.Driver;
+import com.inthinc.pro.model.FuelEfficiencyType;
+import com.inthinc.pro.model.Gender;
+import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.model.Person;
+import com.inthinc.pro.model.State;
 import com.inthinc.pro.model.Status;
 import com.inthinc.pro.model.User;
 import com.inthinc.pro.model.security.AccessPoint;
@@ -17,7 +25,10 @@ import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
 
 import javax.sql.DataSource;
 import java.io.InputStream;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
+import java.util.TimeZone;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -80,7 +91,17 @@ public class PersonJDBCDAOTest extends SimpleJdbcDaoSupport {
 //    public void findTest() {
 //        PersonJDBCDAO personDAO = new PersonJDBCDAO();
 //        DataSource dataSource = new ITDataSource().getRealDataSource();
+//
+//        UserJDBCDAO userDAO = new UserJDBCDAO();
+//
+//        DriverJDBCDAO driverDAO = new DriverJDBCDAO();
+//
+//        userDAO.setDataSource(dataSource);
+//        driverDAO.setDataSource(dataSource);
+//
 //        personDAO.setDataSource(dataSource);
+//        personDAO.setUserDAO(userDAO);
+//        personDAO.setDriverDAO(driverDAO);
 //
 //        //findByID method
 //        Person personByID = personDAO.findByID(personId);
@@ -106,93 +127,170 @@ public class PersonJDBCDAOTest extends SimpleJdbcDaoSupport {
 //        assertEquals(personByEmpID.getLast(),"Last6509");
 //
 //    }
+//
+//    @Test
+//    public void getPeopleInAccountTest() {
+//        PersonJDBCDAO personDAO = new PersonJDBCDAO();
+//        DataSource dataSource = new ITDataSource().getRealDataSource();
+//
+//        UserJDBCDAO userDAO = new UserJDBCDAO();
+//
+//        DriverJDBCDAO driverDAO = new DriverJDBCDAO();
+//
+//        userDAO.setDataSource(dataSource);
+//        driverDAO.setDataSource(dataSource);
+//
+//        personDAO.setDataSource(dataSource);
+//        personDAO.setUserDAO(userDAO);
+//        personDAO.setDriverDAO(driverDAO);
+//
+//        //getPeopleInAccount method
+//        List<Person> personList = personDAO.getPeopleInAccount(accountID);
+//        assertNotNull(personList);
+//        for(int i=0;i<personList.size();i++){
+//        assertEquals(personList.get(i).getAcctID(), accountID);
+//        }
+//    }
+//
+//    @Test
+//    public void getPeopleInGroupHierarchyTest() {
+//        PersonJDBCDAO personDAO = new PersonJDBCDAO();
+//        DataSource dataSource = new ITDataSource().getRealDataSource();
+//
+//        UserJDBCDAO userDAO = new UserJDBCDAO();
+//
+//        DriverJDBCDAO driverDAO = new DriverJDBCDAO();
+//
+//        userDAO.setDataSource(dataSource);
+//        driverDAO.setDataSource(dataSource);
+//
+//        personDAO.setDataSource(dataSource);
+//        personDAO.setUserDAO(userDAO);
+//        personDAO.setDriverDAO(driverDAO);
+//
+//        //getPeopleInGroupHierarchy method
+//        List<Person> personList = personDAO.getPeopleInGroupHierarchy(groupId);
+//        assertNotNull(personList);
+//        List<Integer> groupIds = driverDAO.getGroupIdDeep(groupId);
+//
+//        for (int i = 0; i < personList.size(); i++) {
+//            if (personList.get(i).getUser() != null) {
+//
+//                assertTrue(groupIds.contains(personList.get(i).getUser().getGroupID()));
+//            }
+//            if (personList.get(i).getDriver() != null) {
+//                assertTrue(groupIds.contains(personList.get(i).getDriver().getGroupID()));
+//            }
+//        }
+//    }
+
+
 
     @Test
-    public void getPeopleInAccountTest() {
+    public void createUpdateDeleteTest(){
+
         PersonJDBCDAO personDAO = new PersonJDBCDAO();
         DataSource dataSource = new ITDataSource().getRealDataSource();
+
+        UserJDBCDAO userDAO = new UserJDBCDAO();
+
+        DriverJDBCDAO driverDAO = new DriverJDBCDAO();
+
+        userDAO.setDataSource(dataSource);
+        driverDAO.setDataSource(dataSource);
+
         personDAO.setDataSource(dataSource);
+        personDAO.setUserDAO(userDAO);
+        personDAO.setDriverDAO(driverDAO);
 
-        //getPeopleInAccount method
-        List<Person> person = personDAO.getPeopleInAccount(accountID);
-        assertNotNull(person);
+        // created user
+        User userToCreate = new User();
+        userToCreate.setGroupID(6509);
+        userToCreate.setUsername("TestCreate");
+        userToCreate.setPassword("create");
+        userToCreate.setStatus(Status.INACTIVE);
+        userToCreate.setRoles(roleId);
+        userToCreate.setAccessPoints(accessPoints);
+        userToCreate.setSelectedMapLayerIDs(mapLayers);
+
+        // created driver
+        Driver driverToCreate = new Driver();
+        driverToCreate.setGroupID(6030);
+        driverToCreate.setCertifications("1234545");
+        driverToCreate.setStatus(Status.valueOf(1));
+        driverToCreate.setRfid1(Long.valueOf(300000001));
+        driverToCreate.setRfid2(Long.valueOf(400000000));
+        driverToCreate.setLicenseClass("C");
+        driverToCreate.setBarcode("update_test");
+        driverToCreate.setLicense("update_test");
+        driverToCreate.setFobID("update_test");
+        driverToCreate.setDot(RuleSetType.valueOf(2));
+        driverToCreate.setPersonID(33333333);
+        State state = new State();
+        state.setAbbrev("AL");
+        state.setName("Alabama");
+        state.setStateID(1);
+        driverToCreate.setState(state);
+        driverToCreate.setExpiration(new Date());
+        driverToCreate.setModified(new Date());
+
+        //create address
+        Address addressToInsert = new Address();
+        addressToInsert.setAccountID(1);
+        addressToInsert.setAddr1("832 Street");
+        addressToInsert.setCity("City 71");
+        state.setAbbrev("UT");
+        state.setName("Utah");
+        state.setStateID(45);
+        addressToInsert.setState(state);
+        addressToInsert.setZip("10021");
+
+        // created person
+        Person personToCreate = new Person();
+        personToCreate.setUser(userToCreate);
+        personToCreate.setDriver(driverToCreate);
+
+        personToCreate.setAcctID(accountID);
+        personToCreate.setAddressID(null);
+        personToCreate.setAddress(addressToInsert);
+        personToCreate.setCrit(5);
+        personToCreate.setDept("testCreate");
+        personToCreate.setEmpid("Z666666");
+        personToCreate.setDob(new Date());
+        personToCreate.setFirst("testCreate");
+        personToCreate.setFuelEfficiencyType(FuelEfficiencyType.KMPL);
+        personToCreate.setGender(Gender.MALE);
+        personToCreate.setHeight(200);
+        personToCreate.setInfo(1);
+        personToCreate.setLast("testCreate");
+        personToCreate.setLocale(Locale.CHINA);
+        personToCreate.setWarn(1);
+        personToCreate.setPriEmail("testCreate@inthinc.com");
+        personToCreate.setPriPhone("666666");
+        personToCreate.setPriText("testCreate");
+        personToCreate.setReportsTo("testCreate");
+        personToCreate.setStatus(Status.INACTIVE);
+        personToCreate.setSecEmail("testCreateSec@inthinc.com");
+        personToCreate.setSecPhone("999999");
+        personToCreate.setSecText("testCreateSec");
+        personToCreate.setMeasurementType(MeasurementType.ENGLISH);
+        personToCreate.setTitle("dude");
+        personToCreate.setMiddle("m");
+        personToCreate.setSuffix("s");
+        personToCreate.setWeight(100);
+        personToCreate.setTimeZone(TimeZone.getTimeZone("GMT"));
+
+        Integer createdPersonId = personDAO.create(accountID, personToCreate);
+
+        //find by id test
+        Person createdPerson = personDAO.findByID(createdPersonId);
+
+        assertNotNull(createdPerson);
+
+
+
+        //delete vehicle when finish
+        personDAO.delete(createdPerson);
     }
-
-//    @Test
-//    public void getUserByPersonIDTest() {
-//        UserJDBCDAO userDAO = new UserJDBCDAO();
-//        DataSource dataSource = new ITDataSource().getRealDataSource();
-//        userDAO.setDataSource(dataSource);
-//
-//        //getUserByPersonID method
-//        User user = userDAO.getUserByPersonID(personId);
-//        assertNotNull(user);
-//    }
-//
-//    @Test
-//    public void findByIDTest() {
-//        UserJDBCDAO userDAO = new UserJDBCDAO();
-//        DataSource dataSource = new ITDataSource().getRealDataSource();
-//        userDAO.setDataSource(dataSource);
-//
-//        //findById method
-//        User user = userDAO.findByID(userId);
-//        assertNotNull(user);
-//    }
-//
-//    @Test
-//    public void createUpdateDeleteTest(){
-//
-//        //create  method  test
-//        boolean returnsUserID = false;
-//        UserJDBCDAO userDAO = new UserJDBCDAO();
-//        DataSource dataSource = new ITDataSource().getRealDataSource();
-//        userDAO.setDataSource(dataSource);
-//
-//        User user = new User();
-//        user.setGroupID(6509);
-//        user.setUsername("TestCreate");
-//        user.setPassword("create");
-//        user.setStatus(Status.INACTIVE);
-//
-//
-//        user.setRoles(roleId);
-//        user.setAccessPoints(accessPoints);
-//        user.setSelectedMapLayerIDs(mapLayers);
-//
-//
-//        user.setPersonID(personId);
-//        Integer userID = userDAO.create(user.getUserID(), user);
-//        returnsUserID = (userID != null);
-//        assertTrue(returnsUserID);
-//
-//        //find by id test
-//        User createdUser = userDAO.findByID(userID);
-//
-//        assertEquals("TestCreate", user.getUsername(), createdUser.getUsername());
-//        assertEquals(6509, user.getGroupID(), createdUser.getGroupID());
-//        assertEquals("create", user.getPassword(), createdUser.getPassword());
-//
-//        //update  method  test
-//        User userUpdate = new User();
-//        userUpdate.setUserID(userID);
-//        userUpdate.setGroupID(6509);
-//        userUpdate.setUsername("TestUpdate");
-//        userUpdate.setPassword("update");
-//        userUpdate.setStatus(Status.ACTIVE);
-//
-//        userUpdate.setPersonID(personId);
-//        userDAO.update(userUpdate);
-//
-//        //find vehicle by ID  after update
-//        User updatedUser = userDAO.findByID(userID);
-//
-//        assertEquals("TestUpdate", userUpdate.getUsername(), updatedUser.getUsername());
-//        assertEquals(6509, user.getGroupID(), createdUser.getGroupID());
-//        assertEquals("update", user.getPassword(), createdUser.getPassword());
-//
-//        //delete vehicle when finish
-//        userDAO.deleteByID(userID);
-//    }
 
 }
