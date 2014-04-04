@@ -346,6 +346,11 @@ System.out.println("acct name: " + "TEST " + timeStamp.substring(15));
         redFlagAlert.setSeverityLevel(RedFlagLevel.INFO);
         addRedFlagAlert(redFlagAlert, redFlagAlertDAO);
 
+        // satellite
+        redFlagAlert = initRedFlagAlert(AlertMessageType.ALERT_TYPE_SATELLITE);
+        redFlagAlert.setMaxSpeed(15);
+        addRedFlagAlert(redFlagAlert, redFlagAlertDAO);
+
     
     }
 

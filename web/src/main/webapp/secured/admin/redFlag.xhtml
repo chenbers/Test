@@ -250,6 +250,17 @@
                                 <c:set var="row" value="#{row + 1}" />
                               </c:if>
                             </c:forEach>
+                              <tr class="datagrid">
+                                  <td style="padding: 0px 12px 6px 12px; border-bottom: 1px solid #8BAD37;" width="100">
+                              <h:panelGrid id="vehicSat" columns="2" cellspacing="1"
+                                           rendered="#{redFlagOrZoneAlertsBean.item.selectedAlertTypes['ALERT_TYPE_SATELLITE'] == true}">
+                                  <h:outputText value="#{messages.editDevice_satellite}"/>
+                                  <h:outputText value=" "/>
+                              </h:panelGrid>
+                                  </td>
+                                  <td style="padding: 0px 12px 6px 12px; border-bottom: 1px solid #8BAD37;" width="120" align="center"></td>
+                                  <td style="padding: 0px 12px 6px 0px; border-bottom: 1px solid #8BAD37; width:80px"></td>
+                              </tr>
                           </table>
 
                         </h:panelGroup>
