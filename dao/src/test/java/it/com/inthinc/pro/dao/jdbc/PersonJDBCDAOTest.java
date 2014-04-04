@@ -3,6 +3,7 @@ package it.com.inthinc.pro.dao.jdbc;
 import com.inthinc.hos.model.RuleSetType;
 import com.inthinc.pro.dao.hessian.proserver.SiloService;
 import com.inthinc.pro.dao.hessian.proserver.SiloServiceCreator;
+import com.inthinc.pro.dao.jdbc.AddressJDBCDAO;
 import com.inthinc.pro.dao.jdbc.DriverJDBCDAO;
 import com.inthinc.pro.dao.jdbc.PersonJDBCDAO;
 import com.inthinc.pro.dao.jdbc.UserJDBCDAO;
@@ -193,15 +194,17 @@ public class PersonJDBCDAOTest extends SimpleJdbcDaoSupport {
         DataSource dataSource = new ITDataSource().getRealDataSource();
 
         UserJDBCDAO userDAO = new UserJDBCDAO();
-
         DriverJDBCDAO driverDAO = new DriverJDBCDAO();
+        AddressJDBCDAO addressDAO = new AddressJDBCDAO();
 
         userDAO.setDataSource(dataSource);
         driverDAO.setDataSource(dataSource);
+        addressDAO.setDataSource(dataSource);
 
         personDAO.setDataSource(dataSource);
         personDAO.setUserDAO(userDAO);
         personDAO.setDriverDAO(driverDAO);
+        personDAO.setAddressDAO(addressDAO);
 
         // created user
         User userToCreate = new User();
@@ -215,15 +218,15 @@ public class PersonJDBCDAOTest extends SimpleJdbcDaoSupport {
 
         // created driver
         Driver driverToCreate = new Driver();
-        driverToCreate.setGroupID(6030);
+        driverToCreate.setGroupID(6509);
         driverToCreate.setCertifications("1234545");
         driverToCreate.setStatus(Status.valueOf(1));
         driverToCreate.setRfid1(Long.valueOf(300000001));
         driverToCreate.setRfid2(Long.valueOf(400000000));
         driverToCreate.setLicenseClass("C");
-        driverToCreate.setBarcode("update_test");
-        driverToCreate.setLicense("update_test");
-        driverToCreate.setFobID("update_test");
+        driverToCreate.setBarcode("create_test");
+        driverToCreate.setLicense("create");
+        driverToCreate.setFobID("create_test");
         driverToCreate.setDot(RuleSetType.valueOf(2));
         driverToCreate.setPersonID(33333333);
         State state = new State();
@@ -234,7 +237,7 @@ public class PersonJDBCDAOTest extends SimpleJdbcDaoSupport {
         driverToCreate.setExpiration(new Date());
         driverToCreate.setModified(new Date());
 
-        //create address
+        //update address
         Address addressToInsert = new Address();
         addressToInsert.setAccountID(1);
         addressToInsert.setAddr1("832 Street");
@@ -245,7 +248,7 @@ public class PersonJDBCDAOTest extends SimpleJdbcDaoSupport {
         addressToInsert.setState(state);
         addressToInsert.setZip("10021");
 
-        // created person
+        // updated person
         Person personToCreate = new Person();
         personToCreate.setUser(userToCreate);
         personToCreate.setDriver(driverToCreate);
@@ -278,7 +281,8 @@ public class PersonJDBCDAOTest extends SimpleJdbcDaoSupport {
         personToCreate.setMiddle("m");
         personToCreate.setSuffix("s");
         personToCreate.setWeight(100);
-        personToCreate.setTimeZone(TimeZone.getTimeZone("GMT"));
+
+        personToCreate.setTimeZone(TimeZone.getTimeZone("Europe/Copenhagen"));
 
         Integer createdPersonId = personDAO.create(accountID, personToCreate);
 
@@ -286,8 +290,102 @@ public class PersonJDBCDAOTest extends SimpleJdbcDaoSupport {
         Person createdPerson = personDAO.findByID(createdPersonId);
 
         assertNotNull(createdPerson);
+        assertEquals(createdPerson.getFullNameWithPriEmail(),personToCreate.getFullNameWithPriEmail());
+        assertEquals(createdPerson.getUser().getUsername(), personToCreate.getUser().getUsername());
+
+//        ----------------------------------------------------------------------------------------
 
 
+        // updated user
+        User userToUpdate = new User();
+        userToUpdate.setUserID(createdPerson.getUserID());
+        userToUpdate.setGroupID(6509);
+        userToUpdate.setPersonID(createdPersonId);
+        userToUpdate.setUsername("TestUpdate");
+        userToUpdate.setPassword("update");
+        userToUpdate.setStatus(Status.INACTIVE);
+        userToUpdate.setRoles(roleId);
+        userToUpdate.setAccessPoints(accessPoints);
+        userToUpdate.setSelectedMapLayerIDs(mapLayers);
+
+        // updated driver
+        Driver driverToUpdate = new Driver();
+        driverToUpdate.setPersonID(createdPersonId);
+        driverToUpdate.setDriverID(createdPerson.getDriverID());
+        driverToUpdate.setGroupID(6509);
+        driverToUpdate.setCertifications("1234545");
+        driverToUpdate.setStatus(Status.valueOf(1));
+        driverToUpdate.setRfid1(Long.valueOf(300000001));
+        driverToUpdate.setRfid2(Long.valueOf(400000000));
+        driverToUpdate.setLicenseClass("C");
+        driverToUpdate.setBarcode("update_test");
+        driverToUpdate.setLicense("update_test");
+        driverToUpdate.setFobID("update_test");
+        driverToUpdate.setDot(RuleSetType.valueOf(2));
+        State stateUpdate = new State();
+        stateUpdate.setAbbrev("AL");
+        stateUpdate.setName("Alabama");
+        stateUpdate.setStateID(1);
+        driverToUpdate.setState(state);
+        driverToUpdate.setExpiration(new Date());
+        driverToUpdate.setModified(new Date());
+
+        //update address
+        Address addressToUpdate = new Address();
+        addressToUpdate.setAccountID(1);
+        addressToUpdate.setAddr1("832 Street1");
+        addressToUpdate.setCity("City 711");
+        state.setAbbrev("UT");
+        state.setName("Utah");
+        state.setStateID(45);
+        addressToInsert.setState(state);
+        addressToInsert.setZip("100212");
+
+        // updated person
+        Person personToUpdate = new Person();
+        personToUpdate.setUser(userToUpdate);
+        personToUpdate.setDriver(driverToUpdate);
+
+        personToUpdate.setPersonID(createdPersonId);
+        personToUpdate.setAcctID(accountID);
+        personToUpdate.setAddressID(null);
+        personToUpdate.setAddress(addressToInsert);
+        personToUpdate.setCrit(5);
+        personToUpdate.setDept("testUpdate");
+        personToUpdate.setEmpid("Z666666");
+        personToUpdate.setDob(new Date());
+        personToUpdate.setFirst("testUpdate");
+        personToUpdate.setFuelEfficiencyType(FuelEfficiencyType.KMPL);
+        personToUpdate.setGender(Gender.MALE);
+        personToUpdate.setHeight(200);
+        personToUpdate.setInfo(1);
+        personToUpdate.setLast("testUpdate");
+        personToUpdate.setLocale(Locale.CHINA);
+        personToUpdate.setWarn(1);
+        personToUpdate.setPriEmail("testUpdate@inthinc.com");
+        personToUpdate.setPriPhone("666666");
+        personToUpdate.setPriText("testUpdate");
+        personToUpdate.setReportsTo("testUpdate");
+        personToUpdate.setStatus(Status.INACTIVE);
+        personToUpdate.setSecEmail("testUpdateSec@inthinc.com");
+        personToUpdate.setSecPhone("999999");
+        personToUpdate.setSecText("testUpdateSec");
+        personToUpdate.setMeasurementType(MeasurementType.ENGLISH);
+        personToUpdate.setTitle("dude");
+        personToUpdate.setMiddle("m");
+        personToUpdate.setSuffix("s");
+        personToUpdate.setWeight(100);
+
+        personToUpdate.setTimeZone(TimeZone.getTimeZone("Europe/Copenhagen"));
+
+        Integer updatedPersonId = personDAO.update(personToUpdate);
+
+        //find by id test
+        Person updatedPerson = personDAO.findByID(updatedPersonId);
+
+        assertNotNull(updatedPerson);
+        assertEquals(updatedPerson.getFullNameWithPriEmail(),personToUpdate.getFullNameWithPriEmail());
+        assertEquals(updatedPerson.getUser().getUsername(), personToUpdate.getUser().getUsername());
 
         //delete vehicle when finish
         personDAO.delete(createdPerson);
