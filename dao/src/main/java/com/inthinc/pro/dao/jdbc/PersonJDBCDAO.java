@@ -1,6 +1,7 @@
 package com.inthinc.pro.dao.jdbc;
 
 import com.inthinc.hos.model.RuleSetType;
+import com.inthinc.pro.comm.parser.attrib.IntegerParser;
 import com.inthinc.pro.dao.PersonDAO;
 import com.inthinc.pro.dao.hessian.exceptions.EmptyResultSetException;
 import com.inthinc.pro.model.Address;
@@ -65,8 +66,9 @@ public class PersonJDBCDAO extends SimpleJdbcDaoSupport implements PersonDAO {
     private static final String FIND_BY_ACCOUNT = SELECT_PERSON + " and p.acctID = :accountID";
     private static final String FIND_BY_EMPID = SELECT_PERSON + " and p.acctID = :accountID and p.empid = :empID";
     private static final String FIND_BY_ID = SELECT_PERSON + " and p.personID = :personID";
-    private static final String FIND_REPORT_PREF_BY_USER = "select reportPrefID reportPref where userID = :userID";
+    private static final String FIND_REPORT_PREF_BY_USER = "select reportPrefID from reportPref where userID = :userID";
     private static final String FIND_ALERT_BY_USER = "select alertID from alert where userID = :userID";
+    private static final String TIME_ZONE_SELECT = "select tzID from timezone where tzName = :tzName";
 
     private static final String DEL_PERSON_BY_ID = "DELETE FROM person WHERE personID=?";
     private static final String DEL_REPORT_PREF_BY_ID = "DELETE FROM reportPref WHERE reportPrefID=?";
@@ -76,6 +78,9 @@ public class PersonJDBCDAO extends SimpleJdbcDaoSupport implements PersonDAO {
                     "addrID, locale, reportsTo, title, dept, empid, first, middle, last, suffix, gender, height, weight, dob, info, warn, " +
                     "crit, priEmail, secEmail, priPhone, secPhone, priText, secText, modified )" +
                     "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    private static final String UPDATE_PERSON = "UPDATE person set acctID = ?, tzID = ?, status = ?, measureType = ?, fuelEffType = ?, " +
+                    "addrID = ?, locale = ?, reportsTo = ?, title = ?, dept = ?, empid = ?, first = ?, middle = ?, last = ?, suffix = ?, gender = ?, height = ?, weight = ?, dob = ?, info = ?, warn = ?, " +
+                    "crit = ?, priEmail = ?, secEmail = ?, priPhone = ?, secPhone = ?, priText = ?, secText = ?, modified = ? where personID = ?";
 
     private ParameterizedRowMapper<Person> personRowMapper = new ParameterizedRowMapper<Person>() {
         @Override
@@ -300,7 +305,7 @@ public class PersonJDBCDAO extends SimpleJdbcDaoSupport implements PersonDAO {
             public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
                 PreparedStatement ps = con.prepareStatement(INSERT_PERSON, Statement.RETURN_GENERATED_KEYS);
                 ps.setInt(1, entity.getAccountID());
-                ps.setString(2, entity.getTimeZone().getID());
+                ps.setInt(2, getTimezoneID(entity.getTimeZone().getID()));
 
                 if (entity.getStatus() == null || entity.getStatus().getCode() == null) {
                     ps.setNull(3, Types.NULL);
@@ -435,9 +440,9 @@ public class PersonJDBCDAO extends SimpleJdbcDaoSupport implements PersonDAO {
         PreparedStatementCreator psc = new PreparedStatementCreator() {
             @Override
             public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
-                PreparedStatement ps = con.prepareStatement(INSERT_PERSON, Statement.RETURN_GENERATED_KEYS);
+                PreparedStatement ps = con.prepareStatement(UPDATE_PERSON, Statement.RETURN_GENERATED_KEYS);
                 ps.setInt(1, entity.getAccountID());
-                ps.setString(2, entity.getTimeZone().getID());
+                ps.setInt(2, getTimezoneID(entity.getTimeZone().getID()));
 
                 if (entity.getStatus() == null || entity.getStatus().getCode() == null) {
                     ps.setNull(3, Types.NULL);
@@ -528,6 +533,7 @@ public class PersonJDBCDAO extends SimpleJdbcDaoSupport implements PersonDAO {
                 DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                 String modified = df.format(toUTC(new Date()));
                 ps.setString(29, modified);
+                ps.setInt(30, entity.getPersonID());
 
                 logger.debug(ps.toString());
                 return ps;
@@ -567,6 +573,16 @@ public class PersonJDBCDAO extends SimpleJdbcDaoSupport implements PersonDAO {
 
         return changedID;
 
+    }
+
+    public Integer getTimezoneID(String tzName){
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("tzName", tzName );
+
+        StringBuilder timezoneIDSelect = new StringBuilder(TIME_ZONE_SELECT);
+        Integer timezoneID = getSimpleJdbcTemplate().queryForInt(timezoneIDSelect.toString(), params);
+
+        return timezoneID;
     }
 
     @Override
