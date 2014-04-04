@@ -282,13 +282,13 @@ public class PersonJDBCDAO extends SimpleJdbcDaoSupport implements PersonDAO {
     }
 
     @Override
-    public Integer create(Integer integer, final Person entity) {
+    public Integer create(Integer acctID, final Person entity) {
         JdbcTemplate jdbcTemplate = getJdbcTemplate();
         KeyHolder keyHolder = new GeneratedKeyHolder();
 
         if (entity.getAddress() != null && entity.getAddressID() == null)
         {
-            Integer addressID = addressDAO.create(entity.getAccountID(), entity.getAddress());
+            Integer addressID = addressDAO.create(acctID, entity.getAddress());
             entity.getAddress().setAddrID(addressID);
             entity.setAddressID(addressID);
         }

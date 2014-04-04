@@ -62,7 +62,7 @@
 	</bean>
 	<bean id="accountDAO" class="com.inthinc.pro.dao.hessian.AccountHessianDAO" parent="genericDAO"></bean>
 	<bean id="userDAO" class="com.inthinc.pro.dao.jdbc.UserJDBCDAO"></bean>
-	<bean id="personDAO" class="com.inthinc.pro.dao.hessian.PersonHessianDAO" parent="genericDAO"></bean>
+	<bean id="personDAO" class="com.inthinc.pro.dao.jdbc.PersonJDBCDAO" parent="genericDAO"></bean>
 	<bean id="roadHazardDAO" class="com.inthinc.pro.dao.jdbc.AdminHazardJDBCDAO" parent="genericJDBCDAO"></bean>
     <bean id="groupDAO" class="com.inthinc.pro.dao.hessian.GroupHessianDAO" parent="genericDAO"></bean>
 	<bean id="scoreDAO" class="com.inthinc.pro.dao.hessian.ScoreHessianDAO" parent="genericDAO">
@@ -71,8 +71,8 @@
     <bean id="locationDAO" class="com.inthinc.pro.dao.hessian.LocationHessianDAO" parent="genericDAO"></bean>
 	<bean id="vehicleDAO" class="com.inthinc.pro.dao.jdbc.VehicleJDBCDAO"/>
 	<bean id="eventDAO" class="com.inthinc.pro.dao.hessian.EventHessianDAO" parent="genericDAO"></bean>
-	<bean id="deviceDAO" class="com.inthinc.pro.dao.jdbc.DeviceJDBCDAO" />
-	<bean id="driverDAO" class="com.inthinc.pro.dao.hessian.DriverHessianDAO" parent="genericDAO"></bean>
+	<bean id="deviceDAO" class="com.inthinc.pro.dao.hessian.DeviceHessianDAO" parent="genericDAO"/>
+	<bean id="driverDAO" class="com.inthinc.pro.dao.jdbc.DriverJDBCDAO" parent="genericDAO"></bean>
 	<bean id="driveTimeDAO" class="com.inthinc.pro.dao.jdbc.DriveTimeJDBCDAO" parent="genericJDBCDAO"/>
 	<bean id="redFlagDAO" class="com.inthinc.pro.dao.jdbc.RedFlagJDBCDAO" parent="genericDAO"></bean>
 	<bean id="redFlagAlertDAO" class="com.inthinc.pro.dao.hessian.RedFlagAlertHessianDAO" parent="genericDAO"></bean>
