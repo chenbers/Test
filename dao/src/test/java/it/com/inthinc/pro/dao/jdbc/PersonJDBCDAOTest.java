@@ -88,102 +88,102 @@ public class PersonJDBCDAOTest extends SimpleJdbcDaoSupport {
     private static void initApp() throws Exception {
     }
 
-//    @Test
-//    public void findTest() {
-//        PersonJDBCDAO personDAO = new PersonJDBCDAO();
-//        DataSource dataSource = new ITDataSource().getRealDataSource();
-//
-//        UserJDBCDAO userDAO = new UserJDBCDAO();
-//
-//        DriverJDBCDAO driverDAO = new DriverJDBCDAO();
-//
-//        userDAO.setDataSource(dataSource);
-//        driverDAO.setDataSource(dataSource);
-//
-//        personDAO.setDataSource(dataSource);
-//        personDAO.setUserDAO(userDAO);
-//        personDAO.setDriverDAO(driverDAO);
-//
-//        //findByID method
-//        Person personByID = personDAO.findByID(personId);
-//        assertNotNull(personByID);
-//        assertEquals(personByID.getPriEmail(), "PersonFleetemail650962342@example.com");
-//        assertEquals(personByID.getPriPhone(),"5555555555");
-//        assertEquals(personByID.getFirst(),"PersonFleet");
-//        assertEquals(personByID.getLast(),"Last6509");
-//        //findByEmail method
-//        Person personByEmail = personDAO.findByEmail(personByID.getPriEmail());
-//        assertNotNull(personByEmail);
-//        assertEquals(personByEmail.getPriEmail(),"PersonFleetemail650962342@example.com");
-//        assertEquals(personByEmail.getPriPhone(),"5555555555");
-//        assertEquals(personByEmail.getFirst(),"PersonFleet");
-//        assertEquals(personByEmail.getLast(),"Last6509");
-//
-//        //findByEmpID method
-//        Person personByEmpID = personDAO.findByEmpID(personByID.getAcctID(), personByID.getEmpid());
-//        assertNotNull(personByEmpID);
-//        assertEquals(personByEmpID.getPriEmail(),"PersonFleetemail650962342@example.com");
-//        assertEquals(personByEmpID.getPriPhone(),"5555555555");
-//        assertEquals(personByEmpID.getFirst(),"PersonFleet");
-//        assertEquals(personByEmpID.getLast(),"Last6509");
-//
-//    }
-//
-//    @Test
-//    public void getPeopleInAccountTest() {
-//        PersonJDBCDAO personDAO = new PersonJDBCDAO();
-//        DataSource dataSource = new ITDataSource().getRealDataSource();
-//
-//        UserJDBCDAO userDAO = new UserJDBCDAO();
-//
-//        DriverJDBCDAO driverDAO = new DriverJDBCDAO();
-//
-//        userDAO.setDataSource(dataSource);
-//        driverDAO.setDataSource(dataSource);
-//
-//        personDAO.setDataSource(dataSource);
-//        personDAO.setUserDAO(userDAO);
-//        personDAO.setDriverDAO(driverDAO);
-//
-//        //getPeopleInAccount method
-//        List<Person> personList = personDAO.getPeopleInAccount(accountID);
-//        assertNotNull(personList);
-//        for(int i=0;i<personList.size();i++){
-//        assertEquals(personList.get(i).getAcctID(), accountID);
-//        }
-//    }
-//
-//    @Test
-//    public void getPeopleInGroupHierarchyTest() {
-//        PersonJDBCDAO personDAO = new PersonJDBCDAO();
-//        DataSource dataSource = new ITDataSource().getRealDataSource();
-//
-//        UserJDBCDAO userDAO = new UserJDBCDAO();
-//
-//        DriverJDBCDAO driverDAO = new DriverJDBCDAO();
-//
-//        userDAO.setDataSource(dataSource);
-//        driverDAO.setDataSource(dataSource);
-//
-//        personDAO.setDataSource(dataSource);
-//        personDAO.setUserDAO(userDAO);
-//        personDAO.setDriverDAO(driverDAO);
-//
-//        //getPeopleInGroupHierarchy method
-//        List<Person> personList = personDAO.getPeopleInGroupHierarchy(groupId);
-//        assertNotNull(personList);
-//        List<Integer> groupIds = driverDAO.getGroupIdDeep(groupId);
-//
-//        for (int i = 0; i < personList.size(); i++) {
-//            if (personList.get(i).getUser() != null) {
-//
-//                assertTrue(groupIds.contains(personList.get(i).getUser().getGroupID()));
-//            }
-//            if (personList.get(i).getDriver() != null) {
-//                assertTrue(groupIds.contains(personList.get(i).getDriver().getGroupID()));
-//            }
-//        }
-//    }
+    @Test
+    public void findTest() {
+        PersonJDBCDAO personDAO = new PersonJDBCDAO();
+        DataSource dataSource = new ITDataSource().getRealDataSource();
+
+        UserJDBCDAO userDAO = new UserJDBCDAO();
+
+        DriverJDBCDAO driverDAO = new DriverJDBCDAO();
+
+        userDAO.setDataSource(dataSource);
+        driverDAO.setDataSource(dataSource);
+
+        personDAO.setDataSource(dataSource);
+        personDAO.setUserDAO(userDAO);
+        personDAO.setDriverDAO(driverDAO);
+
+        //findByID method
+        Person personByID = personDAO.findByID(personId);
+        assertNotNull(personByID);
+        assertEquals(personByID.getPriEmail(), "PersonFleetemail650962342@example.com");
+        assertEquals(personByID.getPriPhone(),"5555555555");
+        assertEquals(personByID.getFirst(),"PersonFleet");
+        assertEquals(personByID.getLast(),"Last6509");
+        //findByEmail method
+        Person personByEmail = personDAO.findByEmail(personByID.getPriEmail());
+        assertNotNull(personByEmail);
+        assertEquals(personByEmail.getPriEmail(),"PersonFleetemail650962342@example.com");
+        assertEquals(personByEmail.getPriPhone(),"5555555555");
+        assertEquals(personByEmail.getFirst(),"PersonFleet");
+        assertEquals(personByEmail.getLast(),"Last6509");
+
+        //findByEmpID method
+        Person personByEmpID = personDAO.findByEmpID(personByID.getAcctID(), personByID.getEmpid());
+        assertNotNull(personByEmpID);
+        assertEquals(personByEmpID.getPriEmail(),"PersonFleetemail650962342@example.com");
+        assertEquals(personByEmpID.getPriPhone(),"5555555555");
+        assertEquals(personByEmpID.getFirst(),"PersonFleet");
+        assertEquals(personByEmpID.getLast(),"Last6509");
+
+    }
+
+    @Test
+    public void getPeopleInAccountTest() {
+        PersonJDBCDAO personDAO = new PersonJDBCDAO();
+        DataSource dataSource = new ITDataSource().getRealDataSource();
+
+        UserJDBCDAO userDAO = new UserJDBCDAO();
+
+        DriverJDBCDAO driverDAO = new DriverJDBCDAO();
+
+        userDAO.setDataSource(dataSource);
+        driverDAO.setDataSource(dataSource);
+
+        personDAO.setDataSource(dataSource);
+        personDAO.setUserDAO(userDAO);
+        personDAO.setDriverDAO(driverDAO);
+
+        //getPeopleInAccount method
+        List<Person> personList = personDAO.getPeopleInAccount(accountID);
+        assertNotNull(personList);
+        for(int i=0;i<personList.size();i++){
+        assertEquals(personList.get(i).getAcctID(), accountID);
+        }
+    }
+
+    @Test
+    public void getPeopleInGroupHierarchyTest() {
+        PersonJDBCDAO personDAO = new PersonJDBCDAO();
+        DataSource dataSource = new ITDataSource().getRealDataSource();
+
+        UserJDBCDAO userDAO = new UserJDBCDAO();
+
+        DriverJDBCDAO driverDAO = new DriverJDBCDAO();
+
+        userDAO.setDataSource(dataSource);
+        driverDAO.setDataSource(dataSource);
+
+        personDAO.setDataSource(dataSource);
+        personDAO.setUserDAO(userDAO);
+        personDAO.setDriverDAO(driverDAO);
+
+        //getPeopleInGroupHierarchy method
+        List<Person> personList = personDAO.getPeopleInGroupHierarchy(groupId);
+        assertNotNull(personList);
+        List<Integer> groupIds = driverDAO.getGroupIdDeep(groupId);
+
+        for (int i = 0; i < personList.size(); i++) {
+            if (personList.get(i).getUser() != null) {
+
+                assertTrue(groupIds.contains(personList.get(i).getUser().getGroupID()));
+            }
+            if (personList.get(i).getDriver() != null) {
+                assertTrue(groupIds.contains(personList.get(i).getDriver().getGroupID()));
+            }
+        }
+    }
 
 
 
