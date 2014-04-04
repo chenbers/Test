@@ -183,6 +183,14 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
                 }
             }             
             alertView.setHardVerticalSelected(found);
+
+            found = false;
+            if ( flag.getTypes() != null && findType(flag,AlertMessageType.ALERT_TYPE_SATELLITE) ) {
+                if( flag.getSatellite() != null ) {
+                    found = true;
+                }
+            }
+            alertView.setSatelliteSelected(found);
             
             BeanUtils.copyProperties(flag, alertView);
         }
@@ -192,6 +200,7 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
             alertView.setHardBrakeSelected(false);
             alertView.setHardTurnSelected(false);
             alertView.setHardVerticalSelected(false);
+            alertView.setSatelliteSelected(false);
         }
         
         // this loads the selected types
@@ -426,6 +435,8 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
                 getItem().setHardBrake(null);
             if (!getItem().isHardVerticalSelected())
                 getItem().setHardVertical(null);
+            if(!getItem().isSatelliteSelected())
+                getItem().setSatellite(null);
         }
         
         return super.save();
@@ -989,6 +1000,18 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
 
         public void setHardVerticalSelected(boolean hardVerticalSelected) {
             selectedAlertTypes.put(AlertMessageType.ALERT_TYPE_HARD_BUMP.name(), hardVerticalSelected);
+        }
+
+        public boolean isSatelliteSelected() {
+            if ( selectedAlertTypes.containsKey(AlertMessageType.ALERT_TYPE_SATELLITE.name()) &&
+                            selectedAlertTypes.get(AlertMessageType.ALERT_TYPE_SATELLITE.name()) != null ) {
+                return selectedAlertTypes.get(AlertMessageType.ALERT_TYPE_SATELLITE.name()).booleanValue();
+            }
+            return false;
+        }
+
+        public void setSatelliteSelected(boolean satelliteSelected) {
+            selectedAlertTypes.put(AlertMessageType.ALERT_TYPE_SATELLITE.name(), satelliteSelected);
         }
 
         @Override

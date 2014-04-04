@@ -417,7 +417,12 @@ public abstract class BaseITData {
         redFlagAlert = initRedFlagAlert(AlertMessageType.ALERT_TYPE_PANIC, "generic");
         redFlagAlert.setSeverityLevel(RedFlagLevel.INFO);
         addRedFlagAlert(redFlagAlert, redFlagAlertDAO);
-    
+
+        // satellite
+        redFlagAlert = initRedFlagAlert(AlertMessageType.ALERT_TYPE_SATELLITE, "satellite");
+        redFlagAlert.setMaxSpeed(15);
+        addRedFlagAlert(redFlagAlert, redFlagAlertDAO);
+
     }
 
 
