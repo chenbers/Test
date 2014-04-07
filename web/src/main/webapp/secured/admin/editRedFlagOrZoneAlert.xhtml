@@ -461,15 +461,6 @@
                                     <c:set var="sensitivityLabel" value="editDevice_#{sensitivityItem}" />
                                     <h:outputText value="#{messages[sensitivityLabel]}" />
                                   </td>
-                                  <!--<c:if test="#{index==5}">-->
-                                      <!--<td style="padding: 0px 12px 6px 12px; border-bottom: 1px solid #8BAD37;" width="120">-->
-                                          <!--&lt;!&ndash;<h:outputText value="#{messages.editDevice_satellite}" />&ndash;&gt;-->
-                                          <!--<ui:param name="messageKey" value="editDevice_satellite"/>-->
-                                      <!--</td>-->
-                                      <!--<td style="padding: 0px 12px 6px 0px; border-bottom: 1px solid #8BAD37; width:180"></td>-->
-                                      <!--<td style="padding: 6px 12px 6px 12px; border-bottom: 1px solid #8BAD37;"></td>-->
-                                  <!--</c:if>-->
-                                  <!--<c:if test="#{index!=5}">-->
                                       <td style="padding: 0px 12px 6px 12px; border-bottom: 1px solid #8BAD37;" width="120">
                                         <style>
                                            .dr-insldr-track-decor-1{
@@ -497,9 +488,9 @@
                                       <td style="padding: 6px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
                                         <c:set var="sensitivityLevel" value="#{sensitivityItem}Level" />
                                       </td>
-                                  <!--</c:if>-->
                                 </tr>
                               </c:forEach>
+                              <c:if test="#{redFlagOrZoneAlertsBean.item.selectedAlertTypes['ALERT_TYPE_SATELLITE']}">
                                 <tr class="tableEven">
                                     <td style="padding: 0px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
                                         <h:selectBooleanCheckbox id="sattelitetestingc" value="#{redFlagOrZoneAlertsBean.item.selectedAlertTypes['ALERT_TYPE_SATELLITE']}" onchange="checkMultiple('type')" />
@@ -510,6 +501,7 @@
                                     <td style="padding: 6px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
                                     </td>
                                 </tr>
+                            </c:if>
                             </table>
 
                           </h:panelGroup>
