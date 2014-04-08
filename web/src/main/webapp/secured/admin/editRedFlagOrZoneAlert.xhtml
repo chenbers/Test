@@ -453,7 +453,7 @@
                                 <th width="300" colspan="2"><h:outputText value="#{messages.editRedFlag_severity}" /></th>
                               </tr>
                               <c:forEach begin="1" var="index" end="4">
-                                <c:set var="sensitivityItem" value="#{(index == 1) ? 'hardAcceleration' : ((index == 2) ? 'hardBrake' : ((index == 3) ? 'hardTurn' : 'hardVertical'))}" />
+                                  <c:set var="sensitivityItem" value="#{(index == 1) ? 'hardAcceleration' : ((index == 2) ? 'hardBrake' : ((index == 3) ? 'hardTurn' : 'hardVertical'))}" />
                                 <tr class="#{((index % 2) == 0) ? 'tableOdd' : 'tableEven'}">
                                   <td style="padding: 0px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
                                     <c:set var="sensitivitySelected" value="#{sensitivityItem}Selected" />
@@ -461,35 +461,47 @@
                                     <c:set var="sensitivityLabel" value="editDevice_#{sensitivityItem}" />
                                     <h:outputText value="#{messages[sensitivityLabel]}" />
                                   </td>
-                                  <td style="padding: 0px 12px 6px 12px; border-bottom: 1px solid #8BAD37;" width="120">
-                                    <style>
-                                       .dr-insldr-track-decor-1{
-                                          border: none;
-                                       }
-                                       
-                                       .dr-insldr-track-decor-2{
-                                          border: none;
-                                       }
+                                      <td style="padding: 0px 12px 6px 12px; border-bottom: 1px solid #8BAD37;" width="120">
+                                        <style>
+                                           .dr-insldr-track-decor-1{
+                                              border: none;
+                                           }
 
-                                    </style>
-                                    <rich:inputNumberSlider id="#{sensitivityItem}" 
-                                             value="#{redFlagOrZoneAlertsBean.item[sensitivityItem]}" showToolTip="false" 
-                                             showBoundaryValues="false" showInput="false" minValue="1" maxValue="5" 
-                                             handleClass="severity-slider-handle"
-                                             width="105px"
-         
-                                             onchange="checkMultiple('type'); document.getElementById(this.mainTable.id + 'Selected').checked = true; document.getElementById(this.mainTable.id + 'Level').innerHTML = sensitivities[this.value]" 
-                                             barClass="#{((index % 2) == 0) ? 'severity-table-odd' : 'severity-table-even'} severity-slider-bar"/>
-                                  </td>
-                                  <td style="padding: 0px 12px 6px 0px; border-bottom: 1px solid #8BAD37; width:180">
-                                    <c:set var="sensitivityLevel" value="editRedFlag_severity#{redFlagOrZoneAlertsBean.item[sensitivityItem]}" />
-                                    <h:outputText id="#{sensitivityItem}Level" style="font-weight:bold" value="#{messages[sensitivityLevel]}" />
-                                  </td>
-                                  <td style="padding: 6px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
-                                    <c:set var="sensitivityLevel" value="#{sensitivityItem}Level" />
-                                  </td>
+                                           .dr-insldr-track-decor-2{
+                                              border: none;
+                                           }
+
+                                        </style>
+                                        <rich:inputNumberSlider id="#{sensitivityItem}"
+                                                 value="#{redFlagOrZoneAlertsBean.item[sensitivityItem]}" showToolTip="false"
+                                                 showBoundaryValues="false" showInput="false" minValue="1" maxValue="5"
+                                                 handleClass="severity-slider-handle"
+                                                 width="105px"
+
+                                                 onchange="checkMultiple('type'); document.getElementById(this.mainTable.id + 'Selected').checked = true; document.getElementById(this.mainTable.id + 'Level').innerHTML = sensitivities[this.value]"
+                                                 barClass="#{((index % 2) == 0) ? 'severity-table-odd' : 'severity-table-even'} severity-slider-bar"/>
+                                      </td>
+                                      <td style="padding: 0px 12px 6px 0px; border-bottom: 1px solid #8BAD37; width:180">
+                                        <c:set var="sensitivityLevel" value="editRedFlag_severity#{redFlagOrZoneAlertsBean.item[sensitivityItem]}" />
+                                        <h:outputText id="#{sensitivityItem}Level" style="font-weight:bold" value="#{messages[sensitivityLevel]}" />
+                                      </td>
+                                      <td style="padding: 6px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
+                                        <c:set var="sensitivityLevel" value="#{sensitivityItem}Level" />
+                                      </td>
                                 </tr>
                               </c:forEach>
+                              <c:if test="#{redFlagOrZoneAlertsBean.item.selectedAlertTypes['ALERT_TYPE_SATELLITE']}">
+                                <tr class="tableEven">
+                                    <td style="padding: 0px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
+                                        <h:selectBooleanCheckbox id="sattelitetestingc" value="#{redFlagOrZoneAlertsBean.item.selectedAlertTypes['ALERT_TYPE_SATELLITE']}" onchange="checkMultiple('type')" />
+                                        <h:outputText value="#{messages.editDevice_satellite}" />
+                                    </td>
+                                    <td style="padding: 0px 12px 6px 0px; border-bottom: 1px solid #8BAD37; width:180"></td>
+                                    <td style="padding: 6px 12px 6px 12px; border-bottom: 1px solid #8BAD37;"></td>
+                                    <td style="padding: 6px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
+                                    </td>
+                                </tr>
+                            </c:if>
                             </table>
 
                           </h:panelGroup>

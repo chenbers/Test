@@ -192,6 +192,7 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
             alertView.setHardBrakeSelected(false);
             alertView.setHardTurnSelected(false);
             alertView.setHardVerticalSelected(false);
+//            alertView.setSatelliteSelected(false);
         }
         
         // this loads the selected types
@@ -426,6 +427,8 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
                 getItem().setHardBrake(null);
             if (!getItem().isHardVerticalSelected())
                 getItem().setHardVertical(null);
+//            if(!getItem().isSatelliteSelected())
+//                getItem().setSatellite(null);
         }
         
         return super.save();
