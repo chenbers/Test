@@ -104,7 +104,8 @@ public class AccountOptionsBean extends BaseBean {
                                 " , Waysmart is " + (account.hasWaySmartSupport() ? "Enabled" : "Disabled") + 
                                 " , RHA is " + (account.hasRHAEnabled() ? "Enabled" : "Disabled") + 
                                 " , Forms is " + (account.hasFormsEnabled() ? "Enabled" : "Disabled") + 
-                                " , Trailers is " + (account.hasTrailersEnabled() ? "Enabled" : "Disabled") + 
+                                " , Trailers is " + (account.hasTrailersEnabled() ? "Enabled" : "Disabled") +
+                                " , Maintenance is " + (account.hasMaintenanceEnabled() ? "Enabled" : "Disabled") +
                                 " , Drive Time Violations Report is " + (account.hasDriveTimeViolationsReportEnabled() ? "Enabled" : "Disabled") +
                                 " , Event Queue is " + (account.hasEventsQueueEnabled() ? "Enabled" : "Disabled") + 
                                 " , Login Expire is " +(account.getProps().getLoginExpire()) + 
