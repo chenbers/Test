@@ -306,6 +306,8 @@ public enum NoteType {
                 || noteType == NO_DRIVER
                 || noteType == LOW_BATTERY_POTENTIAL_TAMPERING
                 || noteType == UNPLUGGED
+                || noteType == CRASH
+                || noteType == FULLEVENT
 //              || noteType == LOW_POWER_MODE
                 );
     }
