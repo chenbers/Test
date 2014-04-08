@@ -265,7 +265,7 @@ public class ViolationsReportCriteriaTest extends BaseUnitTest {
         expectedHosDetailCountMap.put(RuleSetType.US_HOME_OFFICE, Integer.valueOf(4)); 
         expectedHosDetailCountMap.put(RuleSetType.CANADA_HOME_OFFICE, Integer.valueOf(3)); 
         expectedHosDetailCountMap.put(RuleSetType.TEXAS, Integer.valueOf(3)); 
-        expectedHosDetailCountMap.put(RuleSetType.CANADA_ALBERTA, Integer.valueOf(2));
+        expectedHosDetailCountMap.put(RuleSetType.CANADA_ALBERTA, Integer.valueOf(3));
         expectedHosDetailCountMap.put(RuleSetType.CANADA_2007_CYCLE_1, Integer.valueOf(8)); 
         expectedHosDetailCountMap.put(RuleSetType.CANADA_2007_CYCLE_2, Integer.valueOf(8)); 
         expectedHosDetailCountMap.put(RuleSetType.CANADA_2007_60_DEGREES_CYCLE_1, Integer.valueOf(6)); 
