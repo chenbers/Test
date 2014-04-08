@@ -32,6 +32,7 @@ public class AccountAttributes extends BaseEntity {
     private String rhaEnabled;
     private String formsEnabled;
     private String trailersEnabled;
+    private String maintenanceEnabled;
     private String phoneControlProvider1;
     private String phoneControlProvider2;
     private String phoneControlProvider3;
@@ -280,5 +281,13 @@ public class AccountAttributes extends BaseEntity {
 
     public void setEventQueueEnabled(String eventQueueEnabled) {
         this.eventQueueEnabled = eventQueueEnabled;
+    }
+
+    public String getMaintenanceEnabled() {
+        return maintenanceEnabled;
+    }
+
+    public void setMaintenanceEnabled(String maintenanceEnabled) {
+        this.maintenanceEnabled = maintenanceEnabled;
     }
 }
