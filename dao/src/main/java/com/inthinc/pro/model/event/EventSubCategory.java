@@ -17,8 +17,8 @@ import com.inthinc.pro.model.BaseEnum;
 public enum EventSubCategory implements BaseEnum
 {
     DRIVING_STYLE(1, 
-            EnumSet.of(EventType.HARD_ACCEL,EventType.HARD_BRAKE,EventType.HARD_TURN,EventType.HARD_VERT, EventType.ATTR_RF_OFF_DISTANCE),
-            EnumSet.of(AlertMessageType.ALERT_TYPE_HARD_ACCEL,AlertMessageType.ALERT_TYPE_HARD_BRAKE,AlertMessageType.ALERT_TYPE_HARD_TURN,AlertMessageType.ALERT_TYPE_HARD_BUMP, AlertMessageType.ALERT_TYPE_SATELLITE)),
+            EnumSet.of(EventType.HARD_ACCEL,EventType.HARD_BRAKE,EventType.HARD_TURN,EventType.HARD_VERT),
+            EnumSet.of(AlertMessageType.ALERT_TYPE_HARD_ACCEL,AlertMessageType.ALERT_TYPE_HARD_BRAKE,AlertMessageType.ALERT_TYPE_HARD_TURN,AlertMessageType.ALERT_TYPE_HARD_BUMP, AlertMessageType.ATTR_RF_OFF_DISTANCE)),
                         
     SPEED(2, 
             EnumSet.of(EventType.SPEEDING),
@@ -34,7 +34,7 @@ public enum EventSubCategory implements BaseEnum
             
     VEHICLE(5, 
             EnumSet.of(EventType.LOW_BATTERY, EventType.DEVICE_LOW_BATTERY, EventType.TAMPERING, EventType.IDLING, EventType.IGNITION_ON, EventType.IGNITION_OFF, EventType.POTENTIAL_TAMPERING, EventType.RF_SWITCH, EventType.POWER_INTERRUPTED),
-            EnumSet.of(AlertMessageType.ALERT_TYPE_LOW_BATTERY, AlertMessageType.ALERT_TYPE_TAMPERING,AlertMessageType.ALERT_TYPE_IGNITION_ON,AlertMessageType.ALERT_TYPE_IDLING)), 
+            EnumSet.of(AlertMessageType.ALERT_TYPE_LOW_BATTERY, AlertMessageType.ALERT_TYPE_TAMPERING,AlertMessageType.ALERT_TYPE_IGNITION_ON,AlertMessageType.ALERT_TYPE_IDLING, AlertMessageType.ALERT_TYPE_VEHICLE_MOVE_BACKWARDS )),
             
     WIRELINE(6, 
             EnumSet.of(EventType.WIRELINE_ALARM),
