@@ -346,6 +346,11 @@ System.out.println("acct name: " + "TEST " + timeStamp.substring(15));
         redFlagAlert.setSeverityLevel(RedFlagLevel.INFO);
         addRedFlagAlert(redFlagAlert, redFlagAlertDAO);
 
+        // vehicle move back INFO
+        redFlagAlert = initRedFlagAlert(AlertMessageType.ALERT_TYPE_VEHICLE_MOVE_BACKWARDS);
+        redFlagAlert.setSeverityLevel(RedFlagLevel.INFO);
+        addRedFlagAlert(redFlagAlert, redFlagAlertDAO);
+
     }
 
 

@@ -492,7 +492,7 @@
                               </c:forEach>
                                 <tr class="tableEven">
                                     <td style="padding: 0px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
-                                        <h:selectBooleanCheckbox id="sattelitetestingc" value="#{redFlagOrZoneAlertsBean.item.selectedAlertTypes['ALERT_TYPE_SATELLITE']}" onchange="checkMultiple('type')" />
+                                        <h:selectBooleanCheckbox id="sattelitetestingc" value="#{redFlagOrZoneAlertsBean.item.selectedAlertTypes['ATTR_RF_OFF_DISTANCE']}" onchange="checkMultiple('type')" />
                                         <h:outputText value="#{messages.editDevice_satellite}" />
                                     </td>
                                     <td style="padding: 0px 12px 6px 0px; border-bottom: 1px solid #8BAD37; width:180"></td>
@@ -704,6 +704,12 @@
                                           convertonchange="checkMultiple('type'); document.getElementById(this.mainTable.id + 'Selected').checked = true" />
                                		</td> 	
                                </tr>
+                                <tr class="tableOdd">
+                                    <td style="padding: 0px 12px 6px 12px; border-bottom: 1px solid #8BAD37;" colspan="2">
+                                        <h:selectBooleanCheckbox id="vehicleMoveBack" value="#{redFlagOrZoneAlertsBean.item.selectedAlertTypes['ALERT_TYPE_VEHICLE_MOVE_BACKWARDS']}" onchange="checkMultiple(this)" />
+                                        <h:outputText value="#{messages.alertTypeVehicleMoveBack}" />
+                                    </td>
+                                </tr>
                                <!--  
                                 <tr class="tableEven">
                                   <td style="padding: 0px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
