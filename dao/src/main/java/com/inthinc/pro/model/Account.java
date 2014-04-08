@@ -250,4 +250,17 @@ public class Account extends BaseEntity implements Comparable<Account>, HasAccou
         
     }
 
+    public Boolean hasMaintenanceEnabled() {
+        AccountAttributes options = getProps();
+        if (options == null)
+            return false;
+
+        String maintenanceEnabled = options.getMaintenanceEnabled();
+        if (maintenanceEnabled == null)
+            return false;
+
+        return Boolean.valueOf(maintenanceEnabled);
+
+    }
+
 }
