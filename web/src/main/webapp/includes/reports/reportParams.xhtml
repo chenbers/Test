@@ -237,7 +237,12 @@
                                 <a4j:support event="onchange" reRender="#{context}_paramsPanelError, #{reRenderList}"/>
                             </h:selectManyMenu>
                             </a4j:outputPanel>
-                            <rich:jQuery selector="##{context}_form\\:#{context}groupListParam" timing="onload" 
+                            <!-- <rich:jQuery selector="##{context}_form\\:#{context}groupListParam" timing="onload" 
+                            query="dropdownchecklist({ icon: {placement: 'right', toOpen: 'ui-icon-triangle-1-s', toClose: 'ui-icon-triangle-1-n'}, 
+                                                        width: 200,maxDropHeight: 150})"/>
+                                </td> -->
+                                <!--Regarding Tomcat7 changes -->
+                                 <rich:jQuery selector="##{context}groupListParam" timing="onload" 
                             query="dropdownchecklist({ icon: {placement: 'right', toOpen: 'ui-icon-triangle-1-s', toClose: 'ui-icon-triangle-1-n'}, 
                                                         width: 200,maxDropHeight: 150})"/>
                                 </td>
@@ -275,7 +280,11 @@
                                 <f:selectItems value="#{params.groups}"/>
                                 <a4j:support event="onchange" reRender="#{context}_paramsPanelError, #{reRenderList}"/>
                             </h:selectManyMenu>
-                            <rich:jQuery selector="##{context}_form\\:#{context}groupDriverListParam" timing="onload" 
+                            <!-- <rich:jQuery selector="##{context}_form\\:#{context}groupDriverListParam" timing="onload" 
+                                    query="dropdownchecklist({ icon: {placement: 'right', toOpen: 'ui-icon-triangle-1-s', toClose: 'ui-icon-triangle-1-n'}, 
+                                                        width: 200,maxDropHeight: 150})"/> -->
+                            <!-- Regarding Tomcat7 changes  -->
+                                  <rich:jQuery selector="##{context}groupDriverListParam" timing="onload" 
                                     query="dropdownchecklist({ icon: {placement: 'right', toOpen: 'ui-icon-triangle-1-s', toClose: 'ui-icon-triangle-1-n'}, 
                                                         width: 200,maxDropHeight: 150})"/>
                             </a4j:outputPanel>                          
@@ -337,9 +346,14 @@
                             NOTE: This is yet a crude implementation. The CSS is not complete and enabling this div breakes
                             the layout of the page. -->
                             <!-- <div id="groupTree"></div> -->
-                            <rich:jQuery selector="##{context}_form\\:#{context}groupListAndIftaParam" timing="onload" 
+                            
+                            <!-- <rich:jQuery selector="##{context}_form\\:#{context}groupListAndIftaParam" timing="onload" 
                             query="dropdownchecklist({ icon: {placement: 'right', toOpen: 'ui-icon-triangle-1-s', toClose: 'ui-icon-triangle-1-n'}, 
-                                                        width: 200,maxDropHeight: 150})"/>
+                                                        width: 200,maxDropHeight: 150})"/> -->
+                            <!-- Regarding Tomcat7 changes -->
+                            <rich:jQuery selector="##{context}groupListAndIftaParam" timing="onload" 
+                            query="dropdownchecklist({ icon: {placement: 'right', toOpen: 'ui-icon-triangle-1-s', toClose: 'ui-icon-triangle-1-n'}, 
+                                                        width: 200,maxDropHeight: 150})"/>                        
                         </td>
                         <td>
                             <h:outputText value="#{messages.reports_ifta_only}"/>                       
