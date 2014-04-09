@@ -418,11 +418,6 @@ public abstract class BaseITData {
         redFlagAlert.setSeverityLevel(RedFlagLevel.INFO);
         addRedFlagAlert(redFlagAlert, redFlagAlertDAO);
 
-        // vehicle move backwards INFO
-        redFlagAlert = initRedFlagAlert(AlertMessageType.ALERT_TYPE_VEHICLE_MOVE_BACKWARDS, "vehicleMoveBack");
-        redFlagAlert.setSeverityLevel(RedFlagLevel.INFO);
-        addRedFlagAlert(redFlagAlert, redFlagAlertDAO);
-
     }
 
 
