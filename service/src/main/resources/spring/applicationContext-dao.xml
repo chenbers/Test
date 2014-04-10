@@ -21,7 +21,7 @@
 	  <property name="password" value="${jdbc.mysql.password}"/>
 	</bean -->
 	
-	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
+	<bean id="tiwiJDBCDataSource" class="org.apache.commons.dbcp.BasicDataSource">
 	   <property name="driverClassName" value="${jdbc.mysql.driverClassName}" />
 	   <property name="url" value="${jdbc.mysql.url}"/>
 	   <property name="connectionProperties" value="${jdbc.mysql.connectionProperties}"/>
@@ -55,7 +55,7 @@
 		<property name="siloService" ref="siloServiceBean" />
 	</bean>
     <bean id="genericJDBCDAO" class="com.inthinc.pro.dao.jdbc.GenericJDBCDAO" abstract="true">
-        <property name="dataSource" ref="dataSource" />
+        <property name="dataSource" ref="tiwiJDBCDataSource" />
     </bean>
 	<bean id="abstractReportDAO" class="com.inthinc.pro.dao.hessian.report.AbstractReportHessianDAO" abstract="true">
 		<property name="reportService" ref="reportServiceBean" />
@@ -86,7 +86,9 @@
 	<bean id="stateDAO" class="com.inthinc.pro.dao.hessian.StateHessianDAO" parent="genericDAO"></bean>
 	<bean id="timeZoneDAO" class="com.inthinc.pro.dao.hessian.TimeZoneHessianDAO" parent="genericDAO"></bean>
 	<bean id="reportScheduleDAO" class="com.inthinc.pro.dao.hessian.ReportScheduleHessianDAO" parent="genericDAO"></bean>
-	<bean id="addressDAO" class="com.inthinc.pro.dao.jdbc.AddressJDBCDAO"></bean>
+    <bean id="addressDAO" class="com.inthinc.pro.dao.jdbc.AddressJDBCDAO">
+        <property name="dataSource" ref="tiwiJDBCDataSource" />
+    </bean>
 	<bean id="crashReportDAO" class="com.inthinc.pro.dao.hessian.CrashReportHessianDAO" parent="genericDAO" />
 	<bean id="driverReportDAO" class="com.inthinc.pro.dao.hessian.report.DriverReportHessianDAO" parent="abstractReportDAO" />
 	<bean id="vehicleReportDAO" class="com.inthinc.pro.dao.hessian.report.VehicleReportHessianDAO" parent="abstractReportDAO" />
