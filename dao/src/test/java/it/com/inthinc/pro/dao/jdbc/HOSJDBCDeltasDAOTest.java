@@ -501,22 +501,18 @@ public class HOSJDBCDeltasDAOTest extends SimpleJdbcDaoSupport {
 
         hosRecord.setLogTime(logStartTime.toDate());
         hosRecord.setStatus(HOSStatus.ON_DUTY);
-        hosRecord.setStatusCode(hosRecord.getStatus().getCode());
         hosDAO.createFromNote(hosRecord);
         
         hosRecord.setLogTime(logStartTime.plusMinutes(10).toDate());
         hosRecord.setStatus(HOSStatus.OFF_DUTY);
-        hosRecord.setStatusCode(hosRecord.getStatus().getCode());
         hosDAO.createFromNote(hosRecord);
         
         hosRecord.setLogTime(logStartTime.plusMinutes(20).toDate());
         hosRecord.setStatus(HOSStatus.DRIVING);
-        hosRecord.setStatusCode(hosRecord.getStatus().getCode());
         hosDAO.createFromNote(hosRecord);
 
         hosRecord.setLogTime(logStartTime.plusMinutes(30).toDate());
         hosRecord.setStatus(HOSStatus.SLEEPER);
-        hosRecord.setStatusCode(hosRecord.getStatus().getCode());
         hosDAO.createFromNote(hosRecord);
 
     
