@@ -184,12 +184,6 @@ public abstract class GenericHessianDAO<T, ID> implements GenericDAO<T, ID>, Ser
             Class<?> returnType = findMethod.getReturnType();
 
             if (Map.class.isAssignableFrom(returnType)) {
-                logger.info(""+getMapper());
-                logger.info(""+getSiloService());
-                logger.info(""+findMethod.invoke(getSiloService(), id));
-                logger.info(""+id);
-                logger.info(""+getMapper().convertToModelObject((Map) findMethod.invoke(getSiloService(), id), modelClass));
-                logger.info(""+ modelClass);
                 returnObject = getMapper().convertToModelObject((Map) findMethod.invoke(getSiloService(), id), modelClass);
             } else if (List.class.isAssignableFrom(returnType)) {
                 returnObject = getMapper().convertToModelObject((List) findMethod.invoke(getSiloService(), id), modelClass);
