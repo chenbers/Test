@@ -438,7 +438,7 @@ public enum EventAttr implements IndexEnum{
     ATTR_DVIR_SIGNOFF_ID_STR(24600, 11, true),   // string 10 max, variable length,              \0 terminated
     ATTR_DVIR_COMMENTS(24601, 61, true),         // string 10 max, variable length,              \0 terminated
     TRAILER_ID_OLD(24602, 20, true),            // string 20 max, variable length,              \0 terminated
-    
+    MOBILE_UNIT_ID(24603, 20, true),            // string 20 max, variable length,              \0 terminated
     
 ////////////////////////////////////////////////////////////////////////////////////
 //		Attribute ids 32768  [0x8000] to  40959 [0x9FFF] have four byte values,
