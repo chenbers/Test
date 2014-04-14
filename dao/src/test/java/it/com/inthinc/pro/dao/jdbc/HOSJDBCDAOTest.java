@@ -2,6 +2,7 @@ package it.com.inthinc.pro.dao.jdbc;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import it.com.inthinc.pro.dao.Util;
 import it.com.inthinc.pro.dao.model.GroupData;
@@ -35,6 +36,7 @@ import com.inthinc.pro.dao.hessian.proserver.SiloService;
 import com.inthinc.pro.dao.hessian.proserver.SiloServiceCreator;
 import com.inthinc.pro.dao.jdbc.HOSJDBCDAO;
 import com.inthinc.pro.dao.util.HOSUtil;
+import com.inthinc.pro.model.Device;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.model.hos.HOSDriverLogin;
@@ -87,6 +89,51 @@ public class HOSJDBCDAOTest extends BaseJDBCTest{
         
     }
 
+
+    @Test
+    public void crudCreateFromNoteFindWithVehicleTest() {
+        
+        // case with a vehicle
+        HOSDAO hosDAO = new HOSJDBCDAO();
+        ((HOSJDBCDAO)hosDAO).setDataSource(new ITDataSource().getRealDataSource());
+
+        GroupData testGroupData = itData.teamGroupData.get(ITData.GOOD);
+        Driver testDriver = fetchDriver(testGroupData.driver.getDriverID());
+        Vehicle testVehicle = testGroupData.vehicle;
+        Device testDevice = testGroupData.device;
+        
+        Date hosRecordDate = new Date();
+        HOSRecord hosRecord = new HOSRecord();
+        hosRecord.setDeviceID(testDevice.getDeviceID());
+        hosRecord.setDriverDotType(testDriver.getDot());
+        hosRecord.setDriverID(testDriver.getDriverID());
+        hosRecord.setLocation(INITIAL_LOCATION);
+        hosRecord.setLat(0.0f);
+        hosRecord.setLng(0.0f);
+        hosRecord.setLogTime(hosRecordDate);
+        hosRecord.setUserEnteredLocationFlag(true);
+        hosRecord.setNoteFlags((byte)0);
+        hosRecord.setStateID(47);
+        hosRecord.setStatus(HOSStatus.HOS_ALTERNATE_SLEEPING);
+        hosRecord.setTimeZone(testDriver.getPerson().getTimeZone());
+        hosRecord.setEditUserID(itData.fleetUser.getUserID());
+        hosRecord.setVehicleID(testVehicle.getVehicleID());
+        hosRecord.setVehicleOdometer(10000l);
+        hosRecord.setTripInspectionFlag(false);
+        hosRecord.setTripReportFlag(false);
+        hosRecord.setMobileUnitID("Mobile123");
+        hosRecord.setEmployeeID(testDriver.getPerson().getEmpid());
+        Long hosLogID = hosDAO.createFromNote(hosRecord);
+        assertNotNull("createFromNote", hosLogID);
+        System.out.println("hosLogID: " + hosLogID + " " + hosRecordDate);
+        hosRecord.setHosLogID(hosLogID);
+
+        HOSRecord foundHosRecord = hosDAO.findByID(hosRecord.getHosLogID());
+        assertEquals("Expected Origin", HOSOrigin.DEVICE, foundHosRecord.getOrigin());
+        assertEquals("Expected Status", HOSStatus.HOS_ALTERNATE_SLEEPING, foundHosRecord.getStatus());
+        assertEquals("Expected Mobile Unit ID", "Mobile123", foundHosRecord.getMobileUnitID());
+        
+    }
 
     @Test
     public void crudCreateFindWithVehicleTest() {
@@ -157,7 +204,7 @@ public class HOSJDBCDAOTest extends BaseJDBCTest{
         // change some of the fields (just the ones that the UI can change, except driver)
         Date newHosRecordDate = new Date(hosRecordDate.getTime()-60000l);   // one minute earlier
         editHosRecord.setLocation("new location");
-        editHosRecord.setStatus(HOSStatus.ON_DUTY);
+        editHosRecord.setStatus(HOSStatus.HOS_ALTERNATE_SLEEPING);
         editHosRecord.setDriverDotType(RuleSetType.CANADA_2007_OIL);
         editHosRecord.setLogTime(newHosRecordDate);
         editHosRecord.setServiceID("new service id");
@@ -166,6 +213,7 @@ public class HOSJDBCDAOTest extends BaseJDBCTest{
         editHosRecord.setEditUserID(itData.districtUser.getUserID());
         editHosRecord.setTruckGallons(34.0f);
         editHosRecord.setTrailerGallons(45.0f);
+        editHosRecord.setMobileUnitID("new mobile unit id");
         hosDAO.update(editHosRecord);
 
         HOSRecord expectedHosRecord = constructExpectedHosRecord(editHosRecord, testGoodDriver, testBadVehicle);
@@ -220,6 +268,8 @@ public class HOSJDBCDAOTest extends BaseJDBCTest{
             foundHosRecord.setServiceID(null);
         if (foundHosRecord.getTrailerID() != null && foundHosRecord.getTrailerID().isEmpty())
             foundHosRecord.setTrailerID(null);
+        if (foundHosRecord.getMobileUnitID() != null && foundHosRecord.getMobileUnitID().isEmpty())
+            foundHosRecord.setMobileUnitID(null);
         Util.compareObjects(expectedHosRecord, foundHosRecord, ignoreFields);
     }
 
@@ -483,6 +533,7 @@ public class HOSJDBCDAOTest extends BaseJDBCTest{
         expectedHosRecord.setVehicleLicense((vehicle == null) ? "" : vehicle.getLicense());
         expectedHosRecord.setVehicleName((vehicle == null) ? "" : vehicle.getName());
         expectedHosRecord.setVehicleOdometer(0l);
+        expectedHosRecord.setMobileUnitID(hosRecord.getMobileUnitID());
         return expectedHosRecord;
     }
 
