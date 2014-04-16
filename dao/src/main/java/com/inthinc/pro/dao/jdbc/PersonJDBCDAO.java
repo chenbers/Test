@@ -225,7 +225,7 @@ public class PersonJDBCDAO extends SimpleJdbcDaoSupport implements PersonDAO {
 
     @Override
     public List<Person> getPeopleInGroupHierarchy(Integer userGroupID, Integer driverGroupID) {
-        throw new NotImplementedException();
+        return getPeopleInGroupHierarchy(userGroupID);
     }
 
     @Override

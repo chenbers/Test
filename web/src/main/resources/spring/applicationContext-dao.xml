@@ -91,20 +91,20 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
     <bean id="driverDAO" class="com.inthinc.pro.dao.jdbc.DriverJDBCDAO"></bean>
     <bean id="driverJDBCDAO" class="com.inthinc.pro.dao.jdbc.DriverJDBCDAO" />
     <bean id="redFlagDAO" class="com.inthinc.pro.dao.jdbc.RedFlagJDBCDAO"></bean>
-    <bean id="redFlagAlertDAO" class="com.inthinc.pro.dao.hessian.RedFlagAlertHessianDAO"></bean>
-    <bean id="tablePreferenceDAO" class="com.inthinc.pro.dao.hessian.TablePreferenceHessianDAO"></bean>
-    <bean id="zoneDAO" class="com.inthinc.pro.dao.hessian.ZoneHessianDAO"></bean>
+    <bean id="redFlagAlertDAO" class="com.inthinc.pro.dao.hessian.RedFlagAlertHessianDAO"></bean>  <!-- to be implemented -->
+    <bean id="tablePreferenceDAO" class="com.inthinc.pro.dao.hessian.TablePreferenceHessianDAO"></bean>   <!-- to be implemented -->
+    <bean id="zoneDAO" class="com.inthinc.pro.dao.hessian.ZoneHessianDAO"></bean>  <!-- to be implemented -->
     <!-- <bean id="zoneAlertDAO" class="com.inthinc.pro.dao.hessian.ZoneAlertHessianDAO"></bean> -->
-    <bean id="roleDAO" class="com.inthinc.pro.dao.hessian.RoleHessianDAO"></bean>
-    <bean id="stateDAO" class="com.inthinc.pro.dao.hessian.StateHessianDAO"></bean>
-    <bean id="timeZoneDAO" class="com.inthinc.pro.dao.hessian.TimeZoneHessianDAO"></bean>
-    <bean id="reportScheduleDAO" class="com.inthinc.pro.dao.hessian.ReportScheduleHessianDAO"></bean>
+    <bean id="roleDAO" class="com.inthinc.pro.dao.hessian.RoleHessianDAO"></bean>   <!-- to be implemented -->
+    <bean id="stateDAO" class="com.inthinc.pro.dao.hessian.StateHessianDAO"></bean> <!-- to be implemented -->
+    <bean id="timeZoneDAO" class="com.inthinc.pro.dao.hessian.TimeZoneHessianDAO"></bean> <!-- to be implemented -->
+    <bean id="reportScheduleDAO" class="com.inthinc.pro.dao.hessian.ReportScheduleHessianDAO"></bean>  <!-- partial --> <!-- to be implemented -->
     <bean id="addressDAO" class="com.inthinc.pro.dao.jdbc.AddressJDBCDAO"></bean>
-    <bean id="crashReportDAO" class="com.inthinc.pro.dao.hessian.CrashReportHessianDAO" />
-    <bean id="textMsgAlertDAO" class="com.inthinc.pro.dao.hessian.TextMsgAlertHessianDAO" />
-    <bean id="configuratorDAO" class="com.inthinc.pro.dao.hessian.ConfiguratorHessianDAO" />
-    <bean id="redFlagAlertsDAO" class="com.inthinc.pro.dao.hessian.RedFlagAlertHessianDAO"></bean>
-    <bean id="phoneControlDAO" class="com.inthinc.pro.dao.hessian.PhoneControlHessianDAO"></bean>
+    <bean id="crashReportDAO" class="com.inthinc.pro.dao.hessian.CrashReportHessianDAO" /> <!-- to be implemented -->
+    <bean id="textMsgAlertDAO" class="com.inthinc.pro.dao.hessian.TextMsgAlertHessianDAO" />  <!-- to be implemented -->
+    <bean id="configuratorDAO" class="com.inthinc.pro.dao.hessian.ConfiguratorHessianDAO" />  <!-- to be implemented -->
+    <bean id="redFlagAlertsDAO" class="com.inthinc.pro.dao.hessian.RedFlagAlertHessianDAO"></bean>  <!-- looks like duplicate, extra S -->
+    <bean id="phoneControlDAO" class="com.inthinc.pro.dao.hessian.PhoneControlHessianDAO"></bean>  <!-- to be implemented -->
     <bean id="reportDAO" class="com.inthinc.pro.dao.jdbc.ReportJDBCDAO">
         <property name="dataSource" ref="dataSource" />
 
@@ -112,7 +112,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 
     <!-- Un-comment and comment out mock DAOs below this to use real data -->
     <bean id="hosDAO" class="com.inthinc.pro.dao.jdbc.HOSJDBCDAO" parent="genericJDBCDAO"></bean>
-    <bean id="waysmartDAO" class="com.inthinc.pro.reports.dao.impl.WaysmartDAOImpl"></bean>
+    <bean id="waysmartDAO" class="com.inthinc.pro.reports.dao.impl.WaysmartDAOImpl"></bean>    <!-- cancelled? -->
     <bean id="zonePublishDAO" class="com.inthinc.pro.dao.jdbc.ZonePublishJDBCDAO" parent="genericJDBCDAO"></bean>
     <bean id="alertMessageDAO" class="com.inthinc.pro.dao.jdbc.AlertMessageJDBCDAO" parent="genericJDBCDAO"></bean>
 
