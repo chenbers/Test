@@ -69,7 +69,7 @@
 		<property name="reportService" ref="reportServiceBean" />
 	</bean>
     <bean id="locationDAO" class="com.inthinc.pro.dao.hessian.LocationHessianDAO" parent="genericDAO"></bean>
-	<bean id="vehicleDAO" class="com.inthinc.pro.dao.hessian.VehicleHessianDAO" parent="genericDAO"/>
+	<bean id="vehicleDAO" class="com.inthinc.pro.dao.jdbc.VehicleJDBCDAO"/>
 	<bean id="eventDAO" class="com.inthinc.pro.dao.hessian.EventHessianDAO" parent="genericDAO"></bean>
     <bean id="deviceDAO" class="com.inthinc.pro.dao.jdbc.DeviceJDBCDAO" />
     <bean id="driverDAO" class="com.inthinc.pro.dao.jdbc.DriverJDBCDAO" parent="genericDAO"></bean>

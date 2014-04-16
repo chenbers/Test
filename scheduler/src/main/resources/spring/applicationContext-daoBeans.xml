@@ -33,7 +33,7 @@
     <bean id="deviceSensitivityMapping" class="com.inthinc.pro.model.app.DeviceSensitivityMapping" init-method="init">
 		<property name="deviceDAO" ref="deviceDAO"></property>
     </bean>
-    <bean id="vehicleDAO" class="com.inthinc.pro.dao.hessian.VehicleHessianDAO" parent="genericDAO"></bean>
+    <bean id="vehicleDAO" class="com.inthinc.pro.dao.jdbc.VehicleJDBCDAO"></bean>
     <bean id="accountDAO" class="com.inthinc.pro.dao.jdbc.AccountJDBCDAO" parent="genericDAO"></bean>
     <bean id="scoreDAO" class="com.inthinc.pro.dao.hessian.ScoreHessianDAO" parent="genericDAO">
         <property name="reportService" ref="reportServiceBean" />
