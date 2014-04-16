@@ -61,15 +61,16 @@ public class AddressJDBCDAO extends SimpleJdbcDaoSupport implements AddressDAO {
     }
 
     @Override
-    public Integer create(Integer integer, final Address address) {
+    public Integer create(final Integer accountId, final Address address) {
         JdbcTemplate jdbcTemplate = getJdbcTemplate();
         KeyHolder keyHolder = new GeneratedKeyHolder();
+
         PreparedStatementCreator psc = new PreparedStatementCreator() {
             @Override
             public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
                 PreparedStatement ps = con.prepareStatement(INSERT_ADDRESS, Statement.RETURN_GENERATED_KEYS);
 
-                ps.setInt(1, address.getAccountID());
+                ps.setInt(1, accountId);
 
                 if (address.getAddr1() == null) {
                     ps.setNull(2, Types.NULL);

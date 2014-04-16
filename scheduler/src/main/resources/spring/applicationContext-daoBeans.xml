@@ -22,15 +22,13 @@
     <bean id="locationDAO" class="com.inthinc.pro.dao.hessian.LocationHessianDAO">
         <property name="siloService" ref="siloServiceBean" />
     </bean>
-    <bean id="addressDAO" class="com.inthinc.pro.dao.jdbc.AddressJDBCDAO">
-        <property name="dataSource" ref="tiwiJDBCDataSource" />
-    </bean>
+    <bean id="addressDAO" class="com.inthinc.pro.dao.jdbc.AddressJDBCDAO"></bean>
     <bean id="groupDAO" class="com.inthinc.pro.dao.hessian.GroupHessianDAO" parent="genericDAO"></bean>
-    <bean id="personDAO" class="com.inthinc.pro.dao.hessian.PersonHessianDAO" parent="genericDAO"></bean>
-    <bean id="driverDAO" class="com.inthinc.pro.dao.hessian.DriverHessianDAO" parent="genericDAO"></bean>
+    <bean id="personDAO" class="com.inthinc.pro.dao.jdbc.PersonJDBCDAO" parent="genericDAO"></bean>
+    <bean id="driverDAO" class="com.inthinc.pro.dao.jdbc.DriverJDBCDAO" parent="genericDAO"></bean>
     <bean id="eventDAO" class="com.inthinc.pro.dao.hessian.EventHessianDAO" parent="genericDAO"></bean>
     <bean id="reportScheduleDAO" class="com.inthinc.pro.dao.hessian.ReportScheduleHessianDAO" parent="genericDAO"></bean>
-    <bean id="userDAO" class="com.inthinc.pro.dao.hessian.UserHessianDAO" parent="genericDAO"></bean>
+    <bean id="userDAO" class="com.inthinc.pro.dao.jdbc.UserJDBCDAO"></bean>
     <bean id="deviceDAO" class="com.inthinc.pro.dao.jdbc.DeviceJDBCDAO"></bean>
     <bean id="deviceSensitivityMapping" class="com.inthinc.pro.model.app.DeviceSensitivityMapping" init-method="init">
 		<property name="deviceDAO" ref="deviceDAO"></property>
