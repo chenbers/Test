@@ -43,6 +43,7 @@
 	<field name="driverPosition" class="java.lang.String"/>
 	<field name="loginCount" class="java.lang.Integer"/>
 	<field name="timeFrame" class="com.inthinc.pro.model.TimeFrame"/>
+	    <field name="interval" class="org.joda.time.Interval"/>
 	<field name="totalMiles" class="java.lang.Integer"/>
 	<field name="overallScore" class="java.lang.Integer"/>
 	<field name="speedingScore" class="java.lang.Integer"/>
@@ -149,7 +150,7 @@
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement key="textField-77" mode="Opaque" x="180" y="0" width="90" height="20" backcolor="#FFFFFF"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[com.inthinc.pro.reports.converter.TimeFrameConverter.convertTimeFrameInterval($F{timeFrame},$P{REPORT_LOCALE}, $P{TIME_ZONE})]]></textFieldExpression>
+                <textFieldExpression class="java.lang.String"><![CDATA[com.inthinc.pro.reports.converter.TimeFrameConverter.convertTimeFrameOrInterval($F{timeFrame}, $F{interval},$P{REPORT_LOCALE}, $P{TIME_ZONE})]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement key="textField-42" mode="Opaque" x="270" y="0" width="120" height="20" backcolor="#FFFFFF"/>
