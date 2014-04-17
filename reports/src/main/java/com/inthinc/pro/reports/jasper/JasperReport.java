@@ -88,12 +88,27 @@ public class JasperReport implements Report
     public void exportReportToEmail(String email, FormatType formatType, String noReplyEmailAddress)
     {
         exportReportToEmail(email, formatType,null,null, noReplyEmailAddress);
-    } 
+    }
+
+    /**
+     * Decides what format type to create a JasperPrint with based on the export format type.
+     * This is used to decide if it's going to use a raw template or not.
+     *
+     * @param exportFormatType format type for export
+     * @return format type for builder
+     */
+    public FormatType getReportBuilderFormatType(FormatType exportFormatType){
+        if (exportFormatType == FormatType.CSV)
+            return FormatType.CSV;
+
+        return FormatType.PDF;
+    }
     
     @Override
     public void exportReportToEmail(String email, FormatType formatType, String subject, String message, String noReplyEmailAddress)
     {
-        JasperPrint jp = reportBuilder.buildReport(reportCriteriaList,formatType);
+        FormatType rbFormatType = getReportBuilderFormatType(formatType);
+        JasperPrint jp = reportBuilder.buildReport(reportCriteriaList,rbFormatType);
         byte[] bytes;
         String ext = ".pdf";
         try
@@ -103,8 +118,12 @@ public class JasperReport implements Report
                 exportToExcelStream(os, jp);
                 bytes = os.toByteArray();
                 ext = ".xls";
-            }
-            else {
+            } else if (formatType == FormatType.CSV){
+                ByteArrayOutputStream os = new ByteArrayOutputStream();
+                exportToCsvStream(os, jp);
+                bytes = os.toByteArray();
+                ext = ".csv";
+            } else {
                 bytes = JasperExportManager.exportReportToPdf(jp);
             }
             ReportAttatchment reportAttatchment = new ReportAttatchment(FILE_NAME + ext, bytes);

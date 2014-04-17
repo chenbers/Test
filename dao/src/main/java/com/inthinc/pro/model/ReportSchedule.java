@@ -42,6 +42,7 @@ public class ReportSchedule implements Cloneable {
     private Integer groupID;
     private Status status;
     private Integer duration;
+    private String format;
 
     
 
@@ -246,6 +247,9 @@ public class ReportSchedule implements Cloneable {
         sb.append(", ");
         sb.append("emailTo=");
         sb.append(this.emailTo);
+        sb.append(", ");
+        sb.append("format=");
+        sb.append(this.format);
         sb.append("]");
         return sb.toString();
     }
@@ -401,4 +405,11 @@ public class ReportSchedule implements Cloneable {
         this.managerDeliveryType = managerDeliveryType;
     }
 
+    public String getFormat() {
+        return format;
+    }
+
+    public void setFormat(String format) {
+        this.format = format;
+    }
 }

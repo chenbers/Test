@@ -426,6 +426,7 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
                 getItem().setHardBrake(null);
             if (!getItem().isHardVerticalSelected())
                 getItem().setHardVertical(null);
+
         }
         
         return super.save();
