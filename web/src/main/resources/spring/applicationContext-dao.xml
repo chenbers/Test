@@ -92,7 +92,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
     <bean id="driverJDBCDAO" class="com.inthinc.pro.dao.jdbc.DriverJDBCDAO" />
     <bean id="redFlagDAO" class="com.inthinc.pro.dao.jdbc.RedFlagJDBCDAO"></bean>
     <bean id="redFlagAlertDAO" class="com.inthinc.pro.dao.hessian.RedFlagAlertHessianDAO"></bean>  <!-- to be implemented -->
-    <bean id="tablePreferenceDAO" class="com.inthinc.pro.dao.hessian.TablePreferenceHessianDAO"></bean>   <!-- to be implemented -->
+    <bean id="tablePreferenceDAO" class="com.inthinc.pro.dao.jdbc.TablePreferenceJDBCDAO"></bean>
     <bean id="zoneDAO" class="com.inthinc.pro.dao.hessian.ZoneHessianDAO"></bean>  <!-- to be implemented -->
     <!-- <bean id="zoneAlertDAO" class="com.inthinc.pro.dao.hessian.ZoneAlertHessianDAO"></bean> -->
     <bean id="roleDAO" class="com.inthinc.pro.dao.hessian.RoleHessianDAO"></bean>   <!-- to be implemented -->
