@@ -125,6 +125,21 @@
 							</h:outputText>
 							
 						</table>
+
+                        <div class="add_section_title"><h:outputText
+                                value="#{messages.reportSchedule_format}" /></div>
+
+                        <table width="370" border="0" cellspacing="2" cellpadding="4"
+                               align="center">
+                            <tr>
+                                <td width="100" valign="top">
+                                    <h:outputText value="#{messages.reportSchedule_format}:"/>
+                                </td>
+                                <td>
+                                    <h:outputText value="#{reportScheduleBean.item.format}"/>
+                                </td>
+                            </tr>
+                        </table>
 						
 						</td>
 						<td width="10"><h:graphicImage value="/images/x.gif" width="10" /></td>
@@ -156,6 +171,7 @@
                                     </td>
                                  </tr>
                            </h:outputText>
+
                             <h:outputText rendered="#{reportScheduleBean.item.report.useTimeFrame}">
                                  <tr>
                                     <td width="100" valign="top">
