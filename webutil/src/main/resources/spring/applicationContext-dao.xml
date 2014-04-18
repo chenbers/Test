@@ -29,8 +29,8 @@
     <bean id="accountDAO" class="com.inthinc.pro.dao.hessian.AccountHessianDAO" parent="genericDAO"></bean>
     <bean id="userDAO" class="com.inthinc.pro.dao.jdbc.UserJDBCDAO"></bean>
     <bean id="personDAO" class="com.inthinc.pro.dao.hessian.PersonHessianDAO" parent="genericDAO"></bean>
-    <bean id="groupDAO" class="com.inthinc.pro.dao.hessian.GroupHessianDAO" parent="genericDAO"></bean>
-    <bean id="vehicleDAO" class="com.inthinc.pro.dao.jdbc.VehicleJDBCDAO"></bean>
+    <bean id="groupDAO" class="com.inthinc.pro.dao.jdbc.GroupJDBCDAO" parent="genericJDBCDAO"></bean>
+    <bean id="vehicleDAO" class="com.inthinc.pro.dao.hessian.VehicleHessianDAO" parent="genericDAO"></bean>
     <bean id="eventDAO" class="com.inthinc.pro.dao.hessian.EventHessianDAO" parent="genericDAO"></bean>
     <bean id="deviceDAO" class="com.inthinc.pro.dao.jdbc.DeviceJDBCDAO"></bean>
     <bean id="driverDAO" class="com.inthinc.pro.dao.hessian.DriverHessianDAO" parent="genericDAO"></bean>
