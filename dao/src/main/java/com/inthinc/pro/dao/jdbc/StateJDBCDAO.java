@@ -40,10 +40,9 @@ public class StateJDBCDAO extends SimpleJdbcDaoSupport implements StateDAO {
     public List<State> getStates() {
         Map<String, Object> params = new HashMap<String, Object>();
 
+        List<State> states = getSimpleJdbcTemplate().query(GET_STATE, stateParameterizedRowMapper, params);
 
-        List<State> states = getSimpleJdbcTemplate().query(GET_STATE,stateParameterizedRowMapper,params);
-
-        return states ;
+        return states;
     }
 
 
