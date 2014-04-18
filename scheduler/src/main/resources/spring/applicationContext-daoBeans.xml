@@ -21,7 +21,7 @@
     <bean id="locationDAO" class="com.inthinc.pro.dao.cassandra.LocationCassandraDAO">
     </bean>
     <bean id="addressDAO" class="com.inthinc.pro.dao.jdbc.AddressJDBCDAO"></bean>
-    <bean id="groupDAO" class="com.inthinc.pro.dao.jdbc.GroupJDBCDAO" parent="genericDAO"></bean>
+    <bean id="groupDAO" class="com.inthinc.pro.dao.jdbc.GroupJDBCDAO" parent="genericJDBCDAO"></bean>
     <bean id="personDAO" class="com.inthinc.pro.dao.jdbc.PersonJDBCDAO" parent="genericDAO"></bean>
     <bean id="driverDAO" class="com.inthinc.pro.dao.jdbc.DriverJDBCDAO" parent="genericDAO"></bean>
     <bean id="eventDAO" class="com.inthinc.pro.dao.cassandra.EventCassandraDAO" parent="genericDAO"></bean>

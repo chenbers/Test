@@ -14,7 +14,7 @@ default-autowire="byName">
   <bean id="accountDAO" class="com.inthinc.pro.dao.hessian.AccountHessianDAO"></bean>
   <bean id="userDAO" class="com.inthinc.pro.dao.jdbc.UserJDBCDAO"></bean>
   <bean id="personDAO" class="com.inthinc.pro.dao.jdbc.PersonJDBCDAO"></bean>
-  <bean id="groupDAO" class="com.inthinc.pro.dao.hessian.GroupHessianDAO"></bean>
+  <bean id="groupDAO" class="com.inthinc.pro.dao.jdbc.GroupJDBCDAO"></bean>
   <bean id="vehicleDAO" class="com.inthinc.pro.dao.jdbc.VehicleJDBCDAO"/>
   <bean id="driverDAO" class="com.inthinc.pro.dao.jdbc.DriverJDBCDAO"></bean>
   <bean id="roleDAO" class="com.inthinc.pro.dao.hessian.RoleHessianDAO"></bean>
