@@ -22,7 +22,7 @@ public class StateJDBCDAOTest extends SimpleJdbcDaoSupport {
 
     @Before
     public void setUpBeforeTest() throws Exception {
-        itData= new ITData();
+        itData = new ITData();
 
     }
 
@@ -32,13 +32,10 @@ public class StateJDBCDAOTest extends SimpleJdbcDaoSupport {
         DataSource dataSource = new ITDataSource().getRealDataSource();
         stateDAO.setDataSource(dataSource);
 
+        List<State> statesList = stateDAO.getStates();
 
-            List<State> statesList = stateDAO.getStates();
-
-            assertTrue(statesList.size() > 0);
-            assertTrue(statesList.size()==80);
-
-
+        assertTrue(statesList.size() > 0);
+        assertTrue(statesList.size() == 80);
     }
 
     @Test
@@ -46,25 +43,18 @@ public class StateJDBCDAOTest extends SimpleJdbcDaoSupport {
         StateJDBCDAO stateDAO = new StateJDBCDAO();
         DataSource dataSource = new ITDataSource().getRealDataSource();
         stateDAO.setDataSource(dataSource);
-         stateID =1;
 
         //findById method
-        State state = stateDAO.findByID(stateID);
+        State state = stateDAO.findByID(1);
         assertNotNull(state);
         assertTrue(state.getName().equals("Alabama"));
         assertTrue(state.getAbbrev().equals("AL"));
 
-
-
-        stateID =3;
-
         //findById method
-        state = stateDAO.findByID(stateID);
+        state = stateDAO.findByID(3);
         assertNotNull(state);
         assertTrue(state.getName().equals("Arizona"));
         assertTrue(state.getAbbrev().equals("AZ"));
-
-
     }
 
 }
