@@ -74,8 +74,8 @@
 	<bean id="deviceDAO" class="com.inthinc.pro.dao.hessian.DeviceHessianDAO" parent="genericDAO"/>
 	<bean id="driverDAO" class="com.inthinc.pro.dao.jdbc.DriverJDBCDAO" parent="genericDAO"></bean>
 	<bean id="driveTimeDAO" class="com.inthinc.pro.dao.jdbc.DriveTimeJDBCDAO" parent="genericJDBCDAO"/>
-	<bean id="redFlagDAO" class="com.inthinc.pro.dao.jdbc.RedFlagJDBCDAO" parent="genericDAO"></bean>
-	<bean id="redFlagAlertDAO" class="com.inthinc.pro.dao.hessian.RedFlagAlertHessianDAO" parent="genericDAO"></bean>
+	<bean id="redFlagDAO" class="com.inthinc.pro.dao.hessian.RedFlagHessianDAO" parent="genericDAO"></bean>
+	<bean id="redFlagAlertDAO" class="com.inthinc.pro.dao.jdbc.RedFlagAlertJDBCDAO" parent="genericDAO"></bean>
 	<bean id="mpgDAO" class="com.inthinc.pro.dao.hessian.MpgHessianDAO" parent="genericDAO">
 		<property name="reportService" ref="reportServiceBean" />
 	</bean>
