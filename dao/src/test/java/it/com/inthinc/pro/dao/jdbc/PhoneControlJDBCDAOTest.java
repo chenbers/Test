@@ -19,6 +19,7 @@ import java.io.InputStream;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 public class PhoneControlJDBCDAOTest extends SimpleJdbcDaoSupport {
@@ -105,7 +106,7 @@ public class PhoneControlJDBCDAOTest extends SimpleJdbcDaoSupport {
 
         //update method
         Cellblock cellblock2 = new Cellblock();
-        cellblock2.setDriverID(40);
+        cellblock2.setDriverID(39);
         cellblock2.setAcctID(4);
         cellblock2.setCellStatus(CellStatusType.ENABLED);
         cellblock2.setProvider(CellProviderType.CELL_CONTROL);
