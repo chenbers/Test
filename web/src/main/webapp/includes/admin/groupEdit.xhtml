@@ -50,7 +50,7 @@
 	<table>
 		<tr>
 			<td width="100%" valign="top">
-		
+			
 			<div class="add_section_title"><h:outputFormat
 				value="#{organizationBean.groupState eq 'ADD'? messages.group_add_title : messages.group_edit_title}">
 				<f:param
@@ -115,6 +115,14 @@
 								requiredMessage="#{messages.required}">
 								<f:selectItems value="#{organizationBean.peopleSelectItems}" />
 						</h:selectOneMenu>
+					</td>
+				</tr>
+				<tr>
+					<td width="100">#{messages.group_gl_code}:</td>
+					<td>
+						<rich:message for="#{context}-glcode" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
+						<h:inputText value="#{groupTreeNode.group.glCode}" id="#{context}-gl-code" tabindex="6" styleClass="text" size="30" maxlength="30" requiredMessage="#{messages.required}">
+						</h:inputText> 
 					</td>
 				</tr>
 			</table>

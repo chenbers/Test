@@ -19,6 +19,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.model.SelectItem;
 import javax.faces.model.SelectItemGroup;
 
+import com.inthinc.pro.reports.FormatType;
 import org.apache.log4j.Logger;
 import org.joda.time.DateMidnight;
 import org.joda.time.DateTime;
@@ -237,6 +238,15 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
         return SelectItemUtil.toList(Duration.class, true);
     }
 
+    public List<SelectItem> getFormats(){
+       List<SelectItem> ret = new ArrayList<SelectItem>();
+
+       ret.add(new SelectItem(FormatType.PDF.toString(),FormatType.PDF.toString()));
+       ret.add(new SelectItem(FormatType.EXCEL.toString(),FormatType.EXCEL.toString()));
+       ret.add(new SelectItem(FormatType.CSV.toString(),FormatType.CSV.toString()));
+       return ret;
+    }
+
     public String getReportTimeFrameStr() {
         if (item != null && item.getReportTimeFrame() != null) {
             return TimeFrameUtil.getTimeFrameStr(item.getReportTimeFrame(), getLocale());
@@ -350,6 +360,7 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
         reportSchedule.setUserID(getUserID());
         reportSchedule.setDeliverToManagers(Boolean.FALSE);
         reportSchedule.setManagerDeliveryType(ReportManagerDeliveryType.ALL);
+        reportSchedule.setFormat(FormatType.PDF.toString());
         List<Boolean> booleanList = new ArrayList<Boolean>();
         booleanList.add(Boolean.FALSE);
         booleanList.add(Boolean.FALSE);
@@ -369,6 +380,8 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
     @Override
     protected ReportScheduleView completeEditItem(ReportScheduleView selectedItem) {
         ReportSchedule reportSchedule = reportScheduleDAO.findByID(selectedItem.getReportScheduleID());
+        if (reportSchedule.getFormat()==null)
+            reportSchedule.setFormat(FormatType.PDF.toString());
         selectedItem = completeReportScheduleView(reportSchedule, selectedItem);
         selectedItem.setSelected(true);
         return selectedItem;
@@ -925,6 +938,8 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
         private String groupName;
         @Column(updateable = false)
         private String driverName;
+        @Column(updateable = true)
+        private String format;
         @Column(updateable = false)
         private String vehicleName;
         @Column(updateable = false)
@@ -1078,6 +1093,14 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
 
         public Integer getDayOfMonth() {
             return dayOfMonth;
+        }
+
+        public String getFormat() {
+            return format;
+        }
+
+        public void setFormat(String format) {
+            this.format = format;
         }
     }
 }

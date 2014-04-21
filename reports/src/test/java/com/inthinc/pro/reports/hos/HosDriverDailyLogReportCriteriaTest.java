@@ -934,5 +934,20 @@ public class HosDriverDailyLogReportCriteriaTest extends BaseUnitTest{
         }
 
 
+    @Test
+    public void statusDescription() {
+        HosDailyDriverLogReportCriteria hosDailyDriverLogReportCriteria = new HosDailyDriverLogReportCriteria(Locale.US, Boolean.FALSE, dateTimeZone);
+        
+        HOSRecord hosRecord = new HOSRecord();
+        hosRecord.setStatus(HOSStatus.HOS_ALTERNATE_SLEEPING);
+        
+        String altSleepStatusDescription = hosDailyDriverLogReportCriteria.getStatusDescription(hosRecord);
+        assertEquals("ALT Sleep with no mobile unit", "Alternate Sleep Accommodations", altSleepStatusDescription);
 
+        hosRecord.setMobileUnitID("MOBILE_UNIT");
+        
+        altSleepStatusDescription = hosDailyDriverLogReportCriteria.getStatusDescription(hosRecord);
+        
+        assertEquals("ALT Sleep with mobile unit", "Alternate Sleep Accommodations (Mobile Unit: MOBILE_UNIT)", altSleepStatusDescription);
+    }
 }

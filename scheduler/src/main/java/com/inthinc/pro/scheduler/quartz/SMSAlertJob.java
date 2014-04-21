@@ -16,17 +16,17 @@ public class SMSAlertJob extends BaseAlertJob
 
     protected void executeInternal(JobExecutionContext ctx) throws JobExecutionException
     {
-        logger.debug("SMSAlertJob: START");
+        logger.info("SMSAlertJob: START");
         List<AlertMessageBuilder> messageList = getMessageBuilders(AlertMessageDeliveryType.TEXT_MESSAGE);
 
         for (AlertMessageBuilder message : messageList)
         {
-            logger.debug("MessageID: " + message.getMessageID() + " Emailed to: " + message.getAddress());
+            logger.info("MessageID: " + message.getMessageID() + " Emailed to: " + message.getAddress());
             String text = LocalizedMessage.getStringWithValues(message.getAlertMessageType().toString(),message.getLocale(),(String[])message.getParamterList().toArray(new String[message.getParamterList().size()]));
             getMailDispatcher().send(message.getAddress(), getSubject(message),text);
             getAlertMessageDAO().acknowledgeMessage(message.getMessageID());
         }
-        logger.debug("SMSAlertJob: END");
+        logger.info("SMSAlertJob: END");
 
     }
 
