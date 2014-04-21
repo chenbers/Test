@@ -97,6 +97,7 @@ public enum NoteType {
 	HEAVY_DUTY(98, new Attrib[]{}),
 	MISSING_IWI_CONF(99, new Attrib[]{}),
     INVALID_DRIVER(103, new Attrib[]{}),  //Created during processing, not sent from device
+    INVALID_OCCUPANT(104, new Attrib[]{}),  //Created during processing, not sent from device
 	TRIAX_STATUS_EX(110, new Attrib[]{Attrib.MAGICA, Attrib.ORIENTATIONTRIAX, Attrib.ZLEVEL, Attrib.RMSLEVEL, Attrib.RMSWINDOW, Attrib.YWINDOW, Attrib.YLEVEL, Attrib.XACCEL, Attrib.SLOPE, Attrib.DVX, Attrib.CALVERSION, Attrib.NUMERATOR, Attrib.DENOMINATOR, Attrib.INTERCEPTS, Attrib.GTRIGGERLEVEL, Attrib.DIAGNOSTIC}),
 	
 	CRASH_DATA_EXTENDED(112, new Attrib[]{}),
@@ -305,6 +306,8 @@ public enum NoteType {
                 || noteType == NO_DRIVER
                 || noteType == LOW_BATTERY_POTENTIAL_TAMPERING
                 || noteType == UNPLUGGED
+                || noteType == CRASH
+                || noteType == FULLEVENT
 //              || noteType == LOW_POWER_MODE
                 );
     }
