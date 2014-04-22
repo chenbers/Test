@@ -14,11 +14,13 @@ import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 
+import java.awt.*;
 import java.sql.*;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.Date;
+import java.util.List;
 
 public class RedFlagAlertJDBCDAO extends SimpleJdbcDaoSupport implements RedFlagAlertDAO {
 
@@ -33,6 +35,11 @@ public class RedFlagAlertJDBCDAO extends SimpleJdbcDaoSupport implements RedFlag
                     "accel, brake, turn,  vert,  severityLevel,  zoneID, escalationTryLimit, escalationTryTimeLimit, escalationCallDelay, idlingThreshold, notifyManagers) VALUES " +
                     "(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
+    private static final String UPDATE_ALERT = "UPDATE alert set alertTypeMask=?, alertType=?, type=?,  status=?,  modified=?,  acctID=?, userID=?,  name=?,  description=?,  startTOD=?,  stopTOD=?, dayOfWeekMask=?, vtypeMask=?,  speedSettings=?, " +
+                                                "accel=?, brake=?, turn=?,  vert=?,  severityLevel=?,  zoneID=?, escalationTryLimit=?, escalationTryTimeLimit=?, escalationCallDelay=?, idlingThreshold=?, notifyManagers=? where alertID=?" ;
+
+
+
     private ParameterizedRowMapper<RedFlagAlert> redFlagAlertParameterizedRowMapper = new ParameterizedRowMapper<RedFlagAlert>() {
         @Override
         public RedFlagAlert mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -40,10 +47,9 @@ public class RedFlagAlertJDBCDAO extends SimpleJdbcDaoSupport implements RedFlag
 
             redFlagAlert.setAlertID(rs.getInt("alertID"));
 
-            List <AlertMessageType> types = new ArrayList<AlertMessageType>();
-
+//            List <AlertMessageType> types = new ArrayList<AlertMessageType>();
 //            if (getIntOrNullFromRS(rs,"alertTypeMask")!=null) {
-//                types.add(AlertMessageType.valueOf("alertTypeMask"));
+//                types.add(AlertMessageType.valueOf(getIntOrNullFromRS(rs, "alertTypeMask")));
 //            }
 //            redFlagAlert.setTypes(types);
 
@@ -65,6 +71,26 @@ public class RedFlagAlertJDBCDAO extends SimpleJdbcDaoSupport implements RedFlag
             redFlagAlert.setMaxEscalationTries(getIntOrNullFromRS(rs,"escalationTryLimit"));
             redFlagAlert.setMaxEscalationTryTime(getIntOrNullFromRS(rs,"escalationTryTimeLimit"));
 
+            String ss = getStringOrNullFromRS(rs,"speedSettings");
+            if(ss==null||ss.isEmpty()||ss.contains("")){
+                redFlagAlert.setSpeedSettings(null);
+            }else if(!ss.contains("~")){
+            String[] sss = ss.split(" ");
+            Integer[] speedSettings = new Integer[sss.length];
+            for(int i=0;i<sss.length;i++){
+                if(!sss[i].trim().isEmpty()){
+                    speedSettings[i]=Integer.parseInt(sss[i]);
+                }
+            }
+                redFlagAlert.setSpeedSettings(speedSettings);
+            } else{
+                Integer[] speedSettings = new Integer[1];
+                String ssfin = ss.replace("~","");
+                speedSettings[0]=Integer.valueOf(ssfin);
+                redFlagAlert.setSpeedSettings(speedSettings);
+            }
+
+
             List<Boolean> dayOfWeek= new ArrayList<Boolean>();
             dayOfWeek.add(rs.getBoolean("dayOfWeekMask"));
             redFlagAlert.setDayOfWeek(dayOfWeek);
@@ -80,7 +106,6 @@ public class RedFlagAlertJDBCDAO extends SimpleJdbcDaoSupport implements RedFlag
             redFlagAlert.setVehicleTypes(vehicleTypes);
 
             List<Integer> groupIds = new ArrayList<Integer>();
-//            groupIds.add(rs.getInt("fwd_teamgroupId"))  ;
             redFlagAlert.setGroupIDs(groupIds);
 
             redFlagAlert.setEscalationTimeBetweenRetries(getIntOrNullFromRS(rs,"escalationCallDelay"));
@@ -190,7 +215,7 @@ public class RedFlagAlertJDBCDAO extends SimpleJdbcDaoSupport implements RedFlag
 
                 ps.setObject(1, entity.getTypes());
 
-                ps.setInt(2, entity.getAlertID());
+                ps.setInt(2, 0);
 
                 ps.setInt(3, 0);
 
@@ -311,7 +336,6 @@ public class RedFlagAlertJDBCDAO extends SimpleJdbcDaoSupport implements RedFlag
                     ps.setBoolean(25, entity.getNotifyManagers());
                 }
 
-
                 logger.debug(ps.toString());
                 return ps;
             }
@@ -323,9 +347,143 @@ public class RedFlagAlertJDBCDAO extends SimpleJdbcDaoSupport implements RedFlag
 
     @Override
     public Integer update(final RedFlagAlert entity) {
-    return null;
-    }
+        JdbcTemplate jdbcTemplate = getJdbcTemplate();
+        PreparedStatementCreator psc = new PreparedStatementCreator() {
+            @Override
+            public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
+                PreparedStatement ps = con.prepareStatement(UPDATE_ALERT);
 
+                ps.setObject(1, entity.getTypes());
+
+                ps.setInt(2, 0);
+                ps.setInt(3, 0);
+
+                ps.setInt(4, entity.getStatus().getCode());
+
+                DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                df.setTimeZone(TimeZone.getTimeZone("UTC"));
+                String modified = df.format(toUTC(new Date()));
+
+                ps.setString(5, modified);
+
+                ps.setInt(6, entity.getAccountID());
+                ps.setInt(7, entity.getUserID());
+
+                if (entity.getName() == null) {
+                    ps.setNull(8, Types.NULL);
+                } else {
+                    ps.setString(8, entity.getName());
+                }
+
+                if (entity.getDescription() == null) {
+                    ps.setNull(9, Types.NULL);
+                } else {
+                    ps.setString(9, entity.getDescription());
+                }
+
+
+                if (entity.getStartTOD() == null) {
+                    ps.setNull(10, Types.NULL);
+                } else {
+                    ps.setInt(10, entity.getStartTOD());
+                }
+
+
+                if (entity.getStopTOD() == null) {
+                    ps.setNull(11, Types.NULL);
+                } else {
+                    ps.setInt(11, entity.getStopTOD());
+                }
+
+                ps.setObject(12, entity.getDayOfWeek());
+
+                if (entity.getVehicleTypes() == null) {
+                    ps.setNull(13, Types.NULL);
+                } else {
+                    ps.setObject(13, entity.getVehicleTypes());
+                }
+
+                if (entity.getSpeedSettings() == null) {
+                    ps.setNull(14, Types.NULL);
+                } else {
+                    ps.setObject(14, entity.getSpeedSettings());
+                }
+
+                if (entity.getHardAcceleration() == null) {
+                    ps.setNull(15, Types.NULL);
+                } else {
+                    ps.setInt(15, entity.getHardAcceleration());
+                }
+
+                if (entity.getHardBrake() == null) {
+                    ps.setNull(16, Types.NULL);
+                } else {
+                    ps.setInt(16, entity.getHardBrake());
+                }
+
+                if (entity.getHardTurn() == null) {
+                    ps.setNull(17, Types.NULL);
+                } else {
+                    ps.setInt(17, entity.getHardTurn());
+                }
+
+                if (entity.getHardVertical() == null) {
+                    ps.setNull(18, Types.NULL);
+                } else {
+                    ps.setInt(18, entity.getHardVertical());
+                }
+
+                if (entity.getSeverityLevel() == null) {
+                    ps.setNull(19, Types.NULL);
+                } else {
+                    ps.setObject(19, entity.getSeverityLevel());
+                }
+
+                if (entity.getZoneID() == null) {
+                    ps.setNull(20, Types.NULL);
+                } else {
+                    ps.setInt(20, entity.getZoneID());
+                }
+
+                if (entity.getMaxEscalationTries() == null) {
+                    ps.setNull(21, Types.NULL);
+                } else {
+                    ps.setInt(21, entity.getMaxEscalationTries());
+                }
+
+                if (entity.getMaxEscalationTryTime() == null) {
+                    ps.setNull(22, Types.NULL);
+                } else {
+                    ps.setInt(22, entity.getMaxEscalationTryTime());
+                }
+
+                if (entity.getEscalationTimeBetweenRetries() == null) {
+                    ps.setNull(23, Types.NULL);
+                } else {
+                    ps.setInt(23, entity.getEscalationTimeBetweenRetries());
+                }
+
+                if (entity.getIdlingThreshold() == null) {
+                    ps.setNull(24, Types.NULL);
+                } else {
+                    ps.setInt(24, entity.getIdlingThreshold());
+                }
+
+                if (entity.getNotifyManagers() == null) {
+                    ps.setNull(25, Types.NULL);
+                } else {
+                    ps.setBoolean(25, entity.getNotifyManagers());
+                }
+
+                ps.setInt(26, entity.getAlertID());
+
+                logger.debug(ps.toString());
+                return ps;
+            }
+        };
+        jdbcTemplate.update(psc);
+        return entity.getAlertID();
+    }
 
 
     @Override
@@ -349,4 +507,6 @@ public class RedFlagAlertJDBCDAO extends SimpleJdbcDaoSupport implements RedFlag
         DateTime dt = new DateTime(date.getTime()).toDateTime(DateTimeZone.UTC);
         return dt.toDate();
     }
+
+
 }
