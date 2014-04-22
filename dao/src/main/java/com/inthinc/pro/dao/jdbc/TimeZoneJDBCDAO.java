@@ -1,10 +1,8 @@
 package com.inthinc.pro.dao.jdbc;
 
+import com.inthinc.pro.ProDAOException;
 import com.inthinc.pro.dao.TimeZoneDAO;
-import com.inthinc.pro.model.Address;
-import com.inthinc.pro.model.State;
 import com.inthinc.pro.model.SupportedTimeZone;
-import com.inthinc.pro.model.silo.SiloDef;
 import com.mysql.jdbc.Statement;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
@@ -23,18 +21,20 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Created by Infrasoft02 on 4/18/2014.
- */
+import static com.inthinc.pro.dao.jdbc.GenericJDBCDAO.close;
+
+
 public class TimeZoneJDBCDAO extends SimpleJdbcDaoSupport implements TimeZoneDAO {
 
     private static final String FIND_TIMEZONE_BY_ID =" SELECT * FROM timezone where tzID = :tzID";
 
+    private static final String SUPORTED_TIMEZONE = " SELECT * FROM timezone WHERE enabled=1";
+
     private static final String DEL_TIMEZONE_BY_ID = " DELETE FROM timezone WHERE tzID = ?";
 
-    private static final String INSERT_TIMEZONE_ADDRESS = " INSERT INTO timezone (tzName, enable) VALUES (?, ?);";
+    private static final String INSERT_TIMEZONE = " INSERT INTO timezone (tzName, enable) VALUES (?, ?);";
 
-    private static final String UPDATE_TIMEZONE_ADDRESS = " UPDATE timezone set tzName=?, enable=? where tzID = ?";
+    private static final String UPDATE_TIMEZONE = " UPDATE timezone set tzName=?, enable=? where tzID = ?";
 
 
     private ParameterizedRowMapper<SupportedTimeZone> timeZoneParameterizedRowMapper = new ParameterizedRowMapper<SupportedTimeZone>() {
@@ -55,19 +55,33 @@ public class TimeZoneJDBCDAO extends SimpleJdbcDaoSupport implements TimeZoneDAO
     public List<SupportedTimeZone> getSupportedTimeZones() {
         List<SupportedTimeZone> suportedTimeZone = new ArrayList<SupportedTimeZone>();
 
-        suportedTimeZone.add(new SupportedTimeZone(535, "US/Alaska"));
-        suportedTimeZone.add(new SupportedTimeZone(536, "US/Aleutian"));
-        suportedTimeZone.add(new SupportedTimeZone(537, "US/Arizona"));
-        suportedTimeZone.add(new SupportedTimeZone(538, "US/Central"));
-        suportedTimeZone.add(new SupportedTimeZone(539, "US/East-Indiana"));
-        suportedTimeZone.add(new SupportedTimeZone(540, "US/Eastern"));
-        suportedTimeZone.add(new SupportedTimeZone(541, "US/Hawaii"));
-        suportedTimeZone.add(new SupportedTimeZone(542, "US/Indiana-Starke"));
-        suportedTimeZone.add(new SupportedTimeZone(543, "US/Michigan"));
-        suportedTimeZone.add(new SupportedTimeZone(544, "US/Mountain"));
-        suportedTimeZone.add(new SupportedTimeZone(545, "US/Pacific"));
-        suportedTimeZone.add(new SupportedTimeZone(546, "US/Samoa"));
-        suportedTimeZone.add(new SupportedTimeZone(547, "UTC"));
+        Connection conn = null;
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+        try
+        {
+            conn = getConnection();
+            statement = (PreparedStatement) conn.prepareStatement(SUPORTED_TIMEZONE);
+
+            resultSet = statement.executeQuery();
+
+            while (resultSet.next()) {
+                SupportedTimeZone stz = new SupportedTimeZone();
+                stz.setTzID(resultSet.getInt("tzID"));
+                stz.setTzName(resultSet.getString("tzName"));
+                stz.setEnabled(resultSet.getInt("enabled"));
+                suportedTimeZone.add(stz);
+            }
+
+        }   // end try
+        catch (SQLException e) {
+            throw new ProDAOException(statement.toString(), e);
+        }
+        finally {
+            close(resultSet);
+            close(statement);
+            close(conn);
+        }
 
         return suportedTimeZone;
     }
@@ -76,9 +90,9 @@ public class TimeZoneJDBCDAO extends SimpleJdbcDaoSupport implements TimeZoneDAO
     public SupportedTimeZone findByID(Integer tzID) {
         Map<String, Object> args = new HashMap<String, Object>();
         args.put("tzID", tzID);
-        StringBuilder findAddress = new StringBuilder(FIND_TIMEZONE_BY_ID);
+        StringBuilder findTimeZone = new StringBuilder(FIND_TIMEZONE_BY_ID);
 
-        return getSimpleJdbcTemplate().queryForObject(findAddress.toString(), timeZoneParameterizedRowMapper, args);
+        return getSimpleJdbcTemplate().queryForObject(findTimeZone.toString(), timeZoneParameterizedRowMapper, args);
     }
 
     @Override
@@ -88,7 +102,7 @@ public class TimeZoneJDBCDAO extends SimpleJdbcDaoSupport implements TimeZoneDAO
         PreparedStatementCreator psc = new PreparedStatementCreator() {
             @Override
             public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
-                PreparedStatement ps = con.prepareStatement(INSERT_TIMEZONE_ADDRESS, Statement.RETURN_GENERATED_KEYS);
+                PreparedStatement ps = con.prepareStatement(INSERT_TIMEZONE, Statement.RETURN_GENERATED_KEYS);
 
                 ps.setString(1,entity.getTzName());
 
@@ -113,7 +127,7 @@ public class TimeZoneJDBCDAO extends SimpleJdbcDaoSupport implements TimeZoneDAO
         PreparedStatementCreator psc = new PreparedStatementCreator() {
             @Override
             public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
-                PreparedStatement ps = con.prepareStatement(UPDATE_TIMEZONE_ADDRESS);
+                PreparedStatement ps = con.prepareStatement(UPDATE_TIMEZONE);
 
                 ps.setString(1, entity.getTzName());
 
