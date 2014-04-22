@@ -74,7 +74,7 @@ public class AlertMessageTypeTest {
         }
         
         String tmp = Long.toHexString(mask);
-        assertEquals("fffffdfffff", Long.toHexString(mask));
+        assertEquals("3fffffdfffff", Long.toHexString(mask));
         
         List<AlertMessageType> allTypes = AlertMessageType.getAlertMessageTypes(mask);
 //        for (AlertMessageType type : allTypes)

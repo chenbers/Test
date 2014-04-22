@@ -111,7 +111,7 @@ public class ReportJDBCDAOTest {
 // for testdev.inthinc v_011596000035091
 //        filterList.add(new TableFilterField("vehicleName", "v_01"));
         filterList.add(new TableFilterField("devicePhone", "8011"));
-        filterList.add(new TableFilterField("deviceName", "MIKE"));
+        filterList.add(new TableFilterField("deviceName", "850"));
         int count = reportJDBCDAO.getDeviceReportCount(TEST_GROUP_ID, filterList);
         assertTrue("expected to be 1 or >1", count > 0);
 
