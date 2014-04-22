@@ -83,8 +83,8 @@
 	<bean id="zoneDAO" class="com.inthinc.pro.dao.hessian.ZoneHessianDAO" parent="genericDAO"></bean>
 	<bean id="zoneAlertDAO" class="com.inthinc.pro.dao.hessian.RedFlagAlertHessianDAO" parent="genericDAO"></bean>
 	<bean id="roleDAO" class="com.inthinc.pro.dao.hessian.RoleHessianDAO" parent="genericDAO"></bean>
-	<bean id="stateDAO" class="com.inthinc.pro.dao.jdbc.StateJDBCDAO" parent="genericDAO"></bean>
-	<bean id="timeZoneDAO" class="com.inthinc.pro.dao.hessian.TimeZoneHessianDAO" parent="genericDAO"></bean>
+	<bean id="stateDAO" class="com.inthinc.pro.dao.hessian.StateHessianDAO" parent="genericDAO"></bean>
+	<bean id="timeZoneDAO" class="com.inthinc.pro.dao.jdbc.TimeZoneJDBCDAO" parent="genericDAO"></bean>
 	<bean id="reportScheduleDAO" class="com.inthinc.pro.dao.hessian.ReportScheduleHessianDAO" parent="genericDAO"></bean>
     <bean id="addressDAO" class="com.inthinc.pro.dao.jdbc.AddressJDBCDAO">
         <property name="dataSource" ref="tiwiJDBCDataSource" />

@@ -37,7 +37,7 @@
     <bean id="roleDAO" class="com.inthinc.pro.dao.hessian.RoleHessianDAO" parent="genericDAO"></bean>
     <bean id="stateDAO" class="com.inthinc.pro.dao.jdbc.StateJDBCDAO" parent="genericDAO"></bean>
     <bean id="tablePreferenceDAO" class="com.inthinc.pro.dao.hessian.TablePreferenceHessianDAO" parent="genericDAO"></bean>
-    <bean id="timeZoneDAO" class="com.inthinc.pro.dao.hessian.TimeZoneHessianDAO" parent="genericDAO"></bean>
+    <bean id="timeZoneDAO" class="com.inthinc.pro.dao.jdbc.TimeZoneJDBCDAO" parent="genericDAO"></bean>
     <bean id="superuserDAO" class="com.inthinc.pro.dao.hessian.SuperuserHessianDAO" parent="genericDAO"></bean>
     <bean id="forwardCommandDefDAO" class="com.inthinc.pro.dao.hessian.ForwardCommandDefHessianDAO" parent="genericDAO"></bean>
     <bean id="redFlagAlertDAO" class="com.inthinc.pro.dao.jdbc.RedFlagAlertJDBCDAO" parent="genericDAO"></bean>

@@ -18,8 +18,8 @@ default-autowire="byName">
   <bean id="vehicleDAO" class="com.inthinc.pro.dao.hessian.VehicleHessianDAO"/>
   <bean id="driverDAO" class="com.inthinc.pro.dao.jdbc.DriverJDBCDAO"></bean>
   <bean id="roleDAO" class="com.inthinc.pro.dao.hessian.RoleHessianDAO"></bean>
-  <bean id="stateDAO" class="com.inthinc.pro.dao.jdbc.StateJDBCDAO"></bean>
-  <bean id="timeZoneDAO" class="com.inthinc.pro.dao.hessian.TimeZoneHessianDAO"></bean>
+  <bean id="stateDAO" class="com.inthinc.pro.dao.hessian.StateHessianDAO"></bean>
+  <bean id="timeZoneDAO" class="com.inthinc.pro.dao.jdbc.TimeZoneJDBCDAO"></bean>
 
    
 </beans>
