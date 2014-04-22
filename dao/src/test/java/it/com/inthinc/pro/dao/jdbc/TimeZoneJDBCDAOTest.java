@@ -11,11 +11,6 @@ import static org.junit.Assert.assertTrue;
 
 public class TimeZoneJDBCDAOTest extends SimpleJdbcDaoSupport {
 
-
-    //TimeZoneJDBCDAOTest
-
-
-
     @Test
     public void findByIDTest() {
         TimeZoneJDBCDAO timeZoneJDBCDAO = new TimeZoneJDBCDAO();
