@@ -13,6 +13,8 @@ public class SupportedTimeZone
     
     private String tzName;
 
+    private Integer enabled;
+
     
     public SupportedTimeZone()
     {
@@ -44,5 +46,11 @@ public class SupportedTimeZone
         this.tzName = tzName;
     }
 
+    public Integer getEnabled() {
+        return enabled;
+    }
 
+    public void setEnabled(Integer enabled) {
+        this.enabled = enabled;
+    }
 }
