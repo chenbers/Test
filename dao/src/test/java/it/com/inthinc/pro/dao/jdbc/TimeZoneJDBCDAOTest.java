@@ -30,7 +30,7 @@ public class TimeZoneJDBCDAOTest extends SimpleJdbcDaoSupport {
     }
 
     @Test
-    public void getSupportedTimeZones(){
+    public void getSupportedTimeZonesTest(){
 
         TimeZoneJDBCDAO timeZoneJDBCDAO = new TimeZoneJDBCDAO();
         DataSource dataSource = new ITDataSource().getRealDataSource();
