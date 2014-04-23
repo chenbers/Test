@@ -3,7 +3,12 @@ package com.inthinc.pro.dao.jdbc;
 
 import com.inthinc.pro.dao.RedFlagAlertDAO;
 import com.inthinc.pro.dao.hessian.exceptions.EmptyResultSetException;
-import com.inthinc.pro.model.*;
+import com.inthinc.pro.model.AlertMessageType;
+import com.inthinc.pro.model.RedFlagAlert;
+import com.inthinc.pro.model.RedFlagAlertAssignItem;
+import com.inthinc.pro.model.RedFlagLevel;
+import com.inthinc.pro.model.Status;
+import com.inthinc.pro.model.VehicleType;
 import com.mysql.jdbc.Statement;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
@@ -14,13 +19,21 @@ import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 
-import java.awt.*;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Types;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+import java.util.TimeZone;
 
 public class RedFlagAlertJDBCDAO extends SimpleJdbcDaoSupport implements RedFlagAlertDAO {
 
@@ -37,13 +50,12 @@ public class RedFlagAlertJDBCDAO extends SimpleJdbcDaoSupport implements RedFlag
     private static final String DELETE_ALERT_GROUP_BY_ID = "delete from alertGroup where alertGroupID = ?";
     private static final String INSERT_ALERT_GROUP = "insert into alertGroup (alertID, groupID) values (?, ?)";
 
-    private static  final String INSERT_INTO = "INSERT INTO alert (alertTypeMask, alertType, type,  status,  modified,  acctID, userID,  name,  description,  startTOD,  stopTOD, dayOfWeekMask, vtypeMask,  speedSettings, " +
-                    "accel, brake, turn,  vert,  severityLevel,  zoneID, escalationTryLimit, escalationTryTimeLimit, escalationCallDelay, idlingThreshold, notifyManagers) VALUES " +
-                    "(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    private static final String INSERT_INTO = "INSERT INTO alert (alertTypeMask, alertType, type,  status,  modified,  acctID, userID,  name,  description,  startTOD,  stopTOD, dayOfWeekMask, vtypeMask,  speedSettings, " +
+            "accel, brake, turn,  vert,  severityLevel,  zoneID, escalationTryLimit, escalationTryTimeLimit, escalationCallDelay, idlingThreshold, notifyManagers) VALUES " +
+            "(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
     private static final String UPDATE_ALERT = "UPDATE alert set alertTypeMask=?, alertType=?, type=?,  status=?,  modified=?,  acctID=?, userID=?,  name=?,  description=?,  startTOD=?,  stopTOD=?, dayOfWeekMask=?, vtypeMask=?,  speedSettings=?, " +
-                                                "accel=?, brake=?, turn=?,  vert=?,  severityLevel=?,  zoneID=?, escalationTryLimit=?, escalationTryTimeLimit=?, escalationCallDelay=?, idlingThreshold=?, notifyManagers=? where alertID=?" ;
-
+            "accel=?, brake=?, turn=?,  vert=?,  severityLevel=?,  zoneID=?, escalationTryLimit=?, escalationTryTimeLimit=?, escalationCallDelay=?, idlingThreshold=?, notifyManagers=? where alertID=?";
 
 
     private ParameterizedRowMapper<RedFlagAlertAssignItem> redFlagAlertGroupRowMapper = new ParameterizedRowMapper<RedFlagAlertAssignItem>() {
@@ -76,39 +88,38 @@ public class RedFlagAlertJDBCDAO extends SimpleJdbcDaoSupport implements RedFlag
             redFlagAlert.setStartTOD(rs.getInt("startTOD"));
             redFlagAlert.setStopTOD(rs.getInt("stopTOD"));
 
-            redFlagAlert.setZoneID(getIntOrNullFromRS(rs,"zoneID"));
+            redFlagAlert.setZoneID(getIntOrNullFromRS(rs, "zoneID"));
             redFlagAlert.setSeverityLevel(RedFlagLevel.valueOf(rs.getInt("severityLevel")));
-            redFlagAlert.setHardAcceleration(getIntOrNullFromRS(rs,"accel"));
-            redFlagAlert.setHardBrake(getIntOrNullFromRS(rs,"brake"));
-            redFlagAlert.setHardTurn(getIntOrNullFromRS(rs,"turn"));
-            redFlagAlert.setHardVertical(getIntOrNullFromRS(rs,"vert"));
-            redFlagAlert.setMaxEscalationTries(getIntOrNullFromRS(rs,"escalationTryLimit"));
-            redFlagAlert.setMaxEscalationTryTime(getIntOrNullFromRS(rs,"escalationTryTimeLimit"));
+            redFlagAlert.setHardAcceleration(getIntOrNullFromRS(rs, "accel"));
+            redFlagAlert.setHardBrake(getIntOrNullFromRS(rs, "brake"));
+            redFlagAlert.setHardTurn(getIntOrNullFromRS(rs, "turn"));
+            redFlagAlert.setHardVertical(getIntOrNullFromRS(rs, "vert"));
+            redFlagAlert.setMaxEscalationTries(getIntOrNullFromRS(rs, "escalationTryLimit"));
+            redFlagAlert.setMaxEscalationTryTime(getIntOrNullFromRS(rs, "escalationTryTimeLimit"));
 
-            String ss = getStringOrNullFromRS(rs,"speedSettings");
-            if(ss==null||ss.isEmpty()||ss.contains("")){
+            String ss = getStringOrNullFromRS(rs, "speedSettings");
+            if (ss == null || ss.isEmpty() || ss.contains("")) {
                 redFlagAlert.setSpeedSettings(null);
-            }else if(!ss.contains("~")){
-            String[] sss = ss.split(" ");
-            Integer[] speedSettings = new Integer[sss.length];
-            for(int i=0;i<sss.length;i++){
-                if(!sss[i].trim().isEmpty()){
-                    speedSettings[i]=Integer.parseInt(sss[i]);
+            } else if (!ss.contains("~")) {
+                String[] sss = ss.split(" ");
+                Integer[] speedSettings = new Integer[sss.length];
+                for (int i = 0; i < sss.length; i++) {
+                    if (!sss[i].trim().isEmpty()) {
+                        speedSettings[i] = Integer.parseInt(sss[i]);
+                    }
                 }
-            }
                 redFlagAlert.setSpeedSettings(speedSettings);
-            } else{
+            } else {
                 Integer[] speedSettings = new Integer[1];
-                String ssfin = ss.replace("~","");
-                speedSettings[0]=Integer.valueOf(ssfin);
+                String ssfin = ss.replace("~", "");
+                speedSettings[0] = Integer.valueOf(ssfin);
                 redFlagAlert.setSpeedSettings(speedSettings);
             }
-
 
             // special mask for day of week
             redFlagAlert.setDayOfWeek(getDaysOfWeek(getLongOrNullFromRS(rs, "dayOfWeekMask")));
 
-            redFlagAlert.setIdlingThreshold(getIntOrNullFromRS(rs,"idlingThreshold"));
+            redFlagAlert.setIdlingThreshold(getIntOrNullFromRS(rs, "idlingThreshold"));
             redFlagAlert.setNotifyManagers(rs.getBoolean("notifyManagers"));
 
             // special mask for vehicle types
@@ -118,7 +129,7 @@ public class RedFlagAlertJDBCDAO extends SimpleJdbcDaoSupport implements RedFlag
             List<Integer> groupIds = new ArrayList<Integer>();
             redFlagAlert.setGroupIDs(groupIds);
 
-            redFlagAlert.setEscalationTimeBetweenRetries(getIntOrNullFromRS(rs,"escalationCallDelay"));
+            redFlagAlert.setEscalationTimeBetweenRetries(getIntOrNullFromRS(rs, "escalationCallDelay"));
 //
 //            List<AlertEscalationItem> escalation = new ArrayList<AlertEscalationItem>();
 //            if (getIntOrNullFromRS(rs,"vtypeMask")!=null) {
@@ -507,7 +518,7 @@ public class RedFlagAlertJDBCDAO extends SimpleJdbcDaoSupport implements RedFlag
             Map<String, Object> params = new HashMap<String, Object>();
             params.put("alertID", alertId);
 
-            return  getSimpleJdbcTemplate().query(FIND_ALERT_GROUP_BY_ALERT_ID, redFlagAlertGroupRowMapper, params);
+            return getSimpleJdbcTemplate().query(FIND_ALERT_GROUP_BY_ALERT_ID, redFlagAlertGroupRowMapper, params);
         } catch (EmptyResultSetException e) {
             return Collections.emptyList();
         }
@@ -578,12 +589,12 @@ public class RedFlagAlertJDBCDAO extends SimpleJdbcDaoSupport implements RedFlag
         return rs.getObject(columnName) == null ? null : rs.getDate(columnName);
     }
 
-    private Date toUTC(Date date){
+    private Date toUTC(Date date) {
         DateTime dt = new DateTime(date.getTime()).toDateTime(DateTimeZone.UTC);
         return dt.toDate();
     }
 
-    private List<Boolean> getDaysOfWeek(Long dayOfWeekMask){
+    private List<Boolean> getDaysOfWeek(Long dayOfWeekMask) {
         List<Boolean> daysOfWeek = new LinkedList<Boolean>();
 
         if (dayOfWeekMask != null) {
@@ -599,16 +610,4 @@ public class RedFlagAlertJDBCDAO extends SimpleJdbcDaoSupport implements RedFlag
     private boolean dayOfWeekMatch(int dayOfWeek, long dayOfWeekMask) {
         return ((dayOfWeekMask & (1 << dayOfWeek)) != 0);
     }
-
-//    public List<Long> getAlertGroups(List<Integer> alertID){
-//        Map<String, Object> params = new HashMap<String, Object>();
-//        params.put("alertID", alertID);
-//
-//        String selectGroups = " " ;
-//
-//        List <>
-//
-//        return null;
-//    }
-
 }
