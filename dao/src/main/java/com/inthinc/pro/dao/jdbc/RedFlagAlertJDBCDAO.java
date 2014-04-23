@@ -39,6 +39,12 @@ public class RedFlagAlertJDBCDAO extends SimpleJdbcDaoSupport implements RedFlag
                                                 "accel=?, brake=?, turn=?,  vert=?,  severityLevel=?,  zoneID=?, escalationTryLimit=?, escalationTryTimeLimit=?, escalationCallDelay=?, idlingThreshold=?, notifyManagers=? where alertID=?" ;
 
 
+//    private ParameterizedRowMapper<Map<Integer,Map<Integer,Integer>>> at = new ParameterizedRowMapper<Map<Integer,Map<Integer,Integer>>>() {
+//        @Override
+//        public Map<Integer,Map<Integer,Integer>> mapRow(ResultSet rs, int rowNum) throws SQLException {
+//
+//        }
+//    }
 
     private ParameterizedRowMapper<RedFlagAlert> redFlagAlertParameterizedRowMapper = new ParameterizedRowMapper<RedFlagAlert>() {
         @Override
@@ -508,5 +514,15 @@ public class RedFlagAlertJDBCDAO extends SimpleJdbcDaoSupport implements RedFlag
         return dt.toDate();
     }
 
+//    public List<Long> getAlertGroups(List<Integer> alertID){
+//        Map<String, Object> params = new HashMap<String, Object>();
+//        params.put("alertID", alertID);
+//
+//        String selectGroups = " " ;
+//
+//        List <>
+//
+//        return null;
+//    }
 
 }
