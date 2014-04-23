@@ -68,13 +68,13 @@ public class ZoneJDBCDAOTest extends SimpleJdbcDaoSupport {
         assertNotNull(zone);
     }
 
-    //@Test
     @Ignore
     public void createUpdateDeleteTest() {
         ZoneJDBCDAO zoneJDBCDAO = new ZoneJDBCDAO();
         DataSource dataSource = new ITDataSource().getRealDataSource();
         zoneJDBCDAO.setDataSource(dataSource);
-        boolean returZoneID=false ;
+        boolean returnZoneID=false ;
+        boolean returnUpdatedZoneID=false ;
 
         GroupData team = itData.teamGroupData.get(0);
         Integer acctID = team.group.getAccountID();
@@ -89,13 +89,23 @@ public class ZoneJDBCDAOTest extends SimpleJdbcDaoSupport {
 
         // create method
         Integer zoneID = zoneJDBCDAO.create(zoneToInsert.getAccountID(), zoneToInsert);
-        returZoneID = (zoneID != null);
-        assertTrue(returZoneID);
+        returnZoneID = (zoneID != null);
+        assertTrue(returnZoneID);
 
         //find by id test method
         Zone createdZone = zoneJDBCDAO.findByID(zoneID);
         assertEquals("cezarica fara frica", zoneToInsert.getName(), createdZone.getName());
         assertEquals("bucuresti sector 6", zoneToInsert.getAddress(), createdZone.getAddress());
+
+        //update test method
+        Zone updateZone = zoneJDBCDAO.findByID(zoneID);
+
+        updateZone.setName("00101012");
+
+        Integer returnUpdateZoneID  =  zoneJDBCDAO.update(updateZone);
+        returnUpdatedZoneID = (returnUpdateZoneID != null);
+        assertTrue(returnUpdatedZoneID);
+
 
 
         //now delete  using method deleteByID

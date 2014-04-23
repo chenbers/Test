@@ -66,15 +66,23 @@ public class ZoneJDBCDAO extends SimpleJdbcDaoSupport implements ZoneDAO {
             zoneItem.setModified(rs.getDate("modified"));
             zoneItem.setName(rs.getString("name"));
             zoneItem.setAddress(rs.getString("address"));
+      //      zoneItem.setPointsString(rs.getString("latLng"));
 
             Blob blob = rs.getBlob("latLng");
             byte[] bdata = blob.getBytes(1, (int) blob.length());
-            String s = new String(bdata);
-            stringToHex(s);
-            zoneItem.setName(s);
+            for(int i=0;i<bdata.length;i++){
+      //          for (int j=0;j<bdata[i].)
+                System.out.println(bdata[i]);
 
-            List<LatLng> latLngs = new ArrayList<LatLng>();
-            zoneItem.setPoints(latLngs);
+            }
+
+            String s = new String(bdata);
+            System.out.println(s);
+//            stringToHex(s);
+//            zoneItem.setName(s);
+//
+//            List<LatLng> latLngs = new ArrayList<LatLng>();
+//            zoneItem.setPoints(latLngs);
 
             return zoneItem;
         }
@@ -155,10 +163,10 @@ public class ZoneJDBCDAO extends SimpleJdbcDaoSupport implements ZoneDAO {
                     ps.setString(7, entity.getAddress());
                 }
 
-                if (entity.getPoints() == null) {
+                if (entity.getPointsString() == null) {
                     ps.setNull(8, Types.NULL);
                 } else {
-                    ps.setString(8, entity.getPoints().toString());
+                    ps.setString(8, entity.getPointsString());
                 }
 
 
@@ -204,10 +212,10 @@ public class ZoneJDBCDAO extends SimpleJdbcDaoSupport implements ZoneDAO {
                     ps.setString(6, entity.getAddress());
                 }
 
-                if (entity.getPoints() == null) {
+                if (entity.getPointsString() == null) {
                     ps.setNull(7, Types.NULL);
                 } else {
-                    ps.setString(7, entity.getPoints().toString());
+                    ps.setString(7, entity.getPointsString());
                 }
 
                 ps.setInt(8, entity.getZoneID());
@@ -230,28 +238,6 @@ public class ZoneJDBCDAO extends SimpleJdbcDaoSupport implements ZoneDAO {
         return dt.toDate();
     }
 
-//    private hexToLatLng(hex):
-////"Convert a long hex string into lat/lng's.  Each value is a Double (8 bytes)"
-//    latlng = []
-//    hexLen = len(hex)
-//    numof = hexLen/32
-//            for i in range(numof):
-//    lng = hexToDbl(hex[i*32    : i*32+16])
-//    lat = hexToDbl(hex[i*32+16 : i*32+32])
-//    latlng.append({u'lat':lat, u'lng':lng})
-//            return latlng
-
-
-
-    static String stringToHex(String string) {
-        StringBuilder buf = new StringBuilder(200);
-        for (char ch: string.toCharArray()) {
-            if (buf.length() > 0)
-                buf.append(' ');
-            buf.append(String.format("%04x", (int) ch));
-        }
-        return buf.toString();
-    }
 
 }
 
