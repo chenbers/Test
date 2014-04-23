@@ -104,7 +104,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
     <bean id="textMsgAlertDAO" class="com.inthinc.pro.dao.hessian.TextMsgAlertHessianDAO" />  <!-- to be implemented -->
     <bean id="configuratorDAO" class="com.inthinc.pro.dao.hessian.ConfiguratorHessianDAO" />  <!-- to be implemented -->
     <bean id="redFlagAlertsDAO" class="com.inthinc.pro.dao.hessian.RedFlagAlertHessianDAO"></bean>  <!-- looks like duplicate, extra S -->
-    <bean id="phoneControlDAO" class="com.inthinc.pro.dao.hessian.PhoneControlHessianDAO"></bean>  <!-- to be implemented -->
+    <bean id="phoneControlDAO" class="com.inthinc.pro.dao.jdbc.PhoneControlJDBCDAO"></bean>  <!-- to be implemented -->
     <bean id="reportDAO" class="com.inthinc.pro.dao.jdbc.ReportJDBCDAO">
         <property name="dataSource" ref="dataSource" />
 
