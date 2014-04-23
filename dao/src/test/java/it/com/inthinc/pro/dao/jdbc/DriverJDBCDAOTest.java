@@ -162,7 +162,7 @@ public class DriverJDBCDAOTest extends BaseJDBCTest {
 
         // create driver
         Driver driver = new Driver();
-        driver.setGroupID(6509);
+        driver.setGroupID(6030);
         driver.setCertifications("1234545");
         driver.setStatus(Status.valueOf(1));
         driver.setRfid1(Long.valueOf(300000001));
@@ -172,6 +172,7 @@ public class DriverJDBCDAOTest extends BaseJDBCTest {
         driver.setLicense("update_test");
         driver.setFobID("update_test");
         driver.setDot(RuleSetType.valueOf(2));
+        driver.setPersonID(33333333);
         State state = new State();
         state.setAbbrev("AL");
         state.setName("Alabama");
@@ -182,7 +183,10 @@ public class DriverJDBCDAOTest extends BaseJDBCTest {
         driver.setPersonID(personId);
         assertNotNull(driver);
 
-        Integer driverId = driverJDBCDAO.create(driver.getPersonID(), driver);
+        driver.setPersonID(personIdForCreate);
+        assertNotNull(driver);
+
+        Integer driverId = driverJDBCDAO.create(driver.getGroupID(), driver);
 
         //find  for create
         Driver driver1Test = driverJDBCDAO.findByID(driverId);
@@ -198,7 +202,7 @@ public class DriverJDBCDAOTest extends BaseJDBCTest {
 
         //update
         Driver driverUpdate = new Driver();
-        driverUpdate.setGroupID(6509);
+        driverUpdate.setGroupID(6030);
         driverUpdate.setCertifications("1234545");
         driverUpdate.setStatus(Status.valueOf(1));
         driverUpdate.setRfid1(Long.valueOf(1000000001));
@@ -208,6 +212,7 @@ public class DriverJDBCDAOTest extends BaseJDBCTest {
         driverUpdate.setLicense("license_test");
         driverUpdate.setFobID("fobid_test");
         driverUpdate.setDot(RuleSetType.valueOf(1));
+        driverUpdate.setPersonID(22222222);
         State stateUpdate = new State();
         stateUpdate.setAbbrev("UT");
         stateUpdate.setName("Utah");
@@ -215,7 +220,7 @@ public class DriverJDBCDAOTest extends BaseJDBCTest {
         driverUpdate.setState(stateUpdate);
         driverUpdate.setExpiration(new Date());
         driverUpdate.setModified(new Date());
-        driverUpdate.setPersonID(personId);
+        driverUpdate.setPersonID(personIdForCreate);
         driverUpdate.setDriverID(driverId);
 
         //find for update

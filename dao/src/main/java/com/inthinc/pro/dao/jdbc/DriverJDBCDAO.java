@@ -294,7 +294,7 @@ public class DriverJDBCDAO extends SimpleJdbcDaoSupport implements DriverDAO {
     }
 
     @Override
-    public Integer create(final Integer integer, final Driver entity) {
+    public Integer create(Integer integer, final Driver entity) {
        JdbcTemplate jdbcTemplate = getJdbcTemplate();
         KeyHolder keyHolder = new GeneratedKeyHolder();
 
@@ -356,13 +356,9 @@ public class DriverJDBCDAO extends SimpleJdbcDaoSupport implements DriverDAO {
                     ps.setInt(10, entity.getDot().getCode());
                 }
 
-                ps.setInt(11,integer);
+                ps.setInt(11,entity.getPersonID());
                 ps.setString(12, getPathByGroupId(entity.getGroupID()));
-                if(entity.getState()==null) {
-                    ps.setNull(13, Types.NULL);
-                }else{
                 ps.setInt(13,entity.getState().getStateID());
-                }
                 if (entity.getExpiration() == null) {
                     ps.setNull(14, Types.NULL);
                 } else {
@@ -409,7 +405,7 @@ public class DriverJDBCDAO extends SimpleJdbcDaoSupport implements DriverDAO {
                     ps.setString(4, entity.getLicense());
                 }
 
-                if (entity.getState() == null || entity.getState().getStateID() == null ) {
+                if (entity.getState().getStateID() == null ) {
                     ps.setNull(5, Types.NULL);
                 } else {
                     ps.setInt(5, entity.getState().getStateID());
