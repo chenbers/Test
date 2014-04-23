@@ -1,18 +1,14 @@
 package com.inthinc.pro.dao.jdbc;
 
-import com.inthinc.pro.comm.parser.attrib.AttribParserFactory;
 import com.inthinc.pro.dao.ZoneDAO;
 import com.inthinc.pro.dao.hessian.exceptions.EmptyResultSetException;
-import com.inthinc.pro.model.Address;
 import com.inthinc.pro.model.LatLng;
-import com.inthinc.pro.model.State;
 import com.inthinc.pro.model.Status;
 import com.inthinc.pro.model.Zone;
 import com.mysql.jdbc.Statement;
+import org.apache.commons.codec.binary.Hex;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.simple.ParameterizedRowMapper;
@@ -21,6 +17,7 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 
 import java.math.BigInteger;
+import java.sql.Blob;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -34,7 +31,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.sql.Blob;
 
 /**
  * Created by Infrasoft02 on 4/17/2014.
@@ -66,23 +62,16 @@ public class ZoneJDBCDAO extends SimpleJdbcDaoSupport implements ZoneDAO {
             zoneItem.setModified(rs.getDate("modified"));
             zoneItem.setName(rs.getString("name"));
             zoneItem.setAddress(rs.getString("address"));
-      //      zoneItem.setPointsString(rs.getString("latLng"));
 
-            Blob blob = rs.getBlob("latLng");
-            byte[] bdata = blob.getBytes(1, (int) blob.length());
-            for(int i=0;i<bdata.length;i++){
-      //          for (int j=0;j<bdata[i].)
-                System.out.println(bdata[i]);
-
+            // get blob data
+            try {
+                byte[] bdata = rs.getBytes("latLng");
+                String sdata = new String(bdata);
+                List<LatLng> latLngList = hexToLatLng(sdata);
+                zoneItem.setPoints(latLngList);
+            } catch (Exception e) {
+                throw new SQLException("Cannot read latLang.");
             }
-
-            String s = new String(bdata);
-            System.out.println(s);
-//            stringToHex(s);
-//            zoneItem.setName(s);
-//
-//            List<LatLng> latLngs = new ArrayList<LatLng>();
-//            zoneItem.setPoints(latLngs);
 
             return zoneItem;
         }
@@ -166,7 +155,11 @@ public class ZoneJDBCDAO extends SimpleJdbcDaoSupport implements ZoneDAO {
                 if (entity.getPointsString() == null) {
                     ps.setNull(8, Types.NULL);
                 } else {
-                    ps.setString(8, entity.getPointsString());
+                    Blob blob = getConnection().createBlob();
+                    List<LatLng> latLngList = entity.getPoints();
+                    String strLatLng = latLngToHex(latLngList);
+                    blob.setBytes(0, strLatLng.getBytes());
+                    ps.setBlob(8, blob);
                 }
 
 
@@ -215,7 +208,11 @@ public class ZoneJDBCDAO extends SimpleJdbcDaoSupport implements ZoneDAO {
                 if (entity.getPointsString() == null) {
                     ps.setNull(7, Types.NULL);
                 } else {
-                    ps.setString(7, entity.getPointsString());
+                    Blob blob = getConnection().createBlob();
+                    List<LatLng> latLngList = entity.getPoints();
+                    String strLatLng = latLngToHex(latLngList);
+                    blob.setBytes(0, strLatLng.getBytes());
+                    ps.setBlob(7, blob);
                 }
 
                 ps.setInt(8, entity.getZoneID());
@@ -238,6 +235,46 @@ public class ZoneJDBCDAO extends SimpleJdbcDaoSupport implements ZoneDAO {
         return dt.toDate();
     }
 
+    private Double hexToDbl(String hex) {
+        Double ret = new BigInteger(hex, 16).doubleValue();
+        return ret;
+    }
 
+    private String dblToHex(Double doub) {
+        String ret = Double.toHexString(doub);
+        return ret;
+    }
+
+    private List<LatLng> hexToLatLng(String hex) {
+        List<LatLng> ret = new ArrayList<LatLng>();
+
+        if (hex != null && !hex.trim().isEmpty()) {
+            int length = hex.length();
+            int numof = length / 32;
+
+            for (int i = 0; i < numof; i++) {
+                Double lng = hexToDbl(hex.substring(i * 32, i * 32 + 16));
+                Double lat = hexToDbl(hex.substring(i * 32 + 16, i * 32 + 32));
+                LatLng latLng = new LatLng();
+                latLng.setLat(lat);
+                latLng.setLng(lng);
+                ret.add(latLng);
+            }
+        }
+        return ret;
+    }
+
+    private String latLngToHex(List<LatLng> latLngList) {
+        String ret = "";
+
+        if (latLngList != null && !latLngList.isEmpty()) {
+            for (LatLng latLng : latLngList) {
+                String lat = dblToHex(latLng.getLat());
+                String lng = dblToHex(latLng.getLng());
+                ret += lng;
+                ret += lat;
+            }
+        }
+        return ret;
+    }
 }
-
