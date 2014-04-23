@@ -7,6 +7,7 @@ public class RedFlagAlertAssignItem {
     private Integer id;
     private Integer redFlagId;
     private Integer itemId;
+    private String  item;
 
     public RedFlagAlertAssignItem(Integer id, Integer redFlagId, Integer itemId) {
         this.id = id;
@@ -20,6 +21,10 @@ public class RedFlagAlertAssignItem {
 
     public RedFlagAlertAssignItem(Integer redFlagId, Integer itemId) {
         this(null, redFlagId, itemId);
+    }
+
+    public RedFlagAlertAssignItem(Integer redFlagId, String item) {
+        this(null, redFlagId, null);
     }
 
     public RedFlagAlertAssignItem() {
@@ -49,6 +54,14 @@ public class RedFlagAlertAssignItem {
         this.itemId = itemId;
     }
 
+    public String getItem() {
+        return item;
+    }
+
+    public void setItem(String item) {
+        this.item = item;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -65,4 +78,5 @@ public class RedFlagAlertAssignItem {
     public int hashCode() {
         return id.hashCode();
     }
+
 }
