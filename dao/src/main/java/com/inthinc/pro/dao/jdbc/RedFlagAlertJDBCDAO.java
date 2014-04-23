@@ -29,23 +29,36 @@ public class RedFlagAlertJDBCDAO extends SimpleJdbcDaoSupport implements RedFlag
     private static final String GET_BY_GROUPID = RED_FLAG_ALERT + " where fwd_teamGroupID=:fwd_teamGroupID and status <> 3";
     private static final String DEL_BY_ID = "DELETE FROM alert WHERE alertID = ?";
 
+    private static final String ALERT_GROUP = "select * from alertGroup";
+    private static final String FIND_ALERT_GROUP_BY_ALERT_ID = ALERT_GROUP + " where alertID = :alertID";
+    private static final String UPDATE_ALERT_GROUP_BY_ID = "update alertGroup set alertID = ?, groupID = ? where alertGroupID = :alertGroupID";
+    private static final String DELETE_ALERT_GROUP_BY_ID = "delete from alertGroup where alertGroupID = ?";
+    private static final String INSERT_ALERT_GROUP = "insert into alertGroup (alertID, groupID) values (?, ?)";
+
     private static  final String INSERT_INTO = "INSERT INTO alert (alertTypeMask, alertType, type,  status,  modified,  acctID, userID,  name,  description,  startTOD,  stopTOD, dayOfWeekMask, vtypeMask,  speedSettings, " +
                     "accel, brake, turn,  vert,  severityLevel,  zoneID, escalationTryLimit, escalationTryTimeLimit, escalationCallDelay, idlingThreshold, notifyManagers) VALUES " +
                     "(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+    private ParameterizedRowMapper<RedFlagAlertAssignItem> redFlagAlertGroupRowMapper = new ParameterizedRowMapper<RedFlagAlertAssignItem>() {
+        @Override
+        public RedFlagAlertAssignItem mapRow(ResultSet rs, int rowNum) throws SQLException {
+            RedFlagAlertAssignItem item = new RedFlagAlertAssignItem();
+            item.setId(rs.getInt("alertGroupID"));
+            item.setRedFlagId(rs.getInt("alertId"));
+            item.setItemId(rs.getInt("groupID"));
+
+            return item;
+        }
+    };
 
     private ParameterizedRowMapper<RedFlagAlert> redFlagAlertParameterizedRowMapper = new ParameterizedRowMapper<RedFlagAlert>() {
         @Override
         public RedFlagAlert mapRow(ResultSet rs, int rowNum) throws SQLException {
             RedFlagAlert redFlagAlert = new RedFlagAlert();
-
             redFlagAlert.setAlertID(rs.getInt("alertID"));
 
-            List <AlertMessageType> types = new ArrayList<AlertMessageType>();
-
-//            if (getIntOrNullFromRS(rs,"alertTypeMask")!=null) {
-//                types.add(AlertMessageType.valueOf("alertTypeMask"));
-//            }
-//            redFlagAlert.setTypes(types);
+            // special mask for alert message types
+            redFlagAlert.setTypes(AlertMessageType.getAlertMessageTypes(getLongOrNullFromRS(rs, "alertTypeMask")));
 
             redFlagAlert.setStatus(Status.valueOf(rs.getInt("status")));
             redFlagAlert.setModified(getDateOrNullFromRS(rs, "modified"));
@@ -65,19 +78,15 @@ public class RedFlagAlertJDBCDAO extends SimpleJdbcDaoSupport implements RedFlag
             redFlagAlert.setMaxEscalationTries(getIntOrNullFromRS(rs,"escalationTryLimit"));
             redFlagAlert.setMaxEscalationTryTime(getIntOrNullFromRS(rs,"escalationTryTimeLimit"));
 
-            List<Boolean> dayOfWeek= new ArrayList<Boolean>();
-            dayOfWeek.add(rs.getBoolean("dayOfWeekMask"));
-            redFlagAlert.setDayOfWeek(dayOfWeek);
+            // special mask for day of week
+            redFlagAlert.setDayOfWeek(getDaysOfWeek(getLongOrNullFromRS(rs, "dayOfWeekMask")));
 
             redFlagAlert.setIdlingThreshold(getIntOrNullFromRS(rs,"idlingThreshold"));
             redFlagAlert.setNotifyManagers(rs.getBoolean("notifyManagers"));
 
-            List <VehicleType> vehicleTypes = new ArrayList<VehicleType>();
+            // special mask for vehicle types
+            redFlagAlert.setVehicleTypes(VehicleType.getVehicleTypes(getLongOrNullFromRS(rs, "vtypeMask")));
 
-            if (getIntOrNullFromRS(rs,"vtypeMask")!=null) {
-                vehicleTypes.add(VehicleType.valueOf(getIntOrNullFromRS(rs,"vtypeMask")));
-            }
-            redFlagAlert.setVehicleTypes(vehicleTypes);
 
             List<Integer> groupIds = new ArrayList<Integer>();
 //            groupIds.add(rs.getInt("fwd_teamgroupId"))  ;
@@ -333,12 +342,77 @@ public class RedFlagAlertJDBCDAO extends SimpleJdbcDaoSupport implements RedFlag
         return getJdbcTemplate().update(DEL_BY_ID, new Object[]{alertID});
     }
 
+
+    private List<RedFlagAlertAssignItem> getRedFlagAlertGroupsByID(Integer alertId) {
+        try {
+            Map<String, Object> params = new HashMap<String, Object>();
+            params.put("alertID", alertId);
+
+            return  getSimpleJdbcTemplate().query(FIND_ALERT_GROUP_BY_ALERT_ID, redFlagAlertGroupRowMapper, params);
+        } catch (EmptyResultSetException e) {
+            return Collections.emptyList();
+        }
+    }
+
+    private Integer deleteRedFlagAlertGroupById(Integer alertGroupID) {
+        return getJdbcTemplate().update(DELETE_ALERT_GROUP_BY_ID, new Object[]{alertGroupID});
+    }
+
+    public Integer createRedFlagAlertGroup(Integer id, final RedFlagAlertAssignItem entity) {
+        JdbcTemplate jdbcTemplate = getJdbcTemplate();
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+        PreparedStatementCreator psc = new PreparedStatementCreator() {
+            @Override
+            public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
+                PreparedStatement ps = con.prepareStatement(INSERT_ALERT_GROUP, Statement.RETURN_GENERATED_KEYS);
+
+                ps.setInt(1, entity.getRedFlagId());
+                ps.setInt(2, entity.getItemId());
+
+                logger.debug(ps.toString());
+                return ps;
+            }
+        };
+        jdbcTemplate.update(psc, keyHolder);
+        return keyHolder.getKey().intValue();
+    }
+
+    public Integer updateRedFlagAlertGroup(final RedFlagAlertAssignItem entity) {
+        JdbcTemplate jdbcTemplate = getJdbcTemplate();
+        PreparedStatementCreator psc = new PreparedStatementCreator() {
+            @Override
+            public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
+                PreparedStatement ps = con.prepareStatement(UPDATE_ALERT_GROUP_BY_ID);
+
+                ps.setInt(1, entity.getRedFlagId());
+                ps.setInt(2, entity.getItemId());
+
+                //where
+                ps.setInt(3, entity.getId());
+
+                logger.debug(ps.toString());
+                return ps;
+            }
+        };
+        jdbcTemplate.update(psc);
+        return entity.getId();
+    }
+
+
     private String getStringOrNullFromRS(ResultSet rs, String columnName) throws SQLException {
         return rs.getObject(columnName) == null ? null : rs.getString(columnName);
     }
 
     private Integer getIntOrNullFromRS(ResultSet rs, String columnName) throws SQLException {
-        return rs.getObject(columnName) == null ? null : (int) rs.getLong(columnName);
+        return rs.getObject(columnName) == null ? null : (int) rs.getInt(columnName);
+    }
+
+    private Long getLongOrNullFromRS(ResultSet rs, String columnName) throws SQLException {
+        return rs.getObject(columnName) == null ? null : (long) rs.getLong(columnName);
+    }
+
+    private Boolean getBoolOrNullFromRs(ResultSet rs, String columnName) throws SQLException {
+        return rs.getObject(columnName) == null ? null : (boolean) rs.getBoolean(columnName);
     }
 
     private Date getDateOrNullFromRS(ResultSet rs, String columnName) throws SQLException {
@@ -348,5 +422,22 @@ public class RedFlagAlertJDBCDAO extends SimpleJdbcDaoSupport implements RedFlag
     private Date toUTC(Date date){
         DateTime dt = new DateTime(date.getTime()).toDateTime(DateTimeZone.UTC);
         return dt.toDate();
+    }
+
+    private List<Boolean> getDaysOfWeek(Long dayOfWeekMask){
+        List<Boolean> daysOfWeek = new LinkedList<Boolean>();
+
+        if (dayOfWeekMask != null) {
+            // for sunday to saturday (sunday = 0, saturday = 6)
+            for (int i = 0; i <= 6; i++) {
+                daysOfWeek.add(dayOfWeekMatch(i, dayOfWeekMask));
+            }
+        }
+
+        return daysOfWeek;
+    }
+
+    private boolean dayOfWeekMatch(int dayOfWeek, long dayOfWeekMask) {
+        return ((dayOfWeekMask & (1 << dayOfWeek)) != 0);
     }
 }
