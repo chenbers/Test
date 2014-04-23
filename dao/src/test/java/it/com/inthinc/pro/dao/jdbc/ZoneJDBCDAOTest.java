@@ -5,6 +5,7 @@ import com.inthinc.pro.dao.hessian.proserver.SiloServiceCreator;
 import com.inthinc.pro.dao.jdbc.AddressJDBCDAO;
 import com.inthinc.pro.dao.jdbc.ZoneJDBCDAO;
 import com.inthinc.pro.model.Address;
+import com.inthinc.pro.model.LatLng;
 import com.inthinc.pro.model.Status;
 import com.inthinc.pro.model.Zone;
 import it.com.inthinc.pro.dao.model.GroupData;
@@ -18,6 +19,7 @@ import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
 
 import javax.sql.DataSource;
 import java.io.InputStream;
+import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -54,7 +56,7 @@ public class ZoneJDBCDAOTest extends SimpleJdbcDaoSupport {
 
     }
 
-
+         Zone zone_glo;
 
     @Test
     public void findByIDTest() {
@@ -66,6 +68,46 @@ public class ZoneJDBCDAOTest extends SimpleJdbcDaoSupport {
         Zone zone = zoneDAO.findByID(zoneI);
 
         assertNotNull(zone);
+        zone_glo=zone;
+    }
+
+    @Test
+    public void latLngToHex(){
+        ZoneJDBCDAO zoneJDBCDAO = new ZoneJDBCDAO();
+        DataSource dataSource = new ITDataSource().getRealDataSource();
+        zoneJDBCDAO.setDataSource(dataSource);
+        boolean returnZoneID=false ;
+        boolean returnUpdatedZoneID=false ;
+
+        GroupData team = itData.teamGroupData.get(0);
+        Integer acctID = team.group.getAccountID();
+        Integer groupID = team.group.getGroupID();
+
+        Integer zoneI= 4;
+        //findById method
+        Zone zone = zoneJDBCDAO.findByID(zoneI);
+
+        assertNotNull(zone);
+        zone_glo=zone;
+
+        Zone zoneToInsert = new Zone();
+        zoneToInsert.setAccountID(acctID);
+        zoneToInsert.setGroupID(groupID);
+        zoneToInsert.setStatus(Status.ACTIVE);
+        zoneToInsert.setName("cezarica fara frica");
+        zoneToInsert.setAddress("bucuresti sector 6");
+        List<LatLng> latLngList = zone_glo.getPoints();
+        zoneToInsert.setPoints(latLngList);
+
+        // create method
+        Integer zoneID = zoneJDBCDAO.create(zoneToInsert.getAccountID(), zoneToInsert);
+        returnZoneID = (zoneID != null);
+        assertTrue(returnZoneID);
+
+
+
+
+
     }
 
     @Ignore
