@@ -14,6 +14,14 @@ public class RedFlagAlertAssignItem {
         this.itemId = itemId;
     }
 
+    public RedFlagAlertAssignItem(Integer id) {
+        this(id, null, null);
+    }
+
+    public RedFlagAlertAssignItem(Integer redFlagId, Integer itemId) {
+        this(null, redFlagId, itemId);
+    }
+
     public RedFlagAlertAssignItem() {
     }
 
@@ -39,5 +47,22 @@ public class RedFlagAlertAssignItem {
 
     public void setItemId(Integer itemId) {
         this.itemId = itemId;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        RedFlagAlertAssignItem that = (RedFlagAlertAssignItem) o;
+
+        if (!id.equals(that.id)) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        return id.hashCode();
     }
 }
