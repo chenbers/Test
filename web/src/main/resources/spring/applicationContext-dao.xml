@@ -96,7 +96,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
     <bean id="zoneDAO" class="com.inthinc.pro.dao.hessian.ZoneHessianDAO"></bean>  <!-- to be implemented -->
     <!-- <bean id="zoneAlertDAO" class="com.inthinc.pro.dao.hessian.ZoneAlertHessianDAO"></bean> -->
     <bean id="roleDAO" class="com.inthinc.pro.dao.hessian.RoleHessianDAO"></bean>   <!-- to be implemented -->
-    <bean id="stateDAO" class="com.inthinc.pro.dao.hessian.StateHessianDAO"></bean> <!-- to be implemented -->
+    <bean id="stateDAO" class="com.inthinc.pro.dao.jdbc.StateJDBCDAO"></bean>
     <bean id="timeZoneDAO" class="com.inthinc.pro.dao.jdbc.TimeZoneJDBCDAO"></bean>
     <bean id="reportScheduleDAO" class="com.inthinc.pro.dao.hessian.ReportScheduleHessianDAO"></bean>  <!-- partial --> <!-- to be implemented -->
     <bean id="addressDAO" class="com.inthinc.pro.dao.jdbc.AddressJDBCDAO"></bean>

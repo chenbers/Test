@@ -83,6 +83,8 @@ public class State extends BaseEntity implements ReferenceEntity, Comparable<Sta
         return getName();
     }
 
+
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
