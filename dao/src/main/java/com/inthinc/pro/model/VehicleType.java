@@ -62,6 +62,10 @@ public enum VehicleType implements BaseEnum, FilterableEnum
 //        return sb.toString();
     }
 
+    public Long getBitMask(){
+        return 1l << code;
+    }
+
     public static List<VehicleType> getVehicleTypes(Long vehicleTypeMask){
         Set<VehicleType> vehicleTypes = EnumSet.noneOf(VehicleType.class);
         if (vehicleTypeMask == null) return Collections.emptyList();
@@ -71,6 +75,18 @@ public enum VehicleType implements BaseEnum, FilterableEnum
            }
         }
         return new ArrayList<VehicleType>(vehicleTypes);
+    }
+
+    public static  Long convertTypes(List<VehicleType> vehicleTypes){
+        Long vehicleTypeMask = new Long(0);
+        if(vehicleTypes != null){
+            for(VehicleType vt : vehicleTypes){
+
+                long bitValue = vt.getBitMask();
+                vehicleTypeMask = vehicleTypeMask.longValue()  | bitValue;
+            }
+        }
+        return vehicleTypeMask;
     }
 
     private static boolean vehicleTypeMatch(int vtype, long vtypeMask) {
