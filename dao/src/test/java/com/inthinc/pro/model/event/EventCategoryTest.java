@@ -13,7 +13,7 @@ public class EventCategoryTest {
 
     Integer[] expectedNoteInCatCounts = {
             11,
-            21,
+            22,
             0,
             11,
             2,
@@ -21,7 +21,7 @@ public class EventCategoryTest {
             4,
             4,
             5,
-            26
+            27
     };
     
     @Test
@@ -56,7 +56,7 @@ public class EventCategoryTest {
             5,  //  DVIR
     		4,	//  EMERGENCY
     		2,	//  HOS
-    		2,	//  NONE
+    		3,	//  NONE
     		1,	//  TEXT
     		10,	//  VIOLATION
     		20,	//  WARNING
@@ -69,6 +69,8 @@ public class EventCategoryTest {
     	Integer count = 0;
     	for(EventType type :EventType.values()) {
     		EventCategory cat = EventCategory.getCategoryForEventType(type);
+    		if (cat == EventCategory.NONE)
+    		System.out.println(cat + " " + type);
 
             if (!map.containsKey(cat.toString())) {
                 map.put(cat.toString(), new HashMap<Integer, EventType>());
