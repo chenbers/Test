@@ -6,6 +6,7 @@ import com.inthinc.pro.model.LatLng;
 import com.inthinc.pro.model.Status;
 import com.inthinc.pro.model.Zone;
 import com.mysql.jdbc.Statement;
+import org.apache.commons.codec.DecoderException;
 import org.apache.commons.codec.binary.Hex;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
@@ -17,6 +18,7 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 
 import java.math.BigInteger;
+import java.nio.ByteBuffer;
 import java.sql.Blob;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -152,13 +154,15 @@ public class ZoneJDBCDAO extends SimpleJdbcDaoSupport implements ZoneDAO {
                     ps.setString(7, entity.getAddress());
                 }
 
-                if (entity.getPointsString() == null) {
-                    ps.setNull(8, Types.NULL);
+                if (entity.getPoints() == null) {
+                    Blob blob = getConnection().createBlob();
+                    blob.setBytes(1, "".getBytes());
+                    ps.setBlob(8, blob);
                 } else {
                     Blob blob = getConnection().createBlob();
                     List<LatLng> latLngList = entity.getPoints();
                     String strLatLng = latLngToHex(latLngList);
-                    blob.setBytes(0, strLatLng.getBytes());
+                    blob.setBytes(1, strLatLng.getBytes());
                     ps.setBlob(8, blob);
                 }
 
@@ -205,13 +209,15 @@ public class ZoneJDBCDAO extends SimpleJdbcDaoSupport implements ZoneDAO {
                     ps.setString(6, entity.getAddress());
                 }
 
-                if (entity.getPointsString() == null) {
-                    ps.setNull(7, Types.NULL);
+                if (entity.getPoints() == null) {
+                    Blob blob = getConnection().createBlob();
+                    blob.setBytes(1, "".getBytes());
+                    ps.setBlob(7, blob);
                 } else {
                     Blob blob = getConnection().createBlob();
                     List<LatLng> latLngList = entity.getPoints();
                     String strLatLng = latLngToHex(latLngList);
-                    blob.setBytes(0, strLatLng.getBytes());
+                    blob.setBytes(1, strLatLng.getBytes());
                     ps.setBlob(7, blob);
                 }
 
@@ -235,17 +241,20 @@ public class ZoneJDBCDAO extends SimpleJdbcDaoSupport implements ZoneDAO {
         return dt.toDate();
     }
 
-    private Double hexToDbl(String hex) {
-        Double ret = new BigInteger(hex, 16).doubleValue();
+    private Double hexToDbl(String hex) throws Exception {
+        byte[] bVal = Hex.decodeHex(hex.toCharArray());
+        double ret = ByteBuffer.wrap(bVal).getDouble();
         return ret;
     }
 
     private String dblToHex(Double doub) {
-        String ret = Double.toHexString(doub);
+        byte[] bytes = new byte[8];
+        ByteBuffer.wrap(bytes).putDouble(doub);
+        String ret = new String(Hex.encodeHex(bytes));
         return ret;
     }
 
-    private List<LatLng> hexToLatLng(String hex) {
+    private List<LatLng> hexToLatLng(String hex) throws Exception {
         List<LatLng> ret = new ArrayList<LatLng>();
 
         if (hex != null && !hex.trim().isEmpty()) {
