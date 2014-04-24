@@ -17,6 +17,7 @@ import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.junit.Before;
 import org.junit.Test;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
 
 import javax.sql.DataSource;
@@ -28,6 +29,7 @@ import java.util.List;
 import java.util.TimeZone;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 public class CrashReportJDBCDAOTest extends SimpleJdbcDaoSupport {
@@ -93,7 +95,7 @@ public class CrashReportJDBCDAOTest extends SimpleJdbcDaoSupport {
         crashReportToInsert.setLng(-117.210274);
         crashReportToInsert.setNoteID(78598764677l);
 
-        Integer createCrashID = crashReportJDBCDAO.create(1, crashReportToInsert);
+        Integer createCrashID = crashReportJDBCDAO.create(null, crashReportToInsert);
         returnCrashID = (createCrashID != null);
         assertTrue(returnCrashID);
 
@@ -102,7 +104,7 @@ public class CrashReportJDBCDAOTest extends SimpleJdbcDaoSupport {
         assertTrue(crashReportList != null);
 
 
-//        find by id test method
+        // find by id test method
         CrashReport createdCrashReport = crashReportJDBCDAO.findByID(createCrashID);
 
         assertEquals("12093", crashReportToInsert.getDriverID(), createdCrashReport.getDriverID());
@@ -116,24 +118,46 @@ public class CrashReportJDBCDAOTest extends SimpleJdbcDaoSupport {
         assertEquals("0", crashReportToInsert.getNoteID(), createdCrashReport.getNoteID());
 
         //get info for update
-        CrashReport crashReportToupdate = new CrashReport();
-        crashReportToupdate.setDriverID(7909);
-        crashReportToupdate.setVehicleID(7977);
-        crashReportToupdate.setOccupantCount(0);
-        crashReportToupdate.setCrashReportStatus(CrashReportStatus.AGGRESSIVE_DRIVING);
-        crashReportToupdate.setHasTrace(0);
-        crashReportToupdate.setDate(new Date());
-        crashReportToupdate.setLat(32.960110);
-        crashReportToupdate.setLng(-117.210274);
-        crashReportToupdate.setNoteID(82799457797774978l);
-        crashReportToupdate.setCrashReportID(createCrashID);
+        CrashReport crashReportToUpdate = new CrashReport();
+        crashReportToUpdate.setDriverID(7909);
+        crashReportToUpdate.setVehicleID(7977);
+        crashReportToUpdate.setOccupantCount(0);
+        crashReportToUpdate.setCrashReportStatus(CrashReportStatus.AGGRESSIVE_DRIVING);
+        crashReportToUpdate.setHasTrace(0);
+        crashReportToUpdate.setDate(new Date());
+        crashReportToUpdate.setLat(32.960110);
+        crashReportToUpdate.setLng(-117.210274);
+        crashReportToUpdate.setNoteID(82799457797774978l);
+        crashReportToUpdate.setCrashReportID(createCrashID);
         //update method
-        crashReportJDBCDAO.update(crashReportToupdate);
+        crashReportJDBCDAO.update(crashReportToUpdate);
 
-        //now delete  using method deleteByID
+        // find and veify again
+        createdCrashReport = crashReportJDBCDAO.findByID(crashReportToUpdate.getCrashReportID());
+
+        assertEquals("12093", crashReportToUpdate.getDriverID(), createdCrashReport.getDriverID());
+        assertEquals("23398", crashReportToUpdate.getVehicleID(), createdCrashReport.getVehicleID());
+        assertEquals("0", crashReportToUpdate.getOccupantCount(), createdCrashReport.getOccupantCount());
+        assertEquals("CrashReportStatus.AGGRESSIVE_DRIVING", crashReportToUpdate.getCrashReportStatus(), createdCrashReport.getCrashReportStatus());
+        assertEquals(df.format(toUTC(crashReportToUpdate.getDate())),df.format(toUTC(createdCrashReport.getDate())));
+        assertEquals("0", crashReportToUpdate.getHasTrace(), createdCrashReport.getHasTrace());
+        assertEquals("32.960110", crashReportToUpdate.getLat(), createdCrashReport.getLat());
+        assertEquals("-117.210274", crashReportToUpdate.getLng(), createdCrashReport.getLng());
+        assertEquals("0", crashReportToUpdate.getNoteID(), createdCrashReport.getNoteID());
+
+        // delete it
         crashReportJDBCDAO.deleteByID(createCrashID);
 
+        // find should not find anything now
+        boolean found = true;
+        try {
+            createdCrashReport = crashReportJDBCDAO.findByID(crashReportToUpdate.getCrashReportID());
+        }catch(EmptyResultDataAccessException e){
+            // EXPECTED
+            found = false;
+        }
 
+        assertFalse(found);
     }
 
 
