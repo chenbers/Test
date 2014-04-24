@@ -72,8 +72,8 @@ public class RedFlagAlertJDBCDAO extends SimpleJdbcDaoSupport implements RedFlag
 
 
     private static final String INSERT_INTO = "INSERT INTO alert (alertTypeMask, alertType, type,  status,  modified,  acctID, userID,  name,  description,  startTOD,  stopTOD, dayOfWeekMask, vtypeMask, " +
-                    "accel, brake, turn,  vert,  severityLevel,  zoneID, escalationTryLimit, escalationTryTimeLimit, escalationCallDelay, idlingThreshold, notifyManagers) VALUES " +
-                    "(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                    "speedSettings, brake, turn,  vert,  severityLevel,  zoneID, escalationTryLimit, escalationTryTimeLimit, escalationCallDelay, idlingThreshold, notifyManagers) VALUES " +
+                    "(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
     private static final String UPDATE_ALERT = "UPDATE alert set alertTypeMask=?, alertType=?, type=?,  status=?,  modified=?,  acctID=?, userID=?,  name=?,  description=?,  startTOD=?,  stopTOD=?, dayOfWeekMask=?, vtypeMask=?,  speedSettings=?, " +
                     "accel=?, brake=?, turn=?,  vert=?,  severityLevel=?,  zoneID=?, escalationTryLimit=?, escalationTryTimeLimit=?, escalationCallDelay=?, idlingThreshold=?, notifyManagers=? where alertID=?";
@@ -387,76 +387,76 @@ public class RedFlagAlertJDBCDAO extends SimpleJdbcDaoSupport implements RedFlag
 
                 ps.setLong(13, VehicleType.convertTypes(entity.getVehicleTypes()));
 
-                //                if (entity.getSpeedSettings() == null) {
-                //                    ps.setObject(14, SpeedingConstants.INSTANCE.DEFAULT_SPEED_SETTING);
-                //                } else {
-                //                    ps.setObject(14, entity.getSpeedSettings());
-                //                }
-
-                if (entity.getHardAcceleration() == null) {
-                    ps.setNull(14, Types.NULL);
+                if (entity.getSpeedSettings() == null) {
+                    ps.setInt(14, SpeedingConstants.INSTANCE.DEFAULT_SPEED_SETTING.length);
                 } else {
-                    ps.setInt(14, entity.getHardAcceleration());
+                    ps.setInt(14, entity.getSpeedSettings().length);
                 }
 
-                if (entity.getHardBrake() == null) {
-                    ps.setNull(15, Types.NULL);
-                } else {
-                    ps.setInt(15, entity.getHardBrake());
-                }
+//                if (entity.getHardAcceleration() == null) {
+//                    ps.setNull(14, Types.NULL);
+//                } else {
+                    ps.setInt(15, entity.getHardAcceleration());
+//                }
 
-                if (entity.getHardTurn() == null) {
-                    ps.setNull(16, Types.NULL);
-                } else {
-                    ps.setInt(16, entity.getHardTurn());
-                }
+//                if (entity.getHardBrake() == null) {
+//                    ps.setNull(15, Types.NULL);
+//                } else {
+                    ps.setInt(16, entity.getHardBrake());
+//                }
 
-                if (entity.getHardVertical() == null) {
-                    ps.setNull(17, Types.NULL);
-                } else {
-                    ps.setInt(17, entity.getHardVertical());
-                }
+//                if (entity.getHardTurn() == null) {
+//                    ps.setNull(16, Types.NULL);
+//                } else {
+                    ps.setInt(17, entity.getHardTurn());
+//                }
+
+//                if (entity.getHardVertical() == null) {
+//                    ps.setNull(17, Types.NULL);
+//                } else {
+                    ps.setInt(18, entity.getHardVertical());
+//                }
 
                 if (entity.getSeverityLevel() == null) {
-                    ps.setObject(18, RedFlagLevel.NONE.getCode());
+                    ps.setObject(19, RedFlagLevel.NONE.getCode());
                 } else {
-                    ps.setInt(18, entity.getSeverityLevel().getCode());
+                    ps.setInt(19, entity.getSeverityLevel().getCode());
                 }
 
                 if (entity.getZoneID() == null) {
-                    ps.setNull(19, Types.NULL);
+                    ps.setNull(20, Types.NULL);
                 } else {
-                    ps.setInt(19, entity.getZoneID());
+                    ps.setInt(20, entity.getZoneID());
                 }
 
                 if (entity.getMaxEscalationTries() == null) {
-                    ps.setNull(20, Types.NULL);
+                    ps.setNull(21, Types.NULL);
                 } else {
-                    ps.setInt(20, entity.getMaxEscalationTries());
+                    ps.setInt(21, entity.getMaxEscalationTries());
                 }
 
                 if (entity.getMaxEscalationTryTime() == null) {
-                    ps.setNull(21, Types.NULL);
+                    ps.setNull(22, Types.NULL);
                 } else {
-                    ps.setInt(21, entity.getMaxEscalationTryTime());
+                    ps.setInt(22, entity.getMaxEscalationTryTime());
                 }
 
                 if (entity.getEscalationTimeBetweenRetries() == null) {
-                    ps.setNull(22, Types.NULL);
+                    ps.setNull(23, Types.NULL);
                 } else {
-                    ps.setInt(22, entity.getEscalationTimeBetweenRetries());
+                    ps.setInt(23, entity.getEscalationTimeBetweenRetries());
                 }
 
                 if (entity.getIdlingThreshold() == null) {
-                    ps.setNull(23, Types.NULL);
+                    ps.setNull(24, Types.NULL);
                 } else {
-                    ps.setInt(23, entity.getIdlingThreshold());
+                    ps.setInt(24, entity.getIdlingThreshold());
                 }
 
                 if (entity.getNotifyManagers() == null) {
-                    ps.setNull(24, Types.NULL);
+                    ps.setNull(25, Types.NULL);
                 } else {
-                    ps.setBoolean(24, entity.getNotifyManagers());
+                    ps.setBoolean(25, entity.getNotifyManagers());
                 }
 
                 logger.debug(ps.toString());
