@@ -5,16 +5,24 @@ import com.inthinc.pro.dao.TextMsgAlertDAO;
 import com.inthinc.pro.dao.hessian.proserver.SiloService;
 import com.inthinc.pro.dao.hessian.proserver.SiloServiceCreator;
 import com.inthinc.pro.dao.jdbc.TextMsgAlertJDBCDAO;
+import com.inthinc.pro.model.DeviceReportItem;
 import com.inthinc.pro.model.MessageItem;
+import com.inthinc.pro.model.pagination.PageParams;
+import com.inthinc.pro.model.pagination.TableFilterField;
 import it.com.inthinc.pro.dao.model.ITData;
 import it.config.ITDataSource;
 import it.config.IntegrationConfig;
+import junit.framework.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
 
 import javax.sql.DataSource;
 import java.io.InputStream;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import static org.junit.Assert.assertTrue;
@@ -23,6 +31,7 @@ public class TextMsgAlertJDBCDAOTest extends SimpleJdbcDaoSupport {
     private static SiloService siloService;
     private static ITData itData = new ITData();
     private Integer acctID;
+    static int TEST_GROUP_ID = 2204;
 
 
     @Before
@@ -52,10 +61,29 @@ public class TextMsgAlertJDBCDAOTest extends SimpleJdbcDaoSupport {
         List<MessageItem> messagesList = textDAO.getTextMsgAlertsByAcctID(25);
 
         assertTrue(messagesList.size() > 0);
-        assertTrue(messagesList.size()==140);
-
 
     }
+
+    @Test
+    public void getTextMsgCountTest() {
+        List<TableFilterField> filterList = new ArrayList<TableFilterField>();
+        filterList.add(new TableFilterField("vehicleID", "4678"));
+        filterList.add(new TableFilterField("flags", "0"));
+        Calendar c1 = Calendar.getInstance();
+        c1.set(2013, Calendar.JANUARY, 1);  //January 1st 2013
+        Date startDate=c1.getTime();
+        Date endDate=new Date();
+
+        TextMsgAlertJDBCDAO textDAO = new TextMsgAlertJDBCDAO();
+        DataSource dataSource = new ITDataSource().getRealDataSource();
+        textDAO.setDataSource(dataSource);
+
+
+        int count = textDAO.getTextMsgCount(TEST_GROUP_ID,startDate,endDate, filterList);
+
+        Assert.assertTrue("expected to be 1 or >1", count > 0);
+    }
+
 
 
 

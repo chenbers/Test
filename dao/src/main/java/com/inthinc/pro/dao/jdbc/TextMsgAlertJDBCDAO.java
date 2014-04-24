@@ -40,6 +40,11 @@ public class TextMsgAlertJDBCDAO extends SimpleJdbcDaoSupport implements TextMsg
     private static final String GET_MESSAGEITEM = "SELECT * FROM message m JOIN alert a ON a.alertID=m.alertID JOIN cachedNoteView c on c.noteID=m.noteID "+
                     "JOIN timezone t on t.tzID=c.tzID where a.acctID=:acctID and a.status != 3";
 
+    private static final String GET_MESSAGEITEM2 = "SELECT * FROM fwd f JOIN Fwd_WSiridium ws ON f.fwdID=ws.Fwd_WSiridiumID join person p where p.personID=f.personID "+
+              "where fwd.created >= :startDate and fwd.created <:stopDate and fwd.fwdCmd=355 and fwd.driverID in (select driverID from driver where groupID in"
+              +" (select groupID from groups where groupPath like  '%/ :groupID  /%' and status != 3) and fwd.vehicleID in (select vehicleID from vehicle where "
+                +" groupID in (select groupID from groups where groupPath like  '%/ :groupID  /%' and status != 3)"    ;
+
     private String getStringOrNullFromRS(ResultSet rs, String columnName) throws SQLException {
         return rs.getObject(columnName) == null ? null : rs.getString(columnName);
     }
@@ -67,6 +72,19 @@ public class TextMsgAlertJDBCDAO extends SimpleJdbcDaoSupport implements TextMsg
         }
     };
 
+    private ParameterizedRowMapper<MessageItem> messageItemFwdParameterizedRowMapper = new ParameterizedRowMapper<MessageItem>(){
+        @Override
+        public MessageItem mapRow(ResultSet rs, int rowNum) throws SQLException {
+            MessageItem messageItem = new MessageItem();
+            messageItem.setSendDate(getDateOrNullFromRS(rs,"f.created"));
+            messageItem.setFromDriverID(getIntOrNullFromRS(rs,"f.driverID"));
+            messageItem.setFromVehicleID(getIntOrNullFromRS(rs,"f.vehicleID"));
+            messageItem.setFrom(getStringOrNullFromRS(rs,"p.first" +" "+"p.last"));
+            messageItem.setMessage(getStringOrNullFromRS(rs,"ws.data"));
+            return messageItem;
+        }
+    };
+
     @Override
     public List<MessageItem> getTextMsgAlertsByAcctID(Integer acctID) {
 
@@ -79,19 +97,32 @@ public class TextMsgAlertJDBCDAO extends SimpleJdbcDaoSupport implements TextMsg
 
     @Override
     public Integer getTextMsgCount(Integer groupID, Date startDate, Date endDate, List<TableFilterField> filterList) {
-        return null;
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("groupID",  groupID );
+        params.put ("startDate", startDate);
+        params.put ("endDate", endDate);
+        StringBuilder txtMsgSelect= new StringBuilder();
+        txtMsgSelect.append("SELECT count(*) nr FROM cachedNoteView c join timezone t on c.tzID=t.tzID where c.time >= :startDate AND c.time<= :endDate AND c.groupID IN " +
+                        "(select groupID from groups where groupPath like  '%/" + groupID + "/%'" + " and status != 3) AND c.type in (72,80,91,92) and c.forgiven=0");
+        txtMsgSelect = new StringBuilder(addFiltersToQuery(filterList, txtMsgSelect.toString(), params, pagedColumnMapTxtMsg));
+        List<Integer> cntMsgs = getSimpleJdbcTemplate().query(txtMsgSelect.toString(), MsgsCountRowMapper, params);
+        Integer cnt = 0;
+        if (cntMsgs != null && !cntMsgs.isEmpty())
+            cnt = cntMsgs.get(0);
+
+        return cnt;
     }
 
     @Override
     public List<MessageItem> getTextMsgPage(Integer groupID, Date startDate, Date endDate, List<TableFilterField> filterList, PageParams pageParams) {
 
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("groupID", "%/" + groupID + "/%");
+        params.put("groupID",   groupID );
         params.put ("startDate", startDate);
         params.put ("endDate", endDate);
         StringBuilder txtMsgSelect= new StringBuilder();
         txtMsgSelect.append("SELECT * FROM cachedNoteView c join timezone t on c.tzID=t.tzID where c.time >= :startDate AND c.time<= :endDate AND c.groupID IN " +
-                        "(select groupID from groups where groupPath like :groupID and status != 3) AND c.type in (72,80,91,92) and c.forgiven=0");
+                        "(select groupID from groups where groupPath like  '%/" + groupID + "/%'" + " and status != 3) AND c.type in (72,80,91,92) and c.forgiven=0");
 
         /***FILTERING***/
         txtMsgSelect = new StringBuilder(addFiltersToQuery(filterList, txtMsgSelect.toString(), params, pagedColumnMapTxtMsg));
@@ -113,7 +144,12 @@ public class TextMsgAlertJDBCDAO extends SimpleJdbcDaoSupport implements TextMsg
 
     @Override
     public List<MessageItem> getSentTextMsgsByGroupID(Integer groupID, Date startTime, Date stopTime) {
-        return null;
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("groupID",   groupID );
+        params.put ("startDate", startTime);
+        params.put ("endDate", stopTime);
+        List<MessageItem> messages = getSimpleJdbcTemplate().query(GET_MESSAGEITEM2, messageItemFwdParameterizedRowMapper, params);
+        return messages;
     }
 
     @Override
@@ -211,4 +247,11 @@ public class TextMsgAlertJDBCDAO extends SimpleJdbcDaoSupport implements TextMsg
         }
         return ret;
     }
+
+    private ParameterizedRowMapper<Integer> MsgsCountRowMapper = new ParameterizedRowMapper<Integer>() {
+        @Override
+        public Integer mapRow(ResultSet rs, int rowNum) throws SQLException {
+            return getIntOrNullFromRS(rs, "nr");
+        }
+    };
 }
