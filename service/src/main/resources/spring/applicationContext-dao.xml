@@ -80,7 +80,7 @@
 		<property name="reportService" ref="reportServiceBean" />
 	</bean>
 	<bean id="tablePreferenceDAO" class="com.inthinc.pro.dao.hessian.TablePreferenceHessianDAO" parent="genericDAO"></bean>
-	<bean id="zoneDAO" class="com.inthinc.pro.dao.hessian.ZoneHessianDAO" parent="genericDAO"></bean>
+	<bean id="zoneDAO" class="com.inthinc.pro.dao.jdbc.ZoneJDBCDAO" parent="genericDAO"></bean>
 	<bean id="zoneAlertDAO" class="com.inthinc.pro.dao.hessian.RedFlagAlertHessianDAO" parent="genericDAO"></bean>
 	<bean id="roleDAO" class="com.inthinc.pro.dao.hessian.RoleHessianDAO" parent="genericDAO"></bean>
 	<bean id="stateDAO" class="com.inthinc.pro.dao.hessian.StateHessianDAO" parent="genericDAO"></bean>

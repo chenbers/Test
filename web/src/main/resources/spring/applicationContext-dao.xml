@@ -93,7 +93,9 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
     <bean id="redFlagDAO" class="com.inthinc.pro.dao.hessian.RedFlagHessianDAO"></bean>
     <bean id="redFlagAlertDAO" class="com.inthinc.pro.dao.hessian.RedFlagAlertHessianDAO"></bean>
     <bean id="tablePreferenceDAO" class="com.inthinc.pro.dao.hessian.TablePreferenceHessianDAO"></bean>
-    <bean id="zoneDAO" class="com.inthinc.pro.dao.hessian.ZoneHessianDAO"></bean>
+    <bean id="zoneDAO" class="com.inthinc.pro.dao.jdbc.ZoneJDBCDAO">
+        <property name="siloService" ref="siloService" />
+    </bean>
     <!-- <bean id="zoneAlertDAO" class="com.inthinc.pro.dao.hessian.ZoneAlertHessianDAO"></bean> -->
     <bean id="roleDAO" class="com.inthinc.pro.dao.hessian.RoleHessianDAO"></bean>
     <bean id="stateDAO" class="com.inthinc.pro.dao.hessian.StateHessianDAO"></bean>

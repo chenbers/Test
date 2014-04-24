@@ -43,7 +43,7 @@
     <bean id="mpgDAO" class="com.inthinc.pro.dao.hessian.MpgHessianDAO" parent="genericDAO">
         <property name="reportService" ref="reportServiceBean" />
     </bean>
-    <bean id="zoneDAO" class="com.inthinc.pro.dao.hessian.ZoneHessianDAO" parent="genericDAO"></bean>
+    <bean id="zoneDAO" class="com.inthinc.pro.dao.jdbc.ZoneJDBCDAO" parent="genericDAO"></bean>
     
     <bean id="groupReportDAO" class="com.inthinc.pro.dao.hessian.report.GroupReportHessianDAO">
         <property name="reportService" ref="reportServiceBean" />

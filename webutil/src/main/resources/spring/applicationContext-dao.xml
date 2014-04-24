@@ -41,7 +41,7 @@
     <bean id="superuserDAO" class="com.inthinc.pro.dao.hessian.SuperuserHessianDAO" parent="genericDAO"></bean>
     <bean id="forwardCommandDefDAO" class="com.inthinc.pro.dao.hessian.ForwardCommandDefHessianDAO" parent="genericDAO"></bean>
     <bean id="redFlagAlertDAO" class="com.inthinc.pro.dao.hessian.RedFlagAlertHessianDAO" parent="genericDAO"></bean>
-    <bean id="zoneDAO" class="com.inthinc.pro.dao.hessian.ZoneHessianDAO" parent="genericDAO"></bean>
+    <bean id="zoneDAO" class="com.inthinc.pro.dao.jdbc.ZoneJDBCDAO" parent="genericDAO"></bean>
     <bean id="crashReportDAO" class="com.inthinc.pro.dao.hessian.CrashReportHessianDAO" parent="genericDAO"></bean>
     <bean id="reportScheduleDAO" class="com.inthinc.pro.dao.hessian.ReportScheduleHessianDAO" parent="genericDAO"></bean>
     <bean id="configuratorDAO" class="com.inthinc.pro.dao.hessian.ConfiguratorHessianDAO" parent="genericDAO"></bean>

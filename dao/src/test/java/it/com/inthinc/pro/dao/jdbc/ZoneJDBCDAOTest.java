@@ -57,8 +57,7 @@ public class ZoneJDBCDAOTest extends SimpleJdbcDaoSupport {
 
     }
 
-
-    @Ignore
+    @Test
     public void findByIDTest() {
         ZoneJDBCDAO zoneDAO = new ZoneJDBCDAO();
         DataSource dataSource = new ITDataSource().getRealDataSource();
@@ -81,23 +80,16 @@ public class ZoneJDBCDAOTest extends SimpleJdbcDaoSupport {
         //findById method
         Zone zone = zoneJDBCDAO.findByID(zoneI);
 
-
         GroupData team = itData.teamGroupData.get(0);
         Integer acctID = team.group.getAccountID();
         Integer groupID = team.group.getGroupID();
-
-        List<LatLng> latLngList = new ArrayList<LatLng>();
-
-        latLngList.add(0,new LatLng(8.345,9.3562));
-        latLngList.add(1,new LatLng(6.2345,2.3435));
-
 
         Zone zoneToInsert = new Zone();
         zoneToInsert.setAccountID(acctID);
         zoneToInsert.setGroupID(groupID);
         zoneToInsert.setStatus(Status.ACTIVE);
-        zoneToInsert.setName("cezarica fara frica");
-        zoneToInsert.setAddress("bucuresti sector 6");
+        zoneToInsert.setName("Home");
+        zoneToInsert.setAddress("Alabama");
 
         zoneToInsert.setPoints(zone.getPoints());
 
@@ -106,13 +98,17 @@ public class ZoneJDBCDAOTest extends SimpleJdbcDaoSupport {
         returnZoneID = (zoneID != null);
         assertTrue(returnZoneID);
 
+        //get created zone from db and compare list of points
         Zone zone1 = zoneJDBCDAO.findByID(zoneID);
+        assertTrue(zoneToInsert.getPoints().equals(zone1.getPoints()));
 
-        zone1.getName();
+        //now delete  using method deleteByID
+        zoneJDBCDAO.deleteByID(zoneID);
+
     }
 
-    @Ignore
-    public void createUpdateDeleteTest() {
+    @Test
+    public void createUpdateGetZonesDeleteTest() {
         ZoneJDBCDAO zoneJDBCDAO = new ZoneJDBCDAO();
         DataSource dataSource = new ITDataSource().getRealDataSource();
         zoneJDBCDAO.setDataSource(dataSource);
@@ -127,8 +123,8 @@ public class ZoneJDBCDAOTest extends SimpleJdbcDaoSupport {
         zoneToInsert.setAccountID(acctID);
         zoneToInsert.setGroupID(groupID);
         zoneToInsert.setStatus(Status.ACTIVE);
-        zoneToInsert.setName("cezarica fara frica");
-        zoneToInsert.setAddress("bucuresti sector 6");
+        zoneToInsert.setName("Home");
+        zoneToInsert.setAddress("Alabama");
 
         // create method
         Integer zoneID = zoneJDBCDAO.create(zoneToInsert.getAccountID(), zoneToInsert);
@@ -137,8 +133,8 @@ public class ZoneJDBCDAOTest extends SimpleJdbcDaoSupport {
 
         //find by id test method
         Zone createdZone = zoneJDBCDAO.findByID(zoneID);
-        assertEquals("cezarica fara frica", zoneToInsert.getName(), createdZone.getName());
-        assertEquals("bucuresti sector 6", zoneToInsert.getAddress(), createdZone.getAddress());
+        assertEquals("Home", zoneToInsert.getName(), createdZone.getName());
+        assertEquals("Alabama", zoneToInsert.getAddress(), createdZone.getAddress());
 
         //update test method
         Zone updateZone = zoneJDBCDAO.findByID(zoneID);
@@ -149,19 +145,18 @@ public class ZoneJDBCDAOTest extends SimpleJdbcDaoSupport {
         returnUpdatedZoneID = (returnUpdateZoneID != null);
         assertTrue(returnUpdatedZoneID);
 
+        //getZones test method
+        List<Zone> listZone=zoneJDBCDAO.getZones(createdZone.getAccountID());
 
+        assertNotNull(listZone);
+
+        for(Zone zoneList : listZone){
+            assertNotNull(zoneList);
+        }
 
         //now delete  using method deleteByID
         zoneJDBCDAO.deleteByID(zoneID);
     }
-
-
-
-
-
-
-
-
 
     private static void initApp() throws Exception {
     }

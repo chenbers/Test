@@ -2,6 +2,7 @@ package com.inthinc.pro.dao.jdbc;
 
 import com.inthinc.pro.dao.ZoneDAO;
 import com.inthinc.pro.dao.hessian.exceptions.EmptyResultSetException;
+import com.inthinc.pro.dao.hessian.proserver.SiloService;
 import com.inthinc.pro.model.LatLng;
 import com.inthinc.pro.model.Status;
 import com.inthinc.pro.model.Zone;
@@ -34,10 +35,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Created by Infrasoft02 on 4/17/2014.
- */
+
 public class ZoneJDBCDAO extends SimpleJdbcDaoSupport implements ZoneDAO {
+    private SiloService siloService;
 
     private static final String ZONE_SELECT = "SELECT * FROM zone ";
     private static final String FIND_BY_ID = ZONE_SELECT + " where zoneID = :zoneID";
@@ -47,8 +47,6 @@ public class ZoneJDBCDAO extends SimpleJdbcDaoSupport implements ZoneDAO {
 
     private static final String INSERT_ZONE = "INSERT INTO zone (acctID, groupID, status, created, modified, name, address, latLng) VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
     private static final String FIND_ZONE_BY_ACCTID = ZONE_SELECT + " where acctID = :acctID";
-
-    private static final String FIND_PUBLISHZONES = " SELECT zoneType FROM zonePublish where acctID = :acctID";
 
 
     private ParameterizedRowMapper<Zone> zoneParameterizedRowMapper = new ParameterizedRowMapper<Zone>() {
@@ -79,13 +77,12 @@ public class ZoneJDBCDAO extends SimpleJdbcDaoSupport implements ZoneDAO {
         }
     };
 
-
     @Override
     public List<Zone> getZones(Integer accountID) {
         {
             try {
                 Map<String, Object> args = new HashMap<String, Object>();
-                args.put("accountID", accountID);
+                args.put("acctID", accountID);
                 StringBuilder findZoneByAcctId = new StringBuilder(FIND_ZONE_BY_ACCTID);
 
                 List<Zone> zoneList = getSimpleJdbcTemplate().query(findZoneByAcctId.toString(), zoneParameterizedRowMapper, args);
@@ -100,12 +97,7 @@ public class ZoneJDBCDAO extends SimpleJdbcDaoSupport implements ZoneDAO {
 
     @Override
     public Integer publishZones(Integer acctID) {
-
-        Map<String, Object> args = new HashMap<String, Object>();
-        args.put("acctID", acctID);
-        StringBuilder findPublishZones = new StringBuilder(ZONE_SELECT);
-
-        return getSimpleJdbcTemplate().queryForInt(findPublishZones.toString(), zoneParameterizedRowMapper, args);
+       return getChangedCount(siloService.publishZones(acctID));
     }
 
     @Override
@@ -118,7 +110,7 @@ public class ZoneJDBCDAO extends SimpleJdbcDaoSupport implements ZoneDAO {
     }
 
     @Override
-    public Integer create(Integer integer, final Zone entity) {
+    public Integer create(final Integer acctId, final Zone entity) {
         JdbcTemplate jdbcTemplate = getJdbcTemplate();
         KeyHolder keyHolder = new GeneratedKeyHolder();
         PreparedStatementCreator psc = new PreparedStatementCreator() {
@@ -126,7 +118,7 @@ public class ZoneJDBCDAO extends SimpleJdbcDaoSupport implements ZoneDAO {
             public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
                 PreparedStatement ps = con.prepareStatement(INSERT_ZONE, Statement.RETURN_GENERATED_KEYS);
 
-                ps.setInt(1, entity.getAccountID());
+                ps.setInt(1, acctId);
 
                 ps.setInt(2, entity.getGroupID());
 
@@ -242,7 +234,7 @@ public class ZoneJDBCDAO extends SimpleJdbcDaoSupport implements ZoneDAO {
     }
 
     private Double hexToDbl(String hex) throws Exception {
-        byte[] bVal = Hex.decodeHex(hex.toCharArray());
+        byte[] bVal = Hex.decodeHex(hex.toUpperCase().toCharArray());
         double ret = ByteBuffer.wrap(bVal).getDouble();
         return ret;
     }
@@ -251,7 +243,7 @@ public class ZoneJDBCDAO extends SimpleJdbcDaoSupport implements ZoneDAO {
         byte[] bytes = new byte[8];
         ByteBuffer.wrap(bytes).putDouble(doub);
         String ret = new String(Hex.encodeHex(bytes));
-        return ret;
+        return ret.toUpperCase();
     }
 
     private List<LatLng> hexToLatLng(String hex) throws Exception {
@@ -285,5 +277,17 @@ public class ZoneJDBCDAO extends SimpleJdbcDaoSupport implements ZoneDAO {
             }
         }
         return ret;
+    }
+
+    private Integer getChangedCount(Map<String, Object> map) {
+        return (Integer) map.get("count");
+    }
+
+    public SiloService getSiloService() {
+        return siloService;
+    }
+
+    public void setSiloService(SiloService siloService) {
+        this.siloService = siloService;
     }
 }
