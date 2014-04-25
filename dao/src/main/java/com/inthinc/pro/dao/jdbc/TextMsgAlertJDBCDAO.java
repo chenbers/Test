@@ -145,11 +145,11 @@ public class TextMsgAlertJDBCDAO extends SimpleJdbcDaoSupport implements TextMsg
         @Override
         public MessageItem mapRow(ResultSet rs, int rowNum) throws SQLException {
             MessageItem messageItem = new MessageItem();
-            messageItem.setFromPortalSent(getDateOrNullFromRS(rs, "c.time"));
+            messageItem.setSendDate(getDateOrNullFromRS(rs, "c.time"));
             messageItem.setFromDriverID(getIntOrNullFromRS(rs, "c.driverID"));
             messageItem.setFromVehicleID(getIntOrNullFromRS(rs, "c.vehicleID"));
-            messageItem.setFromPortalFrom(getStringOrNullFromRS(rs, "c.driverName"));
-            messageItem.setFromPortalMsg(getStringOrNullFromRS(rs, "c.textMsg"));
+            messageItem.setFrom(getStringOrNullFromRS(rs, "c.driverName"));
+            messageItem.setMessage(getStringOrNullFromRS(rs, "c.textMsg"));
             messageItem.setDmrOffset(getIntOrNullFromRS(rs, "c.textID"));
             messageItem.setType(getIntOrNullFromRS(rs, "c.type"));
             messageItem.setTimeZone(TimeZone.getTimeZone(getStringOrNullFromRS(rs, "t.tzName")));
