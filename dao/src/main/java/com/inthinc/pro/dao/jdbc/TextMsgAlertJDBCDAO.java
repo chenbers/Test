@@ -45,8 +45,8 @@ public class TextMsgAlertJDBCDAO extends SimpleJdbcDaoSupport implements TextMsg
 
     private static final String GET_MESSAGEITEM2 = "SELECT * FROM fwd f JOIN Fwd_WSiridium ws ON f.fwdCmd = ws.command join person p on p.personID=ws.personID "+
               " where ws.created >= :startDate and ws.created <= :endDate and f.fwdCmd=355 and f.driverID in (select driverID from driver where groupID in"
-              +" (select groupID from groups where groupPath like  '%/:groupID/%' and status != 3)) and f.vehicleID in (select vehicleID from vehicle where "
-                +" groupID in (select groupID from groups where groupPath like  '%/:groupID/%' and status != 3))"    ;
+              +" (select groupID from groups where groupPath like concat('%/',:groupID,'/%') and status != 3)) and f.vehicleID in (select vehicleID from vehicle where "
+                +" groupID in (select groupID from groups where groupPath like   concat('%/',:groupID,'/%') and status != 3))"    ;
 
     private String getStringOrNullFromRS(ResultSet rs, String columnName) throws SQLException {
         return rs.getObject(columnName) == null ? null : rs.getString(columnName);
@@ -82,7 +82,7 @@ public class TextMsgAlertJDBCDAO extends SimpleJdbcDaoSupport implements TextMsg
             messageItem.setSendDate(getDateOrNullFromRS(rs,"f.created"));
             messageItem.setFromDriverID(getIntOrNullFromRS(rs, "f.driverID"));
             messageItem.setFromVehicleID(getIntOrNullFromRS(rs, "f.vehicleID"));
-            messageItem.setFrom(getStringOrNullFromRS(rs, "p.first" + " " + "p.last"));
+            messageItem.setFrom(getStringOrNullFromRS(rs, "p.first") + " " + getStringOrNullFromRS(rs, "p.last"));
             messageItem.setMessage(getStringOrNullFromRS(rs, "ws.data"));
             return messageItem;
         }
@@ -105,8 +105,8 @@ public class TextMsgAlertJDBCDAO extends SimpleJdbcDaoSupport implements TextMsg
         params.put ("startDate", sdf.format(startDate));
         params.put ("endDate", sdf.format(endDate));
         StringBuilder txtMsgSelect= new StringBuilder();
-        txtMsgSelect.append("SELECT count(*) nr FROM cachedNoteView c join timezone t on c.tzID=t.tzID where c.time >= STR_TO_DATE(':startDate', '%d.%m.%Y') AND c.time<= STR_TO_DATE(':endDate', '%d.%m.%Y') AND c.groupID IN " +
-                        "(select groupID from groups where groupPath like  '%/:groupID/%'" + " and status != 3) AND c.type in (72,80,91,92) and c.forgiven=0");
+        txtMsgSelect.append("SELECT count(*) nr FROM cachedNoteView c join timezone t on c.tzID=t.tzID where c.time >= STR_TO_DATE(:startDate, '%d.%m.%Y') AND c.time<= STR_TO_DATE(:endDate, '%d.%m.%Y') AND c.groupID IN " +
+                        "(select groupID from groups where groupPath like  concat('%/',:groupID,'/%') and status != 3) AND c.type in (72,80,91,92) and c.forgiven=0");
         txtMsgSelect = new StringBuilder(addFiltersToQuery(filterList, txtMsgSelect.toString(), params, pagedColumnMapTxtMsg));
         Integer cnt = getSimpleJdbcTemplate().queryForInt(txtMsgSelect.toString(),params);
 
@@ -121,8 +121,8 @@ public class TextMsgAlertJDBCDAO extends SimpleJdbcDaoSupport implements TextMsg
         params.put ("startDate", sdf.format(startDate));
         params.put ("endDate", sdf.format(endDate));
         StringBuilder txtMsgSelect= new StringBuilder();
-        txtMsgSelect.append("SELECT * FROM cachedNoteView c join timezone t on c.tzID=t.tzID where c.time >= STR_TO_DATE(':startDate', '%d.%m.%Y') AND c.time<= STR_TO_DATE(':endDate', '%d.%m.%Y') AND c.groupID IN " +
-                        "(select groupID from groups where groupPath like  '%/:groupID/%'" + " and status != 3) AND c.type in (72,80,91,92) and c.forgiven=0");
+        txtMsgSelect.append("SELECT * FROM cachedNoteView c join timezone t on c.tzID=t.tzID where c.time >= STR_TO_DATE(:startDate, '%d.%m.%Y') AND c.time<= STR_TO_DATE(:endDate, '%d.%m.%Y') AND c.groupID IN " +
+                        "(select groupID from groups where groupPath like   concat('%/',:groupID,'/%')  and status != 3) AND c.type in (72,80,91,92) and c.forgiven=0");
 
         /***FILTERING***/
         txtMsgSelect = new StringBuilder(addFiltersToQuery(filterList, txtMsgSelect.toString(), params, pagedColumnMapTxtMsg));
