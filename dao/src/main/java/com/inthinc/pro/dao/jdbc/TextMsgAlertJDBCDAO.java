@@ -43,10 +43,17 @@ public class TextMsgAlertJDBCDAO extends SimpleJdbcDaoSupport implements TextMsg
     private static final String GET_MESSAGEITEM = "SELECT * FROM message m JOIN alert a ON a.alertID=m.alertID JOIN cachedNoteView c on c.noteID=m.noteID "+
                     "JOIN timezone t on t.tzID=c.tzID where a.acctID=:acctID and a.status != 3";
 
-    private static final String GET_MESSAGEITEM2 = "SELECT * FROM fwd f JOIN Fwd_WSiridium ws ON f.fwdCmd = ws.command join person p on p.personID=ws.personID "+
-              " where ws.created >= :startDate and ws.created <= :endDate and f.fwdCmd=355 and f.driverID in (select driverID from driver where groupID in"
-              +" (select groupID from groups where groupPath like concat('%/',:groupID,'/%') and status != 3)) and f.vehicleID in (select vehicleID from vehicle where "
-                +" groupID in (select groupID from groups where groupPath like   concat('%/',:groupID,'/%') and status != 3))"    ;
+    private static final String GET_MESSAGEITEM2 = "SELECT f.created as time, f.fwdStr AS message," +
+                    "f.vehicleID AS vehicleID, f.driverID AS driverID,\n"
+                    + "  CONCAT(p.first,' ',p.last) AS \"FROM\", CONCAT(p1.first,' ',p1.last) AS \"TO\" FROM fwd f  join person p on p.personID=f.personID JOIN person p1 "
+                    + "  ON p1.personID=(SELECT personid FROM driver d WHERE d.driverID= f.driverID) where f.created >= :startDate and f.created <= :endDate and f.fwdCmd=355 and f.driverID in (select driverID from driver where groupID in"
+                    + "               (select groupID from groups where groupPath like concat('%/',:groupID,'/%') and status != 3 UNION SELECT 0 AS groupid FROM dual)) and f.vehicleID in (select vehicleID from vehicle where "
+                    + "                 groupID in (select groupID from groups where groupPath like   concat('%/',:groupID,'/%') and status != 3 UNION SELECT 0 AS groupid FROM dual))" +
+                    "  union select ws.data, ws.created, ws.vehicleID, ws.driverID, CONCAT(p.first,' ',p.last),CONCAT(p1.first,' ',p1.last) from Fwd_WSiridium ws  join person p on p.personID=ws.personID  JOIN person p1 "
+                    + "  ON p1.personID=(SELECT personid FROM driver d WHERE d.driverID= ws.driverid)"+
+                  " where ws.created >= :startDate and ws.created <= :endDate and ws.command=355 and f.driverID in (select driverID from driver where groupID in"
+              +" (select groupID from groups where groupPath like concat('%/',:groupID,'/%') and status != 3 UNION SELECT 0 AS groupid FROM dual)) and f.vehicleID in (select vehicleID from vehicle where "
+                +" groupID in (select groupID from groups where groupPath like   concat('%/',:groupID,'/%') and status != 3 UNION SELECT 0 AS groupid FROM dual))"    ;
 
     private String getStringOrNullFromRS(ResultSet rs, String columnName) throws SQLException {
         return rs.getObject(columnName) == null ? null : rs.getString(columnName);
@@ -79,11 +86,12 @@ public class TextMsgAlertJDBCDAO extends SimpleJdbcDaoSupport implements TextMsg
         @Override
         public MessageItem mapRow(ResultSet rs, int rowNum) throws SQLException {
             MessageItem messageItem = new MessageItem();
-            messageItem.setSendDate(getDateOrNullFromRS(rs,"f.created"));
-            messageItem.setFromDriverID(getIntOrNullFromRS(rs, "f.driverID"));
-            messageItem.setFromVehicleID(getIntOrNullFromRS(rs, "f.vehicleID"));
-            messageItem.setFrom(getStringOrNullFromRS(rs, "p.first") + " " + getStringOrNullFromRS(rs, "p.last"));
-            messageItem.setMessage(getStringOrNullFromRS(rs, "ws.data"));
+            messageItem.setSendDate(getDateOrNullFromRS(rs,"time"));
+            messageItem.setFromDriverID(getIntOrNullFromRS(rs, "driverID"));
+            messageItem.setFromVehicleID(getIntOrNullFromRS(rs, "vehicleID"));
+            messageItem.setFrom(getStringOrNullFromRS(rs, "from"));
+            messageItem.setTo(getStringOrNullFromRS(rs, "to"));
+            messageItem.setMessage(getStringOrNullFromRS(rs, "message"));
             return messageItem;
         }
     };

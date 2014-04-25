@@ -68,8 +68,8 @@ public class TextMsgAlertJDBCDAOTest extends SimpleJdbcDaoSupport {
     @Test
     public void getTextMsgCountTest() throws Exception {
         List<TableFilterField> filterList = new ArrayList<TableFilterField>();
-        //filterList.add(new TableFilterField("vehicleID", "7978"));
-        //filterList.add(new TableFilterField("flags", "0"));
+        filterList.add(new TableFilterField("vehicleID", "7978"));
+        filterList.add(new TableFilterField("flags", "0"));
         Calendar c1 = Calendar.getInstance();
         c1.set(1900, Calendar.JANUARY, 1);  //January 1st 2013
         Date startDate=c1.getTime();
@@ -102,7 +102,7 @@ public class TextMsgAlertJDBCDAOTest extends SimpleJdbcDaoSupport {
         pp.setStartRow(0);
         pp.setEndRow(20);
 
-        //filterList.add(new TableFilterField("vehicleID", "7978"));
+        filterList.add(new TableFilterField("vehicleID", "7978"));
         List<MessageItem> messages = textDAO.getTextMsgPage(3384,startDate,endDate, filterList,pp);
         Assert.assertTrue("expected to be 1 or >1", messages.size() > 0);
 
