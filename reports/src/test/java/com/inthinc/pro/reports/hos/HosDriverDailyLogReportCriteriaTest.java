@@ -40,6 +40,7 @@ import com.inthinc.pro.reports.BaseUnitTest;
 import com.inthinc.pro.reports.FormatType;
 import com.inthinc.pro.reports.ReportCriteria;
 import com.inthinc.pro.reports.hos.testData.DDLDataSet;
+import com.inthinc.pro.reports.hos.testData.MockData;
 
 public class HosDriverDailyLogReportCriteriaTest extends BaseUnitTest{
 
@@ -950,4 +951,28 @@ public class HosDriverDailyLogReportCriteriaTest extends BaseUnitTest{
         
         assertEquals("ALT Sleep with mobile unit", "Alternate Sleep Accommodations (Mobile Unit: MOBILE_UNIT)", altSleepStatusDescription);
     }
+    
+    
+    @Test
+    public void driverEmpIDTest() {
+            DDLDataSet ddlTestData = new DDLDataSet("lohrFull_03132013_03252013", DDLDataSet.INTHINC_DB_CSV);
+            HosDailyDriverLogReportCriteria hosDailyDriverLogReportCriteria = new HosDailyDriverLogReportCriteria(Locale.US, Boolean.FALSE, dateTimeZone);
+            hosDailyDriverLogReportCriteria.initCriteriaList(ddlTestData.interval, ddlTestData.interval, ddlTestData.hosRecordList, ddlTestData.hosVehicleDayDataList,
+                ddlTestData.hosOccupantLogList, ddlTestData.driver, ddlTestData.account, ddlTestData.group.getAddress());
+            
+            // check the data
+            List<ReportCriteria> criteriaList = hosDailyDriverLogReportCriteria.getCriteriaList();
+            assertEquals("expected one ReportCriteria item for each day", ddlTestData.numDays, criteriaList.size());
+
+            // turn on in base class to get a dump of report
+            dump("DDL", 1000, hosDailyDriverLogReportCriteria.getCriteriaList(), FormatType.PDF);
+            
+            for (ReportCriteria reportCriteria : hosDailyDriverLogReportCriteria.getCriteriaList()) {
+                HosDailyDriverLog hosDailyDriverLog = (HosDailyDriverLog)reportCriteria.getMainDataset().get(0);
+                
+                assertEquals("EmployeeID", MockData.EMPLOYEE_ID, hosDailyDriverLog.getDriverEmpID());
+            }
+            
+        }
+
 }

@@ -47,6 +47,7 @@
 	<field name="remarksList" class="java.util.List"/>
 	<field name="recap" class="java.util.List"/>
 	<field name="recapType" class="com.inthinc.hos.ddl.RecapType"/>
+	<field name="driverEmpID" class="java.lang.String"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -194,17 +195,17 @@
 				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.ddl.header.driver}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement positionType="Float" x="205" y="95" width="185" height="20"/>
+				<reportElement positionType="Float" x="340" y="95" width="150" height="20"/>
 				<textElement textAlignment="Center">
 					<font size="14" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[com.inthinc.pro.reports.converter.MeasurementConverter.convertDistance100th($F{milesDriven},$P{USE_METRIC},$P{REPORT_LOCALE})]]></textFieldExpression>
 			</textField>
 			<line>
-				<reportElement positionType="Float" x="205" y="115" width="185" height="1"/>
+				<reportElement positionType="Float" x="340" y="115" width="150" height="1"/>
 			</line>
 			<textField pattern="">
-				<reportElement positionType="Float" x="205" y="117" width="185" height="12"/>
+				<reportElement positionType="Float" x="340" y="117" width="150" height="12"/>
 				<textElement textAlignment="Center">
 					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
@@ -384,6 +385,23 @@
 					<font size="12"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[str("report.ddl.exemption."+$F{ruleSetType}.toString())]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement positionType="Float" x="190" y="95" width="140" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="14" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{driverEmpID}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement positionType="Float" x="190" y="115" width="140" height="1"/>
+			</line>
+			<textField pattern="">
+				<reportElement positionType="Float" x="190" y="117" width="140" height="12"/>
+				<textElement textAlignment="Center">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.ddl.header.driverEmpID}]]></textFieldExpression>
 			</textField>
 		</band>
 	</title>

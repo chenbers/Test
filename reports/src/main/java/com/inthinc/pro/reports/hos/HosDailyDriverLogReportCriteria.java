@@ -333,6 +333,7 @@ public class HosDailyDriverLogReportCriteria extends ReportCriteria {
             dayData.setMainAddress(mainOfficeDisplayAddress);
             dayData.setTerminalAddress(terminalAddress == null ? "" : terminalAddress.getDisplayString());
             dayData.setDriverName(driver.getPerson().getFullName());
+            dayData.setDriverEmpID(driver.getPerson().getEmpid());
             dayData.setEdited(ddlUtil.isListEdited(logListForDay));
             dayData.setCodrivers(ddlUtil.getCodrivers(logListForDay, occupantLogListForDay));
             dayData.setShipping(ddlUtil.getShippingInfoForDay(logListForDay, occupantLogListForDay));
