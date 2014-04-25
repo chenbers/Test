@@ -43,17 +43,94 @@ public class TextMsgAlertJDBCDAO extends SimpleJdbcDaoSupport implements TextMsg
     private static final String GET_MESSAGEITEM = "SELECT * FROM message m JOIN alert a ON a.alertID=m.alertID JOIN cachedNoteView c on c.noteID=m.noteID "+
                     "JOIN timezone t on t.tzID=c.tzID where a.acctID=:acctID and a.status != 3";
 
-    private static final String GET_MESSAGEITEM2 = "SELECT f.created as time, f.fwdStr AS message," +
-                    "f.vehicleID AS vehicleID, f.driverID AS driverID,\n"
-                    + "  CONCAT(p.first,' ',p.last) AS \"FROM\", CONCAT(p1.first,' ',p1.last) AS \"TO\" FROM fwd f  join person p on p.personID=f.personID JOIN person p1 "
-                    + "  ON p1.personID=(SELECT personid FROM driver d WHERE d.driverID= f.driverID) where f.created >= STR_TO_DATE(:startDate, '%d.%m.%Y')and f.created <= STR_TO_DATE(:endDate, '%d.%m.%Y') and f.fwdCmd=355 and f.driverID in (select driverID from driver where groupID in"
-                    + "               (select groupID from groups where groupPath like concat('%/',:groupID,'/%') and status != 3 UNION SELECT 0 AS groupid FROM dual)) and f.vehicleID in (select vehicleID from vehicle where "
-                    + "                 groupID in (select groupID from groups where groupPath like   concat('%/',:groupID,'/%') and status != 3 UNION SELECT 0 AS groupid FROM dual))" +
-                    "  union select ws.data, ws.created, ws.vehicleID, ws.driverID, CONCAT(p.first,' ',p.last),CONCAT(p1.first,' ',p1.last) from Fwd_WSiridium ws  join person p on p.personID=ws.personID  JOIN person p1 "
-                    + "  ON p1.personID=(SELECT personid FROM driver d WHERE d.driverID= ws.driverid)"+
-                  " where ws.created >=  STR_TO_DATE(:startDate, '%d.%m.%Y') and ws.created <= STR_TO_DATE(:endDate, '%d.%m.%Y') and ws.command=355 and f.driverID in (select driverID from driver where groupID in"
-              +" (select groupID from groups where groupPath like concat('%/',:groupID,'/%') and status != 3 UNION SELECT 0 AS groupid FROM dual)) and f.vehicleID in (select vehicleID from vehicle where "
-                +" groupID in (select groupID from groups where groupPath like   concat('%/',:groupID,'/%') and status != 3 UNION SELECT 0 AS groupid FROM dual))"    ;
+    private static final String GET_MESSAGEITEM2 = "SELECT " +
+            "  allz.* " +
+            "FROM ((SELECT " +
+            "  created AS time, " +
+            "  fwdStr AS message, " +
+            "  v.vehicleID, " +
+            "  d.driverID, " +
+            "  fwdCmd, " +
+            "  (SELECT " +
+            "    CONCAT(first, ' ', last) " +
+            "  FROM person p2 " +
+            "  WHERE p2.personID = f.personID) AS \"FROM\", " +
+            "  (SELECT " +
+            "    CONCAT(first, ' ', last) " +
+            "  FROM person p2 " +
+            "  WHERE p2.personID = d.personID) AS \"TO\" " +
+            "FROM driver d, " +
+            "     fwd f, " +
+            "     vehicle v " +
+            "WHERE f.driverID = d.driverID " +
+            "AND f.vehicleID = v.vehicleID " +
+            "AND v.groupID IN (SELECT " +
+            "  w.groupID " +
+            "FROM (SELECT " +
+            "  groupID, " +
+            "  groupPath " +
+            "FROM groups " +
+            "WHERE groupPath LIKE CONCAT('%/', :groupID, '/%') AND status != 3 " +
+            "UNION " +
+            "SELECT " +
+            "  0 AS groupID, " +
+            "  '/0/' AS groupPath " +
+            "FROM dual) w) AND d.groupID IN (SELECT " +
+            "  k.groupID " +
+            "FROM (SELECT " +
+            "  groupID, " +
+            "  groupPath " +
+            "FROM groups " +
+            "WHERE groupPath LIKE CONCAT('%/', :groupID, '/%') AND status != 3 " +
+            "UNION " +
+            "SELECT " +
+            "  0 AS groupID, " +
+            "  '/0/' AS groupPath " +
+            "FROM dual) k)) " +
+            " " +
+            "UNION (SELECT " +
+            "  created AS time, " +
+            "  data AS message, " +
+            "  v.vehicleID, " +
+            "  d.driverID, " +
+            "  command fwdCmd, " +
+            "  (SELECT " +
+            "    CONCAT(first, ' ', last) " +
+            "  FROM person p2 " +
+            "  WHERE p2.personID = f.personID) AS \"FROM\", " +
+            "  (SELECT " +
+            "    CONCAT(first, ' ', last) " +
+            "  FROM person p2 " +
+            "  WHERE p2.personID = d.personID) AS \"TO\" " +
+            "FROM driver d, " +
+            "     Fwd_WSiridium f, " +
+            "     vehicle v " +
+            "WHERE f.driverID = d.driverID " +
+            "AND f.vehicleID = v.vehicleID " +
+            "AND v.groupID IN (SELECT " +
+            "  w.groupID " +
+            "FROM (SELECT " +
+            "  groupID, " +
+            "  groupPath " +
+            "FROM groups " +
+            "WHERE groupPath LIKE CONCAT('%/', :groupID, '/%') AND status != 3 " +
+            "UNION " +
+            "SELECT " +
+            "  0 AS groupID, " +
+            "  '/0/' AS groupPath " +
+            "FROM dual) w) AND d.groupID IN (SELECT " +
+            "  k.groupID " +
+            "FROM (SELECT " +
+            "  groupID, " +
+            "  groupPath " +
+            "FROM groups " +
+            "WHERE groupPath LIKE CONCAT('%/', :groupID, '/%') AND status != 3 " +
+            "UNION " +
+            "SELECT " +
+            "  0 AS groupID, " +
+            "  '/0/' AS groupPath " +
+            "FROM dual) k))) allz " +
+            "WHERE allz.time >= STR_TO_DATE(:startDate, '%d.%m.%Y') AND allz.time <= STR_TO_DATE(:endDate, '%d.%m.%Y') AND allz.fwdCmd = 355";
 
     private String getStringOrNullFromRS(ResultSet rs, String columnName) throws SQLException {
         return rs.getObject(columnName) == null ? null : rs.getString(columnName);
