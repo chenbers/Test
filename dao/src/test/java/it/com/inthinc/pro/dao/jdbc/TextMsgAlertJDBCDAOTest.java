@@ -31,7 +31,7 @@ public class TextMsgAlertJDBCDAOTest extends SimpleJdbcDaoSupport {
     private static SiloService siloService;
     private static ITData itData = new ITData();
     private Integer acctID;
-    static int TEST_GROUP_ID = 2204;
+    static int TEST_GROUP_ID = 3384;
 
 
     @Before
@@ -65,12 +65,12 @@ public class TextMsgAlertJDBCDAOTest extends SimpleJdbcDaoSupport {
     }
 
     @Test
-    public void getTextMsgCountTest() {
+    public void getTextMsgCountTest() throws Exception {
         List<TableFilterField> filterList = new ArrayList<TableFilterField>();
-        filterList.add(new TableFilterField("vehicleID", "4678"));
-        filterList.add(new TableFilterField("flags", "0"));
+        //filterList.add(new TableFilterField("vehicleID", "7978"));
+        //filterList.add(new TableFilterField("flags", "0"));
         Calendar c1 = Calendar.getInstance();
-        c1.set(2013, Calendar.JANUARY, 1);  //January 1st 2013
+        c1.set(1900, Calendar.JANUARY, 1);  //January 1st 2013
         Date startDate=c1.getTime();
         Date endDate=new Date();
 
@@ -85,6 +85,48 @@ public class TextMsgAlertJDBCDAOTest extends SimpleJdbcDaoSupport {
     }
 
 
+    @Test
+    public void getTextMsgPageTest() throws Exception {
+        List<TableFilterField> filterList = new ArrayList<TableFilterField>();
+        TextMsgAlertJDBCDAO textDAO = new TextMsgAlertJDBCDAO();
+        DataSource dataSource = new ITDataSource().getRealDataSource();
+        textDAO.setDataSource(dataSource);
+
+        Calendar c1 = Calendar.getInstance();
+        c1.set(1900, Calendar.JANUARY, 1);  //January 1st 2013
+        Date startDate=c1.getTime();
+        Date endDate=new Date();
+
+        PageParams pp = new PageParams();
+        pp.setStartRow(0);
+        pp.setEndRow(20);
+
+        //filterList.add(new TableFilterField("vehicleID", "7978"));
+        List<MessageItem> messages = textDAO.getTextMsgPage(3384,startDate,endDate, filterList,pp);
+        Assert.assertTrue("expected to be 1 or >1", messages.size() > 0);
+
+
+
+
+    }
+
+    @Test
+    public void getSentTextMsgsByGroupIDTest() throws Exception {
+
+
+        TextMsgAlertJDBCDAO textDAO = new TextMsgAlertJDBCDAO();
+        DataSource dataSource = new ITDataSource().getRealDataSource();
+        textDAO.setDataSource(dataSource);
+
+        Calendar c1 = Calendar.getInstance();
+        c1.set(2013, Calendar.JANUARY, 1);  //January 1st 2013
+        Date startDate=c1.getTime();
+        Date stopDate= new Date();
+
+
+        List<MessageItem> messages = textDAO.getSentTextMsgsByGroupID(1,startDate,stopDate);
+        Assert.assertTrue("expected to be 1 or >1", messages.size() > 0);
+    }
 
 
 }
