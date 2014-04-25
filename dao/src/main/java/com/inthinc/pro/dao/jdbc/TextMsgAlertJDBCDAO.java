@@ -46,12 +46,12 @@ public class TextMsgAlertJDBCDAO extends SimpleJdbcDaoSupport implements TextMsg
     private static final String GET_MESSAGEITEM2 = "SELECT f.created as time, f.fwdStr AS message," +
                     "f.vehicleID AS vehicleID, f.driverID AS driverID,\n"
                     + "  CONCAT(p.first,' ',p.last) AS \"FROM\", CONCAT(p1.first,' ',p1.last) AS \"TO\" FROM fwd f  join person p on p.personID=f.personID JOIN person p1 "
-                    + "  ON p1.personID=(SELECT personid FROM driver d WHERE d.driverID= f.driverID) where f.created >= :startDate and f.created <= :endDate and f.fwdCmd=355 and f.driverID in (select driverID from driver where groupID in"
+                    + "  ON p1.personID=(SELECT personid FROM driver d WHERE d.driverID= f.driverID) where f.created >= STR_TO_DATE(:startDate, '%d.%m.%Y')and f.created <= STR_TO_DATE(:endDate, '%d.%m.%Y') and f.fwdCmd=355 and f.driverID in (select driverID from driver where groupID in"
                     + "               (select groupID from groups where groupPath like concat('%/',:groupID,'/%') and status != 3 UNION SELECT 0 AS groupid FROM dual)) and f.vehicleID in (select vehicleID from vehicle where "
                     + "                 groupID in (select groupID from groups where groupPath like   concat('%/',:groupID,'/%') and status != 3 UNION SELECT 0 AS groupid FROM dual))" +
                     "  union select ws.data, ws.created, ws.vehicleID, ws.driverID, CONCAT(p.first,' ',p.last),CONCAT(p1.first,' ',p1.last) from Fwd_WSiridium ws  join person p on p.personID=ws.personID  JOIN person p1 "
                     + "  ON p1.personID=(SELECT personid FROM driver d WHERE d.driverID= ws.driverid)"+
-                  " where ws.created >= :startDate and ws.created <= :endDate and ws.command=355 and f.driverID in (select driverID from driver where groupID in"
+                  " where ws.created >=  STR_TO_DATE(:startDate, '%d.%m.%Y') and ws.created <= STR_TO_DATE(:endDate, '%d.%m.%Y') and ws.command=355 and f.driverID in (select driverID from driver where groupID in"
               +" (select groupID from groups where groupPath like concat('%/',:groupID,'/%') and status != 3 UNION SELECT 0 AS groupid FROM dual)) and f.vehicleID in (select vehicleID from vehicle where "
                 +" groupID in (select groupID from groups where groupPath like   concat('%/',:groupID,'/%') and status != 3 UNION SELECT 0 AS groupid FROM dual))"    ;
 
@@ -154,8 +154,8 @@ public class TextMsgAlertJDBCDAO extends SimpleJdbcDaoSupport implements TextMsg
     public List<MessageItem> getSentTextMsgsByGroupID(Integer groupID, Date startTime, Date stopTime) {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("groupID",   groupID );
-        params.put ("startDate", startTime);
-        params.put ("endDate", stopTime);
+        params.put ("startDate", sdf.format(startTime));
+        params.put ("endDate", sdf.format(stopTime));
         List<MessageItem> messages = getSimpleJdbcTemplate().query(GET_MESSAGEITEM2, messageItemFwdParameterizedRowMapper, params);
         return messages;
     }
