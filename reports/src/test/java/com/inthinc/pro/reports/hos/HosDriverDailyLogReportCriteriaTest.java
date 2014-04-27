@@ -301,7 +301,7 @@ public class HosDriverDailyLogReportCriteriaTest extends BaseUnitTest{
             //3 test3_06202010_06302010_rule13
         null, 
             //4 test4_06202010_06302010_rule7
-        new ExpectedRecap(RecapType.US,RuleSetType.TEXAS,1,"00:00","70:00","-","00:00","70:00","","",0),
+        new ExpectedRecap(RecapType.US,RuleSetType.TEXAS,1,"00:00","70:00","00:00","-","70:00","","",0),
             //5 test5_06202010_06302010_rule1
         new ExpectedRecap(RecapType.US,RuleSetType.US,1,"00:00","70:00","-","00:00","70:00","","",0),
             //6 test6_04182010_04202010_rule10
