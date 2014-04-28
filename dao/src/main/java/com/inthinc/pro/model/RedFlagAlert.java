@@ -423,6 +423,7 @@ public class RedFlagAlert extends BaseEntity implements Comparable<RedFlagAlert>
         this.hardVertical = hardVertical;
     }
 
+
     @Override
     public String toString() {
         return "RedFlagAlert [Types="+getTypes()+", severityLevel=" + severityLevel + ", hardAcceleration=" + hardAcceleration + ", hardBrake="

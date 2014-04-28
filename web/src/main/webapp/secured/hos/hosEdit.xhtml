@@ -134,7 +134,7 @@
                                 <td>
                                   <rich:message for="editHosLog_trailer" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
                                   <h:inputText value="#{hosBean.item.trailerID}" id="editHosLog_trailer" onchange="checkMultiple(this)" styleClass="text" size="30"
-                                    maxlength="50"/>
+                                    maxlength="20"/>
                                 </td>
                               </tr>
                               <tr>
@@ -150,7 +150,23 @@
                                 <td>
                                   <rich:message for="editHosLog_service" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
                                   <h:inputText value="#{hosBean.item.serviceID}" id="editHosLog_service" onchange="checkMultiple(this)" styleClass="text" size="30"
-                                    maxlength="50"/>
+                                    maxlength="20"/>
+                                </td>
+                              </tr>
+                              <tr>
+                                <td width="100" valign="top">
+	                              <ui:include src="../../includes/admin/inputLabel.xhtml">
+		                                 <ui:param name="required" value="FALSE"/>
+		                                 <ui:param name="for" value="editHosLog_mobile"/>
+		                                 <ui:param name="fieldName" value="mobileUnitID"/>
+		                                 <ui:param name="editBean" value="#{hosBean}"/>
+		                                 <ui:param name="label" value="#{messages.hosLog_mobile}"/>
+	                              </ui:include>
+                                </td>
+                                <td>
+                                  <rich:message for="editHosLog_mobile" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
+                                  <h:inputText value="#{hosBean.item.mobileUnitID}" id="editHosLog_mobile" onchange="checkMultiple(this)" styleClass="text" size="30"
+                                    maxlength="20"/>
                                 </td>
                               </tr>
                               <tr>

@@ -417,7 +417,7 @@ public abstract class BaseITData {
         redFlagAlert = initRedFlagAlert(AlertMessageType.ALERT_TYPE_PANIC, "generic");
         redFlagAlert.setSeverityLevel(RedFlagLevel.INFO);
         addRedFlagAlert(redFlagAlert, redFlagAlertDAO);
-    
+
     }
 
 
