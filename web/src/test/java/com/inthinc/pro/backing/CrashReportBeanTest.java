@@ -1,52 +1,52 @@
 package com.inthinc.pro.backing;
 
+import static org.easymock.classextension.EasyMock.createMock;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Properties;
 
+import org.easymock.classextension.EasyMock;
+import org.joda.time.DateTime;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.springframework.test.util.ReflectionTestUtils;
 
 import com.inthinc.pro.dao.CrashReportDAO;
+import com.inthinc.pro.dao.EventDAO;
 import com.inthinc.pro.model.CrashReport;
 import com.inthinc.pro.model.Trip;
 import com.inthinc.pro.model.event.Event;
+import com.inthinc.pro.model.event.EventSubCategory;
+import com.inthinc.pro.model.event.NoteType;
 
 
 public class CrashReportBeanTest extends  BaseBeanTest{
-	
-	private CrashReportDAO crashReportDAO;
 	
 	private Trip crashReportTrip;
 
 	private CrashReport crashReport;
 
 	private CrashReportBean crashReportBean;
+	
+	List<Event> crashEvents = new ArrayList<Event>();
+	
+	Properties prop = new Properties();
 
 	@Before
 	public void setUp() throws Exception {
 		
 		crashReportBean = (CrashReportBean)applicationContext.getBean("crashReportBean");
-		assertNotNull(crashReportBean);
-				
-		crashReportBean.setCrashReportDAO(getCrashReportDAO());
-		crashReportDAO = crashReportBean.getCrashReportDAO();
-		assertNotNull(crashReportDAO);
-						
-		crashReportBean.setCrashReport(getCrashReport());
+		crashReportBean.setCrashReport(getCrashReport());		
 		crashReport = crashReportBean.getCrashReport();
-		assertNotNull(crashReport);		
+		crashReportTrip = null;		
 	}
 
 	@After
 	public void tearDown() throws Exception {	
-	}
-
-	public CrashReportDAO getCrashReportDAO() {
-		crashReportDAO = (CrashReportDAO)applicationContext.getBean("crashReportDAO");
-		return crashReportDAO;
-	}
+	}	
 	
 	public CrashReport getCrashReport() {
 		CrashReport crashReport = new CrashReport();
@@ -58,36 +58,120 @@ public class CrashReportBeanTest extends  BaseBeanTest{
 		return crashReport;		
 	}
 	
+	//Test of getCrashReportTrip() method for Valid CrashReport Value
 	@Test
-	public void testGetCrashReportTrip() {
-		
-		//search for Valid Trip associated with Crash
-		crashReportTrip = getCrashReportTrip();
-				
-		//If no trip found for associated crash go for Note Events
-		List<Event> driverEvents = getEventsForDriver();
-		assertNotNull(driverEvents);
-		System.out.println("crashReport lat/lng before using Note Events:" +crashReport.getLat()+","+crashReport.getLng());
-		//Replace invalid crashReport lat/lng with valid Note Event lat/lng
-		crashReportBean.populateAddresses(driverEvents);
-		System.out.println("crashReport lat/lng after using Note Events:" +crashReport.getLat()+","+crashReport.getLng());
-		
-		//Check if there are invalid crashReport lat/lng with valid trip details 
-		System.out.println("crashReportTrip lat/lng:" +crashReportTrip.getStartLat()+","+crashReportTrip.getStartLng());
-		crashReport = getValidCrashReport();
-		System.out.println("Invalid crashReport lat/lng changed with valid trip lat/lng:" +crashReport.getLat()+","+crashReport.getLng());
-	}   
+	public void testGetCrashReportTripNotNullCrashReport() {
+		CrashReportDAO mockCrashReportDAO = createMock(CrashReportDAO.class);
+		crashReportTrip = mockCrashReportDAO.getTrip(crashReport);	
+		ReflectionTestUtils.setField(crashReportBean, "crashReportTrip", crashReportTrip);
+		crashReportBean.getCrashReportTrip();
+	}
 	
-	public Trip getCrashReportTrip(){
-		
+	//Test of getCrashReportTrip() method for Valid CrashReportTrip Value	
+	@Test
+	public void testGetCrashReportTripNotNullCrashReportTrip() {
+		CrashReportDAO mockCrashReportDAO = createMock(CrashReportDAO.class);
+		crashReportTrip = mockCrashReportDAO.getTrip(crashReport);	
+		ReflectionTestUtils.setField(crashReportBean, "crashReportTrip", crashReportTrip);
+		crashReportBean.getCrashReportTrip();
+	}
+	
+	//Test of getCrashReportTrip() method for Null CrashReport Value
+	@Test
+	public void testGetCrashReportTripNullCrashReport() {
+		CrashReport crashReport = null;
+		CrashReportDAO mockCrashReportDAO = createMock(CrashReportDAO.class);
+		crashReportTrip = mockCrashReportDAO.getTrip(crashReport);	
+		ReflectionTestUtils.setField(crashReportBean, "crashReportTrip", crashReportTrip);
+		crashReportBean.getCrashReportTrip();
+	}
+	
+	//Test of getCrashReportTrip() method for Null CrashReportTrip Value
+	@Test
+	public void testGetCrashReportTripNullCrashReportTrip() {
+		crashReportBean.getCrashReportTrip();
+	}
+	
+	//Test of getCrashReportTrip() method for Null CrashReport and Null CrashReportTrip Value
+	@Test
+	public void testGetCrashReportTripNullCrashReportNullCrashReportTrip() {
+		crashReportBean.getCrashReportTrip();
+		crashReport = null;
+		crashReportBean.getCrashReportTrip();		
+	}
+	
+	//Test of getCrashReportTrip() method for Valid CrashReport and Valid CrashReportTrip Value
+	@Test
+	public void testGetCrashReportTripNotNullCrashReportNotNullCrashReportTrip() {
+		CrashReportDAO mockCrashReportDAO = createMock(CrashReportDAO.class);
+		crashReportTrip = mockCrashReportDAO.getTrip(crashReport);	
+		ReflectionTestUtils.setField(crashReportBean, "crashReportTrip", crashReportTrip);
+		crashReportBean.getCrashReportTrip();
+	}	
+	
+	//Test of getCrashReportTrip() method for InValid CrashEvents and Valid CrashReportTrip Value
+	@Test
+	public void testGetCrashReportTripNullCrashEvent() {		
+		crashReportTrip = getCrashReportTrip(crashReport);	
+		ReflectionTestUtils.setField(crashReportBean, "crashReportTrip", crashReportTrip);
+		crashReportBean.getCrashReportTrip();
+	}
+	
+	//Test of getCrashReportTrip() and populateAddresses() methods for Valid DriverID
+	@Test
+	public void testGetCrashReportTripCrashEventForDriver() throws SecurityException, NoSuchMethodException {
+		crashEvents = getCrashEvents(crashReport.getDriverID());
+		ReflectionTestUtils.setField(crashReportBean, "crashEvents", crashEvents);
+		EventDAO mockEventDAO = createMock(EventDAO.class);
+		crashReportBean.setEventDAO(mockEventDAO);
+		DateTime crashTime = new DateTime(crashReport.getDate()); 
+		EasyMock.expect(mockEventDAO.getEventsForDriver(1627, crashTime.minusHours(1).toDate(), crashTime.plusHours(1).toDate(), getCrashEventTypeList(), 1)).andReturn(crashEvents);
+		EasyMock.replay(mockEventDAO);
+		crashReportBean.getCrashReportTrip();		
+	}
+	
+	//Test of getCrashReportTrip() and populateAddresses() methods for Valid VehicleID
+	@Test
+	public void testGetCrashReportTripCrashEventForVehicle() {
+		crashReport.setDriverID(null);
+		crashEvents = getCrashEvents(crashReport.getVehicleID());
+		ReflectionTestUtils.setField(crashReportBean, "crashEvents", crashEvents);
+		EventDAO mockEventDAO = createMock(EventDAO.class);
+		crashReportBean.setEventDAO(mockEventDAO);
+		DateTime crashTime = new DateTime(crashReport.getDate()); 
+		EasyMock.expect(mockEventDAO.getEventsForVehicle(5042, crashTime.minusHours(1).toDate(), crashTime.plusHours(1).toDate(), getCrashEventTypeList(), 1)).andReturn(crashEvents);
+		EasyMock.replay(mockEventDAO);		
+		crashReportBean.getCrashReportTrip();		
+	}
+	
+	
+	// Hard code crashReportTrip value
+	public Trip  getCrashReportTrip(CrashReport crashReport){
 		Trip crashReportTrip = new Trip();
 		crashReportTrip.setDriverID(1);
 		crashReportTrip.setStartLat(40.00004);
 		crashReportTrip.setStartLng(111.001);
-		return crashReportTrip;
+		return crashReportTrip;			
 	}
 	
-	public List<Event> getEventsForDriver(){
+	// Crash Event Type List to retrieve it from eventDao
+	public List<NoteType> getCrashEventTypeList() {		
+		List<NoteType> crashEventTypeList = new ArrayList<NoteType>();
+		crashEventTypeList.add(NoteType.CRASH_DATA);
+		crashEventTypeList.add(NoteType.FULLEVENT);
+		crashEventTypeList.add(NoteType.SEATBELT);
+		crashEventTypeList.addAll(EventSubCategory.SPEED.getNoteTypesInSubCategory());
+		crashEventTypeList.add(NoteType.ACCELERATION);
+		crashEventTypeList.add(NoteType.LOCATION);
+		crashEventTypeList.add(NoteType.PARKING_BRAKE);
+		crashEventTypeList.addAll(EventSubCategory.DRIVING_STYLE.getNoteTypesInSubCategory());
+		crashEventTypeList.add(NoteType.DSS_MICROSLEEP);
+		crashEventTypeList.add(NoteType.BACKING);
+		return crashEventTypeList;
+	}
+
+	// Hard coded CrashEvent values
+	public List<Event> getCrashEvents(int ID){
 		
 		List<Event> crashEvents = new ArrayList<Event>();
 		Event e1 = new Event();
@@ -114,16 +198,7 @@ public class CrashReportBeanTest extends  BaseBeanTest{
 		crashEvents.get(3).setLatitude(56.1385);
 		crashEvents.get(3).setLongitude(-124.2960);	
 		
-		return crashEvents;		
+		return crashEvents;	
 	}
-	
-	public CrashReport getValidCrashReport(){
-		
-		if(crashReportTrip!=null && ((crashReportTrip.getStartLat() > 0.005 || crashReportTrip.getStartLat() < -0.005) && (crashReportTrip.getStartLng() > 0.005 || crashReportTrip.getStartLng() < -0.005))){
-			crashReport.setLat(crashReportTrip.getStartLat()+ 0.00005);
-			crashReport.setLng(crashReportTrip.getStartLng());
-		}
-		return crashReport;
-	}
-	
-}
+
+}	

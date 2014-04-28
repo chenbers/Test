@@ -29,7 +29,6 @@ import com.inthinc.pro.model.CrashReportStatus;
 import com.inthinc.pro.model.Device;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.EntityType;
-import com.inthinc.pro.model.Person;
 import com.inthinc.pro.model.Trip;
 import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.model.event.Event;
@@ -75,10 +74,13 @@ public class CrashReportBean extends BaseBean {
     private File crashTraceFile;
     private FileUploadBean fileUploadBean;
     
+    public CrashReportBean() {
+		super();
+    }
+    
     public void serveCrashTrace() {
         HttpServletResponse response = (HttpServletResponse) getFacesContext().getExternalContext().getResponse();
         setCrashReport(crashReportDAO.findByID(crashTraceEventID));
-
         OutputStream out = null;
         try {
             out = response.getOutputStream();
@@ -491,6 +493,9 @@ public class CrashReportBean extends BaseBean {
     }
 
     // returns the Trip associated with the current CrashReport. Used on the Crash Report Detail page
+    /**
+     * @return
+     */
     public Trip getCrashReportTrip() {
         if (crashReport != null && crashReportTrip == null) {
             crashReportTrip = crashReportDAO.getTrip(crashReport);
@@ -506,7 +511,8 @@ public class CrashReportBean extends BaseBean {
         
         // Defect #DE9207 --> Start
         // Check if crashReport have valid lat/lng values (i.e non (0,0))
-        if((crashReport.getLat() < 0.005 && crashReport.getLat() > -0.005) || (crashReport.getLng() < 0.005 && crashReport.getLng() > -0.005)){
+        if(crashReport != null){
+        	if((crashReport.getLat() < 0.005 && crashReport.getLat() > -0.005) || (crashReport.getLng() < 0.005 && crashReport.getLng() > -0.005)){
         	    // Get all cachedNote events associated with current CrashReport  	
     			DateTime crashTime = new DateTime(crashReport.getDate()); 
     			List<NoteType> crashEventTypeList = new ArrayList<NoteType>();
@@ -536,7 +542,7 @@ public class CrashReportBean extends BaseBean {
     			}
     			
     			// Get crashEvents associated with current crashReport Driver/ vehicle for specified hours of duration
-    			if (crashReport != null && crashReport.getDriverID() != null){    
+    			if (crashReport != null && crashReport.getDriverID() != null){
     				crashEvents = eventDAO.getEventsForDriver(crashReport.getDriverID(), crashTime.minusHours(crashEventHr).toDate(), crashTime.plusHours(crashEventHr).toDate(), crashEventTypeList, getShowExcludedEvents());
     				logger.debug("Driver Crash Events for +/-"+ crashEventHr +" Hour:"+ crashEvents);
     			}
@@ -565,11 +571,11 @@ public class CrashReportBean extends BaseBean {
     				// Check if there are invalid crashReport lat/lng with valid trip details
     		   		if(crashReportTrip!=null && ((crashReportTrip.getStartLat() > 0.005 || crashReportTrip.getStartLat() < -0.005) && (crashReportTrip.getStartLng() > 0.005 || crashReportTrip.getStartLng() < -0.005))){
         			crashReport.setLat(crashReportTrip.getStartLat()+ 0.00005);
-        			crashReport.setLng(crashReportTrip.getStartLng());
-        		}
+        			crashReport.setLng(crashReportTrip.getStartLng());}
+    			}
         	}
-        }
         
+        }
         // Defect #DE9207 --> end     
         return crashReportTrip;
     }
@@ -666,5 +672,7 @@ public class CrashReportBean extends BaseBean {
     public CrashTraceBean getCrashTraceBean() {
         return crashTraceBean;
     }
+    
+    
 
 }
