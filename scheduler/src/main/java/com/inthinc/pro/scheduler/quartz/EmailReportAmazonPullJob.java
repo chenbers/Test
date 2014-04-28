@@ -323,7 +323,7 @@ public class EmailReportAmazonPullJob extends QuartzJobBean {
         // Set the current date of the reports
         FormatType formatType = FormatType.PDF;
         try{
-            formatType = FormatType.valueOf(reportSchedule.getFormat());
+            formatType = Enum.valueOf(FormatType.class, reportSchedule.getFormat());
         } catch (Throwable t){
             logger.info("Failed to read format type for report schedule: "+reportSchedule.getReportScheduleID()+". Keeping PDF as default.");
         }
