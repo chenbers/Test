@@ -17,6 +17,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -44,6 +45,15 @@ public class TablePreferenceJDBCDAO extends SimpleJdbcDaoSupport implements Tabl
             tablePreference.setUserID(rs.getInt("userID"));
             tablePreference.setFlags(rs.getString("flags"));
             tablePreference.setTableType(TableType.valueOf(rs.getInt("tableType")));
+            List<Boolean> visible = new ArrayList<Boolean>();
+
+            String list = rs.getString("flags");
+            for (int i = 0; i < list.length(); i++)
+            {
+                visible.add(list.charAt(i) == '1');
+            }
+
+            tablePreference.setVisible(visible);
 
             return tablePreference;
         }
