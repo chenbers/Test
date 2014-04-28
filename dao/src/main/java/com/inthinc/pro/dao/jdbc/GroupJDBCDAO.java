@@ -1,6 +1,7 @@
 package com.inthinc.pro.dao.jdbc;
 
 import com.inthinc.pro.dao.GroupDAO;
+import com.inthinc.pro.dao.hessian.exceptions.EmptyResultSetException;
 import com.inthinc.pro.model.Address;
 import com.inthinc.pro.model.DOTOfficeType;
 import com.inthinc.pro.model.Group;
@@ -148,10 +149,14 @@ public class GroupJDBCDAO extends SimpleJdbcDaoSupport implements GroupDAO {
 
     @Override
     public Group findByID(Integer groupID) {
+        try {
         Map<String, Object> args = new HashMap<String, Object>();
         args.put("groupID", groupID);
         StringBuilder groupSelectAcct = new StringBuilder(FIND_GROUP_BY_ID);
         return getSimpleJdbcTemplate().queryForObject(groupSelectAcct.toString(), groupParameterizedRow, args);
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
     }
 
     @Override
