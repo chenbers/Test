@@ -48,8 +48,7 @@ public class TablePreferenceJDBCDAO extends SimpleJdbcDaoSupport implements Tabl
             List<Boolean> visible = new ArrayList<Boolean>();
 
             String list = rs.getString("flags");
-            for (int i = 0; i < list.length(); i++)
-            {
+            for (int i = 0; i < list.length(); i++) {
                 visible.add(list.charAt(i) == '1');
             }
 

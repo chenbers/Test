@@ -1,16 +1,5 @@
 package com.inthinc.pro.dao.jdbc;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-
-import org.springframework.jdbc.core.simple.ParameterizedRowMapper;
-import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
-
 import com.inthinc.pro.dao.util.GeoUtil;
 import com.inthinc.pro.model.Device;
 import com.inthinc.pro.model.DeviceStatus;
@@ -29,8 +18,18 @@ import com.inthinc.pro.model.pagination.FilterOp;
 import com.inthinc.pro.model.pagination.PageParams;
 import com.inthinc.pro.model.pagination.SortOrder;
 import com.inthinc.pro.model.pagination.TableFilterField;
+import org.springframework.jdbc.core.simple.ParameterizedRowMapper;
+import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
 
-public class AdminVehicleJDBCDAO extends SimpleJdbcDaoSupport{
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+
+public class AdminVehicleJDBCDAO extends SimpleJdbcDaoSupport {
     private static String PLUS_LAST_LOC_COLUMNS_STRING = "";// " vehicleID, groupID, status, groupPath, modified, vtype, hos, dot, ifta, zonetype, odometer, absOdometer, weight, year, name, make, model, color, vin, license, stateID, warrantyStart, warranteStop, aggDate, newAggDate ";
     private static String PAGED_VEHICLE_COLUMNS_STRING = "";
     /**
@@ -43,10 +42,10 @@ public class AdminVehicleJDBCDAO extends SimpleJdbcDaoSupport{
         plusLastLocColumnMap.put("modified", "v.modified");
         plusLastLocColumnMap.put("latitude", "lastLocVehicle.latitude");
         plusLastLocColumnMap.put("longitude", "lastLocVehicle.longitude");
-        for(String columnName: plusLastLocColumnMap.values()){
-            PLUS_LAST_LOC_COLUMNS_STRING += " , "+columnName+" ";
+        for (String columnName : plusLastLocColumnMap.values()) {
+            PLUS_LAST_LOC_COLUMNS_STRING += " , " + columnName + " ";
         }
-        
+
         // these match the columns displayed in admin/vehicles
         pagedColumnMap.put("name", "v.name");
         pagedColumnMap.put("fullName", "CONCAT(p.first, ' ', p.last)");
@@ -69,43 +68,45 @@ public class AdminVehicleJDBCDAO extends SimpleJdbcDaoSupport{
         pagedColumnMap.put("IFTA", "v.ifta");
         pagedColumnMap.put("productType", "d.productVer");
 
-        PAGED_VEHICLE_COLUMNS_STRING = 
-                "v.vehicleID, v.groupID, v.status, v.name, v.make, v.model, v.year, v.color, v.vtype, v.vin, v.weight, v.license, v.stateID, v.odometer, v.ifta, v.absOdometer, "+
-                "d.deviceID, d.acctID, d.status, d.name, d.imei, d.sim, d.serialNum, d.phone, d.activated, d.baseID, d.productVer, d.firmVer, d.witnessVer, d.emuMd5, d.mcmid, d.altImei," +
-                "vdd.deviceID, vdd.driverID, CONCAT(p.first, ' ', p.last), g.name, p.first, p.middle, p.last, p.suffix";
-                
-    };
+        PAGED_VEHICLE_COLUMNS_STRING =
+                "v.vehicleID, v.groupID, v.status, v.name, v.make, v.model, v.year, v.color, v.vtype, v.vin, v.weight, v.license, v.stateID, v.odometer, v.ifta, v.absOdometer, " +
+                        "d.deviceID, d.acctID, d.status, d.name, d.imei, d.sim, d.serialNum, d.phone, d.activated, d.baseID, d.productVer, d.firmVer, d.witnessVer, d.emuMd5, d.mcmid, d.altImei," +
+                        "vdd.deviceID, vdd.driverID, CONCAT(p.first, ' ', p.last), g.name, p.first, p.middle, p.last, p.suffix";
+
+    }
+
+    ;
     private static final String VEHICLE_PLUS_LASTLOC_SELECT_BY_ACCOUNT = //
-            "SELECT " + PAGED_VEHICLE_COLUMNS_STRING + " " + PLUS_LAST_LOC_COLUMNS_STRING + " "+//
-            "FROM vehicle v " + //
-            "LEFT JOIN groups g USING (groupID) " +  //
-            "LEFT OUTER JOIN vddlog vdd ON (v.vehicleID = vdd.vehicleID and vdd.stop is null) " +  //
-            "LEFT OUTER JOIN device d ON (d.deviceID = vdd.deviceID and vdd.stop is null) " +  //
-            "LEFT OUTER JOIN driver dr ON (dr.driverID = vdd.driverID and vdd.stop is null) " + // 
-            "LEFT OUTER JOIN person p ON (dr.personID = p.personID) " + //
-            "LEFT OUTER JOIN lastLocVehicle ON (v.vehicleID = lastLocVehicle.vehicleID) " + //
-            "WHERE g.acctID = :acctID "; //
+            "SELECT " + PAGED_VEHICLE_COLUMNS_STRING + " " + PLUS_LAST_LOC_COLUMNS_STRING + " " +//
+                    "FROM vehicle v " + //
+                    "LEFT JOIN groups g USING (groupID) " +  //
+                    "LEFT OUTER JOIN vddlog vdd ON (v.vehicleID = vdd.vehicleID and vdd.stop is null) " +  //
+                    "LEFT OUTER JOIN device d ON (d.deviceID = vdd.deviceID and vdd.stop is null) " +  //
+                    "LEFT OUTER JOIN driver dr ON (dr.driverID = vdd.driverID and vdd.stop is null) " + //
+                    "LEFT OUTER JOIN person p ON (dr.personID = p.personID) " + //
+                    "LEFT OUTER JOIN lastLocVehicle ON (v.vehicleID = lastLocVehicle.vehicleID) " + //
+                    "WHERE g.acctID = :acctID "; //
 
-    private static final String PAGED_VEHICLE_SUFFIX = 
-            "FROM vehicle v " + 
-            "LEFT JOIN groups g USING (groupID) " + 
-            "LEFT OUTER JOIN vddlog vdd ON (v.vehicleID = vdd.vehicleID and vdd.stop is null) " + 
-            "LEFT OUTER JOIN device d ON (d.deviceID = vdd.deviceID and vdd.stop is null) " + 
-            "LEFT OUTER JOIN driver dr ON (dr.driverID = vdd.driverID and vdd.stop is null) " + 
-            "LEFT OUTER JOIN person p ON (dr.personID = p.personID) " + 
-            "WHERE v.groupID in (:group_list) and v.status != 3"; 
-    
-    private static final String PAGED_VEHICLE_SELECT = 
-            "SELECT " + PAGED_VEHICLE_COLUMNS_STRING + " "+ PAGED_VEHICLE_SUFFIX;
+    private static final String PAGED_VEHICLE_SUFFIX =
+            "FROM vehicle v " +
+                    "LEFT JOIN groups g USING (groupID) " +
+                    "LEFT OUTER JOIN vddlog vdd ON (v.vehicleID = vdd.vehicleID and vdd.stop is null) " +
+                    "LEFT OUTER JOIN device d ON (d.deviceID = vdd.deviceID and vdd.stop is null) " +
+                    "LEFT OUTER JOIN driver dr ON (dr.driverID = vdd.driverID and vdd.stop is null) " +
+                    "LEFT OUTER JOIN person p ON (dr.personID = p.personID) " +
+                    "WHERE v.groupID in (:group_list) and v.status != 3";
 
-    private static final String PAGED_VEHICLE_COUNT = 
-            "SELECT COUNT(*)  "+ PAGED_VEHICLE_SUFFIX;
+    private static final String PAGED_VEHICLE_SELECT =
+            "SELECT " + PAGED_VEHICLE_COLUMNS_STRING + " " + PAGED_VEHICLE_SUFFIX;
+
+    private static final String PAGED_VEHICLE_COUNT =
+            "SELECT COUNT(*)  " + PAGED_VEHICLE_SUFFIX;
 
     private static final String MILES_DRIVEN =
             "SELECT MAX(vs.endingOdometer) milesDriven FROM vehicleScoreByDay vs where vs.vehicleID = :vehicleID";
 
-    private static final String FILTERED_VEHICLES_IDS_SELECT = 
-            "SELECT v.vehicleID, d.productVer "+ PAGED_VEHICLE_SUFFIX;
+    private static final String FILTERED_VEHICLES_IDS_SELECT =
+            "SELECT v.vehicleID, d.productVer " + PAGED_VEHICLE_SUFFIX;
 
     public Integer getCount(List<Integer> groupIDs, List<TableFilterField> filters) {
         String vehicleCount = PAGED_VEHICLE_COUNT;
@@ -115,7 +116,7 @@ public class AdminVehicleJDBCDAO extends SimpleJdbcDaoSupport{
         Integer cnt = getSimpleJdbcTemplate().queryForInt(vehicleCount, params);
         return cnt;
     }
-    
+
     public List<VehicleIdentifiers> getFilteredVehicleIDs(List<Integer> groupIDs, List<TableFilterField> filters) {
         String vehicleIdentifiers = FILTERED_VEHICLES_IDS_SELECT;
         Map<String, Object> params = new HashMap<String, Object>();
@@ -128,94 +129,93 @@ public class AdminVehicleJDBCDAO extends SimpleJdbcDaoSupport{
                 vehicleIdentifiers.setVehicleID(rs.getInt("v.vehicleID"));
                 Integer productVer = rs.getObject("d.productVer") == null ? null : rs.getInt("d.productVer");
                 vehicleIdentifiers.setProductType(productVer == null ? ProductType.UNKNOWN : ProductType.getProductTypeFromVersion(productVer));
-                
+
                 return vehicleIdentifiers;
-            }           
-        } , params);
+            }
+        }, params);
     }
 
     public Integer getMilesDriven(Integer vehicleID) {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("vehicleID", vehicleID);
-        
+
         Integer miles = getSimpleJdbcTemplate().queryForInt(MILES_DRIVEN, params);
-        
+
         return miles == null ? 0 : miles;
     }
-    
+
     private String addFiltersToQuery(final List<TableFilterField> filters,
-            String queryStr, Map<String, Object> params) {
-        if(filters != null && !filters.isEmpty()) {
+                                     String queryStr, Map<String, Object> params) {
+        if (filters != null && !filters.isEmpty()) {
             StringBuilder countFilter = new StringBuilder();
-            for(TableFilterField filter : filters) {
-                if(filter.getField() != null && pagedColumnMap.containsKey(filter.getField()) && filter.getFilter() != null ) {
-                    String paramName = "filter_"+filter.getField();
+            for (TableFilterField filter : filters) {
+                if (filter.getField() != null && pagedColumnMap.containsKey(filter.getField()) && filter.getFilter() != null) {
+                    String paramName = "filter_" + filter.getField();
                     if (filter.getFilter().toString().isEmpty())
                         continue;
                     if (filter.getFilterOp() == FilterOp.IN) {
                         countFilter.append(" AND " + pagedColumnMap.get(filter.getField()) + " in (:" + paramName + ")");
                         params.put(paramName, filter.getFilter());
-                        
-                    }
-                    else if (filter.getFilterOp() == FilterOp.IN_OR_NULL) {
+
+                    } else if (filter.getFilterOp() == FilterOp.IN_OR_NULL) {
                         countFilter.append(" AND (" + pagedColumnMap.get(filter.getField()) + " in (:" + paramName + ") OR " + pagedColumnMap.get(filter.getField()) + " IS NULL)");
                         params.put(paramName, filter.getFilter());
-                        
-                    }
-                    else {
+
+                    } else {
                         countFilter.append(" AND " + pagedColumnMap.get(filter.getField()) + " LIKE :" + paramName);
-                        params.put(paramName, "%"+filter.getFilter()+"%");
+                        params.put(paramName, "%" + filter.getFilter() + "%");
                     }
-                    
+
                 }
             }
             queryStr = queryStr + countFilter.toString();
         }
         return queryStr;
     }
-    
+
 
     public List<Vehicle> getVehicles(List<Integer> groupIDs, PageParams pageParams) {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("group_list", groupIDs);
         StringBuilder vehicleSelect = new StringBuilder();
         vehicleSelect.append(PAGED_VEHICLE_SELECT);
-        
+
         /***FILTERING***/
         vehicleSelect = new StringBuilder(addFiltersToQuery(pageParams.getFilterList(), vehicleSelect.toString(), params));
 
         /***SORTING***/
-        if(pageParams.getSort() != null && !pageParams.getSort().getField().isEmpty())
+        if (pageParams.getSort() != null && !pageParams.getSort().getField().isEmpty())
             vehicleSelect.append(" ORDER BY " + pagedColumnMap.get(pageParams.getSort().getField()) + " " + (pageParams.getSort().getOrder() == SortOrder.ASCENDING ? "ASC" : "DESC"));
-        
+
         /***PAGING***/
-        if(pageParams.getStartRow() != null && pageParams.getEndRow() != null)
-            vehicleSelect.append(" LIMIT " + pageParams.getStartRow() + ", " + ((pageParams.getEndRow() - pageParams.getStartRow())+1) );
-        
-                
+        if (pageParams.getStartRow() != null && pageParams.getEndRow() != null)
+            vehicleSelect.append(" LIMIT " + pageParams.getStartRow() + ", " + ((pageParams.getEndRow() - pageParams.getStartRow()) + 1));
+
+
         List<Vehicle> vehicleList = getSimpleJdbcTemplate().query(vehicleSelect.toString(), pagedVehicleRowMapper, params);
-        
+
 
         return vehicleList;
     }
-    public List<Vehicle> findVehiclesByAccountWithinDistance(Integer accountID, Long distanceInKM, LatLng location){
+
+    public List<Vehicle> findVehiclesByAccountWithinDistance(Integer accountID, Long distanceInKM, LatLng location) {
         List<Vehicle> results = new ArrayList<Vehicle>();
         List<VehiclePlusLastLoc> vehiclesPlusLastLoc = new ArrayList<VehiclePlusLastLoc>();
 
         Map<String, Object> args = new HashMap<String, Object>();
         args.put("acctID", accountID);
         vehiclesPlusLastLoc = getSimpleJdbcTemplate().query(VEHICLE_PLUS_LASTLOC_SELECT_BY_ACCOUNT, vehiclePlusLastLocRowMapper, args);
-        logger.debug("VEHICLE_PLUS_LASTLOC_SELECT_BY_ACCOUNT: "+VEHICLE_PLUS_LASTLOC_SELECT_BY_ACCOUNT);
-        
-        for(VehiclePlusLastLoc vehiclePlusLastLoc: vehiclesPlusLastLoc){
-            if(GeoUtil.distBetween(location, vehiclePlusLastLoc.getLastLoc(), MeasurementType.METRIC) <= distanceInKM) {
+        logger.debug("VEHICLE_PLUS_LASTLOC_SELECT_BY_ACCOUNT: " + VEHICLE_PLUS_LASTLOC_SELECT_BY_ACCOUNT);
+
+        for (VehiclePlusLastLoc vehiclePlusLastLoc : vehiclesPlusLastLoc) {
+            if (GeoUtil.distBetween(location, vehiclePlusLastLoc.getLastLoc(), MeasurementType.METRIC) <= distanceInKM) {
                 //logger.debug("adding: "+vehiclePlusLastLoc.getVehicle());
                 results.add(vehiclePlusLastLoc.getVehicle());
             } else {
                 //logger.debug("NOT ADDING: "+vehiclePlusLastLoc.getVehicle());
             }
         }
-        
+
         return results;
     }
 
@@ -225,7 +225,7 @@ public class AdminVehicleJDBCDAO extends SimpleJdbcDaoSupport{
             Vehicle vehicle = new Vehicle();
             vehicle.setVehicleID(rs.getInt("v.vehicleID"));
             vehicle.setColor(rs.getString("v.color"));
-            vehicle.setCreated(null); 
+            vehicle.setCreated(null);
             vehicle.setDeviceID(rs.getObject("vdd.deviceID") == null ? null : rs.getInt("vdd.deviceID"));
             vehicle.setDriverID(rs.getObject("vdd.driverID") == null ? null : rs.getInt("vdd.driverID"));
             vehicle.setFullName(rs.getString("v.name"));
@@ -241,11 +241,10 @@ public class AdminVehicleJDBCDAO extends SimpleJdbcDaoSupport{
             Long absOdometer = rs.getObject("v.absOdometer") == null ? null : (rs.getLong("v.absOdometer"));
             Long odometer = rs.getObject("v.odometer") == null ? null : rs.getLong("v.odometer");
             if (absOdometer != null) {
-                vehicle.setOdometer(Long.valueOf(absOdometer/100l).intValue()); 
-            }
-            else if (odometer != null) {
-                Integer milesDriven = getMilesDriven(vehicle.getVehicleID()); 
-                vehicle.setOdometer(Long.valueOf((odometer + milesDriven)/100).intValue());
+                vehicle.setOdometer(Long.valueOf(absOdometer / 100l).intValue());
+            } else if (odometer != null) {
+                Integer milesDriven = getMilesDriven(vehicle.getVehicleID());
+                vehicle.setOdometer(Long.valueOf((odometer + milesDriven) / 100).intValue());
             }
             vehicle.setState(States.getStateById(rs.getInt("v.stateID")));
             vehicle.setStatus(Status.valueOf(rs.getInt("v.status")));
@@ -275,9 +274,9 @@ public class AdminVehicleJDBCDAO extends SimpleJdbcDaoSupport{
                 device.setAltimei(rs.getString("d.altImei"));
                 device.setProductVersion(device.getProductVer() == null ? ProductType.UNKNOWN : ProductType.getProductTypeFromVersion(device.getProductVer()));
                 vehicle.setDevice(device);
-                
+
             }
-            
+
             return vehicle;
         }
     };
@@ -291,7 +290,7 @@ public class AdminVehicleJDBCDAO extends SimpleJdbcDaoSupport{
                 result.append(' ');
             result.append(rs.getString("p.middle"));
         }
-        if (rs.getObject("p.last")!=null && !rs.getString("p.last").isEmpty()) {
+        if (rs.getObject("p.last") != null && !rs.getString("p.last").isEmpty()) {
             if (result.length() > 0)
                 result.append(' ');
             result.append(rs.getString("p.last"));
@@ -304,14 +303,14 @@ public class AdminVehicleJDBCDAO extends SimpleJdbcDaoSupport{
         return result.toString();
     }
 
-    private ParameterizedRowMapper<VehiclePlusLastLoc> vehiclePlusLastLocRowMapper = new ParameterizedRowMapper<VehiclePlusLastLoc>(){
+    private ParameterizedRowMapper<VehiclePlusLastLoc> vehiclePlusLastLocRowMapper = new ParameterizedRowMapper<VehiclePlusLastLoc>() {
 
         @Override
         public VehiclePlusLastLoc mapRow(ResultSet rs, int rowNum) throws SQLException {
             //TODO: jwimmer: review with cJennings:
             // reusing your pagedVehicleRowMapper (looked like you had all the quirks that I was starting to hit worked out already)
             // not sure why pagedVehicleRowMapper doesn't  setModified ???
-            
+
             Vehicle vehicle = pagedVehicleRowMapper.mapRow(rs, rowNum);
             vehicle.setModified(rs.getDate("v.modified"));
             VehiclePlusLastLoc vehiclePlusLastLoc = new VehiclePlusLastLoc();
@@ -320,8 +319,8 @@ public class AdminVehicleJDBCDAO extends SimpleJdbcDaoSupport{
             return vehiclePlusLastLoc;
         }
     };
-    
-    private class VehiclePlusLastLoc{
+
+    private class VehiclePlusLastLoc {
         private Vehicle vehicle;
         private LatLng lastLoc;
 
@@ -340,29 +339,29 @@ public class AdminVehicleJDBCDAO extends SimpleJdbcDaoSupport{
         public void setVehicle(Vehicle vehicle) {
             this.vehicle = vehicle;
         }
-        
+
     }
 
-    private static final String FUEL_STOP_VEHICLE_SELECT = 
+    private static final String FUEL_STOP_VEHICLE_SELECT =
             "SELECT v.vehicleID, v.name from vehicle v " +
-            "LEFT OUTER JOIN desiredVSet d ON (v.vehicleID = d.vehicleID and d.settingID = :dot_settingID) " +  
-            "LEFT OUTER JOIN actualVSet a ON (v.vehicleID = a.vehicleID and a.settingID = :dot_settingID) " + 
-            "where v.groupID in (:group_list) and v.status != 3 and v.name LIKE :name_filter " +
-            "and (d.value = :dot_type or d.value = :prompt_dot_type or (d.value is null and a.value = :dot_type or a.value = :prompt_dot_type ))";
+                    "LEFT OUTER JOIN desiredVSet d ON (v.vehicleID = d.vehicleID and d.settingID = :dot_settingID) " +
+                    "LEFT OUTER JOIN actualVSet a ON (v.vehicleID = a.vehicleID and a.settingID = :dot_settingID) " +
+                    "where v.groupID in (:group_list) and v.status != 3 and v.name LIKE :name_filter " +
+                    "and (d.value = :dot_type or d.value = :prompt_dot_type or (d.value is null and a.value = :dot_type or a.value = :prompt_dot_type ))";
 
     public List<VehicleName> getFuelStopEligibleVehicles(List<Integer> groupIDs, String nameFilter) {
-        
+
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("group_list", groupIDs);
-        params.put("name_filter", "%"+nameFilter+"%");
+        params.put("name_filter", "%" + nameFilter + "%");
         params.put("dot_settingID", SettingType.DOT_VEHICLE_TYPE.getSettingID());
         params.put("dot_type", VehicleDOTType.DOT.getConfiguratorSetting());
         params.put("prompt_dot_type", VehicleDOTType.PROMPT_FOR_DOT_TRIP.getConfiguratorSetting());
 
         StringBuilder vehicleSelect = new StringBuilder();
         vehicleSelect.append(FUEL_STOP_VEHICLE_SELECT);
-        
-        return  getSimpleJdbcTemplate().query(vehicleSelect.toString(), fuelStopEligibleVehicleRowMapper, params);
+
+        return getSimpleJdbcTemplate().query(vehicleSelect.toString(), fuelStopEligibleVehicleRowMapper, params);
     }
 
     private ParameterizedRowMapper<VehicleName> fuelStopEligibleVehicleRowMapper = new ParameterizedRowMapper<VehicleName>() {

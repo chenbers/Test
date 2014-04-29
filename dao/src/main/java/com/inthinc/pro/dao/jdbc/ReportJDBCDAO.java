@@ -685,6 +685,7 @@ public class ReportJDBCDAO extends SimpleJdbcDaoSupport implements ReportDAO {
     private Integer getIntOrNullFromRS(ResultSet rs, String columnName) throws SQLException {
         return rs.getObject(columnName) == null ? null : (int) rs.getLong(columnName);
     }
+
     public DriverPerformanceMapper getDriverPerformanceMapper() {
         return driverPerformanceMapper;
     }

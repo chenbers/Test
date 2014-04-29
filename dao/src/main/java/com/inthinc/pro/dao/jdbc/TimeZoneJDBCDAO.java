@@ -26,7 +26,7 @@ import static com.inthinc.pro.dao.jdbc.GenericJDBCDAO.close;
 
 public class TimeZoneJDBCDAO extends SimpleJdbcDaoSupport implements TimeZoneDAO {
 
-    private static final String FIND_TIMEZONE_BY_ID =" SELECT * FROM timezone where tzID = :tzID";
+    private static final String FIND_TIMEZONE_BY_ID = " SELECT * FROM timezone where tzID = :tzID";
 
     private static final String SUPORTED_TIMEZONE = " SELECT * FROM timezone WHERE enabled=1";
 
@@ -58,8 +58,7 @@ public class TimeZoneJDBCDAO extends SimpleJdbcDaoSupport implements TimeZoneDAO
         Connection conn = null;
         PreparedStatement statement = null;
         ResultSet resultSet = null;
-        try
-        {
+        try {
             conn = getConnection();
             statement = (PreparedStatement) conn.prepareStatement(SUPORTED_TIMEZONE);
 
@@ -76,8 +75,7 @@ public class TimeZoneJDBCDAO extends SimpleJdbcDaoSupport implements TimeZoneDAO
         }   // end try
         catch (SQLException e) {
             throw new ProDAOException(statement.toString(), e);
-        }
-        finally {
+        } finally {
             close(resultSet);
             close(statement);
             close(conn);
@@ -104,12 +102,12 @@ public class TimeZoneJDBCDAO extends SimpleJdbcDaoSupport implements TimeZoneDAO
             public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
                 PreparedStatement ps = con.prepareStatement(INSERT_TIMEZONE, Statement.RETURN_GENERATED_KEYS);
 
-                ps.setString(1,entity.getTzName());
+                ps.setString(1, entity.getTzName());
 
-                if (entity.getEnabled() == null) {
+                if (entity.getEnabled().intValue() == 0) {
                     ps.setNull(2, Types.NULL);
                 } else {
-                    ps.setInt(2, entity.getEnabled());
+                    ps.setInt(2, entity.getEnabled().intValue());
                 }
 
                 logger.debug(ps.toString());
@@ -131,10 +129,10 @@ public class TimeZoneJDBCDAO extends SimpleJdbcDaoSupport implements TimeZoneDAO
 
                 ps.setString(1, entity.getTzName());
 
-                if (entity.getEnabled() == null) {
+                if (entity.getEnabled().intValue() == 0) {
                     ps.setNull(2, Types.NULL);
                 } else {
-                    ps.setInt(2, entity.getEnabled());
+                    ps.setInt(2, entity.getEnabled().intValue());
                 }
 
                 logger.debug(ps.toString());

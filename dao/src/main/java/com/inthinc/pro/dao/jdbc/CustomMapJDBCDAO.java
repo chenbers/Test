@@ -1,5 +1,9 @@
 package com.inthinc.pro.dao.jdbc;
 
+import com.inthinc.pro.ProDAOException;
+import com.inthinc.pro.dao.CustomMapDAO;
+import com.inthinc.pro.model.CustomMap;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -7,18 +11,14 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.inthinc.pro.ProDAOException;
-import com.inthinc.pro.dao.CustomMapDAO;
-import com.inthinc.pro.model.CustomMap;
-
 public class CustomMapJDBCDAO extends GenericJDBCDAO implements CustomMapDAO {
-    
+
     private static final long serialVersionUID = 1L;
-    
+
     //alter table customMap ADD COLUMN layer VARCHAR(30) AFTER pngFormat;
-    
+
     private static final String CUSTOM_MAP_FIELDS = "customMapID, acctID, name, url, minZoom, maxZoom, opacity, pngFormat, layer";
-    
+
     private static final String INSERT_CUSTOM_MAP = "INSERT INTO customMap(acctID, name, url, minZoom, maxZoom, opacity, pngFormat, layer) values (?, ?, ?, ?, ?, ?, ?, ?)";
     private static final String UPDATE_CUSTOM_MAP = "UPDATE customMap set name = ?, url = ?, minZoom = ?, maxZoom = ?, opacity = ?, pngFormat = ?, layer = ? where acctID = ? and customMapID = ?";
     private static final String FIND_CUSTOM_MAP = "SELECT " + CUSTOM_MAP_FIELDS + " FROM customMap where customMapID = ?";
@@ -30,8 +30,7 @@ public class CustomMapJDBCDAO extends GenericJDBCDAO implements CustomMapDAO {
         Connection conn = null;
         PreparedStatement statement = null;
         ResultSet resultSet = null;
-        try
-        {
+        try {
             conn = getConnection();
             statement = (PreparedStatement) conn.prepareStatement(INSERT_CUSTOM_MAP);
             statement.setInt(1, customMap.getAcctID());
@@ -43,44 +42,37 @@ public class CustomMapJDBCDAO extends GenericJDBCDAO implements CustomMapDAO {
             statement.setInt(7, customMap.getPngFormat() == null || !customMap.getPngFormat() ? 0 : 1);
             statement.setString(8, customMap.getLayer());
             statement.executeUpdate();
-            
+
             resultSet = statement.executeQuery("SELECT LAST_INSERT_ID()");
             if (resultSet.next()) {
                 return resultSet.getInt(1);
             }
             return null;
-        } 
-        catch (SQLException e)
-        { 
+        } catch (SQLException e) {
             throw new ProDAOException(statement.toString(), e);
-        } 
-        finally {
+        } finally {
             close(resultSet);
             close(statement);
             close(conn);
-        }    
-        
+        }
+
     }
 
     @Override
     public Integer deleteByID(Integer customMapID) {
         Connection conn = null;
         PreparedStatement statement = null;
-        try
-        {
+        try {
             conn = getConnection();
             statement = (PreparedStatement) conn.prepareStatement(DELETE_CUSTOM_MAP);
             statement.setInt(1, customMapID);
             return statement.executeUpdate();
-        } 
-        catch (SQLException e)
-        { 
+        } catch (SQLException e) {
             throw new ProDAOException(statement.toString(), e);
-        } 
-        finally {
+        } finally {
             close(statement);
             close(conn);
-        }    
+        }
     }
 
     @Override
@@ -88,8 +80,7 @@ public class CustomMapJDBCDAO extends GenericJDBCDAO implements CustomMapDAO {
         Connection conn = null;
         PreparedStatement statement = null;
         ResultSet resultSet = null;
-        try
-        {
+        try {
             conn = getConnection();
             statement = (PreparedStatement) conn.prepareStatement(FIND_CUSTOM_MAP);
             statement.setInt(1, customMapID);
@@ -98,18 +89,17 @@ public class CustomMapJDBCDAO extends GenericJDBCDAO implements CustomMapDAO {
             if (resultSet.next()) {
                 return extractCustomMapFromResultSet(resultSet);
             }
-                
+
 
         }   // end try
-        catch (SQLException e) { 
+        catch (SQLException e) {
             throw new ProDAOException(statement.toString(), e);
-        }  
-        finally { 
+        } finally {
             close(resultSet);
             close(statement);
             close(conn);
-        }    
-        
+        }
+
         return null;
     }
 
@@ -117,8 +107,7 @@ public class CustomMapJDBCDAO extends GenericJDBCDAO implements CustomMapDAO {
     public Integer update(CustomMap customMap) {
         Connection conn = null;
         PreparedStatement statement = null;
-        try
-        {
+        try {
             conn = getConnection();
             statement = (PreparedStatement) conn.prepareStatement(UPDATE_CUSTOM_MAP);
             statement.setString(1, customMap.getName());
@@ -131,26 +120,23 @@ public class CustomMapJDBCDAO extends GenericJDBCDAO implements CustomMapDAO {
             statement.setInt(8, customMap.getAcctID());
             statement.setInt(9, customMap.getCustomMapID());
             return statement.executeUpdate();
-        }
-        catch (SQLException e) { 
+        } catch (SQLException e) {
             throw new ProDAOException(statement.toString(), e);
-        } 
-        finally {
+        } finally {
             close(statement);
             close(conn);
-        }    
+        }
     }
 
     @Override
     public List<CustomMap> getCustomMapsByAcctID(Integer acctID) {
-        
+
         List<CustomMap> customMapList = new ArrayList<CustomMap>();
-        
+
         Connection conn = null;
         PreparedStatement statement = null;
         ResultSet resultSet = null;
-        try
-        {
+        try {
             conn = getConnection();
             statement = (PreparedStatement) conn.prepareStatement(FETCH_CUSTOM_MAPS_FOR_ACCOUNT);
             statement.setInt(1, acctID);
@@ -159,18 +145,17 @@ public class CustomMapJDBCDAO extends GenericJDBCDAO implements CustomMapDAO {
             while (resultSet.next()) {
                 customMapList.add(extractCustomMapFromResultSet(resultSet));
             }
-                
+
 
         }   // end try
-        catch (SQLException e) { 
+        catch (SQLException e) {
             throw new ProDAOException(statement.toString(), e);
-        }  
-        finally { 
+        } finally {
             close(resultSet);
             close(statement);
             close(conn);
-        }    
-        
+        }
+
         return customMapList;
     }
 

@@ -1,17 +1,14 @@
 package com.inthinc.pro.dao.jdbc;
 
 import com.inthinc.pro.dao.UserDAO;
-import com.inthinc.pro.dao.hessian.exceptions.EmptyResultSetException;
 import com.inthinc.pro.model.FuelEfficiencyType;
 import com.inthinc.pro.model.Gender;
 import com.inthinc.pro.model.GoogleMapType;
-import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.model.Person;
 import com.inthinc.pro.model.Status;
 import com.inthinc.pro.model.User;
 import com.inthinc.pro.model.security.AccessPoint;
-import com.inthinc.pro.model.security.Role;
 import com.mysql.jdbc.Statement;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
@@ -23,7 +20,6 @@ import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 
-import java.lang.reflect.Type;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -110,15 +106,14 @@ public class UserJDBCDAO extends SimpleJdbcDaoSupport implements UserDAO {
 
             userItem.setMapType(rs.getObject("u.status") == null ? null : GoogleMapType.valueOf(rs.getInt("u.mapType")));
             userItem.setPerson(person);
-            List<Integer> roleIds=getUserRoles(rs.getInt("u.userID"));
+            List<Integer> roleIds = getUserRoles(rs.getInt("u.userID"));
             userItem.setRoles(roleIds);
             userItem.setSelectedMapLayerIDs(getUserMapLayers(rs.getInt("u.userID")));
-            if(roleIds.isEmpty()){
+            if (roleIds.isEmpty()) {
                 List<AccessPoint> accessPoints = new ArrayList<AccessPoint>();
                 userItem.setAccessPoints(accessPoints);
-            }else
-            {
-            userItem.setAccessPoints(getUserAccessPoint(roleIds));
+            } else {
+                userItem.setAccessPoints(getUserAccessPoint(roleIds));
             }
             return userItem;
         }
@@ -194,10 +189,10 @@ public class UserJDBCDAO extends SimpleJdbcDaoSupport implements UserDAO {
 
         StringBuilder userSelect = new StringBuilder(SELECT_USER_STRING);
         userSelect.append(SELECT_USER_STRING_BY_PERSONID);
-        try{
-        User userRet = getSimpleJdbcTemplate().queryForObject(userSelect.toString(), userParameterizedRow, params);
+        try {
+            User userRet = getSimpleJdbcTemplate().queryForObject(userSelect.toString(), userParameterizedRow, params);
             return userRet;
-        }catch (EmptyResultDataAccessException e) {
+        } catch (EmptyResultDataAccessException e) {
             return null;
         }
     }
@@ -222,7 +217,7 @@ public class UserJDBCDAO extends SimpleJdbcDaoSupport implements UserDAO {
             public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
                 PreparedStatement ps = con.prepareStatement(INSERT_USER, Statement.RETURN_GENERATED_KEYS);
                 ps.setInt(1, entity.getGroupID());
-                ps.setInt(2,integer);
+                ps.setInt(2, integer);
                 ps.setInt(3, entity.getStatus().getCode());
                 DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                 df.setTimeZone(TimeZone.getTimeZone("UTC"));
@@ -230,10 +225,10 @@ public class UserJDBCDAO extends SimpleJdbcDaoSupport implements UserDAO {
                 ps.setString(4, passwordDT);
                 ps.setString(5, entity.getUsername());
                 ps.setString(6, entity.getPassword());
-                if(entity.getMapType()==null){
+                if (entity.getMapType() == null) {
                     ps.setInt(7, Types.NULL);
-                }else{
-                ps.setInt(7, entity.getMapType().getCode());
+                } else {
+                    ps.setInt(7, entity.getMapType().getCode());
                 }
 
                 String modified = df.format(toUTC(new Date()));
@@ -248,15 +243,18 @@ public class UserJDBCDAO extends SimpleJdbcDaoSupport implements UserDAO {
         //updates roles
         deleteUserRoles(ret);
         List<Integer> roles = entity.getRoles();
-        for (int i=0;i<roles.size();i++){
-            createUserRoles(ret,i);
+        for (int i = 0; i < roles.size(); i++) {
+            createUserRoles(ret, i);
         }
+
         deleteUserMapLayer(ret);
-        List<Integer> userMapLayers = entity.getSelectedMapLayerIDs();
-        for (int j=0;j<userMapLayers.size();j++){
-            createUserMapLayer(ret,j);
+        if (entity.getSelectedMapLayerIDs() != null) {
+            List<Integer> userMapLayers = entity.getSelectedMapLayerIDs();
+            for (int j = 0; j < userMapLayers.size(); j++) {
+                createUserMapLayer(ret, j);
+            }
         }
-    return ret;
+        return ret;
     }
 
     @Override
@@ -279,9 +277,9 @@ public class UserJDBCDAO extends SimpleJdbcDaoSupport implements UserDAO {
                 ps.setString(4, passwordDT);
                 ps.setString(5, entity.getUsername());
                 ps.setString(6, entity.getPassword());
-                if(entity.getMapType()==null){
+                if (entity.getMapType() == null) {
                     ps.setInt(7, Types.NULL);
-                }else{
+                } else {
                     ps.setInt(7, entity.getMapType().getCode());
                 }
                 String modified = df.format(toUTC(new Date()));
@@ -290,7 +288,9 @@ public class UserJDBCDAO extends SimpleJdbcDaoSupport implements UserDAO {
                 ps.setInt(9, entity.getUserID());
                 logger.debug(ps.toString());
                 return ps;
-            };
+            }
+
+            ;
 
         };
         jdbcTemplate.update(psc);
@@ -298,16 +298,18 @@ public class UserJDBCDAO extends SimpleJdbcDaoSupport implements UserDAO {
         //updates roles must be sure it does not make duplicates like hessian was doing
         List<Integer> roles = entity.getRoles();
         deleteUserRoles(ret);
-        for (int i=0;i<roles.size();i++){
-            createUserRoles(ret,i);
+        for (int i = 0; i < roles.size(); i++) {
+            createUserRoles(ret, i);
         }
         deleteUserMapLayer(ret);
-        List<Integer> userMapLayers = entity.getSelectedMapLayerIDs();
-        for (int j=0;j<userMapLayers.size();j++){
-            createUserMapLayer(ret,j);
+        if (entity.getSelectedMapLayerIDs() != null) {
+            List<Integer> userMapLayers = entity.getSelectedMapLayerIDs();
+            for (int j = 0; j < userMapLayers.size(); j++) {
+                createUserMapLayer(ret, j);
+            }
         }
         return ret;
-        }
+    }
 
     @Override
     public Integer deleteByID(Integer userID) {
@@ -341,15 +343,15 @@ public class UserJDBCDAO extends SimpleJdbcDaoSupport implements UserDAO {
         return roleRet;
     }
 
-    public Integer createUserRoles(final Integer userID, final Integer roleID){
+    public Integer createUserRoles(final Integer userID, final Integer roleID) {
         JdbcTemplate jdbcTemplate = getJdbcTemplate();
         KeyHolder keyHolder = new GeneratedKeyHolder();
         PreparedStatementCreator psc = new PreparedStatementCreator() {
             @Override
             public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
                 PreparedStatement ps = con.prepareStatement(INSERT_USER_ROLE, Statement.RETURN_GENERATED_KEYS);
-                ps.setInt(1,userID);
-                ps.setInt(2,roleID);
+                ps.setInt(1, userID);
+                ps.setInt(2, roleID);
                 logger.debug(ps.toString());
                 return ps;
             }
@@ -357,19 +359,20 @@ public class UserJDBCDAO extends SimpleJdbcDaoSupport implements UserDAO {
         jdbcTemplate.update(psc, keyHolder);
         return keyHolder.getKey().intValue();
     }
-    public Integer deleteUserRoles(Integer userID){
+
+    public Integer deleteUserRoles(Integer userID) {
         return getJdbcTemplate().update(DELETE_USER_ROLE, new Object[]{userID});
     }
 
-    public Integer createUserMapLayer(final Integer userID, final Integer customMapID){
+    public Integer createUserMapLayer(final Integer userID, final Integer customMapID) {
         JdbcTemplate jdbcTemplate = getJdbcTemplate();
         KeyHolder keyHolder = new GeneratedKeyHolder();
         PreparedStatementCreator psc = new PreparedStatementCreator() {
             @Override
             public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
                 PreparedStatement ps = con.prepareStatement(INSERT_USER_MAP_LAYER, Statement.RETURN_GENERATED_KEYS);
-                ps.setInt(1,userID);
-                ps.setInt(2,customMapID);
+                ps.setInt(1, userID);
+                ps.setInt(2, customMapID);
                 logger.debug(ps.toString());
                 return ps;
             }
@@ -378,7 +381,7 @@ public class UserJDBCDAO extends SimpleJdbcDaoSupport implements UserDAO {
         return keyHolder.getKey().intValue();
     }
 
-    public Integer deleteUserMapLayer(Integer userID){
+    public Integer deleteUserMapLayer(Integer userID) {
         return getJdbcTemplate().update(DELETE_USER_MAP_LAYER, new Object[]{userID});
     }
 
