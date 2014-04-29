@@ -57,6 +57,7 @@ import com.inthinc.pro.model.DOTOfficeType;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.GroupHierarchy;
+import com.inthinc.pro.model.InspectionType;
 import com.inthinc.pro.model.Status;
 import com.inthinc.pro.model.User;
 import com.inthinc.pro.model.Vehicle;
@@ -666,8 +667,9 @@ public class HosDailyDriverLogReportCriteria extends ReportCriteria {
         String statusString = "";
         if (hosRecord.getStatus() != null)
             statusString = MessageUtil.getBundleString(getResourceBundle(),"status."+hosRecord.getStatus().getCode()); 
-
-        if (hosRecord.getStatus() == HOSStatus.OFF_DUTY) {
+        
+        InspectionType inspectionType = determineInspectionType(hosRecord.getInspectionType(), hosRecord.getStatus());
+        if (inspectionType == InspectionType.POSTTRIP || inspectionType == InspectionType.NO_POSTTRIP) {
             if (inspectionRequired(hosRecord)) {
                 if (inspectionPerformed(hosRecord)) {
                     statusString += " - " + MessageUtil.getBundleString(getResourceBundle(),"status." + HOSStatus.HOS_POSTTRIP_INSPECTION.getCode());
@@ -677,7 +679,7 @@ public class HosDailyDriverLogReportCriteria extends ReportCriteria {
                 }
             }
         }
-        else if (hosRecord.getStatus() == HOSStatus.ON_DUTY) {
+        else if (inspectionType == InspectionType.PRETRIP || inspectionType == InspectionType.NO_PRETRIP) {
             if (inspectionRequired(hosRecord)) {
                 if (inspectionPerformed(hosRecord)) {
                     statusString += " - " + MessageUtil.getBundleString(getResourceBundle(),"status." + HOSStatus.HOS_PRETRIP_INSPECTION.getCode());
@@ -708,6 +710,22 @@ public class HosDailyDriverLogReportCriteria extends ReportCriteria {
         
         return statusString.trim();
 
+    }
+
+    private InspectionType determineInspectionType(InspectionType inspectionType, HOSStatus status) {
+        // this is for backwards compatability - do the old way, OFF_DUTY is post trip and ON_Duty is pretrip
+        if (inspectionType == null || inspectionType == InspectionType.NONE)  {
+            if (status == HOSStatus.OFF_DUTY) {
+                return InspectionType.POSTTRIP;
+            }
+            if (status == HOSStatus.ON_DUTY) {
+                return InspectionType.PRETRIP;
+            }
+            return InspectionType.NONE;
+        }
+        
+        return inspectionType;
+        
     }
 
     private boolean inspectionPerformed(HOSRecord hosRecord) {
