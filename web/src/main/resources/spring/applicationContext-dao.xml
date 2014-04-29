@@ -70,7 +70,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
     </bean>
     
 
-    <bean id="eventDAO" class="com.inthinc.pro.dao.cassandra.EventCassandraDAO" />   <!--cassandra-->
+    <bean id="eventDAO" class="com.inthinc.pro.dao.hessian.EventHessianDAO" />   <!--cassandra-->
     <bean id="locationDAO" class="com.inthinc.pro.dao.hessian.LocationHessianDAO" /> <!--cassandra-->
     <bean id="mpgDAO" class="${mpgDAO}" />   <!--score-->
     <bean id="scoreDAO" class="${scoreDAO}" />  <!--score-->

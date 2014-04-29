@@ -22,6 +22,7 @@ import org.joda.time.DateTimeZone;
 import org.joda.time.Interval;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.simple.ParameterizedRowMapper;
@@ -286,11 +287,14 @@ public class DriverJDBCDAO extends SimpleJdbcDaoSupport implements DriverDAO {
 
     @Override
     public Driver findByID(Integer driverId) {
+        try{
         Map<String, Object> args = new HashMap<String, Object>();
         args.put("driverId", driverId);
         StringBuilder driverIdSelect = new StringBuilder(FIND_DRIVER_BY_ID);
         return getSimpleJdbcTemplate().queryForObject(driverIdSelect.toString(), pagedDriverRowMapper, args);
-
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
     }
 
     @Override
