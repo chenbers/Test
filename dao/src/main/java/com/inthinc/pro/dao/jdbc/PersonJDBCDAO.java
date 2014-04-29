@@ -482,7 +482,7 @@ public class PersonJDBCDAO extends SimpleJdbcDaoSupport implements PersonDAO {
                 ps.setString(8, entity.getReportsTo());
                 ps.setString(9, entity.getTitle());
                 ps.setString(10, entity.getDept());
-                if (entity.getEmpid().isEmpty()){
+                if (entity.getEmpid().isEmpty() || entity.getEmpid()==null){
                     ps.setNull(11,Types.NULL);
                 }else {
                     ps.setString(11, entity.getEmpid());
