@@ -20,9 +20,11 @@
 	<bean id="newAccountBean" class="com.inthinc.pro.backing.NewAccountBean" init-method="init" scope="session"/>
 	<bean id="dateFormatBean" class="com.inthinc.pro.backing.dao.DateFormatBean" scope="session" />
 	<bean id="baseBean" class="com.inthinc.pro.backing.BaseBean" scope="session"/>
-    <bean id="groupDAO" class="com.inthinc.pro.dao.jdbc.GroupJDBCDAO"></bean>
-    <bean id="driverDAO" class="com.inthinc.pro.dao.hessian.DriverHessianDAO"></bean>
+    <bean id="groupDAO" class="com.inthinc.pro.dao.jdbc.GroupJDBCDAO">
+    </bean>
+    <bean id="driverDAO" class="com.inthinc.pro.dao.jdbc.DriverJDBCDAO"></bean>
     <bean id="vehicleDAO" class="com.inthinc.pro.dao.jdbc.VehicleJDBCDAO"></bean>
+    <bean id="addressDAO" class="com.inthinc.pro.dao.jdbc.AddressJDBCDAO" />
     <bean id="daoUtilBean" class="com.inthinc.pro.backing.dao.DaoUtilBean" init-method="init" parent="baseBean" scope="session">
         <property name="driverDAO" ref="driverDAO"/>
         <property name="vehicleDAO" ref="vehicleDAO"/>
