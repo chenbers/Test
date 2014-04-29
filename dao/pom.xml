@@ -205,6 +205,11 @@
             <artifactId>jackson-core-asl</artifactId>
             <version>${codehausjacksonVersion}</version>
         </dependency>
+        <dependency>
+			<groupId>commons-validator</groupId>
+			<artifactId>commons-validator</artifactId>
+			<version>1.4.0</version>
+		</dependency>
 		<dependency>
 			<groupId>com.inthinc.pro.emulation</groupId>
 			<artifactId>emulation</artifactId>
