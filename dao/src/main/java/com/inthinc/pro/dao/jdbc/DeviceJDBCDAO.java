@@ -2,6 +2,7 @@ package com.inthinc.pro.dao.jdbc;
 
 import com.inthinc.pro.dao.DeviceDAO;
 import com.inthinc.pro.dao.VehicleDAO;
+import com.inthinc.pro.dao.hessian.exceptions.EmptyResultSetException;
 import com.inthinc.pro.dao.hessian.mapper.Mapper;
 import com.inthinc.pro.dao.hessian.mapper.SimpleMapper;
 import com.inthinc.pro.model.*;
@@ -122,11 +123,15 @@ public class DeviceJDBCDAO extends SimpleJdbcDaoSupport implements DeviceDAO{
 
     @Override
     public Device findByID(Integer deviceID) {
-        String deviceSelect =  "select "+ DEVICE_COLUMNS_STRING +" " + DEVICE_SUFFIX;
-        Map<String, Object> params = new HashMap<String, Object>();
-        params.put("deviceID", deviceID);
+        try {
+            String deviceSelect = "select " + DEVICE_COLUMNS_STRING + " " + DEVICE_SUFFIX;
+            Map<String, Object> params = new HashMap<String, Object>();
+            params.put("deviceID", deviceID);
 
-        return getSimpleJdbcTemplate().queryForObject(deviceSelect, deviceMapper, params);
+            return getSimpleJdbcTemplate().queryForObject(deviceSelect, deviceMapper, params);
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
     }
 
     @Override
