@@ -18,7 +18,7 @@
     <bean id="genericJDBCDAO" class="com.inthinc.pro.dao.jdbc.GenericJDBCDAO" abstract="true">
         <property name="dataSource" ref="tiwiJDBCDataSource" />
     </bean>
-    <bean id="locationDAO" class="com.inthinc.pro.dao.cassandra.LocationCassandraDAO">
+    <bean id="locationDAO" class="com.inthinc.pro.dao.hessian.LocationHessianDAO">
     </bean>
     <bean id="addressDAO" class="com.inthinc.pro.dao.jdbc.AddressJDBCDAO">
         <property name="dataSource" ref="tiwiJDBCDataSource" />
