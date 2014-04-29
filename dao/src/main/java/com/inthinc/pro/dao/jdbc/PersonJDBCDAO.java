@@ -340,7 +340,11 @@ public class PersonJDBCDAO extends SimpleJdbcDaoSupport implements PersonDAO {
                 ps.setString(8, entity.getReportsTo());
                 ps.setString(9, entity.getTitle());
                 ps.setString(10, entity.getDept());
-                ps.setString(11, entity.getEmpid());
+                if (entity.getEmpid().isEmpty()){
+                    ps.setNull(11,Types.NULL);
+                }else {
+                    ps.setString(11, entity.getEmpid());
+                }
                 ps.setString(12, entity.getFirst());
                 ps.setString(13, entity.getMiddle());
                 ps.setString(14, entity.getLast());
@@ -475,14 +479,18 @@ public class PersonJDBCDAO extends SimpleJdbcDaoSupport implements PersonDAO {
                         ps.setString(7, entity.getLocale().toString());
                     }
 
-                    ps.setString(8, entity.getReportsTo());
-                    ps.setString(9, entity.getTitle());
-                    ps.setString(10, entity.getDept());
+                ps.setString(8, entity.getReportsTo());
+                ps.setString(9, entity.getTitle());
+                ps.setString(10, entity.getDept());
+                if (entity.getEmpid().isEmpty() || entity.getEmpid()==null){
+                    ps.setNull(11,Types.NULL);
+                }else {
                     ps.setString(11, entity.getEmpid());
-                    ps.setString(12, entity.getFirst());
-                    ps.setString(13, entity.getMiddle());
-                    ps.setString(14, entity.getLast());
-                    ps.setString(15, entity.getSuffix());
+                }
+                ps.setString(12, entity.getFirst());
+                ps.setString(13, entity.getMiddle());
+                ps.setString(14, entity.getLast());
+                ps.setString(15, entity.getSuffix());
 
                     if (entity.getGender() == null || entity.getGender().getCode() == null) {
                         ps.setNull(16, Types.NULL);

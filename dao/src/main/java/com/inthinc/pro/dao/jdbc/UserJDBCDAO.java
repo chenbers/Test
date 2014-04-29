@@ -11,6 +11,7 @@ import com.inthinc.pro.model.Person;
 import com.inthinc.pro.model.Status;
 import com.inthinc.pro.model.User;
 import com.inthinc.pro.model.security.AccessPoint;
+import com.inthinc.pro.model.security.Role;
 import com.mysql.jdbc.Statement;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
@@ -56,6 +57,10 @@ public class UserJDBCDAO extends SimpleJdbcDaoSupport implements UserDAO {
             "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
     private static final String UPDATE_USER = "UPDATE user SET groupID=?, personID=?, status=?, passwordDT=?, username=?, password=?, mapType=?, modified=? WHERE userID=?";
     private static final String DEL_USER_BY_ID = "DELETE FROM user where userID=?";
+    private static final String INSERT_USER_ROLE = "INSERT into userRole SET userID=?, roleID=?";
+    private static final String DELETE_USER_ROLE = "DELETE from userRole where userID=?";
+    private static final String INSERT_USER_MAP_LAYER = "INSERT into userMapLayer SET userID=?, customMapID=?";
+    private static final String DELETE_USER_MAP_LAYER = "DELETE from userMapLayer where userID=?";
 
 
     private ParameterizedRowMapper<User> userParameterizedRow = new ParameterizedRowMapper<User>() {
@@ -239,7 +244,19 @@ public class UserJDBCDAO extends SimpleJdbcDaoSupport implements UserDAO {
             }
         };
         jdbcTemplate.update(psc, keyHolder);
-        return keyHolder.getKey().intValue();
+        Integer ret = keyHolder.getKey().intValue();
+        //updates roles
+        deleteUserRoles(ret);
+        List<Integer> roles = entity.getRoles();
+        for (int i=0;i<roles.size();i++){
+            createUserRoles(ret,i);
+        }
+        deleteUserMapLayer(ret);
+        List<Integer> userMapLayers = entity.getSelectedMapLayerIDs();
+        for (int j=0;j<userMapLayers.size();j++){
+            createUserMapLayer(ret,j);
+        }
+    return ret;
     }
 
     @Override
@@ -277,7 +294,19 @@ public class UserJDBCDAO extends SimpleJdbcDaoSupport implements UserDAO {
 
         };
         jdbcTemplate.update(psc);
-        return entity.getUserID();
+        Integer ret = entity.getUserID();
+        //updates roles must be sure it does not make duplicates like hessian was doing
+        List<Integer> roles = entity.getRoles();
+        deleteUserRoles(ret);
+        for (int i=0;i<roles.size();i++){
+            createUserRoles(ret,i);
+        }
+        deleteUserMapLayer(ret);
+        List<Integer> userMapLayers = entity.getSelectedMapLayerIDs();
+        for (int j=0;j<userMapLayers.size();j++){
+            createUserMapLayer(ret,j);
+        }
+        return ret;
         }
 
     @Override
@@ -310,6 +339,47 @@ public class UserJDBCDAO extends SimpleJdbcDaoSupport implements UserDAO {
 
         List<Integer> roleRet = getSimpleJdbcTemplate().query(roleSelect.toString(), roleParameterizedRow, params);
         return roleRet;
+    }
+
+    public Integer createUserRoles(final Integer userID, final Integer roleID){
+        JdbcTemplate jdbcTemplate = getJdbcTemplate();
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+        PreparedStatementCreator psc = new PreparedStatementCreator() {
+            @Override
+            public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
+                PreparedStatement ps = con.prepareStatement(INSERT_USER_ROLE, Statement.RETURN_GENERATED_KEYS);
+                ps.setInt(1,userID);
+                ps.setInt(2,roleID);
+                logger.debug(ps.toString());
+                return ps;
+            }
+        };
+        jdbcTemplate.update(psc, keyHolder);
+        return keyHolder.getKey().intValue();
+    }
+    public Integer deleteUserRoles(Integer userID){
+        return getJdbcTemplate().update(DELETE_USER_ROLE, new Object[]{userID});
+    }
+
+    public Integer createUserMapLayer(final Integer userID, final Integer customMapID){
+        JdbcTemplate jdbcTemplate = getJdbcTemplate();
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+        PreparedStatementCreator psc = new PreparedStatementCreator() {
+            @Override
+            public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
+                PreparedStatement ps = con.prepareStatement(INSERT_USER_MAP_LAYER, Statement.RETURN_GENERATED_KEYS);
+                ps.setInt(1,userID);
+                ps.setInt(2,customMapID);
+                logger.debug(ps.toString());
+                return ps;
+            }
+        };
+        jdbcTemplate.update(psc, keyHolder);
+        return keyHolder.getKey().intValue();
+    }
+
+    public Integer deleteUserMapLayer(Integer userID){
+        return getJdbcTemplate().update(DELETE_USER_MAP_LAYER, new Object[]{userID});
     }
 
     public List<Integer> getUserMapLayers(Integer userID) {
