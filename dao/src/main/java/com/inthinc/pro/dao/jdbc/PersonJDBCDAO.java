@@ -1,9 +1,7 @@
 package com.inthinc.pro.dao.jdbc;
 
 import com.inthinc.hos.model.RuleSetType;
-import com.inthinc.pro.comm.parser.attrib.IntegerParser;
 import com.inthinc.pro.dao.PersonDAO;
-import com.inthinc.pro.dao.hessian.exceptions.EmptyResultSetException;
 import com.inthinc.pro.model.Address;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.FuelEfficiencyType;
@@ -27,7 +25,6 @@ import org.springframework.jdbc.core.simple.ParameterizedRowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -42,7 +39,6 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -75,12 +71,12 @@ public class PersonJDBCDAO extends SimpleJdbcDaoSupport implements PersonDAO {
     private static final String DEL_ALERT_BY_ID = "DELETE FROM alert WHERE alertID=?";
 
     private static final String INSERT_PERSON = "INSERT into person (acctID, tzID, status, measureType, fuelEffType, " +
-                    "addrID, locale, reportsTo, title, dept, empid, first, middle, last, suffix, gender, height, weight, dob, info, warn, " +
-                    "crit, priEmail, secEmail, priPhone, secPhone, priText, secText, modified )" +
-                    "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            "addrID, locale, reportsTo, title, dept, empid, first, middle, last, suffix, gender, height, weight, dob, info, warn, " +
+            "crit, priEmail, secEmail, priPhone, secPhone, priText, secText, modified )" +
+            "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
     private static final String UPDATE_PERSON = "UPDATE person set acctID = ?, tzID = ?, status = ?, measureType = ?, fuelEffType = ?, " +
-                    "addrID = ?, locale = ?, reportsTo = ?, title = ?, dept = ?, empid = ?, first = ?, middle = ?, last = ?, suffix = ?, gender = ?, height = ?, weight = ?, dob = ?, info = ?, warn = ?, " +
-                    "crit = ?, priEmail = ?, secEmail = ?, priPhone = ?, secPhone = ?, priText = ?, secText = ?, modified = ? where personID = ?";
+            "addrID = ?, locale = ?, reportsTo = ?, title = ?, dept = ?, empid = ?, first = ?, middle = ?, last = ?, suffix = ?, gender = ?, height = ?, weight = ?, dob = ?, info = ?, warn = ?, " +
+            "crit = ?, priEmail = ?, secEmail = ?, priPhone = ?, secPhone = ?, priText = ?, secText = ?, modified = ? where personID = ?";
 
     private ParameterizedRowMapper<Person> personRowMapper = new ParameterizedRowMapper<Person>() {
         @Override
@@ -291,8 +287,7 @@ public class PersonJDBCDAO extends SimpleJdbcDaoSupport implements PersonDAO {
         JdbcTemplate jdbcTemplate = getJdbcTemplate();
         KeyHolder keyHolder = new GeneratedKeyHolder();
 
-        if (entity.getAddress() != null && entity.getAddressID() == null)
-        {
+        if (entity.getAddress() != null && entity.getAddressID() == null) {
             Integer addressID = addressDAO.create(acctID, entity.getAddress());
             entity.getAddress().setAddrID(addressID);
             entity.setAddressID(addressID);
@@ -337,18 +332,52 @@ public class PersonJDBCDAO extends SimpleJdbcDaoSupport implements PersonDAO {
                     ps.setString(7, entity.getLocale().toString());
                 }
 
-                ps.setString(8, entity.getReportsTo());
-                ps.setString(9, entity.getTitle());
-                ps.setString(10, entity.getDept());
-                if (entity.getEmpid().isEmpty()){
-                    ps.setNull(11,Types.NULL);
-                }else {
+                if (entity.getReportsTo().equalsIgnoreCase("") || entity.getReportsTo().isEmpty()) {
+                    ps.setNull(8, Types.NULL);
+                } else {
+                    ps.setString(8, entity.getReportsTo().toString());
+                }
+
+                if (entity.getTitle().equalsIgnoreCase("") || entity.getTitle().isEmpty()) {
+                    ps.setNull(9, Types.NULL);
+                } else {
+                    ps.setString(9, entity.getTitle());
+                }
+
+                if (entity.getDept().equalsIgnoreCase("") || entity.getDept().isEmpty()) {
+                    ps.setNull(10, Types.NULL);
+                } else {
+                    ps.setString(10, entity.getDept());
+                }
+
+                if (entity.getEmpid().isEmpty()) {
+                    ps.setNull(11, Types.NULL);
+                } else {
                     ps.setString(11, entity.getEmpid());
                 }
-                ps.setString(12, entity.getFirst());
-                ps.setString(13, entity.getMiddle());
-                ps.setString(14, entity.getLast());
-                ps.setString(15, entity.getSuffix());
+
+                if (entity.getFirst().trim().equalsIgnoreCase("") || entity.getFirst().trim().isEmpty()) {
+                    ps.setNull(12, Types.NULL);
+                } else {
+                    ps.setString(12, entity.getFirst().trim());
+                }
+
+                if (entity.getMiddle().trim().equalsIgnoreCase("") || entity.getMiddle().trim().isEmpty()) {
+                    ps.setNull(13, Types.NULL);
+                } else {
+                    ps.setString(13, entity.getMiddle().trim());
+                }
+
+                if (entity.getLast().trim().equalsIgnoreCase("") || entity.getLast().trim().isEmpty()) {
+                    ps.setNull(14, Types.NULL);
+                } else {
+                    ps.setString(14, entity.getLast().trim());
+                }
+                if (entity.getSuffix().trim().equalsIgnoreCase("") || entity.getSuffix().trim().isEmpty()) {
+                    ps.setNull(15, Types.NULL);
+                } else {
+                    ps.setString(15, entity.getSuffix().trim());
+                }
 
                 if (entity.getGender() == null || entity.getGender().getCode() == null) {
                     ps.setNull(16, Types.NULL);
@@ -390,12 +419,41 @@ public class PersonJDBCDAO extends SimpleJdbcDaoSupport implements PersonDAO {
                 } else {
                     ps.setInt(22, entity.getCrit());
                 }
-                ps.setString(23, entity.getPriEmail());
-                ps.setString(24, entity.getSecEmail());
-                ps.setString(25, entity.getPriPhone());
-                ps.setString(26, entity.getSecPhone());
-                ps.setString(27, entity.getPriText());
-                ps.setString(28, entity.getSecText());
+
+                if (entity.getPriEmail().equalsIgnoreCase("") || entity.getPriEmail().isEmpty()) {
+                    ps.setNull(23, Types.NULL);
+                } else {
+                    ps.setString(23, entity.getPriEmail());
+                }
+
+                if (entity.getSecEmail().equalsIgnoreCase("") || entity.getSecEmail().isEmpty()) {
+                    ps.setNull(24, Types.NULL);
+                } else {
+                    ps.setString(24, entity.getSecEmail());
+                }
+
+                if (entity.getPriPhone().equalsIgnoreCase("") || entity.getPriPhone().isEmpty()) {
+                    ps.setNull(25, Types.NULL);
+                } else {
+                    ps.setString(25, entity.getPriPhone());
+                }
+
+                if (entity.getSecPhone().equalsIgnoreCase("") || entity.getSecPhone().isEmpty()) {
+                    ps.setNull(26, Types.NULL);
+                } else {
+                    ps.setString(26, entity.getSecPhone());
+                }
+                if (entity.getPriText().equalsIgnoreCase("") || entity.getPriText().isEmpty()) {
+                    ps.setNull(27, Types.NULL);
+                } else {
+                    ps.setString(27, entity.getPriText());
+                }
+
+                if (entity.getSecText().equalsIgnoreCase("") || entity.getSecText().isEmpty()) {
+                    ps.setNull(28, Types.NULL);
+                } else {
+                    ps.setString(28, entity.getSecText());
+                }
 
                 DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                 String modified = df.format(toUTC(new Date()));
@@ -428,102 +486,182 @@ public class PersonJDBCDAO extends SimpleJdbcDaoSupport implements PersonDAO {
     public Integer update(final Person entity) {
 
 
-        if ((entity.getAddress() != null) && !entity.getAddress().isEmpty() && entity.getAddress().getAddrID() != null)
-        {
-           addressDAO.update(entity.getAddress());
-        }
-        else if (entity.getAddress() != null && (entity.getAddressID() == null || entity.getAddressID().intValue() == 0))
-        {
+        if ((entity.getAddress() != null) && !entity.getAddress().isEmpty() && entity.getAddress().getAddrID() != null) {
+            addressDAO.update(entity.getAddress());
+        } else if (entity.getAddress() != null && (entity.getAddressID() == null || entity.getAddressID().intValue() == 0)) {
             Integer addressID = addressDAO.create(entity.getAccountID(), entity.getAddress());
             entity.getAddress().setAddrID(addressID);
             entity.setAddressID(addressID);
         }
 
-        Integer changedID; 
+        Integer changedID;
         JdbcTemplate jdbcTemplate = getJdbcTemplate();
-        PreparedStatementCreator psc = new PreparedStatementCreator() {
-            @Override
-            public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
-                PreparedStatement ps = con.prepareStatement(UPDATE_PERSON, Statement.RETURN_GENERATED_KEYS);
-                ps.setInt(1, entity.getAccountID());
-                ps.setInt(2, getTimezoneID(entity.getTimeZone().getID()));
+        if (entity.getAccountID() != null) {
+            PreparedStatementCreator psc = new PreparedStatementCreator() {
+                @Override
+                public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
+                    PreparedStatement ps = con.prepareStatement(UPDATE_PERSON, Statement.RETURN_GENERATED_KEYS);
+                    ps.setInt(1, entity.getAccountID());
+                    ps.setInt(2, getTimezoneID(entity.getTimeZone().getID()));
 
-                if (entity.getStatus() == null || entity.getStatus().getCode() == null) {
-                    ps.setNull(3, Types.NULL);
-                } else {
-                    ps.setInt(3, entity.getStatus().getCode());
-                }
+                    if (entity.getStatus() == null || entity.getStatus().getCode() == null) {
+                        ps.setNull(3, Types.NULL);
+                    } else {
+                        ps.setInt(3, entity.getStatus().getCode());
+                    }
 
-                if (entity.getMeasurementType() == null || entity.getMeasurementType().getCode() == null) {
-                    ps.setNull(4, Types.NULL);
-                } else {
-                    ps.setInt(4, entity.getMeasurementType().getCode());
-                }
+                    if (entity.getMeasurementType() == null || entity.getMeasurementType().getCode() == null) {
+                        ps.setNull(4, Types.NULL);
+                    } else {
+                        ps.setInt(4, entity.getMeasurementType().getCode());
+                    }
 
-                if (entity.getFuelEfficiencyType() == null || entity.getFuelEfficiencyType().getCode() == null) {
-                    ps.setNull(5, Types.NULL);
-                } else {
-                    ps.setInt(5, entity.getFuelEfficiencyType().getCode());
-                }
+                    if (entity.getFuelEfficiencyType() == null || entity.getFuelEfficiencyType().getCode() == null) {
+                        ps.setNull(5, Types.NULL);
+                    } else {
+                        ps.setInt(5, entity.getFuelEfficiencyType().getCode());
+                    }
 
-                if (entity.getAddress() == null) {
-                    ps.setNull(6, Types.NULL);
-                } else {
-                    ps.setInt(6, entity.getAddress().getAddrID());
-                }
+                    if (entity.getAddress() == null) {
+                        ps.setNull(6, Types.NULL);
+                    } else {
+                        ps.setInt(6, entity.getAddress().getAddrID());
+                    }
 
-                if (entity.getLocale() == null) {
-                    ps.setNull(7, Types.NULL);
-                } else {
-                    ps.setString(7, entity.getLocale().toString());
-                }
+                    if (entity.getLocale() == null) {
+                        ps.setNull(7, Types.NULL);
+                    } else {
+                        ps.setString(7, entity.getLocale().toString());
+                    }
 
-                ps.setString(8, entity.getReportsTo());
-                ps.setString(9, entity.getTitle());
-                ps.setString(10, entity.getDept());
-                if (entity.getEmpid().isEmpty() || entity.getEmpid()==null){
-                    ps.setNull(11,Types.NULL);
-                }else {
-                    ps.setString(11, entity.getEmpid());
-                }
-                ps.setString(12, entity.getFirst());
-                ps.setString(13, entity.getMiddle());
-                ps.setString(14, entity.getLast());
-                ps.setString(15, entity.getSuffix());
+                    if (entity.getReportsTo().equalsIgnoreCase("") || entity.getReportsTo().isEmpty()) {
+                        ps.setNull(8, Types.NULL);
+                    } else {
+                        ps.setString(8, entity.getReportsTo().toString());
+                    }
 
-                if (entity.getGender() == null || entity.getGender().getCode() == null) {
-                    ps.setNull(16, Types.NULL);
-                } else {
-                    ps.setInt(16, entity.getGender().getCode());
-                }
+                    if (entity.getTitle().equalsIgnoreCase("") || entity.getTitle().isEmpty()) {
+                        ps.setNull(9, Types.NULL);
+                    } else {
+                        ps.setString(9, entity.getTitle());
+                    }
 
-                if (entity.getHeight() == null) {
-                    ps.setNull(17, Types.NULL);
-                } else {
-                    ps.setInt(17, entity.getHeight());
-                }
-                if (entity.getWeight() == null) {
-                    ps.setNull(18, Types.NULL);
-                } else {
-                    ps.setInt(18, entity.getWeight());
-                }
+                    if (entity.getDept().equalsIgnoreCase("") || entity.getDept().isEmpty()) {
+                        ps.setNull(10, Types.NULL);
+                    } else {
+                        ps.setString(10, entity.getDept());
+                    }
 
-                if (entity.getDob() == null) {
-                    ps.setNull(19, Types.NULL);
-                } else {
-                    ps.setDate(19, new java.sql.Date(entity.getDob().getTime()));
-                }
+                    if (entity.getEmpid().isEmpty() || entity.getEmpid() == null) {
+                        ps.setNull(11, Types.NULL);
+                    } else {
+                        ps.setString(11, entity.getEmpid());
+                    }
+                    if (entity.getFirst().trim().equalsIgnoreCase("") || entity.getFirst().trim().isEmpty()) {
+                        ps.setNull(12, Types.NULL);
+                    } else {
+                        ps.setString(12, entity.getFirst().trim());
+                    }
 
-                if (entity.getInfo() == null) {
-                    ps.setNull(20, Types.NULL);
-                } else {
-                    ps.setInt(20, entity.getInfo());
-                }
+                    if (entity.getMiddle().trim().equalsIgnoreCase("") || entity.getMiddle().trim().isEmpty()) {
+                        ps.setNull(13, Types.NULL);
+                    } else {
+                        ps.setString(13, entity.getMiddle().trim());
+                    }
 
-                if (entity.getWarn() == null) {
-                    ps.setNull(21, Types.NULL);
-                } else {
-                    ps.setInt(21, entity.getWarn());
+                    if (entity.getLast().trim().equalsIgnoreCase("") || entity.getLast().trim().isEmpty()) {
+                        ps.setNull(14, Types.NULL);
+                    } else {
+                        ps.setString(14, entity.getLast().trim());
+                    }
+                    if (entity.getSuffix().trim().equalsIgnoreCase("") || entity.getSuffix().trim().isEmpty()) {
+                        ps.setNull(15, Types.NULL);
+                    } else {
+                        ps.setString(15, entity.getSuffix().trim());
+                    }
+
+                    if (entity.getGender() == null || entity.getGender().getCode() == null) {
+                        ps.setNull(16, Types.NULL);
+                    } else {
+                        ps.setInt(16, entity.getGender().getCode());
+                    }
+
+                    if (entity.getHeight() == null) {
+                        ps.setNull(17, Types.NULL);
+                    } else {
+                        ps.setInt(17, entity.getHeight());
+                    }
+                    if (entity.getWeight() == null) {
+                        ps.setNull(18, Types.NULL);
+                    } else {
+                        ps.setInt(18, entity.getWeight());
+                    }
+
+                    if (entity.getDob() == null) {
+                        ps.setNull(19, Types.NULL);
+                    } else {
+                        ps.setDate(19, new java.sql.Date(entity.getDob().getTime()));
+                    }
+
+                    if (entity.getInfo() == null) {
+                        ps.setNull(20, Types.NULL);
+                    } else {
+                        ps.setInt(20, entity.getInfo());
+                    }
+
+                    if (entity.getWarn() == null) {
+                        ps.setNull(21, Types.NULL);
+                    } else {
+                        ps.setInt(21, entity.getWarn());
+                    }
+
+                    if (entity.getCrit() == null) {
+                        ps.setNull(22, Types.NULL);
+                    } else {
+                        ps.setInt(22, entity.getCrit());
+                    }
+                    if (entity.getPriEmail().equalsIgnoreCase("") || entity.getPriEmail().isEmpty()) {
+                        ps.setNull(23, Types.NULL);
+                    } else {
+                        ps.setString(23, entity.getPriEmail());
+                    }
+
+                    if (entity.getSecEmail().equalsIgnoreCase("") || entity.getSecEmail().isEmpty()) {
+                        ps.setNull(24, Types.NULL);
+                    } else {
+                        ps.setString(24, entity.getSecEmail());
+                    }
+
+                    if (entity.getPriPhone().equalsIgnoreCase("") || entity.getPriPhone().isEmpty()) {
+                        ps.setNull(25, Types.NULL);
+                    } else {
+                        ps.setString(25, entity.getPriPhone());
+                    }
+
+                    if (entity.getSecPhone().equalsIgnoreCase("") || entity.getSecPhone().isEmpty()) {
+                        ps.setNull(26, Types.NULL);
+                    } else {
+                        ps.setString(26, entity.getSecPhone());
+                    }
+                    if (entity.getPriText().equalsIgnoreCase("") || entity.getPriText().isEmpty()) {
+                        ps.setNull(27, Types.NULL);
+                    } else {
+                        ps.setString(27, entity.getPriText());
+                    }
+
+                    if (entity.getSecText().equalsIgnoreCase("") || entity.getSecText().isEmpty()) {
+                        ps.setNull(28, Types.NULL);
+                    } else {
+                        ps.setString(28, entity.getSecText());
+                    }
+
+                    DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                    String modified = df.format(toUTC(new Date()));
+                    ps.setString(29, modified);
+                    ps.setInt(30, entity.getPersonID());
+
+                    logger.debug(ps.toString());
+                    return ps;
                 }
             };
 
@@ -531,30 +669,22 @@ public class PersonJDBCDAO extends SimpleJdbcDaoSupport implements PersonDAO {
         }
         changedID = entity.getPersonID();
 
-        if (entity.getDriver() != null)
-        {
-            if (entity.getDriver().getDriverID() == null || entity.getDriver().getDriverID().intValue() == 0)
-            {
+        if (entity.getDriver() != null) {
+            if (entity.getDriver().getDriverID() == null || entity.getDriver().getDriverID().intValue() == 0) {
                 entity.getDriver().setPersonID(entity.getPersonID());
-                Integer driverID = driverDAO.create(entity.getPersonID(),entity.getDriver());
+                Integer driverID = driverDAO.create(entity.getPersonID(), entity.getDriver());
                 entity.getDriver().setDriverID(driverID);
-            }
-            else
-            {
+            } else {
                 driverDAO.update(entity.getDriver());
             }
         }
 
-        if (entity.getUser() != null)
-        {
-            if (entity.getUser().getUserID() == null || entity.getUser().getUserID().intValue() == 0)
-            {
+        if (entity.getUser() != null) {
+            if (entity.getUser().getUserID() == null || entity.getUser().getUserID().intValue() == 0) {
                 entity.getUser().setPersonID(entity.getPersonID());
-                Integer userID = userDAO.create(entity.getPersonID(),entity.getUser());
+                Integer userID = userDAO.create(entity.getPersonID(), entity.getUser());
                 entity.getUser().setUserID(userID);
-            }
-            else
-            {
+            } else {
                 userDAO.update(entity.getUser());
             }
         }
@@ -563,9 +693,9 @@ public class PersonJDBCDAO extends SimpleJdbcDaoSupport implements PersonDAO {
 
     }
 
-    public Integer getTimezoneID(String tzName){
+    public Integer getTimezoneID(String tzName) {
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("tzName", tzName );
+        params.put("tzName", tzName);
 
         StringBuilder timezoneIDSelect = new StringBuilder(TIME_ZONE_SELECT);
         Integer timezoneID = getSimpleJdbcTemplate().queryForInt(timezoneIDSelect.toString(), params);
@@ -575,7 +705,7 @@ public class PersonJDBCDAO extends SimpleJdbcDaoSupport implements PersonDAO {
 
     @Override
     public Integer deleteByID(Integer integer) {
-        return getJdbcTemplate().update(DEL_PERSON_BY_ID, new Object[] { integer });
+        return getJdbcTemplate().update(DEL_PERSON_BY_ID, new Object[]{integer});
     }
 
     private String getStringOrNullFromRS(ResultSet rs, String columnName) throws SQLException {
@@ -620,7 +750,7 @@ public class PersonJDBCDAO extends SimpleJdbcDaoSupport implements PersonDAO {
         List<Integer> reportIDList = getSimpleJdbcTemplate().query(reportPrefByIDSelect.toString(), reportPrefIDRowMapper, params);
         for (int i = 0; i < reportIDList.size(); i++) {
             Integer reportPrefId = reportIDList.get(i);
-            getJdbcTemplate().update(DEL_REPORT_PREF_BY_ID, new Object[] { reportPrefId });
+            getJdbcTemplate().update(DEL_REPORT_PREF_BY_ID, new Object[]{reportPrefId});
         }
     }
 
@@ -637,7 +767,7 @@ public class PersonJDBCDAO extends SimpleJdbcDaoSupport implements PersonDAO {
         List<Integer> alertIDList = getSimpleJdbcTemplate().query(alertByIDSelect.toString(), alertIDRowMapper, params);
         for (int i = 0; i < alertIDList.size(); i++) {
             Integer alertId = alertIDList.get(i);
-            getJdbcTemplate().update(DEL_ALERT_BY_ID, new Object[] { alertId });
+            getJdbcTemplate().update(DEL_ALERT_BY_ID, new Object[]{alertId});
         }
 
     }

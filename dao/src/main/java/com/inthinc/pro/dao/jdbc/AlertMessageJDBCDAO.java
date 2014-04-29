@@ -1,22 +1,5 @@
 package com.inthinc.pro.dao.jdbc;
 
-import java.sql.CallableStatement;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.TimeZone;
-
-import org.apache.log4j.Logger;
-
 import com.inthinc.pro.ProDAOException;
 import com.inthinc.pro.comm.parser.attrib.Attrib;
 import com.inthinc.pro.dao.AlertMessageDAO;
@@ -48,6 +31,22 @@ import com.inthinc.pro.model.event.EventAttr;
 import com.inthinc.pro.model.event.IdleEvent;
 import com.inthinc.pro.model.event.SpeedingEvent;
 import com.inthinc.pro.model.event.VersionEvent;
+import org.apache.log4j.Logger;
+
+import java.sql.CallableStatement;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.TimeZone;
 
 public class AlertMessageJDBCDAO extends GenericJDBCDAO implements AlertMessageDAO {
 
@@ -90,7 +89,7 @@ public class AlertMessageJDBCDAO extends GenericJDBCDAO implements AlertMessageD
 
         if (msgID == null)
             return false;
-        
+
 
         Connection conn = null;
         Integer numRows = 0;
@@ -156,8 +155,8 @@ public class AlertMessageJDBCDAO extends GenericJDBCDAO implements AlertMessageD
 
     @Override
     public AlertMessage findByID(Integer id) {
-    	
-    	
+
+
         Connection conn = null;
         java.sql.PreparedStatement statement = null;
         ResultSet resultSet = null;
@@ -219,7 +218,7 @@ public class AlertMessageJDBCDAO extends GenericJDBCDAO implements AlertMessageD
             Long owner = getNextJobOwner(conn);
             runMessageWatchDog(conn, owner, messageDeliveryType);
             List<AlertMessage> messages = getScheduledMessages(conn, owner);
-            messageBuilders = getMessageBuilders(conn,messages, messageDeliveryType);
+            messageBuilders = getMessageBuilders(conn, messages, messageDeliveryType);
 
         } catch (SQLException e) {
             throw new ProDAOException("getMessageBuilders", e);
@@ -232,7 +231,7 @@ public class AlertMessageJDBCDAO extends GenericJDBCDAO implements AlertMessageD
 
         return messageBuilders;
     }
-    
+
     private List<AlertMessageBuilder> getMessageBuilders(Connection conn, List<AlertMessage> messages, AlertMessageDeliveryType messageDeliveryType) {
         List<AlertMessageBuilder> messageBuilders = new ArrayList<AlertMessageBuilder>();
 
@@ -244,10 +243,10 @@ public class AlertMessageJDBCDAO extends GenericJDBCDAO implements AlertMessageD
             logger.debug("Preparing message for: " + person.getFullName());
 
             Event event = null;
-            
+
             if (alertMessage.getAttribs() == null || alertMessage.getAttribs().isEmpty())
                 event = eventDAO.findByID(alertMessage.getNoteID());
-            
+
             if (event == null) {
                 logger.debug("alertMessage.getAttribs(): " + alertMessage.getAttribs());
                 if (alertMessage.getAttribs() != null && !alertMessage.getAttribs().equalsIgnoreCase("")) {
@@ -257,38 +256,38 @@ public class AlertMessageJDBCDAO extends GenericJDBCDAO implements AlertMessageD
                     event.setVehicleID(alertMessage.getVehicleID());
                     event.setDeviceID(alertMessage.getDeviceID());
                     logger.debug("event: " + event);
-                }    
+                }
                 if (event == null) {
                     logger.debug("event is Null ");
                     continue;
                 }
             }
-            
-            if(event instanceof SpeedingEvent){
-	            if(!((SpeedingEvent)event).isValidEvent()){
-	            	
-	            	StringBuilder sb = new StringBuilder();
-	            	
-	            	sb.append("Invalid speeding event has occured! ")
-	            	.append(" DriverID: ")
-	            	.append(event.getDriverID() == null ? "Not Available " : String.valueOf(event.getDriverID()))
-	            	.append(" VehicleID: ")
-	            	.append(event.getVehicleID() == null ? "Not Available " : String.valueOf(event.getVehicleID()))
-	            	.append(" DeviceID: ")
-	            	.append(event.getDeviceID() == null ? "Not Available " : String.valueOf(event.getDeviceID()))
-	            	.append(" SpeedLimit: ")
-	            	.append(((SpeedingEvent)event).getSpeedLimit() == null ? "Not Available " : String.valueOf(((SpeedingEvent)event).getSpeedLimit()))
-	            	.append(" Speed: ")
-	            	.append(((SpeedingEvent)event).getSpeed()  == null ? "Not Available" : String.valueOf(((SpeedingEvent)event).getSpeed()));
-	            	
-	            	logger.error(sb.toString());
-	            	
-	            	continue;
-	            }
+
+            if (event instanceof SpeedingEvent) {
+                if (!((SpeedingEvent) event).isValidEvent()) {
+
+                    StringBuilder sb = new StringBuilder();
+
+                    sb.append("Invalid speeding event has occured! ")
+                            .append(" DriverID: ")
+                            .append(event.getDriverID() == null ? "Not Available " : String.valueOf(event.getDriverID()))
+                            .append(" VehicleID: ")
+                            .append(event.getVehicleID() == null ? "Not Available " : String.valueOf(event.getVehicleID()))
+                            .append(" DeviceID: ")
+                            .append(event.getDeviceID() == null ? "Not Available " : String.valueOf(event.getDeviceID()))
+                            .append(" SpeedLimit: ")
+                            .append(((SpeedingEvent) event).getSpeedLimit() == null ? "Not Available " : String.valueOf(((SpeedingEvent) event).getSpeedLimit()))
+                            .append(" Speed: ")
+                            .append(((SpeedingEvent) event).getSpeed() == null ? "Not Available" : String.valueOf(((SpeedingEvent) event).getSpeed()));
+
+                    logger.error(sb.toString());
+
+                    continue;
+                }
             }
 
             Locale locale = getLocale(person);
-            
+
             List<String> parameterList = new ParameterList().getParameterList(event, person.getMeasurementType(), alertMessage.getAlertMessageType(), locale, alertMessage.getZoneID());
             if (!alertReady(parameterList))
                 continue;
@@ -296,11 +295,11 @@ public class AlertMessageJDBCDAO extends GenericJDBCDAO implements AlertMessageD
             if (!AlertEscalationStatus.SENT.equals(alertMessage.getStatus())) {
                 alertMessage.setAddress(getAlertMessageAddress(person, messageDeliveryType));
             }
-            AlertMessageBuilder  alertMessageBuilder = new AlertMessageBuilder(alertMessage.getAlertID(), 
-                    alertMessage.getMessageID(), 
-                    locale, 
+            AlertMessageBuilder alertMessageBuilder = new AlertMessageBuilder(alertMessage.getAlertID(),
+                    alertMessage.getMessageID(),
+                    locale,
                     alertMessage.getAddress(),
-                    alertMessage.getAlertMessageType(), 
+                    alertMessage.getAlertMessageType(),
                     alertMessage.getAcknowledge(),
                     parameterList);
 
@@ -312,6 +311,7 @@ public class AlertMessageJDBCDAO extends GenericJDBCDAO implements AlertMessageD
         }
         return messageBuilders;
     }
+
     private Long getNextJobOwner(Connection conn) {
         Statement statement = null;
         ResultSet resultSet = null;
@@ -623,7 +623,7 @@ public class AlertMessageJDBCDAO extends GenericJDBCDAO implements AlertMessageD
                 case ALERT_TYPE_DVIR_POST_TRIP_FAIL:
                 case ALERT_TYPE_DVIR_PRE_TRIP_PASS:
                 case ALERT_TYPE_DVIR_POST_TRIP_PASS:
-                   addAddress(event);
+                    addAddress(event);
                     parameterList.add(formSubmissionsURL);
                     // if (!addFailReasons(event)) {
                     // // form not available yet
@@ -675,22 +675,23 @@ public class AlertMessageJDBCDAO extends GenericJDBCDAO implements AlertMessageD
             Number speedLimit = MeasurementConversionUtil.convertSpeed(event.getSpeedLimit(), measurementType);
             parameterList.add(String.valueOf(speedLimit));
         }
-        
-        private void addDVIRRepairAttributes(Event event){
+
+        private void addDVIRRepairAttributes(Event event) {
             String mechanicID = event.getAttrMap().get(EventAttr.ATTR_DVIR_MECHANIC_ID_STR.toString()) == null ? "" : String.valueOf(event.getAttrMap().get(EventAttr.ATTR_DVIR_MECHANIC_ID_STR.toString()));
             String inspectorID = event.getAttrMap().get(EventAttr.ATTR_DVIR_INSPECTOR_ID_STR.toString()) == null ? "" : String.valueOf(event.getAttrMap().get(EventAttr.ATTR_DVIR_INSPECTOR_ID_STR.toString()));
             String signOffID = event.getAttrMap().get(EventAttr.ATTR_DVIR_SIGNOFF_ID_STR.toString()) == null ? "" : String.valueOf(event.getAttrMap().get(EventAttr.ATTR_DVIR_SIGNOFF_ID_STR.toString()));
             String comments = event.getAttrMap().get(EventAttr.ATTR_DVIR_COMMENTS.toString()) == null ? "" : String.valueOf(event.getAttrMap().get(EventAttr.ATTR_DVIR_COMMENTS.toString()));
             String formDefID = event.getAttrMap().get(EventAttr.ATTR_DVIR_FORM_ID.toString()) == null ? "" : String.valueOf(event.getAttrMap().get(EventAttr.ATTR_DVIR_FORM_ID.toString()));
             String submissionTime = event.getAttrMap().get(EventAttr.ATTR_DVIR_SUBMISSION_TIME.toString()) == null ? "" : String.valueOf(event.getAttrMap().get(EventAttr.ATTR_DVIR_SUBMISSION_TIME.toString()));
-            
+
             parameterList.add(mechanicID);
             parameterList.add(inspectorID);
             parameterList.add(signOffID);
             parameterList.add(comments);
             parameterList.add(formDefID);
             parameterList.add(submissionTime)
-;        }
+            ;
+        }
 
         public List<String> getParameterList() {
             return parameterList;

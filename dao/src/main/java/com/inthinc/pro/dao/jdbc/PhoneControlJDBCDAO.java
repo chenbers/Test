@@ -112,7 +112,7 @@ public class PhoneControlJDBCDAO extends SimpleJdbcDaoSupport implements PhoneCo
         PreparedStatementCreator psc = new PreparedStatementCreator() {
             @Override
             public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
-                PreparedStatement ps = con.prepareStatement(INSERT_INTO_PHONE_CONTROL,Statement.RETURN_GENERATED_KEYS);
+                PreparedStatement ps = con.prepareStatement(INSERT_INTO_PHONE_CONTROL, Statement.RETURN_GENERATED_KEYS);
 
                 ps.setInt(1, entity.getDriverID());
                 ps.setInt(2, entity.getAcctID());

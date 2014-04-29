@@ -1,21 +1,20 @@
 package com.inthinc.pro.dao.jdbc;
 
+import com.inthinc.pro.dao.AdminReportScheduleDAO;
+import com.inthinc.pro.model.Occurrence;
+import com.inthinc.pro.model.ReportParamType;
+import com.inthinc.pro.model.ReportSchedule;
+import com.inthinc.pro.model.Status;
+import org.springframework.jdbc.core.simple.ParameterizedRowMapper;
+import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.springframework.jdbc.core.simple.ParameterizedRowMapper;
-import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
-
-import com.inthinc.pro.dao.AdminReportScheduleDAO;
-import com.inthinc.pro.model.Occurrence;
-import com.inthinc.pro.model.ReportParamType;
-import com.inthinc.pro.model.ReportSchedule;
-import com.inthinc.pro.model.Status;
-
-public class AdminReportScheduleJDBCDAO extends SimpleJdbcDaoSupport implements AdminReportScheduleDAO{
+public class AdminReportScheduleJDBCDAO extends SimpleJdbcDaoSupport implements AdminReportScheduleDAO {
 
     @Override
     public ReportSchedule findByID(Integer id) {
@@ -49,7 +48,7 @@ public class AdminReportScheduleJDBCDAO extends SimpleJdbcDaoSupport implements 
             reportSchedule.setAccountID(ObjectToInteger(rs.getObject("acctID")));
             reportSchedule.setStartDate(rs.getDate("startDate"));
             reportSchedule.setLastDate(rs.getTimestamp("lastDate"));
-            if(reportSchedule.getLastDate().before(reportSchedule.getStartDate())){
+            if (reportSchedule.getLastDate().before(reportSchedule.getStartDate())) {
                 reportSchedule.setLastDate(null);
             }
             reportSchedule.setName(rs.getString("name"));
@@ -59,7 +58,7 @@ public class AdminReportScheduleJDBCDAO extends SimpleJdbcDaoSupport implements 
             reportSchedule.setUserID(ObjectToInteger(rs.getObject("userID")));
             reportSchedule.setStatus(Status.valueOf(rs.getInt("status")));
             reportSchedule.setReportScheduleID(ObjectToInteger(rs.getObject("reportPrefID")));
-            reportSchedule.setFullName(rs.getString("first")+ " "+rs.getString("last"));
+            reportSchedule.setFullName(rs.getString("first") + " " + rs.getString("last"));
 
             String format = rs.getString("format");
             if (format == null || format.isEmpty())
@@ -67,7 +66,9 @@ public class AdminReportScheduleJDBCDAO extends SimpleJdbcDaoSupport implements 
             else
                 reportSchedule.setFormat(format);
             return reportSchedule;
-        };
+        }
+
+        ;
     };
 
     public List<ReportSchedule> getReportSchedulesForUsersDeep(Integer userID, List<Integer> groupIDs, Integer acctID) {

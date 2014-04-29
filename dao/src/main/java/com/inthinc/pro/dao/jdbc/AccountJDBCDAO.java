@@ -7,7 +7,6 @@ import com.inthinc.pro.model.AccountHOSType;
 import com.inthinc.pro.model.Address;
 import com.inthinc.pro.model.State;
 import com.inthinc.pro.model.Status;
-import com.inthinc.pro.model.app.States;
 import com.mysql.jdbc.Statement;
 import org.apache.commons.lang.NotImplementedException;
 import org.joda.time.DateTime;
@@ -16,18 +15,16 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.simple.ParameterizedRowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
-import org.springframework.jdbc.support.GeneratedKeyHolder;
-import org.springframework.jdbc.support.KeyHolder;
 
 import java.sql.Connection;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -39,8 +36,8 @@ public class AccountJDBCDAO extends SimpleJdbcDaoSupport implements AccountDAO {
     private static final String ALL_VALID_ACCOUNTIDS = "select acctID from account where status=1";
     private static final String FIND_ALL_ACCOUNT_IDS = "SELECT acctID FROM  account ";
     private static final String DEL_ACCOUNT_BY_ID = "delete from account where acctID = ?";
-    private static final String INSERT_ACCOUNT="INSERT INTO account() values()";
-    private static final String FIND_BY_ID = "select * from account ac LEFT JOIN address ad on ac.mailId= ad.addrId, state st where  ac.acctID= :acctID and ad.stateId=st.stateID  " ;
+    private static final String INSERT_ACCOUNT = "INSERT INTO account() values()";
+    private static final String FIND_BY_ID = "select * from account ac LEFT JOIN address ad on ac.mailId= ad.addrId, state st where  ac.acctID= :acctID and ad.stateId=st.stateID  ";
     private static final String UPDATE_ACCOUNT_1 = "UPDATE account set zonePublishDate=?, status=?, billID=?, mailID=?, name=?, hos=?, unkDriverID=? where acctID = ?";
     private static final String UPDATE_ACCOUNT_SUPPORT_PHONE1 = "UPDATE accountProp set value=? where acctID = ? and name like 'supportPhone1'";
     private static final String UPDATE_ACCOUNT_SUPPORT_PHONE2 = "UPDATE accountProp set value=? where acctID = ? and name like 'supportPhone2'";
@@ -72,14 +69,15 @@ public class AccountJDBCDAO extends SimpleJdbcDaoSupport implements AccountDAO {
         }
         return accountIDs;
     }
-    public static Long objectToLong(Object theObj){
+
+    public static Long objectToLong(Object theObj) {
         Long theLong;
-        if(theObj == null){
+        if (theObj == null) {
             theLong = null;
-        } else if(theObj instanceof Long) {
-            theLong = ((Long)theObj).longValue();
-        } else if(theObj instanceof Integer){
-            theLong = ((Long)theObj).longValue();
+        } else if (theObj instanceof Long) {
+            theLong = ((Long) theObj).longValue();
+        } else if (theObj instanceof Integer) {
+            theLong = ((Long) theObj).longValue();
         } else {
             theLong = null;
         }
@@ -95,7 +93,7 @@ public class AccountJDBCDAO extends SimpleJdbcDaoSupport implements AccountDAO {
     public List<Account> getAllAcctIDs() {
         Map<String, Object> args = new HashMap<String, Object>();
         List<Account> accountList = getSimpleJdbcTemplate().query(FIND_ALL_ACCOUNT_IDS, accountListParameterizedRowMapper, args);
-         return accountList;
+        return accountList;
     }
 
     @Override
@@ -122,7 +120,7 @@ public class AccountJDBCDAO extends SimpleJdbcDaoSupport implements AccountDAO {
                 PreparedStatement ps = con.prepareStatement(UPDATE_ACCOUNT_1, Statement.RETURN_GENERATED_KEYS);
                 df.setTimeZone(TimeZone.getTimeZone("UTC"));
                 String ZonePublishDate = df.format(toUTC(new Date()));
-                ps.setString(1, ZonePublishDate );
+                ps.setString(1, ZonePublishDate);
 
                 if (account.getStatus() == null || account.getStatus().getCode() == null) {
                     ps.setNull(2, Types.NULL);
@@ -134,7 +132,7 @@ public class AccountJDBCDAO extends SimpleJdbcDaoSupport implements AccountDAO {
                 ps.setInt(4, account.getAddressID());
                 ps.setString(5, account.getAcctName());
                 ps.setInt(6, account.getHos().getCode());
-                ps.setInt(7,account.getUnkDriverID());
+                ps.setInt(7, account.getUnkDriverID());
                 ps.setInt(8, account.getAccountID());
 
                 logger.debug(ps.toString());
@@ -146,8 +144,8 @@ public class AccountJDBCDAO extends SimpleJdbcDaoSupport implements AccountDAO {
             @Override
             public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
                 PreparedStatement ps = con.prepareStatement(UPDATE_ACCOUNT_SUPPORT_PHONE1, Statement.RETURN_GENERATED_KEYS);
-                ps.setString(1,account.getProps().getSupportContact1());
-                ps.setInt(2,account.getAccountID() );
+                ps.setString(1, account.getProps().getSupportContact1());
+                ps.setInt(2, account.getAccountID());
 
                 logger.debug(ps.toString());
                 return ps;
@@ -158,8 +156,8 @@ public class AccountJDBCDAO extends SimpleJdbcDaoSupport implements AccountDAO {
             @Override
             public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
                 PreparedStatement ps = con.prepareStatement(UPDATE_ACCOUNT_SUPPORT_PHONE2, Statement.RETURN_GENERATED_KEYS);
-                ps.setString(1,account.getProps().getSupportContact2());
-                ps.setInt(2,account.getAccountID() );
+                ps.setString(1, account.getProps().getSupportContact2());
+                ps.setInt(2, account.getAccountID());
 
                 logger.debug(ps.toString());
                 return ps;
@@ -170,8 +168,8 @@ public class AccountJDBCDAO extends SimpleJdbcDaoSupport implements AccountDAO {
             @Override
             public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
                 PreparedStatement ps = con.prepareStatement(UPDATE_ACCOUNT_SUPPORT_PHONE3, Statement.RETURN_GENERATED_KEYS);
-                ps.setString(1,account.getProps().getSupportContact3());
-                ps.setInt(2,account.getAccountID() );
+                ps.setString(1, account.getProps().getSupportContact3());
+                ps.setInt(2, account.getAccountID());
 
                 logger.debug(ps.toString());
                 return ps;
@@ -183,8 +181,8 @@ public class AccountJDBCDAO extends SimpleJdbcDaoSupport implements AccountDAO {
             @Override
             public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
                 PreparedStatement ps = con.prepareStatement(UPDATE_ACCOUNT_SUPPORT_PHONE4, Statement.RETURN_GENERATED_KEYS);
-                ps.setString(1,account.getProps().getSupportContact4());
-                ps.setInt(2,account.getAccountID() );
+                ps.setString(1, account.getProps().getSupportContact4());
+                ps.setInt(2, account.getAccountID());
 
                 logger.debug(ps.toString());
                 return ps;
@@ -195,8 +193,8 @@ public class AccountJDBCDAO extends SimpleJdbcDaoSupport implements AccountDAO {
             @Override
             public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
                 PreparedStatement ps = con.prepareStatement(UPDATE_ACCOUNT_SUPPORT_PHONE5, Statement.RETURN_GENERATED_KEYS);
-                ps.setString(1,account.getProps().getSupportContact5());
-                ps.setInt(2,account.getAccountID() );
+                ps.setString(1, account.getProps().getSupportContact5());
+                ps.setInt(2, account.getAccountID());
 
                 logger.debug(ps.toString());
                 return ps;
@@ -207,8 +205,8 @@ public class AccountJDBCDAO extends SimpleJdbcDaoSupport implements AccountDAO {
             @Override
             public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
                 PreparedStatement ps = con.prepareStatement(UPDATE_ACCOUNT_PHONE_ALERT, Statement.RETURN_GENERATED_KEYS);
-                ps.setString(1,account.getProps().getPhoneAlertsActive());
-                ps.setInt(2,account.getAccountID() );
+                ps.setString(1, account.getProps().getPhoneAlertsActive());
+                ps.setInt(2, account.getAccountID());
 
                 logger.debug(ps.toString());
                 return ps;
@@ -230,6 +228,7 @@ public class AccountJDBCDAO extends SimpleJdbcDaoSupport implements AccountDAO {
     public Integer deleteByID(Integer id) {
         return getJdbcTemplate().update(DEL_ACCOUNT_BY_ID, new Object[]{id});
     }
+
     private ParameterizedRowMapper<Account> accountParameterizedRowMapper = new ParameterizedRowMapper<Account>() {
         @Override
         public Account mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -242,15 +241,15 @@ public class AccountJDBCDAO extends SimpleJdbcDaoSupport implements AccountDAO {
             account.setAddressID(rs.getInt("ac.mailId"));
             account.setZonePublishDate(rs.getDate("ac.zonePublishDate"));
 
-            AccountAttributes accountAttributes= new AccountAttributes();
+            AccountAttributes accountAttributes = new AccountAttributes();
             Map<String, Object> args = new HashMap<String, Object>();
             args.put("acctID", 1);
-            String accountPhone1 = getSimpleJdbcTemplate().queryForObject(FIND_PHONE1,String.class, args);
-            String accountPhone2 = getSimpleJdbcTemplate().queryForObject(FIND_PHONE2,String.class, args);
-            String accountContact3 = getSimpleJdbcTemplate().queryForObject(FIND_CONTACT3,String.class, args);
-            String accountContact4 = getSimpleJdbcTemplate().queryForObject(FIND_CONTACT4,String.class, args);
-            String accountContact5 = getSimpleJdbcTemplate().queryForObject(FIND_CONTACT5,String.class, args);
-            String phoneActive = getSimpleJdbcTemplate().queryForObject(FIND_PHONE_ALERT,String.class, args);
+            String accountPhone1 = getSimpleJdbcTemplate().queryForObject(FIND_PHONE1, String.class, args);
+            String accountPhone2 = getSimpleJdbcTemplate().queryForObject(FIND_PHONE2, String.class, args);
+            String accountContact3 = getSimpleJdbcTemplate().queryForObject(FIND_CONTACT3, String.class, args);
+            String accountContact4 = getSimpleJdbcTemplate().queryForObject(FIND_CONTACT4, String.class, args);
+            String accountContact5 = getSimpleJdbcTemplate().queryForObject(FIND_CONTACT5, String.class, args);
+            String phoneActive = getSimpleJdbcTemplate().queryForObject(FIND_PHONE_ALERT, String.class, args);
             accountAttributes.setSupportContact1(accountPhone1);
             accountAttributes.setSupportContact2(accountPhone2);
             accountAttributes.setSupportContact3(accountContact3);
@@ -263,7 +262,7 @@ public class AccountJDBCDAO extends SimpleJdbcDaoSupport implements AccountDAO {
             state.setName(rs.getString("st.name"));
             state.setStateID(rs.getInt("st.stateId"));
 
-            Address addres =new Address ();
+            Address addres = new Address();
             addres.setAccountID(rs.getInt("ad.acctID"));
             addres.setAddr1(rs.getString("ad.addr1"));
             addres.setAddr2(rs.getString("ad.addr2"));
@@ -282,13 +281,14 @@ public class AccountJDBCDAO extends SimpleJdbcDaoSupport implements AccountDAO {
     private ParameterizedRowMapper<Account> accountListParameterizedRowMapper = new ParameterizedRowMapper<Account>() {
         @Override
         public Account mapRow(ResultSet rs, int rowNum) throws SQLException {
-            Account accountList =new Account();
+            Account accountList = new Account();
             accountList.setAccountID(rs.getInt("acctID"));
             return accountList;
         }
     };
-    private Date toUTC(Date date){
-         DateTime dt = new DateTime(date.getTime()).toDateTime(DateTimeZone.UTC);
+
+    private Date toUTC(Date date) {
+        DateTime dt = new DateTime(date.getTime()).toDateTime(DateTimeZone.UTC);
         return dt.toDate();
     }
 }

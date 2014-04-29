@@ -1,16 +1,16 @@
 package com.inthinc.pro.dao.jdbc;
 
-import java.io.Serializable;
-import java.util.List;
-
 import com.inthinc.pro.model.Device;
 import com.inthinc.pro.model.ForwardCommandSpool;
 
+import java.io.Serializable;
+import java.util.List;
+
 public class FwdCmdSpoolWS implements Serializable {
     private static final long serialVersionUID = 1L;
-    private FwdCmdSpoolWSIridiumJDBCDAO fwdCmdSpoolWSIridiumJDBCDAO; 
+    private FwdCmdSpoolWSIridiumJDBCDAO fwdCmdSpoolWSIridiumJDBCDAO;
     private FwdCmdSpoolWSHttpJDBCDAO fwdCmdSpoolWSHttpJDBCDAO;
-    
+
     public Integer add(Device device, ForwardCommandSpool forwardCommandSpool) {
         if (isGPRSOnlyWaysmart(device)) {
             return fwdCmdSpoolWSHttpJDBCDAO.add(forwardCommandSpool);
@@ -28,10 +28,9 @@ public class FwdCmdSpoolWS implements Serializable {
     public void update(Device device, Integer fwdID, Boolean processedSuccessfully) {
         if (isGPRSOnlyWaysmart(device)) {
             fwdCmdSpoolWSHttpJDBCDAO.update(fwdID, processedSuccessfully);
-        }
-        else fwdCmdSpoolWSIridiumJDBCDAO.update(fwdID, processedSuccessfully);
+        } else fwdCmdSpoolWSIridiumJDBCDAO.update(fwdID, processedSuccessfully);
     }
-    
+
     private boolean isGPRSOnlyWaysmart(Device device) {
         return device.isWaySmart() && device.isGPRSOnly();
     }

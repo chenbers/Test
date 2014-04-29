@@ -1,5 +1,11 @@
 package com.inthinc.pro.dao.jdbc;
 
+import com.inthinc.pro.ProDAOException;
+import com.inthinc.pro.dao.StateMileageDAO;
+import com.inthinc.pro.model.StateMileage;
+import org.apache.log4j.Logger;
+import org.joda.time.Interval;
+
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -7,40 +13,30 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.log4j.Logger;
-import org.joda.time.Interval;
-
-import com.inthinc.pro.ProDAOException;
-import com.inthinc.pro.dao.StateMileageDAO;
-import com.inthinc.pro.model.StateMileage;
-
-public class StateMileageJDBCDAO  extends GenericJDBCDAO  implements StateMileageDAO{
+public class StateMileageJDBCDAO extends GenericJDBCDAO implements StateMileageDAO {
 
     private static final long serialVersionUID = 1L;
     private static final Logger logger = Logger.getLogger(StateMileageJDBCDAO.class);
 
-    public List<StateMileage> getStateMileageByGroupAndMonth(Integer groupID, Interval interval, Boolean dotOnly)
-    {
+    public List<StateMileage> getStateMileageByGroupAndMonth(Integer groupID, Interval interval, Boolean dotOnly) {
         Connection conn = null;
         CallableStatement statement = null;
         ResultSet resultSet = null;
 
         ArrayList<StateMileage> recordList = new ArrayList<StateMileage>();
-        
-        try
-        {
+
+        try {
             conn = getConnection();
             statement = conn.prepareCall("{call ifta_getStateMileageByGroupAndMonth(?, ?, ?, ?)}");
             statement.setInt(1, groupID);
             statement.setLong(2, interval.getStartMillis());
             statement.setLong(3, interval.getEndMillis());
             statement.setBoolean(4, dotOnly);
-            
+
             resultSet = statement.executeQuery();
 
             StateMileage record = null;
-            while (resultSet.next())
-            {
+            while (resultSet.next()) {
                 record = new StateMileage();
 
                 record.setGroupID(resultSet.getInt(1));
@@ -53,16 +49,14 @@ public class StateMileageJDBCDAO  extends GenericJDBCDAO  implements StateMileag
                 record.setMiles(resultSet.getLong(5));
                 record.setTruckGallons(resultSet.getFloat(6));
                 record.setTrailerGallons(resultSet.getFloat(7));
-                
+
                 recordList.add(record);
             }
         }   // end try
-        catch (SQLException e)
-        { // handle database hosLogs in the usual manner
+        catch (SQLException e) { // handle database hosLogs in the usual manner
             throw new ProDAOException((statement != null) ? statement.toString() : "", e);
         }   // end catch
-        finally
-        { // clean up and release the connection
+        finally { // clean up and release the connection
             close(resultSet);
             close(statement);
             close(conn);
@@ -70,29 +64,26 @@ public class StateMileageJDBCDAO  extends GenericJDBCDAO  implements StateMileag
 
         return recordList;
     }
-    
-    public List<StateMileage> getStateMileageByGroup(Integer groupID, Interval interval, Boolean dotOnly)
-    {
+
+    public List<StateMileage> getStateMileageByGroup(Integer groupID, Interval interval, Boolean dotOnly) {
         Connection conn = null;
         CallableStatement statement = null;
         ResultSet resultSet = null;
 
         ArrayList<StateMileage> recordList = new ArrayList<StateMileage>();
-        
-        try
-        {
+
+        try {
             conn = getConnection();
             statement = conn.prepareCall("{call ifta_getStateMileageByGroup(?, ?, ?, ?)}");
             statement.setInt(1, groupID);
             statement.setLong(2, interval.getStartMillis());
             statement.setLong(3, interval.getEndMillis());
             statement.setBoolean(4, dotOnly);
-            
+
             resultSet = statement.executeQuery();
 
             StateMileage record = null;
-            while (resultSet.next())
-            {
+            while (resultSet.next()) {
                 record = new StateMileage();
 
                 record.setGroupID(resultSet.getInt(1));
@@ -104,12 +95,10 @@ public class StateMileageJDBCDAO  extends GenericJDBCDAO  implements StateMileag
                 recordList.add(record);
             }
         }   // end try
-        catch (SQLException e)
-        { // handle database hosLogs in the usual manner
+        catch (SQLException e) { // handle database hosLogs in the usual manner
             throw new ProDAOException((statement != null) ? statement.toString() : "", e);
         }   // end catch
-        finally
-        { // clean up and release the connection
+        finally { // clean up and release the connection
             close(resultSet);
             close(statement);
             close(conn);
@@ -117,29 +106,26 @@ public class StateMileageJDBCDAO  extends GenericJDBCDAO  implements StateMileag
 
         return recordList;
     }
-    
-    public List<StateMileage> getStateMileageByVehicle(Integer groupID, Interval interval, Boolean dotOnly)
-    {
+
+    public List<StateMileage> getStateMileageByVehicle(Integer groupID, Interval interval, Boolean dotOnly) {
         Connection conn = null;
         CallableStatement statement = null;
         ResultSet resultSet = null;
 
         ArrayList<StateMileage> recordList = new ArrayList<StateMileage>();
-        
-        try
-        {
+
+        try {
             conn = getConnection();
             statement = conn.prepareCall("{call ifta_getStateMileageByVehicle(?, ?, ?, ?)}");
             statement.setInt(1, groupID);
             statement.setLong(2, interval.getStartMillis());
             statement.setLong(3, interval.getEndMillis());
             statement.setBoolean(4, dotOnly);
-            
+
             resultSet = statement.executeQuery();
 
             StateMileage record = null;
-            while (resultSet.next())
-            {
+            while (resultSet.next()) {
                 record = new StateMileage();
 
                 record.setGroupID(resultSet.getInt(1));
@@ -152,12 +138,10 @@ public class StateMileageJDBCDAO  extends GenericJDBCDAO  implements StateMileag
                 recordList.add(record);
             }
         }   // end try
-        catch (SQLException e)
-        { // handle database hosLogs in the usual manner
+        catch (SQLException e) { // handle database hosLogs in the usual manner
             throw new ProDAOException((statement != null) ? statement.toString() : "", e);
         }   // end catch
-        finally
-        { // clean up and release the connection
+        finally { // clean up and release the connection
             close(resultSet);
             close(statement);
             close(conn);
@@ -165,29 +149,26 @@ public class StateMileageJDBCDAO  extends GenericJDBCDAO  implements StateMileag
 
         return recordList;
     }
-    
-    public List<StateMileage> getStateMileageByVehicleRoad(Integer groupID, Interval interval, Boolean dotOnly)
-    {
+
+    public List<StateMileage> getStateMileageByVehicleRoad(Integer groupID, Interval interval, Boolean dotOnly) {
         Connection conn = null;
         CallableStatement statement = null;
         ResultSet resultSet = null;
 
         ArrayList<StateMileage> recordList = new ArrayList<StateMileage>();
-        
-        try
-        {
+
+        try {
             conn = getConnection();
             statement = conn.prepareCall("{call ifta_getStateMileageByVehicleRoad(?, ?, ?, ?)}");
             statement.setInt(1, groupID);
             statement.setLong(2, interval.getStartMillis());
             statement.setLong(3, interval.getEndMillis());
             statement.setBoolean(4, dotOnly);
-            
+
             resultSet = statement.executeQuery();
 
             StateMileage record = null;
-            while (resultSet.next())
-            {
+            while (resultSet.next()) {
                 record = new StateMileage();
 
                 record.setGroupID(resultSet.getInt(1));
@@ -201,12 +182,10 @@ public class StateMileageJDBCDAO  extends GenericJDBCDAO  implements StateMileag
                 recordList.add(record);
             }
         }   // end try
-        catch (SQLException e)
-        { // handle database hosLogs in the usual manner
+        catch (SQLException e) { // handle database hosLogs in the usual manner
             throw new ProDAOException((statement != null) ? statement.toString() : "", e);
         }   // end catch
-        finally
-        { // clean up and release the connection
+        finally { // clean up and release the connection
             close(resultSet);
             close(statement);
             close(conn);
@@ -214,29 +193,26 @@ public class StateMileageJDBCDAO  extends GenericJDBCDAO  implements StateMileag
 
         return recordList;
     }
-    
-    public List<StateMileage> getFuelStateMileageByVehicle(Integer groupID, Interval interval, Boolean dotOnly)
-    {
+
+    public List<StateMileage> getFuelStateMileageByVehicle(Integer groupID, Interval interval, Boolean dotOnly) {
         Connection conn = null;
         CallableStatement statement = null;
         ResultSet resultSet = null;
 
         ArrayList<StateMileage> recordList = new ArrayList<StateMileage>();
-        
-        try
-        {
+
+        try {
             conn = getConnection();
             statement = conn.prepareCall("{call ifta_getFuelStateMileageByVehicle(?, ?, ?, ?)}");
             statement.setInt(1, groupID);
             statement.setLong(2, interval.getStartMillis());
             statement.setLong(3, interval.getEndMillis());
             statement.setBoolean(4, dotOnly);
-            
+
             resultSet = statement.executeQuery();
 
             StateMileage record = null;
-            while (resultSet.next())
-            {
+            while (resultSet.next()) {
                 record = new StateMileage();
 
                 record.setGroupID(resultSet.getInt(1));
@@ -250,12 +226,10 @@ public class StateMileageJDBCDAO  extends GenericJDBCDAO  implements StateMileag
                 recordList.add(record);
             }
         }   // end try
-        catch (SQLException e)
-        { // handle database hosLogs in the usual manner
+        catch (SQLException e) { // handle database hosLogs in the usual manner
             throw new ProDAOException((statement != null) ? statement.toString() : "", e);
         }   // end catch
-        finally
-        { // clean up and release the connection
+        finally { // clean up and release the connection
             close(resultSet);
             close(statement);
             close(conn);
@@ -264,28 +238,25 @@ public class StateMileageJDBCDAO  extends GenericJDBCDAO  implements StateMileag
         return recordList;
     }
 
-    public List<StateMileage> getMileageByVehicle(Integer groupID, Interval interval, Boolean dotOnly)
-    {
+    public List<StateMileage> getMileageByVehicle(Integer groupID, Interval interval, Boolean dotOnly) {
         Connection conn = null;
         CallableStatement statement = null;
         ResultSet resultSet = null;
 
         ArrayList<StateMileage> recordList = new ArrayList<StateMileage>();
-        
-        try
-        {
+
+        try {
             conn = getConnection();
             statement = conn.prepareCall("{call ifta_getMileageByVehicle(?, ?, ?, ?)}");
             statement.setInt(1, groupID);
             statement.setLong(2, interval.getStartMillis());
             statement.setLong(3, interval.getEndMillis());
             statement.setBoolean(4, dotOnly);
-            
+
             resultSet = statement.executeQuery();
 
             StateMileage record = null;
-            while (resultSet.next())
-            {
+            while (resultSet.next()) {
                 record = new StateMileage();
 
                 record.setGroupID(resultSet.getInt(1));
@@ -296,12 +267,10 @@ public class StateMileageJDBCDAO  extends GenericJDBCDAO  implements StateMileag
                 recordList.add(record);
             }
         }   // end try
-        catch (SQLException e)
-        { // handle database hosLogs in the usual manner
+        catch (SQLException e) { // handle database hosLogs in the usual manner
             throw new ProDAOException((statement != null) ? statement.toString() : "", e);
         }   // end catch
-        finally
-        { // clean up and release the connection
+        finally { // clean up and release the connection
             close(resultSet);
             close(statement);
             close(conn);

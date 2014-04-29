@@ -1,22 +1,5 @@
 package com.inthinc.pro.dao.jdbc;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Set;
-import java.util.TimeZone;
-
-import org.apache.log4j.Logger;
-import org.springframework.jdbc.core.simple.ParameterizedRowMapper;
-import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
-
 import com.inthinc.hos.model.RuleSetType;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.FuelEfficiencyType;
@@ -33,11 +16,27 @@ import com.inthinc.pro.model.pagination.PageParams;
 import com.inthinc.pro.model.pagination.SortOrder;
 import com.inthinc.pro.model.pagination.TableFilterField;
 import com.inthinc.pro.model.security.AccessPoint;
+import org.apache.log4j.Logger;
+import org.springframework.jdbc.core.simple.ParameterizedRowMapper;
+import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
 
-public class AdminPersonJDBCDAO extends SimpleJdbcDaoSupport{
-    
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Set;
+import java.util.TimeZone;
+
+public class AdminPersonJDBCDAO extends SimpleJdbcDaoSupport {
+
     private static final Logger logger = Logger.getLogger(AdminPersonJDBCDAO.class);
-    
+
     // these are created as application level beans in spring context (need to do that for tests too)
     //SupportedTimeZones;
     //States;
@@ -48,172 +47,172 @@ public class AdminPersonJDBCDAO extends SimpleJdbcDaoSupport{
     private static final String ALL_PERSON_IDS_SELECT = "SELECT p.personID FROM person AS p LEFT JOIN user as u USING (personID) LEFT JOIN driver as d USING (personID) WHERE (p.acctID = :acct_id) and  (d.groupID IN (:group_list) OR u.groupID IN (:group_list)) AND (p.status != 3 AND (d.status != 3 OR u.status !=3))";
     private static final String FILTERED_PERSON_IDS_SELECT = "SELECT p.personID, u.userID, d.driverID FROM person AS p LEFT JOIN user as u USING (personID) LEFT JOIN driver as d USING (personID) WHERE (p.acctID = :acct_id) and  (d.groupID IN (:group_list) OR u.groupID IN (:group_list)) AND (p.status != 3 AND (d.status != 3 OR u.status !=3))";
     private static final String CLEAR_FOB = "UPDATE driver set fobID='' WHERE fobID=:fob and driverID!=:driverId";
-    
-    
-	private static final Map<String,String> columnMap = new HashMap<String, String>();
 
-	static {
-		columnMap.put("fullName", "CONCAT(p.first, ' ', p.last)");
-		columnMap.put("priPhone", "p.priPhone");
-		columnMap.put("secPhone", "p.secPhone");
-		columnMap.put("priEmail", "p.priEmail");
-		columnMap.put("secEmail", "p.secEmail");
-		columnMap.put("priText", "p.priText");
-		columnMap.put("secText", "p.secText");
-		columnMap.put("info", "p.info");
-		columnMap.put("warn", "p.warn");
-		columnMap.put("crit", "p.crit");
-		columnMap.put("timeZone", "p.tzID");
-		columnMap.put("empid", "p.empID");
-		columnMap.put("reportsTo", "p.reportsTo");
-		columnMap.put("title", "p.title");
-		columnMap.put("dob", "p.dob");
-		columnMap.put("gender", "p.gender");
-		columnMap.put("locale", "p.locale");
-		columnMap.put("measurementType", "p.measureType");
-		columnMap.put("fuelEfficiencyType", "p.fuelEffType");
-		columnMap.put("user_status", "u.status");
-		columnMap.put("user_username", "username");
-		columnMap.put("user_groupID", "u.groupID");
-		columnMap.put("user_role", "u.role");
-		columnMap.put("driver_status", "d.status");
-		columnMap.put("driver_license", "d.license");
-		columnMap.put("driver_licenseClass", "d.class");
-		columnMap.put("driver_state", "d.stateID");
-		columnMap.put("driver_expiration", "d.expiration");
-		columnMap.put("driver_certifications", "d.certs");
-		columnMap.put("driver_dot", "d.dot");
-		columnMap.put("barcode", "d.barcode");
-		columnMap.put("rfid1", "d.rfid1");
-		columnMap.put("rfid2", "d.rfid2");
-		columnMap.put("fobID", "d.fobID");
-		columnMap.put("driver_groupID", "d.groupID");
-	}
-	
-	public Integer getCount(final Integer acctID, final List<Integer> groupIDs, final List<TableFilterField> filters) {
-		String personCount = "SELECT COUNT(*) FROM person AS p LEFT JOIN user as u USING (personID) LEFT JOIN driver as d USING (personID) WHERE (p.acctID = :acct_id) and  (d.groupID IN (:group_list) OR u.groupID IN (:group_list)) AND (p.status != 3 AND (d.status != 3 OR u.status !=3))";
-		Map<String, Object> params = new HashMap<String, Object>();
-		personCount = addFiltersToQuery(filters, personCount, params);
-		params.put("acct_id", acctID);
-		params.put("group_list", groupIDs);
+
+    private static final Map<String, String> columnMap = new HashMap<String, String>();
+
+    static {
+        columnMap.put("fullName", "CONCAT(p.first, ' ', p.last)");
+        columnMap.put("priPhone", "p.priPhone");
+        columnMap.put("secPhone", "p.secPhone");
+        columnMap.put("priEmail", "p.priEmail");
+        columnMap.put("secEmail", "p.secEmail");
+        columnMap.put("priText", "p.priText");
+        columnMap.put("secText", "p.secText");
+        columnMap.put("info", "p.info");
+        columnMap.put("warn", "p.warn");
+        columnMap.put("crit", "p.crit");
+        columnMap.put("timeZone", "p.tzID");
+        columnMap.put("empid", "p.empID");
+        columnMap.put("reportsTo", "p.reportsTo");
+        columnMap.put("title", "p.title");
+        columnMap.put("dob", "p.dob");
+        columnMap.put("gender", "p.gender");
+        columnMap.put("locale", "p.locale");
+        columnMap.put("measurementType", "p.measureType");
+        columnMap.put("fuelEfficiencyType", "p.fuelEffType");
+        columnMap.put("user_status", "u.status");
+        columnMap.put("user_username", "username");
+        columnMap.put("user_groupID", "u.groupID");
+        columnMap.put("user_role", "u.role");
+        columnMap.put("driver_status", "d.status");
+        columnMap.put("driver_license", "d.license");
+        columnMap.put("driver_licenseClass", "d.class");
+        columnMap.put("driver_state", "d.stateID");
+        columnMap.put("driver_expiration", "d.expiration");
+        columnMap.put("driver_certifications", "d.certs");
+        columnMap.put("driver_dot", "d.dot");
+        columnMap.put("barcode", "d.barcode");
+        columnMap.put("rfid1", "d.rfid1");
+        columnMap.put("rfid2", "d.rfid2");
+        columnMap.put("fobID", "d.fobID");
+        columnMap.put("driver_groupID", "d.groupID");
+    }
+
+    public Integer getCount(final Integer acctID, final List<Integer> groupIDs, final List<TableFilterField> filters) {
+        String personCount = "SELECT COUNT(*) FROM person AS p LEFT JOIN user as u USING (personID) LEFT JOIN driver as d USING (personID) WHERE (p.acctID = :acct_id) and  (d.groupID IN (:group_list) OR u.groupID IN (:group_list)) AND (p.status != 3 AND (d.status != 3 OR u.status !=3))";
+        Map<String, Object> params = new HashMap<String, Object>();
+        personCount = addFiltersToQuery(filters, personCount, params);
+        params.put("acct_id", acctID);
+        params.put("group_list", groupIDs);
         return getSimpleJdbcTemplate().queryForInt(personCount, params);
-	}
-	
-	public List<Integer> getAllPersonIDs(final Integer acctID, final List<Integer> groupIDs) {
-		Map<String, Object> params = new HashMap<String, Object>();
-		params.put("acct_id", acctID);
-		params.put("group_list", groupIDs);
-		return getSimpleJdbcTemplate().query(ALL_PERSON_IDS_SELECT, new ParameterizedRowMapper<Integer>() {
-			@Override
-			public Integer mapRow(ResultSet rs, int rowNum) throws SQLException {
-				return rs.getInt(1);
-			}			
-		} , params);
-	}
-	
-	public List<PersonIdentifiers> getFilteredPersonIDs(final Integer acctID, final List<Integer> groupIDs, final List<TableFilterField> filters) {
-		String personIdentifiers = FILTERED_PERSON_IDS_SELECT;
-		Map<String, Object> params = new HashMap<String, Object>();
-		personIdentifiers = addFiltersToQuery(filters, personIdentifiers, params);
-		params.put("acct_id", acctID);
-		params.put("group_list", groupIDs);
-		return getSimpleJdbcTemplate().query(personIdentifiers, new ParameterizedRowMapper<PersonIdentifiers>() {
-			@Override
-			public PersonIdentifiers mapRow(ResultSet rs, int rowNum) throws SQLException {
-				PersonIdentifiers personIdentifiers = new PersonIdentifiers();
-				personIdentifiers.setPersonID(rs.getInt("p.personID"));
-				personIdentifiers.setUserID(rs.getObject("u.userID") == null ? null : rs.getInt("u.userID"));
-				personIdentifiers.setDriverID(rs.getObject("d.driverID") == null ? null : rs.getInt("d.driverID"));
-				return personIdentifiers;
-			}			
-		} , params);
-	}
+    }
 
-	private String addFiltersToQuery(final List<TableFilterField> filters,
-			String queryStr, Map<String, Object> params) {
-		if(filters != null && !filters.isEmpty()) {
-			StringBuilder countFilter = new StringBuilder();
-			for(TableFilterField filter : filters) {
-				if(filter.getField() != null && columnMap.containsKey(filter.getField()) && filter.getFilter() != null ) {
-					String paramName = "filter_"+filter.getField();
-					countFilter.append(" AND " + columnMap.get(filter.getField()) + " LIKE :" + paramName);
-					params.put(paramName, "%"+filter.getFilter()+"%");
-				}
-			}
-			queryStr = queryStr + countFilter.toString();
-		}
-		return queryStr;
-	}
+    public List<Integer> getAllPersonIDs(final Integer acctID, final List<Integer> groupIDs) {
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("acct_id", acctID);
+        params.put("group_list", groupIDs);
+        return getSimpleJdbcTemplate().query(ALL_PERSON_IDS_SELECT, new ParameterizedRowMapper<Integer>() {
+            @Override
+            public Integer mapRow(ResultSet rs, int rowNum) throws SQLException {
+                return rs.getInt(1);
+            }
+        }, params);
+    }
 
-	public void clearFOBonOtherDrivers(String fob, Integer driverId){
-		Map<String, Object> params = new HashMap<String, Object>();
-		params.put("fob", fob);
-		params.put("driverId", driverId);
-		int rows = getSimpleJdbcTemplate().update(CLEAR_FOB, params);
-	}
-	
-	public List<Person> getPeople(final Integer acctID, final List<Integer> groupIDs, final PageParams pageParams) {
-		Map<String, Object> params = new HashMap<String, Object>();
-		params.put("acct_id", acctID);
-		params.put("group_list", groupIDs);
-		StringBuilder personSelect = new StringBuilder();
-		personSelect
-				.append("SELECT p.personID, p.acctID, p.priPhone, p.secPhone, p.priEmail, p.secEmail, p.priText, p.secText, p.info, p.warn, p.crit, p.tzID, p.empID, p.reportsTo, p.title, p.dob, p.gender, p.locale, p.measureType, p.fuelEffType, p.first, p.middle, p.last, p.suffix, p.status, ")
-				.append("u.userID, u.status, convert(u.username using utf8) as username, u.groupID, u.mapType, u.password,  u.lastLogin, u.passwordDT, ")
-				.append("d.driverID, d.groupID, d.status, d.license, d.class, d.stateID, d.expiration, d.certs, d.dot, d.barcode, d.rfid1, d.rfid2, d.fobID ")
-				//.append("FROM person AS p LEFT JOIN user as u USING (personID) LEFT JOIN driver as d USING (personID) WHERE (p.acctID = :acct_id) and  (d.groupID IN (:group_list) OR u.groupID IN (:group_list)) AND (p.status != 3 AND (d.status != 3 OR u.status !=3))");
-				.append("FROM person AS p LEFT JOIN user as u on u.personID = p.personID and u.status != 3 LEFT JOIN driver as d on d.personID = p.personID and d.status != 3 WHERE (p.acctID = :acct_id) and  (d.groupID IN (:group_list) OR u.groupID IN (:group_list)) AND p.status != 3 ");
-		
-		/***FILTERING***/
-		List<TableFilterField> filters = pageParams.getFilterList();
-		if(filters != null && !filters.isEmpty()) {
-			for(TableFilterField filter : filters) {
-				if(filter.getField() != null && columnMap.containsKey(filter.getField()) && filter.getFilter() != null ) {
-					String paramName = "filter_"+filter.getField();
-					personSelect.append(" AND " + columnMap.get(filter.getField()) + " LIKE :" + paramName);
-					params.put(paramName, "%"+filter.getFilter()+"%");
-				}
-			}
-		}
+    public List<PersonIdentifiers> getFilteredPersonIDs(final Integer acctID, final List<Integer> groupIDs, final List<TableFilterField> filters) {
+        String personIdentifiers = FILTERED_PERSON_IDS_SELECT;
+        Map<String, Object> params = new HashMap<String, Object>();
+        personIdentifiers = addFiltersToQuery(filters, personIdentifiers, params);
+        params.put("acct_id", acctID);
+        params.put("group_list", groupIDs);
+        return getSimpleJdbcTemplate().query(personIdentifiers, new ParameterizedRowMapper<PersonIdentifiers>() {
+            @Override
+            public PersonIdentifiers mapRow(ResultSet rs, int rowNum) throws SQLException {
+                PersonIdentifiers personIdentifiers = new PersonIdentifiers();
+                personIdentifiers.setPersonID(rs.getInt("p.personID"));
+                personIdentifiers.setUserID(rs.getObject("u.userID") == null ? null : rs.getInt("u.userID"));
+                personIdentifiers.setDriverID(rs.getObject("d.driverID") == null ? null : rs.getInt("d.driverID"));
+                return personIdentifiers;
+            }
+        }, params);
+    }
+
+    private String addFiltersToQuery(final List<TableFilterField> filters,
+                                     String queryStr, Map<String, Object> params) {
+        if (filters != null && !filters.isEmpty()) {
+            StringBuilder countFilter = new StringBuilder();
+            for (TableFilterField filter : filters) {
+                if (filter.getField() != null && columnMap.containsKey(filter.getField()) && filter.getFilter() != null) {
+                    String paramName = "filter_" + filter.getField();
+                    countFilter.append(" AND " + columnMap.get(filter.getField()) + " LIKE :" + paramName);
+                    params.put(paramName, "%" + filter.getFilter() + "%");
+                }
+            }
+            queryStr = queryStr + countFilter.toString();
+        }
+        return queryStr;
+    }
+
+    public void clearFOBonOtherDrivers(String fob, Integer driverId) {
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("fob", fob);
+        params.put("driverId", driverId);
+        int rows = getSimpleJdbcTemplate().update(CLEAR_FOB, params);
+    }
+
+    public List<Person> getPeople(final Integer acctID, final List<Integer> groupIDs, final PageParams pageParams) {
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("acct_id", acctID);
+        params.put("group_list", groupIDs);
+        StringBuilder personSelect = new StringBuilder();
+        personSelect
+                .append("SELECT p.personID, p.acctID, p.priPhone, p.secPhone, p.priEmail, p.secEmail, p.priText, p.secText, p.info, p.warn, p.crit, p.tzID, p.empID, p.reportsTo, p.title, p.dob, p.gender, p.locale, p.measureType, p.fuelEffType, p.first, p.middle, p.last, p.suffix, p.status, ")
+                .append("u.userID, u.status, convert(u.username using utf8) as username, u.groupID, u.mapType, u.password,  u.lastLogin, u.passwordDT, ")
+                .append("d.driverID, d.groupID, d.status, d.license, d.class, d.stateID, d.expiration, d.certs, d.dot, d.barcode, d.rfid1, d.rfid2, d.fobID ")
+                        //.append("FROM person AS p LEFT JOIN user as u USING (personID) LEFT JOIN driver as d USING (personID) WHERE (p.acctID = :acct_id) and  (d.groupID IN (:group_list) OR u.groupID IN (:group_list)) AND (p.status != 3 AND (d.status != 3 OR u.status !=3))");
+                .append("FROM person AS p LEFT JOIN user as u on u.personID = p.personID and u.status != 3 LEFT JOIN driver as d on d.personID = p.personID and d.status != 3 WHERE (p.acctID = :acct_id) and  (d.groupID IN (:group_list) OR u.groupID IN (:group_list)) AND p.status != 3 ");
+
+        /***FILTERING***/
+        List<TableFilterField> filters = pageParams.getFilterList();
+        if (filters != null && !filters.isEmpty()) {
+            for (TableFilterField filter : filters) {
+                if (filter.getField() != null && columnMap.containsKey(filter.getField()) && filter.getFilter() != null) {
+                    String paramName = "filter_" + filter.getField();
+                    personSelect.append(" AND " + columnMap.get(filter.getField()) + " LIKE :" + paramName);
+                    params.put(paramName, "%" + filter.getFilter() + "%");
+                }
+            }
+        }
 
 
-		/***SORTING***/
-		if(pageParams.getSort() == null || pageParams.getSort().getField().isEmpty())
-			personSelect.append(" ORDER BY p.first ASC");
-		else 
-		    personSelect.append(" ORDER BY " + columnMap.get(pageParams.getSort().getField()) + " " + (pageParams.getSort().getOrder() == SortOrder.ASCENDING ? "ASC" : "DESC"));
-		
-		/***PAGING***/
-		if(pageParams.getStartRow() != null && pageParams.getEndRow() != null)
-			personSelect.append(" LIMIT " + pageParams.getStartRow() + ", " + ((pageParams.getEndRow() - pageParams.getStartRow())+1) );
-		
-		
-		List<Person> personList = getSimpleJdbcTemplate().query(personSelect.toString(), new ParameterizedRowMapper<Person>() {
-			
-			
-			@Override
-			public Person mapRow(ResultSet rs, int rowNum) throws SQLException {
-				Person person = new Person();
-				person.setPersonID(rs.getInt("p.personID"));
-				person.setAcctID(rs.getInt("p.acctID"));
-				person.setPriPhone(rs.getString("p.priPhone"));
-				person.setSecPhone(rs.getString("p.secPhone"));
-				person.setPriEmail(rs.getString("p.priEmail"));
-				person.setSecEmail(rs.getString("p.secEmail"));
-				person.setPriText(rs.getString("p.priText"));
-				person.setSecText(rs.getString("p.secText"));
-				person.setInfo(rs.getObject("p.info") == null ? null : rs.getInt("p.info"));
-				person.setWarn(rs.getObject("p.warn") == null ? null : rs.getInt("p.warn"));
-				person.setCrit(rs.getObject("p.crit") == null ? null : rs.getInt("p.crit"));
-				Integer tzID = rs.getInt("p.tzID");
-				String tzString = tzID != null ? SupportedTimeZones.lookup(tzID) : null;
-				person.setTimeZone(tzString != null ? TimeZone.getTimeZone(tzString) : TimeZone.getDefault());
-				person.setEmpid(rs.getString("p.empID"));
-				person.setReportsTo(rs.getString("p.reportsTo"));
-				person.setTitle(rs.getString("p.title"));
-				person.setDob(rs.getDate("p.dob", calendar));
-				person.setGender(Gender.valueOf(rs.getInt("p.gender")));
-				
+        /***SORTING***/
+        if (pageParams.getSort() == null || pageParams.getSort().getField().isEmpty())
+            personSelect.append(" ORDER BY p.first ASC");
+        else
+            personSelect.append(" ORDER BY " + columnMap.get(pageParams.getSort().getField()) + " " + (pageParams.getSort().getOrder() == SortOrder.ASCENDING ? "ASC" : "DESC"));
+
+        /***PAGING***/
+        if (pageParams.getStartRow() != null && pageParams.getEndRow() != null)
+            personSelect.append(" LIMIT " + pageParams.getStartRow() + ", " + ((pageParams.getEndRow() - pageParams.getStartRow()) + 1));
+
+
+        List<Person> personList = getSimpleJdbcTemplate().query(personSelect.toString(), new ParameterizedRowMapper<Person>() {
+
+
+            @Override
+            public Person mapRow(ResultSet rs, int rowNum) throws SQLException {
+                Person person = new Person();
+                person.setPersonID(rs.getInt("p.personID"));
+                person.setAcctID(rs.getInt("p.acctID"));
+                person.setPriPhone(rs.getString("p.priPhone"));
+                person.setSecPhone(rs.getString("p.secPhone"));
+                person.setPriEmail(rs.getString("p.priEmail"));
+                person.setSecEmail(rs.getString("p.secEmail"));
+                person.setPriText(rs.getString("p.priText"));
+                person.setSecText(rs.getString("p.secText"));
+                person.setInfo(rs.getObject("p.info") == null ? null : rs.getInt("p.info"));
+                person.setWarn(rs.getObject("p.warn") == null ? null : rs.getInt("p.warn"));
+                person.setCrit(rs.getObject("p.crit") == null ? null : rs.getInt("p.crit"));
+                Integer tzID = rs.getInt("p.tzID");
+                String tzString = tzID != null ? SupportedTimeZones.lookup(tzID) : null;
+                person.setTimeZone(tzString != null ? TimeZone.getTimeZone(tzString) : TimeZone.getDefault());
+                person.setEmpid(rs.getString("p.empID"));
+                person.setReportsTo(rs.getString("p.reportsTo"));
+                person.setTitle(rs.getString("p.title"));
+                person.setDob(rs.getDate("p.dob", calendar));
+                person.setGender(Gender.valueOf(rs.getInt("p.gender")));
+
                 String[] locale = rs.getString("p.locale").split("_");
                 if (locale.length == 1)
                     person.setLocale(new Locale(locale[0]));
@@ -227,87 +226,89 @@ public class AdminPersonJDBCDAO extends SimpleJdbcDaoSupport{
                 person.setLast(rs.getString("p.last"));
                 person.setSuffix(rs.getString("p.suffix"));
                 person.setStatus(Status.valueOf(rs.getInt("p.status")));
-                
+
                 person.setUser(null);
-                Integer userID= rs.getInt("u.userID");
+                Integer userID = rs.getInt("u.userID");
                 if (userID != 0) {
-                	Status status = Status.valueOf(rs.getInt("u.status"));
-                	if (status != Status.DELETED) {
-	                    User user = new User();
-	                    user.setUserID(userID);
-	                    user.setStatus(status);
-	                    user.setUsername(rs.getString("username"));
-	                    user.setGroupID(rs.getInt("u.groupID"));
-	                    user.setMapType(GoogleMapType.valueOf(rs.getInt("u.mapType")));
-	                    user.setPassword(rs.getString("u.password"));
-	                    user.setLastLogin(rs.getTimestamp("u.lastLogin"));
-	                    user.setPasswordDT(rs.getTimestamp("u.passwordDT"));
-	                    user.setPerson(person);
-	                    user.setPersonID(person.getPersonID());
-	                    person.setUser(user);
-	                    user.setPerson(person);
-                	}
+                    Status status = Status.valueOf(rs.getInt("u.status"));
+                    if (status != Status.DELETED) {
+                        User user = new User();
+                        user.setUserID(userID);
+                        user.setStatus(status);
+                        user.setUsername(rs.getString("username"));
+                        user.setGroupID(rs.getInt("u.groupID"));
+                        user.setMapType(GoogleMapType.valueOf(rs.getInt("u.mapType")));
+                        user.setPassword(rs.getString("u.password"));
+                        user.setLastLogin(rs.getTimestamp("u.lastLogin"));
+                        user.setPasswordDT(rs.getTimestamp("u.passwordDT"));
+                        user.setPerson(person);
+                        user.setPersonID(person.getPersonID());
+                        person.setUser(user);
+                        user.setPerson(person);
+                    }
                 }
 
-                
+
                 person.setDriver(null);
                 Integer driverID = rs.getInt("d.driverID");
                 if (driverID != 0) {
-                	Status status = Status.valueOf(rs.getInt("d.status"));
-                	if (status != Status.DELETED) {
-	                    Driver driver = new Driver();
-	                    driver.setDriverID(driverID);
-	                    driver.setGroupID(rs.getInt("d.groupID"));
-	                    driver.setStatus(status);
-	                    driver.setLicense(rs.getString("d.license"));
-	                    driver.setLicenseClass(rs.getString("d.class"));
-	                    driver.setState(States.getStateById(rs.getInt("d.stateID")));
-	                    driver.setExpiration(rs.getDate("d.expiration", calendar));
-	                    driver.setCertifications(rs.getString("d.certs"));
-	                    driver.setDot(RuleSetType.valueOf(rs.getInt("d.dot")));
-	                    driver.setBarcode(rs.getString("d.barcode"));
-	                    driver.setRfid1(rs.getObject("d.rfid1") == null ? null : rs.getLong("d.rfid1"));
-	                    driver.setRfid2(rs.getObject("d.rfid2")== null ? null : rs.getLong("d.rfid2"));
-	                    driver.setFobID(rs.getString("d.fobID"));
-	                    person.setDriver(driver);
-	                    driver.setPerson(person);
-                	}
+                    Status status = Status.valueOf(rs.getInt("d.status"));
+                    if (status != Status.DELETED) {
+                        Driver driver = new Driver();
+                        driver.setDriverID(driverID);
+                        driver.setGroupID(rs.getInt("d.groupID"));
+                        driver.setStatus(status);
+                        driver.setLicense(rs.getString("d.license"));
+                        driver.setLicenseClass(rs.getString("d.class"));
+                        driver.setState(States.getStateById(rs.getInt("d.stateID")));
+                        driver.setExpiration(rs.getDate("d.expiration", calendar));
+                        driver.setCertifications(rs.getString("d.certs"));
+                        driver.setDot(RuleSetType.valueOf(rs.getInt("d.dot")));
+                        driver.setBarcode(rs.getString("d.barcode"));
+                        driver.setRfid1(rs.getObject("d.rfid1") == null ? null : rs.getLong("d.rfid1"));
+                        driver.setRfid2(rs.getObject("d.rfid2") == null ? null : rs.getLong("d.rfid2"));
+                        driver.setFobID(rs.getString("d.fobID"));
+                        person.setDriver(driver);
+                        driver.setPerson(person);
+                    }
                 }
-                
-				return person;
-			}
-		}, params); 
-		
-		addUserRoles(personList);
-		return personList;
-	}
+
+                return person;
+            }
+        }, params);
+
+        addUserRoles(personList);
+        return personList;
+    }
 
 
     private void addUserRoles(List<Person> personList) {
-        
+
         final Map<Integer, User> users = new HashMap<Integer, User>();
         final Set<Integer> roleSet = new HashSet<Integer>();
         final Map<Integer, List<AccessPoint>> roleAccessPointMap = new HashMap<Integer, List<AccessPoint>>();
-        
+
         for (Person person : personList) {
-        	if (person.getUserID() != null)
-        		users.put(person.getUserID(), person.getUser());
+            if (person.getUserID() != null)
+                users.put(person.getUserID(), person.getUser());
         }
         if (users.size() == 0)
-        	return;
-        
+            return;
+
         List<List<Integer>> roleList = getSimpleJdbcTemplate().query(ROLE_SELECT, new ParameterizedRowMapper<List<Integer>>() {
-			@Override
-			public List<Integer> mapRow(ResultSet rs, int rowNum) throws SQLException {
-				User user = users.get(rs.getInt("u.userID"));
-				if(user.getRoles() == null)
-					user.setRoles(new ArrayList<Integer>());
-				user.getRoles().add(rs.getInt("u.roleID"));
-				roleSet.add(rs.getInt("u.roleID"));
-        		return null;
-        	}
-        }, new HashMap<String, Object>(){{put("ulist", users.keySet());}});
-        
+            @Override
+            public List<Integer> mapRow(ResultSet rs, int rowNum) throws SQLException {
+                User user = users.get(rs.getInt("u.userID"));
+                if (user.getRoles() == null)
+                    user.setRoles(new ArrayList<Integer>());
+                user.getRoles().add(rs.getInt("u.roleID"));
+                roleSet.add(rs.getInt("u.roleID"));
+                return null;
+            }
+        }, new HashMap<String, Object>() {{
+            put("ulist", users.keySet());
+        }});
+
 //        List<List<AccessPoint>> accessList = getSimpleJdbcTemplate().query(ROLE_ACCESS_SELECT, new ParameterizedRowMapper<List<AccessPoint>>() {
 //
 //			@Override
@@ -328,7 +329,7 @@ public class AdminPersonJDBCDAO extends SimpleJdbcDaoSupport{
 //        		user.getAccessPoints().addAll(roleAccessPointMap.get(roleID));
 //        	}
 //        }
-        
+
     }
-    
+
 }

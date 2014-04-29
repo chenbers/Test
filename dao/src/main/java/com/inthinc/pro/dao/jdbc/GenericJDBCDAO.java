@@ -1,47 +1,40 @@
 package com.inthinc.pro.dao.jdbc;
 
+import com.inthinc.pro.ProDAOException;
+import org.apache.log4j.Logger;
+
+import javax.sql.DataSource;
 import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import javax.sql.DataSource;
-
-import org.apache.log4j.Logger;
-
-import com.inthinc.pro.ProDAOException;
-
-public abstract class GenericJDBCDAO implements Serializable
-{
+public abstract class GenericJDBCDAO implements Serializable {
     /**
-     * 
+     *
      */
     private static final long serialVersionUID = 1L;
-    
+
     private static final Logger logger = Logger.getLogger(GenericJDBCDAO.class);
     private DataSource dataSource;
-    
 
 
     @SuppressWarnings("unchecked")
-    public GenericJDBCDAO()
-    {
+    public GenericJDBCDAO() {
     }
 
 
-    
     public DataSource getDataSource() {
-        
+
         return dataSource;
-    }    
+    }
 
     public void setDataSource(DataSource dataSource) {
         this.dataSource = dataSource;
     }
 
-    public Connection getConnection() throws NullPointerException, SQLException
-    {
+    public Connection getConnection() throws NullPointerException, SQLException {
         try {
             return dataSource.getConnection();
         } catch (SQLException e) {
@@ -60,35 +53,25 @@ public abstract class GenericJDBCDAO implements Serializable
      *
      * @param s SQL statement to be closed.
      */
-    public static void close(final Statement s)
-    {
-        if (s!=null)
-        {
-            try
-            {
+    public static void close(final Statement s) {
+        if (s != null) {
+            try {
                 s.close();
 
-            }
-            catch (final Throwable e)
-            {
+            } catch (final Throwable e) {
                 logger.error("error closing statement", e);
             }
         }
     }
 
-    public static void close(final ResultSet r)
-    {
-        if (r!=null)
-        {
-          try
-          {
-            r.close();
+    public static void close(final ResultSet r) {
+        if (r != null) {
+            try {
+                r.close();
 
-          }
-          catch (final Throwable e)
-          {
-              logger.error("error closing result set", e);
-          }
+            } catch (final Throwable e) {
+                logger.error("error closing result set", e);
+            }
         }
     }
 
@@ -101,5 +84,5 @@ public abstract class GenericJDBCDAO implements Serializable
             }
         }
     }
-    
+
 }

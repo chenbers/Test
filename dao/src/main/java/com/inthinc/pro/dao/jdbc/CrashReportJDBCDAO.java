@@ -10,9 +10,6 @@ import com.inthinc.pro.model.ForgivenType;
 import com.inthinc.pro.model.Trip;
 import com.mysql.jdbc.Statement;
 import org.joda.time.DateTime;
-import org.joda.time.DateTimeZone;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.simple.ParameterizedRowMapper;
@@ -26,14 +23,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.TimeZone;
 
 public class CrashReportJDBCDAO extends SimpleJdbcDaoSupport implements CrashReportDAO {
     private VehicleDAO vehicleDAO;
@@ -60,7 +54,7 @@ public class CrashReportJDBCDAO extends SimpleJdbcDaoSupport implements CrashRep
             crashReport.setDate(rs.getTimestamp("time"));
             crashReport.setLat(getDoubleOrNullFromRS(rs, "lat"));
             crashReport.setLng(getDoubleOrNullFromRS(rs, "lng"));
-            crashReport.setNoteID(getLongOrNullFromRS(rs,"noteID"));
+            crashReport.setNoteID(getLongOrNullFromRS(rs, "noteID"));
             crashReport.setWeather(getStringOrNullFromRS(rs, "weather"));
             crashReport.setDescription(getStringOrNullFromRS(rs, "description"));
 
@@ -248,7 +242,7 @@ public class CrashReportJDBCDAO extends SimpleJdbcDaoSupport implements CrashRep
             public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
                 PreparedStatement ps = con.prepareStatement(UPDATE_CRASH_REPORT);
 
-                 if (crash.getDriverID() == null) {
+                if (crash.getDriverID() == null) {
                     ps.setNull(1, Types.NULL);
                 } else {
                     ps.setInt(1, crash.getDriverID());
@@ -332,6 +326,7 @@ public class CrashReportJDBCDAO extends SimpleJdbcDaoSupport implements CrashRep
     private Integer getIntOrNullFromRS(ResultSet rs, String columnName) throws SQLException {
         return rs.getObject(columnName) == null ? null : (int) rs.getLong(columnName);
     }
+
     private Double getDoubleOrNullFromRS(ResultSet rs, String columnName) throws SQLException {
         return rs.getObject(columnName) == null ? null : (double) rs.getDouble(columnName);
     }
@@ -339,6 +334,7 @@ public class CrashReportJDBCDAO extends SimpleJdbcDaoSupport implements CrashRep
     private Date getDateOrNullFromRS(ResultSet rs, String columnName) throws SQLException {
         return rs.getObject(columnName) == null ? null : rs.getDate(columnName);
     }
+
     private Long getLongOrNullFromRS(ResultSet rs, String columnName) throws SQLException {
         return rs.getObject(columnName) == null ? null : (long) rs.getLong(columnName);
     }

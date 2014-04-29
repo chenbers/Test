@@ -1,5 +1,9 @@
 package com.inthinc.pro.dao.jdbc;
 
+import com.inthinc.pro.ProDAOException;
+import com.inthinc.pro.dao.SiloDAO;
+import com.inthinc.pro.model.silo.SiloDef;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -8,24 +12,19 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.inthinc.pro.ProDAOException;
-import com.inthinc.pro.dao.SiloDAO;
-import com.inthinc.pro.model.silo.SiloDef;
-
 public class SiloJDBCDAO extends GenericJDBCDAO implements SiloDAO {
 
-    private static final String FETCH_SILO_DEFS= "SELECT siloID, serverURL, host, port, proxyHost, proxyPort FROM centDB.silomap";
+    private static final String FETCH_SILO_DEFS = "SELECT siloID, serverURL, host, port, proxyHost, proxyPort FROM centDB.silomap";
     private static final String FETCH_SILO_DEF_BY_ID = "SELECT siloID, serverURL, host, port, proxyHost, proxyPort FROM centDB.silomap WHERE siloID = ?";
 
     @Override
     public List<SiloDef> getSiloDefs() {
         List<SiloDef> siloDefList = new ArrayList<SiloDef>();
-        
+
         Connection conn = null;
         Statement statement = null;
         ResultSet resultSet = null;
-        try
-        {
+        try {
             conn = getConnection();
             statement = conn.createStatement();
             resultSet = statement.executeQuery(FETCH_SILO_DEFS);
@@ -40,20 +39,18 @@ public class SiloJDBCDAO extends GenericJDBCDAO implements SiloDAO {
                 siloDef.setProxyPort(resultSet.getInt(6));
                 siloDefList.add(siloDef);
             }
-                
+
 
         }   // end try
-        catch (SQLException e)
-        { // handle database hosLogs in the usual manner
+        catch (SQLException e) { // handle database hosLogs in the usual manner
             throw new ProDAOException(statement.toString(), e);
         }   // end catch
-        finally
-        { // clean up and release the connection
+        finally { // clean up and release the connection
             close(resultSet);
             close(statement);
             close(conn);
         } // end finally   
-        
+
         return siloDefList;
     }
 
@@ -62,8 +59,7 @@ public class SiloJDBCDAO extends GenericJDBCDAO implements SiloDAO {
         Connection conn = null;
         PreparedStatement statement = null;
         ResultSet resultSet = null;
-        try
-        {
+        try {
             conn = getConnection();
             statement = (PreparedStatement) conn.prepareStatement(FETCH_SILO_DEF_BY_ID);
             statement.setInt(1, id);
@@ -79,22 +75,20 @@ public class SiloJDBCDAO extends GenericJDBCDAO implements SiloDAO {
                 siloDef.setProxyPort(resultSet.getInt(6));
                 return siloDef;
             }
-                
+
 
         }   // end try
-        catch (SQLException e)
-        { // handle database hosLogs in the usual manner
+        catch (SQLException e) { // handle database hosLogs in the usual manner
             throw new ProDAOException(statement.toString(), e);
         }   // end catch
-        finally
-        { // clean up and release the connection
+        finally { // clean up and release the connection
             close(resultSet);
             close(statement);
             close(conn);
         } // end finally   
-        
+
         return null;
-        
+
     }
 
 

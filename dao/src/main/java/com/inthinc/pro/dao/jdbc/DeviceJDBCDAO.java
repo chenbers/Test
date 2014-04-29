@@ -2,11 +2,13 @@ package com.inthinc.pro.dao.jdbc;
 
 import com.inthinc.pro.dao.DeviceDAO;
 import com.inthinc.pro.dao.VehicleDAO;
-import com.inthinc.pro.dao.hessian.exceptions.EmptyResultSetException;
 import com.inthinc.pro.dao.hessian.mapper.Mapper;
 import com.inthinc.pro.dao.hessian.mapper.SimpleMapper;
-import com.inthinc.pro.model.*;
-import com.inthinc.pro.model.pagination.SortOrder;
+import com.inthinc.pro.model.Device;
+import com.inthinc.pro.model.DeviceStatus;
+import com.inthinc.pro.model.ForwardCommand;
+import com.inthinc.pro.model.ForwardCommandSpool;
+import com.inthinc.pro.model.ForwardCommandStatus;
 import com.mysql.jdbc.Statement;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
@@ -17,18 +19,25 @@ import org.springframework.jdbc.core.simple.ParameterizedRowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Types;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.TimeZone;
 
 /**
  * Device jdbc dao.
  */
-public class DeviceJDBCDAO extends SimpleJdbcDaoSupport implements DeviceDAO{
+public class DeviceJDBCDAO extends SimpleJdbcDaoSupport implements DeviceDAO {
     private static final String DEVICE_COLUMNS_STRING = "d.deviceID, d.acctID, d.baseID, d.status, d.autoLogoff," +
             " d.productVer, d.firmVer, d.witnessVer, d.emuFeatureMask, d.serialNum, d.name, d.imei, d.mcmid, d.altImei, " +
             " d.sim, d.phone, d.ephone, d.emuMd5, d.speedSet, d.accel, d.brake, d.turn, d.vert, d.modified, d.activated, " +
@@ -44,15 +53,15 @@ public class DeviceJDBCDAO extends SimpleJdbcDaoSupport implements DeviceDAO{
             " LEFT OUTER JOIN vehicle veh on (veh.vehicleID = vdd.vehicleID)" +
             " ) d ";
 
-    private static final String GET_DEVICE_IN = "select " + DEVICE_COLUMNS_STRING + " " + DEVICE_SECOND + "where d.acctID=:acctID" ;
+    private static final String GET_DEVICE_IN = "select " + DEVICE_COLUMNS_STRING + " " + DEVICE_SECOND + "where d.acctID=:acctID";
 
     private static final String FIND_BY_IMEI = "select " + DEVICE_COLUMNS_STRING + " " + DEVICE_SECOND + "where imei like :imei";
 
     private static final String FIND_BY_SERIALNUM = "select " + DEVICE_COLUMNS_STRING + " " + DEVICE_SECOND + " where serialNum like :serialNum";
 
     private static final String INSERT_DEVICE = "INSERT INTO device" +
-                    "(acctID, baseID, status, productVer, firmVer, witnessVer, serialNum, name, imei, mcmid, altImei, sim, phone, emuMd5, modified)" +
-                    "VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)" ;
+            "(acctID, baseID, status, productVer, firmVer, witnessVer, serialNum, name, imei, mcmid, altImei, sim, phone, emuMd5, modified)" +
+            "VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 
     private static final String UPDATE_DEVICE = "UPDATE device set acctID=?, baseID=?, status=?, productVer=?, firmVer=?, witnessVer=?, serialNum=?, name=?, imei=?, mcmid=?, altImei=?, sim=?, phone=?, emuMd5=?, modified=? where deviceID=?";
 
@@ -62,11 +71,11 @@ public class DeviceJDBCDAO extends SimpleJdbcDaoSupport implements DeviceDAO{
     private Mapper mapper = new SimpleMapper();
 
     private static final String INSERT_FWD = "INSERT INTO fwd (deviceID, driverID, vehicleID, personID, fwdCmd, fwdint, fwdStr, tries, status, created, modified)"
-                                             + "VALUES(? ,? ,? ,? ,? ,? ,? ,? ,?, ?, ?)" ;
+            + "VALUES(? ,? ,? ,? ,? ,? ,? ,? ,?, ?, ?)";
 
     private static final String INSERT_FWD_SIRIDIUM = "INSERT INTO Fwd_WSiridium"
-                    + " (data, created, modified, processing, status, iridiumStatus, command, datatype, personID, driverID, vehicleID, deviceID)"
-                    + " VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            + " (data, created, modified, processing, status, iridiumStatus, command, datatype, personID, driverID, vehicleID, deviceID)"
+            + " VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
     //get ForwardCommand
     private static final String GET_FWD = "select * from fwd ";
@@ -142,10 +151,9 @@ public class DeviceJDBCDAO extends SimpleJdbcDaoSupport implements DeviceDAO{
             StringBuilder deviceSelect = new StringBuilder(GET_DEVICE_IN);
             List<Device> deviceList = getSimpleJdbcTemplate().query(deviceSelect.toString(), deviceMapper, params);
 
-            return  deviceList;
-        }
-        catch (EmptyResultDataAccessException e){
-         return Collections.emptyList();
+            return deviceList;
+        } catch (EmptyResultDataAccessException e) {
+            return Collections.emptyList();
         }
     }
 
@@ -196,7 +204,7 @@ public class DeviceJDBCDAO extends SimpleJdbcDaoSupport implements DeviceDAO{
     public Integer queueForwardCommand(Integer deviceID, ForwardCommand forwardCommand) {
         Integer fwdIdcreated = 0;
         Device device = findByID(deviceID);
-        Map <String, Object> forwardCommandMap = getMapper().convertToMap(forwardCommand);
+        Map<String, Object> forwardCommandMap = getMapper().convertToMap(forwardCommand);
         if (forwardCommandMap.containsKey("fwdID"))
             forwardCommandMap.remove("fwdID");
         ForwardCommand fwd = new ForwardCommand();
@@ -223,54 +231,54 @@ public class DeviceJDBCDAO extends SimpleJdbcDaoSupport implements DeviceDAO{
         }
 
 
-        if (fwd!=null){
+        if (fwd != null) {
             if (forwardCommandMap.containsKey("fwdID"))
-                fwd.setFwdID((Integer)forwardCommandMap.get("fwdID"));
-            if(forwardCommandMap.containsKey("deviceID"))
+                fwd.setFwdID((Integer) forwardCommandMap.get("fwdID"));
+            if (forwardCommandMap.containsKey("deviceID"))
                 fwd.setDeviceID((Integer) forwardCommandMap.get("deviceID"));
-            if(forwardCommandMap.containsKey("driverID"))
+            if (forwardCommandMap.containsKey("driverID"))
                 fwd.setDriverID((Integer) forwardCommandMap.get("driverID"));
-            if(forwardCommandMap.containsKey("vehicleID"))
+            if (forwardCommandMap.containsKey("vehicleID"))
                 fwd.setVehicleID((Integer) forwardCommandMap.get("vehicleID"));
-            if(forwardCommandMap.containsKey("personID"))
+            if (forwardCommandMap.containsKey("personID"))
                 fwd.setPersonID((Integer) forwardCommandMap.get("personID"));
-            if(forwardCommandMap.containsKey("cmd"))
+            if (forwardCommandMap.containsKey("cmd"))
                 fwd.setCmd((Integer) forwardCommandMap.get("cmd"));
-            if(forwardCommandMap.containsKey("fwdInt"))
+            if (forwardCommandMap.containsKey("fwdInt"))
                 fwd.setFwdInt((Integer) forwardCommandMap.get("fwdInt"));
-            if(forwardCommandMap.containsKey("fwdStr"))
+            if (forwardCommandMap.containsKey("fwdStr"))
                 fwd.setFwdStr((String) forwardCommandMap.get("fwdInt"));
-            if(forwardCommandMap.containsKey("data"))
+            if (forwardCommandMap.containsKey("data"))
                 fwd.setData(forwardCommandMap.get("data"));
-            if(forwardCommandMap.containsKey("tries"))
+            if (forwardCommandMap.containsKey("tries"))
                 fwd.setTries((Integer) forwardCommandMap.get("tries"));
-            if(forwardCommandMap.containsKey("status"))
+            if (forwardCommandMap.containsKey("status"))
                 fwd.setStatus(ForwardCommandStatus.valueOf((Integer) forwardCommandMap.get("status")));
-            if(forwardCommandMap.containsKey("created"))
+            if (forwardCommandMap.containsKey("created"))
                 fwd.setCreated((Date) forwardCommandMap.get("created"));
             if (forwardCommandMap.containsKey("modified"))
                 fwd.setModified((Date) forwardCommandMap.get("modified"));
 
             fwdIdcreated = createFwd(fwd);
 
-        }else {
+        } else {
             if (forwardCommandMap.containsKey("fwdID"))
-                fwds.setFwdID((Integer)forwardCommandMap.get("fwdID"));
-            if(forwardCommandMap.containsKey("deviceID"))
+                fwds.setFwdID((Integer) forwardCommandMap.get("fwdID"));
+            if (forwardCommandMap.containsKey("deviceID"))
                 fwds.setDeviceID((Integer) forwardCommandMap.get("deviceID"));
-            if(forwardCommandMap.containsKey("driverID"))
+            if (forwardCommandMap.containsKey("driverID"))
                 fwd.setDriverID((Integer) forwardCommandMap.get("driverID"));
-            if(forwardCommandMap.containsKey("vehicleID"))
+            if (forwardCommandMap.containsKey("vehicleID"))
                 fwd.setVehicleID((Integer) forwardCommandMap.get("vehicleID"));
-            if(forwardCommandMap.containsKey("personID"))
+            if (forwardCommandMap.containsKey("personID"))
                 fwd.setPersonID((Integer) forwardCommandMap.get("personID"));
-            if(forwardCommandMap.containsKey("cmd"))
+            if (forwardCommandMap.containsKey("cmd"))
                 fwds.setCommand((Integer) forwardCommandMap.get("cmd"));
-            if(forwardCommandMap.containsKey("data"))
+            if (forwardCommandMap.containsKey("data"))
                 fwds.setData((byte[]) forwardCommandMap.get("data"));
-            if(forwardCommandMap.containsKey("status"))
-                fwds.setStatus(ForwardCommandStatus.valueOf((Integer)forwardCommandMap.get("status")));
-            if(forwardCommandMap.containsKey("created"))
+            if (forwardCommandMap.containsKey("status"))
+                fwds.setStatus(ForwardCommandStatus.valueOf((Integer) forwardCommandMap.get("status")));
+            if (forwardCommandMap.containsKey("created"))
                 fwds.setCreated((Date) forwardCommandMap.get("created"));
             if (forwardCommandMap.containsKey("modified"))
                 fwds.setModified((Date) forwardCommandMap.get("modified"));
@@ -279,7 +287,7 @@ public class DeviceJDBCDAO extends SimpleJdbcDaoSupport implements DeviceDAO{
 
         }
 
-        return   fwdIdcreated;
+        return fwdIdcreated;
     }
 
     @Override
@@ -381,7 +389,13 @@ public class DeviceJDBCDAO extends SimpleJdbcDaoSupport implements DeviceDAO{
                 }
 
                 ps.setString(7, entity.getSerialNum());
-                ps.setString(8, entity.getName());
+
+                if (entity.getName().equalsIgnoreCase("") || entity.getName().equals(null) || entity.getName().isEmpty()) {
+                    ps.setNull(8, Types.NULL);
+                } else {
+                    ps.setString(8, entity.getName());
+                }
+
                 ps.setString(9, entity.getImei());
                 ps.setString(10, entity.getMcmid());
 
@@ -420,7 +434,7 @@ public class DeviceJDBCDAO extends SimpleJdbcDaoSupport implements DeviceDAO{
     @Override
     public Integer deleteByID(Integer deviceID) {
         Device device = findByID(deviceID);
-        if(device.getVehicleID() != null)
+        if (device.getVehicleID() != null)
             vehicleDAO.clearVehicleDevice(device.getVehicleID(), deviceID);
 
         return getJdbcTemplate().update(DEL_DEVICE_BY_ID, new Object[]{deviceID});
@@ -444,7 +458,7 @@ public class DeviceJDBCDAO extends SimpleJdbcDaoSupport implements DeviceDAO{
         }
     };
 
-    public Integer createFwd (final ForwardCommand fwd) {
+    public Integer createFwd(final ForwardCommand fwd) {
         JdbcTemplate jdbcTemplate = getJdbcTemplate();
         KeyHolder keyHolder = new GeneratedKeyHolder();
         PreparedStatementCreator psc = new PreparedStatementCreator() {
@@ -517,7 +531,7 @@ public class DeviceJDBCDAO extends SimpleJdbcDaoSupport implements DeviceDAO{
         return keyHolder.getKey().intValue();
     }
 
-    public Integer createFwdSiridium (final ForwardCommandSpool fwdSpool) {
+    public Integer createFwdSiridium(final ForwardCommandSpool fwdSpool) {
         JdbcTemplate jdbcTemplate = getJdbcTemplate();
         KeyHolder keyHolder = new GeneratedKeyHolder();
         PreparedStatementCreator psc = new PreparedStatementCreator() {
