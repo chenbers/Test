@@ -441,42 +441,43 @@ public class PersonJDBCDAO extends SimpleJdbcDaoSupport implements PersonDAO {
 
         Integer changedID; 
         JdbcTemplate jdbcTemplate = getJdbcTemplate();
-        PreparedStatementCreator psc = new PreparedStatementCreator() {
-            @Override
-            public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
-                PreparedStatement ps = con.prepareStatement(UPDATE_PERSON, Statement.RETURN_GENERATED_KEYS);
-                ps.setInt(1, entity.getAccountID());
-                ps.setInt(2, getTimezoneID(entity.getTimeZone().getID()));
+        if (entity.getAccountID()!=null) {
+            PreparedStatementCreator psc = new PreparedStatementCreator() {
+                @Override
+                public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
+                    PreparedStatement ps = con.prepareStatement(UPDATE_PERSON, Statement.RETURN_GENERATED_KEYS);
+                    ps.setInt(1, entity.getAccountID());
+                    ps.setInt(2, getTimezoneID(entity.getTimeZone().getID()));
 
-                if (entity.getStatus() == null || entity.getStatus().getCode() == null) {
-                    ps.setNull(3, Types.NULL);
-                } else {
-                    ps.setInt(3, entity.getStatus().getCode());
-                }
+                    if (entity.getStatus() == null || entity.getStatus().getCode() == null) {
+                        ps.setNull(3, Types.NULL);
+                    } else {
+                        ps.setInt(3, entity.getStatus().getCode());
+                    }
 
-                if (entity.getMeasurementType() == null || entity.getMeasurementType().getCode() == null) {
-                    ps.setNull(4, Types.NULL);
-                } else {
-                    ps.setInt(4, entity.getMeasurementType().getCode());
-                }
+                    if (entity.getMeasurementType() == null || entity.getMeasurementType().getCode() == null) {
+                        ps.setNull(4, Types.NULL);
+                    } else {
+                        ps.setInt(4, entity.getMeasurementType().getCode());
+                    }
 
-                if (entity.getFuelEfficiencyType() == null || entity.getFuelEfficiencyType().getCode() == null) {
-                    ps.setNull(5, Types.NULL);
-                } else {
-                    ps.setInt(5, entity.getFuelEfficiencyType().getCode());
-                }
+                    if (entity.getFuelEfficiencyType() == null || entity.getFuelEfficiencyType().getCode() == null) {
+                        ps.setNull(5, Types.NULL);
+                    } else {
+                        ps.setInt(5, entity.getFuelEfficiencyType().getCode());
+                    }
 
-                if (entity.getAddress() == null) {
-                    ps.setNull(6, Types.NULL);
-                } else {
-                    ps.setInt(6, entity.getAddress().getAddrID());
-                }
+                    if (entity.getAddress() == null) {
+                        ps.setNull(6, Types.NULL);
+                    } else {
+                        ps.setInt(6, entity.getAddress().getAddrID());
+                    }
 
-                if (entity.getLocale() == null) {
-                    ps.setNull(7, Types.NULL);
-                } else {
-                    ps.setString(7, entity.getLocale().toString());
-                }
+                    if (entity.getLocale() == null) {
+                        ps.setNull(7, Types.NULL);
+                    } else {
+                        ps.setString(7, entity.getLocale().toString());
+                    }
 
                 ps.setString(8, entity.getReportsTo());
                 ps.setString(9, entity.getTitle());
@@ -491,64 +492,65 @@ public class PersonJDBCDAO extends SimpleJdbcDaoSupport implements PersonDAO {
                 ps.setString(14, entity.getLast());
                 ps.setString(15, entity.getSuffix());
 
-                if (entity.getGender() == null || entity.getGender().getCode() == null) {
-                    ps.setNull(16, Types.NULL);
-                } else {
-                    ps.setInt(16, entity.getGender().getCode());
+                    if (entity.getGender() == null || entity.getGender().getCode() == null) {
+                        ps.setNull(16, Types.NULL);
+                    } else {
+                        ps.setInt(16, entity.getGender().getCode());
+                    }
+
+                    if (entity.getHeight() == null) {
+                        ps.setNull(17, Types.NULL);
+                    } else {
+                        ps.setInt(17, entity.getHeight());
+                    }
+                    if (entity.getWeight() == null) {
+                        ps.setNull(18, Types.NULL);
+                    } else {
+                        ps.setInt(18, entity.getWeight());
+                    }
+
+                    if (entity.getDob() == null) {
+                        ps.setNull(19, Types.NULL);
+                    } else {
+                        ps.setDate(19, new java.sql.Date(entity.getDob().getTime()));
+                    }
+
+                    if (entity.getInfo() == null) {
+                        ps.setNull(20, Types.NULL);
+                    } else {
+                        ps.setInt(20, entity.getInfo());
+                    }
+
+                    if (entity.getWarn() == null) {
+                        ps.setNull(21, Types.NULL);
+                    } else {
+                        ps.setInt(21, entity.getWarn());
+                    }
+
+                    if (entity.getCrit() == null) {
+                        ps.setNull(22, Types.NULL);
+                    } else {
+                        ps.setInt(22, entity.getCrit());
+                    }
+                    ps.setString(23, entity.getPriEmail());
+                    ps.setString(24, entity.getSecEmail());
+                    ps.setString(25, entity.getPriPhone());
+                    ps.setString(26, entity.getSecPhone());
+                    ps.setString(27, entity.getPriText());
+                    ps.setString(28, entity.getSecText());
+
+                    DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                    String modified = df.format(toUTC(new Date()));
+                    ps.setString(29, modified);
+                    ps.setInt(30, entity.getPersonID());
+
+                    logger.debug(ps.toString());
+                    return ps;
                 }
+            };
 
-                if (entity.getHeight() == null) {
-                    ps.setNull(17, Types.NULL);
-                } else {
-                    ps.setInt(17, entity.getHeight());
-                }
-                if (entity.getWeight() == null) {
-                    ps.setNull(18, Types.NULL);
-                } else {
-                    ps.setInt(18, entity.getWeight());
-                }
-
-                if (entity.getDob() == null) {
-                    ps.setNull(19, Types.NULL);
-                } else {
-                    ps.setDate(19, new java.sql.Date(entity.getDob().getTime()));
-                }
-
-                if (entity.getInfo() == null) {
-                    ps.setNull(20, Types.NULL);
-                } else {
-                    ps.setInt(20, entity.getInfo());
-                }
-
-                if (entity.getWarn() == null) {
-                    ps.setNull(21, Types.NULL);
-                } else {
-                    ps.setInt(21, entity.getWarn());
-                }
-
-                if (entity.getCrit() == null) {
-                    ps.setNull(22, Types.NULL);
-                } else {
-                    ps.setInt(22, entity.getCrit());
-                }
-                ps.setString(23, entity.getPriEmail());
-                ps.setString(24, entity.getSecEmail());
-                ps.setString(25, entity.getPriPhone());
-                ps.setString(26, entity.getSecPhone());
-                ps.setString(27, entity.getPriText());
-                ps.setString(28, entity.getSecText());
-
-                DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                String modified = df.format(toUTC(new Date()));
-                ps.setString(29, modified);
-                ps.setInt(30, entity.getPersonID());
-
-                logger.debug(ps.toString());
-                return ps;
-            }
-        };
-
-        jdbcTemplate.update(psc);
+            jdbcTemplate.update(psc);
+        }
         changedID = entity.getPersonID();
 
         if (entity.getDriver() != null)
