@@ -289,7 +289,7 @@ public class GroupJDBCDAO extends SimpleJdbcDaoSupport implements GroupDAO {
                 ps.setInt(2, entity.getParentID());
                 ps.setString(3, entity.getName() == null ? "" : entity.getName().trim());
 
-                if (entity.getDescription().equalsIgnoreCase("") || entity.getDescription().isEmpty()) {
+                if (entity.getDescription() == null || entity.getDescription().isEmpty()) {
                     ps.setNull(4, Types.NULL);
                 } else {
                     ps.setString(4, entity.getDescription());
@@ -315,30 +315,30 @@ public class GroupJDBCDAO extends SimpleJdbcDaoSupport implements GroupDAO {
                     ps.setInt(8, entity.getType().getCode());
                 }
 
-                if (entity.getManagerID() == null) {
+                if (entity.getManagerID() == null || entity.getManagerID().intValue() == 0) {
                     ps.setNull(9, Types.NULL);
                 } else {
                     ps.setInt(9, entity.getManagerID());
                 }
-                if (entity.getMapZoom().intValue() == 0 || entity.getMapZoom().equals(null)) {
+                if (entity.getMapZoom() == null || entity.getMapZoom().intValue() == 0) {
                     ps.setNull(10, Types.NULL);
                 } else {
                     ps.setInt(10, entity.getMapZoom());
                 }
 
-                if (entity.getMapLat().intValue() == 0 || entity.getMapLat().equals(null)) {
-                    ps.setNull(10, Types.NULL);
+                if (entity.getMapLat() == null || entity.getMapLat().intValue() == 0) {
+                    ps.setNull(11, Types.NULL);
                 } else {
                     ps.setDouble(11, entity.getMapLat());
                 }
 
-                if (entity.getMapLng().intValue() == 0 || entity.getMapLng().equals(null)) {
-                    ps.setNull(10, Types.NULL);
+                if (entity.getMapLng() == null || entity.getMapLng().doubleValue() == 0) {
+                    ps.setNull(12, Types.NULL);
                 } else {
                     ps.setDouble(12, entity.getMapLng());
                 }
 
-                if (entity.getZoneRev() == null) {
+                if (entity.getZoneRev() == null || entity.getZoneRev().intValue() == 0) {
                     ps.setInt(13, Types.NULL);
                 } else {
                     ps.setInt(13, entity.getZoneRev());
@@ -350,7 +350,7 @@ public class GroupJDBCDAO extends SimpleJdbcDaoSupport implements GroupDAO {
                     ps.setDate(14, new java.sql.Date(dateFormatter.parseDateTime(entity.getAggDate()).getMillis()));
                 }
 
-                if (entity.getAddress() == null) {
+                if (entity.getAddress() == null || entity.getAddress().getAddrID().intValue() == 0) {
                     ps.setNull(15, Types.NULL);
                 } else {
                     ps.setInt(15, entity.getAddress().getAddrID());

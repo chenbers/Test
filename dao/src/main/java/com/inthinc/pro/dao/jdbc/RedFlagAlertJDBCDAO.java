@@ -405,13 +405,13 @@ public class RedFlagAlertJDBCDAO extends SimpleJdbcDaoSupport implements RedFlag
                 ps.setInt(6, entity.getAccountID());
                 ps.setInt(7, entity.getUserID());
 
-                if (entity.getName() == null) {
+                if (entity.getName() == null || entity.getName().isEmpty()) {
                     ps.setNull(8, Types.NULL);
                 } else {
                     ps.setString(8, entity.getName());
                 }
 
-                if (entity.getDescription() == null) {
+                if (entity.getDescription() == null || entity.getDescription().isEmpty()) {
                     ps.setNull(9, Types.NULL);
                 } else {
                     ps.setString(9, entity.getDescription());
@@ -439,25 +439,25 @@ public class RedFlagAlertJDBCDAO extends SimpleJdbcDaoSupport implements RedFlag
                     ps.setString(14, Arrays.toString(entity.getSpeedSettings()));
                 }
 
-                if (entity.getHardAcceleration().intValue() == 0 || entity.getHardAcceleration().equals(null)) {
+                if (entity.getHardAcceleration() == null || entity.getHardAcceleration().intValue() == 0) {
                     ps.setNull(15, Types.NULL);
                 } else {
                     ps.setInt(15, entity.getHardAcceleration());
                 }
 
-                if (entity.getHardBrake().intValue() == 0 || entity.getHardBrake().equals(null)) {
+                if (entity.getHardBrake() == null || entity.getHardBrake().intValue() == 0) {
                     ps.setNull(16, Types.NULL);
                 } else {
                     ps.setInt(16, entity.getHardBrake());
                 }
 
-                if (entity.getHardTurn().intValue() == 0 || entity.getHardTurn().equals(null)) {
+                if (entity.getHardTurn() == null || entity.getHardTurn().intValue() == 0) {
                     ps.setNull(17, Types.NULL);
                 } else {
                     ps.setInt(17, entity.getHardTurn());
                 }
 
-                if (entity.getHardVertical().intValue() == 0 || entity.getHardVertical().equals(null)) {
+                if (entity.getHardVertical() == null || entity.getHardVertical().intValue() == 0) {
                     ps.setNull(18, Types.NULL);
                 } else {
                     ps.setInt(18, entity.getHardVertical());
@@ -600,13 +600,13 @@ public class RedFlagAlertJDBCDAO extends SimpleJdbcDaoSupport implements RedFlag
                 ps.setInt(6, entity.getAccountID());
                 ps.setInt(7, entity.getUserID());
 
-                if (entity.getName() == null) {
+                if (entity.getName() == null || entity.getName().isEmpty()) {
                     ps.setNull(8, Types.NULL);
                 } else {
                     ps.setString(8, entity.getName());
                 }
 
-                if (entity.getDescription() == null) {
+                if (entity.getDescription() == null || entity.getDescription().isEmpty()) {
                     ps.setNull(9, Types.NULL);
                 } else {
                     ps.setString(9, entity.getDescription());
@@ -633,33 +633,32 @@ public class RedFlagAlertJDBCDAO extends SimpleJdbcDaoSupport implements RedFlag
                     ps.setInt(14, entity.getSpeedSettings().length);
                 }
 
-                if (entity.getHardAcceleration().intValue() == 0 || entity.getHardAcceleration().equals(null)) {
+                if (entity.getHardAcceleration() == null) {
                     ps.setNull(15, Types.NULL);
                 } else {
                     ps.setInt(15, entity.getHardAcceleration());
                 }
 
-                if (entity.getHardBrake().intValue() == 0 || entity.getHardBrake().equals(null)) {
+                if (entity.getHardBrake() == null || entity.getHardBrake().intValue() == 0) {
                     ps.setNull(16, Types.NULL);
                 } else {
                     ps.setInt(16, entity.getHardBrake());
                 }
 
-                if (entity.getHardTurn().intValue() == 0 || entity.getHardTurn().equals(null)) {
+                if (entity.getHardTurn() == null || entity.getHardTurn().intValue() == 0) {
                     ps.setNull(17, Types.NULL);
                 } else {
                     ps.setInt(17, entity.getHardTurn());
                 }
 
-                if (entity.getHardVertical().intValue() == 0 || entity.getHardVertical().equals(null)) {
+                if (entity.getHardVertical() == null || entity.getHardVertical().intValue() == 0) {
                     ps.setNull(18, Types.NULL);
                 } else {
                     ps.setInt(18, entity.getHardVertical());
                 }
 
-
                 if (entity.getSeverityLevel() == null) {
-                    ps.setInt(19, RedFlagLevel.NONE.getCode());
+                    ps.setObject(19, RedFlagLevel.NONE.getCode());
                 } else {
                     ps.setInt(19, entity.getSeverityLevel().getCode());
                 }
