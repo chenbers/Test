@@ -115,10 +115,8 @@ public class DriverJDBCDAO extends SimpleJdbcDaoSupport implements DriverDAO {
     DateFormat dfNew = new SimpleDateFormat("yyyy-MM-dd");
 
 
-    private static final String FIND_DRIVER_BY_ID = "Select d.status, t.tzName,p.personID, p.acctID, p.tzID, p.modified, p.status, p.measureType, p.fuelEffType, p.addrID, p.locale, p.reportsTo," +
-            "    p.title,p.dept,p.empid, p.first, p.middle, p.last,p.suffix, p.gender, p.height, p.weight, p.dob, p.info, p.warn, p.crit, p.priEmail, p.secEmail, p.priPhone," +
-            "    p.secPhone, p.priText, p.secText, d.personID, d.driverid, d.groupid, d.barcode, d.rfid1, d.rfid2, d.fobID, d.license, d.stateid, d.expiration,  d.certs,d.dot," +
-            "    d.grouppath, d.class from driver d, person p,timezone t where d.driverId = :driverId and p.personID = d.personID and p.tzID=t.tzID; ";
+    private static final String FIND_DRIVER_BY_ID = "SELECT * FROM driver d LEFT OUTER JOIN person p  ON d.personID=p.personID LEFT OUTER JOIN timezone t ON p.tzID=t.tzID where d.driverID = :driverID ";
+
     private static final String SELECT_DRIVERS_BY_GROUPID = "Select d.status, t.tzName,d.driverid,d.groupid,d.barcode, d.rfid1, d.rfid2, d.fobID, d.license, d.stateid, d.expiration," +
             "    d.certs,d.dot,d.grouppath, d.class, p.personid,p.acctid, p.tzid,p.modified, p.status,p.measuretype,p.fuelefftype,p.addrid,p.locale,p.reportsto," +
             "    p.title,p.dept,p.empid,p.first,p.middle, p.last, p.suffix, p.gender, p.height, p.weight,  p.dob, p.info,p.warn, p.crit, p.priemail, p.secemail," +
@@ -284,10 +282,10 @@ public class DriverJDBCDAO extends SimpleJdbcDaoSupport implements DriverDAO {
     }
 
     @Override
-    public Driver findByID(Integer driverId) {
+    public Driver findByID(Integer driverID) {
         try {
             Map<String, Object> args = new HashMap<String, Object>();
-            args.put("driverId", driverId);
+            args.put("driverID", driverID);
             StringBuilder driverIdSelect = new StringBuilder(FIND_DRIVER_BY_ID);
             return getSimpleJdbcTemplate().queryForObject(driverIdSelect.toString(), pagedDriverRowMapper, args);
         } catch (EmptyResultDataAccessException e) {
@@ -391,7 +389,7 @@ public class DriverJDBCDAO extends SimpleJdbcDaoSupport implements DriverDAO {
             @Override
             public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
                 if (entity.getDriverID() == null)
-                    throw new SQLException("Cannot update group with null id.");
+                    throw new SQLException("Cannot update driver with null id.");
                 PreparedStatement ps = con.prepareStatement(UPDATE_DRIVER_ACCOUNT);
                 ps.setInt(1, entity.getGroupID());
                 ps.setInt(2, entity.getPersonID());
@@ -509,7 +507,7 @@ public class DriverJDBCDAO extends SimpleJdbcDaoSupport implements DriverDAO {
             person.setSecPhone(rs.getString("p.secPhone"));
             person.setPriText(rs.getString("p.priText"));
             person.setSecText(rs.getString("p.secText"));
-            person.setTimeZone(TimeZone.getTimeZone(rs.getString("t.tzName")));
+            person.setTimeZone(TimeZone.getTimeZone(getStrOrNullFromRs(rs, "t.tzName")));
             driver.setDriverID(rs.getInt("d.driverID"));
             driver.setGroupID(rs.getInt("d.groupID"));
 //            driver.setStatus(status);
@@ -606,4 +604,11 @@ public class DriverJDBCDAO extends SimpleJdbcDaoSupport implements DriverDAO {
         DateTime dt = new DateTime(date.getTime()).toDateTime(DateTimeZone.UTC);
         return dt.toDate();
     }
+
+    public String getStrOrNullFromRs(ResultSet rs, String key) throws SQLException {
+        Object obj = rs.getObject(key);
+        if (obj == null)
+            return null;
+        else return rs.getString(key);
+    } 
 }
