@@ -313,6 +313,8 @@ public class UserJDBCDAO extends SimpleJdbcDaoSupport implements UserDAO {
 
     @Override
     public Integer deleteByID(Integer userID) {
+        deleteUserRoles(userID);
+        deleteUserMapLayer(userID);
         return getJdbcTemplate().update(DEL_USER_BY_ID, new Object[]{userID});
     }
 
