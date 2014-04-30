@@ -1,21 +1,20 @@
 package com.inthinc.pro.dao.jdbc;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import org.apache.commons.lang.NotImplementedException;
-import org.springframework.jdbc.core.simple.ParameterizedRowMapper;
-import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
-
 import com.inthinc.pro.dao.ReportScheduleDAO;
 import com.inthinc.pro.dao.util.NumberUtil;
 import com.inthinc.pro.model.Occurrence;
 import com.inthinc.pro.model.ReportParamType;
 import com.inthinc.pro.model.ReportSchedule;
 import com.inthinc.pro.model.Status;
+import org.apache.commons.lang.NotImplementedException;
+import org.springframework.jdbc.core.simple.ParameterizedRowMapper;
+import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class ReportScheduleJDBCDAO extends SimpleJdbcDaoSupport implements ReportScheduleDAO {
 
@@ -28,7 +27,7 @@ public class ReportScheduleJDBCDAO extends SimpleJdbcDaoSupport implements Repor
             reportSchedule.setAccountID(NumberUtil.objectToInteger(rs.getObject("acctID")));
             reportSchedule.setStartDate(rs.getDate("startDate"));
             reportSchedule.setLastDate(rs.getDate("lastDate"));
-            if(reportSchedule.getLastDate().before(reportSchedule.getStartDate())){
+            if (reportSchedule.getLastDate().before(reportSchedule.getStartDate())) {
                 reportSchedule.setLastDate(null);
             }
             reportSchedule.setName(rs.getString("name"));
@@ -40,17 +39,21 @@ public class ReportScheduleJDBCDAO extends SimpleJdbcDaoSupport implements Repor
             reportSchedule.setReportScheduleID(NumberUtil.objectToInteger(rs.getObject("reportPrefID")));
             reportSchedule.setTimeOfDay(rs.getInt("timeOfDay"));
             return reportSchedule;
-        };
+        }
+
+        ;
     };
-@Override
+
+    @Override
     public List<ReportSchedule> getActiveReportSchedulesByAccountID(Integer accountID) {
-    Map<String, Object> params = new HashMap<String, Object>();
-    params.put("acctID", accountID);
-    return getSimpleJdbcTemplate().query(ACTIVE_REPORT_SCHEDULES, reportScheduleRowMapper, params);
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("acctID", accountID);
+        return getSimpleJdbcTemplate().query(ACTIVE_REPORT_SCHEDULES, reportScheduleRowMapper, params);
     }
-     @Override
+
+    @Override
     public ReportSchedule findByID(Integer id) {
-         throw new NotImplementedException();
+        throw new NotImplementedException();
     }
 
     @Override
@@ -70,7 +73,7 @@ public class ReportScheduleJDBCDAO extends SimpleJdbcDaoSupport implements Repor
 
     @Override
     public List<ReportSchedule> getReportSchedulesByUserID(Integer userID) {
-         throw new NotImplementedException();
+        throw new NotImplementedException();
     }
 
     @Override

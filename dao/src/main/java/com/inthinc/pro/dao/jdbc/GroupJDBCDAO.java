@@ -3,6 +3,11 @@ package com.inthinc.pro.dao.jdbc;
 import com.inthinc.pro.dao.GroupDAO;
 import com.inthinc.pro.dao.hessian.exceptions.EmptyResultSetException;
 import com.inthinc.pro.model.*;
+import com.inthinc.pro.model.Address;
+import com.inthinc.pro.model.DOTOfficeType;
+import com.inthinc.pro.model.Group;
+import com.inthinc.pro.model.GroupStatus;
+import com.inthinc.pro.model.GroupType;
 import com.mysql.jdbc.Statement;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
@@ -100,6 +105,7 @@ public class GroupJDBCDAO extends SimpleJdbcDaoSupport implements GroupDAO {
             groupItem.setAddress(address);
 
             groupItem.setAddressID(address.getAddrID());
+            groupItem.setType(rs.getObject("level") == null ? null : GroupType.valueOf(rs.getInt("level")));
 
             return groupItem;
         }
@@ -189,9 +195,21 @@ public class GroupJDBCDAO extends SimpleJdbcDaoSupport implements GroupDAO {
             public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
                 PreparedStatement ps = con.prepareStatement(INSERT_GROUP_ACCOUNT, Statement.RETURN_GENERATED_KEYS);
                 ps.setInt(1, entity.getAccountID());
-                ps.setInt(2, entity.getParentID());
+
+                if (entity.getParentID().intValue() == 0 || entity.getParentID().equals(null)) {
+                    ps.setNull(2, Types.NULL);
+                } else {
+                    ps.setInt(2, entity.getParentID());
+                }
+
                 ps.setString(3, entity.getName() == null ? "" : entity.getName().trim());
-                ps.setString(4, entity.getDescription());
+
+                if (entity.getDescription().equalsIgnoreCase("") || entity.getDescription().isEmpty()) {
+                    ps.setNull(4, Types.NULL);
+                } else {
+                    ps.setString(4, entity.getDescription());
+                }
+
                 if (entity.getStatus() == null || entity.getStatus().getCode() == null) {
                     ps.setNull(5, Types.NULL);
                 } else {
@@ -217,10 +235,24 @@ public class GroupJDBCDAO extends SimpleJdbcDaoSupport implements GroupDAO {
                 } else {
                     ps.setInt(9, entity.getManagerID());
                 }
-                ps.setInt(10, entity.getMapZoom());
-                ps.setDouble(11, entity.getMapLat());
-                ps.setDouble(12, entity.getMapLng());
 
+                if (entity.getMapZoom().intValue() == 0 || entity.getMapZoom().equals(null)) {
+                    ps.setNull(10, Types.NULL);
+                } else {
+                    ps.setInt(10, entity.getMapZoom());
+                }
+
+                if (entity.getMapLat().intValue() == 0 || entity.getMapLat().equals(null)) {
+                    ps.setNull(10, Types.NULL);
+                } else {
+                    ps.setDouble(11, entity.getMapLat());
+                }
+
+                if (entity.getMapLng().intValue() == 0 || entity.getMapLng().equals(null)) {
+                    ps.setNull(10, Types.NULL);
+                } else {
+                    ps.setDouble(12, entity.getMapLng());
+                }
                 if (entity.getZoneRev() == null) {
                     ps.setInt(13, Types.NULL);
                 } else {
@@ -262,7 +294,13 @@ public class GroupJDBCDAO extends SimpleJdbcDaoSupport implements GroupDAO {
                 ps.setInt(1, entity.getAccountID());
                 ps.setInt(2, entity.getParentID());
                 ps.setString(3, entity.getName() == null ? "" : entity.getName().trim());
-                ps.setString(4, entity.getDescription());
+
+                if (entity.getDescription().equalsIgnoreCase("") || entity.getDescription().isEmpty()) {
+                    ps.setNull(4, Types.NULL);
+                } else {
+                    ps.setString(4, entity.getDescription());
+                }
+
                 if (entity.getStatus() == null || entity.getStatus().getCode() == null) {
                     ps.setNull(5, Types.NULL);
                 } else {
@@ -288,9 +326,23 @@ public class GroupJDBCDAO extends SimpleJdbcDaoSupport implements GroupDAO {
                 } else {
                     ps.setInt(9, entity.getManagerID());
                 }
-                ps.setInt(10, entity.getMapZoom());
-                ps.setDouble(11, entity.getMapLat());
-                ps.setDouble(12, entity.getMapLng());
+                if (entity.getMapZoom().intValue() == 0 || entity.getMapZoom().equals(null)) {
+                    ps.setNull(10, Types.NULL);
+                } else {
+                    ps.setInt(10, entity.getMapZoom());
+                }
+
+                if (entity.getMapLat().intValue() == 0 || entity.getMapLat().equals(null)) {
+                    ps.setNull(11, Types.NULL);
+                } else {
+                    ps.setDouble(11, entity.getMapLat());
+                }
+
+                if (entity.getMapLng().intValue() == 0 || entity.getMapLng().equals(null)) {
+                    ps.setNull(12, Types.NULL);
+                } else {
+                    ps.setDouble(12, entity.getMapLng());
+                }
 
                 if (entity.getZoneRev() == null) {
                     ps.setInt(13, Types.NULL);
@@ -441,12 +493,12 @@ public class GroupJDBCDAO extends SimpleJdbcDaoSupport implements GroupDAO {
      * @param groupID group id
      * @return path
      */
-    public String determineGroupPathById(Integer groupID){
-        if (groupID.equals(0)){
+    public String determineGroupPathById(Integer groupID) {
+        if (groupID.equals(0)) {
             return "/0/";
         } else {
             Group group = findFastById(groupID);
-            return determineGroupPathById(group.getParentID()) + groupID +"/";
+            return determineGroupPathById(group.getParentID()) + groupID + "/";
         }
     }
 

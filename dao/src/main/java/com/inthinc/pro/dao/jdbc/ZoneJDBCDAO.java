@@ -1,18 +1,13 @@
 package com.inthinc.pro.dao.jdbc;
 
-import com.inthinc.pro.comm.parser.attrib.AttribParserFactory;
 import com.inthinc.pro.dao.ZoneDAO;
 import com.inthinc.pro.dao.hessian.exceptions.EmptyResultSetException;
-import com.inthinc.pro.model.Address;
 import com.inthinc.pro.model.LatLng;
-import com.inthinc.pro.model.State;
 import com.inthinc.pro.model.Status;
 import com.inthinc.pro.model.Zone;
 import com.mysql.jdbc.Statement;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.simple.ParameterizedRowMapper;
@@ -20,7 +15,7 @@ import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 
-import java.math.BigInteger;
+import java.sql.Blob;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -34,11 +29,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.sql.Blob;
 
-/**
- * Created by Infrasoft02 on 4/17/2014.
- */
+
 public class ZoneJDBCDAO extends SimpleJdbcDaoSupport implements ZoneDAO {
 
     private static final String ZONE_SELECT = "SELECT * FROM zone ";
@@ -230,22 +222,9 @@ public class ZoneJDBCDAO extends SimpleJdbcDaoSupport implements ZoneDAO {
         return dt.toDate();
     }
 
-//    private hexToLatLng(hex):
-////"Convert a long hex string into lat/lng's.  Each value is a Double (8 bytes)"
-//    latlng = []
-//    hexLen = len(hex)
-//    numof = hexLen/32
-//            for i in range(numof):
-//    lng = hexToDbl(hex[i*32    : i*32+16])
-//    lat = hexToDbl(hex[i*32+16 : i*32+32])
-//    latlng.append({u'lat':lat, u'lng':lng})
-//            return latlng
-
-
-
     static String stringToHex(String string) {
         StringBuilder buf = new StringBuilder(200);
-        for (char ch: string.toCharArray()) {
+        for (char ch : string.toCharArray()) {
             if (buf.length() > 0)
                 buf.append(' ');
             buf.append(String.format("%04x", (int) ch));

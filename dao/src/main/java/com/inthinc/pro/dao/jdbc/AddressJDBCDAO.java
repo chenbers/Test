@@ -13,7 +13,11 @@ import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Types;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -106,7 +110,7 @@ public class AddressJDBCDAO extends SimpleJdbcDaoSupport implements AddressDAO {
                 return ps;
             }
 
-            };
+        };
         jdbcTemplate.update(psc, keyHolder);
         return keyHolder.getKey().intValue();
     }

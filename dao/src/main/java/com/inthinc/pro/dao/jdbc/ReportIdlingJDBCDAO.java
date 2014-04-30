@@ -1,19 +1,18 @@
 package com.inthinc.pro.dao.jdbc;
 
+import com.inthinc.pro.dao.ReportIdlingDAO;
+import com.inthinc.pro.model.IdlingReportItem;
+import com.inthinc.pro.model.Status;
+import org.joda.time.Interval;
+import org.springframework.jdbc.core.simple.ParameterizedRowMapper;
+import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import org.joda.time.Interval;
-import org.springframework.jdbc.core.simple.ParameterizedRowMapper;
-import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
-
-import com.inthinc.pro.dao.ReportIdlingDAO;
-import com.inthinc.pro.model.IdlingReportItem;
-import com.inthinc.pro.model.Status;
 
 public class ReportIdlingJDBCDAO extends SimpleJdbcDaoSupport implements ReportIdlingDAO {
     //Instead of the hessian ReportDAO for idling

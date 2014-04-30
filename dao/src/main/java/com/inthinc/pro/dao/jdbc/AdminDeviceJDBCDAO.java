@@ -55,7 +55,7 @@ public class AdminDeviceJDBCDAO extends SimpleJdbcDaoSupport {
         deviceCount = addFiltersToQuery(filters, deviceCount, params);
         List<Integer> cntList = getSimpleJdbcTemplate().query(deviceCount, pagedDeviceCountRowMapper, params);
         Integer cnt = 0;
-        if (cntList!=null && !cntList.isEmpty())
+        if (cntList != null && !cntList.isEmpty())
             cnt = cntList.get(0);
 
         return cnt;

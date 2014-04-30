@@ -1,17 +1,5 @@
 package com.inthinc.pro.dao.jdbc;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-
-import org.joda.time.Interval;
-import org.springframework.jdbc.core.simple.ParameterizedRowMapper;
-import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
-
 import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.dao.EventAggregationDAO;
 import com.inthinc.pro.model.Driver;
@@ -21,6 +9,17 @@ import com.inthinc.pro.model.aggregation.DriverForgivenEventTotal;
 import com.inthinc.pro.model.event.EventType;
 import com.inthinc.pro.model.event.LastReportedEvent;
 import com.inthinc.pro.model.event.NoteType;
+import org.joda.time.Interval;
+import org.springframework.jdbc.core.simple.ParameterizedRowMapper;
+import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Modified for de9040 for queries for never assigned vehicles and last note for vehicle By adding relation between groupVehicleFlat and vehicle by groupId.
@@ -29,21 +28,21 @@ public class EventAggregationJDBCDAO extends SimpleJdbcDaoSupport implements Eve
     protected static final boolean INACTIVE_DRIVERS_DEFAULT = false;
     protected static final boolean ZERO_MILES_DRIVERS_DEFAULT = false;
     private DriverDAO driverDAO;
-    
+
     /* Query to return the total number of forgiven events for a single driver by event type */
     private static final String SELECT_FORGIVEN_EVENT_TOTALS = "SELECT cnv.driverID AS 'driverId', cnv.driverName AS 'driverName', cnv.type AS 'type',cnv.aggType as 'aggType',g.groupID as 'groupID', g.name AS 'groupName', count(noteID) AS 'eventCount', "
-                    +
-                    // "(SELECT count(*) FROM cachedNoteView cnv1 WHERE cnv1.driverID = cnv.driverID AND cnv1.type = cnv.type AND (cnv1.aggType = cnv.aggType OR cnv1.aggType is null) AND forgiven = 1 AND cnv1.time BETWEEN :startDate AND :endDate) AS 'eventCountForgiven' "
-                    // +
-                    "SUM(cnv.forgiven=1)  AS 'eventCountForgiven' "
-                    + // Another way of getting a filtered count cvn.forgiven=1 returns 1 which means true and we can count that.
-                    "FROM cachedNoteView cnv  INNER JOIN groups g ON g.groupID = cnv.driverGroupID "
-                    + "WHERE cnv.driverGroupID IN (:groupList) AND cnv.time BETWEEN :startDate AND :endDate GROUP BY cnv.driverID,cnv.type,cnv.aggType";
-    
+            +
+            // "(SELECT count(*) FROM cachedNoteView cnv1 WHERE cnv1.driverID = cnv.driverID AND cnv1.type = cnv.type AND (cnv1.aggType = cnv.aggType OR cnv1.aggType is null) AND forgiven = 1 AND cnv1.time BETWEEN :startDate AND :endDate) AS 'eventCountForgiven' "
+            // +
+            "SUM(cnv.forgiven=1)  AS 'eventCountForgiven' "
+            + // Another way of getting a filtered count cvn.forgiven=1 returns 1 which means true and we can count that.
+            "FROM cachedNoteView cnv  INNER JOIN groups g ON g.groupID = cnv.driverGroupID "
+            + "WHERE cnv.driverGroupID IN (:groupList) AND cnv.time BETWEEN :startDate AND :endDate GROUP BY cnv.driverID,cnv.type,cnv.aggType";
+
     public List<DriverForgivenEventTotal> findDriverForgivenEventTotalsByGroups(List<Integer> groupIDs, Interval interval) {
         return findDriverForgivenEventTotalsByGroups(groupIDs, interval, INACTIVE_DRIVERS_DEFAULT, ZERO_MILES_DRIVERS_DEFAULT);
     }
-    
+
     /*
      * (non-Javadoc)
      * 
@@ -51,7 +50,7 @@ public class EventAggregationJDBCDAO extends SimpleJdbcDaoSupport implements Eve
      */
     @Override
     public List<DriverForgivenEventTotal> findDriverForgivenEventTotalsByGroups(List<Integer> groupIDs, final Interval interval, final boolean includeInactiveDrivers,
-                    final boolean includeZeroMilesDrivers) {
+                                                                                final boolean includeZeroMilesDrivers) {
         String forgivenEventTotals = SELECT_FORGIVEN_EVENT_TOTALS;
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("groupList", groupIDs);
@@ -79,7 +78,7 @@ public class EventAggregationJDBCDAO extends SimpleJdbcDaoSupport implements Eve
                     Object[] mapId = new Object[3];
                     mapId[0] = rs.getInt("driverID");
                     mapId[1] = eventType;
-                    
+
                     DriverForgivenEventTotal driverForgivenEventTotal = null;
                     if (driverForgivenEventTotalMap.get(mapId) != null) {
                         driverForgivenEventTotal = driverForgivenEventTotalMap.get(mapId);
@@ -87,17 +86,17 @@ public class EventAggregationJDBCDAO extends SimpleJdbcDaoSupport implements Eve
                         driverForgivenEventTotal.setEventCountForgiven(driverForgivenEventTotal.getEventCountForgiven() + rs.getInt("eventCountForgiven"));
                     } else {
                         Driver driver = driverDAO.findByID(rs.getInt("driverID"));
-                        
+
                         List<Trip> trips = driverDAO.getTrips(driver.getDriverID(), interval);
                         Integer totalMiles = 0;
                         for (Trip trip : trips) {
                             totalMiles += trip.getMileage();
                         }
-                        
+
                         boolean includeThisInactiveDriver = (includeInactiveDrivers && totalMiles != 0);
                         boolean includeThisZeroMilesDriver = (includeZeroMilesDrivers && driver.getStatus().equals(Status.ACTIVE));
                         if ((driver.getStatus().equals(Status.ACTIVE) && totalMiles != 0) || (includeInactiveDrivers && includeZeroMilesDrivers) || includeThisInactiveDriver
-                                        || includeThisZeroMilesDriver) {
+                                || includeThisZeroMilesDriver) {
                             System.out.println("INCLUDING: fullName: " + driver.getPerson().getFullName());
                             System.out.println("status: " + driver.getStatus());
                             System.out.println("totalMiles: " + totalMiles);
@@ -128,21 +127,21 @@ public class EventAggregationJDBCDAO extends SimpleJdbcDaoSupport implements Eve
         }, params);
         return Arrays.asList(driverForgivenEventTotalMap.values().toArray(new DriverForgivenEventTotal[0]));
     }
-    
+
     private static final String SELECT_LAST_NOTE_TEMPLATE = "SELECT * from (%s) a GROUP by vehicleID ORDER by vehicleName ASC;";
     private static final String SELECT_LAST_NOTE_TEMPLATE_INNER = "SELECT v.vehicleID,v.name as 'vehicleName',l.deviceID,d.name as 'deviceName',d.serialNum,"
-                    + "l.start AS 'deviceAssignedDate',l.stop AS 'deviceUnassignedDate',n.noteID,n.time AS 'noteTime',n.type AS 'noteType',g.groupID,g.name as 'groupName',(DATEDIFF(n.time,CURDATE()) * -1) as 'daysSince' FROM vehicle v "
-                    + "INNER JOIN vddlog l ON l.vehicleID = v.vehicleID INNER JOIN device d ON d.deviceID = l.deviceID "
-                    + "INNER JOIN note%s n ON n.deviceID = l.deviceID AND n.vehicleID = v.vehicleID "
-                    + "INNER JOIN groupVehicleFlat gv ON gv.vehicleID = v.vehicleID INNER JOIN groups g ON g.groupID = gv.groupID "
-                    + "INNER JOIN (SELECT _n.vehicleID,_n.deviceID,MAX(_n.time) as 'maxTime' FROM note%s _n GROUP BY _n.deviceID,_n.vehicleID) groupedNote "
-                    + "ON groupedNote.maxtime = n.time AND groupedNote.deviceID = l.deviceID AND groupedNote.vehicleID = l.vehicleID "
-                    + "WHERE n.time < :startDate AND (l.stop iS NULL OR l.stop = (select max(stop) from vddlog where vehicleID = v.vehicleID)) " + "AND g.groupID IN (:groupList)";
-    
+            + "l.start AS 'deviceAssignedDate',l.stop AS 'deviceUnassignedDate',n.noteID,n.time AS 'noteTime',n.type AS 'noteType',g.groupID,g.name as 'groupName',(DATEDIFF(n.time,CURDATE()) * -1) as 'daysSince' FROM vehicle v "
+            + "INNER JOIN vddlog l ON l.vehicleID = v.vehicleID INNER JOIN device d ON d.deviceID = l.deviceID "
+            + "INNER JOIN note%s n ON n.deviceID = l.deviceID AND n.vehicleID = v.vehicleID "
+            + "INNER JOIN groupVehicleFlat gv ON gv.vehicleID = v.vehicleID INNER JOIN groups g ON g.groupID = gv.groupID "
+            + "INNER JOIN (SELECT _n.vehicleID,_n.deviceID,MAX(_n.time) as 'maxTime' FROM note%s _n GROUP BY _n.deviceID,_n.vehicleID) groupedNote "
+            + "ON groupedNote.maxtime = n.time AND groupedNote.deviceID = l.deviceID AND groupedNote.vehicleID = l.vehicleID "
+            + "WHERE n.time < :startDate AND (l.stop iS NULL OR l.stop = (select max(stop) from vddlog where vehicleID = v.vehicleID)) " + "AND g.groupID IN (:groupList)";
+
     private static final String SELECT_NEVER_ASSIGNED_VEHICLE = "SELECT v.vehicleID,v.name AS 'vehicleName',g.groupID,g.name AS 'groupName' FROM vehicle v "
-                    + "INNER JOIN groupVehicleFlat gv ON gv.vehicleID = v.vehicleID INNER JOIN groups g ON g.groupID = gv.groupID " + "LEFT OUTER JOIN vddlog l ON l.vehicleID = v.vehicleID WHERE "
-                    + "NOT EXISTS (SELECT  * FROM vddlog _l WHERE _l.vehicleID = v.vehicleID) " + "AND g.groupID IN (:groupList) ";
-    
+            + "INNER JOIN groupVehicleFlat gv ON gv.vehicleID = v.vehicleID INNER JOIN groups g ON g.groupID = gv.groupID " + "LEFT OUTER JOIN vddlog l ON l.vehicleID = v.vehicleID WHERE "
+            + "NOT EXISTS (SELECT  * FROM vddlog _l WHERE _l.vehicleID = v.vehicleID) " + "AND g.groupID IN (:groupList) ";
+
     /*
      * (non-Javadoc)
      * 
@@ -167,13 +166,13 @@ public class EventAggregationJDBCDAO extends SimpleJdbcDaoSupport implements Eve
                 lastNoteQueryStringBuilder.append(" UNION ");
             }
         }
-        
+
         String lastNotQuery = String.format(SELECT_LAST_NOTE_TEMPLATE, lastNoteQueryStringBuilder.toString());
         System.out.println(lastNotQuery);
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("groupList", groupIDs);
         params.put("startDate", interval.getStart().toDate());
-        
+
         if (logger.isDebugEnabled()) {
             logger.debug("Executing query for findRecentEventByDevice()");
             logger.debug(String.format("Executing query: %s", lastNotQuery));
@@ -212,23 +211,23 @@ public class EventAggregationJDBCDAO extends SimpleJdbcDaoSupport implements Eve
                 return event;
             }
         }, params2);
-        
+
         lastReportedEvents.addAll(vehiclesWithNoNotes);
         return lastReportedEvents;
     }
-    
+
     private static final String SELECT_LAST_NOTE_FOR_VEHICLE = "SELECT v.vehicleID,v.name as 'vehicleName',d.deviceID,d.name as 'deviceName',d.serialNum,max(l.time) AS 'noteTime',l.noteType AS 'noteType',g.groupID,g.name as 'groupName',(DATEDIFF(l.time,CURDATE()) * -1) as 'daysSince' "
-                    + "FROM vehicle v "
-                    + "INNER JOIN groupVehicleFlat gv ON gv.vehicleID = v.vehicleID AND gv.groupID=v.groupID INNER JOIN groups g ON g.groupID = gv.groupID "
-                    + "INNER JOIN (select max(time) maxTime  from lastLocVehicle _l group by deviceID) dmax "
-                    + "INNER JOIN lastLocVehicle l on l.vehicleID = v.vehicleID and dmax.maxTime = l.time "
-                    + "INNER JOIN device d ON d.deviceID = l.deviceID "
-                    + "where v.vehicleID in (select vehicleID from vehicle where groupID in (:groupList)) and l.time < :startDate group by vehicleID order by vehicleName";
-    
+            + "FROM vehicle v "
+            + "INNER JOIN groupVehicleFlat gv ON gv.vehicleID = v.vehicleID AND gv.groupID=v.groupID INNER JOIN groups g ON g.groupID = gv.groupID "
+            + "INNER JOIN (select max(time) maxTime  from lastLocVehicle _l group by deviceID) dmax "
+            + "INNER JOIN lastLocVehicle l on l.vehicleID = v.vehicleID and dmax.maxTime = l.time "
+            + "INNER JOIN device d ON d.deviceID = l.deviceID "
+            + "where v.vehicleID in (select vehicleID from vehicle where groupID in (:groupList)) and l.time < :startDate group by vehicleID order by vehicleName";
+
     private static final String SELECT_NEVER_ASSIGNED_VEHICLES = "SELECT v.vehicleID,v.name AS 'vehicleName',g.groupID,g.name AS 'groupName' FROM vehicle v "
-                    + "INNER JOIN groupVehicleFlat gv ON gv.vehicleID = v.vehicleID AND gv.groupID=v.groupID INNER JOIN groups g ON g.groupID = gv.groupID "
-                    + "LEFT OUTER JOIN vddlog l ON l.vehicleID = v.vehicleID WHERE " + "NOT EXISTS (SELECT  * FROM vddlog _l WHERE _l.vehicleID = v.vehicleID) " + "AND g.groupID IN (:groupList) ";
-    
+            + "INNER JOIN groupVehicleFlat gv ON gv.vehicleID = v.vehicleID AND gv.groupID=v.groupID INNER JOIN groups g ON g.groupID = gv.groupID "
+            + "LEFT OUTER JOIN vddlog l ON l.vehicleID = v.vehicleID WHERE " + "NOT EXISTS (SELECT  * FROM vddlog _l WHERE _l.vehicleID = v.vehicleID) " + "AND g.groupID IN (:groupList) ";
+
     /*
      * (non-Javadoc)
      * 
@@ -242,11 +241,11 @@ public class EventAggregationJDBCDAO extends SimpleJdbcDaoSupport implements Eve
          * from the last device which was assigned to it.
          */
         String lastNotQuery = SELECT_LAST_NOTE_FOR_VEHICLE;
-        
+
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("groupList", groupIDs);
         params.put("startDate", interval.getStart().toDate());
-        
+
         if (logger.isDebugEnabled()) {
             logger.debug("Executing query for findLastEventForVehicles()");
             logger.debug(String.format("Executing query: %s", lastNotQuery));
@@ -283,15 +282,15 @@ public class EventAggregationJDBCDAO extends SimpleJdbcDaoSupport implements Eve
                 return event;
             }
         }, params2);
-        
+
         lastReportedEvents.addAll(vehiclesWithNoNotes);
         return lastReportedEvents;
     }
-    
+
     public DriverDAO getDriverDAO() {
         return driverDAO;
     }
-    
+
     public void setDriverDAO(DriverDAO driverDAO) {
         this.driverDAO = driverDAO;
     }

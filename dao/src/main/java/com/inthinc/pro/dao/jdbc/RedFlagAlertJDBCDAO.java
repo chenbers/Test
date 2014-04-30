@@ -3,7 +3,13 @@ package com.inthinc.pro.dao.jdbc;
 
 import com.inthinc.pro.dao.RedFlagAlertDAO;
 import com.inthinc.pro.dao.hessian.exceptions.EmptyResultSetException;
-import com.inthinc.pro.model.*;
+import com.inthinc.pro.model.AlertEscalationItem;
+import com.inthinc.pro.model.AlertMessageType;
+import com.inthinc.pro.model.RedFlagAlert;
+import com.inthinc.pro.model.RedFlagAlertAssignItem;
+import com.inthinc.pro.model.RedFlagLevel;
+import com.inthinc.pro.model.Status;
+import com.inthinc.pro.model.VehicleType;
 import com.inthinc.pro.model.configurator.SpeedingConstants;
 import com.mysql.jdbc.Statement;
 import org.joda.time.DateTime;
@@ -15,11 +21,21 @@ import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Types;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.TimeZone;
 
 public class RedFlagAlertJDBCDAO extends SimpleJdbcDaoSupport implements RedFlagAlertDAO {
 
@@ -82,12 +98,12 @@ public class RedFlagAlertJDBCDAO extends SimpleJdbcDaoSupport implements RedFlag
 
 
     private static final String INSERT_INTO = "INSERT INTO alert (alertTypeMask, alertType, type,  status,  modified,  acctID, userID,  name,  description,  startTOD,  stopTOD, dayOfWeekMask, vtypeMask, " +
-                    "speedSettings, accel, brake, turn,  vert,  severityLevel,  zoneID, escalationTryLimit, escalationTryTimeLimit, escalationCallDelay, idlingThreshold, notifyManagers) VALUES " +
-                    "(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            "speedSettings, accel, brake, turn,  vert,  severityLevel,  zoneID, escalationTryLimit, escalationTryTimeLimit, escalationCallDelay, idlingThreshold, notifyManagers) VALUES " +
+            "(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
 
     private static final String UPDATE_ALERT = "UPDATE alert set alertTypeMask=?, alertType=?, type=?,  status=?,  modified=?,  acctID=?, userID=?,  name=?,  description=?,  startTOD=?,  stopTOD=?, dayOfWeekMask=?, vtypeMask=?,  speedSettings=?, " +
-                    "accel=?, brake=?, turn=?,  vert=?,  severityLevel=?,  zoneID=?, escalationTryLimit=?, escalationTryTimeLimit=?, escalationCallDelay=?, idlingThreshold=?, notifyManagers=? where alertID=?";
+            "accel=?, brake=?, turn=?,  vert=?,  severityLevel=?,  zoneID=?, escalationTryLimit=?, escalationTryTimeLimit=?, escalationCallDelay=?, idlingThreshold=?, notifyManagers=? where alertID=?";
 
 
     private ParameterizedRowMapper<RedFlagAlertAssignItem> redFlagAlertGroupRowMapper = new ParameterizedRowMapper<RedFlagAlertAssignItem>() {
@@ -313,7 +329,6 @@ public class RedFlagAlertJDBCDAO extends SimpleJdbcDaoSupport implements RedFlag
     }
 
 
-
     @Override
     public List<RedFlagAlert> getRedFlagAlertsByUserIDDeep(Integer userID) {
         try {
@@ -346,7 +361,6 @@ public class RedFlagAlertJDBCDAO extends SimpleJdbcDaoSupport implements RedFlag
             return Collections.emptyList();
         }
     }
-
 
 
     @Override
@@ -425,13 +439,29 @@ public class RedFlagAlertJDBCDAO extends SimpleJdbcDaoSupport implements RedFlag
                     ps.setString(14, Arrays.toString(entity.getSpeedSettings()));
                 }
 
+                if (entity.getHardAcceleration().intValue() == 0 || entity.getHardAcceleration().equals(null)) {
+                    ps.setNull(15, Types.NULL);
+                } else {
                     ps.setInt(15, entity.getHardAcceleration());
+                }
 
+                if (entity.getHardBrake().intValue() == 0 || entity.getHardBrake().equals(null)) {
+                    ps.setNull(16, Types.NULL);
+                } else {
                     ps.setInt(16, entity.getHardBrake());
+                }
 
+                if (entity.getHardTurn().intValue() == 0 || entity.getHardTurn().equals(null)) {
+                    ps.setNull(17, Types.NULL);
+                } else {
                     ps.setInt(17, entity.getHardTurn());
+                }
 
+                if (entity.getHardVertical().intValue() == 0 || entity.getHardVertical().equals(null)) {
+                    ps.setNull(18, Types.NULL);
+                } else {
                     ps.setInt(18, entity.getHardVertical());
+                }
 
                 if (entity.getSeverityLevel() == null) {
                     ps.setObject(19, RedFlagLevel.NONE.getCode());
@@ -536,7 +566,7 @@ public class RedFlagAlertJDBCDAO extends SimpleJdbcDaoSupport implements RedFlag
         }
     }
 
-//    //create for AlertEsc
+    //    //create for AlertEsc
     private void createEscForRedFlagAlert(Integer alertID, List<AlertEscalationItem> escalation) {
         for (AlertEscalationItem esc : escalation) {
             AlertEscalationItem item = new AlertEscalationItem(alertID, esc);
@@ -603,13 +633,29 @@ public class RedFlagAlertJDBCDAO extends SimpleJdbcDaoSupport implements RedFlag
                     ps.setInt(14, entity.getSpeedSettings().length);
                 }
 
+                if (entity.getHardAcceleration().intValue() == 0 || entity.getHardAcceleration().equals(null)) {
+                    ps.setNull(15, Types.NULL);
+                } else {
                     ps.setInt(15, entity.getHardAcceleration());
+                }
 
+                if (entity.getHardBrake().intValue() == 0 || entity.getHardBrake().equals(null)) {
+                    ps.setNull(16, Types.NULL);
+                } else {
                     ps.setInt(16, entity.getHardBrake());
+                }
 
+                if (entity.getHardTurn().intValue() == 0 || entity.getHardTurn().equals(null)) {
+                    ps.setNull(17, Types.NULL);
+                } else {
                     ps.setInt(17, entity.getHardTurn());
+                }
 
+                if (entity.getHardVertical().intValue() == 0 || entity.getHardVertical().equals(null)) {
+                    ps.setNull(18, Types.NULL);
+                } else {
                     ps.setInt(18, entity.getHardVertical());
+                }
 
 
                 if (entity.getSeverityLevel() == null) {
@@ -673,27 +719,27 @@ public class RedFlagAlertJDBCDAO extends SimpleJdbcDaoSupport implements RedFlag
     }
 
 
-        private void updateGroupsForRedFlagAlert(Integer redFlagId, List<Integer> groupIds) {
-            List<RedFlagAlertAssignItem> existing = getRedFlagAlertGroupsByAlertID(redFlagId);
-            for (RedFlagAlertAssignItem item : existing) {
-                    // delete it
-                    deleteRedFlagAlertGroupById(item.getId());
-            }
-
-            for (Integer id : groupIds) {
-                RedFlagAlertAssignItem item = new RedFlagAlertAssignItem(id);
-                    // insert it
-                    item.setRedFlagId(redFlagId);
-                    item.setItemId(id);
-                    createRedFlagAlertGroup(null,item);
-
-            }
+    private void updateGroupsForRedFlagAlert(Integer redFlagId, List<Integer> groupIds) {
+        List<RedFlagAlertAssignItem> existing = getRedFlagAlertGroupsByAlertID(redFlagId);
+        for (RedFlagAlertAssignItem item : existing) {
+            // delete it
+            deleteRedFlagAlertGroupById(item.getId());
         }
+
+        for (Integer id : groupIds) {
+            RedFlagAlertAssignItem item = new RedFlagAlertAssignItem(id);
+            // insert it
+            item.setRedFlagId(redFlagId);
+            item.setItemId(id);
+            createRedFlagAlertGroup(null, item);
+
+        }
+    }
 
 
     @Override
     public Integer deleteByID(Integer alertID) {
-        int result = getJdbcTemplate().update(DEL_BY_ID, new Object[] { alertID });
+        int result = getJdbcTemplate().update(DEL_BY_ID, new Object[]{alertID});
 
         //delete other items for this red flag.
         deleteGroupsForRedFlagsAlert(alertID);
@@ -749,13 +795,13 @@ public class RedFlagAlertJDBCDAO extends SimpleJdbcDaoSupport implements RedFlag
     }
 
 
-    public  Integer deleteRedFlagAlertGroupById(Integer alertGroupID) {
-        return getJdbcTemplate().update(DELETE_ALERT_GROUP_BY_ID, new Object[] { alertGroupID });
+    public Integer deleteRedFlagAlertGroupById(Integer alertGroupID) {
+        return getJdbcTemplate().update(DELETE_ALERT_GROUP_BY_ID, new Object[]{alertGroupID});
     }
 
 
     private Integer deleteRedFlagAlertGroupByAlertId(Integer alertID) {
-        return getJdbcTemplate().update(DELETE_ALERT_GROUP_BY_ALERT_ID, new Object[] { alertID });
+        return getJdbcTemplate().update(DELETE_ALERT_GROUP_BY_ALERT_ID, new Object[]{alertID});
     }
 
 
@@ -815,12 +861,12 @@ public class RedFlagAlertJDBCDAO extends SimpleJdbcDaoSupport implements RedFlag
 
 
     private Integer deleteRedFlagAlertDriverById(Integer alertDriverID) {
-        return getJdbcTemplate().update(DELETE_ALERT_DRIVER_BY_ID, new Object[] { alertDriverID });
+        return getJdbcTemplate().update(DELETE_ALERT_DRIVER_BY_ID, new Object[]{alertDriverID});
     }
 
 
     private Integer deleteRedFlagAlertDriverByAlertId(Integer alertID) {
-        return getJdbcTemplate().update(DELETE_ALERT_DRIVER_BY_ALERT_ID, new Object[] { alertID });
+        return getJdbcTemplate().update(DELETE_ALERT_DRIVER_BY_ALERT_ID, new Object[]{alertID});
     }
 
 
@@ -870,18 +916,18 @@ public class RedFlagAlertJDBCDAO extends SimpleJdbcDaoSupport implements RedFlag
         List<RedFlagAlertAssignItem> existing = getRedFlagAlertDriverByAlertID(redFlagId);
 
         for (RedFlagAlertAssignItem item : existing) {
-                // delete it
-                deleteRedFlagAlertDriverById(item.getId());
+            // delete it
+            deleteRedFlagAlertDriverById(item.getId());
 
         }
 
         for (Integer id : driverIDs) {
             RedFlagAlertAssignItem item = new RedFlagAlertAssignItem(id);
 
-                // insert it
-                item.setRedFlagId(redFlagId);
-                item.setItemId(id);
-                createRedFlagAlertDriver(null, item);
+            // insert it
+            item.setRedFlagId(redFlagId);
+            item.setItemId(id);
+            createRedFlagAlertDriver(null, item);
 
         }
     }
@@ -900,11 +946,11 @@ public class RedFlagAlertJDBCDAO extends SimpleJdbcDaoSupport implements RedFlag
     }
 
     private Integer deleteRedFlagAlertVehicleById(Integer alertVehicleID) {
-        return getJdbcTemplate().update(DELETE_ALERT_VEHICLE_BY_ID, new Object[] { alertVehicleID });
+        return getJdbcTemplate().update(DELETE_ALERT_VEHICLE_BY_ID, new Object[]{alertVehicleID});
     }
 
     private Integer deleteRedFlagAlertVehicleByAlertId(Integer alertID) {
-        return getJdbcTemplate().update(DELETE_ALERT_VEHICLE_BY_ALERT_ID, new Object[] { alertID });
+        return getJdbcTemplate().update(DELETE_ALERT_VEHICLE_BY_ALERT_ID, new Object[]{alertID});
     }
 
     public Integer createRedFlagAlertVehicle(Integer id, final RedFlagAlertAssignItem entity) {
@@ -953,17 +999,17 @@ public class RedFlagAlertJDBCDAO extends SimpleJdbcDaoSupport implements RedFlag
         List<RedFlagAlertAssignItem> existing = getRedFlagAlertDriverByAlertID(redFlagId);
 
         for (RedFlagAlertAssignItem item : existing) {
-                // delete it
-                deleteRedFlagAlertVehicleById(item.getId());
+            // delete it
+            deleteRedFlagAlertVehicleById(item.getId());
 
         }
 
         for (Integer id : vehicleIDs) {
             RedFlagAlertAssignItem item = new RedFlagAlertAssignItem(id);
 
-                // insert it
-                item.setRedFlagId(redFlagId);
-                item.setItemId(id);
+            // insert it
+            item.setRedFlagId(redFlagId);
+            item.setItemId(id);
             createRedFlagAlertVehicle(null, item);
 
         }
@@ -983,12 +1029,12 @@ public class RedFlagAlertJDBCDAO extends SimpleJdbcDaoSupport implements RedFlag
     }
 
     private Integer deleteRedFlagAlertPersonById(Integer alertPersonID) {
-        return getJdbcTemplate().update(DELETE_ALERT_PERSON_BY_ID, new Object[] { alertPersonID });
+        return getJdbcTemplate().update(DELETE_ALERT_PERSON_BY_ID, new Object[]{alertPersonID});
     }
 
 
     private Integer deleteRedFlagAlertPersonByAlertId(Integer alertID) {
-        return getJdbcTemplate().update(DELETE_ALERT_PERSON_BY_ALERT_ID, new Object[] { alertID });
+        return getJdbcTemplate().update(DELETE_ALERT_PERSON_BY_ALERT_ID, new Object[]{alertID});
     }
 
 
@@ -1039,17 +1085,17 @@ public class RedFlagAlertJDBCDAO extends SimpleJdbcDaoSupport implements RedFlag
         List<RedFlagAlertAssignItem> existing = getRedFlagAlertPersonByAlertID(redFlagId);
 
         for (RedFlagAlertAssignItem item : existing) {
-                // delete it
-                deleteRedFlagAlertPersonById(item.getId());
+            // delete it
+            deleteRedFlagAlertPersonById(item.getId());
 
         }
 
         for (Integer id : notifyPersonIDs) {
             RedFlagAlertAssignItem item = new RedFlagAlertAssignItem(id);
 
-                // insert it
-                item.setRedFlagId(redFlagId);
-                item.setItemId(id);
+            // insert it
+            item.setRedFlagId(redFlagId);
+            item.setItemId(id);
             createRedFlagAlertPerson(null, item);
 
         }
@@ -1069,11 +1115,11 @@ public class RedFlagAlertJDBCDAO extends SimpleJdbcDaoSupport implements RedFlag
     }
 
     private Integer deleteRedFlagAlertEscpById(Integer alertPersonID) {
-        return getJdbcTemplate().update(DELETE_ALERT_ESCPERS_BY_ID, new Object[] { alertPersonID });
+        return getJdbcTemplate().update(DELETE_ALERT_ESCPERS_BY_ID, new Object[]{alertPersonID});
     }
 
     private Integer deleteRedFlagAlertEscpByAlertId(Integer alertID) {
-        return getJdbcTemplate().update(DELETE_ALERT_ESCPERS_BY_ALERT_ID, new Object[] { alertID });
+        return getJdbcTemplate().update(DELETE_ALERT_ESCPERS_BY_ALERT_ID, new Object[]{alertID});
     }
 
     public Integer createRedFlagAlertEscP(Integer id, final AlertEscalationItem entity) {
@@ -1104,7 +1150,7 @@ public class RedFlagAlertJDBCDAO extends SimpleJdbcDaoSupport implements RedFlag
             @Override
             public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
                 PreparedStatement ps = con.prepareStatement(UPDATE_ALERT_ESCPERS_BY_ID);
-                                                             //alertID = ?, personID = ?, escalationOrder=?, contactType=?
+                //alertID = ?, personID = ?, escalationOrder=?, contactType=?
                 ps.setInt(1, entity.getAlertID());
                 ps.setInt(2, entity.getPersonID());
                 ps.setInt(3, entity.getEscalationOrder());
@@ -1127,8 +1173,8 @@ public class RedFlagAlertJDBCDAO extends SimpleJdbcDaoSupport implements RedFlag
 
         //for each existing, if it's not in the given list, delete it from bd
         for (AlertEscalationItem item : existing) {
-                // delete it
-                deleteRedFlagAlertEscpById(item.getAlertPersonID());
+            // delete it
+            deleteRedFlagAlertEscpById(item.getAlertPersonID());
 
         }
 
@@ -1136,11 +1182,11 @@ public class RedFlagAlertJDBCDAO extends SimpleJdbcDaoSupport implements RedFlag
         for (AlertEscalationItem id : escIDs) {
             AlertEscalationItem item = new AlertEscalationItem();
 
-                // insert it
-                item.setAlertID(redFlagId);
-                item.setPersonID(id.getPersonID());
-                item.setEscalationOrder(id.getEscalationOrder());
-                item.setContactType(id.getContactType());
+            // insert it
+            item.setAlertID(redFlagId);
+            item.setPersonID(id.getPersonID());
+            item.setEscalationOrder(id.getEscalationOrder());
+            item.setContactType(id.getContactType());
             createRedFlagAlertEscP(null, item);
 
         }
@@ -1160,11 +1206,11 @@ public class RedFlagAlertJDBCDAO extends SimpleJdbcDaoSupport implements RedFlag
     }
 
     private Integer deleteRedFlagAlertEmailById(Integer alertEmailID) {
-        return getJdbcTemplate().update(DELETE_ALERT_EMAIL_BY_ID, new Object[] { alertEmailID });
+        return getJdbcTemplate().update(DELETE_ALERT_EMAIL_BY_ID, new Object[]{alertEmailID});
     }
 
     private Integer deleteRedFlagAlertEmailByAlertId(Integer alertID) {
-        return getJdbcTemplate().update(DELETE_ALERT_EMAIL_BY_ALERT_ID, new Object[] { alertID });
+        return getJdbcTemplate().update(DELETE_ALERT_EMAIL_BY_ALERT_ID, new Object[]{alertID});
     }
 
     public Integer createRedFlagAlertEmail(Integer id, final RedFlagAlertAssignItem entity) {
@@ -1213,23 +1259,21 @@ public class RedFlagAlertJDBCDAO extends SimpleJdbcDaoSupport implements RedFlag
         List<RedFlagAlertAssignItem> existing = getRedFlagAlertEmailByAlertID(redFlagId);
 
         for (RedFlagAlertAssignItem item : existing) {
-                // delete it
-                deleteRedFlagAlertEmailById(item.getId());
+            // delete it
+            deleteRedFlagAlertEmailById(item.getId());
 
         }
 
         for (Integer id : emails) {
             RedFlagAlertAssignItem item = new RedFlagAlertAssignItem(id);
 
-                // insert it
-                item.setRedFlagId(redFlagId);
-                item.setItemId(id);
-                 createRedFlagAlertEmail(null, item);
+            // insert it
+            item.setRedFlagId(redFlagId);
+            item.setItemId(id);
+            createRedFlagAlertEmail(null, item);
 
         }
     }
-
-
 
 
     private String getStringOrNullFromRS(ResultSet rs, String columnName) throws SQLException {
