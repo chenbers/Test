@@ -81,7 +81,8 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
     <bean id="accountDAO" class="com.inthinc.pro.dao.jdbc.AccountJDBCDAO"></bean>
     <bean id="userDAO" class="com.inthinc.pro.dao.jdbc.UserJDBCDAO"></bean>
     <bean id="personDAO" class="com.inthinc.pro.dao.jdbc.PersonJDBCDAO"></bean>
-    <bean id="groupDAO" class="com.inthinc.pro.dao.jdbc.GroupJDBCDAO"></bean>
+    <bean id="groupDAO" class="com.inthinc.pro.dao.jdbc.GroupJDBCDAO">
+    </bean>
     <bean id="vehicleDAO" class="com.inthinc.pro.dao.jdbc.VehicleJDBCDAO" />
     <bean id="vehicleJDBCDAO" class="com.inthinc.pro.dao.jdbc.VehicleJDBCDAO" />
     <bean id="deviceDAO" class="com.inthinc.pro.dao.jdbc.DeviceJDBCDAO" />

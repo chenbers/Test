@@ -690,7 +690,11 @@ public class VehicleJDBCDAO extends SimpleJdbcDaoSupport implements VehicleDAO {
                     ps.setString(2, entity.getColor());
                 }
 
-                ps.setInt(3, entity.getGroupID());
+                if(entity.getGroupID() == null){
+                    ps.setNull(3, Types.NULL);
+                } else {
+                    ps.setInt(3, entity.getGroupID());
+                }
 
                 ps.setString(4, getPathByGroupId(entity.getGroupID()));
 
@@ -858,12 +862,16 @@ public class VehicleJDBCDAO extends SimpleJdbcDaoSupport implements VehicleDAO {
     }
 
     private String getPathByGroupId(Integer groupID) {
+        try {
         Map<String, Object> args = new HashMap<String, Object>();
         args.put("groupID", groupID);
         String groupPath = new String(GET_GROUP_PATH);
         String grPath = getSimpleJdbcTemplate().queryForObject(groupPath, String.class, args);
 
         return grPath;
+        }catch (EmptyResultDataAccessException e){
+            return null;
+        }
     }
 
     private String getVegicleCount(Integer deviceID) {

@@ -1,6 +1,8 @@
 package com.inthinc.pro.dao.jdbc;
 
 import com.inthinc.pro.dao.GroupDAO;
+import com.inthinc.pro.dao.hessian.exceptions.EmptyResultSetException;
+import com.inthinc.pro.model.*;
 import com.inthinc.pro.model.Address;
 import com.inthinc.pro.model.DOTOfficeType;
 import com.inthinc.pro.model.Group;
@@ -32,11 +34,15 @@ public class GroupJDBCDAO extends SimpleJdbcDaoSupport implements GroupDAO {
 
     private static final long serialVersionUID = 2855781183498326572L;
 
-    private static final String GET_GROUP = "select g.groupID, g.acctID, g.parentID, g.name, g.desc, g.status, g.groupPath, g.addrID, g.addrID2, g.level, g.managerID, g.mapZoom, g.mapLat, g.mapLng, g.zoneRev, g.aggDate, g.newAggDate, g.dotOfficeType  from groups g ";
-    private static final String GET_GROUP_ACCT = "select g.groupID, g.acctID, g.parentID, g.name, g.desc, g.status, g.groupPath, g.addrID, g.addrID2, g.level, g.managerID, g.mapZoom, g.mapLat, g.mapLng, g.zoneRev, g.aggDate, g.newAggDate, g.dotOfficeType  from groups g where g.status <> 3 and g.acctID = :acctID";
-    private static final String FIND_GROUP_BY_ID = "select g.groupID, g.acctID, g.parentID, g.name, g.desc, g.status, g.groupPath, g.addrID, g.addrID2, g.level, g.managerID, g.mapZoom, g.mapLat, g.mapLng, g.zoneRev, g.aggDate, g.newAggDate, g.dotOfficeType  from groups g where g.groupID =:groupID";
+    private static final String GET_GROUP = "select * from groups g ";
+    private static final String GET_GROUP_ACCT = "select *  from groups g LEFT OUTER JOIN  address a ON g.addrID=a.addrID LEFT OUTER JOIN state s ON a.stateID=s.stateID where g.status <> 3 and g.acctID = :acctID";
+    private static final String FIND_GROUP_BY_ID = "select *  from groups g LEFT OUTER JOIN  address a ON g.addrID=a.addrID LEFT OUTER JOIN state s ON a.stateID=s.stateID where g.groupID =:groupID";
+
     private static final String DEL_GROUP_BY_ID = "DELETE FROM groups WHERE groupID = ?";
     private static final String ADD_NEW_ADDRESS = "INSERT INTO address (acctID, addr1, addr2, city, stateID, zip) VALUES (?, ?, ?, ?, ?, ?);";
+    private static final String DEL_ADDRESS_BY_ID = "DELETE FROM address WHERE addrID = ?";
+
+    private static final String UPDATE_ADDRESS = "UPDATE address set addr1=?, addr2=?, city=?, stateID=?, zip=? where addrID=?";
 
     private static final String INSERT_GROUP_ACCOUNT = "insert into groups (acctID, parentID, name, `desc`, status, groupPath, dotOfficeType , level, managerID, mapZoom, mapLat, mapLng, zoneRev, aggDate, addrID)  values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
     private static final String UPDATE_GROUP_ACCOUNT = "UPDATE groups " +
@@ -79,9 +85,25 @@ public class GroupJDBCDAO extends SimpleJdbcDaoSupport implements GroupDAO {
             groupItem.setMapLat(groupItem.getMapLat());
             groupItem.setMapLng(groupItem.getMapLng());
             groupItem.setDotOfficeType(rs.getObject("dotOfficeType") == null ? null : DOTOfficeType.valueOf(rs.getInt("dotOfficeType")));
+            groupItem.setType(rs.getObject("level") == null ? null : GroupType.valueOf(rs.getInt("level")));
+
+//            show state
+            State state = new State();
+            state.setStateID(getIntOrNullFromRs(rs, "s.stateID"));
+            state.setAbbrev(getStrOrNullFromRs(rs,"s.abbrev"));
+            state.setName(getStrOrNullFromRs(rs, "s.name"));
+
+            //show address
             Address address = new Address();
-            address.setAddrID(getIntOrNullFromRs(rs, "addrID"));
+            address.setAddrID(getIntOrNullFromRs(rs, "a.addrID"));
+            address.setAddr1(getStrOrNullFromRs(rs,"a.addr1"));
+            address.setAddr2(getStrOrNullFromRs(rs,"a.addr2"));
+            address.setCity(getStrOrNullFromRs(rs,"a.city"));
+            address.setZip(getStrOrNullFromRs(rs,"a.zip"));
+            address.setState(state);
+
             groupItem.setAddress(address);
+
             groupItem.setAddressID(address.getAddrID());
             groupItem.setType(rs.getObject("level") == null ? null : GroupType.valueOf(rs.getInt("level")));
 
@@ -106,6 +128,13 @@ public class GroupJDBCDAO extends SimpleJdbcDaoSupport implements GroupDAO {
         if (obj == null)
             return null;
         else return rs.getInt(key);
+    }
+
+    public String getStrOrNullFromRs(ResultSet rs, String key) throws SQLException {
+        Object obj = rs.getObject(key);
+        if (obj == null)
+            return null;
+        else return rs.getString(key);
     }
 
     @Override
@@ -140,19 +169,17 @@ public class GroupJDBCDAO extends SimpleJdbcDaoSupport implements GroupDAO {
 
     @Override
     public Integer delete(Group group) {
-        Map<String, Object> params = new HashMap<String, Object>();
-        params.put("groupID", group.getGroupID());
-
-        return getSimpleJdbcTemplate().update(DEL_GROUP_BY_ID, params);
+        deleteAddressByID(group.getAddressID());
+        return deleteByID(group.getGroupID());
     }
 
     @Override
     public Group findByID(Integer groupID) {
         try {
-            Map<String, Object> args = new HashMap<String, Object>();
-            args.put("groupID", groupID);
-            StringBuilder groupSelectAcct = new StringBuilder(FIND_GROUP_BY_ID);
-            return getSimpleJdbcTemplate().queryForObject(groupSelectAcct.toString(), groupParameterizedRow, args);
+        Map<String, Object> args = new HashMap<String, Object>();
+        args.put("groupID", groupID);
+        StringBuilder groupSelectAcct = new StringBuilder(FIND_GROUP_BY_ID);
+        return getSimpleJdbcTemplate().queryForObject(groupSelectAcct.toString(), groupParameterizedRow, args);
         } catch (EmptyResultDataAccessException e) {
             return null;
         }
@@ -162,7 +189,7 @@ public class GroupJDBCDAO extends SimpleJdbcDaoSupport implements GroupDAO {
     public Integer create(Integer id, final Group entity) {
         JdbcTemplate jdbcTemplate = getJdbcTemplate();
         KeyHolder keyHolder = new GeneratedKeyHolder();
-        entity.setAddress(createAddressIfNeeded(entity.getAccountID(), entity.getAddress()));
+        createAddressIfNeeded(entity.getAccountID(), entity.getAddress());
         PreparedStatementCreator psc = new PreparedStatementCreator() {
             @Override
             public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
@@ -306,13 +333,13 @@ public class GroupJDBCDAO extends SimpleJdbcDaoSupport implements GroupDAO {
                 }
 
                 if (entity.getMapLat().intValue() == 0 || entity.getMapLat().equals(null)) {
-                    ps.setNull(10, Types.NULL);
+                    ps.setNull(11, Types.NULL);
                 } else {
                     ps.setDouble(11, entity.getMapLat());
                 }
 
                 if (entity.getMapLng().intValue() == 0 || entity.getMapLng().equals(null)) {
-                    ps.setNull(10, Types.NULL);
+                    ps.setNull(12, Types.NULL);
                 } else {
                     ps.setDouble(12, entity.getMapLng());
                 }
@@ -344,6 +371,8 @@ public class GroupJDBCDAO extends SimpleJdbcDaoSupport implements GroupDAO {
 
         jdbcTemplate.update(psc);
         updateGroupPathById(entity.getGroupID());
+        updateAddressIfNeeded(entity.getAddress());
+
         return entity.getGroupID();
     }
 
@@ -361,12 +390,7 @@ public class GroupJDBCDAO extends SimpleJdbcDaoSupport implements GroupDAO {
         }
     }
 
-    public Address createAddressIfNeeded(Integer accountID, Address address) {
-        if (address != null && address.getAddrID() != null)
-            return address;
-
-        final Address newAddress = new Address();
-        newAddress.setAccountID(accountID);
+    public Address createAddressIfNeeded(Integer accountID, final Address address) {
 
         JdbcTemplate jdbcTemplate = getJdbcTemplate();
         KeyHolder keyHolder = new GeneratedKeyHolder();
@@ -377,42 +401,91 @@ public class GroupJDBCDAO extends SimpleJdbcDaoSupport implements GroupDAO {
                 PreparedStatement ps = con.prepareStatement(ADD_NEW_ADDRESS, Statement.RETURN_GENERATED_KEYS);
 
 //                acctID, addr1, addr2, city, stateID, zip
-                ps.setInt(1, newAddress.getAccountID());
-                if (newAddress.getAddr1() == null) {
+                ps.setInt(1, address.getAccountID());
+                if (address.getAddr1() == null) {
                     ps.setNull(2, Types.NULL);
                 } else {
-                    ps.setString(2, newAddress.getAddr1());
+                    ps.setString(2, address.getAddr1());
                 }
-                if (newAddress.getAddr2() == null) {
+                if (address.getAddr2() == null) {
                     ps.setNull(3, Types.NULL);
                 } else {
-                    ps.setString(3, newAddress.getAddr2());
+                    ps.setString(3, address.getAddr2());
                 }
-                if (newAddress.getCity() == null) {
+                if (address.getCity() == null) {
                     ps.setNull(4, Types.NULL);
                 } else {
-                    ps.setString(4, newAddress.getCity());
+                    ps.setString(4, address.getCity());
                 }
 
-                if (newAddress.getState() == null) {
+                if (address.getState() == null) {
                     ps.setNull(5, Types.NULL);
                 } else {
-                    ps.setInt(5, newAddress.getState().getStateID());
+                    ps.setInt(5, address.getState().getStateID());
                 }
 
-                if (newAddress.getZip() == null) {
+                if (address.getZip() == null) {
                     ps.setNull(6, Types.NULL);
                 } else {
-                    ps.setString(6, newAddress.getZip());
+                    ps.setString(6, address.getZip());
                 }
 
                 return ps;
             }
         };
         jdbcTemplate.update(psc, keyHolder);
-        newAddress.setAddrID(keyHolder.getKey().intValue());
-        return newAddress;
+        address.setAddrID(keyHolder.getKey().intValue());
+        return address;
     }
+
+    public Address updateAddressIfNeeded(final Address address) {
+
+        JdbcTemplate jdbcTemplate = getJdbcTemplate();
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+        PreparedStatementCreator psc = new PreparedStatementCreator() {
+
+            @Override
+            public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
+                PreparedStatement ps = con.prepareStatement(UPDATE_ADDRESS, Statement.RETURN_GENERATED_KEYS);
+
+                if (address.getAddr1() == null) {
+                    ps.setNull(1, Types.NULL);
+                } else {
+                    ps.setString(1, address.getAddr1());
+                }
+                if (address.getAddr2() == null) {
+                    ps.setNull(2, Types.NULL);
+                } else {
+                    ps.setString(2, address.getAddr2());
+                }
+                if (address.getCity() == null) {
+                    ps.setNull(3, Types.NULL);
+                } else {
+                    ps.setString(3, address.getCity());
+                }
+
+                if (address.getState() == null) {
+                    ps.setNull(4, Types.NULL);
+                } else {
+                    ps.setInt(4, address.getState().getStateID());
+                }
+
+                if (address.getZip() == null) {
+                    ps.setNull(5, Types.NULL);
+                } else {
+                    ps.setString(5, address.getZip());
+                }
+
+               ps.setInt(6, address.getAddrID());
+
+                return ps;
+            }
+        };
+        jdbcTemplate.update(psc, keyHolder);
+        return address;
+
+    }
+
 
     /**
      * Calculates the group path by id (recursive).
@@ -473,5 +546,10 @@ public class GroupJDBCDAO extends SimpleJdbcDaoSupport implements GroupDAO {
 
         getSimpleJdbcTemplate().update(updateGroupPath, params);
     }
+
+    public Integer deleteAddressByID(Integer addrID) {
+        return getJdbcTemplate().update(DEL_ADDRESS_BY_ID, new Object[]{addrID});
+    }
+
 }
 
