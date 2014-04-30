@@ -117,34 +117,33 @@ public class PhoneControlJDBCDAO extends SimpleJdbcDaoSupport implements PhoneCo
                 ps.setInt(1, entity.getDriverID());
                 ps.setInt(2, entity.getAcctID());
 
-                if (entity.getCellStatus() == null) {
+                if (entity.getCellStatus() == null || entity.getCellStatus().getCode() == null) {
                     ps.setNull(3, Types.NULL);
                 } else {
                     ps.setInt(3, entity.getCellStatus().getCode());
                 }
 
-                if (entity.getProvider() == null) {
+                if (entity.getProvider() == null || entity.getProvider().getCode() == null) {
                     ps.setNull(4, Types.NULL);
                 } else {
                     ps.setInt(4, entity.getProvider().getCode());
                 }
 
-                if (entity.getProviderUser() == null) {
+                if (entity.getProviderUser() == null ||entity.getProviderUser().trim().isEmpty() ) {
                     ps.setNull(5, Types.NULL);
                 } else {
                     ps.setString(5, entity.getProviderUser());
                 }
-                if (entity.getProviderPassword() == null) {
+                if (entity.getProviderPassword() == null || entity.getProviderPassword().trim().isEmpty()) {
                     ps.setNull(6, Types.NULL);
                 } else {
                     ps.setString(6, entity.getProviderPassword());
                 }
-                if (entity.getCellPhone() == null) {
+                if (entity.getCellPhone() == null ||entity.getCellPhone().trim().isEmpty()) {
                     ps.setNull(7, Types.NULL);
                 } else {
                     ps.setString(7, entity.getCellPhone());
                 }
-
                 logger.debug(ps.toString());
                 return ps;
             }
@@ -168,29 +167,29 @@ public class PhoneControlJDBCDAO extends SimpleJdbcDaoSupport implements PhoneCo
                 ps.setInt(1, entity.getDriverID());
                 ps.setInt(2, entity.getAcctID());
 
-                if (entity.getCellStatus() == null) {
+                if (entity.getCellStatus() == null || entity.getCellStatus().getCode() == null) {
                     ps.setNull(3, Types.NULL);
                 } else {
                     ps.setInt(3, entity.getCellStatus().getCode());
                 }
 
-                if (entity.getProvider() == null) {
+                if (entity.getProvider() == null || entity.getProvider().getCode() == null) {
                     ps.setNull(4, Types.NULL);
                 } else {
                     ps.setInt(4, entity.getProvider().getCode());
                 }
 
-                if (entity.getProviderUser() == null) {
+                if (entity.getProviderUser() == null ||entity.getProviderUser().trim().isEmpty() ) {
                     ps.setNull(5, Types.NULL);
                 } else {
                     ps.setString(5, entity.getProviderUser());
                 }
-                if (entity.getProviderPassword() == null) {
+                if (entity.getProviderPassword() == null || entity.getProviderPassword().trim().isEmpty()) {
                     ps.setNull(6, Types.NULL);
                 } else {
                     ps.setString(6, entity.getProviderPassword());
                 }
-                if (entity.getCellPhone() == null) {
+                if (entity.getCellPhone() == null ||entity.getCellPhone().trim().isEmpty()) {
                     ps.setNull(7, Types.NULL);
                 } else {
                     ps.setString(7, entity.getCellPhone());

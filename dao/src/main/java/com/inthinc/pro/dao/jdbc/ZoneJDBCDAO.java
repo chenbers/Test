@@ -175,7 +175,7 @@ public class ZoneJDBCDAO extends SimpleJdbcDaoSupport implements ZoneDAO {
 
                 ps.setInt(2, entity.getGroupID());
 
-                if (entity.getStatus() == null) {
+                if (entity.getStatus() == null || entity.getStatus().toString().isEmpty()) {
                     ps.setNull(3, Types.NULL);
                 } else {
                     ps.setInt(3, entity.getStatus().getCode());
@@ -184,13 +184,13 @@ public class ZoneJDBCDAO extends SimpleJdbcDaoSupport implements ZoneDAO {
                 ps.setDate(4, new java.sql.Date(toUTC(new Date()).getTime()));
 
 
-                if (entity.getName() == null) {
+                if (entity.getName() == null || entity.getName().isEmpty()) {
                     ps.setNull(5, Types.NULL);
                 } else {
                     ps.setString(5, entity.getName());
                 }
 
-                if (entity.getAddress() == null) {
+                if (entity.getAddress() == null || entity.getName().isEmpty()) {
                     ps.setNull(6, Types.NULL);
                 } else {
                     ps.setString(6, entity.getAddress());
