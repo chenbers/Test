@@ -11,6 +11,7 @@ import it.com.inthinc.pro.dao.model.ITData;
 import it.config.ITDataSource;
 import it.config.IntegrationConfig;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
 
@@ -60,19 +61,18 @@ public class UserJDBCDAOTest extends SimpleJdbcDaoSupport {
             throw new Exception("Error parsing Test data xml file");
         }
 
-        userName = itData.fleetUser.getUsername();
-        groupId = itData.fleetGroup.getGroupID();
-        personId = itData.fleetUser.getPersonID();
-        userId = itData.fleetUser.getUserID();
-        roleId = itData.fleetUser.getRoles();
-        accessPoints = itData.fleetUser.getAccessPoints();
-        mapLayers = itData.fleetUser.getSelectedMapLayerIDs();
+        userName = itData.districtUser.getUsername();
+        groupId = itData.districtGroup.getGroupID();
+        personId = itData.districtUser.getPersonID();
+        userId = itData.districtUser.getUserID();
+        roleId = itData.districtUser.getRoles();
+        accessPoints = itData.districtUser.getAccessPoints();
+        mapLayers = itData.districtUser.getSelectedMapLayerIDs();
 
 
 
     }
-    private static void initApp() throws Exception {
-    }
+
 
     @Test
     public void findByNameTest() {
@@ -128,7 +128,7 @@ public class UserJDBCDAOTest extends SimpleJdbcDaoSupport {
         userDAO.setDataSource(dataSource);
 
         User user = new User();
-        user.setGroupID(6509);
+        user.setGroupID(6510);
         user.setUsername("TestCreate");
         user.setPassword("create");
         user.setStatus(Status.INACTIVE);
@@ -148,16 +148,20 @@ public class UserJDBCDAOTest extends SimpleJdbcDaoSupport {
         User createdUser = userDAO.findByID(userID);
 
         assertEquals("TestCreate", user.getUsername(), createdUser.getUsername());
-        assertEquals(6509, user.getGroupID(), createdUser.getGroupID());
+        assertEquals(6510, user.getGroupID(), createdUser.getGroupID());
         assertEquals("create", user.getPassword(), createdUser.getPassword());
 
         //update  method  test
         User userUpdate = new User();
         userUpdate.setUserID(userID);
-        userUpdate.setGroupID(6509);
+        userUpdate.setGroupID(6510);
         userUpdate.setUsername("TestUpdate");
         userUpdate.setPassword("update");
         userUpdate.setStatus(Status.ACTIVE);
+
+        userUpdate.setRoles(roleId);
+        userUpdate.setAccessPoints(accessPoints);
+        userUpdate.setSelectedMapLayerIDs(mapLayers);
 
         userUpdate.setPersonID(personId);
         userDAO.update(userUpdate);
@@ -166,11 +170,12 @@ public class UserJDBCDAOTest extends SimpleJdbcDaoSupport {
         User updatedUser = userDAO.findByID(userID);
 
         assertEquals("TestUpdate", userUpdate.getUsername(), updatedUser.getUsername());
-        assertEquals(6509, user.getGroupID(), createdUser.getGroupID());
+        assertEquals(6510, user.getGroupID(), createdUser.getGroupID());
         assertEquals("update", user.getPassword(), createdUser.getPassword());
 
         //delete vehicle when finish
         userDAO.deleteByID(userID);
     }
-
+    private static void initApp() throws Exception {
+    }
 }
