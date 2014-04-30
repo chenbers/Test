@@ -35,6 +35,7 @@ public class DriverJDBCDAOTest extends BaseJDBCTest {
     private static Integer personIdForCreate;
     private static Integer personIdForUpdate;
     private static Integer personId;
+    private static Integer personIdInv;
 
 
     @BeforeClass
@@ -52,6 +53,8 @@ public class DriverJDBCDAOTest extends BaseJDBCTest {
         personIdForUpdate = itData.teamGroupData.get(ITData.GOOD).user.getPersonID();
         personId = itData.fleetUser.getPersonID();
 
+        //person id invented
+        personIdInv= 21058;
 
     }
 
@@ -160,49 +163,45 @@ public class DriverJDBCDAOTest extends BaseJDBCTest {
         DataSource dataSource = new ITDataSource().getRealDataSource();
         driverJDBCDAO.setDataSource(dataSource);
 
-        // create driver
-        Driver driver = new Driver();
-        driver.setGroupID(6030);
-        driver.setCertifications("1234545");
-        driver.setStatus(Status.valueOf(1));
-        driver.setRfid1(Long.valueOf(300000001));
-        driver.setRfid2(Long.valueOf(400000000));
-        driver.setLicenseClass("C");
-        driver.setBarcode("update_test");
-        driver.setLicense("update_test");
-        driver.setFobID("update_test");
-        driver.setDot(RuleSetType.valueOf(2));
-        driver.setPersonID(33333333);
+        // created driver
+        Driver driverToCreate = new Driver();
+        driverToCreate.setGroupID(6808);
+        driverToCreate.setCertifications("1234545");
+        driverToCreate.setStatus(Status.valueOf(1));
+        driverToCreate.setRfid1(Long.valueOf(300000001));
+        driverToCreate.setRfid2(Long.valueOf(400000000));
+        driverToCreate.setLicenseClass("C");
+        driverToCreate.setBarcode("create_test");
+        driverToCreate.setLicense("create");
+        driverToCreate.setFobID("create_test");
+        driverToCreate.setDot(RuleSetType.valueOf(2));
+        driverToCreate.setPersonID(21763);
         State state = new State();
         state.setAbbrev("AL");
         state.setName("Alabama");
         state.setStateID(1);
-        driver.setState(state);
-        driver.setExpiration(new Date());
-        driver.setModified(new Date());
-        driver.setPersonID(personId);
-        assertNotNull(driver);
+        driverToCreate.setState(state);
+        driverToCreate.setExpiration(new Date());
+        driverToCreate.setModified(new Date());
+        assertNotNull(driverToCreate);
 
-        driver.setPersonID(personIdForCreate);
-        assertNotNull(driver);
-
-        Integer driverId = driverJDBCDAO.create(driver.getGroupID(), driver);
+        Integer driverIdTest = driverJDBCDAO.create(driverToCreate.getGroupID(), driverToCreate);
 
         //find  for create
-        Driver driver1Test = driverJDBCDAO.findByID(driverId);
-        assertNotNull(driver1Test);
-        assertEquals(" groupid expected to be the same ", driver.getGroupID(), driver1Test.getGroupID());
-        assertEquals(" State expected to be the same ", driver.getStatus().getCode(), driver1Test.getStatus().getCode());
-        assertEquals(" Driver Id expected to be the same ", driverId, driver1Test.getDriverID());
-        assertEquals(" Person Id expected to be the same ", driver.getPersonID(), driver1Test.getPersonID());
-        assertEquals(" Certification expected to be the same ", driver.getCertifications(), driver1Test.getCertifications());
-        assertEquals(" Barcode expected to be the same ", driver.getBarcode(), driver1Test.getBarcode());
-        assertEquals(" Rfid1 expected to be the same ", driver.getRfid1(), driver1Test.getRfid1());
-        assertEquals(" Rfid2 expected to be the same ", driver.getRfid2(), driver1Test.getRfid2());
+        Driver driverTest = driverJDBCDAO.findByID(driverIdTest);
+        assertEquals(6808, driverToCreate.getGroupID(), driverTest.getGroupID());
+        assertEquals(1, driverToCreate.getStatus().getCode(), driverTest.getStatus().getCode());
+        assertEquals("C", driverToCreate.getLicenseClass(), driverTest.getLicenseClass());
+        assertEquals("create_test", driverToCreate.getBarcode(), driverTest.getBarcode());
+        assertEquals("create", driverToCreate.getLicense(), driverTest.getLicense());
+        assertEquals("create_test", driverToCreate.getFobID(), driverTest.getFobID());
+        assertEquals(21763, driverToCreate.getPersonID(), driverTest.getPersonID());
+
 
         //update
         Driver driverUpdate = new Driver();
-        driverUpdate.setGroupID(6030);
+        driverUpdate.setGroupID(6808);
+        driverUpdate.setPersonID(21763);
         driverUpdate.setCertifications("1234545");
         driverUpdate.setStatus(Status.valueOf(1));
         driverUpdate.setRfid1(Long.valueOf(1000000001));
@@ -212,7 +211,6 @@ public class DriverJDBCDAOTest extends BaseJDBCTest {
         driverUpdate.setLicense("license_test");
         driverUpdate.setFobID("fobid_test");
         driverUpdate.setDot(RuleSetType.valueOf(1));
-        driverUpdate.setPersonID(22222222);
         State stateUpdate = new State();
         stateUpdate.setAbbrev("UT");
         stateUpdate.setName("Utah");
@@ -220,24 +218,24 @@ public class DriverJDBCDAOTest extends BaseJDBCTest {
         driverUpdate.setState(stateUpdate);
         driverUpdate.setExpiration(new Date());
         driverUpdate.setModified(new Date());
-        driverUpdate.setPersonID(personIdForCreate);
-        driverUpdate.setDriverID(driverId);
+        driverUpdate.setDriverID(driverIdTest);
 
         //find for update
         Integer driverIdUpdate = driverJDBCDAO.update(driverUpdate);
+
         Driver driver1TestUpdate = driverJDBCDAO.findByID(driverIdUpdate);
+
         assertNotNull(driver1TestUpdate);
-        assertEquals(" groupid expected to be the same ", driverUpdate.getGroupID(), driver1TestUpdate.getGroupID());
-        assertEquals(" State expected to be the same ", driverUpdate.getStatus().getCode(), driver1TestUpdate.getStatus().getCode());
-        assertEquals(" Driver Id expected to be the same ", driverIdUpdate, driver1TestUpdate.getDriverID());
-        assertEquals(" Person Id expected to be the same ", driverUpdate.getPersonID(), driver1TestUpdate.getPersonID());
-        assertEquals(" Certification expected to be the same ", driverUpdate.getCertifications(), driver1TestUpdate.getCertifications());
-        assertEquals(" Barcode expected to be the same ", driverUpdate.getBarcode(), driver1TestUpdate.getBarcode());
-        assertEquals(" Rfid1 expected to be the same ", driverUpdate.getRfid1(), driver1TestUpdate.getRfid1());
-        assertEquals(" Rfid2 expected to be the same ", driverUpdate.getRfid2(), driver1TestUpdate.getRfid2());
+        assertEquals(6808, driverUpdate.getGroupID(), driver1TestUpdate.getGroupID());
+        assertEquals(1, driverUpdate.getStatus().getCode(), driver1TestUpdate.getStatus().getCode());
+        assertEquals(21763, driverUpdate.getPersonID(), driver1TestUpdate.getPersonID());
+        assertEquals("1234545", driverUpdate.getCertifications(), driver1TestUpdate.getCertifications());
+        assertEquals("barcode_test", driverUpdate.getBarcode(), driver1TestUpdate.getBarcode());
+        assertEquals("license_test", driverUpdate.getLicense(), driver1TestUpdate.getLicense());
+        assertEquals("B", driverUpdate.getLicenseClass(), driver1TestUpdate.getLicenseClass());
 
         //test delete
-        driverJDBCDAO.deleteByID(driverId);
+        driverJDBCDAO.deleteByID(driverIdTest);
 
 
     }
