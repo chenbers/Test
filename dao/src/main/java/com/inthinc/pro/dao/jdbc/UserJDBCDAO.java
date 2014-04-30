@@ -244,14 +244,14 @@ public class UserJDBCDAO extends SimpleJdbcDaoSupport implements UserDAO {
         deleteUserRoles(ret);
         List<Integer> roles = entity.getRoles();
         for (int i = 0; i < roles.size(); i++) {
-            createUserRoles(ret, i);
+            createUserRoles(ret, roles.get(i));
         }
 
         deleteUserMapLayer(ret);
         if (entity.getSelectedMapLayerIDs() != null) {
             List<Integer> userMapLayers = entity.getSelectedMapLayerIDs();
             for (int j = 0; j < userMapLayers.size(); j++) {
-                createUserMapLayer(ret, j);
+                createUserMapLayer(ret, userMapLayers.get(j));
             }
         }
         return ret;
@@ -299,13 +299,13 @@ public class UserJDBCDAO extends SimpleJdbcDaoSupport implements UserDAO {
         List<Integer> roles = entity.getRoles();
         deleteUserRoles(ret);
         for (int i = 0; i < roles.size(); i++) {
-            createUserRoles(ret, i);
+            createUserRoles(ret, roles.get(i));
         }
         deleteUserMapLayer(ret);
         if (entity.getSelectedMapLayerIDs() != null) {
             List<Integer> userMapLayers = entity.getSelectedMapLayerIDs();
             for (int j = 0; j < userMapLayers.size(); j++) {
-                createUserMapLayer(ret, j);
+                createUserMapLayer(ret, userMapLayers.get(j));
             }
         }
         return ret;
