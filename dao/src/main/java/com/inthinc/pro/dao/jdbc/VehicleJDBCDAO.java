@@ -607,19 +607,19 @@ public class VehicleJDBCDAO extends SimpleJdbcDaoSupport implements VehicleDAO {
                 } else {
                     ps.setString(6, entity.getLicense());
                 }
-                if (entity.getMake().isEmpty() || entity.getMake().trim().equalsIgnoreCase("")) {
+                if (entity.getMake() == null || entity.getMake().isEmpty()) {
                     ps.setNull(7, Types.NULL);
                 } else {
                     ps.setString(7, entity.getMake());
                 }
 
-                if (entity.getModel().isEmpty()) {
+                if (entity.getModel() == null || entity.getModel().isEmpty()) {
                     ps.setNull(8, Types.NULL);
                 } else {
                     ps.setString(8, entity.getModel());
                 }
 
-                if (entity.getName().isEmpty()) {
+                if (entity.getName() == null || entity.getName().isEmpty()) {
                     ps.setNull(9, Types.NULL);
                 } else {
                     ps.setString(9, entity.getName());
@@ -633,13 +633,13 @@ public class VehicleJDBCDAO extends SimpleJdbcDaoSupport implements VehicleDAO {
 
                 ps.setInt(11, entity.getStatus().getCode());
 
-                if (entity.getWeight() == null) {
+                if (entity.getWeight() == null || entity.getWeight().intValue() == 0) {
                     ps.setNull(12, Types.NULL);
                 } else {
                     ps.setInt(12, entity.getWeight());
                 }
 
-                if (entity.getYear().intValue() == 0) {
+                if (entity.getYear() == null || entity.getYear().intValue() == 0) {
                     ps.setNull(13, Types.NULL);
                 } else {
                     ps.setInt(13, entity.getYear());
@@ -709,9 +709,23 @@ public class VehicleJDBCDAO extends SimpleJdbcDaoSupport implements VehicleDAO {
                 } else {
                     ps.setString(6, entity.getLicense());
                 }
-                ps.setString(7, entity.getMake());
-                ps.setString(8, entity.getModel());
-                ps.setString(9, entity.getName());
+                if (entity.getMake() == null || entity.getMake().isEmpty()) {
+                    ps.setNull(7, Types.NULL);
+                } else {
+                    ps.setString(7, entity.getMake());
+                }
+
+                if (entity.getModel() == null || entity.getModel().isEmpty()) {
+                    ps.setNull(8, Types.NULL);
+                } else {
+                    ps.setString(8, entity.getModel());
+                }
+
+                if (entity.getName() == null || entity.getName().isEmpty()) {
+                    ps.setNull(9, Types.NULL);
+                } else {
+                    ps.setString(9, entity.getName());
+                }
 
                 if (entity.getState() == null) {
                     ps.setNull(10, Types.NULL);
@@ -721,14 +735,17 @@ public class VehicleJDBCDAO extends SimpleJdbcDaoSupport implements VehicleDAO {
 
                 ps.setInt(11, entity.getStatus().getCode());
 
-                if (entity.getWeight() == null) {
+                if (entity.getWeight() == null || entity.getWeight().intValue() == 0) {
                     ps.setNull(12, Types.NULL);
                 } else {
                     ps.setInt(12, entity.getWeight());
                 }
 
-                ps.setInt(13, entity.getYear());
-
+                if (entity.getYear() == null || entity.getYear().intValue() == 0) {
+                    ps.setNull(13, Types.NULL);
+                } else {
+                    ps.setInt(13, entity.getYear());
+                }
                 if (entity.getIfta() == null) {
                     ps.setNull(14, Types.NULL);
                 } else {

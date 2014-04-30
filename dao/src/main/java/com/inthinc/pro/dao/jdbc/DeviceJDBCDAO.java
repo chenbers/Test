@@ -390,7 +390,7 @@ public class DeviceJDBCDAO extends SimpleJdbcDaoSupport implements DeviceDAO {
 
                 ps.setString(7, entity.getSerialNum());
 
-                if (entity.getName().equalsIgnoreCase("") || entity.getName().equals(null) || entity.getName().isEmpty()) {
+                if (entity.getName() == null || entity.getName().isEmpty()) {
                     ps.setNull(8, Types.NULL);
                 } else {
                     ps.setString(8, entity.getName());
