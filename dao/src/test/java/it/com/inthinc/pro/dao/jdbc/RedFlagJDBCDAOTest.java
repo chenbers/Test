@@ -30,6 +30,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.io.InputStream;
@@ -116,14 +117,14 @@ public class RedFlagJDBCDAOTest extends BaseJDBCTest{
          // no filters
          for (int teamIdx = ITData.GOOD; teamIdx <= ITData.BAD; teamIdx++) {
              GroupData team = itData.teamGroupData.get(teamIdx);
-             Integer redFlagCount = redFlagJDBCDAO.getRedFlagCount(goodGroupID, today.minusDays(1).toDate() , today.toDate(), 0, null);
-             assertTrue(redFlagCount>0);
+             Integer redFlagCount = redFlagJDBCDAO.getRedFlagCount(goodGroupID, today.minusYears(1).toDate() , today.toDate(), 0, null);
+             assertNotNull(redFlagCount);
              PageParams pageParams = new PageParams();
              pageParams.setStartRow(0);
              pageParams.setEndRow(redFlagCount-1);
 
-         List<RedFlag> redFlagList = redFlagJDBCDAO.getRedFlagPage(goodGroupID, today.minusDays(1).toDate() , today.toDate(), 0, pageParams);
-             assertTrue(!redFlagList.isEmpty());
+         List<RedFlag> redFlagList = redFlagJDBCDAO.getRedFlagPage(goodGroupID, today.minusYears(1).toDate() , today.toDate(), 0, pageParams);
+             assertNotNull(redFlagList);
 
 
          }
