@@ -314,66 +314,66 @@ public class PersonJDBCDAO extends SimpleJdbcDaoSupport implements PersonDAO {
                     ps.setInt(4, entity.getMeasurementType().getCode());
                 }
 
-                if (entity.getFuelEfficiencyType() == null || entity.getFuelEfficiencyType().getCode() == null) {
+                if (entity.getFuelEfficiencyType() == null || entity.getFuelEfficiencyType().getCode().intValue() == 0) {
                     ps.setNull(5, Types.NULL);
                 } else {
                     ps.setInt(5, entity.getFuelEfficiencyType().getCode());
                 }
 
-                if (entity.getAddress() == null) {
+                if (entity.getAddress() == null || entity.getAddress().isEmpty()) {
                     ps.setNull(6, Types.NULL);
                 } else {
                     ps.setInt(6, entity.getAddress().getAddrID());
                 }
 
-                if (entity.getLocale() == null) {
+                if (entity.getLocale() == null || entity.getLocale().toString().isEmpty()) {
                     ps.setNull(7, Types.NULL);
                 } else {
                     ps.setString(7, entity.getLocale().toString());
                 }
 
-                if (entity.getReportsTo().equalsIgnoreCase("") || entity.getReportsTo().isEmpty()) {
+                if (entity.getReportsTo() == null || entity.getReportsTo().isEmpty()) {
                     ps.setNull(8, Types.NULL);
                 } else {
                     ps.setString(8, entity.getReportsTo().toString());
                 }
 
-                if (entity.getTitle().equalsIgnoreCase("") || entity.getTitle().isEmpty()) {
+                if (entity.getTitle() == null || entity.getTitle().isEmpty()) {
                     ps.setNull(9, Types.NULL);
                 } else {
                     ps.setString(9, entity.getTitle());
                 }
 
-                if (entity.getDept().equalsIgnoreCase("") || entity.getDept().isEmpty()) {
+                if (entity.getDept() == null || entity.getDept().isEmpty()) {
                     ps.setNull(10, Types.NULL);
                 } else {
                     ps.setString(10, entity.getDept());
                 }
 
-                if (entity.getEmpid().isEmpty()) {
+                if (entity.getEmpid() == null || entity.getEmpid().isEmpty()) {
                     ps.setNull(11, Types.NULL);
                 } else {
                     ps.setString(11, entity.getEmpid());
                 }
 
-                if (entity.getFirst().trim().equalsIgnoreCase("") || entity.getFirst().trim().isEmpty()) {
+                if (entity.getFirst() == null || entity.getFirst().trim().isEmpty()) {
                     ps.setNull(12, Types.NULL);
                 } else {
                     ps.setString(12, entity.getFirst().trim());
                 }
 
-                if (entity.getMiddle().trim().equalsIgnoreCase("") || entity.getMiddle().trim().isEmpty()) {
+                if (entity.getMiddle() == null || entity.getMiddle().trim().isEmpty()) {
                     ps.setNull(13, Types.NULL);
                 } else {
                     ps.setString(13, entity.getMiddle().trim());
                 }
 
-                if (entity.getLast().trim().equalsIgnoreCase("") || entity.getLast().trim().isEmpty()) {
+                if (entity.getLast() == null || entity.getLast().trim().isEmpty()) {
                     ps.setNull(14, Types.NULL);
                 } else {
                     ps.setString(14, entity.getLast().trim());
                 }
-                if (entity.getSuffix().trim().equalsIgnoreCase("") || entity.getSuffix().trim().isEmpty()) {
+                if (entity.getSuffix() == null || entity.getSuffix().trim().isEmpty()) {
                     ps.setNull(15, Types.NULL);
                 } else {
                     ps.setString(15, entity.getSuffix().trim());
@@ -385,12 +385,12 @@ public class PersonJDBCDAO extends SimpleJdbcDaoSupport implements PersonDAO {
                     ps.setInt(16, entity.getGender().getCode());
                 }
 
-                if (entity.getHeight() == null) {
+                if (entity.getHeight() == null || entity.getHeight().intValue() == 0) {
                     ps.setNull(17, Types.NULL);
                 } else {
                     ps.setInt(17, entity.getHeight());
                 }
-                if (entity.getWeight() == null) {
+                if (entity.getWeight() == null || entity.getWeight().intValue() == 0 ) {
                     ps.setNull(18, Types.NULL);
                 } else {
                     ps.setInt(18, entity.getWeight());
@@ -402,54 +402,54 @@ public class PersonJDBCDAO extends SimpleJdbcDaoSupport implements PersonDAO {
                     ps.setDate(19, new java.sql.Date(entity.getDob().getTime()));
                 }
 
-                if (entity.getInfo() == null) {
+                if (entity.getInfo() == null || entity.getInfo().intValue() == 0) {
                     ps.setNull(20, Types.NULL);
                 } else {
                     ps.setInt(20, entity.getInfo());
                 }
 
-                if (entity.getWarn() == null) {
+                if (entity.getWarn() == null || entity.getWarn().intValue() == 0) {
                     ps.setNull(21, Types.NULL);
                 } else {
                     ps.setInt(21, entity.getWarn());
                 }
 
-                if (entity.getCrit() == null) {
+                if (entity.getCrit() == null || entity.getCrit().intValue() == 0) {
                     ps.setNull(22, Types.NULL);
                 } else {
                     ps.setInt(22, entity.getCrit());
                 }
 
-                if (entity.getPriEmail().equalsIgnoreCase("") || entity.getPriEmail().isEmpty()) {
+                if (entity.getPriEmail() == null || entity.getPriEmail().isEmpty()) {
                     ps.setNull(23, Types.NULL);
                 } else {
                     ps.setString(23, entity.getPriEmail());
                 }
 
-                if (entity.getSecEmail().equalsIgnoreCase("") || entity.getSecEmail().isEmpty()) {
+                if (entity.getSecEmail() == null || entity.getSecEmail().isEmpty()) {
                     ps.setNull(24, Types.NULL);
                 } else {
                     ps.setString(24, entity.getSecEmail());
                 }
 
-                if (entity.getPriPhone().equalsIgnoreCase("") || entity.getPriPhone().isEmpty()) {
+                if (entity.getPriPhone() == null || entity.getPriPhone().isEmpty()) {
                     ps.setNull(25, Types.NULL);
                 } else {
                     ps.setString(25, entity.getPriPhone());
                 }
 
-                if (entity.getSecPhone().equalsIgnoreCase("") || entity.getSecPhone().isEmpty()) {
+                if (entity.getSecPhone() == null || entity.getSecPhone().isEmpty()) {
                     ps.setNull(26, Types.NULL);
                 } else {
                     ps.setString(26, entity.getSecPhone());
                 }
-                if (entity.getPriText().equalsIgnoreCase("") || entity.getPriText().isEmpty()) {
+                if (entity.getPriText() == null || entity.getPriText().isEmpty()) {
                     ps.setNull(27, Types.NULL);
                 } else {
                     ps.setString(27, entity.getPriText());
                 }
 
-                if (entity.getSecText().equalsIgnoreCase("") || entity.getSecText().isEmpty()) {
+                if (entity.getSecText() == null || entity.getSecText().isEmpty()) {
                     ps.setNull(28, Types.NULL);
                 } else {
                     ps.setString(28, entity.getSecText());
@@ -522,59 +522,59 @@ public class PersonJDBCDAO extends SimpleJdbcDaoSupport implements PersonDAO {
                         ps.setInt(5, entity.getFuelEfficiencyType().getCode());
                     }
 
-                    if (entity.getAddress() == null) {
+                    if (entity.getAddress() == null || entity.getAddress().isEmpty()) {
                         ps.setNull(6, Types.NULL);
                     } else {
                         ps.setInt(6, entity.getAddress().getAddrID());
                     }
 
-                    if (entity.getLocale() == null) {
+                    if (entity.getLocale() == null || entity.getLocale().toString().isEmpty()) {
                         ps.setNull(7, Types.NULL);
                     } else {
                         ps.setString(7, entity.getLocale().toString());
                     }
 
-                    if (entity.getReportsTo().equalsIgnoreCase("") || entity.getReportsTo().isEmpty()) {
+                    if (entity.getReportsTo() == null || entity.getReportsTo().isEmpty()) {
                         ps.setNull(8, Types.NULL);
                     } else {
                         ps.setString(8, entity.getReportsTo().toString());
                     }
 
-                    if (entity.getTitle().equalsIgnoreCase("") || entity.getTitle().isEmpty()) {
+                    if (entity.getTitle() == null || entity.getTitle().isEmpty()) {
                         ps.setNull(9, Types.NULL);
                     } else {
                         ps.setString(9, entity.getTitle());
                     }
 
-                    if (entity.getDept().equalsIgnoreCase("") || entity.getDept().isEmpty()) {
+                    if (entity.getDept() == null || entity.getDept().isEmpty()) {
                         ps.setNull(10, Types.NULL);
                     } else {
                         ps.setString(10, entity.getDept());
                     }
 
-                    if (entity.getEmpid().isEmpty() || entity.getEmpid() == null) {
+                    if ( entity.getEmpid() == null || entity.getEmpid().isEmpty()) {
                         ps.setNull(11, Types.NULL);
                     } else {
                         ps.setString(11, entity.getEmpid());
                     }
-                    if (entity.getFirst().trim().equalsIgnoreCase("") || entity.getFirst().trim().isEmpty()) {
+                    if (entity.getFirst() == null || entity.getFirst().trim().isEmpty()) {
                         ps.setNull(12, Types.NULL);
                     } else {
                         ps.setString(12, entity.getFirst().trim());
                     }
 
-                    if (entity.getMiddle().trim().equalsIgnoreCase("") || entity.getMiddle().trim().isEmpty()) {
+                    if (entity.getMiddle() == null || entity.getMiddle().trim().isEmpty()) {
                         ps.setNull(13, Types.NULL);
                     } else {
                         ps.setString(13, entity.getMiddle().trim());
                     }
 
-                    if (entity.getLast().trim().equalsIgnoreCase("") || entity.getLast().trim().isEmpty()) {
+                    if (entity.getLast() == null|| entity.getLast().trim().isEmpty()) {
                         ps.setNull(14, Types.NULL);
                     } else {
                         ps.setString(14, entity.getLast().trim());
                     }
-                    if (entity.getSuffix().trim().equalsIgnoreCase("") || entity.getSuffix().trim().isEmpty()) {
+                    if (entity.getSuffix() == null || entity.getSuffix().trim().isEmpty()) {
                         ps.setNull(15, Types.NULL);
                     } else {
                         ps.setString(15, entity.getSuffix().trim());
@@ -603,53 +603,53 @@ public class PersonJDBCDAO extends SimpleJdbcDaoSupport implements PersonDAO {
                         ps.setDate(19, new java.sql.Date(entity.getDob().getTime()));
                     }
 
-                    if (entity.getInfo() == null) {
+                    if (entity.getInfo() == null || entity.getInfo().intValue() == 0) {
                         ps.setNull(20, Types.NULL);
                     } else {
                         ps.setInt(20, entity.getInfo());
                     }
 
-                    if (entity.getWarn() == null) {
+                    if (entity.getWarn() == null || entity.getWarn().intValue() == 0) {
                         ps.setNull(21, Types.NULL);
                     } else {
                         ps.setInt(21, entity.getWarn());
                     }
 
-                    if (entity.getCrit() == null) {
+                    if (entity.getCrit() == null || entity.getCrit().intValue() == 0) {
                         ps.setNull(22, Types.NULL);
                     } else {
                         ps.setInt(22, entity.getCrit());
                     }
-                    if (entity.getPriEmail().equalsIgnoreCase("") || entity.getPriEmail().isEmpty()) {
+                    if (entity.getPriEmail() == null || entity.getPriEmail().trim().isEmpty()) {
                         ps.setNull(23, Types.NULL);
                     } else {
                         ps.setString(23, entity.getPriEmail());
                     }
 
-                    if (entity.getSecEmail().equalsIgnoreCase("") || entity.getSecEmail().isEmpty()) {
+                    if (entity.getSecEmail() == null || entity.getSecEmail().isEmpty()) {
                         ps.setNull(24, Types.NULL);
                     } else {
                         ps.setString(24, entity.getSecEmail());
                     }
 
-                    if (entity.getPriPhone().equalsIgnoreCase("") || entity.getPriPhone().isEmpty()) {
+                    if (entity.getPriPhone() == null || entity.getPriPhone().isEmpty()) {
                         ps.setNull(25, Types.NULL);
                     } else {
                         ps.setString(25, entity.getPriPhone());
                     }
 
-                    if (entity.getSecPhone().equalsIgnoreCase("") || entity.getSecPhone().isEmpty()) {
+                    if (entity.getSecPhone() == null || entity.getSecPhone().isEmpty()) {
                         ps.setNull(26, Types.NULL);
                     } else {
                         ps.setString(26, entity.getSecPhone());
                     }
-                    if (entity.getPriText().equalsIgnoreCase("") || entity.getPriText().isEmpty()) {
+                    if (entity.getPriText() == null || entity.getPriText().isEmpty()) {
                         ps.setNull(27, Types.NULL);
                     } else {
                         ps.setString(27, entity.getPriText());
                     }
 
-                    if (entity.getSecText().equalsIgnoreCase("") || entity.getSecText().isEmpty()) {
+                    if (entity.getSecText() == null || entity.getSecText().isEmpty()) {
                         ps.setNull(28, Types.NULL);
                     } else {
                         ps.setString(28, entity.getSecText());

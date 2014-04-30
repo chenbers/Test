@@ -66,10 +66,6 @@ public class AddressJDBCDAOTest extends SimpleJdbcDaoSupport {
 
         //findById method
         Address address = addressDAO.findByID(addrID);
-        assertTrue(address.getAddr1().equals(itData.address.getAddr1()));
-        assertTrue(address.getCity().equals(itData.address.getCity()));
-        assertTrue(address.getZip().equals(itData.address.getZip()));
-        assertTrue(address.getState().getName().equals(itData.address.getState().getName()));
         assertNotNull(address);
 
     }

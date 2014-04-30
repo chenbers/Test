@@ -11,6 +11,7 @@ import com.mysql.jdbc.Statement;
 import org.apache.commons.lang.NotImplementedException;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.simple.ParameterizedRowMapper;
@@ -38,7 +39,7 @@ public class AccountJDBCDAO extends SimpleJdbcDaoSupport implements AccountDAO {
     private static final String DEL_ACCOUNT_BY_ID = "delete from account where acctID = ?";
     private static final String INSERT_ACCOUNT = "INSERT INTO account() values()";
     private static final String FIND_BY_ID = "select * from account ac LEFT JOIN address ad on ac.mailId= ad.addrId, state st where  ac.acctID= :acctID and ad.stateId=st.stateID  ";
-    private static final String UPDATE_ACCOUNT_1 = "UPDATE account set zonePublishDate=?, status=?, billID=?, mailID=?, name=?, hos=?, unkDriverID=? where acctID = ?";
+    private static final String UPDATE_ACCOUNT_1 = "UPDATE account set zonePublishDate=?, status=?, billID=?, name=?, hos=?, unkDriverID=? where acctID = ?";
     private static final String UPDATE_ACCOUNT_SUPPORT_PHONE1 = "UPDATE accountProp set value=? where acctID = ? and name like 'supportPhone1'";
     private static final String UPDATE_ACCOUNT_SUPPORT_PHONE2 = "UPDATE accountProp set value=? where acctID = ? and name like 'supportPhone2'";
     private static final String UPDATE_ACCOUNT_SUPPORT_PHONE3 = "UPDATE accountProp set value=? where acctID = ? and name like 'supportContact3'";
@@ -98,11 +99,15 @@ public class AccountJDBCDAO extends SimpleJdbcDaoSupport implements AccountDAO {
 
     @Override
     public Account findByID(Integer acctId) {
+        try {
         Map<String, Object> args = new HashMap<String, Object>();
         args.put("acctID", acctId);
         StringBuilder findAccount = new StringBuilder(FIND_BY_ID);
         Account account = getSimpleJdbcTemplate().queryForObject(findAccount.toString(), accountParameterizedRowMapper, args);
         return account;
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
     }
 
     @Override
@@ -112,7 +117,6 @@ public class AccountJDBCDAO extends SimpleJdbcDaoSupport implements AccountDAO {
 
     @Override
     public Integer update(final Account account) {
-
         JdbcTemplate jdbcTemplate = getJdbcTemplate();
         PreparedStatementCreator psc = new PreparedStatementCreator() {
             @Override
@@ -129,11 +133,10 @@ public class AccountJDBCDAO extends SimpleJdbcDaoSupport implements AccountDAO {
                 }
 
                 ps.setInt(3, account.getBillID());
-                ps.setInt(4, account.getAddressID());
-                ps.setString(5, account.getAcctName());
-                ps.setInt(6, account.getHos().getCode());
-                ps.setInt(7, account.getUnkDriverID());
-                ps.setInt(8, account.getAccountID());
+                ps.setString(4, account.getAcctName());
+                ps.setInt(5, account.getHos().getCode());
+                ps.setInt(6, account.getUnkDriverID());
+                ps.setInt(7, account.getAccountID());
 
                 logger.debug(ps.toString());
                 return ps;
