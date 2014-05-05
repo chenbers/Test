@@ -323,7 +323,7 @@ public class EmailReportAmazonPullJob extends QuartzJobBean {
         // Set the current date of the reports
         FormatType formatType = FormatType.PDF;
         try{
-            formatType = Enum.valueOf(FormatType.class, reportSchedule.getFormat());
+            formatType = FormatType.valueOf(reportSchedule.getFormat());
         } catch (Throwable t){
             logger.info("Failed to read format type for report schedule: "+reportSchedule.getReportScheduleID()+". Keeping PDF as default.");
         }
@@ -523,7 +523,7 @@ public class EmailReportAmazonPullJob extends QuartzJobBean {
             }
 
             // send all the e-mails only if we make it though without errors
-            boolean allowUnsubscribe = false;
+            boolean allowUnsubscribe = true;
             for (IndividualReportEmail individualReportEmail : individualReportEmailList) {
                 logger.info("sending to driver " + individualReportEmail.driverPerson.getPriEmail());
                 emailReport(individualReportEmail.reportSchedule, individualReportEmail.driverPerson, individualReportEmail.driverReportCriteriaList, individualReportEmail.owner, allowUnsubscribe);
