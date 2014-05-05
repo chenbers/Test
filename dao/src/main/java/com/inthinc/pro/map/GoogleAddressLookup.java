@@ -12,6 +12,7 @@ import com.google.code.geocoder.model.GeocoderRequest;
 import com.google.code.geocoder.model.GeocoderResult;
 import com.google.code.geocoder.model.GeocoderResultType;
 import com.google.code.geocoder.model.GeocoderStatus;
+import com.inthinc.pro.dao.FipsDAO;
 import com.inthinc.pro.dao.util.GeoUtil;
 import com.inthinc.pro.model.LatLng;
 import com.inthinc.pro.model.MeasurementType;
@@ -27,7 +28,18 @@ public class GoogleAddressLookup extends AddressLookup {
 	
 	private LatLng latLng;
 	
-	public GoogleAddressLookup() {
+	private FipsDAO fipsDAO;
+	
+	
+	public FipsDAO getFipsDAO() {
+        return fipsDAO;
+    }
+
+    public void setFipsDAO(FipsDAO fipsDAO) {
+        this.fipsDAO = fipsDAO;
+    }
+
+    public GoogleAddressLookup() {
 		super();
 		setAddressFormat(AddressLookup.AddressFormat.ADDRESS);
 	}
@@ -84,7 +96,21 @@ public class GoogleAddressLookup extends AddressLookup {
                 }
                 
             }
-            
+
+            if (!gotPlacemarkInfo) {
+                String closestTown = fipsDAO.getClosestTown(latLng);
+                
+                System.out.println("FIPS: " + (closestTown == null ? "null" : closestTown));
+                
+                if (closestTown != null) {
+                    String[] cityState = closestTown.split(",");
+                    if (cityState.length == 2) {
+                        placemark.setLocality(cityState[0].trim());
+                        placemark.setState(cityState[1].trim());
+                        gotPlacemarkInfo = true;
+                    }
+                }
+            }
             if (gotPlacemarkInfo) {
                 // The location (lat, lng) in the original request is for the county not the city, so looking up the city to gauge the distance and heading)
                 Geocoder geocoder = getGeocoder();
