@@ -45,7 +45,7 @@ public interface HOSDAO extends GenericDAO<HOSRecord, Long> {
     
     List<HOSRecord> getHOSDeltaRecords(Integer driverID, Integer deviceID, Date deltaTime);
     boolean otherHosRecordExistsForDriverTimestamp(Integer driverID, Date dateTime, Long hosLogID);
-    List<HOSRecord> getHOSRecordAtSummaryTime(Integer driverID, Date summaryTime, Date startTime, Date endTime);
+    List<HOSRecord> getHOSRecordAtSummaryTime(Integer driverID, Integer vehicleID, Date summaryTime, Date startTime, Date endTime);
 
 
 }

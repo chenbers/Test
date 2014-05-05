@@ -101,6 +101,9 @@
 	<bean id="phoneControlDAO" class="com.inthinc.pro.dao.hessian.PhoneControlHessianDAO" parent="genericDAO"></bean>
 	<bean id="superuserDAO" class="com.inthinc.pro.dao.hessian.SuperuserHessianDAO" parent="genericDAO"></bean>
 
+   	<bean id="fipsDAO" class="com.inthinc.pro.dao.jdbc.FipsJDBCDAO">
+        <property name="dataSource" ref="tiwiJDBCDataSource" />
+    </bean>
 
     <!-- Address Lookup -->
 	<bean id="geonamesAddressLookupBean" class="com.inthinc.pro.map.GeonamesAddressLookup">
