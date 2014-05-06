@@ -4,7 +4,7 @@
     <groupId>com.inthinc.pro</groupId>
     <artifactId>root</artifactId>
     <packaging>pom</packaging>
-    <version>2.0.44-SNAPSHOT</version>
+    <version>2.0.46-SNAPSHOT</version>
     <name>TIWI Pro Application</name>
     <url>http://www.iwiglobal.com</url>
     <organization>
@@ -283,8 +283,6 @@ mi2KFq<Nc4zYl8ZVexWN8GNR2KNYvC5rn293xhqnaa8hMH QROnTXrOnpnpNqQpRomwtNpNmPMPpMnrp
 			<url>https://devserv.tiwipro.com:8484/artifactory/libs-snapshots-local</url>
 		</snapshotRepository>
 	</distributionManagement>
-
-
 	<!-- -->
 	<!-- Dependency Management -->
 	<!-- -->
