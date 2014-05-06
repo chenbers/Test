@@ -1,0 +1,37 @@
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util" xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+    http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+    http://www.springframework.org/schema/util 
+    http://www.springframework.org/schema/util/spring-util-2.5.xsd
+    http://www.springframework.org/schema/context
+    http://www.springframework.org/schema/context/spring-context-2.5.xsd"
+	default-autowire="byName">
+  <bean id="reportMailer" class="com.inthinc.pro.reports.mail.ReportMailerImpl">
+<!--
+    <property name="from">
+      <value><![CDATA[tiwiPRO Reporting <${accountOptions.noReplyEmailAddress}>]]></value>
+    </property>
+ -->    
+  </bean>
+
+  <bean id="reportCreator" class="com.inthinc.pro.reports.jasper.JasperReportCreator">
+    <constructor-arg ref="reportMailer" />
+  </bean>
+
+  <bean id="reportCriteriaService" class="com.inthinc.pro.reports.service.impl.ReportCriteriaServiceImpl">
+    <property name="groupDAO" ref="groupDAO" />
+    <property name="scoreDAO" ref="scoreDAO" />
+    <property name="mpgDAO" ref="mpgDAO" />
+    <property name="vehicleDAO" ref="vehicleDAO" />
+    <property name="deviceDAO" ref="deviceDAO" />
+    <property name="groupReportDAO" ref="groupReportDAO" />
+    <property name="reportDAO" ref="reportDAO" />
+    <property name="reportIdlingDAO" ref="reportIdlingDAO" />
+    <property name="eventAggregationDAO" ref="eventAggregationDAO" />
+    <property name="formsDAO" ref="formsDAO"/>
+    <property name="dvirViolationReportDAO" ref="dvirViolationReportDAO" />
+    <property name="dvirInspectionRepairReportDAO" ref="dvirInspectionRepairReportDAO" />
+    <property name="driverPerformanceDAO" ref="driverPerformanceDAO"/>
+  </bean>
+
+</beans>

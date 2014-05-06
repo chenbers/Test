@@ -72,7 +72,7 @@ public class OrganizationBeanTest extends BaseBeanTest
         selectedGroup.setMapCenter(new LatLng(0, 0));
         selectedGroup.setMapZoom(5);
         selectedGroup.setManagerID(220);
-        
+        selectedGroup.setGlCode("test glcode");
         organizationBean.setSelectedParentGroupID(selectedGroup.getGroupID()); //Causes validation to fail. Tests will still pass though
         organizationBean.update();
     }
@@ -99,6 +99,7 @@ public class OrganizationBeanTest extends BaseBeanTest
         selectedGroup.setMapCenter(new LatLng(0, 0));
         selectedGroup.setMapZoom(5);
         selectedGroup.setManagerID(220);
+        selectedGroup.setGlCode("test glcode");
         organizationBean.setSelectedParentGroupID(treeNode.getGroup().getGroupID());
         //assertEquals(treeNode, organizationBean.getTopLevelNodes());
         organizationBean.save();

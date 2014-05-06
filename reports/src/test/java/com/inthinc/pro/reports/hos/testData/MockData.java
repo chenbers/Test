@@ -15,6 +15,7 @@ import com.inthinc.pro.model.hos.HOSRecord;
 
 public class MockData {
     
+    public static String  EMPLOYEE_ID = "EMP_ID";
     
     public static Address createMockAddress(String groupName) {
         return new Address(0, "123 " + groupName, null, "City", new State(1, "Utah", "UT"), "12345", 0);
@@ -46,6 +47,7 @@ public class MockData {
         Person person = new Person();
         person.setFirst("First");
         person.setLast("Last");
+        person.setEmpid(EMPLOYEE_ID);
         driver.setPerson(person);
         
         return driver;

@@ -333,6 +333,7 @@ public class HosDailyDriverLogReportCriteria extends ReportCriteria {
             dayData.setMainAddress(mainOfficeDisplayAddress);
             dayData.setTerminalAddress(terminalAddress == null ? "" : terminalAddress.getDisplayString());
             dayData.setDriverName(driver.getPerson().getFullName());
+            dayData.setDriverEmpID(driver.getPerson().getEmpid());
             dayData.setEdited(ddlUtil.isListEdited(logListForDay));
             dayData.setCodrivers(ddlUtil.getCodrivers(logListForDay, occupantLogListForDay));
             dayData.setShipping(ddlUtil.getShippingInfoForDay(logListForDay, occupantLogListForDay));
@@ -659,7 +660,7 @@ public class HosDailyDriverLogReportCriteria extends ReportCriteria {
         return user.getPerson().getFullName();
     }
 
-    private String getStatusDescription(HOSRecord hosRecord) {
+    String getStatusDescription(HOSRecord hosRecord) {
         
         
         String statusString = "";
@@ -696,6 +697,12 @@ public class HosDailyDriverLogReportCriteria extends ReportCriteria {
             else {
                 String formatString = MessageUtil.getBundleString(getResourceBundle(),"report.ddl.fuelStopDescription");
                 statusString += " " + MessageFormat.format(formatString, new Object[] {hosRecord.getTruckGallons(),hosRecord.getTrailerGallons()});
+            }
+        }
+        else if (hosRecord.getStatus() == HOSStatus.HOS_ALTERNATE_SLEEPING) {
+            if (hosRecord.getMobileUnitID() != null && !hosRecord.getMobileUnitID().isEmpty()) {
+                String formatString = MessageUtil.getBundleString(getResourceBundle(),"report.ddl.mobileUnit");
+                statusString += " " + MessageFormat.format(formatString, new Object[] {hosRecord.getMobileUnitID()});
             }
         }
         
