@@ -1,27 +1,5 @@
 package com.inthinc.pro.dao.jdbc;
 
-import com.inthinc.hos.ddl.HOSOccupantLog;
-import com.inthinc.hos.model.HOSOrigin;
-import com.inthinc.hos.model.HOSStatus;
-import com.inthinc.hos.model.RuleSetType;
-import com.inthinc.pro.ProDAOException;
-import com.inthinc.pro.dao.HOSDAO;
-import com.inthinc.pro.model.FuelEfficiencyType;
-import com.inthinc.pro.model.LatLng;
-import com.inthinc.pro.model.MeasurementType;
-import com.inthinc.pro.model.hos.HOSDriverLogin;
-import com.inthinc.pro.model.hos.HOSGroupMileage;
-import com.inthinc.pro.model.hos.HOSOccupantHistory;
-import com.inthinc.pro.model.hos.HOSOccupantInfo;
-import com.inthinc.pro.model.hos.HOSRecord;
-import com.inthinc.pro.model.hos.HOSVehicleMileage;
-import org.apache.log4j.Logger;
-import org.joda.time.DateTime;
-import org.joda.time.DateTimeZone;
-import org.joda.time.Interval;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
-
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -39,23 +17,47 @@ import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
 
+import org.apache.log4j.Logger;
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
+import org.joda.time.Interval;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
+
+import com.inthinc.hos.ddl.HOSOccupantLog;
+import com.inthinc.hos.model.HOSOrigin;
+import com.inthinc.hos.model.HOSStatus;
+import com.inthinc.hos.model.RuleSetType;
+import com.inthinc.pro.ProDAOException;
+import com.inthinc.pro.dao.HOSDAO;
+import com.inthinc.pro.model.FuelEfficiencyType;
+import com.inthinc.pro.model.InspectionType;
+import com.inthinc.pro.model.LatLng;
+import com.inthinc.pro.model.MeasurementType;
+import com.inthinc.pro.model.hos.HOSDriverLogin;
+import com.inthinc.pro.model.hos.HOSGroupMileage;
+import com.inthinc.pro.model.hos.HOSOccupantHistory;
+import com.inthinc.pro.model.hos.HOSOccupantInfo;
+import com.inthinc.pro.model.hos.HOSRecord;
+import com.inthinc.pro.model.hos.HOSVehicleMileage;
+
+
 
 public class HOSJDBCDAO extends GenericJDBCDAO implements HOSDAO {
-
+    
 
     /**
-     *
+     * 
      */
     private static final long serialVersionUID = 1L;
     private static final Logger logger = Logger.getLogger(HOSJDBCDAO.class);
     private static final SimpleDateFormat dbdateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-
     static {
         dbdateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
     }
-
+    
     /**
-     *
+     * 
      */
 
     @Override
@@ -65,35 +67,39 @@ public class HOSJDBCDAO extends GenericJDBCDAO implements HOSDAO {
         ResultSet resultSet = null;
 
         ArrayList<HOSGroupMileage> recordList = new ArrayList<HOSGroupMileage>();
-
-        try {
+        
+        try
+        {
             conn = getConnection();
             statement = conn.prepareCall("{call hos_getMileageByGroup(?, ?, ?, ?)}");
             statement.setInt(1, groupID);
             statement.setLong(2, interval.getStartMillis());
             statement.setLong(3, interval.getEndMillis());
             statement.setBoolean(4, noDriver);
-
-            if (logger.isDebugEnabled())
+			
+            if(logger.isDebugEnabled())
                 logger.debug(statement.toString());
-
+            
             resultSet = statement.executeQuery();
 
             HOSGroupMileage hosRecord = null;
-            while (resultSet.next()) {
+            while (resultSet.next())
+            {
                 hosRecord = new HOSGroupMileage();
 
                 hosRecord.setGroupID(resultSet.getInt(1));
                 hosRecord.setDistance(resultSet.getLong(2));
 
                 recordList.add(hosRecord);
-
+                
             }
         }   // end try
-        catch (SQLException e) { // handle database hosLogs in the usual manner
+        catch (SQLException e)
+        { // handle database hosLogs in the usual manner
             throw new ProDAOException((statement != null) ? statement.toString() : "", e);
         }   // end catch
-        finally { // clean up and release the connection
+        finally
+        { // clean up and release the connection
             close(resultSet);
             close(statement);
             close(conn);
@@ -109,22 +115,24 @@ public class HOSJDBCDAO extends GenericJDBCDAO implements HOSDAO {
         ResultSet resultSet = null;
 
         ArrayList<HOSVehicleMileage> recordList = new ArrayList<HOSVehicleMileage>();
-
-        try {
+        
+        try
+        {
             conn = getConnection();
             statement = conn.prepareCall("{call hos_getVehicleMileageByGroup(?, ?, ?, ?)}");
             statement.setInt(1, groupID);
             statement.setLong(2, interval.getStartMillis());
             statement.setLong(3, interval.getEndMillis());
             statement.setBoolean(4, noDriver);
-
-            if (logger.isDebugEnabled())
+			
+            if(logger.isDebugEnabled())
                 logger.debug(statement.toString());
-
+            
             resultSet = statement.executeQuery();
 
             HOSVehicleMileage hosRecord = null;
-            while (resultSet.next()) {
+            while (resultSet.next())
+            {
                 hosRecord = new HOSVehicleMileage();
 
                 hosRecord.setGroupID(resultSet.getInt(1));
@@ -132,13 +140,15 @@ public class HOSJDBCDAO extends GenericJDBCDAO implements HOSDAO {
                 hosRecord.setDistance(resultSet.getLong(3));
 
                 recordList.add(hosRecord);
-
+                
             }
         }   // end try
-        catch (SQLException e) { // handle database hosLogs in the usual manner
+        catch (SQLException e)
+        { // handle database hosLogs in the usual manner
             throw new ProDAOException((statement != null) ? statement.toString() : "", e);
         }   // end catch
-        finally { // clean up and release the connection
+        finally
+        { // clean up and release the connection
             close(resultSet);
             close(statement);
             close(conn);
@@ -146,7 +156,7 @@ public class HOSJDBCDAO extends GenericJDBCDAO implements HOSDAO {
 
         return recordList;
     }
-
+    
     @Override
     public List<HOSOccupantHistory> getHOSOccupantHistory(String commAddress, String employeeId) {
         HOSDriverLogin driverLogin = getDriverForEmpid(commAddress, employeeId);
@@ -157,22 +167,22 @@ public class HOSJDBCDAO extends GenericJDBCDAO implements HOSDAO {
     public List<HOSOccupantHistory> getHOSOccupantHistory(HOSDriverLogin driverLogin) {
         final RuleSetType dotType = driverLogin.getDriverDotType();
 
-        final int daysback = (dotType == RuleSetType.CANADA_2007_OIL || dotType == RuleSetType.CANADA_2007_60_DEGREES_OIL) ? -24 : -14;
+        final int daysback = ( dotType == RuleSetType.CANADA_2007_OIL  || dotType == RuleSetType.CANADA_2007_60_DEGREES_OIL) ? -24 : -14;
 
         TimeZone driverTz = TimeZone.getTimeZone("MST7MDT");  //default
         if (!driverLogin.getTimezoneID().equals(""))
             driverTz = TimeZone.getTimeZone(driverLogin.getTimezoneID());
 
-
+        
         GregorianCalendar startDayCalendar = new GregorianCalendar();
         startDayCalendar.setTimeZone(driverTz);
         startDayCalendar.setTime(new Date());
         startDayCalendar.add(Calendar.DATE, daysback);
         int startDayOfYear = startDayCalendar.get(Calendar.DAY_OF_YEAR);
-
+        
         Interval interval = new Interval(startDayCalendar.getTime().getTime(), new Date().getTime());
         final List<HOSOccupantLog> recordList = getHOSOccupantLogs(driverLogin.getDriverID(), interval);
-
+        
         startDayCalendar.set(startDayCalendar.get(Calendar.YEAR), startDayCalendar.get(Calendar.MONTH), startDayCalendar.get(Calendar.DATE), 0, 0, 0);
         GregorianCalendar endDayCalendar = new GregorianCalendar();
         endDayCalendar.setTimeZone(driverTz);
@@ -185,19 +195,23 @@ public class HOSJDBCDAO extends GenericJDBCDAO implements HOSDAO {
         List<Integer> occupantDuplicateCheckList = new ArrayList<Integer>();
         List<HOSOccupantHistory> occupantHistoryList = new ArrayList<HOSOccupantHistory>();
 
-        for (int i = 0; i >= daysback; i--) {
-            for (HOSOccupantLog occupantLog : recordList) {
+        for (int i = 0; i >= daysback; i--)
+        {
+            for (HOSOccupantLog occupantLog: recordList)
+            {
                 startLogTimeCalendar.setTime(occupantLog.getLogTime());
                 endLogTimeCalendar.setTime(occupantLog.getEndTime());
 
                 //if the dates for the log fit in the given day.
                 if ((startLogTimeCalendar.after(startDayCalendar) && startLogTimeCalendar.before(endDayCalendar))
-                        || (endLogTimeCalendar.after(startDayCalendar) && endLogTimeCalendar.before(endDayCalendar))
-                        || (startLogTimeCalendar.before(startDayCalendar) && endLogTimeCalendar.after(endDayCalendar))) {
-                    Integer driverID = (Integer) (occupantLog.getDriverID());
-                    if (occupantDuplicateCheckList.indexOf(driverID) == -1) {
+                    || (endLogTimeCalendar.after(startDayCalendar) && endLogTimeCalendar.before(endDayCalendar))
+                    || (startLogTimeCalendar.before(startDayCalendar) && endLogTimeCalendar.after(endDayCalendar)))
+                {
+                    Integer driverID = (Integer)(occupantLog.getDriverID());
+                    if (occupantDuplicateCheckList.indexOf(driverID) == -1)
+                    {
                         occupantDuplicateCheckList.add(driverID);
-                        occupantHistoryList.add(new HOSOccupantHistory((i * -1) + 1, driverID, startDayOfYear));
+                        occupantHistoryList.add(new HOSOccupantHistory((i * -1)+1, driverID, startDayOfYear));
                     }
                 }
             }
@@ -205,58 +219,62 @@ public class HOSJDBCDAO extends GenericJDBCDAO implements HOSDAO {
             startDayCalendar.add(Calendar.DATE, 1);
             endDayCalendar.add(Calendar.DATE, 1);
         }
-
+        
         return occupantHistoryList;
-
+        
     }
 
-
+    
     @Override
     public List<HOSOccupantLog> getHOSOccupantLogs(Integer driverID, Interval interval) {
         Date currentTime = new Date();
 //System.out.println("getHOSOccupantLogs: " + interval);            
-
+        
         Connection conn = null;
         CallableStatement statement = null;
         ResultSet resultSet = null;
 
         ArrayList<HOSOccupantLog> recordList = new ArrayList<HOSOccupantLog>();
-
-        try {
+        
+        try
+        {
             conn = getConnection();
             statement = conn.prepareCall("{call hos_getHOSOccupantLogsForDriverVehicle(?, ?, ?)}");
             statement.setInt(1, driverID);
             statement.setLong(2, interval.getStartMillis());
             statement.setLong(3, interval.getEndMillis());
 
-            if (logger.isDebugEnabled())
+            if(logger.isDebugEnabled())
                 logger.debug(statement.toString());
-
+            
             resultSet = statement.executeQuery();
 
-            while (resultSet.next()) {
+            while (resultSet.next())
+            {
                 HOSOccupantLog occupantLog = new HOSOccupantLog();
-
+                
                 occupantLog.setDriverID(resultSet.getInt(1));
                 occupantLog.setDriverName(resultSet.getString(2));
                 occupantLog.setVehicleID(resultSet.getInt(3));
                 Long ms = resultSet.getLong(4);
                 occupantLog.setLogTime(new Date(ms));
-                ms = resultSet.getLong(5);
+                ms = resultSet.getLong(5);                
                 occupantLog.setEndTime((ms == null || ms == 0) ? currentTime : new Date(ms));
                 occupantLog.setServiceID(resultSet.getString(6));
                 occupantLog.setTrailerID(resultSet.getString(7));
-                if (logger.isDebugEnabled())
-                    logger.debug("adding OccupantLog: driverID" + occupantLog.getDriverID() + " vehicleID: " + occupantLog.getVehicleID() + " time: " + occupantLog.getLogTime() + " to " + occupantLog.getEndTime());
-
+                if(logger.isDebugEnabled())
+                    logger.debug("adding OccupantLog: driverID" + occupantLog.getDriverID() + " vehicleID: " + occupantLog.getVehicleID() + " time: " + occupantLog.getLogTime() + " to " + occupantLog.getEndTime());                
+                
                 recordList.add(occupantLog);
             }
         }   // end try
-        catch (SQLException e) { // handle database hosLogs in the usual manner
+        catch (SQLException e)
+        { // handle database hosLogs in the usual manner
             throw new ProDAOException((statement != null) ? statement.toString() : "", e);
 
         }   // end catch
-        finally { // clean up and release the connection
+        finally
+        { // clean up and release the connection
             close(resultSet);
             close(statement);
             close(conn);
@@ -266,29 +284,31 @@ public class HOSJDBCDAO extends GenericJDBCDAO implements HOSDAO {
     }
 
     @Override
-    public List<HOSRecord> getHOSRecords(Integer driverID, Interval interval, Boolean driverStatusOnly) {
+    public List<HOSRecord> getHOSRecords(Integer driverID, Interval interval, Boolean driverStatusOnly)  {
 
         Connection conn = null;
         CallableStatement statement = null;
         ResultSet resultSet = null;
 
         ArrayList<HOSRecord> recordList = new ArrayList<HOSRecord>();
-
-        try {
+        
+        try
+        {
             conn = getConnection();
             statement = conn.prepareCall("{call hos_getFullRecords(?, ?, ?, ?)}");
             statement.setInt(1, driverID);
             statement.setLong(2, interval.getStartMillis());
             statement.setLong(3, interval.getEndMillis());
             statement.setBoolean(4, driverStatusOnly);
-            if (logger.isDebugEnabled())
+            if(logger.isDebugEnabled())
                 logger.debug(statement.toString());
 
             resultSet = statement.executeQuery();
 
-            while (resultSet.next()) {
+            while (resultSet.next())
+            {
                 HOSRecord hosRecord = new HOSRecord();
-
+                
                 hosRecord.setHosLogID(resultSet.getLong(1));
                 hosRecord.setDriverID(resultSet.getInt(2));
                 hosRecord.setVehicleID(resultSet.getInt(3));
@@ -323,14 +343,17 @@ public class HOSJDBCDAO extends GenericJDBCDAO implements HOSDAO {
                 hosRecord.setSingleDriver(resultSet.getBoolean(30));
                 hosRecord.setOriginalStatus(HOSStatus.valueOf(resultSet.getInt(31)));
                 hosRecord.setMobileUnitID(resultSet.getString(32));
-
+                hosRecord.setInspectionType(InspectionType.valueOf(resultSet.getInt(33)));
+                
                 recordList.add(hosRecord);
             }
         }   // end try
-        catch (SQLException e) { // handle database hosLogs in the usual manner
+        catch (SQLException e)
+        { // handle database hosLogs in the usual manner
             throw new ProDAOException((statement != null) ? statement.toString() : "", e);
         }   // end catch
-        finally { // clean up and release the connection
+        finally
+        { // clean up and release the connection
             close(resultSet);
             close(statement);
             close(conn);
@@ -338,31 +361,33 @@ public class HOSJDBCDAO extends GenericJDBCDAO implements HOSDAO {
 
         return recordList;
     }
-
+    
     @Override
-    public List<HOSRecord> getRecordsForVehicle(Integer vehicleID, Interval interval, Boolean driverStatusOnly) {
+    public List<HOSRecord> getRecordsForVehicle(Integer vehicleID, Interval interval, Boolean driverStatusOnly)  {
 
         Connection conn = null;
         CallableStatement statement = null;
         ResultSet resultSet = null;
 
         ArrayList<HOSRecord> recordList = new ArrayList<HOSRecord>();
-
-        try {
+        
+        try
+        {
             conn = getConnection();
             statement = conn.prepareCall("{call hos_getRecordsForVehicle(?, ?, ?, ?)}");
             statement.setInt(1, vehicleID);
             statement.setLong(2, interval.getStartMillis());
             statement.setLong(3, interval.getEndMillis());
             statement.setBoolean(4, driverStatusOnly);
-            if (logger.isDebugEnabled())
+            if(logger.isDebugEnabled())
                 logger.debug(statement.toString());
 
             resultSet = statement.executeQuery();
 
-            while (resultSet.next()) {
+            while (resultSet.next())
+            {
                 HOSRecord hosRecord = new HOSRecord();
-
+                
                 hosRecord.setHosLogID(resultSet.getLong(1));
                 hosRecord.setDriverID(resultSet.getInt(2));
                 hosRecord.setVehicleID(resultSet.getInt(3));
@@ -397,14 +422,17 @@ public class HOSJDBCDAO extends GenericJDBCDAO implements HOSDAO {
                 hosRecord.setSingleDriver(resultSet.getBoolean(30));
                 hosRecord.setOriginalStatus(HOSStatus.valueOf(resultSet.getInt(31)));
                 hosRecord.setMobileUnitID(resultSet.getString(32));
-
+                hosRecord.setInspectionType(InspectionType.valueOf(resultSet.getInt(33)));
+                
                 recordList.add(hosRecord);
             }
         }   // end try
-        catch (SQLException e) { // handle database hosLogs in the usual manner
+        catch (SQLException e)
+        { // handle database hosLogs in the usual manner
             throw new ProDAOException((statement != null) ? statement.toString() : "", e);
         }   // end catch
-        finally { // clean up and release the connection
+        finally
+        { // clean up and release the connection
             close(resultSet);
             close(statement);
             close(conn);
@@ -412,31 +440,33 @@ public class HOSJDBCDAO extends GenericJDBCDAO implements HOSDAO {
 
         return recordList;
     }
-
+        
 
     @Override
-    public List<HOSRecord> getFuelStopRecordsForVehicle(Integer vehicleID, Interval interval) {
+    public List<HOSRecord> getFuelStopRecordsForVehicle(Integer vehicleID, Interval interval)  {
 
         Connection conn = null;
         CallableStatement statement = null;
         ResultSet resultSet = null;
 
         ArrayList<HOSRecord> recordList = new ArrayList<HOSRecord>();
-
-        try {
+        
+        try
+        {
             conn = getConnection();
             statement = conn.prepareCall("{call hos_getFuelStopRecordsForVehicle(?, ?, ?)}");
             statement.setInt(1, vehicleID);
             statement.setLong(2, interval.getStartMillis());
             statement.setLong(3, interval.getEndMillis());
-            if (logger.isDebugEnabled())
+            if(logger.isDebugEnabled())
                 logger.debug(statement.toString());
 
             resultSet = statement.executeQuery();
 
-            while (resultSet.next()) {
+            while (resultSet.next())
+            {
                 HOSRecord hosRecord = new HOSRecord();
-
+                
                 hosRecord.setHosLogID(resultSet.getLong(1));
                 hosRecord.setDriverID(resultSet.getInt(2));
                 hosRecord.setVehicleID(resultSet.getInt(3));
@@ -470,14 +500,16 @@ public class HOSJDBCDAO extends GenericJDBCDAO implements HOSDAO {
                 hosRecord.setEditUserID(resultSet.getInt(29));
                 hosRecord.setSingleDriver(resultSet.getBoolean(30));
                 hosRecord.setOriginalStatus(HOSStatus.valueOf(resultSet.getInt(31)));
-
+                
                 recordList.add(hosRecord);
             }
         }   // end try
-        catch (SQLException e) { // handle database hosLogs in the usual manner
+        catch (SQLException e)
+        { // handle database hosLogs in the usual manner
             throw new ProDAOException((statement != null) ? statement.toString() : "", e);
         }   // end catch
-        finally { // clean up and release the connection
+        finally
+        { // clean up and release the connection
             close(resultSet);
             close(statement);
             close(conn);
@@ -485,34 +517,34 @@ public class HOSJDBCDAO extends GenericJDBCDAO implements HOSDAO {
 
         return recordList;
     }
-
+    
     @Override
     public List<HOSRecord> getHOSRecordsFilteredByInterval(Integer driverID, Interval interval, Boolean driverStatusOnly) {
         List<HOSRecord> hosRecordList = getHOSRecords(driverID, interval, driverStatusOnly);
         if (hosRecordList == null)
             return null;
-        if (logger.isDebugEnabled())
+        if(logger.isDebugEnabled())
             logger.debug("original list size: " + hosRecordList.size());
-
+        
         List<HOSRecord> hosFilteredRecordList = new ArrayList<HOSRecord>();
         for (HOSRecord rec : hosRecordList)
             if (interval.contains(rec.getLogTime().getTime()))
                 hosFilteredRecordList.add(rec);
-
-
+        
+        
         return hosFilteredRecordList;
-
-
+        
+        
     }
-
     @Override
     public Long create(Long id, HOSRecord hosRecord) {
         Connection conn = null;
         CallableStatement statement = null;
         ResultSet resultSet = null;
-
-
-        try {
+        
+        
+        try
+        {
             conn = getConnection();
             statement = conn.prepareCall("{call hos_createFromAdminPortal(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)}");
             statement.setInt(1, hosRecord.getDriverID());
@@ -524,29 +556,31 @@ public class HOSJDBCDAO extends GenericJDBCDAO implements HOSDAO {
             statement.setString(7, hosRecord.getTrailerID());
             statement.setString(8, hosRecord.getServiceID());
             statement.setString(9, hosRecord.getLocation());
-            statement.setFloat(10, (hosRecord.getTruckGallons() == null) ? 0f : hosRecord.getTruckGallons());
+            statement.setFloat(10, (hosRecord.getTruckGallons()== null) ? 0f : hosRecord.getTruckGallons());
             statement.setFloat(11, (hosRecord.getTrailerGallons() == null) ? 0f : hosRecord.getTrailerGallons());
             statement.setInt(12, hosRecord.getEditUserID());
             statement.setString(13, hosRecord.getMobileUnitID());
-
-            if (logger.isDebugEnabled())
+			
+            if(logger.isDebugEnabled())
                 logger.debug(statement.toString());
-
+			
 
             resultSet = statement.executeQuery();
 
             if (resultSet.next())
                 id = resultSet.getLong(1);
         }   // end try
-        catch (SQLException e) { // handle database hosLogs in the usual manner
+        catch (SQLException e)
+        { // handle database hosLogs in the usual manner
             throw new ProDAOException((statement != null) ? statement.toString() : "", e);
         }   // end catch
-        finally { // clean up and release the connection
+        finally
+        { // clean up and release the connection
             close(resultSet);
             close(statement);
             close(conn);
         } // end finally
-
+        
         return id;
     }
 
@@ -556,11 +590,12 @@ public class HOSJDBCDAO extends GenericJDBCDAO implements HOSDAO {
         Connection conn = null;
         CallableStatement statement = null;
         ResultSet resultSet = null;
-
-
-        try {
+        
+        
+        try
+        {
             conn = getConnection();
-            statement = conn.prepareCall("{call hos_createFromNote(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)}");
+            statement = conn.prepareCall("{call hos_createFromNote(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?)}");
             statement.setInt(1, hosRecord.getDeviceID());
             statement.setInt(2, hosRecord.getVehicleID());
             statement.setLong(3, 0); //Note ID
@@ -574,57 +609,63 @@ public class HOSJDBCDAO extends GenericJDBCDAO implements HOSDAO {
             statement.setByte(11, hosRecord.getNoteFlags());
             statement.setString(12, hosRecord.getTrailerID());
             statement.setString(13, hosRecord.getServiceID());
-            statement.setFloat(14, (hosRecord.getTruckGallons() == null) ? 0f : hosRecord.getTruckGallons());
+            statement.setFloat(14, (hosRecord.getTruckGallons()== null) ? 0f : hosRecord.getTruckGallons());
             statement.setFloat(15, (hosRecord.getTrailerGallons() == null) ? 0f : hosRecord.getTrailerGallons());
             statement.setString(16, hosRecord.getEmployeeID());
             statement.setInt(17, hosRecord.getStateID());
             statement.setBoolean(18, hosRecord.getTripInspectionFlag());
             statement.setBoolean(19, hosRecord.getTripReportFlag());
             statement.setString(20, hosRecord.getMobileUnitID());
-
-            if (logger.isDebugEnabled())
+            statement.setInt(21, hosRecord.getInspectionType() == null ? 0 : hosRecord.getInspectionType().getCode());
+            
+            if(logger.isDebugEnabled())
                 logger.debug(statement.toString());
-
+            
 
             resultSet = statement.executeQuery();
 
             if (resultSet.next())
                 id = resultSet.getLong(1);
         }   // end try
-        catch (SQLException e) { // handle database hosLogs in the usual manner
+        catch (SQLException e)
+        { // handle database hosLogs in the usual manner
             throw new ProDAOException((statement != null) ? statement.toString() : "", e);
         }   // end catch
-        finally { // clean up and release the connection
+        finally
+        { // clean up and release the connection
             close(resultSet);
             close(statement);
             close(conn);
         } // end finally
-
+        
         return id;
     }
-
-    private final static String DELETE_HOS_LOG = "UPDATE hoslog set deletedFlag = 1, editedFlag=1, editCount=editCount+1, timeLastUpdated=UTC_TIMESTAMP() WHERE hosLogId = ?";
+    
+    private final static String DELETE_HOS_LOG = "UPDATE hoslog set deletedFlag = 1, editedFlag=1, editCount=editCount+1, timeLastUpdated=UTC_TIMESTAMP() WHERE hosLogId = ?"; 
 
     @Override
     public Integer deleteByID(Long id) {
         Connection conn = null;
         PreparedStatement statement = null;
-
-        try {
+        
+        try
+        {
             conn = getConnection();
             statement = conn.prepareStatement(DELETE_HOS_LOG);
             statement.setLong(1, id);
-
-            if (logger.isDebugEnabled())
+			
+            if(logger.isDebugEnabled())
                 logger.debug(statement.toString());
-
+            
             statement.executeUpdate();
 
         }   // end try
-        catch (SQLException e) { // handle database hosLogs in the usual manner
+        catch (SQLException e)
+        { // handle database hosLogs in the usual manner
             throw new ProDAOException((statement != null) ? statement.toString() : "", e);
         }   // end catch
-        finally { // clean up and release the connection
+        finally
+        { // clean up and release the connection
             close(statement);
             close(conn);
         } // end finally
@@ -639,19 +680,21 @@ public class HOSJDBCDAO extends GenericJDBCDAO implements HOSDAO {
         ResultSet resultSet = null;
 
         HOSRecord hosRecord = null;
-
-        try {
+        
+        try
+        {
             conn = getConnection();
             statement = conn.prepareCall("{call hos_getFullRecord(?)}");
             statement.setLong(1, id);
-
-            if (logger.isDebugEnabled())
+			
+            if(logger.isDebugEnabled())
                 logger.debug(statement.toString());
 
-            resultSet = statement.executeQuery();
+				resultSet = statement.executeQuery();
 
-            if (resultSet.next()) {
-
+            if (resultSet.next())
+            {
+                
                 hosRecord = new HOSRecord();
                 hosRecord.setHosLogID(resultSet.getLong(1));
                 hosRecord.setDriverID(resultSet.getInt(2));
@@ -686,13 +729,16 @@ public class HOSJDBCDAO extends GenericJDBCDAO implements HOSDAO {
                 hosRecord.setEditUserID(resultSet.getInt(29));
                 hosRecord.setSingleDriver(resultSet.getBoolean(30));
                 hosRecord.setMobileUnitID(resultSet.getString(31));
-
+                hosRecord.setInspectionType(InspectionType.valueOf(resultSet.getInt(32)));
+            
             }
         }   // end try
-        catch (SQLException e) { // handle database hosLogs in the usual manner
+        catch (SQLException e)
+        { // handle database hosLogs in the usual manner
             throw new ProDAOException((statement != null) ? statement.toString() : "", e);
         }   // end catch
-        finally { // clean up and release the connection
+        finally
+        { // clean up and release the connection
             close(resultSet);
             close(statement);
             close(conn);
@@ -705,9 +751,10 @@ public class HOSJDBCDAO extends GenericJDBCDAO implements HOSDAO {
     public Integer update(HOSRecord hosRecord) {
         Connection conn = null;
         CallableStatement statement = null;
-
-
-        try {
+        
+        
+        try
+        {
             conn = getConnection();
             statement = conn.prepareCall("{call hos_update(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)}");
             statement.setLong(1, hosRecord.getHosLogID());
@@ -724,32 +771,36 @@ public class HOSJDBCDAO extends GenericJDBCDAO implements HOSDAO {
             statement.setFloat(12, hosRecord.getTrailerGallons() == null ? 0f : hosRecord.getTrailerGallons());
             statement.setInt(13, hosRecord.getEditUserID());
             statement.setString(14, hosRecord.getMobileUnitID());
-
-            if (logger.isDebugEnabled())
+			
+            if(logger.isDebugEnabled())
                 logger.debug(statement.toString());
-
+            
             statement.executeUpdate();
 
         }   // end try
-        catch (SQLException e) { // handle database hosLogs in the usual manner
+        catch (SQLException e)
+        { // handle database hosLogs in the usual manner
             throw new ProDAOException((statement != null) ? statement.toString() : "", e);
         }   // end catch
-        finally { // clean up and release the connection
+        finally
+        { // clean up and release the connection
             close(statement);
             close(conn);
         } // end finally
         return 1;
     }
-
+    
     @Override
-    public HOSDriverLogin isValidLogin(String commAddress, String employeeId, long loginTime, boolean occupantFlag, int odometer) {
+    public HOSDriverLogin isValidLogin(String commAddress, String employeeId, long loginTime, boolean occupantFlag, int odometer) 
+    {
         Connection conn = null;
         CallableStatement statement = null;
         ResultSet resultSet = null;
         HOSDriverLogin driverLogin = new HOSDriverLogin(0, 0, 0);
-        try {
+        try
+        {
             conn = getConnection();
-
+            
             statement = conn.prepareCall("{call hos_isValidLogin(?, ?, ?, ?, ?)}");
 
 
@@ -758,8 +809,8 @@ public class HOSJDBCDAO extends GenericJDBCDAO implements HOSDAO {
             statement.setLong(3, loginTime);
             statement.setBoolean(4, occupantFlag);
             statement.setInt(5, odometer);
-
-            if (logger.isDebugEnabled())
+            
+            if(logger.isDebugEnabled())
                 logger.debug(statement.toString());
 
             resultSet = statement.executeQuery();
@@ -780,10 +831,12 @@ public class HOSJDBCDAO extends GenericJDBCDAO implements HOSDAO {
             }
 
         }   // end try
-        catch (SQLException e) { // handle database hosLogs in the usual manner
+        catch (SQLException e)
+        { // handle database hosLogs in the usual manner
             throw new ProDAOException((statement != null) ? statement.toString() : "", e);
         }   // end catch
-        finally { // clean up and release the connection
+        finally
+        { // clean up and release the connection
             close(resultSet);
             close(statement);
             close(conn);
@@ -793,23 +846,25 @@ public class HOSJDBCDAO extends GenericJDBCDAO implements HOSDAO {
     }
 
     @Override
-    public HOSDriverLogin getDriverForEmpid(String commAddress, String employeeId) {
+    public HOSDriverLogin getDriverForEmpid(String commAddress, String employeeId) 
+    {
         Connection conn = null;
         CallableStatement statement = null;
         ResultSet resultSet = null;
         HOSDriverLogin driverLogin = new HOSDriverLogin(0, 0, 0);
-        try {
+        try
+        {
             conn = getConnection();
             statement = conn.prepareCall("{call hos_getDriverForEmpid(?, ?)}");
             statement.setString(1, commAddress);
             statement.setString(2, employeeId);
-
-            if (logger.isDebugEnabled())
+			
+            if(logger.isDebugEnabled())
                 logger.debug(statement.toString());
-
+            
             resultSet = statement.executeQuery();
 
-
+            
             if (resultSet.next()) {
                 driverLogin.setAcctID(resultSet.getInt(1));
                 driverLogin.setDeviceID(resultSet.getInt(2));
@@ -823,10 +878,12 @@ public class HOSJDBCDAO extends GenericJDBCDAO implements HOSDAO {
             }
 
         }   // end try
-        catch (SQLException e) { // handle database hosLogs in the usual manner
+        catch (SQLException e)
+        { // handle database hosLogs in the usual manner
             throw new ProDAOException((statement != null) ? statement.toString() : "", e);
         }   // end catch
-        finally { // clean up and release the connection
+        finally
+        { // clean up and release the connection
             close(resultSet);
             close(statement);
             close(conn);
@@ -836,23 +893,25 @@ public class HOSJDBCDAO extends GenericJDBCDAO implements HOSDAO {
     }
 
     @Override
-    public HOSDriverLogin getDriverForEmpidLastName(String employeeId, String lastName) {
+    public HOSDriverLogin getDriverForEmpidLastName(String employeeId, String lastName) 
+    {
         Connection conn = null;
         CallableStatement statement = null;
         ResultSet resultSet = null;
         HOSDriverLogin driverLogin = new HOSDriverLogin(0, 0, 0);
-        try {
+        try
+        {
             conn = getConnection();
             statement = conn.prepareCall("{call hos_getDriverForEmpidLastname(?, ?)}");
             statement.setString(1, employeeId);
             statement.setString(2, lastName);
-
-            if (logger.isDebugEnabled())
+			
+            if(logger.isDebugEnabled())
                 logger.debug(statement.toString());
-
+            
             resultSet = statement.executeQuery();
 
-
+            
             if (resultSet.next()) {
                 driverLogin.setDriverID(resultSet.getInt(1));
                 driverLogin.setDriverDotType(RuleSetType.valueOf(resultSet.getInt(2)));
@@ -861,10 +920,12 @@ public class HOSJDBCDAO extends GenericJDBCDAO implements HOSDAO {
             }
 
         }   // end try
-        catch (SQLException e) { // handle database hosLogs in the usual manner
+        catch (SQLException e)
+        { // handle database hosLogs in the usual manner
             throw new ProDAOException((statement != null) ? statement.toString() : "", e);
         }   // end catch
-        finally { // clean up and release the connection
+        finally
+        { // clean up and release the connection
             close(resultSet);
             close(statement);
             close(conn);
@@ -874,38 +935,42 @@ public class HOSJDBCDAO extends GenericJDBCDAO implements HOSDAO {
     }
 
     @Override
-    public List<HOSRecord> getHOSRecordsForCommAddress(String address, List<HOSRecord> paramList) {
+    public List<HOSRecord> getHOSRecordsForCommAddress(String address, List<HOSRecord> paramList)  
+    {
         Connection conn = null;
         CallableStatement statement = null;
         ResultSet resultSet = null;
         List<HOSRecord> recordList = new ArrayList<HOSRecord>();
         List<HOSRecord> finalRecordList = new ArrayList<HOSRecord>();
-
+        
         Integer driverID;
-        try {
+        try
+        {
             conn = getConnection();
             statement = conn.prepareCall("{call hos_getDriverIDForCommAddress(?)}");
             statement.setString(1, address);
-
-            if (logger.isDebugEnabled())
+			
+            if(logger.isDebugEnabled())
                 logger.debug(statement.toString());
-
+			
             resultSet = statement.executeQuery();
 
-            if (resultSet.next()) {
+            if (resultSet.next())
+            {
                 driverID = resultSet.getInt(1);
-
+    
                 //Grab the min/max dates from the list to use for call.
                 Date startDate = new Date();
                 Date endDate = new Date(0L);
-                for (HOSRecord record : paramList) {
+                for (HOSRecord record : paramList)
+                {
                     if (record.getLogTime().before(startDate))
                         startDate = record.getLogTime();
-
+                    
                     if (record.getLogTime().after(endDate))
                         endDate = record.getLogTime();
                 }
-
+                
                 Interval interval = new Interval(startDate.getTime(), endDate.getTime(), DateTimeZone.UTC);
 
                 recordList = getHOSRecords(driverID, interval, true);
@@ -913,18 +978,21 @@ public class HOSJDBCDAO extends GenericJDBCDAO implements HOSDAO {
                 //driver but weren't in params list.
                 for (HOSRecord record : recordList) {
                     for (HOSRecord param : paramList) {
-                        if (record.getLogTime().equals(param.getLogTime())
-                                && record.getStatus().equals(param.getStatus())) {
+                        if (record.getLogTime().equals(param.getLogTime()) 
+                            && record.getStatus().equals(param.getStatus()))
+                        {
                             finalRecordList.add(record);
                         }
                     }
                 }
             }
         }   // end try
-        catch (SQLException e) { // handle database hosLogs in the usual manner
+        catch (SQLException e)
+        { // handle database hosLogs in the usual manner
             throw new ProDAOException((statement != null) ? statement.toString() : "", e);
         }   // end catch
-        finally { // clean up and release the connection
+        finally
+        { // clean up and release the connection
             close(resultSet);
             close(statement);
             close(conn);
@@ -940,28 +1008,32 @@ public class HOSJDBCDAO extends GenericJDBCDAO implements HOSDAO {
         ResultSet resultSet = null;
 
         HOSOccupantInfo occupantInfo = null;
-
-        try {
+        
+        try
+        {
             conn = getConnection();
             statement = conn.prepareCall("{call hos_getOccupantInfo(?)}");
             statement.setInt(1, driverID);
-
-            if (logger.isDebugEnabled())
+			
+            if(logger.isDebugEnabled())
                 logger.debug(statement.toString());
-
+            
             resultSet = statement.executeQuery();
 
-            if (resultSet.next()) {
-
+            if (resultSet.next())
+            {
+                
                 occupantInfo = new HOSOccupantInfo();
                 occupantInfo.setFullName(resultSet.getString(1));
                 occupantInfo.setEmpId(resultSet.getString(2));
                 occupantInfo.setFobId(resultSet.getString(3));
             }
         }   // end try
-        catch (SQLException e) {
+        catch (SQLException e) { 
             throw new ProDAOException((statement != null) ? statement.toString() : "", e);
-        } finally { // clean up and release the connection
+        } 
+        finally
+        { // clean up and release the connection
             close(resultSet);
             close(statement);
             close(conn);
@@ -972,15 +1044,16 @@ public class HOSJDBCDAO extends GenericJDBCDAO implements HOSDAO {
 
     private static final DateTimeFormatter dateFormatter = DateTimeFormat.forPattern("yyyy-MM-dd");
     private static final String FETCH_MILEAGE_VEHICLE_DAY = "select driverID, odometer6 from agg where vehicleID = ? and aggDate = ?";
-
+    
     @Override
     public Map<Integer, Long> fetchMileageForDayVehicle(DateTime day, Integer vehicleID) {
-
+        
         Map<Integer, Long> mileageMap = new HashMap<Integer, Long>();
         Connection conn = null;
         PreparedStatement statement = null;
         ResultSet resultSet = null;
-        try {
+        try
+        {
             conn = getConnection();
             statement = (PreparedStatement) conn.prepareStatement(FETCH_MILEAGE_VEHICLE_DAY);
             statement.setInt(1, vehicleID);
@@ -991,30 +1064,34 @@ public class HOSJDBCDAO extends GenericJDBCDAO implements HOSDAO {
                 Integer driverID = resultSet.getInt(1);
                 Long mileage = resultSet.getLong(2);
                 mileageMap.put(driverID, mileage);
-
+                
             }
-
+                
 
         }   // end try
-        catch (SQLException e) { // handle database hosLogs in the usual manner
+        catch (SQLException e)
+        { // handle database hosLogs in the usual manner
             throw new ProDAOException(statement.toString(), e);
         }   // end catch
-        finally { // clean up and release the connection
+        finally
+        { // clean up and release the connection
             close(resultSet);
             close(statement);
             close(conn);
         } // end finally   
-
+        
         return mileageMap;
     }
 
     @Override
-    public void logoutDriverFromDevice(String commAddress, String employeeId, long logoutTime, int odometer) {
+    public void logoutDriverFromDevice(String commAddress, String employeeId, long logoutTime,  int odometer) 
+    {
         Connection conn = null;
         CallableStatement statement = null;
-        try {
+        try
+        {
             conn = getConnection();
-
+            
             statement = conn.prepareCall("{call hos_logoutDriverFromDevice(?, ?, ?, ?)}");
 
 
@@ -1022,51 +1099,56 @@ public class HOSJDBCDAO extends GenericJDBCDAO implements HOSDAO {
             statement.setString(2, employeeId);
             statement.setLong(3, logoutTime);
             statement.setInt(4, odometer);
-
-            if (logger.isDebugEnabled())
+            
+            if(logger.isDebugEnabled())
                 logger.debug(statement.toString());
 
             statement.executeUpdate();
 
         }   // end try
-        catch (SQLException e) { // handle database hosLogs in the usual manner
+        catch (SQLException e)
+        { // handle database hosLogs in the usual manner
             throw new ProDAOException((statement != null) ? statement.toString() : "", e);
         }   // end catch
-        finally { // clean up and release the connection
+        finally
+        { // clean up and release the connection
             close(statement);
             close(conn);
         } // end finally
     }
-
-    private final static String FETCH_IMEI_FOR_OCCUPANT = "SELECT imei FROM hosvehiclelogin l, device d WHERE l.deviceID=d.deviceID AND l.logoutTime IS NULL and l.occupantFlag=1 AND l.driverID = ? AND loginTime < ?";
-
+    
+    private final static String FETCH_IMEI_FOR_OCCUPANT = "SELECT imei FROM hosvehiclelogin l, device d WHERE l.deviceID=d.deviceID AND l.logoutTime IS NULL and l.occupantFlag=1 AND l.driverID = ? AND loginTime < ?"; 
     @Override
-    public String fetchIMEIForOccupant(Integer driverID, Integer startTime) {
+    public String fetchIMEIForOccupant(Integer driverID, Integer startTime) 
+    {
         Connection conn = null;
         PreparedStatement statement = null;
         ResultSet resultSet = null;
         String imei = "";
-
-        try {
+        
+        try
+        {
             conn = getConnection();
-
+            
             statement = conn.prepareCall(FETCH_IMEI_FOR_OCCUPANT);
 
 
             statement.setInt(1, driverID);
             statement.setString(2, dbdateFormat.format(startTime));
-
-            if (logger.isDebugEnabled())
+            
+            if(logger.isDebugEnabled())
                 logger.debug(statement.toString());
 
             resultSet = statement.executeQuery();
-            if (resultSet.next())
+            if (resultSet.next()) 
                 imei = resultSet.getString(1);
         }   // end try
-        catch (SQLException e) { // handle database hosLogs in the usual manner
+        catch (SQLException e)
+        { // handle database hosLogs in the usual manner
             throw new ProDAOException((statement != null) ? statement.toString() : "", e);
         }   // end catch
-        finally { // clean up and release the connection
+        finally
+        { // clean up and release the connection
             close(resultSet);
             close(statement);
             close(conn);
@@ -1075,10 +1157,10 @@ public class HOSJDBCDAO extends GenericJDBCDAO implements HOSDAO {
         return imei;
     }
 
-
+    
+    
     // home office location for vehicle is in the actual settings 
-    private final static String FETCH_VEHICLE_HOME_LOCATION = "select settingID, value from actualVSet where settingID in (1048, 1049) and vehicleID=?";
-
+    private final static String FETCH_VEHICLE_HOME_LOCATION = "select settingID, value from actualVSet where settingID in (1048, 1049) and vehicleID=?"; 
     @Override
     public LatLng getVehicleHomeOfficeLocation(Integer vehicleID) {
         Connection conn = null;
@@ -1086,94 +1168,101 @@ public class HOSJDBCDAO extends GenericJDBCDAO implements HOSDAO {
         ResultSet resultSet = null;
 
         LatLng homeLocation = null;
-        try {
+        try
+        {
             conn = getConnection();
-
+            
             statement = conn.prepareCall(FETCH_VEHICLE_HOME_LOCATION);
 
 
             statement.setInt(1, vehicleID);
-
-            if (logger.isDebugEnabled())
+            
+            if(logger.isDebugEnabled())
                 logger.debug(statement.toString());
 
             resultSet = statement.executeQuery();
-            while (resultSet.next()) {
+            while (resultSet.next()) { 
                 Integer settingID = resultSet.getInt(1);
                 if (homeLocation == null) {
                     homeLocation = new LatLng();
                 }
                 if (settingID == 1048) {
                     homeLocation.setLat(resultSet.getFloat(2));
-                } else {
+                }
+                else {
                     homeLocation.setLng(resultSet.getFloat(2));
                 }
             }
         }   // end try
-        catch (SQLException e) { // handle database hosLogs in the usual manner
+        catch (SQLException e)
+        { // handle database hosLogs in the usual manner
             throw new ProDAOException((statement != null) ? statement.toString() : "", e);
         }   // end catch
-        finally { // clean up and release the connection
+        finally
+        { // clean up and release the connection
             close(resultSet);
             close(statement);
             close(conn);
         } // end finally
 
         return homeLocation;
-
+        
     }
-
-    private final static String FETCH_HOS_DELTA_RECORDS = "SELECT h.hosLogID, h.logTime, cl.logTime as originalLogTime, " +
-            "h.status, cl.status as originalStatus, h.driverDOTType, h.origin, h.deletedFlag, h.editedFlag, h.vehicleID, coalesce(v.deviceID, 0) as deviceID " +
-            "FROM hoslog h " +
-            "left JOIN vddlog v on (h.vehicleID != 0 and h.vehicleID = v.vehicleID and h.logTime BETWEEN v.start AND coalesce(v.stop, UTC_TIMESTAMP())) " +
-            "LEFT JOIN hoslog_changelog cl ON  (h.hosLogID = cl.hosLogID) " +
-            "WHERE h.driverID = ? AND (h.origin IN (2,3) OR h.editedFlag = true OR deviceID != ?) AND (h.timeLastUpdated > ?) AND h.status NOT IN (31,39,47,48) ORDER BY h.logTime DESC";
-
+    
+    private final static String FETCH_HOS_DELTA_RECORDS = "SELECT h.hosLogID, h.logTime, cl.logTime as originalLogTime, " + 
+                    "h.status, cl.status as originalStatus, h.driverDOTType, h.origin, h.deletedFlag, h.editedFlag, h.vehicleID, coalesce(v.deviceID, 0) as deviceID " +
+                    "FROM hoslog h " + 
+                    "left JOIN vddlog v on (h.vehicleID != 0 and h.vehicleID = v.vehicleID and h.logTime BETWEEN v.start AND coalesce(v.stop, UTC_TIMESTAMP())) " + 
+                    "LEFT JOIN hoslog_changelog cl ON  (h.hosLogID = cl.hosLogID) " +
+                    "WHERE h.driverID = ? AND (h.origin IN (2,3) OR h.editedFlag = true OR deviceID != ?) AND (h.timeLastUpdated > ?) AND h.status NOT IN (31,39,47,48) ORDER BY h.logTime DESC";
     @Override
-    public List<HOSRecord> getHOSDeltaRecords(Integer driverID, Integer deviceID, Date deltaTime) {
+    public List<HOSRecord> getHOSDeltaRecords(Integer driverID, Integer deviceID, Date deltaTime)  {
 
         String deltaTimeStr = dbdateFormat.format(deltaTime);
-
+        
         Connection conn = null;
         PreparedStatement statement = null;
         ResultSet resultSet = null;
 
         ArrayList<HOSRecord> recordList = new ArrayList<HOSRecord>();
-
-        try {
+        
+        try
+        {
             conn = getConnection();
             statement = conn.prepareCall(FETCH_HOS_DELTA_RECORDS);
             statement.setInt(1, driverID);
             statement.setInt(2, deviceID);
             statement.setString(3, deltaTimeStr);
-            if (logger.isDebugEnabled())
+            if(logger.isDebugEnabled())
                 logger.debug(statement.toString());
             resultSet = statement.executeQuery();
 
-            while (resultSet.next()) {
+            while (resultSet.next())
+            {
                 HOSRecord hosRecord = new HOSRecord();
-
+                
                 hosRecord.setHosLogID(resultSet.getLong(1));
                 hosRecord.setLogTime(getResultSetDate(resultSet, 2));
                 hosRecord.setOriginalLogTime(getResultSetDate(resultSet, 3));
                 hosRecord.setStatus(HOSStatus.valueOf(resultSet.getInt(4)));
-                hosRecord.setOriginalStatus(resultSet.getObject(5) == null ? null : HOSStatus.valueOf(resultSet.getInt(5)));
+                hosRecord.setOriginalStatus(resultSet.getObject(5) == null? null : HOSStatus.valueOf(resultSet.getInt(5)));
                 hosRecord.setDriverDotType(RuleSetType.valueOf(resultSet.getInt(6)));
                 hosRecord.setOrigin(HOSOrigin.valueOf(resultSet.getInt(7)));
                 hosRecord.setDeleted(resultSet.getBoolean(8));
                 hosRecord.setEdited(resultSet.getBoolean(9));
                 hosRecord.setVehicleID(resultSet.getInt(10));
                 hosRecord.setDeviceID(resultSet.getInt(11));
-
-
+                     
+                
                 recordList.add(hosRecord);
             }
         }   // end try
-        catch (SQLException e) { // handle database hosLogs in the usual manner
+        catch (SQLException e)
+        { // handle database hosLogs in the usual manner
             throw new ProDAOException((statement != null) ? statement.toString() : "", e);
         }   // end catch
-        finally { // clean up and release the connection
+        finally
+        { // clean up and release the connection
             close(resultSet);
             close(statement);
             close(conn);
@@ -1181,39 +1270,42 @@ public class HOSJDBCDAO extends GenericJDBCDAO implements HOSDAO {
 
         return recordList;
     }
-
-
+    
+    
     private final static String COUNT_HOS_RECORDS_AT_TIMESTAMP = "select count(*) from hoslog where deletedFlag = false and driverID = ? and logTime = ? and hosLogID != ?";
-
     @Override
-    public boolean otherHosRecordExistsForDriverTimestamp(Integer driverID, Date dateTime, Long hosLogID) {
+    public boolean otherHosRecordExistsForDriverTimestamp(Integer driverID, Date dateTime, Long hosLogID)  {
         boolean recordExists = false;
         String dateTimeStr = dbdateFormat.format(dateTime);
-
+        
         Connection conn = null;
         PreparedStatement statement = null;
         ResultSet resultSet = null;
 
-        try {
+        try
+        {
             conn = getConnection();
             statement = conn.prepareCall(COUNT_HOS_RECORDS_AT_TIMESTAMP);
             statement.setInt(1, driverID);
             statement.setString(2, dateTimeStr);
             statement.setLong(3, (hosLogID == null ? -1l : hosLogID));
-            if (logger.isDebugEnabled())
+            if(logger.isDebugEnabled())
                 logger.debug(statement.toString());
-
+            
             resultSet = statement.executeQuery();
 
-            if (resultSet.next()) {
+            if (resultSet.next())
+            {
                 Integer count = resultSet.getInt(1);
                 recordExists = (count > 0);
             }
         }   // end try
-        catch (SQLException e) { // handle database hosLogs in the usual manner
+        catch (SQLException e)
+        { // handle database hosLogs in the usual manner
             throw new ProDAOException((statement != null) ? statement.toString() : "", e);
         }   // end catch
-        finally { // clean up and release the connection
+        finally
+        { // clean up and release the connection
             close(resultSet);
             close(statement);
             close(conn);
@@ -1221,16 +1313,15 @@ public class HOSJDBCDAO extends GenericJDBCDAO implements HOSDAO {
 
         return recordExists;
     }
-
-    private final static String FETCH_HOS_RECORDS_AT_SUMMARY_TIME = "SELECT h.hosLogID, h.timeLastUpdated, h.timeAdded, h.logTime, cl.logTime as originalLogTime, " +
-            "h.status, cl.status as originalStatus, h.driverDOTType " +
-            "FROM hoslog h " +
+    
+    private final static String FETCH_HOS_RECORDS_AT_SUMMARY_TIME = "SELECT h.hosLogID, h.timeLastUpdated, h.timeAdded, h.logTime, cl.logTime as originalLogTime, " + 
+            "h.status, cl.status as originalStatus, h.driverDOTType, coalesce(h.vehicleID,0), h.deletedFlag, h.editedFlag " +
+            "FROM hoslog h " + 
             "LEFT JOIN hoslog_changelog cl ON  (h.hosLogID = cl.hosLogID) " +
             "WHERE h.driverID = ? AND h.status NOT IN (31,39,47,48) " +
             "AND (h.logTime between ? and ? or cl.logTime between ? and ?)";
-
     @Override
-    public List<HOSRecord> getHOSRecordAtSummaryTime(Integer driverID, Date summaryTime, Date startTime, Date endTime) {
+    public List<HOSRecord> getHOSRecordAtSummaryTime(Integer driverID, Integer vehicleID,  Date summaryTime, Date startTime, Date endTime)  {
 
         String startTimeStr = dbdateFormat.format(startTime);
         String endTimeStr = dbdateFormat.format(endTime);
@@ -1238,10 +1329,11 @@ public class HOSJDBCDAO extends GenericJDBCDAO implements HOSDAO {
         Connection conn = null;
         PreparedStatement statement = null;
         ResultSet resultSet = null;
-
+        
         ArrayList<HOSRecord> recordList = new ArrayList<HOSRecord>();
-
-        try {
+        
+        try
+        {
             conn = getConnection();
             statement = conn.prepareCall(FETCH_HOS_RECORDS_AT_SUMMARY_TIME);
             statement.setInt(1, driverID);
@@ -1249,50 +1341,59 @@ public class HOSJDBCDAO extends GenericJDBCDAO implements HOSDAO {
             statement.setString(3, endTimeStr);
             statement.setString(4, startTimeStr);
             statement.setString(5, endTimeStr);
-            if (logger.isDebugEnabled())
+            if(logger.isDebugEnabled())
                 logger.debug(statement.toString());
-
+            
             resultSet = statement.executeQuery();
-
-            while (resultSet.next()) {
+        
+            while (resultSet.next())
+            {
                 HOSRecord hosRecord = new HOSRecord();
-
+                
                 hosRecord.setHosLogID(resultSet.getLong(1));
                 Date lastUpdateTime = getResultSetDate(resultSet, 2);
                 Date addedTime = getResultSetDate(resultSet, 3);
-                if (addedTime.after(summaryTime)) {
-                    continue;
-                }
                 Date logTime = getResultSetDate(resultSet, 4);
                 Date originalLogTime = getResultSetDate(resultSet, 5);
                 HOSStatus status = HOSStatus.valueOf(resultSet.getInt(6));
                 HOSStatus originalStatus = resultSet.getObject(7) == null ? null : HOSStatus.valueOf(resultSet.getInt(7));
                 hosRecord.setDriverDotType(RuleSetType.valueOf(resultSet.getInt(8)));
-
+                hosRecord.setVehicleID(resultSet.getInt(9));
+                hosRecord.setDeleted(resultSet.getBoolean(10));
+                hosRecord.setEdited(resultSet.getBoolean(11));
+                if (addedTime.after(summaryTime) && (!hosRecord.getVehicleID().equals(vehicleID) || hosRecord.getDeleted() || hosRecord.getEdited())) {
+                    continue;
+                }
+                
                 if (lastUpdateTime.after(summaryTime)) {
                     hosRecord.setLogTime(originalLogTime == null ? logTime : originalLogTime);
-                    hosRecord.setStatus(originalStatus == null ? status : originalStatus);
-                } else {
+                    hosRecord.setStatus(originalStatus== null ? status : originalStatus);
+                }
+                else {
                     hosRecord.setLogTime(logTime);
                     hosRecord.setStatus(status);
                 }
 
-
+                     
+                
                 recordList.add(hosRecord);
             }
         }   // end try
-        catch (SQLException e) { // handle database hosLogs in the usual manner
+        catch (SQLException e)
+        { // handle database hosLogs in the usual manner
             throw new ProDAOException((statement != null) ? statement.toString() : "", e);
         }   // end catch
-        finally { // clean up and release the connection
+        finally
+        { // clean up and release the connection
             close(resultSet);
             close(statement);
             close(conn);
         } // end finally
-
+    
         Collections.sort(recordList);
         return recordList;
     }
+
 
     private Date getResultSetDate(ResultSet resultSet, Integer index) throws SQLException {
         String dateStr = resultSet.getString(index);

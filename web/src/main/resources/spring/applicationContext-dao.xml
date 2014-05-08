@@ -134,6 +134,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
     <bean id="adminReportScheduleDAO" class="com.inthinc.pro.dao.jdbc.AdminReportScheduleJDBCDAO"/>
     <bean id="eventAggregationDAO" class="com.inthinc.pro.dao.jdbc.EventAggregationJDBCDAO" parent="genericJDBCDAO" />
     <bean id="trailerReportDAO" class="com.inthinc.pro.dao.jdbc.TrailerReportJDBCDAO" />
+   	<bean id="fipsDAO" class="com.inthinc.pro.dao.jdbc.FipsJDBCDAO"/>
     
     <!-- Custom Mappers -->
     <bean id="driverPerformanceMapper" class="com.inthinc.pro.dao.hessian.mapper.DriverPerformanceMapper"/>
