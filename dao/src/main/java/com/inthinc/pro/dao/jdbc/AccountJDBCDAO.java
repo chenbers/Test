@@ -38,7 +38,13 @@ public class AccountJDBCDAO extends SimpleJdbcDaoSupport implements AccountDAO {
     private static final String FIND_ALL_ACCOUNT_IDS = "SELECT acctID FROM  account ";
     private static final String DEL_ACCOUNT_BY_ID = "delete from account where acctID = ?";
     private static final String INSERT_ACCOUNT = "INSERT INTO account() values()";
-    private static final String FIND_BY_ID = "select * from account ac LEFT JOIN address ad on ac.mailId= ad.addrId, state st where  ac.acctID= :acctID and ad.stateId=st.stateID  ";
+    private static final String FIND_BY_ID = "SELECT * " +
+            " FROM account ac " +
+            "  LEFT OUTER JOIN address ad " +
+            "    ON ac.mailID = ad.addrID " +
+            "  LEFT OUTER JOIN state st " +
+            "    ON ad.stateID = st.stateID " +
+            " WHERE ac.acctID = :acctID";
     private static final String UPDATE_ACCOUNT_1 = "UPDATE account set zonePublishDate=?, status=?, billID=?, name=?, hos=?, unkDriverID=? where acctID = ?";
     private static final String UPDATE_ACCOUNT_SUPPORT_PHONE1 = "UPDATE accountProp set value=? where acctID = ? and name like 'supportPhone1'";
     private static final String UPDATE_ACCOUNT_SUPPORT_PHONE2 = "UPDATE accountProp set value=? where acctID = ? and name like 'supportPhone2'";

@@ -9,11 +9,15 @@
 
     <!-- DAO -->
     <bean id="driverPerformanceDAO" class="com.inthinc.pro.dao.report.impl.DriverPerformanceDAOImpl"/>
-    <bean id="genericDAO" class="com.inthinc.pro.dao.hessian.GenericHessianDAO" abstract="true"/>
+    <bean id="genericDAO" class="com.inthinc.pro.dao.hessian.GenericHessianDAO" abstract="true">
+        <property name="siloService" ref="siloServiceBean"></property>
+    </bean>
     <bean id="genericJDBCDAO" class="com.inthinc.pro.dao.jdbc.GenericJDBCDAO" abstract="true">
         <property name="dataSource" ref="tiwiJDBCDataSource"/>
     </bean>
-    <bean id="locationDAO" class="com.inthinc.pro.dao.hessian.LocationHessianDAO"/>
+    <bean id="locationDAO" class="com.inthinc.pro.dao.hessian.LocationHessianDAO">
+        <property name="siloService" ref="siloServiceBean"/>
+    </bean>
     <bean id="addressDAO" class="com.inthinc.pro.dao.jdbc.AddressJDBCDAO" parent="genericJDBCDAO">
         <property name="dataSource" ref="tiwiJDBCDataSource"/>
     </bean>
@@ -25,6 +29,8 @@
     </bean>
     <bean id="driverDAO" class="com.inthinc.pro.dao.jdbc.DriverJDBCDAO" parent="genericJDBCDAO">
         <property name="dataSource" ref="tiwiJDBCDataSource"/>
+        <property name="locationDAO" ref="locationDAO"></property>
+        <property name="vehicleDAO" ref="vehicleDAO"></property>
     </bean>
     <bean id="eventDAO" class="com.inthinc.pro.dao.hessian.EventHessianDAO" parent="genericDAO"/>
     <bean id="reportScheduleDAO" class="com.inthinc.pro.dao.jdbc.ReportScheduleJDBCDAO" parent="genericJDBCDAO">
