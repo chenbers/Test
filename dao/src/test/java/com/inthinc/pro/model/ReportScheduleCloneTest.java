@@ -8,6 +8,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Tests correct cloning of {@link ReportSchedule}.
@@ -89,4 +90,26 @@ public class ReportScheduleCloneTest {
         assertFalse(original.getEndDate().getTime() == clone.getEndDate().getTime());
         assertFalse(original.getLastDate().getTime() == clone.getLastDate().getTime());
     }
+    @Test
+    public void validateEmailsTest(){
+        ReportSchedule reportSchedule = new ReportSchedule();
+        reportSchedule.setReportDuration(Duration.DAYS);
+        reportSchedule.setStatus(Status.ACTIVE);
+        reportSchedule.setName("Report Schedule");
+        reportSchedule.setUserID(1);
+        reportSchedule.setGroupID(1);
+        reportSchedule.setReportID(1);
+        reportSchedule.setAccountID(1);
+        List<String> emailList = new ArrayList<String>();
+        emailList.add("foo@inthinc.com");
+        emailList.add("  bar@inthinc.com");
+        emailList.add("baz@inthinc.com");
+        emailList.add("bazinthinc.com");
+        reportSchedule.setEmailTo(emailList);
+        assertTrue(reportSchedule.getEmailTo().size()==3);
+        for(String email : reportSchedule.getEmailTo()) {
+            assertTrue("email address contains white spaces",!email.contains(" "));
+        }
+    }
+
 }
