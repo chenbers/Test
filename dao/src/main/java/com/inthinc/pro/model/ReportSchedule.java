@@ -17,7 +17,7 @@ import com.inthinc.pro.dao.annotations.SimpleName;
 @XmlRootElement
 @SimpleName(simpleName = "ReportPref")
 public class ReportSchedule implements Cloneable {
-    private static final Logger logger = Logger.getLogger(ReportSchedule.class);
+    //private static final Logger logger = Logger.getLogger(ReportSchedule.class);
     @ID
     @Column(name = "reportPrefID")
     private Integer reportScheduleID;
@@ -132,7 +132,7 @@ public class ReportSchedule implements Cloneable {
             if (EmailValidator.getInstance().isValid(emailToList.get(i))) {
                 this.emailTo.add(emailToList.get(i).trim());
             } else {
-                logger.info("Wrong email detected:" + emailToList.get(i));
+                //logger.info("Wrong email detected:" + emailToList.get(i));
             }
         }
 
