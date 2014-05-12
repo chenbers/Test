@@ -706,8 +706,8 @@ public class EmailReportJobTest
         emailList.add("  bar@inthinc.com");
         emailList.add("baz@inthinc.com");
         reportSchedule.setEmailTo(emailList);
-        for(String email : emailList) {
-            assertTrue("email address contains white spaces",!email.contains(" "));
+        for(String email : reportSchedule.getEmailTo()) {
+            assertTrue("email ("+email+") address contains white spaces",!email.contains(" "));
         }
 
     }
