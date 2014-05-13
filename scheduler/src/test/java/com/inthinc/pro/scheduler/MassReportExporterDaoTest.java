@@ -2,7 +2,6 @@ package com.inthinc.pro.scheduler;
 
 import com.inthinc.pro.dao.GroupDAO;
 import com.inthinc.pro.dao.UserDAO;
-import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.GroupHierarchy;
 import com.inthinc.pro.model.Occurrence;
@@ -13,9 +12,9 @@ import com.inthinc.pro.model.Status;
 import com.inthinc.pro.model.TimeFrame;
 import com.inthinc.pro.model.User;
 import com.inthinc.pro.reports.FormatType;
-import com.inthinc.pro.reports.ReportCategory;
 import com.inthinc.pro.reports.ReportCriteria;
 import com.inthinc.pro.reports.ReportGroup;
+import com.inthinc.pro.reports.ReportType;
 import com.inthinc.pro.reports.jasper.JasperReportBuilder;
 import com.inthinc.pro.reports.service.ReportCriteriaService;
 import junit.framework.Assert;
@@ -127,8 +126,10 @@ public class MassReportExporterDaoTest {
                         exportToCsvStream(os, jp);
                         bytes = os.toByteArray();
                         ext = ".csv";
-                    } else {
+                    } else if (format == FormatType.PDF) {
                         bytes = JasperExportManager.exportReportToPdf(jp);
+                    } else {
+                        continue;
                     }
 
                     long milis = System.currentTimeMillis();
@@ -151,8 +152,8 @@ public class MassReportExporterDaoTest {
                     }
                 }
             } catch (Throwable t) {
-               logger.error("Exception when creating report: "+reportSchedule.getName());
-               t.printStackTrace();
+                logger.error("Exception when creating report: " + reportSchedule.getName());
+                t.printStackTrace();
             }
         }
     }
@@ -168,10 +169,7 @@ public class MassReportExporterDaoTest {
 
         accountGroupHierarchy = getAccountGroupHierarchy(ACCOUNT_ID);
         Map<Integer, String> items = new HashMap<Integer, String>();
-
-        for (ReportCategory cat : ReportCategory.values()) {
-            items.putAll(getItemsByCategory(cat));
-        }
+        items.putAll(getItems());
 
         int i = 0;
         DateTime dtNow = new DateTime();
@@ -234,21 +232,23 @@ public class MassReportExporterDaoTest {
         exporter.exportReport();
     }
 
-    private Map<Integer, String> getItemsByCategory(ReportCategory category) {
+    private Map<Integer, String> getItems() {
         Map<Integer, String> items = new HashMap<Integer, String>();
-        for (ReportGroup rt : EnumSet.allOf(ReportGroup.class)) {
+        EnumSet<ReportGroup> es = EnumSet.allOf(ReportGroup.class);
+        for (ReportGroup rt : es) {
+            for (ReportType rtt : rt.getReports()) {
+                String jasperName = rtt.getPrettyJasper();
+                if (jasperName == null)
+                    jasperName = rtt.getRawJasper();
 
-            String label = rt.getLabel().replace("\\", "_").replace("/", "_").replace(" ", "_");
-            if (label==null)
-                label = "unknown";
-            if (category == null && rt.getReportCategory() == null) {
+                jasperName.replaceAll(".jrxml", "");
+                String repoName = rtt.getLabel() + "_" + jasperName;
+
+                String label = repoName.replace("/", "_").replace(" ", "_");
+                if (label == null)
+                    label = "unknown";
                 items.put(rt.getCode(), label);
-                continue;
             }
-            if (!rt.isCategory(category))
-                continue;
-
-            items.put(rt.getCode(), label);
         }
         return items;
     }
