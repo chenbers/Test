@@ -31,6 +31,7 @@ import com.inthinc.hos.model.RuleSetType;
 import com.inthinc.pro.ProDAOException;
 import com.inthinc.pro.dao.HOSDAO;
 import com.inthinc.pro.model.FuelEfficiencyType;
+import com.inthinc.pro.model.InspectionType;
 import com.inthinc.pro.model.LatLng;
 import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.model.hos.HOSDriverLogin;
@@ -342,6 +343,7 @@ public class HOSJDBCDAO extends GenericJDBCDAO implements HOSDAO {
                 hosRecord.setSingleDriver(resultSet.getBoolean(30));
                 hosRecord.setOriginalStatus(HOSStatus.valueOf(resultSet.getInt(31)));
                 hosRecord.setMobileUnitID(resultSet.getString(32));
+                hosRecord.setInspectionType(InspectionType.valueOf(resultSet.getInt(33)));
                 
                 recordList.add(hosRecord);
             }
@@ -420,6 +422,7 @@ public class HOSJDBCDAO extends GenericJDBCDAO implements HOSDAO {
                 hosRecord.setSingleDriver(resultSet.getBoolean(30));
                 hosRecord.setOriginalStatus(HOSStatus.valueOf(resultSet.getInt(31)));
                 hosRecord.setMobileUnitID(resultSet.getString(32));
+                hosRecord.setInspectionType(InspectionType.valueOf(resultSet.getInt(33)));
                 
                 recordList.add(hosRecord);
             }
@@ -592,7 +595,7 @@ public class HOSJDBCDAO extends GenericJDBCDAO implements HOSDAO {
         try
         {
             conn = getConnection();
-            statement = conn.prepareCall("{call hos_createFromNote(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)}");
+            statement = conn.prepareCall("{call hos_createFromNote(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?)}");
             statement.setInt(1, hosRecord.getDeviceID());
             statement.setInt(2, hosRecord.getVehicleID());
             statement.setLong(3, 0); //Note ID
@@ -613,6 +616,7 @@ public class HOSJDBCDAO extends GenericJDBCDAO implements HOSDAO {
             statement.setBoolean(18, hosRecord.getTripInspectionFlag());
             statement.setBoolean(19, hosRecord.getTripReportFlag());
             statement.setString(20, hosRecord.getMobileUnitID());
+            statement.setInt(21, hosRecord.getInspectionType() == null ? 0 : hosRecord.getInspectionType().getCode());
             
             if(logger.isDebugEnabled())
                 logger.debug(statement.toString());
@@ -725,6 +729,7 @@ public class HOSJDBCDAO extends GenericJDBCDAO implements HOSDAO {
                 hosRecord.setEditUserID(resultSet.getInt(29));
                 hosRecord.setSingleDriver(resultSet.getBoolean(30));
                 hosRecord.setMobileUnitID(resultSet.getString(31));
+                hosRecord.setInspectionType(InspectionType.valueOf(resultSet.getInt(32)));
             
             }
         }   // end try
@@ -1310,13 +1315,13 @@ public class HOSJDBCDAO extends GenericJDBCDAO implements HOSDAO {
     }
     
     private final static String FETCH_HOS_RECORDS_AT_SUMMARY_TIME = "SELECT h.hosLogID, h.timeLastUpdated, h.timeAdded, h.logTime, cl.logTime as originalLogTime, " + 
-            "h.status, cl.status as originalStatus, h.driverDOTType " +
+            "h.status, cl.status as originalStatus, h.driverDOTType, coalesce(h.vehicleID,0), h.deletedFlag, h.editedFlag " +
             "FROM hoslog h " + 
             "LEFT JOIN hoslog_changelog cl ON  (h.hosLogID = cl.hosLogID) " +
             "WHERE h.driverID = ? AND h.status NOT IN (31,39,47,48) " +
             "AND (h.logTime between ? and ? or cl.logTime between ? and ?)";
     @Override
-    public List<HOSRecord> getHOSRecordAtSummaryTime(Integer driverID, Date summaryTime, Date startTime, Date endTime)  {
+    public List<HOSRecord> getHOSRecordAtSummaryTime(Integer driverID, Integer vehicleID,  Date summaryTime, Date startTime, Date endTime)  {
 
         String startTimeStr = dbdateFormat.format(startTime);
         String endTimeStr = dbdateFormat.format(endTime);
@@ -1348,14 +1353,17 @@ public class HOSJDBCDAO extends GenericJDBCDAO implements HOSDAO {
                 hosRecord.setHosLogID(resultSet.getLong(1));
                 Date lastUpdateTime = getResultSetDate(resultSet, 2);
                 Date addedTime = getResultSetDate(resultSet, 3);
-                if (addedTime.after(summaryTime)) {
-                    continue;
-                }
                 Date logTime = getResultSetDate(resultSet, 4);
                 Date originalLogTime = getResultSetDate(resultSet, 5);
                 HOSStatus status = HOSStatus.valueOf(resultSet.getInt(6));
                 HOSStatus originalStatus = resultSet.getObject(7) == null ? null : HOSStatus.valueOf(resultSet.getInt(7));
                 hosRecord.setDriverDotType(RuleSetType.valueOf(resultSet.getInt(8)));
+                hosRecord.setVehicleID(resultSet.getInt(9));
+                hosRecord.setDeleted(resultSet.getBoolean(10));
+                hosRecord.setEdited(resultSet.getBoolean(11));
+                if (addedTime.after(summaryTime) && (!hosRecord.getVehicleID().equals(vehicleID) || hosRecord.getDeleted() || hosRecord.getEdited())) {
+                    continue;
+                }
                 
                 if (lastUpdateTime.after(summaryTime)) {
                     hosRecord.setLogTime(originalLogTime == null ? logTime : originalLogTime);
@@ -1385,6 +1393,7 @@ public class HOSJDBCDAO extends GenericJDBCDAO implements HOSDAO {
         Collections.sort(recordList);
         return recordList;
     }
+
 
     private Date getResultSetDate(ResultSet resultSet, Integer index) throws SQLException {
         String dateStr = resultSet.getString(index);

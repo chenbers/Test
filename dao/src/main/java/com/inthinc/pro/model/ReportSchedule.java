@@ -7,6 +7,9 @@ import java.util.List;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
+import org.apache.commons.validator.routines.EmailValidator;
+import org.apache.log4j.Logger;
+
 import com.inthinc.pro.dao.annotations.Column;
 import com.inthinc.pro.dao.annotations.ID;
 import com.inthinc.pro.dao.annotations.SimpleName;
@@ -14,6 +17,7 @@ import com.inthinc.pro.dao.annotations.SimpleName;
 @XmlRootElement
 @SimpleName(simpleName = "ReportPref")
 public class ReportSchedule implements Cloneable {
+    //private static final Logger logger = Logger.getLogger(ReportSchedule.class);
     @ID
     @Column(name = "reportPrefID")
     private Integer reportScheduleID;
@@ -122,11 +126,16 @@ public class ReportSchedule implements Cloneable {
         return emailTo;
     }
 
-    public void setEmailTo(List<String> emailTo) {
-        this.emailTo = emailTo;
-        for (int i=0; i<emailTo.size(); i++ ) {
-            this.emailTo.set(i,this.emailTo.get(i)==null?this.emailTo.get(i):this.emailTo.get(i).trim());
+    public void setEmailTo(List<String> emailToList) {
+        this.emailTo = new ArrayList<String>();
+        for (int i = 0; i < emailToList.size(); i++) {
+            if (EmailValidator.getInstance().isValid(emailToList.get(i))) {
+                this.emailTo.add(emailToList.get(i).trim());
+            } else {
+                //logger.info("Wrong email detected:" + emailToList.get(i));
+            }
         }
+
     }
 
     public Integer getAccountID() {

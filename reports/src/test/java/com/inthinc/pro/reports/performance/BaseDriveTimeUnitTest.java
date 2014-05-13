@@ -274,7 +274,7 @@ public class BaseDriveTimeUnitTest extends BasePerformanceUnitTest {
         }
 
         @Override
-        public List<HOSRecord> getHOSRecordAtSummaryTime(Integer driverID, Date summaryTime, Date startTime, Date endTime) {
+        public List<HOSRecord> getHOSRecordAtSummaryTime(Integer driverID, Integer vehicleID, Date summaryTime, Date startTime, Date endTime) {
             // TODO Auto-generated method stub
             return null;
         }

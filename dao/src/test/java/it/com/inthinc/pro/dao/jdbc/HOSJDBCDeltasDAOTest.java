@@ -424,9 +424,54 @@ public class HOSJDBCDeltasDAOTest extends SimpleJdbcDaoSupport {
         checkOriginalListAtSummaryTime(hosDAO, groupData, cloneList);
     }
 
+    @Test
+    // DE9503
+    public void testCaseHOSRecordAtSummaryTimeFromDevice() {
+        DataSource dataSource = new ITDataSource().getRealDataSource();
+        this.setDataSource(dataSource);
+        SimpleJdbcTemplate template = getSimpleJdbcTemplate();
+
+        HOSDAO hosDAO = new HOSJDBCDAO();
+        ((HOSJDBCDAO)hosDAO).setDataSource(new ITDataSource().getRealDataSource());
+        
+        GroupData groupData = itData.teamGroupData.get(ITData.WS_GROUP);
+        List<HOSRecord> initialList = setupforLogDeltasTest(groupData);
+        List<HOSRecord> cloneList = copyLogTimeAndStatus(initialList);
+        
+        // change the added/update time to 1 minute later
+        DateTime latentUpdateTime = testDateTime.plusHours(1).plusMinutes(1);
+        String sql = "UPDATE hoslog set timeAdded = '" + dateTimeFormatter.print(latentUpdateTime) + "', timeLastUpdated = '" + dateTimeFormatter.print(latentUpdateTime) + "' where driverID = " + groupData.driver.getDriverID();
+        Integer rows = template.update(sql);
+
+        // records added for same device/vehicle should not be filtered out of list
+        List<HOSRecord> recListAtSummaryTime = hosDAO.getHOSRecordAtSummaryTime(groupData.driver.getDriverID(), groupData.vehicle.getVehicleID(), lastUpdateTime.toDate(), testDateTime.toDate(), testDateTime.plusHours(1).toDate());
+        assertEquals("recListAtSummaryTime should match initial list", cloneList.size(), recListAtSummaryTime.size());
+        
+        
+        // change vehicleID on one
+        sql = "UPDATE hoslog set vehicleID = 0 where hosLogID = " + initialList.get(0).getHosLogID();
+        System.out.println("sql: " + sql);
+        rows = template.update(sql);
+        
+        // deleted flag on one
+        sql = "UPDATE hoslog set deletedFlag = 1 where hosLogID = " + initialList.get(1).getHosLogID();
+        System.out.println("sql: " + sql);
+        rows = template.update(sql);
+        
+        // edited flag on one
+        sql = "UPDATE hoslog set editedFlag = 1 where hosLogID = " + initialList.get(2).getHosLogID();
+        System.out.println("sql: " + sql);
+        rows = template.update(sql);
+
+        // should only have one left
+        recListAtSummaryTime = hosDAO.getHOSRecordAtSummaryTime(groupData.driver.getDriverID(), groupData.vehicle.getVehicleID(), lastUpdateTime.toDate(), testDateTime.toDate(), testDateTime.plusHours(1).toDate());
+        assertEquals("recListAtSummaryTime should be filtered to one record left", 1, recListAtSummaryTime.size());
+        
+    }
+
 
     private void checkOriginalListAtSummaryTime(HOSDAO hosDAO, GroupData groupData, List<HOSRecord> cloneList) {
-        List<HOSRecord> recListAtSummaryTime = hosDAO.getHOSRecordAtSummaryTime(groupData.driver.getDriverID(), lastUpdateTime.toDate(), testDateTime.toDate(), testDateTime.plusHours(1).toDate());
+        List<HOSRecord> recListAtSummaryTime = hosDAO.getHOSRecordAtSummaryTime(groupData.driver.getDriverID(), groupData.vehicle.getVehicleID(), lastUpdateTime.toDate(), testDateTime.toDate(), testDateTime.plusHours(1).toDate());
         assertEquals("recListAtSummaryTime should match initial list", cloneList.size(), recListAtSummaryTime.size());
         
         int cnt = 0;
