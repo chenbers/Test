@@ -168,17 +168,20 @@ public class MassReportExporterDaoTest {
         useRawTemplateForTabularFormats = useRawTemplateStr != null && useRawTemplateStr.trim().equals("true");
 
         accountGroupHierarchy = getAccountGroupHierarchy(ACCOUNT_ID);
-        Map<Integer, String> items = new HashMap<Integer, String>();
+        Map<String, String> items = new HashMap<String, String>();
         items.putAll(getItems());
 
         int i = 0;
         DateTime dtNow = new DateTime();
         DateTime dtMonth = new DateTime();
         dtMonth = dtMonth.minusMonths(1);
-        for (Map.Entry<Integer, String> entry : items.entrySet()) {
+        for (Map.Entry<String, String> entry : items.entrySet()) {
+            String[] split = entry.getKey().split("_");
+            Integer id = Integer.valueOf(split[0]);
+
             ReportSchedule reportSchedule = new ReportSchedule();
             reportSchedule.setReportScheduleID(i);
-            reportSchedule.setReportID(entry.getKey());
+            reportSchedule.setReportID(id);
             reportSchedule.setName(entry.getValue());
             reportSchedule.setStatus(Status.ACTIVE);
             reportSchedule.setAccountID(ACCOUNT_ID);
@@ -232,8 +235,8 @@ public class MassReportExporterDaoTest {
         exporter.exportReport();
     }
 
-    private Map<Integer, String> getItems() {
-        Map<Integer, String> items = new HashMap<Integer, String>();
+    private Map<String, String> getItems() {
+        Map<String, String> items = new HashMap<String, String>();
         EnumSet<ReportGroup> es = EnumSet.allOf(ReportGroup.class);
         for (ReportGroup rt : es) {
             for (ReportType rtt : rt.getReports()) {
@@ -247,7 +250,7 @@ public class MassReportExporterDaoTest {
                 String label = repoName.replace("/", "_").replace(" ", "_");
                 if (label == null)
                     label = "unknown";
-                items.put(rt.getCode(), label);
+                items.put(rt.getCode()+"_"+label, label);
             }
         }
         return items;
