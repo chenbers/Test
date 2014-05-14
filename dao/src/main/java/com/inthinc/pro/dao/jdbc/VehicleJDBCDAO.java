@@ -849,7 +849,7 @@ public class VehicleJDBCDAO extends SimpleJdbcDaoSupport implements VehicleDAO {
             Vehicle veh = new Vehicle();
             veh.setVehicleID(rs.getInt("vehicleID"));
             veh.setGroupID(rs.getObject("groupID") == null ? null : rs.getInt("groupID"));
-            veh.setFullName(rs.getString("name"));
+            veh.setName(rs.getString("name"));
             veh.setMake(rs.getString("make"));
             veh.setModel(rs.getString("model"));
             veh.setVIN(rs.getString("vin"));
