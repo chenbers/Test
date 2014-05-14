@@ -101,6 +101,9 @@ public class Address extends BaseEntity implements HasAccountId {
     }
     
     public String getDisplayString() {
+        if (hasAllNullComponents())
+            return "";
+
         StringBuffer buffer = new StringBuffer();
         buffer.append((addr1 == null) ? "" : addr1);
         buffer.append((addr2 == null) ? "" : (", " + addr2));
@@ -113,6 +116,11 @@ public class Address extends BaseEntity implements HasAccountId {
         return buffer.toString();
         
     }
+    private Boolean hasAllNullComponents(){
+        return addr1 == null && addr2 == null && city == null && (state != null && state.getName() == null
+                && state.getAbbrev() == null && state.getModified() == null && state.getCreated() == null);
+    }
+
     public Boolean isEmpty(){
         return (addr1 == null || addr1.isEmpty()) && 
         	   (addr2 == null || addr2.isEmpty()) && 
