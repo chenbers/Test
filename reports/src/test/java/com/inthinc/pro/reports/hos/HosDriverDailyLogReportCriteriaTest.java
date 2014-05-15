@@ -3,20 +3,18 @@ package com.inthinc.pro.reports.hos;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 import java.util.TimeZone;
 
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.Interval;
 import org.joda.time.LocalDate;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.inthinc.hos.ddl.HosDailyDriverLog;
@@ -34,7 +32,6 @@ import com.inthinc.hos.model.HOSRecBase;
 import com.inthinc.hos.model.HOSStatus;
 import com.inthinc.hos.model.RuleSetType;
 import com.inthinc.pro.dao.mock.MockHOSDAO;
-import com.inthinc.pro.model.InspectionType;
 import com.inthinc.pro.model.Status;
 import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.model.VehicleType;
@@ -976,47 +973,6 @@ public class HosDriverDailyLogReportCriteriaTest extends BaseUnitTest{
                 assertEquals("EmployeeID", MockData.EMPLOYEE_ID, hosDailyDriverLog.getDriverEmpID());
             }
             
-    }
-    
-
-    @Test
-    public void tripInspectionTest() {
-        
-        Map<InspectionType, String> expectedRemarksMap = new HashMap<InspectionType, String>();
-        expectedRemarksMap.put(InspectionType.PRETRIP, "Pre Trip Inspection performed");
-        expectedRemarksMap.put(InspectionType.POSTTRIP, "Post Trip Inspection performed");
-        expectedRemarksMap.put(InspectionType.NO_PRETRIP, "Pre Trip Inspection not needed");
-        expectedRemarksMap.put(InspectionType.NO_POSTTRIP, "Post Trip Inspection not needed");
-        
-        
-        DDLDataSet ddlTestData = new DDLDataSet("lohrFull_03132013_03252013", DDLDataSet.INTHINC_DB_CSV);
-        for (InspectionType inspectionType : expectedRemarksMap.keySet()) {   
-            
-            for (HOSRecord hosRecord : ddlTestData.hosRecordList) {
-                hosRecord.setInspectionType(inspectionType);
-                hosRecord.setTripReportFlag(true);
-                hosRecord.setTripInspectionFlag(inspectionType == InspectionType.PRETRIP || inspectionType == inspectionType.POSTTRIP);
-            }
-            String expectedRemarkStr = expectedRemarksMap.get(inspectionType);
-            
-            HosDailyDriverLogReportCriteria hosDailyDriverLogReportCriteria = new HosDailyDriverLogReportCriteria(Locale.US, Boolean.FALSE, dateTimeZone);
-            hosDailyDriverLogReportCriteria.initCriteriaList(ddlTestData.interval, ddlTestData.interval, ddlTestData.hosRecordList, ddlTestData.hosVehicleDayDataList,
-                ddlTestData.hosOccupantLogList, ddlTestData.driver, ddlTestData.account, ddlTestData.group.getAddress());
-            
-            // check the data
-            List<ReportCriteria> criteriaList = hosDailyDriverLogReportCriteria.getCriteriaList();
-            assertEquals("expected one ReportCriteria item for each day", ddlTestData.numDays, criteriaList.size());
-
-            // turn on in base class to get a dump of report
-            dump("DDL", 1000, hosDailyDriverLogReportCriteria.getCriteriaList(), FormatType.PDF);
-            
-            for (ReportCriteria reportCriteria : hosDailyDriverLogReportCriteria.getCriteriaList()) {
-                HosDailyDriverLog hosDailyDriverLog = (HosDailyDriverLog)reportCriteria.getMainDataset().get(0);
-                for (RemarkLog remarkLog : hosDailyDriverLog.getRemarksList()) {
-                    assertTrue("Expected Remark to contain " + expectedRemarkStr, remarkLog.getStatusDescription().contains(expectedRemarkStr));
-                }
-            }
         }
-    }
 
 }
