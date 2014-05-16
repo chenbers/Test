@@ -22,6 +22,7 @@ import org.joda.time.Interval;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
 import org.springframework.jdbc.core.simple.SimpleJdbcTemplate;
@@ -39,7 +40,7 @@ import com.inthinc.pro.model.hos.HOSDelta;
 import com.inthinc.pro.model.hos.HOSDeltaRecord;
 import com.inthinc.pro.model.hos.HOSRecord;
 
-
+@Ignore //until hos_createFromNote is unified across dev/qa/staging/prod
 public class HOSJDBCDeltasDAOTest extends SimpleJdbcDaoSupport {
     private static ITData itData;
     private static SiloService siloService;
