@@ -38,7 +38,6 @@ import com.inthinc.pro.dao.jdbc.HOSJDBCDAO;
 import com.inthinc.pro.dao.util.HOSUtil;
 import com.inthinc.pro.model.Device;
 import com.inthinc.pro.model.Driver;
-import com.inthinc.pro.model.InspectionType;
 import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.model.hos.HOSDriverLogin;
 import com.inthinc.pro.model.hos.HOSGroupMileage;
@@ -494,7 +493,6 @@ public class HOSJDBCDAOTest extends BaseJDBCTest{
         hosRecord.setVehicleID(vehicleID);
         hosRecord.setTruckGallons(truckGallons);
         hosRecord.setTrailerGallons(trailerGallons);
-        hosRecord.setInspectionType(InspectionType.NONE);
         Long hosLogID = hosDAO.create(0l, hosRecord);
         System.out.println("hosLogID: " + hosLogID + " " + hosRecordDate);
         hosRecord.setHosLogID(hosLogID);
@@ -536,7 +534,6 @@ public class HOSJDBCDAOTest extends BaseJDBCTest{
         expectedHosRecord.setVehicleName((vehicle == null) ? "" : vehicle.getName());
         expectedHosRecord.setVehicleOdometer(0l);
         expectedHosRecord.setMobileUnitID(hosRecord.getMobileUnitID());
-        expectedHosRecord.setInspectionType(InspectionType.NONE);
         return expectedHosRecord;
     }
 
