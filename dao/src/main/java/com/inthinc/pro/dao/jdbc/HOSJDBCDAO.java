@@ -31,7 +31,6 @@ import com.inthinc.hos.model.RuleSetType;
 import com.inthinc.pro.ProDAOException;
 import com.inthinc.pro.dao.HOSDAO;
 import com.inthinc.pro.model.FuelEfficiencyType;
-import com.inthinc.pro.model.InspectionType;
 import com.inthinc.pro.model.LatLng;
 import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.model.hos.HOSDriverLogin;
@@ -343,7 +342,6 @@ public class HOSJDBCDAO extends GenericJDBCDAO implements HOSDAO {
                 hosRecord.setSingleDriver(resultSet.getBoolean(30));
                 hosRecord.setOriginalStatus(HOSStatus.valueOf(resultSet.getInt(31)));
                 hosRecord.setMobileUnitID(resultSet.getString(32));
-                hosRecord.setInspectionType(InspectionType.valueOf(resultSet.getInt(33)));
                 
                 recordList.add(hosRecord);
             }
@@ -422,7 +420,6 @@ public class HOSJDBCDAO extends GenericJDBCDAO implements HOSDAO {
                 hosRecord.setSingleDriver(resultSet.getBoolean(30));
                 hosRecord.setOriginalStatus(HOSStatus.valueOf(resultSet.getInt(31)));
                 hosRecord.setMobileUnitID(resultSet.getString(32));
-                hosRecord.setInspectionType(InspectionType.valueOf(resultSet.getInt(33)));
                 
                 recordList.add(hosRecord);
             }
@@ -595,7 +592,7 @@ public class HOSJDBCDAO extends GenericJDBCDAO implements HOSDAO {
         try
         {
             conn = getConnection();
-            statement = conn.prepareCall("{call hos_createFromNote(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?)}");
+            statement = conn.prepareCall("{call hos_createFromNote(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)}");
             statement.setInt(1, hosRecord.getDeviceID());
             statement.setInt(2, hosRecord.getVehicleID());
             statement.setLong(3, 0); //Note ID
@@ -616,7 +613,6 @@ public class HOSJDBCDAO extends GenericJDBCDAO implements HOSDAO {
             statement.setBoolean(18, hosRecord.getTripInspectionFlag());
             statement.setBoolean(19, hosRecord.getTripReportFlag());
             statement.setString(20, hosRecord.getMobileUnitID());
-            statement.setInt(21, hosRecord.getInspectionType() == null ? 0 : hosRecord.getInspectionType().getCode());
             
             if(logger.isDebugEnabled())
                 logger.debug(statement.toString());
@@ -729,7 +725,6 @@ public class HOSJDBCDAO extends GenericJDBCDAO implements HOSDAO {
                 hosRecord.setEditUserID(resultSet.getInt(29));
                 hosRecord.setSingleDriver(resultSet.getBoolean(30));
                 hosRecord.setMobileUnitID(resultSet.getString(31));
-                hosRecord.setInspectionType(InspectionType.valueOf(resultSet.getInt(32)));
             
             }
         }   // end try

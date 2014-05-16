@@ -12,7 +12,6 @@ import com.inthinc.hos.model.HOSOrigin;
 import com.inthinc.hos.model.HOSStatus;
 import com.inthinc.hos.model.RuleSetType;
 import com.inthinc.pro.model.BaseEntity;
-import com.inthinc.pro.model.InspectionType;
 
 @XmlRootElement
 public class HOSRecord extends BaseEntity implements Comparable<HOSRecord>{
@@ -59,9 +58,7 @@ public class HOSRecord extends BaseEntity implements Comparable<HOSRecord>{
     private Byte noteFlags;
     private Integer stateID;
     private String mobileUnitID;
-    private InspectionType inspectionType;
     
-
     public HOSRecord()
     {
         
@@ -389,14 +386,6 @@ public class HOSRecord extends BaseEntity implements Comparable<HOSRecord>{
 
     public void setMobileUnitID(String mobileUnitID) {
         this.mobileUnitID = mobileUnitID;
-    }
-
-    public InspectionType getInspectionType() {
-        return inspectionType;
-    }
-
-    public void setInspectionType(InspectionType inspectionType) {
-        this.inspectionType = inspectionType;
     }
 
     public void dump () {
