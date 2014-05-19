@@ -150,8 +150,11 @@ public class PayrollData implements Comparable<PayrollData>
         int cmp = groupName.compareTo(o.getGroupName());
         if (cmp == 0) {
             cmp = driverName.compareTo(o.getDriverName());
-            if (cmp == 0) 
-                cmp = day.compareTo(o.getDay());
+            if (cmp == 0) {
+            	if((this.getEmployeeID()!=null)&&(o.getEmployeeID()!=null))
+            	cmp=this.getEmployeeID().compareTo(o.getEmployeeID());
+            	
+            }
         }
         
         return cmp;
