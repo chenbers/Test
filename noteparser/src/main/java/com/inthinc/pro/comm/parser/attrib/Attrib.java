@@ -142,6 +142,7 @@ public enum Attrib {
 	STRUCTVERSION(8280, AttribParserType.BYTE),
 	SENDER(8281, AttribParserType.BYTE),
 	CONNECTTYPE(8282, AttribParserType.BYTE),
+	VEHICLE_KIOSK(8284, AttribParserType.BYTE),
 	INSPECTIONTYPE(8291, AttribParserType.BYTE),
 	VEHICLESAFETOOPERATE(8292, AttribParserType.BYTE),
     RHA_TYPE(8293, AttribParserType.BYTE),
