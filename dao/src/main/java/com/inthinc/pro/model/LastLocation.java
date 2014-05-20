@@ -14,6 +14,7 @@ public class LastLocation {
 	private Integer speed;
 	private Integer head;
 	private Integer odometer;
+    private Date lastTripTime;
 
 	@XmlElement(name = "location")
 	public LatLng getLoc() {
@@ -99,4 +100,12 @@ public class LastLocation {
         return "LastLocation [driverID=" + driverID + ", vehicleID=" + vehicleID + ", latLng=" + loc + ", time=" + time + ", odometer=" + odometer + ", speed=" + speed  + ", head=" + head  + "]";
 
 	}
+
+    public Date getLastTripTime() {
+        return lastTripTime;
+    }
+
+    public void setLastTripTime(Date lastTripTime) {
+        this.lastTripTime = lastTripTime;
+    }
 }

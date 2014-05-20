@@ -11,7 +11,7 @@ import com.inthinc.pro.dao.annotations.ID;
 import com.inthinc.pro.model.event.Event;
 
 @XmlRootElement
-public class Trip extends BaseEntity {
+public class Trip extends BaseEntity implements Comparable<Trip> {
     @ID
     private Long tripID;
     private Integer vehicleID;
@@ -271,5 +271,4 @@ public class Trip extends BaseEntity {
 //        return "Trip [driverID=" + driverID + ", vehicleID=" + vehicleID + ", startTime=" + startTime + ", endTime=" + endTime + ", mileage=" + mileage + ", locations Count=" + route.size() + "]";
         return "Trip [driverID=" + driverID + ", vehicleID=" + vehicleID + ", startTime=" + startTime + ", endTime=" + endTime + ", mileage=" + mileage + " startLat:" + getStartLat() + " startLng:" + getStartLng() + " endLat:" + getEndLat() + " endLng: " + getEndLng() + "]";
 	}
-
 }

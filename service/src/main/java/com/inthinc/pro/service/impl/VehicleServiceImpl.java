@@ -4,6 +4,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -96,6 +97,28 @@ public class VehicleServiceImpl extends AbstractService<Vehicle, VehicleDAOAdapt
     public Response getLastLocation(Integer vehicleID) {
         LastLocation location = getDao().getLastLocation(vehicleID);
         if (location != null) {
+            return Response.ok(location).build();
+        }
+        return Response.status(Status.NOT_FOUND).build();
+    }
+
+    @Override
+    public Response getLastLocation(Integer vehicleID, String dateTime) {
+        Date endDate = buildDateTimeFromString(dateTime);
+        DateTime dtDate = new DateTime(endDate);
+        Date startDate = dtDate.minusMonths(1).toDate();
+
+        LastLocation location = getDao().getLastLocation(vehicleID);
+        if (location != null) {
+            List<Trip> trips = getDao().getTrips(vehicleID, startDate, endDate);
+            if (trips==null|| trips.isEmpty()){
+                return Response.status(Status.NOT_FOUND).build();
+            }
+
+            Collections.sort(trips);
+            Trip lastTrip = trips.get(0);
+            location.setLastTripTime(lastTrip.getStartTime());
+
             return Response.ok(location).build();
         }
         return Response.status(Status.NOT_FOUND).build();
