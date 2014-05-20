@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.EnumSet;
 import java.util.List;
 
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.PathSegment;
 import javax.ws.rs.core.Response;
@@ -13,6 +14,8 @@ import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.core.UriBuilder;
 import javax.ws.rs.core.UriInfo;
 
+import com.inthinc.pro.service.annotations.DateFormat;
+import jxl.write.DateTime;
 import org.joda.time.Interval;
 
 import com.inthinc.pro.model.event.Event;
@@ -49,6 +52,25 @@ public class EventServiceImpl implements EventService {
             return Response.status(Status.BAD_REQUEST).build();
         }
     }
+
+    @Override
+    public Response getEventCountByDuration(Integer driverID, @DateFormat(SIMPLE_DATE_FORMAT) Date dateTime, Integer duration) {
+        try {
+            org.joda.time.DateTime startDate = new org.joda.time.DateTime(dateTime);
+            org.joda.time.DateTime endDate = startDate.minusMinutes(duration);
+            Interval interval = DateUtil.getInterval(startDate.toDate(),endDate.toDate());
+            List<NoteType> noteTypesList = parseNoteTypes("all");
+            Integer count = eventGetter.getEventCount("driver", driverID,  noteTypesList, interval.getStart().toDate(), interval.getEnd().toDate());
+            return Response.ok(count.toString()).build();
+        }
+        catch(BadDateRangeException bdre){
+            return BadDateRangeExceptionMapper.getResponse(bdre);
+        }
+        catch(IllegalArgumentException e){
+            return Response.status(Status.BAD_REQUEST).build();
+        }
+    }
+
     @Override
     public Response getEventsFirstPage(String entity, Integer entityID, String eventTypes, Date startDate, Date endDate, UriInfo uriInfo) {
         try {
@@ -145,6 +167,49 @@ public class EventServiceImpl implements EventService {
             return Response.status(Status.BAD_REQUEST).header(HEADER_ERROR_MESSAGE, "Note types or start or pageCount are incorrect.").build();
         }
     }
+
+    @Override
+    public Response getEventsByDuration(Integer driverID, @DateFormat(SIMPLE_DATE_FORMAT) Date dateTime, Integer duration, PathSegment page, @Context UriInfo uriInfo) {
+        try {
+            org.joda.time.DateTime startDate = new org.joda.time.DateTime(dateTime);
+            org.joda.time.DateTime endDate = startDate.minusMinutes(duration);
+            Interval interval = DateUtil.getInterval(startDate.toDate(),endDate.toDate());
+
+            int start = validateStart(page.getMatrixParameters().getFirst("start"));
+            int pageCount = validatePageCount(page.getMatrixParameters().getFirst("pageCount"));
+
+            List<NoteType> noteTypesList = parseNoteTypes("all");
+
+            List<Event> pageOfEvents = eventGetter.getEvents("driver", driverID,  noteTypesList, interval.getStart().toDate(), interval.getEnd().toDate(), start, pageCount);
+            if (pageOfEvents==null){
+                return Response.status(Status.BAD_REQUEST).build();
+            }
+            if(pageOfEvents.isEmpty()){
+                return Response.status(Status.NOT_FOUND).build();
+            }
+
+            Integer totalCount = eventGetter.getEventCount("driver", driverID,  noteTypesList, interval.getStart().toDate(), interval.getEnd().toDate());
+
+            List<Link> links = getLinks(uriInfo,interval,start,pageCount,totalCount);
+
+            EventPage eventPage = createPage(pageOfEvents, start, pageCount, totalCount, links);
+
+            Response.ResponseBuilder builder = Response.ok(new GenericEntity<EventPage>(eventPage) {});
+
+            return builder.build();
+        }
+        catch(BadDateRangeException bdre){
+            return BadDateRangeExceptionMapper.getResponse(bdre);
+        }
+
+        catch(NumberFormatException nfe){
+            return Response.status(Status.BAD_REQUEST).header(HEADER_ERROR_MESSAGE, "Start and pageCount parameter values must be numeric.").build();
+        }
+        catch(IllegalArgumentException e){
+            return Response.status(Status.BAD_REQUEST).header(HEADER_ERROR_MESSAGE, "Note types or start or pageCount are incorrect.").build();
+        }
+    }
+
     private int validateStart(String startParameter) throws IllegalArgumentException{
         
         if (startParameter == null) return 0;
