@@ -124,6 +124,11 @@ public class JasperReport implements Report
                 exportToCsvStream(os, jp);
                 bytes = os.toByteArray();
                 ext = ".csv";
+            } else if (formatType == FormatType.HTML){
+                ByteArrayOutputStream os = new ByteArrayOutputStream();
+                exportToHtmlStream(os, jp);
+                bytes = os.toByteArray();
+                ext = ".html";
             } else {
                 bytes = JasperExportManager.exportReportToPdf(jp);
             }

@@ -244,6 +244,7 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
        ret.add(new SelectItem(FormatType.PDF.toString(),FormatType.PDF.toString()));
        ret.add(new SelectItem(FormatType.EXCEL.toString(),FormatType.EXCEL.toString()));
        ret.add(new SelectItem(FormatType.CSV.toString(),FormatType.CSV.toString()));
+       ret.add(new SelectItem(FormatType.HTML.toString(),FormatType.HTML.toString()));
        return ret;
     }
 
