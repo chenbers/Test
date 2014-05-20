@@ -93,22 +93,23 @@ public class JasperReport implements Report
     /**
      * Decides what format type to create a JasperPrint with based on the export format type.
      * This is used to decide if it's going to use a raw template or not.
+     * Since we don't email HTML if that is requested we email PDF.
      *
      * @param exportFormatType format type for export
      * @return format type for builder
      */
     public FormatType getReportBuilderFormatType(FormatType exportFormatType){
-        if (exportFormatType == FormatType.CSV)
-            return FormatType.CSV;
-
-        return FormatType.PDF;
+        if(exportFormatType == FormatType.HTML)
+            return FormatType.PDF;
+        
+        return exportFormatType;
     }
     
     @Override
     public void exportReportToEmail(String email, FormatType formatType, String subject, String message, String noReplyEmailAddress)
     {
         FormatType rbFormatType = getReportBuilderFormatType(formatType);
-        JasperPrint jp = reportBuilder.buildReport(reportCriteriaList,rbFormatType);
+        JasperPrint jp = reportBuilder.buildReport(reportCriteriaList, rbFormatType);
         byte[] bytes;
         String ext = ".pdf";
         try
