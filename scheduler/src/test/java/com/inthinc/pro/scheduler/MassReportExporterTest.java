@@ -23,6 +23,8 @@ import net.sf.jasperreports.engine.JRExporterParameter;
 import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.export.JRCsvExporter;
+import net.sf.jasperreports.engine.export.JRHtmlExporter;
+import net.sf.jasperreports.engine.export.JRHtmlExporterParameter;
 import net.sf.jasperreports.engine.export.JRXlsExporter;
 import net.sf.jasperreports.engine.export.JRXlsExporterParameter;
 import org.apache.log4j.Logger;
@@ -127,6 +129,11 @@ public class MassReportExporterTest {
                         exportToCsvStream(os, jp);
                         bytes = os.toByteArray();
                         ext = ".csv";
+                    }else if (format == FormatType.HTML) {
+                        ByteArrayOutputStream os = new ByteArrayOutputStream();
+                        exportToHtmlStream(os, jp);
+                        bytes = os.toByteArray();
+                        ext = ".html";
                     } else {
                         bytes = JasperExportManager.exportReportToPdf(jp);
                     }
@@ -217,6 +224,25 @@ public class MassReportExporterTest {
         jexcelexporter.setParameter(JRXlsExporterParameter.MAXIMUM_ROWS_PER_SHEET, EXCEL_MAX_ROWS);
         jexcelexporter.setParameter(JRXlsExporterParameter.CHARACTER_ENCODING, "UTF-8");
         jexcelexporter.exportReport();
+    }
+
+    public void exportToHtmlStream(OutputStream out,JasperPrint jasperPrint) throws JRException
+    {
+        exportToHtmlStream(out, jasperPrint, null);
+    }
+    public void exportToHtmlStream(OutputStream out,JasperPrint jasperPrint, String imagesURIStr) throws JRException
+    {
+        JRHtmlExporter exporter = new JRHtmlExporter();
+        exporter.setParameter(JRXlsExporterParameter.JASPER_PRINT, jasperPrint);
+        exporter.setParameter(JRXlsExporterParameter.OUTPUT_STREAM, out);
+        exporter.setParameter(JRHtmlExporterParameter.IS_USING_IMAGES_TO_ALIGN, Boolean.FALSE);
+        if (imagesURIStr != null)
+            exporter.setParameter(JRHtmlExporterParameter.IMAGES_URI, imagesURIStr);
+        exporter.setParameter(JRHtmlExporterParameter.HTML_HEADER, "");
+        exporter.setParameter(JRHtmlExporterParameter.BETWEEN_PAGES_HTML, "");
+        exporter.setParameter(JRHtmlExporterParameter.HTML_FOOTER, "");
+
+        exporter.exportReport();
     }
 
     private void exportToCsvStream(OutputStream outputStream, JasperPrint jp) throws JRException {
