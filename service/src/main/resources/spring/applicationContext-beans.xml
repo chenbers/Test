@@ -187,4 +187,12 @@
   		<property name="effectiveDateForUS2013Changes" value="${hos.usrules.effective.date}"/>
   	</bean>
 
+    <!-- vehicle status util -->
+    <bean id="vehicleStatusUtil" class="com.inthinc.pro.util.VehicleStatusUtil">
+        <!-- number of recursive attempts -->
+        <property name="maxNumTries" value="5"/>
+
+        <!-- number of hours to scan back in time when requesting events -->
+        <property name="scanHours" value="1"/>
+    </bean>
 </beans>

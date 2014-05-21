@@ -4,7 +4,6 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -14,9 +13,12 @@ import javax.ws.rs.core.UriBuilder;
 import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.core.Response.Status;
 
+import com.inthinc.pro.service.model.VehicleStatus;
+import com.inthinc.pro.util.VehicleStatusUtil;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.AccessDeniedException;
 
 import com.inthinc.pro.map.AddressLookup;
@@ -32,6 +34,8 @@ import com.inthinc.pro.service.adapters.VehicleDAOAdapter;
 import com.inthinc.pro.service.model.BatchResponse;
 
 public class VehicleServiceImpl extends AbstractService<Vehicle, VehicleDAOAdapter> implements VehicleService {
+    @Autowired
+    VehicleStatusUtil vehicleStatusUtil;
 
     private static final String SIMPLE_DATE_FORMAT = "yyyyMMdd";
     //2011-08-29T08:31:25-0600
@@ -90,7 +94,8 @@ public class VehicleServiceImpl extends AbstractService<Vehicle, VehicleDAOAdapt
             }
             responseList.add(batchResponse);
         }
-        return Response.ok(new GenericEntity<List<BatchResponse>>(responseList) {}).build();
+        return Response.ok(new GenericEntity<List<BatchResponse>>(responseList) {
+        }).build();
     }
 
     @Override
@@ -107,12 +112,14 @@ public class VehicleServiceImpl extends AbstractService<Vehicle, VehicleDAOAdapt
         LastLocation location = getDao().getLastLocation(vehicleID);
         if (location != null) {
             Trip trip = getDao().getLastTrip(vehicleID);
+            VehicleStatus vehicleStatus = vehicleStatusUtil.determineStatusByVehicleId(vehicleID);
 
             if (trip == null){
                 return Response.status(Status.NOT_FOUND).build();
             }
 
             location.setLastTripTime(trip.getStartTime());
+            location.setVehicleStatus(vehicleStatus.toString());
 
             return Response.ok(location).build();
         }
