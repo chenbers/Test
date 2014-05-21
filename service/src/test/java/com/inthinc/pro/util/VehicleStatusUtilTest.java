@@ -143,6 +143,56 @@ public class VehicleStatusUtilTest {
         assertEquals(status, VehicleStatus.PARKING);
     }
 
+    @Test
+    public void testDrivingAfterRecursion(){
+        new Expectations() {{
+            mockEventDao.getEventsForVehicle(VEHICLE_ID, withInstanceOf(Date.class), withInstanceOf(Date.class),(List<NoteType>)any, 0);
+            times = 1;
+            result = makeEvents(Arrays.asList(NoteType.LOCATION, NoteType.LOCATION, NoteType.LOCATION));
+        }};
+
+        new Expectations() {{
+            mockEventDao.getEventsForVehicle(VEHICLE_ID, withInstanceOf(Date.class), withInstanceOf(Date.class),(List<NoteType>)any, 0);
+            times = 1;
+            result = makeEvents(Arrays.asList(NoteType.LOCATION, NoteType.LOCATION, NoteType.LOCATION));
+        }};
+
+        new Expectations() {{
+            mockEventDao.getEventsForVehicle(VEHICLE_ID, withInstanceOf(Date.class), withInstanceOf(Date.class),(List<NoteType>)any, 0);
+            times = 1;
+            result = makeEvents(Arrays.asList(NoteType.IGNITION_ON, NoteType.LOCATION, NoteType.LOCATION));
+        }};
+
+        VehicleStatus status = vehicleStatusUtil.determineStatusByVehicleId(VEHICLE_ID);
+        assertEquals(status, VehicleStatus.DRIVING);
+    }
+
+    @Test
+    public void testRecursionLimit(){
+        vehicleStatusUtil.setMaxNumTries(2);
+
+        new Expectations() {{
+            mockEventDao.getEventsForVehicle(VEHICLE_ID, withInstanceOf(Date.class), withInstanceOf(Date.class),(List<NoteType>)any, 0);
+            times = 1;
+            result = makeEvents(Arrays.asList(NoteType.LOCATION, NoteType.LOCATION, NoteType.LOCATION));
+        }};
+
+        new Expectations() {{
+            mockEventDao.getEventsForVehicle(VEHICLE_ID, withInstanceOf(Date.class), withInstanceOf(Date.class),(List<NoteType>)any, 0);
+            times = 1;
+            result = makeEvents(Arrays.asList(NoteType.LOCATION, NoteType.LOCATION, NoteType.LOCATION));
+        }};
+
+        new Expectations() {{
+            mockEventDao.getEventsForVehicle(VEHICLE_ID, withInstanceOf(Date.class), withInstanceOf(Date.class),(List<NoteType>)any, 0);
+            times = 1;
+            result = makeEvents(Arrays.asList(NoteType.LOCATION, NoteType.LOCATION, NoteType.LOCATION));
+        }};
+
+        VehicleStatus status = vehicleStatusUtil.determineStatusByVehicleId(VEHICLE_ID);
+        assertEquals(status, VehicleStatus.PARKING);
+    }
+
     /**
      * Makes events with given event types.
      *
