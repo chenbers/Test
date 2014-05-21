@@ -104,6 +104,9 @@ public class ReportJDBCDAO extends SimpleJdbcDaoSupport implements ReportDAO {
             " d.status" +
             " FROM driverInfo di LEFT JOIN driver d ON (d.driverID = di.driverID) LEFT JOIN agg on agg.driverID=di.driverID WHERE" +
             " di.groupId in (select g.groupID from groups g where g.groupPath like :groupID) AND agg.aggDate between :intervalStart AND :intervalEnd";
+    private static final String SELECT_IDLING_VEHICLES_COUNT = "SELECT count(distinct di.driverID ) as nr " +
+            " FROM driverInfo di LEFT JOIN driver d ON (d.driverID = di.driverID) LEFT JOIN agg on agg.driverID=di.driverID WHERE" +
+            " di.groupId in (select g.groupID from groups g where g.groupPath like :groupID) AND agg.aggDate between :intervalStart AND :intervalEnd";
 
     private static final Map<String, String> pagedColumnMapIdleReport = new HashMap<String, String>();
 
@@ -374,10 +377,8 @@ public class ReportJDBCDAO extends SimpleJdbcDaoSupport implements ReportDAO {
         params.put("intervalStart", dbFormat.format(interval.getStart().toDate()));
         params.put("intervalEnd", dbFormat.format(interval.getEnd().toDate()));
 
-
-        StringBuilder idlingVehicleReportCountSelect = new StringBuilder(addIdlingFilter(reportFilters, SELECT_IDLING_VEHICLES, params, pagedColumnMapIdleVehicleReport));
-        String idlingVehicleQueryCount = "SELECT count(*) as nr from (" + idlingVehicleReportCountSelect.toString() + " GROUP BY vi.vehicleID) as x";
-
+        StringBuilder idlingVehicleReportCountSelect = new StringBuilder(addIdlingFilter(reportFilters, SELECT_IDLING_VEHICLES_COUNT, params, pagedColumnMapIdleVehicleReport));
+        String idlingVehicleQueryCount =  idlingVehicleReportCountSelect.toString();
         List<Integer> cntDevice = getSimpleJdbcTemplate().query(idlingVehicleQueryCount, idlingVehicleRowMapperCount, params);
         Integer cnt = 0;
         if (cntDevice != null && !cntDevice.isEmpty())
