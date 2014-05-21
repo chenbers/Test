@@ -88,8 +88,8 @@ public interface VehicleService {
     public Response getLastLocation(@PathParam("id") Integer vehicleID);
 
     @GET
-    @Path("/vehicle/{id}/lastlocationByDate")
-    public Response getLastLocation(@PathParam("id") Integer vehicleID, @PathParam("dateTim") String dateTime);
+    @Path("/vehicle/{id}/lastLocationExtraInfo")
+    public Response getLastLocationExtraInfo(@PathParam("id") Integer vehicleID);
 
     @POST
     @Consumes("application/xml")

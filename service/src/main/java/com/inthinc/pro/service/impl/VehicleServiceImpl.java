@@ -103,21 +103,16 @@ public class VehicleServiceImpl extends AbstractService<Vehicle, VehicleDAOAdapt
     }
 
     @Override
-    public Response getLastLocation(Integer vehicleID, String dateTime) {
-        Date endDate = buildDateTimeFromString(dateTime);
-        DateTime dtDate = new DateTime(endDate);
-        Date startDate = dtDate.minusMonths(1).toDate();
-
+    public Response getLastLocationExtraInfo(Integer vehicleID) {
         LastLocation location = getDao().getLastLocation(vehicleID);
         if (location != null) {
-            List<Trip> trips = getDao().getTrips(vehicleID, startDate, endDate);
-            if (trips==null|| trips.isEmpty()){
+            Trip trip = getDao().getLastTrip(vehicleID);
+
+            if (trip == null){
                 return Response.status(Status.NOT_FOUND).build();
             }
 
-            Collections.sort(trips);
-            Trip lastTrip = trips.get(0);
-            location.setLastTripTime(lastTrip.getStartTime());
+            location.setLastTripTime(trip.getStartTime());
 
             return Response.ok(location).build();
         }
