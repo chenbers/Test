@@ -56,8 +56,8 @@ public class EventServiceImpl implements EventService {
     @Override
     public Response getEventCountByDuration(Integer driverID, @DateFormat(SIMPLE_DATE_FORMAT) Date dateTime, Integer duration) {
         try {
-            org.joda.time.DateTime startDate = new org.joda.time.DateTime(dateTime);
-            org.joda.time.DateTime endDate = startDate.minusMinutes(duration);
+            org.joda.time.DateTime endDate = new org.joda.time.DateTime(dateTime);
+            org.joda.time.DateTime startDate = endDate.minusMinutes(duration);
             Interval interval = DateUtil.getInterval(startDate.toDate(),endDate.toDate());
             List<NoteType> noteTypesList = parseNoteTypes("all");
             Integer count = eventGetter.getEventCount("driver", driverID,  noteTypesList, interval.getStart().toDate(), interval.getEnd().toDate());
@@ -171,8 +171,8 @@ public class EventServiceImpl implements EventService {
     @Override
     public Response getEventsByDuration(Integer driverID, @DateFormat(SIMPLE_DATE_FORMAT) Date dateTime, Integer duration, PathSegment page, @Context UriInfo uriInfo) {
         try {
-            org.joda.time.DateTime startDate = new org.joda.time.DateTime(dateTime);
-            org.joda.time.DateTime endDate = startDate.minusMinutes(duration);
+            org.joda.time.DateTime endDate = new org.joda.time.DateTime(dateTime);
+            org.joda.time.DateTime startDate = endDate.minusMinutes(duration);
             Interval interval = DateUtil.getInterval(startDate.toDate(),endDate.toDate());
 
             int start = validateStart(page.getMatrixParameters().getFirst("start"));
