@@ -105,7 +105,7 @@ public enum TimeFrame implements BaseEnum {
     },
     PAST_SEVEN_DAYS(AggregationDuration.SEVEN_DAY, 17) {
         public Interval getInterval(DateTimeZone dateTimeZone) {
-            return new Interval(new DateMidnight(getCurrent().minusDays(7), dateTimeZone), new DateMidnight(getCurrent().plusDays(1), dateTimeZone).toDateTime().minusSeconds(1));
+            return new Interval(new DateMidnight(getCurrent().minusDays(7), dateTimeZone), new DateMidnight(getCurrent(), dateTimeZone).toDateTime().minusSeconds(1));
         }
     },
     CUSTOM_RANGE(AggregationDuration.ONE_DAY, 18){
