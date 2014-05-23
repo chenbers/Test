@@ -329,6 +329,25 @@
                           </table>
                           
                         </h:panelGroup>
+
+                          <h:panelGroup rendered="#{redFlagOrZoneAlertsBean.item.eventSubCategory != 'SPEED' and redFlagOrZoneAlertsBean.item.eventSubCategory != 'DRIVING_STYLE' and redFlagOrZoneAlertsBean.item.eventSubCategory != 'VEHICLE' and redFlagOrZoneAlertsBean.item.eventSubCategory != null}">
+
+                              <table width="100%" border="0" cellpadding="2" cellspacing="0" class="datagrid">
+                                  <tr>
+                                      <th><h:outputText value="#{messages.editRedFlag_setting}" /></th>
+                                  </tr>
+                                  <tr class="tableEven">
+                                      <td>
+                                          <rich:dataList value="#{redFlagOrZoneAlertsBean.item.types}" var="type" >
+                                              <h:outputText value="#{messages[type]}" />
+                                              <rich:spacer width="5"/>
+                                              <h:outputText value="#{redFlagOrZoneAlertsBean.item.zonesString}" />
+                                          </rich:dataList>
+                                      </td>
+                                  </tr>
+                              </table>
+
+                          </h:panelGroup>
                       </td>
                     </tr>
                   </table>
