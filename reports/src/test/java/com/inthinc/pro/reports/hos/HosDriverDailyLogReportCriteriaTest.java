@@ -33,6 +33,7 @@ import com.inthinc.hos.model.HOSRecAdjusted;
 import com.inthinc.hos.model.HOSRecBase;
 import com.inthinc.hos.model.HOSStatus;
 import com.inthinc.hos.model.RuleSetType;
+import com.inthinc.pro.aggregation.util.DateUtil;
 import com.inthinc.pro.dao.mock.MockHOSDAO;
 import com.inthinc.pro.model.InspectionType;
 import com.inthinc.pro.model.Status;
@@ -1051,5 +1052,23 @@ public class HosDriverDailyLogReportCriteriaTest extends BaseUnitTest{
             }
         }
     }
-}
 
+    @Test
+    public void sortRemarksList() {
+        Date date1 = DateUtil.getDateFromString("2014-02-21 10:10:10");
+        Date date2 = DateUtil.getDateFromString("2014-02-22 10:10:10");
+        Date date3 = DateUtil.getDateFromString("2014-02-23 10:10:10");
+        
+        List<RemarkLog> remarksList = new ArrayList<RemarkLog>();
+        remarksList.add(new RemarkLog(HOSStatus.OFF_DUTY, date3, TimeZone.getTimeZone("UTC"), false, "loc", "", false, 10000, "desc", false, ""));
+        remarksList.add(new RemarkLog(HOSStatus.OFF_DUTY, date2, TimeZone.getTimeZone("UTC"), false, "loc", "", false, 10000, "desc", false, ""));
+        remarksList.add(new RemarkLog(HOSStatus.OFF_DUTY, date1, TimeZone.getTimeZone("UTC"), false, "loc", "", false, 10000, "desc", false, ""));
+        
+        HosDailyDriverLogReportCriteria hosDailyDriverLogReportCriteria = new HosDailyDriverLogReportCriteria(Locale.US, Boolean.FALSE, dateTimeZone);
+        List<RemarkLog> sortedRemarksList = hosDailyDriverLogReportCriteria.sortRemarkList(remarksList);
+        
+        assertEquals("date 1", date1, sortedRemarksList.get(0).getLogTimeDate());
+        assertEquals("date 2", date2, sortedRemarksList.get(1).getLogTimeDate());
+        assertEquals("date 3", date3, sortedRemarksList.get(2).getLogTimeDate());
+    }
+}

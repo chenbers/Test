@@ -1544,6 +1544,9 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
     }
 
     public List<ReportCriteria> getReportCriteria(ReportSchedule reportSchedule, GroupHierarchy groupHierarchy, Person person) {
+        if (person.getLocale() == null)
+            person.setLocale(Locale.ENGLISH);
+
         ReportGroup reportGroup = ReportGroup.valueOf(reportSchedule.getReportID());
         if (reportGroup == null) {
             logger.error("null reportGroup for schedule ID " + reportSchedule.getReportID());

@@ -17,7 +17,7 @@ import com.inthinc.pro.model.BaseEnum;
 public enum EventSubCategory implements BaseEnum
 {
     DRIVING_STYLE(1, 
-            EnumSet.of(EventType.HARD_ACCEL,EventType.HARD_BRAKE,EventType.HARD_TURN,EventType.HARD_VERT),
+            EnumSet.of(EventType.HARD_ACCEL,EventType.HARD_BRAKE,EventType.HARD_TURN,EventType.HARD_VERT,EventType.ATTR_RF_OFF_DISTANCE),
             EnumSet.of(AlertMessageType.ALERT_TYPE_HARD_ACCEL,AlertMessageType.ALERT_TYPE_HARD_BRAKE,AlertMessageType.ALERT_TYPE_HARD_TURN,AlertMessageType.ALERT_TYPE_HARD_BUMP, AlertMessageType.ALERT_TYPE_SATELLITE)),
                         
     SPEED(2, 

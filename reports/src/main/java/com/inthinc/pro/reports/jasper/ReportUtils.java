@@ -30,9 +30,9 @@ public class ReportUtils
         try
         {
             if(formatType != null && (formatType.equals(FormatType.EXCEL) || formatType.equals(FormatType.CSV)) && reportType.getRawTemplate() != null)
-                in = loadFile(reportType.getRawJasper());
+                in = getRawOrPrettyJasper(reportType);
             else
-                in = loadFile(reportType.getPrettyJasper());
+                in = getPrettyOrRawJasper(reportType);
             
             JasperReport jasperReport = (JasperReport)JRLoader.loadObject(in);
 
@@ -56,6 +56,36 @@ public class ReportUtils
         }
     }
 
+    /**
+     * Tries to get raw jasper but defaults to pretty jasper if it fails.
+     *
+     * @param reportType report type
+     * @return raw or pretty
+     * @throws IOException
+     */
+  private static InputStream getRawOrPrettyJasper(ReportType reportType) throws IOException {
+       if (reportType.getRawJasper()!=null){
+           return loadFile(reportType.getRawJasper());
+       }else{
+           return loadFile(reportType.getPrettyJasper());
+       }
+   }
+
+
+    /**
+     * Tries to get pretty jasper but defaults to raw jasper if it fails.
+     *
+     * @param reportType report type
+     * @return pretty or raw
+     * @throws IOException
+     */
+    private static InputStream getPrettyOrRawJasper(ReportType reportType) throws IOException {
+        if (reportType.getPrettyJasper()!=null){
+            return loadFile(reportType.getPrettyJasper());
+        }else{
+            return loadFile(reportType.getRawJasper());
+        }
+    }
 
     public static InputStream loadFile(String fileName) throws IOException
     {
