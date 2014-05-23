@@ -21,6 +21,7 @@ public class DriverPerformance implements Comparable<DriverPerformance> {
     private Number totalIdleTime;
     private Number idleLo;
     private Boolean ryg;
+    private Integer hosViolationCount;
     
     List<VehiclePerformance> vehiclePerformanceBreakdown;
     
@@ -232,5 +233,11 @@ public class DriverPerformance implements Comparable<DriverPerformance> {
     }
     public void setIdleLo(Number idleLo) {
         this.idleLo = idleLo;
+    }
+    public Integer getHosViolationCount() {
+        return hosViolationCount;
+    }
+    public void setHosViolationCount(Integer hosViolationCount) {
+        this.hosViolationCount = hosViolationCount;
     }
 }

@@ -41,6 +41,7 @@ import com.inthinc.pro.dao.report.GroupReportDAO;
 import com.inthinc.pro.dao.report.TrailerReportDAO;
 import com.inthinc.pro.dao.util.DateUtil;
 import com.inthinc.pro.map.ReportAddressLookupBean;
+import com.inthinc.pro.model.AccountHOSType;
 import com.inthinc.pro.model.DriverStopReport;
 import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.EntityType;
@@ -1411,7 +1412,13 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
         builder.setDateTimeZone(timeZone);
         builder.setLocale(locale);
         builder.setGroupHierarchy(accountGroupHierarchy);
+        builder.setAccountHOSEnabled(isAccountHOSEnabled(accountGroupHierarchy.getGroupList().get(0).getAccountID()));
+        builder.setHosDAO(getHosDAO());
         return builder.buildSingle();
+    }
+    
+    private boolean isAccountHOSEnabled(Integer accountID) {
+        return accountDAO.findByID(accountID).getHos() == AccountHOSType.HOS_SUPPORT;
     }
     @Override
     public List<ReportCriteria> getDriverCoachingReportCriteriaByGroup(GroupHierarchy accountGroupHierarchy, Integer groupID, Interval interval, Locale locale, DateTimeZone timeZone,
@@ -1420,6 +1427,9 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
         builder.setDateTimeZone(timeZone);
         builder.setLocale(locale);
         builder.setGroupHierarchy(accountGroupHierarchy);
+        builder.setAccountHOSEnabled(isAccountHOSEnabled(accountGroupHierarchy.getGroupList().get(0).getAccountID()));
+        builder.setHosDAO(getHosDAO());
+        builder.setDriverDAO(driverDAO);
         return builder.build();
     }
     @Override
