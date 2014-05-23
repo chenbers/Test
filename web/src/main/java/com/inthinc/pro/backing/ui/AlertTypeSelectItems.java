@@ -20,11 +20,12 @@ public class AlertTypeSelectItems {
         alertTypeSelectItems = addHosTypes(alertTypeSelectItems,hosEnabled);
         alertTypeSelectItems = addWaySmartTypes(alertTypeSelectItems,waySmartEnabled);
         alertTypeSelectItems = addZones(alertTypeSelectItems,hasZones);
-        
+        alertTypeSelectItems = addConditionals(alertTypeSelectItems,true);
+
         return alertTypeSelectItems;
     }
     private static List<SelectItem> addDefaultTypes(List<SelectItem> alertTypeSelectItems){
-        
+
         Set<EventSubCategory> defaultSet = EnumSet.of(EventSubCategory.COMPLIANCE,
                                                       EventSubCategory.DRIVING_STYLE,
                                                       EventSubCategory.EMERGENCY,
@@ -32,6 +33,7 @@ public class AlertTypeSelectItems {
                                                       EventSubCategory.VEHICLE,
                                                       EventSubCategory.DVIR);
         return addSet(alertTypeSelectItems,defaultSet);
+
     }
     private static List<SelectItem> addHosTypes(List<SelectItem> alertTypeSelectItems, Boolean hosEnabled){
         
@@ -39,7 +41,17 @@ public class AlertTypeSelectItems {
             alertTypeSelectItems = addSet(alertTypeSelectItems,EnumSet.of(EventSubCategory.HOS));
         }
         return alertTypeSelectItems;
+
     }
+
+//    private static List<SelectItem> addConditionalTypes(List<SelectItem> alertTypeSelectItems, Boolean condEnabled){
+//
+//        if (condEnabled){
+//            alertTypeSelectItems = addSet(alertTypeSelectItems,EnumSet.of(EventSubCategory.CONDITIONAL));
+//        }
+//        return alertTypeSelectItems;
+//
+//    }
     private static List<SelectItem> addWaySmartTypes(List<SelectItem> alertTypeSelectItems, Boolean waySmartEnabled){
         
         if(waySmartEnabled){
@@ -56,6 +68,13 @@ public class AlertTypeSelectItems {
         
         if (hasZones){
             alertTypeSelectItems = addSet(alertTypeSelectItems,EnumSet.of(EventSubCategory.ZONES));
+        }
+        return alertTypeSelectItems;
+    }
+    private static List<SelectItem> addConditionals(List<SelectItem> alertTypeSelectItems, Boolean hasConditionals){
+
+        if (hasConditionals){
+            alertTypeSelectItems = addSet(alertTypeSelectItems,EnumSet.of(EventSubCategory.CONDITIONAL));
         }
         return alertTypeSelectItems;
     }
