@@ -84,7 +84,9 @@ public class RedFlagAlert extends BaseEntity implements Comparable<RedFlagAlert>
     private Integer hardTurn;
     @Column(name = "vert")
     private Integer hardVertical;
-    
+    @Column(name = "satellite")
+    private Boolean satellite;
+
     private Integer zoneID;
     
     private Integer idlingThreshold;
@@ -423,6 +425,13 @@ public class RedFlagAlert extends BaseEntity implements Comparable<RedFlagAlert>
         this.hardVertical = hardVertical;
     }
 
+    public Boolean getSatellite() {
+        return satellite;
+    }
+
+    public void setSatellite(Boolean satellite) {
+        this.satellite = satellite;
+    }
 
     @Override
     public String toString() {

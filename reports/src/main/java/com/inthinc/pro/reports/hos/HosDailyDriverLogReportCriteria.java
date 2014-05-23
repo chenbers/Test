@@ -7,14 +7,15 @@ import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.TimeZone;
 import java.util.Map.Entry;
 import java.util.ResourceBundle;
+import java.util.TimeZone;
 
 import javax.imageio.ImageIO;
 
@@ -529,8 +530,21 @@ public class HosDailyDriverLogReportCriteria extends ReportCriteria {
                 remarkLogList.add(populateRemarkLog(hosRecordList.get(hosRecordList.size() - 1)));
         }
 
-        return fillInSubdescriptions(remarkLogList, recapList, day, ruleSetType,  recap);
+        List<RemarkLog> remarksList = fillInSubdescriptions(remarkLogList, recapList, day, ruleSetType,  recap);
+
+        return sortRemarkList(remarksList);
     }
+    
+    List<RemarkLog> sortRemarkList(List<RemarkLog> remarksList) {
+        Collections.sort(remarksList, new Comparator<RemarkLog>() {
+            @Override
+            public int compare(RemarkLog r1, RemarkLog r2) {
+                return r1.getLogTimeDate().compareTo(r2.getLogTimeDate());
+            }
+        });
+        return remarksList;
+    }
+    
     private List<RemarkLog> fillInSubdescriptions(List<RemarkLog> remarkLogList, List<HOSRec> recapList, DateTime day, RuleSetType ruleSetType, Recap recap) {
         
         Interval dayInterval = new Interval(day, day.plusDays(1));
@@ -641,6 +655,8 @@ public class HosDailyDriverLogReportCriteria extends ReportCriteria {
         remarkLog.setEditor("");
         if (hosRecord.getOrigin() != null && hosRecord.getOrigin().equals(HOSOrigin.KIOSK)) 
             remarkLog.setEditor(MessageUtil.getBundleString(getResourceBundle(),"report.ddl.kiosk"));
+        if (hosRecord.getOrigin() != null && hosRecord.getOrigin().equals(HOSOrigin.VEHICLE_KIOSK)) 
+            remarkLog.setEditor(MessageUtil.getBundleString(getResourceBundle(),"report.ddl.vehiclekiosk"));
         if (remarkLog.getEdited()) {
             if (hosRecord.getEditUserID() != null && hosRecord.getEditUserID() != 0)
                 remarkLog.setEditor(getEditUserFullName(hosRecord.getEditUserID()));
