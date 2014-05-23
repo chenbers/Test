@@ -66,7 +66,8 @@ public enum EventType implements BaseEnum {
     DVIR_REPAIR(50),
     BACKING(51),
     TRAILER_PROGRAMMED(52),
-    ATTR_RF_OFF_DISTANCE(53);
+    ATTR_RF_OFF_DISTANCE(53),
+    PREVENTATIVE_MESSAGE_ODOMETER(54);
 
 
     private int code;
