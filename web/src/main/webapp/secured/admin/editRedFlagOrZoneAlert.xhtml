@@ -1083,28 +1083,27 @@
 <!--                           </a4j:outputPanel>-->
 
 
-                        <a4j:outputPanel id="editRedFlag-preventative">
-                            <h:panelGroup rendered="#{redFlagOrZoneAlertsBean.item.eventSubCategory eq 'PREVENTATIVE_MAINTENANCE'}">
+    <a4j:outputPanel id="editRedFlag-preventative">
+        <h:panelGroup rendered="#{redFlagOrZoneAlertsBean.item.eventSubCategory eq 'PREVENTIVE_MAINTENANCE'}">
 
-                                <div class="add_section_title">
+            <div class="add_section_title">
 
-                                    <h:outputText value="#{messages[redFlagOrZoneAlertsBean.item.eventSubCategory]}" />
-                                </div>
+                <h:outputText value="#{messages[redFlagOrZoneAlertsBean.item.eventSubCategory]}" />
+            </div>
 
-                                <div class="spacer"></div>
-                                <table width="100%" border="0" cellpadding="2" cellspacing="0" class="datagrid">
-                                    <tr>
-                                        <th><h:outputText value="#{messages.editRedFlag_setting}" /></th>
-                                    </tr>
-                                    <tr class="tableOdd">
-                                        <td style="padding: 0px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
-                                            <h:outputText value="#{messages.alertTypePreventativeMessage}" />
-                                        </td>
-                                    </tr>
-                                </table>
-                            </h:panelGroup>
-</a4j:outputPanel>
-
+            <div class="spacer"></div>
+            <table width="100%" border="0" cellpadding="2" cellspacing="0" class="datagrid">
+                <tr>
+                    <th><h:outputText value="#{messages.editRedFlag_setting}" /></th>
+                </tr>
+                <tr class="tableOdd">
+                    <td style="padding: 0px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
+                        <h:outputText value="#{messages.alertTypePreventiveMessage}" />
+                    </td>
+                </tr>
+            </table>
+        </h:panelGroup>
+    </a4j:outputPanel>
 						</a4j:outputPanel>
 </td>
 </tr>
