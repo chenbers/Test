@@ -69,7 +69,9 @@ public enum EventSubCategory implements BaseEnum
                     AlertMessageType.ALERT_TYPE_DVIR_DRIVEN_INSPECTED_UNSAFE,AlertMessageType.ALERT_TYPE_DVIR_DRIVEN_WITHOUT_INSPECTION,
                     AlertMessageType.ALERT_TYPE_DVIR_NO_POST_TRIP_INSPECTION, AlertMessageType.ALERT_TYPE_DVIR_REPAIR)),
     REVERSE(15,EnumSet.of(EventType.BACKING), null),
-    TRAILER(16, EnumSet.of(EventType.TRAILER_DATA, EventType.TRAILER_PROGRAMMED), null);
+    TRAILER(16, EnumSet.of(EventType.TRAILER_DATA, EventType.TRAILER_PROGRAMMED), null),
+    CONDITIONAL(17, EnumSet.of(EventType.ZONES_ARRIVAL, EventType.ZONES_DEPARTURE),
+            EnumSet.of(AlertMessageType.ATTR_BATTERY_VOLTAGE));
     
     private int code;
     private Set<EventType> eventTypeSet;
