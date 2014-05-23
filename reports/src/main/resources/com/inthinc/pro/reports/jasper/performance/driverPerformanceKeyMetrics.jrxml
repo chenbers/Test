@@ -2,8 +2,8 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="driverPerformanceKeyMetrics" pageWidth="842" pageHeight="595" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="782" leftMargin="30" rightMargin="30" topMargin="20" bottomMargin="20" resourceBundle="i18n/driverPerformanceKeyMetrics">
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
-	<property name="ireport.zoom" value="1.6105100000000114"/>
-	<property name="ireport.x" value="43"/>
+	<property name="ireport.zoom" value="1.6105100000000134"/>
+	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<property name="net.sf.jasperreports.export.xls.exclude.origin.keep.first.band.1" value="columnHeader"/>
 	<property name="net.sf.jasperreports.export.xls.wrap.text" value="false"/>
@@ -62,6 +62,29 @@
 	<field name="idleViolationsCount" class="java.lang.Integer"/>
 	<field name="loIdleViolationsMinutes" class="java.lang.Integer"/>
 	<field name="hiIdleViolationsMinutes" class="java.lang.Integer"/>
+	<group name="groupByGroup">
+		<groupExpression><![CDATA[$F{groupName}]]></groupExpression>
+		<groupHeader>
+			<band height="22">
+				<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="false">
+					<reportElement key="textField-23" mode="Opaque" x="0" y="0" width="782" height="22" forecolor="#FFFFFF" backcolor="#000000"/>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Left">
+						<font size="14" isBold="false" pdfFontName="Helvetica"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[str("column.1")+" "+ $F{groupName}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band/>
+		</groupFooter>
+	</group>
 	<title>
 		<band height="43">
 			<image scaleImage="RetainShape">
@@ -119,22 +142,17 @@
 				</graphicElement>
 			</rectangle>
 			<textField isBlankWhenNull="false">
-				<reportElement key="textField-51" positionType="FixRelativeToBottom" mode="Opaque" x="2" y="0" width="106" height="49" backcolor="#CCCCCC"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[str("column.1")]]></textFieldExpression>
-			</textField>
-			<textField isBlankWhenNull="false">
-				<reportElement key="textField-51" positionType="FixRelativeToBottom" mode="Opaque" x="109" y="0" width="55" height="49" backcolor="#CCCCCC"/>
+				<reportElement key="textField-51" positionType="FixRelativeToBottom" mode="Opaque" x="2" y="0" width="97" height="49" backcolor="#CCCCCC"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[str("column.2")]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="false">
-				<reportElement key="textField-42" positionType="FixRelativeToBottom" mode="Opaque" x="165" y="0" width="91" height="49" backcolor="#CCCCCC"/>
+				<reportElement key="textField-42" positionType="FixRelativeToBottom" mode="Opaque" x="100" y="0" width="91" height="49" backcolor="#CCCCCC"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[str("column.3")]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="false">
-				<reportElement key="textField-53" positionType="FixRelativeToBottom" mode="Opaque" x="257" y="0" width="123" height="49" backcolor="#CCCCCC"/>
+				<reportElement key="textField-53" positionType="FixRelativeToBottom" mode="Opaque" x="191" y="0" width="189" height="49" backcolor="#CCCCCC"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[str("column.4")]]></textFieldExpression>
 			</textField>
@@ -209,7 +227,7 @@
 				<reportElement x="0" y="0" width="782" height="1"/>
 			</line>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement key="textField-77" mode="Opaque" x="742" y="1" width="40" height="57" backcolor="#FFFFFF"/>
+				<reportElement key="textField-77" mode="Opaque" x="742" y="1" width="39" height="57" backcolor="#FFFFFF"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="9"/>
 				</textElement>
@@ -231,7 +249,7 @@
 				<textFieldExpression class="java.lang.String"><![CDATA[com.inthinc.pro.reports.converter.ScoreConverter.convertScore($F{speedingScore},$P{REPORT_LOCALE})]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement key="textField-42" mode="Opaque" x="257" y="1" width="124" height="57" backcolor="#FFFFFF"/>
+				<reportElement key="textField-42" mode="Opaque" x="191" y="1" width="190" height="57" backcolor="#FFFFFF"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{driverName}]]></textFieldExpression>
 			</textField>
@@ -243,17 +261,12 @@
 				<textFieldExpression class="java.lang.String"><![CDATA[com.inthinc.pro.reports.converter.TimeToStringConverter.convertSeconds($F{loIdleViolationsMinutes})]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement key="textField-51" mode="Opaque" x="0" y="1" width="108" height="57" backcolor="#FFFFFF"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{groupName}]]></textFieldExpression>
-			</textField>
-			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement key="textField-77" style="OverAllScore" mode="Opaque" x="502" y="1" width="39" height="57" backcolor="#FFFFFF"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[com.inthinc.pro.reports.converter.ScoreConverter.convertScore($F{overallScore},$P{REPORT_LOCALE})]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement key="textField-51" mode="Opaque" x="109" y="1" width="55" height="57" backcolor="#FFFFFF"/>
+				<reportElement key="textField-51" mode="Opaque" x="2" y="1" width="97" height="57" backcolor="#FFFFFF"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{teamName}]]></textFieldExpression>
 			</textField>
@@ -268,7 +281,7 @@
 				<textFieldExpression class="java.lang.String"><![CDATA[com.inthinc.pro.reports.converter.MeasurementConverter.convertDistance100th($F{totalMiles},$P{USE_METRIC},$P{REPORT_LOCALE})]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement key="textField-77" mode="Opaque" x="165" y="1" width="91" height="57" backcolor="#FFFFFF"/>
+				<reportElement key="textField-77" mode="Opaque" x="100" y="1" width="91" height="57" backcolor="#FFFFFF"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[com.inthinc.pro.reports.converter.TimeFrameConverter.convertTimeFrameOrInterval($F{timeFrame}, $F{interval},$P{REPORT_LOCALE}, $P{TIME_ZONE})]]></textFieldExpression>
 			</textField>
