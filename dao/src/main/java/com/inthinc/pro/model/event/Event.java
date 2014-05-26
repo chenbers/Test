@@ -80,6 +80,9 @@ public class Event extends BaseEntity implements Comparable<Event>, Serializable
     @EventAttrID(name="SPEED_LIMIT")
     private Integer speedLimit;
     private Map<Object, Object> attrMap;
+
+    @Column(name = "attribs")
+    private String attribs ;
     
     @SuppressWarnings("unused")
     private String eventTypeString;    
@@ -444,5 +447,40 @@ public class Event extends BaseEntity implements Comparable<Event>, Serializable
     
     public EventAttr[] getEventAttrList() {
         return null;
+    }
+
+    public String getAttribs() {
+        return attribs;
+    }
+
+    public void setAttribs(String attribs) {
+        this.attribs = attribs;
+    }
+
+    public String getDeviceName() {
+        return deviceName;
+    }
+
+    public void setDeviceName(String deviceName) {
+        this.deviceName = deviceName;
+    }
+
+    @XmlElement
+    public Integer getDuration() {
+        Integer duration = 0;
+            try {
+                Map<Object, Object> attrMap = getAttrMap();
+                if (attrMap != null && attrMap.isEmpty()) {
+                    if (attrMap.containsKey(EventAttr.START_TIME) && attrMap.containsKey(EventAttr.STOP_TIME)) {
+                        Integer startTime = (Integer) attrMap.get(EventAttr.START_TIME);
+                        Integer stopTime = (Integer) attrMap.get(EventAttr.STOP_TIME);
+
+                        duration = stopTime - startTime;
+                    }
+                }
+            } catch (Exception e) {
+               e.printStackTrace();
+            }
+        return duration;
     }
 }
