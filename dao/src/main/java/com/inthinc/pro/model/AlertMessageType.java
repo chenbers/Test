@@ -62,7 +62,7 @@ public enum AlertMessageType implements BaseEnum
     ALERT_TYPE_VEHICLE_MOVE_BACKWARDS(46),
     ATTR_BATTERY_VOLTAGE(47),
     ATTR_CHECK_ENGINE(48),
-    ODOMETER_ENGINE_ALERT(57);
+    ATTR_ENGINE_HOURS(57);
     
     private int code;
 

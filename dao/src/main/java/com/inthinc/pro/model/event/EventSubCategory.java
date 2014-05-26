@@ -72,7 +72,7 @@ public enum EventSubCategory implements BaseEnum
     TRAILER(16, EnumSet.of(EventType.TRAILER_DATA, EventType.TRAILER_PROGRAMMED), null),
     CONDITIONAL(17, EnumSet.of(EventType.ZONES_ARRIVAL, EventType.ZONES_DEPARTURE),
             EnumSet.of(AlertMessageType.ATTR_BATTERY_VOLTAGE)),
-    PREVENTATIVE_MAINTENANCE(18,  EnumSet.of(EventType.PREVENTATIVE_MESSAGE_ODOMETER), EnumSet.of(AlertMessageType.ODOMETER_ENGINE_ALERT));
+    PREVENTATIVE_MAINTENANCE(18,  EnumSet.of(EventType.PREVENTATIVE_MESSAGE_ODOMETER), EnumSet.of(AlertMessageType.ATTR_ENGINE_HOURS));
     
     private int code;
     private Set<EventType> eventTypeSet;
