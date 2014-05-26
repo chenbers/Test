@@ -72,10 +72,8 @@ public enum EventType implements BaseEnum {
     TRANSMISSION_TEMP(57),
     DPF_FLOW_RATE(58),
     OIL_PRESSURE(59),
-    ENGINE_HOURS(60),
-    MALFUNCTION_INDICATOR_LAMP(61),
-    CHECK_ENGINE(62),
-    MAINTENANCE_CAPABILITIES(63);
+    MALFUNCTION_INDICATOR_LAMP(60),
+    CHECK_ENGINE(61);
 
 
     private int code;

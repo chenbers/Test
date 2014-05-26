@@ -71,10 +71,10 @@ public enum EventSubCategory implements BaseEnum
     REVERSE(15,EnumSet.of(EventType.BACKING), null),
     TRAILER(16, EnumSet.of(EventType.TRAILER_DATA, EventType.TRAILER_PROGRAMMED), null),
     CONDITIONAL(17,
-            EnumSet.of(EventType.BATTERY_VOLTAGE, EventType.ENGINE_TEMP, EventType.TRANSMISSION_TEMP, EventType.DPF_FLOW_RATE, EventType.OIL_PRESSURE,
-                       EventType.ENGINE_HOURS, EventType.MALFUNCTION_INDICATOR_LAMP, EventType.CHECK_ENGINE, EventType.MAINTENANCE_CAPABILITIES),
-            EnumSet.of(AlertMessageType.ATTR_BATTERY_VOLTAGE,AlertMessageType.ATTR_ENGINE_TEMP,AlertMessageType.ATTR_TRANSMISSION_TEMP,AlertMessageType.ATTR_DPF_FLOW_RATE,AlertMessageType.ATTR_OIL_PRESSURE,
-                       AlertMessageType.ATTR_ENGINE_HOURS,AlertMessageType.ATTR_MALFUNCTION_INDICATOR_LAMP,AlertMessageType.ATTR_CHECK_ENGINE,AlertMessageType.ATTR_MAINTENANCE_CAPABILITIES));
+            EnumSet.of(EventType.BATTERY_VOLTAGE, EventType.ENGINE_TEMP, EventType.TRANSMISSION_TEMP, EventType.DPF_FLOW_RATE,
+                       EventType.OIL_PRESSURE,EventType.MALFUNCTION_INDICATOR_LAMP, EventType.CHECK_ENGINE),
+            EnumSet.of(AlertMessageType.ATTR_BATTERY_VOLTAGE,AlertMessageType.ATTR_ENGINE_TEMP,AlertMessageType.ATTR_TRANSMISSION_TEMP,AlertMessageType.ATTR_DPF_FLOW_RATE,
+                       AlertMessageType.ATTR_OIL_PRESSURE,AlertMessageType.ATTR_MALFUNCTION_INDICATOR_LAMP,AlertMessageType.ATTR_CHECK_ENGINE));
     
     private int code;
     private Set<EventType> eventTypeSet;

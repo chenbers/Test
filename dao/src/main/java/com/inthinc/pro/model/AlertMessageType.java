@@ -67,8 +67,7 @@ public enum AlertMessageType implements BaseEnum
     ATTR_OIL_PRESSURE(51),
     ATTR_ENGINE_HOURS(52),
     ATTR_MALFUNCTION_INDICATOR_LAMP(53),
-    ATTR_CHECK_ENGINE(54),
-    ATTR_MAINTENANCE_CAPABILITIES(55);
+    ATTR_CHECK_ENGINE(54);
 
     private int code;
 

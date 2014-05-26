@@ -44,14 +44,6 @@ public class AlertTypeSelectItems {
 
     }
 
-//    private static List<SelectItem> addConditionalTypes(List<SelectItem> alertTypeSelectItems, Boolean condEnabled){
-//
-//        if (condEnabled){
-//            alertTypeSelectItems = addSet(alertTypeSelectItems,EnumSet.of(EventSubCategory.CONDITIONAL));
-//        }
-//        return alertTypeSelectItems;
-//
-//    }
     private static List<SelectItem> addWaySmartTypes(List<SelectItem> alertTypeSelectItems, Boolean waySmartEnabled){
         
         if(waySmartEnabled){

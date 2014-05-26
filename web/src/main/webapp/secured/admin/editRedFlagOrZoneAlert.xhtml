@@ -950,11 +950,6 @@
 
                                     <h:outputText value="#{messages[redFlagOrZoneAlertsBean.item.eventSubCategory]}" />
                                 </div>
-                                <!--<ui:fragment rendered="#{redFlagOrZoneAlertsBean.accountIsWaysmart}">-->
-                                    <!--<div >-->
-                                        <!--<h:outputText value="#{messages.redFlagAlertComplianceNote}"/>-->
-                                    <!--</div>-->
-                                <!--</ui:fragment>-->
                                 <div class="spacer"></div>
                                 <table width="100%" border="0" cellpadding="2" cellspacing="0" class="datagrid">
                                     <tr>
@@ -974,42 +969,34 @@
                                     </tr>
                                     <tr class="tableOdd">
                                         <td style="padding: 0px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
-                                            <h:selectBooleanCheckbox id="maintenanceCapabilitiesSelected" value="#{redFlagOrZoneAlertsBean.item.selectedAlertTypes['ATTR_MAINTENANCE_CAPABILITIES']}" onchange="checkMultiple('type')" />
-                                            <h:outputText value="#{messages.attrMaintenaceCapabilities}" />
-                                        </td>
-                                    </tr>
-                                    <tr class="tableEven">
-                                        <td style="padding: 0px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
                                             <h:selectBooleanCheckbox id="engineTempSelected" value="#{redFlagOrZoneAlertsBean.item.selectedAlertTypes['ATTR_ENGINE_TEMP']}" onchange="checkMultiple('type')" />
                                             <h:outputText value="#{messages.attrEngineTemp}" />
                                         </td>
                                     </tr>
-                                    <tr class="tableOdd">
+                                    <tr class="tableEven">
                                         <td style="padding: 0px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
                                             <h:selectBooleanCheckbox id="batteryVoltageSelected" value="#{redFlagOrZoneAlertsBean.item.selectedAlertTypes['ATTR_BATTERY_VOLTAGE']}" onchange="checkMultiple('type')" />
                                             <h:outputText value="#{messages.attrBatteryVoltage}" />
                                         </td>
                                     </tr>
-                                    <tr class="tableEven">
+                                    <tr class="tableOdd">
                                     <td style="padding: 0px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
                                         <h:selectBooleanCheckbox id="oilPresureSelected" value="#{redFlagOrZoneAlertsBean.item.selectedAlertTypes['ATTR_OIL_PRESSURE']}" onchange="checkMultiple('type')" />
                                         <h:outputText value="#{messages.attrOilPressure}" />
                                     </td>
                                     </tr>
-                                    <tr class="tableOdd">
+                                    <tr class="tableEven">
                                         <td style="padding: 0px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
                                             <h:selectBooleanCheckbox id="transmisionTempSelected" value="#{redFlagOrZoneAlertsBean.item.selectedAlertTypes['ATTR_TRANSMISSION_TEMP']}" onchange="checkMultiple('type')" />
                                             <h:outputText value="#{messages.attrTransmissionTemp}" />
                                         </td>
                                     </tr>
-                                    <!--<ui:fragment rendered="#{redFlagOrZoneAlertsBean.accountIsWaysmart}">-->
-                                        <tr class="tableEven">
-                                            <td style="padding: 0px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
-                                                <h:selectBooleanCheckbox id="particulateTrapSelected" value="#{redFlagOrZoneAlertsBean.item.selectedAlertTypes['ATTR_DPF_FLOW_RATE']}" onchange="checkMultiple('type')" />
-                                                <h:outputText value="#{messages.attrDPFFlowRate}" />
-                                            </td>
-                                        </tr>
-                                    <!--</ui:fragment>-->
+                                    <tr class="tableOdd">
+                                        <td style="padding: 0px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
+                                            <h:selectBooleanCheckbox id="particulateTrapSelected" value="#{redFlagOrZoneAlertsBean.item.selectedAlertTypes['ATTR_DPF_FLOW_RATE']}" onchange="checkMultiple('type')" />
+                                            <h:outputText value="#{messages.attrDPFFlowRate}" />
+                                        </td>
+                                    </tr>
                                 </table>
 
                             </h:panelGroup>
