@@ -36,7 +36,8 @@ public enum RedFlagGenericDetails implements SeleniumEnums {
     STYLE_HARD_BRAKE("Hard Brake", "//tr[@class='datagrid']/../tr[3]/td[1]"),
     STYLE_UNSAFE_TURN("Unsafe Turn", "//tr[@class='datagrid']/../tr[4]/td[1]"),
     STYLE_HARD_BUMP("Hard Bump", "//tr[@class='datagrid']/../tr[5]/td[1]"),
-    
+    STYLE_SATELLITE_SWITCH_VIOLATION("Satellite Switch Violation", "//tr[@class='datagrid']/../tr[6]/td[1]"),
+
     STYLE_HARD_ACCELERATE_SLIDER_POSITION(null, "redFlagForm:hardAccelerationTip"),
     STYLE_HARD_BRAKE_SLIDER_POSITION(null, "redFlagForm:hardBrakeTip"),
     STYLE_UNSAFE_TURN_SLIDER_POSITION(null, "redFlagForm:hardTurnTip"),
