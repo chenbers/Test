@@ -7,14 +7,15 @@ import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.TimeZone;
 import java.util.Map.Entry;
 import java.util.ResourceBundle;
+import java.util.TimeZone;
 
 import javax.imageio.ImageIO;
 
@@ -529,8 +530,21 @@ public class HosDailyDriverLogReportCriteria extends ReportCriteria {
                 remarkLogList.add(populateRemarkLog(hosRecordList.get(hosRecordList.size() - 1)));
         }
 
-        return fillInSubdescriptions(remarkLogList, recapList, day, ruleSetType,  recap);
+        List<RemarkLog> remarksList = fillInSubdescriptions(remarkLogList, recapList, day, ruleSetType,  recap);
+
+        return sortRemarkList(remarksList);
     }
+    
+    List<RemarkLog> sortRemarkList(List<RemarkLog> remarksList) {
+        Collections.sort(remarksList, new Comparator<RemarkLog>() {
+            @Override
+            public int compare(RemarkLog r1, RemarkLog r2) {
+                return r1.getLogTimeDate().compareTo(r2.getLogTimeDate());
+            }
+        });
+        return remarksList;
+    }
+    
     private List<RemarkLog> fillInSubdescriptions(List<RemarkLog> remarkLogList, List<HOSRec> recapList, DateTime day, RuleSetType ruleSetType, Recap recap) {
         
         Interval dayInterval = new Interval(day, day.plusDays(1));
