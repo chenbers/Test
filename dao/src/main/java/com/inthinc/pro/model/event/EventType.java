@@ -67,6 +67,7 @@ public enum EventType implements BaseEnum {
     BACKING(51),
     TRAILER_PROGRAMMED(52),
     ATTR_RF_OFF_DISTANCE(53),
+    PREVENTATIVE_MESSAGE_ODOMETER(54),
     BATTERY_VOLTAGE(55),
     ENGINE_TEMP(56),
     TRANSMISSION_TEMP(57),
@@ -74,6 +75,7 @@ public enum EventType implements BaseEnum {
     OIL_PRESSURE(59),
     MALFUNCTION_INDICATOR_LAMP(60),
     CHECK_ENGINE(61);
+    
 
 
     private int code;

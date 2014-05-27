@@ -21,6 +21,7 @@ public class AlertTypeSelectItems {
         alertTypeSelectItems = addWaySmartTypes(alertTypeSelectItems,waySmartEnabled);
         alertTypeSelectItems = addZones(alertTypeSelectItems,hasZones);
         alertTypeSelectItems = addConditionals(alertTypeSelectItems,true);
+        alertTypeSelectItems = addPrevMaintenance(alertTypeSelectItems, true);
 
         return alertTypeSelectItems;
     }
@@ -43,6 +44,7 @@ public class AlertTypeSelectItems {
         return alertTypeSelectItems;
 
     }
+
 
     private static List<SelectItem> addWaySmartTypes(List<SelectItem> alertTypeSelectItems, Boolean waySmartEnabled){
         
@@ -70,6 +72,15 @@ public class AlertTypeSelectItems {
         }
         return alertTypeSelectItems;
     }
+
+    private static List<SelectItem> addPrevMaintenance(List<SelectItem> alertTypeSelectItems, Boolean hasPrevMaintenance){
+
+        if (hasPrevMaintenance){
+            alertTypeSelectItems = addSet(alertTypeSelectItems,EnumSet.of(EventSubCategory.PREVENTATIVE_MAINTENANCE));
+        }
+        return alertTypeSelectItems;
+    }
+
     private static List<SelectItem> addSet(List<SelectItem> alertTypeSelectItems,Set<EventSubCategory> setOfAlertTypes){
         
         for (EventSubCategory e : setOfAlertTypes)
