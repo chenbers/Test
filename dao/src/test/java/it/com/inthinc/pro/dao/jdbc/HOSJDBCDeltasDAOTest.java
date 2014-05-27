@@ -39,7 +39,7 @@ import com.inthinc.pro.model.hos.HOSDelta;
 import com.inthinc.pro.model.hos.HOSDeltaRecord;
 import com.inthinc.pro.model.hos.HOSRecord;
 
-
+@Ignore // relys on colleen's lates HOS changes... keep out of hotfix branch
 public class HOSJDBCDeltasDAOTest extends SimpleJdbcDaoSupport {
     private static ITData itData;
     private static SiloService siloService;
@@ -81,7 +81,7 @@ public class HOSJDBCDeltasDAOTest extends SimpleJdbcDaoSupport {
 //        ((HOSJDBCDAO2)hosDAO).setDataSource(new ITDataSource().getRealDataSource());
     }
 
-    
+    @Ignore //reliant on colleen's latest HOS changes, keep out of hotfix branches 
     @Test
     // no changes
     public void testCaseNoChanges() {
@@ -99,7 +99,8 @@ public class HOSJDBCDeltasDAOTest extends SimpleJdbcDaoSupport {
         
         checkOriginalListAtSummaryTime(hosDAO, groupData, cloneList);
     }
-    
+   
+    @Ignore //reliant on colleen's latest HOS changes, keep out of hotfix branches  
     @Test
     // Portal edit of record 1 status from Driving(2) to OFF_DUTY (0)
     public void testCaseChangeStatus() {
@@ -136,6 +137,7 @@ public class HOSJDBCDeltasDAOTest extends SimpleJdbcDaoSupport {
         checkOriginalListAtSummaryTime(hosDAO, groupData, cloneList);
     }
 
+    @Ignore // relies on colleen's latest HOS changes ... keep out of hotfix branch
     @Test
     // Portal edit of record 1 time 5 minutes later
     public void testCaseChangeLogTime() {
@@ -174,6 +176,7 @@ public class HOSJDBCDeltasDAOTest extends SimpleJdbcDaoSupport {
         checkOriginalListAtSummaryTime(hosDAO, groupData, cloneList);
     }
 
+    @Ignore // relies on colleen's lates HOS changes... keep out of hotfix branch
     @Test
     // Kiosk add a record
     public void testCaseAddLogFromKiosk() {
@@ -220,7 +223,7 @@ public class HOSJDBCDeltasDAOTest extends SimpleJdbcDaoSupport {
 
     }
 
-
+    @Ignore // relys on colleen's lates HOS changes... keep out of hotfix branch
     @Test
     // Portal add a record
     public void testCaseAddLogFromPortal() {
@@ -268,6 +271,7 @@ public class HOSJDBCDeltasDAOTest extends SimpleJdbcDaoSupport {
     }
 
 
+    @Ignore // relys on colleen's lates HOS changes... keep out of hotfix branch
     @Test
     // Portal delete a record
     public void testCaseDeleteLogFromPortal() {
@@ -303,6 +307,7 @@ public class HOSJDBCDeltasDAOTest extends SimpleJdbcDaoSupport {
         checkOriginalListAtSummaryTime(hosDAO, groupData, cloneList);
     }
 
+    @Ignore // relys on colleen's lates HOS changes... keep out of hotfix branch
     @Test
     // Portal multiple edits of record 1 time 5 minutes later, status change from driving to off duty
     public void testCaseChangeLogTimeAndStatus() {
