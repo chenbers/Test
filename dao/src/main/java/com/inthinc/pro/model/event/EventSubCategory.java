@@ -74,8 +74,8 @@ public enum EventSubCategory implements BaseEnum
             EnumSet.of(EventType.BATTERY_VOLTAGE, EventType.ENGINE_TEMP, EventType.TRANSMISSION_TEMP, EventType.DPF_FLOW_RATE,
                        EventType.OIL_PRESSURE,EventType.MALFUNCTION_INDICATOR_LAMP, EventType.CHECK_ENGINE),
             EnumSet.of(AlertMessageType.ATTR_BATTERY_VOLTAGE,AlertMessageType.ATTR_ENGINE_TEMP,AlertMessageType.ATTR_TRANSMISSION_TEMP,AlertMessageType.ATTR_DPF_FLOW_RATE,
-                       AlertMessageType.ATTR_OIL_PRESSURE,AlertMessageType.ATTR_MALFUNCTION_INDICATOR_LAMP,AlertMessageType.ATTR_CHECK_ENGINE));
-    PREVENTATIVE_MAINTENANCE(18,  EnumSet.of(EventType.PREVENTATIVE_MESSAGE_ODOMETER), EnumSet.of(AlertMessageType.ATTR_ENGINE_HOURS));
+                       AlertMessageType.ATTR_OIL_PRESSURE,AlertMessageType.ATTR_MALFUNCTION_INDICATOR_LAMP,AlertMessageType.ATTR_CHECK_ENGINE)),
+    PREVENTATIVE_MAINTENANCE(18,  EnumSet.of(EventType.ENGINE_HOURS), EnumSet.of(AlertMessageType.ATTR_ENGINE_HOURS));
     
     private int code;
     private Set<EventType> eventTypeSet;
