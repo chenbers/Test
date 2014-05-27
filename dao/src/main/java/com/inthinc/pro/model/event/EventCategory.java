@@ -25,7 +25,8 @@ public enum EventCategory implements BaseEnum
     TEXT(9,"TEXT", EnumSet.of(EventSubCategory.TEXTMESSAGE)),
     DRIVER_LOGIN(10, "DRIVER", EnumSet.of(EventSubCategory.DRIVER)),
     DVIR(11,"DVIR", EnumSet.of(EventSubCategory.DVIR)),
-    DIAGNOSTICS(12, "DIAGNOSTICS", EnumSet.of(EventSubCategory.VEHICLE, EventSubCategory.WIRELINE, EventSubCategory.INSTALLATION, EventSubCategory.DVIR, EventSubCategory.TRAILER));
+    DIAGNOSTICS(12, "DIAGNOSTICS", EnumSet.of(EventSubCategory.VEHICLE, EventSubCategory.WIRELINE, EventSubCategory.INSTALLATION, EventSubCategory.DVIR, EventSubCategory.TRAILER)),
+    MAINTENANCE(13,"MAINTENANCE", EnumSet.of(EventSubCategory.CONDITIONAL));
 
     private String description;
     private int code;
