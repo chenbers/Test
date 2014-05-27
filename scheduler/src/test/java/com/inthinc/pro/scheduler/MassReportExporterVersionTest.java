@@ -61,7 +61,7 @@ import java.util.Set;
         "classpath:/applicationContext-reports.xml"
 })
 @RunWith(SpringJUnit4ClassRunner.class)
-//@Ignore
+@Ignore
 public class MassReportExporterVersionTest {
     @Autowired
     ReportCriteriaService reportCriteriaService;

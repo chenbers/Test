@@ -62,6 +62,7 @@ import java.util.Set;
         "classpath:/applicationContext-daoJDBCBeans.xml",
         "classpath:/applicationContext-reports.xml"
 })
+@Ignore
 @RunWith(SpringJUnit4ClassRunner.class)
 public class MassReportExporterTest {
     @Autowired
