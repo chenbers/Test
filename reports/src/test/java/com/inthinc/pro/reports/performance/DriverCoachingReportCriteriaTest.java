@@ -120,7 +120,7 @@ public class DriverCoachingReportCriteriaTest extends BaseUnitTest {
          */
         Map<Interval, CustomExpectation> testMap = new HashMap<Interval, CustomExpectation>();
         testMap.put(builder.getCustomInterval(TimeFrame.SIX_MONTHS, baseInterval, DateTimeZone.UTC), new CustomExpectation("SIX_MONTHS", baseInterval.getEnd().minusMonths(6).minusDays(1),  baseInterval.getEnd()));
-        testMap.put(builder.getCustomInterval(TimeFrame.THREE_MONTHS, baseInterval, DateTimeZone.UTC), new CustomExpectation("THREE_MONTHS", baseInterval.getEnd().minusMonths(3).minusDays(1),  baseInterval.getEnd()));
+        testMap.put(builder.getCustomInterval(TimeFrame.THREE_MONTHS, baseInterval, DateTimeZone.UTC), new CustomExpectation("THREE_MONTHS", baseInterval.getEnd().minusMonths(3),  baseInterval.getEnd()));
         testMap.put(builder.getCustomInterval(TimeFrame.FIVE_DAYS_AGO, baseInterval, DateTimeZone.UTC), new CustomExpectation("FIVE_DAYS_AGO", baseInterval.getEnd().minusDays(1),  baseInterval.getEnd()));
         testMap.put(builder.getCustomInterval(TimeFrame.LAST_MONTH, baseInterval, DateTimeZone.UTC), new CustomExpectation("LAST_MONTH", baseInterval.getEnd().minusMonths(1),  baseInterval.getEnd()));
         testMap.put(builder.getCustomInterval(TimeFrame.THREE_DAYS_AGO, baseInterval, DateTimeZone.UTC), new CustomExpectation("THREE_DAYS_AGO", baseInterval.getEnd().minusDays(1),  baseInterval.getEnd()));
