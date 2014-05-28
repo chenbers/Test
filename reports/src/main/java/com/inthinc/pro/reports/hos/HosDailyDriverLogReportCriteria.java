@@ -655,8 +655,6 @@ public class HosDailyDriverLogReportCriteria extends ReportCriteria {
         remarkLog.setEditor("");
         if (hosRecord.getOrigin() != null && hosRecord.getOrigin().equals(HOSOrigin.KIOSK)) 
             remarkLog.setEditor(MessageUtil.getBundleString(getResourceBundle(),"report.ddl.kiosk"));
-        if (hosRecord.getOrigin() != null && hosRecord.getOrigin().equals(HOSOrigin.VEHICLE_KIOSK)) 
-            remarkLog.setEditor(MessageUtil.getBundleString(getResourceBundle(),"report.ddl.vehiclekiosk"));
         if (remarkLog.getEdited()) {
             if (hosRecord.getEditUserID() != null && hosRecord.getEditUserID() != 0)
                 remarkLog.setEditor(getEditUserFullName(hosRecord.getEditUserID()));
