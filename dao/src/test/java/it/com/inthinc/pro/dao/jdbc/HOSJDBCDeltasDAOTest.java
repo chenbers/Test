@@ -40,7 +40,7 @@ import com.inthinc.pro.model.hos.HOSDelta;
 import com.inthinc.pro.model.hos.HOSDeltaRecord;
 import com.inthinc.pro.model.hos.HOSRecord;
 
-@Ignore // relies on colleen's lates HOS changes... keep out of hotfix branch
+@Ignore // relies on Colleen's latest HOS changes... keep out of hotfix branch
 public class HOSJDBCDeltasDAOTest extends SimpleJdbcDaoSupport {
     private static ITData itData;
     private static SiloService siloService;
