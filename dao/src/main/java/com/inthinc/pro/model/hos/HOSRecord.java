@@ -58,7 +58,6 @@ public class HOSRecord extends BaseEntity implements Comparable<HOSRecord>{
     private Byte noteFlags;
     private Integer stateID;
     private String mobileUnitID;
-    private Integer tzID;
     
     public HOSRecord()
     {
@@ -387,14 +386,6 @@ public class HOSRecord extends BaseEntity implements Comparable<HOSRecord>{
 
     public void setMobileUnitID(String mobileUnitID) {
         this.mobileUnitID = mobileUnitID;
-    }
-
-    public Integer getTzID() {
-        return tzID;
-    }
-
-    public void setTzID(Integer tzID) {
-        this.tzID = tzID;
     }
 
     public void dump () {
