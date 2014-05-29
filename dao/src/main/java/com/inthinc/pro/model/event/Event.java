@@ -498,22 +498,40 @@ public class Event extends BaseEntity implements Comparable<Event>, Serializable
         return stopTime;
     }
 
-    @XmlElement
+    //@XmlElement  // unblock this to get duration also
     public Integer getDuration() {
-        Integer duration = 0;
-            try {
-                Map<Object, Object> attrMap = getAttrMap();
-                if (attrMap != null && attrMap.isEmpty()) {
-                    if (attrMap.containsKey(EventAttr.START_TIME) && attrMap.containsKey(EventAttr.STOP_TIME)) {
-                        Integer startTime = (Integer) attrMap.get(EventAttr.START_TIME);
-                        Integer stopTime = (Integer) attrMap.get(EventAttr.STOP_TIME);
+        return Math.abs(getStopTime() - getStartTime());
+    }
 
-                        duration = stopTime - startTime;
-                    }
+    @XmlElement
+    public Integer getStartTime() {
+        Integer startTime = 0;
+        try {
+            Map<Object, Object> attrMap = getAttrMap();
+            if (attrMap != null && attrMap.isEmpty()) {
+                if (attrMap.containsKey(EventAttr.START_TIME)) {
+                    startTime = (Integer) attrMap.get(EventAttr.START_TIME);
                 }
-            } catch (Exception e) {
-               e.printStackTrace();
             }
-        return duration;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return startTime;
+    }
+
+    @XmlElement
+    public Integer getStopTime() {
+        Integer stopTime = 0;
+        try {
+            Map<Object, Object> attrMap = getAttrMap();
+            if (attrMap != null && attrMap.isEmpty()) {
+                if (attrMap.containsKey(EventAttr.STOP_TIME)) {
+                    stopTime = (Integer) attrMap.get(EventAttr.STOP_TIME);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return stopTime;
     }
 }
