@@ -472,13 +472,13 @@ public class Event extends BaseEntity implements Comparable<Event>, Serializable
     }
 
     @XmlElement
-    public Integer getStartTime() {
-        Integer startTime = 0;
+    public String getStartTime() {
+        String startTime="";
         try {
             Map<Object, Object> attrMap = getAttrMap();
             if (attrMap != null && attrMap.isEmpty()) {
                 if (attrMap.containsKey(EventAttr.START_TIME)) {
-                    startTime = (Integer) attrMap.get(EventAttr.START_TIME);
+                    startTime = attrMap.get(EventAttr.START_TIME).toString();
                 }
             }
         } catch (Exception e) {
@@ -488,13 +488,13 @@ public class Event extends BaseEntity implements Comparable<Event>, Serializable
     }
 
     @XmlElement
-    public Integer getStopTime() {
-        Integer stopTime = 0;
+    public String getStopTime() {
+        String stopTime = "";
         try {
             Map<Object, Object> attrMap = getAttrMap();
             if (attrMap != null && attrMap.isEmpty()) {
                 if (attrMap.containsKey(EventAttr.STOP_TIME)) {
-                    stopTime = (Integer) attrMap.get(EventAttr.STOP_TIME);
+                    stopTime = attrMap.get(EventAttr.STOP_TIME).toString();
                 }
             }
         } catch (Exception e) {
