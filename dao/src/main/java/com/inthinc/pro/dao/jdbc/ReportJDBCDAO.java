@@ -144,7 +144,7 @@ public class ReportJDBCDAO extends SimpleJdbcDaoSupport implements ReportDAO {
         pagedColumnMapIdleVehicleReport.put("groupID", "groupID");
         pagedColumnMapIdleVehicleReport.put("groupName", "groupName");
         pagedColumnMapIdleVehicleReport.put("vehicleID", "vehicleID");
-        pagedColumnMapIdleVehicleReport.put("vehicleName", "vehicleName");
+        pagedColumnMapIdleVehicleReport.put("vehicleName", "vi.Name");
         pagedColumnMapIdleVehicleReport.put("driveTime", "driveTime");
         pagedColumnMapIdleVehicleReport.put("lowIdleTime", "lowIdleTime");
         pagedColumnMapIdleVehicleReport.put("highIdleTime", "highIdleTime");
