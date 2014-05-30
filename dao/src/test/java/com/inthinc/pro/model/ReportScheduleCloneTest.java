@@ -105,6 +105,8 @@ public class ReportScheduleCloneTest {
         emailList.add("  bar@inthinc.com");
         emailList.add("baz@inthinc.com");
         emailList.add("bazinthinc.com");
+        emailList.add("@inthinc.com");
+        
         reportSchedule.setEmailTo(emailList);
         assertTrue(reportSchedule.getEmailTo().size()==3);
         for(String email : reportSchedule.getEmailTo()) {
