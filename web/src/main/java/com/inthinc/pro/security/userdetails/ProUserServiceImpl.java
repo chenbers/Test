@@ -273,7 +273,7 @@ public class ProUserServiceImpl implements UserDetailsService
 
 		for(Integer id:userRoles){
 			
-			if (roles.getRoleById(id).getName().equals("Admin")){
+			if (roles.getRoleById(id) != null && roles.getRoleById(id).getName().equals("Admin")){
 				
 				return true;
 			}
