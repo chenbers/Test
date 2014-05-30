@@ -5,26 +5,12 @@ import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.xml.bind.annotation.XmlRootElement;
-
-@XmlRootElement
-/* Duration Enum
- * 
- * 4/1/2009 - dvqCode added to retrieve 7 day aggregation.
- * 
- * code - specifies cumulative of entities based on 30 day aggregation
- * dvqCode - specifies cumulative of entities based on 7 day aggregation
- * dvqCount - specifies number of records to retrieve
+/**
+ * Custom durations.
  */
-
-public enum Duration implements BaseEnum
-{    
-    
-    // Other widget values
-    DAYS(1, "30 days", 30, "dd", 0, 30, 6), 
-    THREE(/*3*/ 2, "3 months", 90, "MMM", 2, 3, 3), 
-    SIX(/*4*/ 3, "6 months", 180, "MMM", 2, 6, 4), 
-    TWELVE(/*5*/ 4, "12 months", 360, "MMM", 2, 12, 5);
+public enum CustomDuration implements BaseEnum
+{
+    SEVEN_DAYS(5, "7 days", 7, "dd", 0, 7, 6);
 
     /*
      * dvqCode
@@ -36,7 +22,7 @@ public enum Duration implements BaseEnum
 	    5 - 12 month bins
 	    6 - 30 day bins
     */
-    
+
 //    typedef enum
 //    {
 //        DriveQDuration1Day    = 0,
@@ -47,7 +33,7 @@ public enum Duration implements BaseEnum
 //        DriveQDuration12Month = 5,
 //        DriveQDuration30Day    = 6
 //    } DriveQDuration;
-    
+
 	public static final int BINSIZE_1_DAY = 0;
 	public static final int BINSIZE_7_DAY = 1;
 	public static final int BINSIZE_1_MONTH = 2;
@@ -64,24 +50,24 @@ public enum Duration implements BaseEnum
     private Integer aggregationBinSize;
     private Integer dvqCount;
     private Integer dvqCode;
-    
-    
-    private static final Map<Integer, Duration> lookup = new HashMap<Integer, Duration>();
-    
+
+
+    private static final Map<Integer, CustomDuration> lookup = new HashMap<Integer, CustomDuration>();
+
     static
     {
-        for(Duration d : EnumSet.allOf(Duration.class))
+        for(CustomDuration d : EnumSet.allOf(CustomDuration.class))
             lookup.put(d.getNumberOfDays(), d);
     }
 
-    private static final Map<Integer, Duration> codeLookup = new HashMap<Integer, Duration>();
-    
+    private static final Map<Integer, CustomDuration> codeLookup = new HashMap<Integer, CustomDuration>();
+
     static
     {
-        for(Duration d : EnumSet.allOf(Duration.class))
+        for(CustomDuration d : EnumSet.allOf(CustomDuration.class))
             codeLookup.put(d.getCode(), d);
     }
-    Duration(Integer code, String durationValue, int numberOfDays, String datePattern, Integer aggregationBinSize, Integer dvqCount, Integer dvqCode)
+    CustomDuration(Integer code, String durationValue, int numberOfDays, String datePattern, Integer aggregationBinSize, Integer dvqCount, Integer dvqCode)
     {
         this.code = code;
         this.durationValue = durationValue;
@@ -98,10 +84,10 @@ public enum Duration implements BaseEnum
     	
     	switch (binSize)
     	{
-	        case Duration.BINSIZE_1_MONTH:
-	        case Duration.BINSIZE_3_MONTHS:
-	        case Duration.BINSIZE_6_MONTHS:
-	        case Duration.BINSIZE_12_MONTHS:
+	        case CustomDuration.BINSIZE_1_MONTH:
+	        case CustomDuration.BINSIZE_3_MONTHS:
+	        case CustomDuration.BINSIZE_6_MONTHS:
+	        case CustomDuration.BINSIZE_12_MONTHS:
 	        	calendarPeriod = Calendar.MONTH;
 	        	break;
 	        default:	
@@ -116,7 +102,7 @@ public enum Duration implements BaseEnum
         return this.numberOfDays;
     }
     
-    public static Duration getDurationByDays(int numberOfDays)
+    public static CustomDuration getDurationByDays(int numberOfDays)
     {
         return lookup.get(numberOfDays);
     }
@@ -141,16 +127,11 @@ public enum Duration implements BaseEnum
         return dvqCode;
     }
 
-    public static Duration valueOf(Integer code)
+    public static CustomDuration valueOf(Integer code)
     {
         return codeLookup.get(code);
     }
        
-//    public String getDatePattern()
-//    {
-//        return this.datePattern;
-//    }
-
     public Integer getAggregationBinSize()
     {
         return aggregationBinSize;

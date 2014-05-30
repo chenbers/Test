@@ -3,6 +3,7 @@ package com.inthinc.pro.service.adapters;
 import java.util.Date;
 import java.util.List;
 
+import com.inthinc.pro.model.CustomDuration;
 import org.joda.time.DateTime;
 import org.joda.time.Interval;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -86,6 +87,11 @@ public class DriverDAOAdapter extends BaseDAOAdapter<Driver> {
     public Score getScore(Integer driverID, Duration duration) {
         return driverReportDAO.getScore(driverID, duration);
     }
+
+    public Score getScore(Integer driverID, CustomDuration customDuration) {
+        return driverReportDAO.getScore(driverID, customDuration);
+    }
+
     public List<DriverVehicleScoreWrapper> getDriverScores(Integer groupID, Interval interval) {
 		Group group = groupDAO.findByID(groupID);
 		GroupHierarchy gh = new GroupHierarchy(groupDAO.getGroupHierarchy(group.getAccountID(), getGroupID()));
@@ -99,6 +105,10 @@ public class DriverDAOAdapter extends BaseDAOAdapter<Driver> {
 
     public List<Trend> getTrend(Integer driverID, Duration duration) {
         return driverReportDAO.getTrend(driverID, duration);
+    }
+
+    public List<Trend> getTrend(Integer driverID, CustomDuration customDuration) {
+        return driverReportDAO.getTrend(driverID, customDuration);
     }
     
     public Trip getLastTrip(Integer driverID) {

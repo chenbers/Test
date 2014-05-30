@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import com.inthinc.pro.model.CustomDuration;
 import me.prettyprint.hector.api.beans.Composite;
 import me.prettyprint.hector.api.beans.CounterRows;
 
@@ -29,6 +30,19 @@ public abstract class ReportCassandraDAO extends AggregationCassandraDAO {
         List<Composite> rowKeys = createDateIDKeys(getToday(id, entityType), id, duration.getDvqCode(), duration.getDvqCount());
 
         CounterRows<Composite, String> rows = fetchAggsForKeys(getAggCF(duration.getDvqCode(), entityType), rowKeys);
+        Map<String, Map<String, Long>> scoreMap = summarize(rows);
+        Score score = new Score();
+        for (Map.Entry<String, Map<String, Long>> entry : scoreMap.entrySet()) {
+            Map<String, Long> columnMap = entry.getValue();
+            score = convertToScore(columnMap);
+        }
+        return score;
+    }
+
+    protected Score getScoreForAsset(Integer id, EntityType entityType, CustomDuration customDuration) {
+        List<Composite> rowKeys = createDateIDKeys(getToday(id, entityType), id, customDuration.getDvqCode(), customDuration.getDvqCount());
+
+        CounterRows<Composite, String> rows = fetchAggsForKeys(getAggCF(customDuration.getDvqCode(), entityType), rowKeys);
         Map<String, Map<String, Long>> scoreMap = summarize(rows);
         Score score = new Score();
         for (Map.Entry<String, Map<String, Long>> entry : scoreMap.entrySet()) {
@@ -79,6 +93,20 @@ public abstract class ReportCassandraDAO extends AggregationCassandraDAO {
         List<Composite> rowKeys = createDateIDKeys(getToday(id, entityType), id, duration.getDvqCode(), duration.getDvqCount()); // TO DO: set correct timezone
 
         CounterRows<Composite, String> rows = fetchAggsForKeys(getAggCF(duration.getDvqCode(), entityType), rowKeys);
+        Map<String, Map<String, Long>> scoreMap = summarize(rows);
+        List<Trend> trendList = new ArrayList<Trend>();
+        for (Map.Entry<String, Map<String, Long>> entry : scoreMap.entrySet()) {
+            Map<String, Long> columnMap = entry.getValue();
+            Trend trend = convertToTrend(columnMap);
+            trendList.add(trend);
+        }
+        return trendList;
+    }
+
+    protected List<Trend> getTrendForAsset(Integer id, EntityType entityType, CustomDuration customDuration) {
+        List<Composite> rowKeys = createDateIDKeys(getToday(id, entityType), id, customDuration.getDvqCode(), customDuration.getDvqCount()); // TO DO: set correct timezone
+
+        CounterRows<Composite, String> rows = fetchAggsForKeys(getAggCF(customDuration.getDvqCode(), entityType), rowKeys);
         Map<String, Map<String, Long>> scoreMap = summarize(rows);
         List<Trend> trendList = new ArrayList<Trend>();
         for (Map.Entry<String, Map<String, Long>> entry : scoreMap.entrySet()) {
