@@ -43,6 +43,8 @@ public class ReportCriteria
     private TimeZone timeZone;
     private Boolean includeInactiveDrivers = DEFAULT_EXCLUDE_INACTIVE_DRIVERS;
     private Boolean includeZeroMilesDrivers = DEFAULT_EXCLUDE_ZERO_MILES_DRIVERS;
+    private Boolean dontIncludeUnassignedDevice = DEFAULT_EXCLUDE_ZERO_MILES_DRIVERS;
+
 
     private static final String INTHINC_NAME = "Inthinc";
     private static final String REPORT_DATE_STRING = "REPORT_DATE_AS_STRING";
@@ -356,6 +358,15 @@ public class ReportCriteria
     public void setIncludeZeroMilesDrivers(Boolean includeZeroMilesDrivers) {
         this.includeZeroMilesDrivers = includeZeroMilesDrivers;
     }
+
+    public Boolean getDontIncludeUnassignedDevice() {
+        return dontIncludeUnassignedDevice;
+    }
+
+    public void setDontIncludeUnassignedDevice(Boolean dontIncludeUnassignedDevice) {
+        this.dontIncludeUnassignedDevice = dontIncludeUnassignedDevice;
+    }
+
     public void addReportStartEndDateParams(Interval interval) {
         addParameter(REPORT_START_DATE, startEndDateTimeFormatter.withLocale(locale).print(interval.getStart()));
         addParameter(REPORT_END_DATE, startEndDateTimeFormatter.withLocale(locale).print(interval.getEnd()));

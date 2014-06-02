@@ -37,6 +37,7 @@ public class ReportParams implements Cloneable {
     private boolean includeZeroMilesDrivers;
     private boolean zeroMilesDriversControlDisabled;
     private boolean inactiveDriversControlDisabled;
+    private boolean dontIncludeUnassignedDevice;
     
     List<Driver> driverList;
     GroupHierarchy groupHierarchy;
@@ -358,5 +359,12 @@ public class ReportParams implements Cloneable {
 
     public void setIncludeInactiveDrivers(boolean includeInactiveDrivers) {
         this.includeInactiveDrivers = includeInactiveDrivers;
+    }
+    public boolean isDontIncludeUnassignedDevice() {
+        return dontIncludeUnassignedDevice;
+    }
+
+    public void setDontIncludeUnassignedDevice(boolean dontIncludeUnassignedDevice) {
+        this.dontIncludeUnassignedDevice = dontIncludeUnassignedDevice;
     }
 }

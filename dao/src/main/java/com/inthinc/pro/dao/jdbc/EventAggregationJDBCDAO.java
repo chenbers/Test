@@ -235,7 +235,7 @@ public class EventAggregationJDBCDAO extends SimpleJdbcDaoSupport implements Eve
      * @see com.inthinc.pro.dao.EventAggregationDAO#findLastEventForVehicles(java.util.List, org.joda.time.Interval)
      */
     @Override
-    public List<LastReportedEvent> findLastEventForVehicles(List<Integer> groupIDs, Interval interval) {
+    public List<LastReportedEvent> findLastEventForVehicles(List<Integer> groupIDs, Interval interval,boolean dontIncludeUnassignedDevice) {
         
         /*
          * First load all last reported events which fall before the start time of the interval. If a vehicle doesn't have a device currently, still load it and the last note received for that vehicle
@@ -268,7 +268,8 @@ public class EventAggregationJDBCDAO extends SimpleJdbcDaoSupport implements Eve
                 return event;
             }
         }, params);
-        
+
+        if(!dontIncludeUnassignedDevice) {
         /* Now we need to load all vehicles which have never been assigned */
         Map<String, Object> params2 = new HashMap<String, Object>();
         params2.put("groupList", groupIDs);
@@ -283,8 +284,9 @@ public class EventAggregationJDBCDAO extends SimpleJdbcDaoSupport implements Eve
                 return event;
             }
         }, params2);
-        
+
         lastReportedEvents.addAll(vehiclesWithNoNotes);
+        }
         return lastReportedEvents;
     }
     

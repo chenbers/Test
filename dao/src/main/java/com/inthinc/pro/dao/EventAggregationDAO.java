@@ -55,6 +55,6 @@ public interface EventAggregationDAO {
      * @param interval
      * @return
      */
-    public List<LastReportedEvent> findLastEventForVehicles(List<Integer> groupIds,Interval interval);
+    public List<LastReportedEvent> findLastEventForVehicles(List<Integer> groupIds,Interval interval, boolean dontIncludeUnassignedDevice);
 
 }

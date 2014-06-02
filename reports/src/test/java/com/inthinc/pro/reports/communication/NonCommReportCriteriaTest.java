@@ -29,6 +29,7 @@ import com.inthinc.pro.reports.performance.DriverExcludedViolationsCriteriaTest;
 public class NonCommReportCriteriaTest extends BaseUnitTest{
     
     private static Logger logger = Logger.getLogger(DriverExcludedViolationsCriteriaTest.class);
+    private static boolean dontIncludeUnassignedDevice=true;
     
     @Mocked
     private EventAggregationDAO eventAggregationDAO;
@@ -112,12 +113,12 @@ public class NonCommReportCriteriaTest extends BaseUnitTest{
         List<Integer> groupIDs = new ArrayList<Integer>();
         groupIDs.add(12);
         
-        NonCommReportCriteria.Builder builder = new NonCommReportCriteria.Builder(groupHierarchy, eventAggregationDAO, groupIDs, TimeFrame.DAY);
+        NonCommReportCriteria.Builder builder = new NonCommReportCriteria.Builder(groupHierarchy, eventAggregationDAO, groupIDs, TimeFrame.DAY,dontIncludeUnassignedDevice);
         
         builder.setLocale(Locale.US);
         List<ReportCriteria> reportCriterias = new ArrayList<ReportCriteria>();
         new NonStrictExpectations() {{
-            eventAggregationDAO.findLastEventForVehicles((List)any, (Interval)any);
+            eventAggregationDAO.findLastEventForVehicles((List)any, (Interval)any,dontIncludeUnassignedDevice);
             returns(lastReportedEvents);
         }};
         reportCriterias.add(builder.build());

@@ -39,14 +39,18 @@ public class NonCommReportCriteria extends ReportCriteria{
         private EventAggregationDAO eventAggregationDAO;
         
         private GroupHierarchy groupHierarchy;
-        
-        public Builder(GroupHierarchy groupHierarchy,EventAggregationDAO eventAggregationDAO,List<Integer> groupIDs,TimeFrame timeFrame) {
+
+        private Boolean dontIncludeUnassignedDevice;
+
+
+        public Builder(GroupHierarchy groupHierarchy,EventAggregationDAO eventAggregationDAO,List<Integer> groupIDs,TimeFrame timeFrame, boolean dontIncludeUnassignedDevice) {
             this.dateTimeZone = DateTimeZone.UTC;
             this.locale = Locale.US;
             this.groupIDs = groupIDs;
             this.timeFrame = timeFrame;
             this.groupHierarchy = groupHierarchy;
             this.eventAggregationDAO = eventAggregationDAO;
+            this.dontIncludeUnassignedDevice = dontIncludeUnassignedDevice;
             
         }
         
@@ -84,7 +88,7 @@ public class NonCommReportCriteria extends ReportCriteria{
         
         public NonCommReportCriteria build(){
             logger.debug(String.format("Building NonCommReportCriteria with locale %s",locale));
-            List<LastReportedEvent> lastReportedEvents = eventAggregationDAO.findLastEventForVehicles(this.groupIDs, timeFrame.getInterval());
+            List<LastReportedEvent> lastReportedEvents = eventAggregationDAO.findLastEventForVehicles(this.groupIDs, timeFrame.getInterval(), this.dontIncludeUnassignedDevice);
             
             List<NonCommReportCriteria.LastReportedEventWrapper> lastReportedEventWrappers = new ArrayList<NonCommReportCriteria.LastReportedEventWrapper>();
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat(MessageUtil.formatMessageString("dateTimeFormat", locale), locale);
@@ -103,6 +107,14 @@ public class NonCommReportCriteria extends ReportCriteria{
             
             return criteria;
             
+        }
+
+        public Boolean getDontIncludeUnassignedDevice() {
+            return dontIncludeUnassignedDevice;
+        }
+
+        public void setDontIncludeUnassignedDevice(Boolean dontIncludeUnassignedDevice) {
+            this.dontIncludeUnassignedDevice = dontIncludeUnassignedDevice;
         }
     }
     
@@ -148,6 +160,7 @@ public class NonCommReportCriteria extends ReportCriteria{
         public void setNoteDate(String noteDate) {
             this.noteDate = noteDate;
         }
+
     }
 
 }
