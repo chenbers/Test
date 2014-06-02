@@ -51,6 +51,7 @@ public class HOSJDBCDeltasDAOTest extends SimpleJdbcDaoSupport {
     private DateTime lastUpdateTime; 
     private static DateTimeFormatter dateTimeFormatter = DateTimeFormat.forPattern("yyyy-MM-dd hh:mm:ss").withZone(DateTimeZone.UTC);
 
+    private static HOSDAO hosDAO; 
     // initial state
     // 0   8:30    SLEEPER (1)
     // 1   8:20    DRIVING (2)
@@ -74,6 +75,10 @@ public class HOSJDBCDeltasDAOTest extends SimpleJdbcDaoSupport {
         testDateTime = new DateTime(itData.startDateInSec*1000l, DateTimeZone.UTC);
         
 //        System.out.println("Test DateTime: " + dateTimeFormatter.print(testDateTime));
+        hosDAO = new HOSJDBCDAO();
+        ((HOSJDBCDAO)hosDAO).setDataSource(new ITDataSource().getRealDataSource());
+//        hosDAO = new HOSJDBCDAO2();
+//        ((HOSJDBCDAO2)hosDAO).setDataSource(new ITDataSource().getRealDataSource());
     }
 
     
@@ -81,9 +86,6 @@ public class HOSJDBCDeltasDAOTest extends SimpleJdbcDaoSupport {
     // no changes
     public void testCaseNoChanges() {
 
-        HOSDAO hosDAO = new HOSJDBCDAO();
-        ((HOSJDBCDAO)hosDAO).setDataSource(new ITDataSource().getRealDataSource());
-        
         GroupData groupData = itData.teamGroupData.get(ITData.WS_GROUP);
         List<HOSRecord> initialList = setupforLogDeltasTest(groupData);
         List<HOSRecord> cloneList = copyLogTimeAndStatus(initialList);
@@ -102,9 +104,6 @@ public class HOSJDBCDeltasDAOTest extends SimpleJdbcDaoSupport {
     // Portal edit of record 1 status from Driving(2) to OFF_DUTY (0)
     public void testCaseChangeStatus() {
 
-        HOSDAO hosDAO = new HOSJDBCDAO();
-        ((HOSJDBCDAO)hosDAO).setDataSource(new ITDataSource().getRealDataSource());
-        
         GroupData groupData = itData.teamGroupData.get(ITData.WS_GROUP);
         List<HOSRecord> initialList = setupforLogDeltasTest(groupData);
         List<HOSRecord> cloneList = copyLogTimeAndStatus(initialList);
@@ -141,9 +140,6 @@ public class HOSJDBCDeltasDAOTest extends SimpleJdbcDaoSupport {
     // Portal edit of record 1 time 5 minutes later
     public void testCaseChangeLogTime() {
 
-        HOSDAO hosDAO = new HOSJDBCDAO();
-        ((HOSJDBCDAO)hosDAO).setDataSource(new ITDataSource().getRealDataSource());
-        
         GroupData groupData = itData.teamGroupData.get(ITData.WS_GROUP);
         List<HOSRecord> initialList = setupforLogDeltasTest(groupData);
         List<HOSRecord> cloneList = copyLogTimeAndStatus(initialList);
@@ -181,9 +177,7 @@ public class HOSJDBCDeltasDAOTest extends SimpleJdbcDaoSupport {
     @Test
     // Kiosk add a record
     public void testCaseAddLogFromKiosk() {
-        HOSDAO hosDAO = new HOSJDBCDAO();
-        ((HOSJDBCDAO)hosDAO).setDataSource(new ITDataSource().getRealDataSource());
-        
+
         GroupData groupData = itData.teamGroupData.get(ITData.WS_GROUP);
         Driver driver = groupData.driver;
         List<HOSRecord> initialList = setupforLogDeltasTest(groupData);
@@ -230,8 +224,6 @@ public class HOSJDBCDeltasDAOTest extends SimpleJdbcDaoSupport {
     @Test
     // Portal add a record
     public void testCaseAddLogFromPortal() {
-        HOSDAO hosDAO = new HOSJDBCDAO();
-        ((HOSJDBCDAO)hosDAO).setDataSource(new ITDataSource().getRealDataSource());
         
         GroupData groupData = itData.teamGroupData.get(ITData.WS_GROUP);
         Driver driver = groupData.driver;
@@ -279,8 +271,6 @@ public class HOSJDBCDeltasDAOTest extends SimpleJdbcDaoSupport {
     @Test
     // Portal delete a record
     public void testCaseDeleteLogFromPortal() {
-        HOSDAO hosDAO = new HOSJDBCDAO();
-        ((HOSJDBCDAO)hosDAO).setDataSource(new ITDataSource().getRealDataSource());
         
         GroupData groupData = itData.teamGroupData.get(ITData.WS_GROUP);
         List<HOSRecord> initialList = setupforLogDeltasTest(groupData);
@@ -317,9 +307,6 @@ public class HOSJDBCDeltasDAOTest extends SimpleJdbcDaoSupport {
     // Portal multiple edits of record 1 time 5 minutes later, status change from driving to off duty
     public void testCaseChangeLogTimeAndStatus() {
 
-        HOSDAO hosDAO = new HOSJDBCDAO();
-        ((HOSJDBCDAO)hosDAO).setDataSource(new ITDataSource().getRealDataSource());
-        
         GroupData groupData = itData.teamGroupData.get(ITData.WS_GROUP);
         List<HOSRecord> initialList = setupforLogDeltasTest(groupData);
         List<HOSRecord> cloneList = copyLogTimeAndStatus(initialList);
@@ -369,8 +356,6 @@ public class HOSJDBCDeltasDAOTest extends SimpleJdbcDaoSupport {
     // Portal multiple edits of record 1 time 5 minutes later, status change from driving to off duty
     public void testCaseHOSRecordAtSummaryTime() {
 
-        HOSDAO hosDAO = new HOSJDBCDAO();
-        ((HOSJDBCDAO)hosDAO).setDataSource(new ITDataSource().getRealDataSource());
         
         GroupData groupData = itData.teamGroupData.get(ITData.WS_GROUP);
         List<HOSRecord> initialList = setupforLogDeltasTest(groupData);
@@ -398,9 +383,6 @@ public class HOSJDBCDeltasDAOTest extends SimpleJdbcDaoSupport {
     // Portal multiple edits of record 1 time 5 minutes later, status change from driving to off duty, and then delete it
     public void testCaseMultipleChanges() {
 
-        HOSDAO hosDAO = new HOSJDBCDAO();
-        ((HOSJDBCDAO)hosDAO).setDataSource(new ITDataSource().getRealDataSource());
-        
         GroupData groupData = itData.teamGroupData.get(ITData.WS_GROUP);
         List<HOSRecord> initialList = setupforLogDeltasTest(groupData);
         List<HOSRecord> cloneList = copyLogTimeAndStatus(initialList);
@@ -431,9 +413,6 @@ public class HOSJDBCDeltasDAOTest extends SimpleJdbcDaoSupport {
         this.setDataSource(dataSource);
         SimpleJdbcTemplate template = getSimpleJdbcTemplate();
 
-        HOSDAO hosDAO = new HOSJDBCDAO();
-        ((HOSJDBCDAO)hosDAO).setDataSource(new ITDataSource().getRealDataSource());
-        
         GroupData groupData = itData.teamGroupData.get(ITData.WS_GROUP);
         List<HOSRecord> initialList = setupforLogDeltasTest(groupData);
         List<HOSRecord> cloneList = copyLogTimeAndStatus(initialList);
@@ -521,10 +500,6 @@ public class HOSJDBCDeltasDAOTest extends SimpleJdbcDaoSupport {
         rows = template.update(sql);
 //        System.out.println("HOSLog Rows Deleted: " + rows);
         
-        
-        HOSDAO hosDAO = new HOSJDBCDAO();
-        ((HOSJDBCDAO)hosDAO).setDataSource(new ITDataSource().getRealDataSource());
-
         HOSRecord hosRecord = new HOSRecord();
         hosRecord.setDeviceID(groupData.device.getDeviceID());
         hosRecord.setVehicleID(groupData.vehicle.getVehicleID());

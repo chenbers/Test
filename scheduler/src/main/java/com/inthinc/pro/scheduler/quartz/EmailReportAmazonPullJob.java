@@ -354,11 +354,13 @@ public class EmailReportAmazonPullJob extends QuartzJobBean {
 
         if (reportSchedule.getDeliverToManagers() != null && reportSchedule.getDeliverToManagers().equals(Boolean.TRUE)) {
             Person groupManager = person;
+            String unsubscribeURL = buildUnsubscribeURL(groupManager.getPriEmail(), reportSchedule.getReportScheduleID());
+            
             String subject = LocalizedMessage.getString("reportSchedule.emailSubject", person.getLocale()) + reportSchedule.getName();
             String message = LocalizedMessage.getStringWithValues("reportSchedule.emailMessage.groupManager", person.getLocale(),
                     (owner == null) ? person.getFullName() : owner.getFullName(),
                     (owner == null) ? person.getPriEmail() : owner.getPriEmail(),
-                    "");
+                                    unsubscribeURL);
 
             // Change noreplyemail address based on account
             String noReplyEmailAddress = DEFAULT_NO_REPLY_EMAIL_ADDRESS;
@@ -523,7 +525,7 @@ public class EmailReportAmazonPullJob extends QuartzJobBean {
             }
 
             // send all the e-mails only if we make it though without errors
-            boolean allowUnsubscribe = false;
+            boolean allowUnsubscribe = true;
             for (IndividualReportEmail individualReportEmail : individualReportEmailList) {
                 logger.info("sending to driver " + individualReportEmail.driverPerson.getPriEmail());
                 emailReport(individualReportEmail.reportSchedule, individualReportEmail.driverPerson, individualReportEmail.driverReportCriteriaList, individualReportEmail.owner, allowUnsubscribe);

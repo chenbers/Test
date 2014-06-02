@@ -33,8 +33,8 @@ import com.inthinc.hos.model.HOSRecAdjusted;
 import com.inthinc.hos.model.HOSRecBase;
 import com.inthinc.hos.model.HOSStatus;
 import com.inthinc.hos.model.RuleSetType;
+import com.inthinc.pro.aggregation.util.DateUtil;
 import com.inthinc.pro.dao.mock.MockHOSDAO;
-import com.inthinc.pro.model.InspectionType;
 import com.inthinc.pro.model.Status;
 import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.model.VehicleType;
@@ -978,26 +978,20 @@ public class HosDriverDailyLogReportCriteriaTest extends BaseUnitTest{
             
     }
     
-
     @Test
-    public void tripInspectionTest() {
+    public void originRemarksTest() {
         
-        Map<InspectionType, String> expectedRemarksMap = new HashMap<InspectionType, String>();
-        expectedRemarksMap.put(InspectionType.PRETRIP, "Pre Trip Inspection performed");
-        expectedRemarksMap.put(InspectionType.POSTTRIP, "Post Trip Inspection performed");
-        expectedRemarksMap.put(InspectionType.NO_PRETRIP, "Pre Trip Inspection not needed");
-        expectedRemarksMap.put(InspectionType.NO_POSTTRIP, "Post Trip Inspection not needed");
-        
+        Map<HOSOrigin, String> expectedRemarksMap = new HashMap<HOSOrigin, String>();
+        expectedRemarksMap.put(HOSOrigin.KIOSK, "Driver Kiosk");
+        expectedRemarksMap.put(HOSOrigin.VEHICLE_KIOSK, "Vehicle Kiosk");
         
         DDLDataSet ddlTestData = new DDLDataSet("lohrFull_03132013_03252013", DDLDataSet.INTHINC_DB_CSV);
-        for (InspectionType inspectionType : expectedRemarksMap.keySet()) {   
+        for (HOSOrigin hosOrigin : expectedRemarksMap.keySet()) {   
             
             for (HOSRecord hosRecord : ddlTestData.hosRecordList) {
-                hosRecord.setInspectionType(inspectionType);
-                hosRecord.setTripReportFlag(true);
-                hosRecord.setTripInspectionFlag(inspectionType == InspectionType.PRETRIP || inspectionType == inspectionType.POSTTRIP);
+                hosRecord.setOrigin(hosOrigin);
             }
-            String expectedRemarkStr = expectedRemarksMap.get(inspectionType);
+            String expectedRemarkStr = expectedRemarksMap.get(hosOrigin);
             
             HosDailyDriverLogReportCriteria hosDailyDriverLogReportCriteria = new HosDailyDriverLogReportCriteria(Locale.US, Boolean.FALSE, dateTimeZone);
             hosDailyDriverLogReportCriteria.initCriteriaList(ddlTestData.interval, ddlTestData.interval, ddlTestData.hosRecordList, ddlTestData.hosVehicleDayDataList,
@@ -1013,10 +1007,28 @@ public class HosDriverDailyLogReportCriteriaTest extends BaseUnitTest{
             for (ReportCriteria reportCriteria : hosDailyDriverLogReportCriteria.getCriteriaList()) {
                 HosDailyDriverLog hosDailyDriverLog = (HosDailyDriverLog)reportCriteria.getMainDataset().get(0);
                 for (RemarkLog remarkLog : hosDailyDriverLog.getRemarksList()) {
-                    assertTrue("Expected Remark to contain " + expectedRemarkStr, remarkLog.getStatusDescription().contains(expectedRemarkStr));
+                    assertTrue("Expected Remark to contain " + expectedRemarkStr, remarkLog.getEditor().contains(expectedRemarkStr));
                 }
             }
         }
     }
-
+    
+    @Test
+    public void sortRemarksList() {
+        Date date1 = DateUtil.getDateFromString("2014-02-21 10:10:10");
+        Date date2 = DateUtil.getDateFromString("2014-02-22 10:10:10");
+        Date date3 = DateUtil.getDateFromString("2014-02-23 10:10:10");
+        
+        List<RemarkLog> remarksList = new ArrayList<RemarkLog>();
+        remarksList.add(new RemarkLog(HOSStatus.OFF_DUTY, date3, TimeZone.getTimeZone("UTC"), false, "loc", "", false, 10000, "desc", false, ""));
+        remarksList.add(new RemarkLog(HOSStatus.OFF_DUTY, date2, TimeZone.getTimeZone("UTC"), false, "loc", "", false, 10000, "desc", false, ""));
+        remarksList.add(new RemarkLog(HOSStatus.OFF_DUTY, date1, TimeZone.getTimeZone("UTC"), false, "loc", "", false, 10000, "desc", false, ""));
+        
+        HosDailyDriverLogReportCriteria hosDailyDriverLogReportCriteria = new HosDailyDriverLogReportCriteria(Locale.US, Boolean.FALSE, dateTimeZone);
+        List<RemarkLog> sortedRemarksList = hosDailyDriverLogReportCriteria.sortRemarkList(remarksList);
+        
+        assertEquals("date 1", date1, sortedRemarksList.get(0).getLogTimeDate());
+        assertEquals("date 2", date2, sortedRemarksList.get(1).getLogTimeDate());
+        assertEquals("date 3", date3, sortedRemarksList.get(2).getLogTimeDate());
+    }
 }

@@ -1615,7 +1615,7 @@ public class SiloServiceTest {
         Integer weeklyId = reportScheduleHessianDAO.create(acctID, reportScheduleWeekly);
         logger.debug("Report Schedule ID: " + weeklyId);
         logger.debug("Report Schedule acctID: " + acctID);
-        assertNotNull(weeklyId);
+        assertNotNull("acctID "+acctID+" and reportScheduleWeekly "+reportScheduleWeekly,weeklyId);
         reportScheduleWeekly.setReportScheduleID(weeklyId);
         
         // Daily report create

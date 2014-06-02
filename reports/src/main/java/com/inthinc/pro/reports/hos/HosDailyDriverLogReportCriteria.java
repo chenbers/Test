@@ -7,14 +7,15 @@ import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.TimeZone;
 import java.util.Map.Entry;
 import java.util.ResourceBundle;
+import java.util.TimeZone;
 
 import javax.imageio.ImageIO;
 
@@ -57,7 +58,6 @@ import com.inthinc.pro.model.DOTOfficeType;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.GroupHierarchy;
-import com.inthinc.pro.model.InspectionType;
 import com.inthinc.pro.model.Status;
 import com.inthinc.pro.model.User;
 import com.inthinc.pro.model.Vehicle;
@@ -530,8 +530,21 @@ public class HosDailyDriverLogReportCriteria extends ReportCriteria {
                 remarkLogList.add(populateRemarkLog(hosRecordList.get(hosRecordList.size() - 1)));
         }
 
-        return fillInSubdescriptions(remarkLogList, recapList, day, ruleSetType,  recap);
+        List<RemarkLog> remarksList = fillInSubdescriptions(remarkLogList, recapList, day, ruleSetType,  recap);
+
+        return sortRemarkList(remarksList);
     }
+    
+    List<RemarkLog> sortRemarkList(List<RemarkLog> remarksList) {
+        Collections.sort(remarksList, new Comparator<RemarkLog>() {
+            @Override
+            public int compare(RemarkLog r1, RemarkLog r2) {
+                return r1.getLogTimeDate().compareTo(r2.getLogTimeDate());
+            }
+        });
+        return remarksList;
+    }
+    
     private List<RemarkLog> fillInSubdescriptions(List<RemarkLog> remarkLogList, List<HOSRec> recapList, DateTime day, RuleSetType ruleSetType, Recap recap) {
         
         Interval dayInterval = new Interval(day, day.plusDays(1));
@@ -642,6 +655,8 @@ public class HosDailyDriverLogReportCriteria extends ReportCriteria {
         remarkLog.setEditor("");
         if (hosRecord.getOrigin() != null && hosRecord.getOrigin().equals(HOSOrigin.KIOSK)) 
             remarkLog.setEditor(MessageUtil.getBundleString(getResourceBundle(),"report.ddl.kiosk"));
+        if (hosRecord.getOrigin() != null && hosRecord.getOrigin().equals(HOSOrigin.VEHICLE_KIOSK)) 
+            remarkLog.setEditor(MessageUtil.getBundleString(getResourceBundle(),"report.ddl.vehiclekiosk"));
         if (remarkLog.getEdited()) {
             if (hosRecord.getEditUserID() != null && hosRecord.getEditUserID() != 0)
                 remarkLog.setEditor(getEditUserFullName(hosRecord.getEditUserID()));
@@ -667,9 +682,8 @@ public class HosDailyDriverLogReportCriteria extends ReportCriteria {
         String statusString = "";
         if (hosRecord.getStatus() != null)
             statusString = MessageUtil.getBundleString(getResourceBundle(),"status."+hosRecord.getStatus().getCode()); 
-        
-        InspectionType inspectionType = determineInspectionType(hosRecord.getInspectionType(), hosRecord.getStatus());
-        if (inspectionType == InspectionType.POSTTRIP || inspectionType == InspectionType.NO_POSTTRIP) {
+
+        if (hosRecord.getStatus() == HOSStatus.OFF_DUTY) {
             if (inspectionRequired(hosRecord)) {
                 if (inspectionPerformed(hosRecord)) {
                     statusString += " - " + MessageUtil.getBundleString(getResourceBundle(),"status." + HOSStatus.HOS_POSTTRIP_INSPECTION.getCode());
@@ -679,7 +693,7 @@ public class HosDailyDriverLogReportCriteria extends ReportCriteria {
                 }
             }
         }
-        else if (inspectionType == InspectionType.PRETRIP || inspectionType == InspectionType.NO_PRETRIP) {
+        else if (hosRecord.getStatus() == HOSStatus.ON_DUTY) {
             if (inspectionRequired(hosRecord)) {
                 if (inspectionPerformed(hosRecord)) {
                     statusString += " - " + MessageUtil.getBundleString(getResourceBundle(),"status." + HOSStatus.HOS_PRETRIP_INSPECTION.getCode());
@@ -710,22 +724,6 @@ public class HosDailyDriverLogReportCriteria extends ReportCriteria {
         
         return statusString.trim();
 
-    }
-
-    private InspectionType determineInspectionType(InspectionType inspectionType, HOSStatus status) {
-        // this is for backwards compatability - do the old way, OFF_DUTY is post trip and ON_Duty is pretrip
-        if (inspectionType == null || inspectionType == InspectionType.NONE)  {
-            if (status == HOSStatus.OFF_DUTY) {
-                return InspectionType.POSTTRIP;
-            }
-            if (status == HOSStatus.ON_DUTY) {
-                return InspectionType.PRETRIP;
-            }
-            return InspectionType.NONE;
-        }
-        
-        return inspectionType;
-        
     }
 
     private boolean inspectionPerformed(HOSRecord hosRecord) {
