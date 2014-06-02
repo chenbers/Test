@@ -3,6 +3,7 @@ package com.inthinc.pro.service.test.mock;
 import java.util.Collections;
 import java.util.List;
 
+import com.inthinc.pro.model.CustomDuration;
 import org.joda.time.DateTime;
 import org.joda.time.Interval;
 import org.springframework.stereotype.Component;
@@ -154,6 +155,14 @@ public class GroupDaoStub implements GroupDAO, GroupReportDAO {
 
     /**
      * {@inheritDoc}
+     * @see com.inthinc.pro.dao.report.GroupReportDAO#getDriverScores(java.lang.Integer, com.inthinc.pro.model.CustomDuration)
+     */
+    public List<DriverVehicleScoreWrapper> getDriverScores(Integer groupID, CustomDuration customDuration) {
+        return Collections.emptyList();
+    }
+
+    /**
+     * {@inheritDoc}
      * @see com.inthinc.pro.dao.report.GroupReportDAO#getDriverScores(java.lang.Integer, org.joda.time.DateTime, org.joda.time.DateTime)
      */
     public List<DriverVehicleScoreWrapper> getDriverScores(Integer groupID, DateTime startTime, DateTime endTime) {
@@ -210,6 +219,14 @@ public class GroupDaoStub implements GroupDAO, GroupReportDAO {
 
     /**
      * {@inheritDoc}
+     * @see com.inthinc.pro.dao.report.GroupReportDAO#getSubGroupsAggregateDriverScores(java.lang.Integer, com.inthinc.pro.model.CustomDuration)
+     */
+    public List<GroupScoreWrapper> getSubGroupsAggregateDriverScores(Integer groupID, CustomDuration customDuration) {
+        return Collections.emptyList();
+    }
+
+    /**
+     * {@inheritDoc}
      * @see com.inthinc.pro.dao.report.GroupReportDAO#getSubGroupsAggregateDriverTrends(java.lang.Integer, com.inthinc.pro.model.Duration)
      */
     public List<GroupTrendWrapper> getSubGroupsAggregateDriverTrends(Integer groupID, Duration duration) {
@@ -218,9 +235,25 @@ public class GroupDaoStub implements GroupDAO, GroupReportDAO {
 
     /**
      * {@inheritDoc}
+     * @see com.inthinc.pro.dao.report.GroupReportDAO#getSubGroupsAggregateDriverTrends(java.lang.Integer, com.inthinc.pro.model.CustomDuration)
+     */
+    public List<GroupTrendWrapper> getSubGroupsAggregateDriverTrends(Integer groupID, CustomDuration customDuration) {
+        return Collections.emptyList();
+    }
+
+    /**
+     * {@inheritDoc}
      * @see com.inthinc.pro.dao.report.GroupReportDAO#getVehicleScores(java.lang.Integer, com.inthinc.pro.model.Duration)
      */
     public List<DriverVehicleScoreWrapper> getVehicleScores(Integer groupID, Duration duration) {
+        return Collections.emptyList();
+    }
+
+    /**
+     * {@inheritDoc}
+     * @see com.inthinc.pro.dao.report.GroupReportDAO#getVehicleScores(java.lang.Integer, com.inthinc.pro.model.CustomDuration)
+     */
+    public List<DriverVehicleScoreWrapper> getVehicleScores(Integer groupID, CustomDuration customDuration) {
         return Collections.emptyList();
     }
 
@@ -275,6 +308,12 @@ public class GroupDaoStub implements GroupDAO, GroupReportDAO {
     }
 
     @Override
+    public List<DriverVehicleScoreWrapper> getDriverScores(Integer groupID, CustomDuration customDuration, GroupHierarchy gh) {
+        // TODO temporarily calling OLD (non GroupHierarch stub), assuming Bill has his own version of GroupDaoStub
+        return getDriverScores(groupID, customDuration);
+    }
+
+    @Override
     public List<DriverVehicleScoreWrapper> getDriverScores(Integer groupID, DateTime startTime, DateTime endTime, GroupHierarchy gh) {
      // TODO temporarily calling OLD (non GroupHierarch stub), assuming Bill has his own version of GroupDaoStub
         return getDriverScores(groupID, startTime, endTime);
@@ -308,6 +347,12 @@ public class GroupDaoStub implements GroupDAO, GroupReportDAO {
     public List<DriverVehicleScoreWrapper> getVehicleScores(Integer groupID, Duration duration, GroupHierarchy gh) {
      // TODO temporarily calling OLD (non GroupHierarch stub), assuming Bill has his own version of GroupDaoStub
         return getVehicleScores(groupID, duration);
+    }
+
+    @Override
+    public List<DriverVehicleScoreWrapper> getVehicleScores(Integer groupID, CustomDuration customDuration, GroupHierarchy gh) {
+        // TODO temporarily calling OLD (non GroupHierarch stub), assuming Bill has his own version of GroupDaoStub
+        return getVehicleScores(groupID, customDuration);
     }
 
     @Override
@@ -347,6 +392,12 @@ public class GroupDaoStub implements GroupDAO, GroupReportDAO {
     }
 
     @Override
+    public List<GroupTrendWrapper> getSubGroupsAggregateDriverTrends(Integer groupID, CustomDuration customDuration, GroupHierarchy gh) {
+        // TODO temporarily calling OLD (non GroupHierarch stub), assuming Bill has his own version of GroupDaoStub
+        return getSubGroupsAggregateDriverTrends(groupID, customDuration);
+    }
+
+    @Override
     public Percentage getDriverPercentage(Integer groupID, Duration duration, GroupHierarchy gh) {
      // TODO temporarily calling OLD (non GroupHierarch stub), assuming Bill has his own version of GroupDaoStub
         return getDriverPercentage(groupID, duration);
@@ -356,6 +407,12 @@ public class GroupDaoStub implements GroupDAO, GroupReportDAO {
     public List<GroupScoreWrapper> getSubGroupsAggregateDriverScores(Integer groupID, Duration duration, GroupHierarchy gh) {
         // TODO temporarily calling OLD (non GroupHierarch stub), assuming Bill has his own version of GroupDaoStub
         return getSubGroupsAggregateDriverScores(groupID, duration);
+    }
+
+    @Override
+    public List<GroupScoreWrapper> getSubGroupsAggregateDriverScores(Integer groupID, CustomDuration customDuration, GroupHierarchy gh) {
+        // TODO temporarily calling OLD (non GroupHierarch stub), assuming Bill has his own version of GroupDaoStub
+        return getSubGroupsAggregateDriverScores(groupID, customDuration);
     }
 
 }

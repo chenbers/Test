@@ -10,6 +10,8 @@ import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.core.UriBuilder;
 import javax.ws.rs.core.UriInfo;
 
+import com.inthinc.pro.model.CustomDuration;
+import com.inthinc.pro.model.aggregation.Score;
 import org.jboss.resteasy.spi.BadRequestException;
 import org.joda.time.Interval;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -135,6 +137,13 @@ public class GroupServiceImpl extends AbstractService<Group, GroupDAOAdapter> im
             if (!list.isEmpty())
                 return Response.ok(new GenericEntity<List<DriverVehicleScoreWrapper>>(list) {}).build();
         }
+
+        CustomDuration customDuration = CustomDuration.getDurationByDays(numberOfDays);
+        if (customDuration != null) {
+            List<DriverVehicleScoreWrapper> list = getDao().getDriverScores(groupID, customDuration);
+            if (!list.isEmpty())
+                return Response.ok(new GenericEntity<List<DriverVehicleScoreWrapper>>(list) {}).build();
+        }
         return Response.status(Status.NOT_FOUND).build();
     }
 
@@ -191,6 +200,13 @@ public class GroupServiceImpl extends AbstractService<Group, GroupDAOAdapter> im
             if (list != null && !list.isEmpty())
                 return Response.ok(new GenericEntity<List<DriverVehicleScoreWrapper>>(list) {}).build();
         }
+
+        CustomDuration customDuration = CustomDuration.getDurationByDays(numberOfDays);
+        if (customDuration != null) {
+            List<DriverVehicleScoreWrapper> list = getDao().getVehicleScores(groupID, customDuration);
+            if (list != null && !list.isEmpty())
+                return Response.ok(new GenericEntity<List<DriverVehicleScoreWrapper>>(list) {}).build();
+        }
         return Response.status(Status.NOT_FOUND).build();
     }
 
@@ -202,6 +218,13 @@ public class GroupServiceImpl extends AbstractService<Group, GroupDAOAdapter> im
             if (list != null && !list.isEmpty())
                 return Response.ok(new GenericEntity<List<GroupTrendWrapper>>(list) {}).build();
         }
+
+        CustomDuration customDuration = CustomDuration.getDurationByDays(numberOfDays);
+        if (customDuration != null) {
+            List<GroupTrendWrapper> list = getDao().getChildGroupsDriverTrends(groupID, customDuration);
+            if (list != null && !list.isEmpty())
+                return Response.ok(new GenericEntity<List<GroupTrendWrapper>>(list) {}).build();
+        }
         return Response.status(Status.NOT_FOUND).build();
     }
 
@@ -210,6 +233,13 @@ public class GroupServiceImpl extends AbstractService<Group, GroupDAOAdapter> im
         Duration duration = Duration.getDurationByDays(numberOfDays);
         if (duration != null) {
             List<GroupScoreWrapper> list = getDao().getChildGroupsDriverScores(groupID, duration);
+            if (list != null && !list.isEmpty())
+                return Response.ok(new GenericEntity<List<GroupScoreWrapper>>(list) {}).build();
+        }
+
+        CustomDuration customDuration = CustomDuration.getDurationByDays(numberOfDays);
+        if (customDuration != null) {
+            List<GroupScoreWrapper> list = getDao().getChildGroupsDriverScores(groupID, customDuration);
             if (list != null && !list.isEmpty())
                 return Response.ok(new GenericEntity<List<GroupScoreWrapper>>(list) {}).build();
         }

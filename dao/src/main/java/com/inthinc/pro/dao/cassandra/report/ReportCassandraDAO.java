@@ -132,6 +132,21 @@ public abstract class ReportCassandraDAO extends AggregationCassandraDAO {
         return getTrendForGroup(rowKeys, columnFamily, duration);
     }
 
+    protected List<Trend> getTrendForGroup(Integer groupID, CustomDuration customDuration, GroupHierarchy gh, boolean includeSubGroups) {
+        logger.debug("gettrendForGroup groupID: " + groupID);
+        List<Integer> groupIDList = new ArrayList<Integer>();
+        if (includeSubGroups)
+            groupIDList = gh.getGroupIDList(groupID);
+        else
+            groupIDList.add(groupID);
+        List<Composite> rowKeys = new ArrayList<Composite>();
+        for (Integer groupId : groupIDList)
+            rowKeys.addAll(createDateIDKeys(getTodayForGroup(groupId), groupId, customDuration.getCode(), 1));
+
+        String columnFamily = getDriverGroupAggCF(customDuration.getCode());
+        return getTrendForGroup(rowKeys, columnFamily, customDuration);
+    }
+
     protected Score getScoreForGroup(Integer groupID, Date startDate, Date endDate, GroupHierarchy gh, boolean includeSubGroups) {
         logger.debug("getScoreForGroup groupID: " + groupID);
         List<Integer> groupIDList = new ArrayList<Integer>();
@@ -163,6 +178,18 @@ public abstract class ReportCassandraDAO extends AggregationCassandraDAO {
     }
 
     private List<Trend> getTrendForGroup(List<Composite> rowKeys, String columnFamily, Duration duration) {
+        CounterRows<Composite, String> rows = fetchAggsForKeys(columnFamily, rowKeys);
+        Map<String, Map<String, Long>> scoreMap = summarize(rows);
+        List<Trend> trendList = new ArrayList<Trend>();
+        for (Map.Entry<String, Map<String, Long>> entry : scoreMap.entrySet()) {
+            Map<String, Long> columnMap = entry.getValue();
+            Trend trend = convertToTrend(columnMap);
+            trendList.add(trend);
+        }
+        return trendList;
+    }
+
+    private List<Trend> getTrendForGroup(List<Composite> rowKeys, String columnFamily, CustomDuration customDuration) {
         CounterRows<Composite, String> rows = fetchAggsForKeys(columnFamily, rowKeys);
         Map<String, Map<String, Long>> scoreMap = summarize(rows);
         List<Trend> trendList = new ArrayList<Trend>();
