@@ -3,6 +3,8 @@ package com.inthinc.pro.service.adapters;
 import java.util.Date;
 import java.util.List;
 
+import com.inthinc.pro.dao.PersonDAO;
+import com.inthinc.pro.model.Person;
 import com.inthinc.pro.model.CustomDuration;
 import com.inthinc.pro.dao.PersonDAO;
 import com.inthinc.pro.model.Person;
@@ -210,7 +212,7 @@ public class DriverDAOAdapter extends BaseDAOAdapter<Driver> {
     public Driver getDriverByEmpID(String empID) {
         Person person = personDAO.findByEmpID(getAccountID(), empID);
         if (person != null) {
-            Driver driver = driverDAO.findByPersonID(person.getPersonID());
+            Driver driver = driverDAO.findByPersonID(person.getDriverID());
             if (driver != null) {
                 return driver;
             }
