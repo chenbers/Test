@@ -571,6 +571,7 @@ public enum EventAttr {
     ATTR_MALFUNCTION_INDICATOR_LAMP(32869),
     ATTR_CHECK_ENGINE(32870),
     ATTR_ENGINE_HOURS(32868),
+    ATTR_MAINTENANCE_CAPABILITIES(32871),
 
     // Attribute Id (255) has a stringId byte,
     // followed by a null terminate string.
