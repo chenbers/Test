@@ -135,4 +135,16 @@ public interface EmployeeService {
     @GET
     @Path("/employee/{employeeID}/location")
     Response getLastLocation(@PathParam("employeeID") String employeeID);
+
+    /**
+     * Service to get the last location of all drivers from given groupID.
+     * @param groupID the group ID
+     * @returnWrapped List<LastLocation> the last employee location
+     * @HTTP HTTP 200 - OK if last location found
+     * @HTTP HTTP 404 - NOT FOUND if no location found 
+     */
+    @GET
+    @Path("/group/{groupID}/driverlocations")
+    Response getGroupDriverLocations(@PathParam("groupID") Integer groupID);
+
 }
