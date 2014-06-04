@@ -41,6 +41,8 @@ public class NonCommReportCriteriaTest extends BaseUnitTest{
     private static final List<Integer> eventIDPickList;
     
     private static final List<Integer> groupIDPickList;
+
+    private static  Interval interval;
     
     static{
         eventIDPickList = new ArrayList<Integer>();
@@ -113,7 +115,7 @@ public class NonCommReportCriteriaTest extends BaseUnitTest{
         List<Integer> groupIDs = new ArrayList<Integer>();
         groupIDs.add(12);
         
-        NonCommReportCriteria.Builder builder = new NonCommReportCriteria.Builder(groupHierarchy, eventAggregationDAO, groupIDs, TimeFrame.DAY,dontIncludeUnassignedDevice);
+        NonCommReportCriteria.Builder builder = new NonCommReportCriteria.Builder(groupHierarchy, eventAggregationDAO, groupIDs, TimeFrame.DAY,interval,dontIncludeUnassignedDevice);
         
         builder.setLocale(Locale.US);
         List<ReportCriteria> reportCriterias = new ArrayList<ReportCriteria>();

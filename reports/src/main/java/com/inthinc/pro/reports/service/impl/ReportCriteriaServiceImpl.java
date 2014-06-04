@@ -1541,7 +1541,7 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
     @Override
     public ReportCriteria getNonCommReportCriteria(GroupHierarchy accountGroupHierarchy, Integer groupID, TimeFrame timeFrame,Interval interval, Locale locale, DateTimeZone timeZone, boolean dontIncludeUnassignedDevice) {
         List<Integer> groupIDs = accountGroupHierarchy.getGroupIDList(groupID);
-        NonCommReportCriteria.Builder builder = new NonCommReportCriteria.Builder(accountGroupHierarchy, eventAggregationDAO, groupIDs, timeFrame,dontIncludeUnassignedDevice);
+        NonCommReportCriteria.Builder builder = new NonCommReportCriteria.Builder(accountGroupHierarchy, eventAggregationDAO, groupIDs, timeFrame,interval,dontIncludeUnassignedDevice);
         builder.setLocale(locale);
         builder.setDateTimeZone(timeZone);
         return builder.build();
