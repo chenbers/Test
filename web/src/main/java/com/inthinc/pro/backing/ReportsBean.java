@@ -285,8 +285,8 @@ public abstract class ReportsBean extends BaseBean {
                 reportCriteriaList.add(getReportCriteriaService().getDVIRViolationReportCriteria(getAccountGroupHierarchy(),params.getGroupID(),params.getTimeFrameSelect().getTimeFrame(), getLocale(),getDateTimeZone()));
                 break;
             case BACKING_REPORT:
-                reportCriteriaList.add(getReportCriteriaService().getBackingReportCriteria(getAccountGroupHierarchy(), 
-                        params.getGroupID(),params.getTimeFrameSelect().getTimeFrame(), getLocale(), getDateTimeZone(), 
+                reportCriteriaList.add(getReportCriteriaService().getBackingReportCriteria(params.getDateRange().getInterval(),getAccountGroupHierarchy(),
+                        params.getGroupID(),params.getTimeFrameSelect().getTimeFrame(), getLocale(), getDateTimeZone(),
                         getUser().getPerson().getMeasurementType(), params.isIncludeInactiveDrivers(), 
                         params.isIncludeZeroMilesDrivers()));
                 break;
