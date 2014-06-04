@@ -104,6 +104,7 @@ public class NonCommReportCriteria extends ReportCriteria{
             NonCommReportCriteria criteria = new NonCommReportCriteria(this.locale);
             criteria.setMainDataset(lastReportedEventWrappers);
             criteria.addDateParameter(REPORT_START_DATE, timeFrame.getInterval().getStart().toDate(), DateTimeZone.UTC.toTimeZone());
+            criteria.addDateParameter(REPORT_END_DATE, timeFrame.getInterval().getEnd().minusSeconds(1).toDate(), this.dateTimeZone.toTimeZone());
             
             return criteria;
             
