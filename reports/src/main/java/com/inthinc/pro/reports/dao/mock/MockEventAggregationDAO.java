@@ -27,7 +27,7 @@ public class MockEventAggregationDAO implements EventAggregationDAO{
     }
 
     @Override
-    public List<LastReportedEvent> findLastEventForVehicles(List<Integer> groupIds, Interval interval, boolean dontIncludeUnassignedDevice) {
+    public List<LastReportedEvent> findLastEventForVehicles(List<Integer> groupIds, Interval interval, boolean dontIncludeUnassignedDevice, boolean activeInterval) {
         return Collections.emptyList();
     }
 

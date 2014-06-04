@@ -92,11 +92,14 @@ public class NonCommReportCriteria extends ReportCriteria{
         public NonCommReportCriteria build(){
             logger.debug(String.format("Building NonCommReportCriteria with locale %s",locale));
             List<LastReportedEvent> lastReportedEvents=new ArrayList<LastReportedEvent>();
+            Boolean activeInterval=true;
             if (timeFrame != null && !timeFrame.equals(TimeFrame.CUSTOM_RANGE)){
-               lastReportedEvents = eventAggregationDAO.findLastEventForVehicles(this.groupIDs, timeFrame.getInterval(), this.dontIncludeUnassignedDevice);
+                activeInterval=false;
+               lastReportedEvents = eventAggregationDAO.findLastEventForVehicles(this.groupIDs, timeFrame.getInterval(), this.dontIncludeUnassignedDevice,activeInterval);
             }
                 else{
-                lastReportedEvents = eventAggregationDAO.findLastEventForVehicles(this.groupIDs, interval, this.dontIncludeUnassignedDevice);
+                activeInterval=true;
+                lastReportedEvents = eventAggregationDAO.findLastEventForVehicles(this.groupIDs, interval, this.dontIncludeUnassignedDevice,activeInterval);
             }
 
             List<NonCommReportCriteria.LastReportedEventWrapper> lastReportedEventWrappers = new ArrayList<NonCommReportCriteria.LastReportedEventWrapper>();

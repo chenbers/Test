@@ -30,6 +30,7 @@ public class NonCommReportCriteriaTest extends BaseUnitTest{
     
     private static Logger logger = Logger.getLogger(DriverExcludedViolationsCriteriaTest.class);
     private static boolean dontIncludeUnassignedDevice=true;
+    private static boolean activeInterval=true;
     
     @Mocked
     private EventAggregationDAO eventAggregationDAO;
@@ -120,7 +121,7 @@ public class NonCommReportCriteriaTest extends BaseUnitTest{
         builder.setLocale(Locale.US);
         List<ReportCriteria> reportCriterias = new ArrayList<ReportCriteria>();
         new NonStrictExpectations() {{
-            eventAggregationDAO.findLastEventForVehicles((List)any, (Interval)any,dontIncludeUnassignedDevice);
+            eventAggregationDAO.findLastEventForVehicles((List)any, (Interval)any,dontIncludeUnassignedDevice,activeInterval);
             returns(lastReportedEvents);
         }};
         reportCriterias.add(builder.build());
