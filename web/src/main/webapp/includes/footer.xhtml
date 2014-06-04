@@ -30,8 +30,7 @@
 		 		<h:outputText value="#{session.lastAccessedTime}">
 		 			<f:convertDateTime pattern="yyyy" type="date" />
 		 		</h:outputText>
-		 		<h:outputText value="&#160;" />
-		 		<h:outputText value="#{messages.footer_copyrightCompanyName}" escape="false"/>
+		 		<h:outputText value="&#160;#{messages.footer_copyrightCompanyName}" escape="false"/>
 		 	</li>
 			<li class="last version_info">
 			  	   <h:outputFormat id="version" value="#{messages.footer_version}" style="color:gray;" >
