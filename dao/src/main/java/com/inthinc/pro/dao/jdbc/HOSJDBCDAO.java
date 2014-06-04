@@ -30,6 +30,7 @@ import com.inthinc.hos.model.HOSStatus;
 import com.inthinc.hos.model.RuleSetType;
 import com.inthinc.pro.dao.HOSDAO;
 import com.inthinc.pro.model.FuelEfficiencyType;
+import com.inthinc.pro.model.InspectionType;
 import com.inthinc.pro.model.LatLng;
 import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.model.configurator.SettingType;
@@ -815,9 +816,7 @@ public class HOSJDBCDAO extends NamedParameterJdbcDaoSupport implements HOSDAO {
         params.put("timeAdded", getDateString(currentTime));
         params.put("timeLastUpdated", getDateString(currentTime));
         params.put("mobileUnitId", hosRecord.getMobileUnitID());
-        // TODO: fix when restore inspection type user story
-//        params.put("inspectionType", hosRecord.getInspectionType() == null ? InspectionType.NONE.getCode() : hosRecord.getInspectionType().getCode());
-        params.put("inspectionType", 0);
+        params.put("inspectionType", hosRecord.getInspectionType() == null ? InspectionType.NONE.getCode() : hosRecord.getInspectionType().getCode());
         return params;
     }
 
@@ -857,10 +856,7 @@ public class HOSJDBCDAO extends NamedParameterJdbcDaoSupport implements HOSDAO {
             hosRecord.setEditUserID(resultSet.getInt("editUserID"));
             hosRecord.setSingleDriver(resultSet.getBoolean("singleDriver"));
             hosRecord.setMobileUnitID(resultSet.getString("mobileUnitID"));
-            
-            // TODO: fix when restore inspection type user story
-
-//            hosRecord.setInspectionType(InspectionType.valueOf(resultSet.getInt("inspectionType")));
+            hosRecord.setInspectionType(InspectionType.valueOf(resultSet.getInt("inspectionType")));
             return hosRecord;
         }
 
