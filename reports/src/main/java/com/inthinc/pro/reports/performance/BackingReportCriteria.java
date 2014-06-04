@@ -17,6 +17,7 @@ import com.inthinc.pro.model.aggregation.DriverVehicleScoreWrapper;
 import com.inthinc.pro.model.aggregation.Score;
 import com.inthinc.pro.reports.ReportCriteria;
 import com.inthinc.pro.reports.ReportType;
+import org.joda.time.Interval;
 
 public class BackingReportCriteria extends ReportCriteria {
 
@@ -37,6 +38,8 @@ public class BackingReportCriteria extends ReportCriteria {
 
         private TimeFrame timeFrame;
 
+        private Interval interval;
+
         private MeasurementType measurementType;
 
         private GroupReportDAO groupReportDAO;
@@ -47,12 +50,13 @@ public class BackingReportCriteria extends ReportCriteria {
 
         private Boolean includeZeroMilesDrivers;
 
-        public Builder(GroupHierarchy groupHierarchy, GroupReportDAO groupReportDAO, Integer groupID, TimeFrame timeFrame, MeasurementType measurementType) {
-            this(groupHierarchy, groupReportDAO, groupID, timeFrame, measurementType, ReportCriteria.DEFAULT_EXCLUDE_INACTIVE_DRIVERS, ReportCriteria.DEFAULT_EXCLUDE_ZERO_MILES_DRIVERS);
+        public Builder(Interval interval, GroupHierarchy groupHierarchy, GroupReportDAO groupReportDAO, Integer groupID, TimeFrame timeFrame, MeasurementType measurementType) {
+            this(interval, groupHierarchy, groupReportDAO, groupID, timeFrame, measurementType, ReportCriteria.DEFAULT_EXCLUDE_INACTIVE_DRIVERS, ReportCriteria.DEFAULT_EXCLUDE_ZERO_MILES_DRIVERS);
         }
 
-        public Builder(GroupHierarchy groupHierarchy, GroupReportDAO groupReportDAO, Integer groupID, TimeFrame timeFrame, MeasurementType measurementType, boolean includeInactiveDrivers,
+        public Builder(Interval interval, GroupHierarchy groupHierarchy, GroupReportDAO groupReportDAO, Integer groupID, TimeFrame timeFrame, MeasurementType measurementType, boolean includeInactiveDrivers,
                 boolean includeZeroMilesDrivers) {
+            this.interval = interval;
             this.dateTimeZone = DateTimeZone.UTC;
             this.locale = Locale.US;
             this.groupID = groupID;
@@ -99,8 +103,15 @@ public class BackingReportCriteria extends ReportCriteria {
         public BackingReportCriteria build() {
             logger.debug(String.format("Building BackingCriteria with locale %s", locale));
             List<DriverVehicleScoreWrapper> resultsList = new ArrayList<DriverVehicleScoreWrapper>();
+            if (timeFrame != null && !timeFrame.equals(TimeFrame.CUSTOM_RANGE))  {
+                resultsList = groupReportDAO.getDriverScores(groupID, timeFrame.getInterval(), groupHierarchy);
 
-            resultsList = groupReportDAO.getDriverScores(groupID, timeFrame.getInterval(), groupHierarchy);
+            }
+            else{
+                resultsList = groupReportDAO.getDriverScores(groupID, interval, groupHierarchy);
+
+            }
+
 
             List<BackingReportCriteria.BackingWrapper> backingWrappers = new ArrayList<BackingReportCriteria.BackingWrapper>();
             for (DriverVehicleScoreWrapper dvsw : resultsList) {
@@ -126,10 +137,18 @@ public class BackingReportCriteria extends ReportCriteria {
 
             BackingReportCriteria criteria = new BackingReportCriteria(this.locale);
             criteria.setMainDataset(backingWrappers);
+
+            if (timeFrame != null && !timeFrame.equals(TimeFrame.CUSTOM_RANGE))  {
             criteria.addDateParameter(REPORT_START_DATE, timeFrame.getInterval().getStart().toDate(), this.dateTimeZone.toTimeZone());
 
             /* The interval returns for the end date the beginning of the next day. We minus a second to get the previous day */
             criteria.addDateParameter(REPORT_END_DATE, timeFrame.getInterval().getEnd().minusSeconds(1).toDate(), this.dateTimeZone.toTimeZone());
+            } else {
+                criteria.addDateParameter(REPORT_START_DATE, interval.getStart().toDate(), this.dateTimeZone.toTimeZone());
+                criteria.addDateParameter(REPORT_END_DATE, interval.getEnd().toDate(), this.dateTimeZone.toTimeZone());
+
+            }
+
             criteria.setUseMetric(measurementType == MeasurementType.METRIC);
             return criteria;
 

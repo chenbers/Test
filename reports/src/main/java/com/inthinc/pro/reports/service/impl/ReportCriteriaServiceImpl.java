@@ -1595,13 +1595,13 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
 
     
     @Override
-    public ReportCriteria getBackingReportCriteria(GroupHierarchy accountGroupHierarchy, Integer groupID, TimeFrame timeFrame, Locale locale, DateTimeZone timeZone, MeasurementType measurementType) {
-        return getBackingReportCriteria(accountGroupHierarchy, groupID, timeFrame, locale, timeZone, measurementType, ReportCriteria.DEFAULT_EXCLUDE_INACTIVE_DRIVERS, ReportCriteria.DEFAULT_EXCLUDE_ZERO_MILES_DRIVERS);
+    public ReportCriteria getBackingReportCriteria(Interval interval, GroupHierarchy accountGroupHierarchy, Integer groupID, TimeFrame timeFrame, Locale locale, DateTimeZone timeZone, MeasurementType measurementType) {
+        return getBackingReportCriteria(interval, accountGroupHierarchy, groupID, timeFrame, locale, timeZone, measurementType, ReportCriteria.DEFAULT_EXCLUDE_INACTIVE_DRIVERS, ReportCriteria.DEFAULT_EXCLUDE_ZERO_MILES_DRIVERS);
         
     }
     @Override
-    public ReportCriteria getBackingReportCriteria(GroupHierarchy accountGroupHierarchy, Integer groupID, TimeFrame timeFrame, Locale locale, DateTimeZone timeZone, MeasurementType measurementType, boolean includeInactiveDrivers, boolean includeZeroMilesDrivers) {
-        BackingReportCriteria.Builder builder = new BackingReportCriteria.Builder(accountGroupHierarchy, groupReportDAO, groupID, timeFrame, measurementType, includeInactiveDrivers, includeZeroMilesDrivers);
+    public ReportCriteria getBackingReportCriteria(Interval interval, GroupHierarchy accountGroupHierarchy, Integer groupID, TimeFrame timeFrame, Locale locale, DateTimeZone timeZone, MeasurementType measurementType, boolean includeInactiveDrivers, boolean includeZeroMilesDrivers) {
+        BackingReportCriteria.Builder builder = new BackingReportCriteria.Builder(interval, accountGroupHierarchy, groupReportDAO, groupID, timeFrame, measurementType, includeInactiveDrivers, includeZeroMilesDrivers);
         builder.setLocale(locale);
         builder.setDateTimeZone(timeZone);
         return builder.build();
@@ -2113,7 +2113,7 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
                     reportCriteriaList.add(getDVIRInspectionRepairCompleteCriteria(groupHierarchy, reportSchedule.getGroupID(), timeFrame, person.getLocale(), DateTimeZone.forTimeZone(person.getTimeZone()), true));
                     break;
                 case BACKING_REPORT:
-                    reportCriteriaList.add(getBackingReportCriteria(groupHierarchy, reportSchedule.getGroupID(), timeFrame, person.getLocale(), DateTimeZone.forID(person.getTimeZone().getID()),
+                    reportCriteriaList.add(getBackingReportCriteria(timeFrame.getInterval(), groupHierarchy, reportSchedule.getGroupID(), timeFrame, person.getLocale(), DateTimeZone.forID(person.getTimeZone().getID()),
                             person.getMeasurementType(), reportSchedule.getIncludeInactiveDrivers(), reportSchedule.getIncludeZeroMilesDrivers()));
                     break;
                 case VEHICLE_MAINTENANCE_EVENTS_REPORT:
