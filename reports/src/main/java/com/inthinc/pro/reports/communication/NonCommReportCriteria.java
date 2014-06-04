@@ -120,7 +120,7 @@ public class NonCommReportCriteria extends ReportCriteria{
                 criteria.addDateParameter(REPORT_START_DATE, timeFrame.getInterval().getStart().toDate(), DateTimeZone.UTC.toTimeZone());
             }
             else{
-                criteria.addDateParameter(REPORT_START_DATE, interval.getStart().toDate(), DateTimeZone.UTC.toTimeZone());
+                criteria.addDateParameter(REPORT_START_DATE, interval.getStart().toDate(), DateTimeZone.UTC.toTimeZone() );
                 criteria.addDateParameter(REPORT_END_DATE, interval.getEnd().minusSeconds(1).toDate(), this.dateTimeZone.toTimeZone());
             }
 
