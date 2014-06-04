@@ -3,6 +3,7 @@ package com.inthinc.pro.reports.performance;
 import static org.junit.Assert.*;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import mockit.Mocked;
@@ -32,7 +33,7 @@ public class BackingReportCriteriaTest extends BaseUnitTest {
     GroupReportDAO groupReportDAO;
     
     private GroupHierarchy groupHierarchy;
-    
+    private static Interval INTERVAL = new Interval(new Date().getTime() - 3600, new Date().getTime());
     private static Integer FLEET_GROUP_ID = 0;
     private static Integer DIV_GROUP_ID = 1;
     private static Integer TEAM_GROUP_ID = 2;
@@ -100,7 +101,7 @@ public class BackingReportCriteriaTest extends BaseUnitTest {
     }
     
     private void runTest( Boolean includeInactiveDrivers, Boolean includeZeroMilesDrivers, int expectedDriverCount, int dumpID) {
-        BackingReportCriteria.Builder builder = new BackingReportCriteria.Builder(groupHierarchy, groupReportDAO, 
+        BackingReportCriteria.Builder builder = new BackingReportCriteria.Builder(INTERVAL, groupHierarchy, groupReportDAO,
                 TEAM_GROUP_ID, TimeFrame.MONTH, MeasurementType.ENGLISH, includeInactiveDrivers, includeZeroMilesDrivers);
         ReportCriteria reportCriteria = builder.build();
         assertEquals("all drivers count" , expectedDriverCount, reportCriteria.getMainDataset().size());
