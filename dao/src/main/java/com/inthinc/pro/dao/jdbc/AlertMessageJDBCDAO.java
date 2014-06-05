@@ -485,56 +485,60 @@ public class AlertMessageJDBCDAO extends GenericJDBCDAO implements AlertMessageD
     private static final String FETCH_RED_FLAG_MESSAGE_INFO_PREFIX = "SELECT noteID, msgID, status FROM message WHERE noteID IN (";
     private static final String FETCH_RED_FLAG_MESSAGE_INFO_SUFFIX = ") order by noteID";
 
-    @Override
-    public void fillInRedFlagMessageInfo(List<RedFlag> redFlagList) {
-        Map<Long, RedFlag> redFlagMap = new HashMap<Long, RedFlag>();
-        StringBuffer noteIDList = new StringBuffer();
-        for (RedFlag redFlag : redFlagList) {
-            redFlag.setMsgIDList(new ArrayList<Integer>());
-            redFlag.setSent(AlertSentStatus.NONE);
-            if (noteIDList.length() > 0)
-                noteIDList.append(",");
-            noteIDList.append(redFlag.getEvent().getNoteID());
-            redFlagMap.put(redFlag.getEvent().getNoteID(), redFlag);
-        }
+	@Override
+	public void fillInRedFlagMessageInfo(List<RedFlag> redFlagList) {
+		Map<Long, RedFlag> redFlagMap = new HashMap<Long, RedFlag>();
+		StringBuffer noteIDList = new StringBuffer();
+		for (RedFlag redFlag : redFlagList) {
+			redFlag.setMsgIDList(new ArrayList<Integer>());
+			if (noteIDList.length() > 0)
+				noteIDList.append(",");
+			noteIDList.append(redFlag.getEvent().getNoteID());
+			redFlagMap.put(redFlag.getEvent().getNoteID(), redFlag);
+		}
+		if (!(noteIDList.toString() == null)) {
+			Connection conn = null;
+			Statement statement = null;
+			ResultSet resultSet = null;
+			try {
+				conn = getConnection();
+				statement = conn.createStatement();
+				resultSet = statement
+						.executeQuery(FETCH_RED_FLAG_MESSAGE_INFO_PREFIX
+								+ noteIDList.toString() 
+								+ FETCH_RED_FLAG_MESSAGE_INFO_SUFFIX);
 
-        Connection conn = null;
-        Statement statement = null;
-        ResultSet resultSet = null;
-        try {
-            conn = getConnection();
-            statement = conn.createStatement();
-            resultSet = statement.executeQuery(FETCH_RED_FLAG_MESSAGE_INFO_PREFIX + !(noteIDList.toString() == null) + FETCH_RED_FLAG_MESSAGE_INFO_SUFFIX);
+				while (resultSet.next()) {
+					long noteID = resultSet.getLong(1);
+					int msgID = resultSet.getInt(2);
+					AlertEscalationStatus status = AlertEscalationStatus
+							.valueOf(resultSet.getInt(3));
+					RedFlag redFlag = redFlagMap.get(noteID);
+					redFlag.getMsgIDList().add(msgID);
+					if (redFlag.getSent() != AlertSentStatus.PENDING
+							&& redFlag.getSent() != AlertSentStatus.CANCELED) {
 
-            while (resultSet.next()) {
-                long noteID = resultSet.getLong(1);
-                int msgID = resultSet.getInt(2);
-                AlertEscalationStatus status = AlertEscalationStatus.valueOf(resultSet.getInt(3));
-                RedFlag redFlag = redFlagMap.get(noteID);
-                redFlag.getMsgIDList().add(msgID);
-                // System.out.println("msgStatus: " + status + " redFlag status: " + redFlag.getSent());
-                if (redFlag.getSent() != AlertSentStatus.PENDING && redFlag.getSent() != AlertSentStatus.CANCELED) {
-
-                    if (status == AlertEscalationStatus.CANCELED)
-                        redFlag.setSent(AlertSentStatus.CANCELED);
-                    else if (status == AlertEscalationStatus.ESCALATED_AWAITING_ACKNOWLEDGE || status == AlertEscalationStatus.NEW)
-                        redFlag.setSent(AlertSentStatus.PENDING);
-                    else if (status == AlertEscalationStatus.SENT || status == AlertEscalationStatus.ESCALATED_ACKNOWLEDGED)
-                        redFlag.setSent(AlertSentStatus.SENT);
-                }
-                // System.out.println("new redFlag status: " + redFlag.getSent());
-            }
-        } // end try
-        catch (SQLException e) { // handle database hosLogs in the usual manner
-            throw new ProDAOException(statement.toString(), e);
-        } // end catch
-        finally { // clean up and release the connection
-            close(resultSet);
-            close(statement);
-            close(conn);
-        } // end finally
-
-    }
+						if (status == AlertEscalationStatus.CANCELED)
+							redFlag.setSent(AlertSentStatus.CANCELED);
+						else if (status == AlertEscalationStatus.ESCALATED_AWAITING_ACKNOWLEDGE
+								|| status == AlertEscalationStatus.NEW)
+							redFlag.setSent(AlertSentStatus.PENDING);
+						else if (status == AlertEscalationStatus.SENT
+								|| status == AlertEscalationStatus.ESCALATED_ACKNOWLEDGED)
+							redFlag.setSent(AlertSentStatus.SENT);
+					}
+				}
+			} // end try
+			catch (SQLException e) { // handle database hosLogs in the usual manner
+				throw new ProDAOException(statement.toString(), e);
+			} // end catch
+			finally { // clean up and release the connection
+				close(resultSet);
+				close(statement);
+				close(conn);
+			} // end finally
+		}
+	}
 
     public class ParameterList {
         private List<String> parameterList;

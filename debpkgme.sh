@@ -491,12 +491,12 @@ function create_archive {
         find etc -type f | sed -e 's/^\.//' |tee -a ${CONF_FILE}
     fi
     echo "Creating data.tar.gz for debian package"
-    tar -zcf ${TMP_DIR}/data.tar.gz *
+    tar -zcf ${TMP_DIR}/data.tar.gz ./
     cd ${TMP_DIR}/control
     echo "Removing underscores from Control file"
     perl -pi -e 's/_/-/g' ${CONTROL_FILE}
     echo "Creating control tarball for debian package"
-    tar -zcf ${TMP_DIR}/control.tar.gz *
+    tar -zcf ${TMP_DIR}/control.tar.gz ./
     cd ${TMP_DIR}
     echo "Removing data and control folders"
     /bin/rm -Rf data
