@@ -62,8 +62,8 @@ public class TeamStopsReportCriteria  extends GroupListReportCriteria {
 //            Integer lastDate = dateTimeList.size();
 //            DateTime timeFrame1=  dateTimeList.get(lastDate);
 //            //            setTimeFrame((TimeFrame) interval.se));
-//            setTimeFrame(timeFrame1);
-////            setTimeFrame(timeFrame);
+            setTimeFrame(timeFrame);
+//            setTimeFrame(timeFrame);
 //            DateTime startDateTime = interval.getStart();
 //            DateTime endDateTime = interval.getEnd();
 
