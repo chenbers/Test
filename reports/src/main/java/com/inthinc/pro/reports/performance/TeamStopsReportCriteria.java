@@ -24,6 +24,7 @@ import com.inthinc.pro.reports.GroupListReportCriteria;
 import com.inthinc.pro.reports.ReportType;
 import com.inthinc.pro.reports.util.DateTimeUtil;
 import com.inthinc.pro.reports.util.MessageUtil;
+import org.joda.time.format.DateTimeFormatter;
 
 public class TeamStopsReportCriteria  extends GroupListReportCriteria {
     private ReportAddressLookupBean reportAddressLookupBean;
@@ -58,16 +59,11 @@ public class TeamStopsReportCriteria  extends GroupListReportCriteria {
         if (timeFrame != null && !timeFrame.equals(TimeFrame.CUSTOM_RANGE))  {
         setTimeFrame(timeFrame);
         } else{
-//            List<DateTime> dateTimeList=  DateTimeUtil.getDayList(interval, timeZone);
-//            Integer lastDate = dateTimeList.size();
-//            DateTime timeFrame1=  dateTimeList.get(lastDate);
-//            //            setTimeFrame((TimeFrame) interval.se));
-            setTimeFrame(timeFrame);
-//            setTimeFrame(timeFrame);
-//            DateTime startDateTime = interval.getStart();
-//            DateTime endDateTime = interval.getEnd();
+
+        setTimeFrame(timeFrame, interval);
 
         }
+
         List<DriverStopReport> teamStopsCriteriaList = new ArrayList<DriverStopReport>();
         List<Group> reportGroupList = getReportGroupList(groupIDList, accountGroupHierarchy);
         List<Driver> reportDriverList = getReportDriverList(reportGroupList);
@@ -112,7 +108,7 @@ public class TeamStopsReportCriteria  extends GroupListReportCriteria {
             addParameter(USER_TIME_ZONE, zone);
 
         }   else {
-            addParameter(USER_TIME_ZONE, zone);
+
             addParameter(REPORT_START_DATE, interval.getStart().toDate());
             addParameter(REPORT_END_DATE, interval.getEnd().toDate());
 
