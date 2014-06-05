@@ -627,23 +627,24 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
     }
 
     @Override
-    public ReportCriteria getTeamStopsReportCriteria(GroupHierarchy accountGroupHierarchy, Integer driverID, TimeFrame timeFrame, DateTimeZone timeZone, Locale locale,
+    public ReportCriteria getTeamStopsReportCriteria(Interval interval, GroupHierarchy accountGroupHierarchy, Integer driverID, TimeFrame timeFrame, DateTimeZone timeZone, Locale locale,
             DriverStopReport driverStopReport) {
 
         TeamStopsReportCriteria reportCriteria = new TeamStopsReportCriteria(locale);
         reportCriteria.setDriverDAO(driverDAO);
         reportCriteria.setReportAddressLookupBean(reportAddressLookupBean);
-        reportCriteria.init(accountGroupHierarchy, driverID, timeFrame, timeZone, driverStopReport);
+        Boolean active = true;
+        reportCriteria.init(active, interval, accountGroupHierarchy, driverID, timeFrame, timeZone, driverStopReport);
         return reportCriteria;
     }
 
     @Override
-    public ReportCriteria getTeamStopsReportCriteriaByGroup(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, TimeFrame timeFrame, DateTimeZone timeZone, Locale locale) {
+    public ReportCriteria getTeamStopsReportCriteriaByGroup(Interval interval, GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, TimeFrame timeFrame, DateTimeZone timeZone, Locale locale) {
         TeamStopsReportCriteria reportCriteria = new TeamStopsReportCriteria(locale);
         reportCriteria.setDriverDAO(driverDAO);
         reportCriteria.setReportAddressLookupBean(reportAddressLookupBean);
 
-        reportCriteria.init(accountGroupHierarchy, groupIDList, timeFrame, timeZone);
+        reportCriteria.init(interval, accountGroupHierarchy, groupIDList, timeFrame, timeZone);
         return reportCriteria;
     }
     @Override
@@ -1623,7 +1624,7 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
                             groupHierarchy));
                     break;
                 case TEAM_STOPS_REPORT:
-                    reportCriteriaList.add(getTeamStopsReportCriteriaByGroup(groupHierarchy, reportSchedule.getGroupIDList(), timeFrame, DateTimeZone.forTimeZone(person.getTimeZone()),
+                    reportCriteriaList.add(getTeamStopsReportCriteriaByGroup(timeFrame.getInterval(), groupHierarchy, reportSchedule.getGroupIDList(), timeFrame, DateTimeZone.forTimeZone(person.getTimeZone()),
                             person.getLocale()));
                     break;
                 case HOS_DAILY_DRIVER_LOG_REPORT:
