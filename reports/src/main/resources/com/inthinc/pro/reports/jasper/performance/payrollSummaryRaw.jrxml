@@ -187,7 +187,7 @@ new DecimalFormat("00").format($V{totalHours}.intValue()%60))]]></textFieldExpre
 					<textElement textAlignment="Left" verticalAlignment="Middle">
 						<font size="12" isBold="false" pdfFontName="Helvetica"/>
 					</textElement>
-					<textFieldExpression class="java.lang.String"><![CDATA[msg($R{group.name},$F{groupName})]]></textFieldExpression>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{groupName}]]></textFieldExpression>
 				</textField>
 			</band>
 		</groupFooter>
