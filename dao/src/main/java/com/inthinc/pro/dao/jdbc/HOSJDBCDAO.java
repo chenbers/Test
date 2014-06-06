@@ -929,45 +929,24 @@ public class HOSJDBCDAO extends NamedParameterJdbcDaoSupport implements HOSDAO {
         return (Integer) getNamedParameterJdbcTemplate().queryForObject(UNKNOWN_DRIVERID_SELECT, params, Integer.class);
     }
 
-    private final static String DRIVER_INFO_FROM_EMPID_SELECT = "SELECT p.empid, p.tzID, d.driverID, coalesce(d.dot, 0) AS dot FROM person p inner join driver d on d.personID = p.personID inner join device de on de.acctID = p.acctID WHERE p.empid = :employeeID AND de.deviceID = :deviceID AND p.status = 1 and d.status = 1";
-    private final static String DRIVER_INFO_FROM_DRIVER_ID_SELECT = "SELECT p.empid, p.tzID, d.driverID, coalesce(d.dot, 0) AS dot FROM driver d, person p WHERE d.personID = p.personID AND d.driverID = :driverID  AND d.status = 1 AND p.status = 1";
+    private final static String DRIVER_INFO_FROM_DRIVER_ID_SELECT = "SELECT p.empid, p.tzID, d.driverID, coalesce(d.dot, 0) AS dot FROM driver d, person p WHERE d.personID = p.personID AND d.driverID = :driverID";
 
     private void populateDriver(HOSRecord hosRecord) {
         HOSRecord driverInfo = null;
-        if (hosRecord.getEmployeeID() != null && !hosRecord.getEmployeeID().isEmpty()) {
-            Map<String, Object> params = new HashMap<String, Object>();
-            params.put("employeeID", hosRecord.getEmployeeID());
-            params.put("deviceID", hosRecord.getDeviceID());
-            driverInfo = (HOSRecord) getNamedParameterJdbcTemplate().queryForObject(DRIVER_INFO_FROM_EMPID_SELECT, params, new ParameterizedRowMapper<HOSRecord>() {
-                @Override
-                public HOSRecord mapRow(ResultSet rs, int rowNum) throws SQLException {
-                    HOSRecord hosRecord = new HOSRecord();
-                    hosRecord.setDriverID(rs.getInt("driverID"));
-                    hosRecord.setEmployeeID(rs.getString("empid"));
-                    hosRecord.setDriverDotType(RuleSetType.valueOf(rs.getInt("dot")));
-                    hosRecord.setTzID(rs.getInt("tzID"));
-                    return hosRecord;
-                }
-            });
-        } else if (hosRecord.getVehicleID() != null) {
-            Integer driverID = fetchDriverIDFromHOSVehicleLogin(hosRecord.getVehicleID());
-            if (driverID != null) {
-                Map<String, Object> params = new HashMap<String, Object>();
-                params.put("driverID", hosRecord.getDriverID());
-                driverInfo = (HOSRecord) getNamedParameterJdbcTemplate().queryForObject(DRIVER_INFO_FROM_DRIVER_ID_SELECT, params, new ParameterizedRowMapper<HOSRecord>() {
-                    @Override
-                    public HOSRecord mapRow(ResultSet rs, int rowNum) throws SQLException {
-                        HOSRecord hosRecord = new HOSRecord();
-                        hosRecord.setDriverID(rs.getInt("driverID"));
-                        hosRecord.setEmployeeID(rs.getString("empid"));
-                        hosRecord.setDriverDotType(RuleSetType.valueOf(rs.getInt("dot")));
-                        hosRecord.setTzID(rs.getInt("tzID"));
-                        return hosRecord;
-                    }
-                });
-
+        Map<String, Object> params = new HashMap<String, Object>();
+        
+        params.put("driverID", hosRecord.getDriverID());
+        driverInfo = (HOSRecord) getNamedParameterJdbcTemplate().queryForObject(DRIVER_INFO_FROM_DRIVER_ID_SELECT, params, new ParameterizedRowMapper<HOSRecord>() {
+            @Override
+            public HOSRecord mapRow(ResultSet rs, int rowNum) throws SQLException {
+                HOSRecord hosRecord = new HOSRecord();
+                hosRecord.setDriverID(rs.getInt("driverID"));
+                hosRecord.setEmployeeID(rs.getString("empid"));
+                hosRecord.setDriverDotType(RuleSetType.valueOf(rs.getInt("dot")));
+                hosRecord.setTzID(rs.getInt("tzID"));
+                return hosRecord;
             }
-        }
+        });
 
         if (driverInfo != null) {
             hosRecord.setDriverDotType(driverInfo.getDriverDotType());
@@ -977,13 +956,6 @@ public class HOSJDBCDAO extends NamedParameterJdbcDaoSupport implements HOSDAO {
         }
     }
 
-    private static final String FETCH_DRIVER_ID_FROM_HOSLOGIN = "SELECT driverID INTO _driverID FROM hosvehiclelogin WHERE vehicleID = :vehicleID and logoutTime IS NULL AND loginTime > DATE_SUB(NOW(), INTERVAL 7 DAY)  ORDER by loginTime DESC limit 1";
-
-    private Integer fetchDriverIDFromHOSVehicleLogin(Integer vehicleID) {
-        Map<String, Object> params = new HashMap<String, Object>();
-        params.put("vehicleID", vehicleID);
-        return queryForNullableObject(FETCH_DRIVER_ID_FROM_HOSLOGIN, Integer.class, params);
-    }
 
     private final static String EMPID_INFO_FROM_DRIVER_ID_SELECT = "SELECT p.empid, p.tzID tzID FROM person p inner join driver d on d.personID = p.personID WHERE d.driverID = :driverID";
 
