@@ -168,6 +168,17 @@ public class ReportJDBCDAOTest {
     }
 
     @Test
+    public void testIdleVehicleCountByVehicleName() {
+        List<TableFilterField> filterList = new ArrayList<TableFilterField>();
+        filterList.add(new TableFilterField("vehicleName", "C"));
+        DateTimeZone dateTimeZone = DateTimeZone.forID(ReportTestConst.TIMEZONE_STR);
+        Interval interval = new Interval(new DateMidnight(new org.joda.time.DateTime().minusYears(1), dateTimeZone), new DateMidnight(new org.joda.time.DateTime(), dateTimeZone));
+
+        int count = reportJDBCDAO.getIdlingVehicleReportCount(TEST_GROUP_ID, interval, filterList);
+        assertTrue("expected to be 1 or >1", count > 0);
+    }
+    
+    @Test
     public void testIdlingVehicleReportSupportsIdleStatsCount() {
         List<TableFilterField> filterList = new ArrayList<TableFilterField>();
         filterList.add(new TableFilterField("driverName", "Tina"));

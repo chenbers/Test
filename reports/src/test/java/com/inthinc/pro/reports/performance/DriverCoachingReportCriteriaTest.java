@@ -1,16 +1,17 @@
 package com.inthinc.pro.reports.performance;
 
-import com.inthinc.pro.dao.report.DriverPerformanceDAO;
-import com.inthinc.pro.dao.report.GroupReportDAO;
-import com.inthinc.pro.model.Driver;
-import com.inthinc.pro.model.TimeFrame;
-import com.inthinc.pro.model.aggregation.DriverPerformance;
-import com.inthinc.pro.model.aggregation.DriverVehicleScoreWrapper;
-import com.inthinc.pro.model.aggregation.Score;
-import com.inthinc.pro.reports.BaseUnitTest;
-import junit.framework.Assert;
+import static junit.framework.Assert.assertEquals;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.TimeZone;
+
 import mockit.Mocked;
 import mockit.NonStrictExpectations;
+
 import org.joda.time.DateMidnight;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
@@ -18,12 +19,23 @@ import org.joda.time.Interval;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import static junit.framework.Assert.*;
+import com.inthinc.hos.model.HOSStatus;
+import com.inthinc.hos.model.RuleSetType;
+import com.inthinc.pro.dao.DriverDAO;
+import com.inthinc.pro.dao.HOSDAO;
+import com.inthinc.pro.dao.report.DriverPerformanceDAO;
+import com.inthinc.pro.dao.report.GroupReportDAO;
+import com.inthinc.pro.model.Driver;
+import com.inthinc.pro.model.Person;
+import com.inthinc.pro.model.TimeFrame;
+import com.inthinc.pro.model.aggregation.DriverPerformance;
+import com.inthinc.pro.model.aggregation.DriverVehicleScoreWrapper;
+import com.inthinc.pro.model.aggregation.Score;
+import com.inthinc.pro.model.hos.HOSRecord;
+import com.inthinc.pro.reports.BaseUnitTest;
+import com.inthinc.pro.reports.FormatType;
+import com.inthinc.pro.reports.ReportCriteria;
+import com.inthinc.pro.reports.performance.DriverCoachingReportCriteria.DriverCoachingReportViolationSummary;
 
 
 public class DriverCoachingReportCriteriaTest extends BaseUnitTest {
@@ -34,11 +46,24 @@ public class DriverCoachingReportCriteriaTest extends BaseUnitTest {
 
     @Mocked
     private GroupReportDAO groupReportDAO;
+    
+    @Mocked
+    private HOSDAO hosDAO;
+
+    @Mocked
+    private DriverDAO driverDAO;
 
     private List<DriverVehicleScoreWrapper> driverVehicleScoreWrappers;
 
     private List<DriverPerformance> driverPerformances;
+    
+    private Driver driver;
+    
+    private List<HOSRecord> hosRecords;
 
+    private static final TimeZone DRIVER_TIME_ZONE = TimeZone.getTimeZone("UTC");
+    private static final RuleSetType DRIVER_DOT_TYPE = RuleSetType.CANADA_2007_CYCLE_1;
+    
     @Before
     public void setupTests() {
         driverPerformances = new ArrayList<DriverPerformance>();
@@ -47,7 +72,7 @@ public class DriverCoachingReportCriteriaTest extends BaseUnitTest {
         DriverPerformance driverPerformance = new DriverPerformance();
         driverPerformance.setDriverName("Test Driver");
         driverPerformance.setDriverID(1);
-        driverPerformance.setTotalIdleTime(123123);
+        driverPerformance.setIdleLo(65);
         driverPerformance.setHardAccelCount(3);
         driverPerformance.setHardBrakeCount(3);
         driverPerformance.setHardTurnCount(3);
@@ -64,20 +89,39 @@ public class DriverCoachingReportCriteriaTest extends BaseUnitTest {
         
         /* Setup the mock Driver Score Bean */
         DriverVehicleScoreWrapper driverVehicleScoreWrapper1 = new DriverVehicleScoreWrapper();
-        Driver driver = new Driver();
+        driver = new Driver();
         driver.setDriverID(1);
+        driver.setDot(DRIVER_DOT_TYPE);
+        Person person = new Person();
+        person.setDriver(driver);
+        person.setTimeZone(DRIVER_TIME_ZONE);
+        
+        driver.setPerson(person);
+        
         driverVehicleScoreWrapper1.setDriver(driver);
         Score score = new Score();
         score.setOverall(30);
         driverVehicleScoreWrapper1.setScore(score);
         driverVehicleScoreWrappers.add(driverVehicleScoreWrapper1);
+        
+        
+        hosRecords = new ArrayList<HOSRecord>();
+        DateTime currentTime = new DateTime();
+        hosRecords.add(new HOSRecord(1, currentTime.minusDays(7).toDate(), DRIVER_TIME_ZONE, HOSStatus.OFF_DUTY));
+        hosRecords.add(new HOSRecord(1, currentTime.minusDays(2).toDate(), DRIVER_TIME_ZONE, HOSStatus.DRIVING));  // SHIFT and DAILY violation (24 hours of driving)
+        hosRecords.add(new HOSRecord(1, currentTime.minusDays(1).toDate(), DRIVER_TIME_ZONE, HOSStatus.OFF_DUTY));
+        for (HOSRecord hosRecord : hosRecords) {
+            hosRecord.setDriverDotType(DRIVER_DOT_TYPE);
+        }
+    
     }
 
 
+    @SuppressWarnings("unchecked")
     @Test
     public void testBuildDriverCoachingReportCriteria() {
         new NonStrictExpectations() {{
-            driverPerformanceDAO.getDriverPerformanceListForGroup(anyInt, anyString, (Interval) any);
+            driverPerformanceDAO.getDriverPerformanceListForGroup(anyInt, anyString, (Interval) any, true, true);
             returns(driverPerformances);
         }};
 
@@ -86,10 +130,49 @@ public class DriverCoachingReportCriteriaTest extends BaseUnitTest {
             returns(driverVehicleScoreWrappers);
         }};
 
-//        DriverCoachingReportCriteria.Builder reportCriteriaBuilder = new DriverCoachingReportCriteria.Builder(groupReportDAO,driverPerformanceDAO,1,TimeFrame.PAST_SEVEN_DAYS.getInterval());
-//        reportCriteriaBuilder.setLocale(Locale.US);
-//        List<ReportCriteria> reportCriterias = reportCriteriaBuilder.build();
-//        dump("DriverCoaching", 2, reportCriterias, FormatType.PDF);
+        new NonStrictExpectations() {{
+            driverDAO.findByID(anyInt);
+            returns(driver);
+        }};
+
+        new NonStrictExpectations() {{
+            hosDAO.getHOSRecords(anyInt, (Interval) any, false);
+            returns(hosRecords);
+        }};
+
+
+        DriverCoachingReportCriteria.Builder reportCriteriaBuilder = new DriverCoachingReportCriteria.Builder(groupReportDAO,driverPerformanceDAO,1,TimeFrame.PAST_SEVEN_DAYS.getInterval(), true, true);
+        reportCriteriaBuilder.setLocale(Locale.US);
+        reportCriteriaBuilder.setDateTimeZone(DateTimeZone.UTC);
+        reportCriteriaBuilder.setAccountHOSEnabled(true);
+        reportCriteriaBuilder.setHosDAO(hosDAO);
+        reportCriteriaBuilder.setDriverDAO(driverDAO);
+        
+        List<ReportCriteria> reportCriterias = reportCriteriaBuilder.build();
+        assertEquals("Expeced 1 report criteria", 1, reportCriterias.size());
+        DriverCoachingReportCriteria reportCriteria = (DriverCoachingReportCriteria)reportCriterias.get(0);
+
+        List<DriverCoachingReportViolationSummary> violations = (List<DriverCoachingReportViolationSummary>)reportCriteria.getMainDataset();
+        assertEquals("Expeced 5 items", 5, violations.size());
+        assertEquals("Expected Speeding Violations", "6", violations.get(0).getSummary());
+        assertEquals("Expected Seatbelt Violations", "3", violations.get(1).getSummary());
+        assertEquals("Expected Aggressive Violations", "12", violations.get(2).getSummary());
+        assertEquals("Expected Lo Idle Time", "00:01:05", violations.get(3).getSummary());
+        assertEquals("Expected HOS Violations", "2", violations.get(4).getSummary());
+        
+        dump("DriverCoaching", 1, reportCriterias, FormatType.PDF);
+        
+        
+        // non hos account
+        reportCriteriaBuilder.setAccountHOSEnabled(false);
+        reportCriterias = reportCriteriaBuilder.build();
+        assertEquals("Expeced 1 report criteria", 1, reportCriterias.size());
+        reportCriteria = (DriverCoachingReportCriteria)reportCriterias.get(0);
+
+        violations = (List<DriverCoachingReportViolationSummary>)reportCriteria.getMainDataset();
+        assertEquals("Expeced 4 items", 4, violations.size());
+        
+        dump("DriverCoaching", 2, reportCriterias, FormatType.PDF);
     }
 
 

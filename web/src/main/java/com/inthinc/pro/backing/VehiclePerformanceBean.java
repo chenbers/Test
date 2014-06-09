@@ -641,9 +641,7 @@ public class VehiclePerformanceBean extends BasePerformanceBean
 
     public DeviceBean getDeviceBean() {
         logger.debug("DeviceBean getDeviceBean()");
-        if(null == deviceBean.getDeviceID()){
-            deviceBean.loadDeviceBean(getVehicle());
-        }
+        deviceBean.loadDeviceBean(getVehicle());
         return deviceBean;
     }
 
