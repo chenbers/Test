@@ -503,6 +503,7 @@ public class HOSJDBCDeltasDAOTest extends SimpleJdbcDaoSupport {
         HOSRecord hosRecord = new HOSRecord();
         hosRecord.setDeviceID(groupData.device.getDeviceID());
         hosRecord.setVehicleID(groupData.vehicle.getVehicleID());
+        hosRecord.setDriverID(groupData.driver.getDriverID());
         hosRecord.setNoteID(0l);
         hosRecord.setVehicleOdometer(1000l);
         hosRecord.setLat(0.0f);

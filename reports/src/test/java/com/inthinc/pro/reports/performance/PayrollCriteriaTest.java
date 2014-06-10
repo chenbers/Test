@@ -667,7 +667,7 @@ public class PayrollCriteriaTest extends BaseUnitTest {
       criteria.initDataSet(testData.interval, testData.account, testData.getGroupHierarchy(), testData.driverHOSRecordMap);
       dump("de8159", 1, criteria, FormatType.PDF);
       
-      PayrollData secondDay = ((List<PayrollData>)criteria.getMainDataset()).get(1);
+      PayrollData secondDay = ((List<PayrollData>)criteria.getMainDataset()).get(0);
       assertEquals("expected day", "11/11/2011", secondDay.getDayStr());
       assertEquals("expected time", 240, secondDay.getTotalAdjustedMinutes());
       
