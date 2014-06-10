@@ -9,15 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
-import java.util.Map;
-import java.util.Set;
 
 import static com.inthinc.pro.model.event.NoteType.*;
 
@@ -29,15 +23,10 @@ public class VehicleStatusUtil {
     @Autowired
     public EventDAO eventDAO;
 
-    private Integer maxNumTries = 5;
+    private DateTime lastFoundDateTime;
     private Integer scanHours = 1;
     private List<NoteType> scannedNoteTypes;
     private Integer vehicleId;
-
-    private final String IGN_ON_KEY = "ignition_on";
-    private final String IGN_OFF_KEY = "ignition_off";
-    private final String IDL_KEY = "idling";
-    private final String LOC_KEY = "location";
 
     /**
      * Bean init.
@@ -72,6 +61,7 @@ public class VehicleStatusUtil {
                 WSZONES_DEPARTURE_EX,
                 IDLE_STATS,
                 POWER_ON,
+                POWER_INTERRUPTED,
                 FUEL_STOP_EX,
                 VERTICAL_EVENT,
                 PARKING_BRAKE,
@@ -99,105 +89,83 @@ public class VehicleStatusUtil {
         this.vehicleId = vehicleId;
 
         // set the initial last found datetime to now
-        DateTime lastFoundDateTime = new DateTime();
+        lastFoundDateTime = new DateTime();
 
-        // set the initial notable events as empty
-        Map<String, Event> notableEvents = new HashMap<String, Event>();
+        // search while status is not determined
+        VehicleStatus vehicleStatus = VehicleStatus.NOT_YET_DETERMINED;
+        while (vehicleStatus == VehicleStatus.NOT_YET_DETERMINED) {
+            vehicleStatus = getStatus(lastFoundDateTime);
+        }
 
-        // set the current num tries to 0
-        Integer numTries = 0;
-
-        // execute the recursive logic function
-        return getStatusRecursive(lastFoundDateTime, notableEvents, numTries);
+        return vehicleStatus;
     }
 
     /**
-     * Determines the status recursively.
+     * Determines the status by looking at the last event between a given date and a
+     * configured number of hours before that date. If it doesn't find any events, it will
+     * return 'not yet determined'. It should find something in the first try.
      *
-     * @param lastFoundDateTime last date time for found events
-     * @param notableEvents     notable events
-     * @param numTries          number of tries
+     * @param dateTime last date time for found events
      * @return vehicle status
      */
-    private VehicleStatus getStatusRecursive(DateTime lastFoundDateTime, Map<String, Event> notableEvents, Integer numTries) {
-
-        // if we exceeded the max tries, semi-lie - it's probably parked
-        if (numTries > maxNumTries) {
-            return VehicleStatus.PARKING;
-        }
+    private VehicleStatus getStatus(DateTime dateTime) {
 
         // scan for some events
-        DateTime newLastFound = lastFoundDateTime.minusHours(scanHours);
-        List<Event> newEvents = eventDAO.getEventsForVehicle(vehicleId, newLastFound.toDate(), lastFoundDateTime.minusSeconds(1).toDate(), scannedNoteTypes, 0);
+        DateTime newLastFound = dateTime.minusHours(scanHours);
+        List<Event> newEvents = eventDAO.getEventsForVehicle(vehicleId, newLastFound.toDate(), dateTime.minusSeconds(1).toDate(), scannedNoteTypes, 0);
+        lastFoundDateTime = newLastFound;
 
-        // if the event list is not empty, treat it and try to come to a determination,
-        if (!newEvents.isEmpty()) {
+        // if the list is empty, return not yet determined
+        if (newEvents.isEmpty())
+            return VehicleStatus.NOT_YET_DETERMINED;
 
-            /**
-             * Walk backwards on the event list.
-             * The presence of some evetns trigger an immediate return (example IGNITION ON OR OFF).
-             * The presence of others can help determine the status after another iteration.
-             */
-            ListIterator<Event> it = newEvents.listIterator(newEvents.size());
-            while(it.hasPrevious()){
-                Event event = it.previous();
-                switch(event.getType()){
-                    case TRIP_START:
-                    case TRIP_INPROGRESS:
-                    case NOTEEVENT:
-                    case SPEEDING:
-                    case ACCELERATION:
-                    case DECELERATION:
-                    case ON_ROAD:
-                    case OFF_ROAD:
-                    case SPEEDING_EX:
-                    case SPEEDING_EX2:
-                    case SPEEDING_EX3:
-                    case WSZONES_ARRIVAL:
-                    case WSZONES_DEPARTURE:
-                    case WSZONES_ARRIVAL_EX:
-                    case WSZONES_DEPARTURE_EX:
-                    case VERTICAL_EVENT:
-                    case VERTICAL_EVENT_SECONDARY:
-                    case SPEEDING_EX4:
-                    case SPEEDING_LOG4:
-                    case SPEEDING_AV:
-                    case START_SPEEDING:
-                    case COACHING_SPEEDING:
-                    case BACKING:
-                        return VehicleStatus.DRIVING;             // if the last event is a motion event then it's driving
-                    case FULLEVENT:
-                    case ROLLOVER:
-                    case STOP_MOTION:
-                    case PARKING_BRAKE:
-                        return VehicleStatus.PARKING;             // if the last event is ignition on or park break then it's parking
-                    case LOCATION:
-                    case LOCATION_DEBUG:
-                        notableEvents.put(LOC_KEY, event);        // if the last event is location, it's stored in notable events
-                        break;
-                    case IDLE:                                    // idle means idle
-                        return VehicleStatus.IDLE;
-                    case IGNITION_ON:                             // ignition on has custom logic (if it had onr not previous location events)
-                        if (notableEvents.containsKey(LOC_KEY))
-                            return VehicleStatus.DRIVING;
-                        else
-                            return VehicleStatus.STANDING;
-                    case IGNITION_OFF:                            // ignition off is parking
-                        return VehicleStatus.PARKING;
-                }
-            }
+        // otherwise base your logic on the last event of the list
+        ListIterator<Event> it = newEvents.listIterator(newEvents.size());
+        Event event = it.previous();
+
+        // based on the last event type
+        switch (event.getType()) {
+            case TRIP_START:
+            case TRIP_INPROGRESS:
+            case NOTEEVENT:
+            case SPEEDING:
+            case ACCELERATION:
+            case DECELERATION:
+            case ON_ROAD:
+            case OFF_ROAD:
+            case SPEEDING_EX:
+            case SPEEDING_EX2:
+            case SPEEDING_EX3:
+            case WSZONES_ARRIVAL:
+            case WSZONES_DEPARTURE:
+            case WSZONES_ARRIVAL_EX:
+            case WSZONES_DEPARTURE_EX:
+            case VERTICAL_EVENT:
+            case VERTICAL_EVENT_SECONDARY:
+            case SPEEDING_EX4:
+            case SPEEDING_LOG4:
+            case SPEEDING_AV:
+            case START_SPEEDING:
+            case COACHING_SPEEDING:
+            case BACKING:
+            case FULLEVENT:
+            case ROLLOVER:
+            case STOP_MOTION:
+            case PARKING_BRAKE:
+            case LOCATION:
+            case LOCATION_DEBUG:
+                return VehicleStatus.DRIVING;             // the ones above mean driving
+            case IDLE:                                    // idle means idle
+                return VehicleStatus.IDLE;
+            case IGNITION_ON:
+            case POWER_ON:                                // ignition on or power on means standing
+                return VehicleStatus.STANDING;
+            case IGNITION_OFF:
+            case POWER_INTERRUPTED:                      // ignition off or power off means parking
+                return VehicleStatus.PARKING;
+            default:
+                return VehicleStatus.NOT_YET_DETERMINED;
         }
-
-        // retry
-        return getStatusRecursive(newLastFound, notableEvents, ++numTries);
-    }
-
-    public Integer getMaxNumTries() {
-        return maxNumTries;
-    }
-
-    public void setMaxNumTries(Integer maxNumTries) {
-        this.maxNumTries = maxNumTries;
     }
 
     public Integer getScanHours() {

@@ -35,7 +35,6 @@ public class VehicleStatusUtilTest {
     public void before(){
         vehicleStatusUtil = new VehicleStatusUtil();
         vehicleStatusUtil.setEventDAO(mockEventDao);
-        vehicleStatusUtil.setMaxNumTries(5);
         vehicleStatusUtil.setScanHours(1);
     }
 
@@ -46,19 +45,6 @@ public class VehicleStatusUtilTest {
             mockEventDao.getEventsForVehicle(VEHICLE_ID, withInstanceOf(Date.class), withInstanceOf(Date.class),(List<NoteType>)any, 0);
             times = 1;
             result = makeEvents(Arrays.asList(NoteType.PARKING_BRAKE, NoteType.ACCELERATION));
-        }};
-
-        VehicleStatus status = vehicleStatusUtil.determineStatusByVehicleId(VEHICLE_ID);
-        assertEquals(status, VehicleStatus.DRIVING);
-    }
-
-    @Test
-    public void testDrivingWithMiddleElem(){
-
-        new Expectations() {{
-            mockEventDao.getEventsForVehicle(VEHICLE_ID, withInstanceOf(Date.class), withInstanceOf(Date.class),(List<NoteType>)any, 0);
-            times = 1;
-            result = makeEvents(Arrays.asList(NoteType.IGNITION_ON, NoteType.LOCATION));
         }};
 
         VehicleStatus status = vehicleStatusUtil.determineStatusByVehicleId(VEHICLE_ID);
@@ -79,38 +65,12 @@ public class VehicleStatusUtilTest {
     }
 
     @Test
-    public void testIdlingWithMiddleElem(){
-
-        new Expectations() {{
-            mockEventDao.getEventsForVehicle(VEHICLE_ID, withInstanceOf(Date.class), withInstanceOf(Date.class),(List<NoteType>)any, 0);
-            times = 1;
-            result = makeEvents(Arrays.asList(NoteType.IDLE, NoteType.COLILO_VERSION));
-        }};
-
-        VehicleStatus status = vehicleStatusUtil.determineStatusByVehicleId(VEHICLE_ID);
-        assertEquals(status, VehicleStatus.IDLE);
-    }
-
-    @Test
     public void testStandingWithLastElem(){
 
         new Expectations() {{
             mockEventDao.getEventsForVehicle(VEHICLE_ID, withInstanceOf(Date.class), withInstanceOf(Date.class),(List<NoteType>)any, 0);
             times = 1;
             result = makeEvents(Arrays.asList(NoteType.PARKING_BRAKE, NoteType.IGNITION_ON));
-        }};
-
-        VehicleStatus status = vehicleStatusUtil.determineStatusByVehicleId(VEHICLE_ID);
-        assertEquals(status, VehicleStatus.STANDING);
-    }
-
-    @Test
-    public void testStandingWithMiddleElem(){
-
-        new Expectations() {{
-            mockEventDao.getEventsForVehicle(VEHICLE_ID, withInstanceOf(Date.class), withInstanceOf(Date.class),(List<NoteType>)any, 0);
-            times = 1;
-            result = makeEvents(Arrays.asList(NoteType.IGNITION_ON, NoteType.CHECK_HOSMINUTES));
         }};
 
         VehicleStatus status = vehicleStatusUtil.determineStatusByVehicleId(VEHICLE_ID);
@@ -131,66 +91,24 @@ public class VehicleStatusUtilTest {
     }
 
     @Test
-    public void testParkingWithMiddleElem(){
+    public void testDrivingAfterIteration(){
+
 
         new Expectations() {{
             mockEventDao.getEventsForVehicle(VEHICLE_ID, withInstanceOf(Date.class), withInstanceOf(Date.class),(List<NoteType>)any, 0);
             times = 1;
-            result = makeEvents(Arrays.asList(NoteType.IGNITION_OFF, NoteType.CHECK_HOSMINUTES));
+            result = makeEvents(Arrays.asList(NoteType._24HR_REBOOT, NoteType.CHECK_HOSMINUTES, NoteType.BASE));
         }};
 
-        VehicleStatus status = vehicleStatusUtil.determineStatusByVehicleId(VEHICLE_ID);
-        assertEquals(status, VehicleStatus.PARKING);
-    }
-
-    @Test
-    public void testDrivingAfterRecursion(){
-        new Expectations() {{
-            mockEventDao.getEventsForVehicle(VEHICLE_ID, withInstanceOf(Date.class), withInstanceOf(Date.class),(List<NoteType>)any, 0);
-            times = 1;
-            result = makeEvents(Arrays.asList(NoteType.LOCATION, NoteType.LOCATION, NoteType.LOCATION));
-        }};
 
         new Expectations() {{
             mockEventDao.getEventsForVehicle(VEHICLE_ID, withInstanceOf(Date.class), withInstanceOf(Date.class),(List<NoteType>)any, 0);
             times = 1;
-            result = makeEvents(Arrays.asList(NoteType.LOCATION, NoteType.LOCATION, NoteType.LOCATION));
-        }};
-
-        new Expectations() {{
-            mockEventDao.getEventsForVehicle(VEHICLE_ID, withInstanceOf(Date.class), withInstanceOf(Date.class),(List<NoteType>)any, 0);
-            times = 1;
-            result = makeEvents(Arrays.asList(NoteType.IGNITION_ON, NoteType.LOCATION, NoteType.LOCATION));
+            result = makeEvents(Arrays.asList(NoteType._24HR_REBOOT, NoteType.CHECK_HOSMINUTES, NoteType.LOCATION));
         }};
 
         VehicleStatus status = vehicleStatusUtil.determineStatusByVehicleId(VEHICLE_ID);
         assertEquals(status, VehicleStatus.DRIVING);
-    }
-
-    @Test
-    public void testRecursionLimit(){
-        vehicleStatusUtil.setMaxNumTries(2);
-
-        new Expectations() {{
-            mockEventDao.getEventsForVehicle(VEHICLE_ID, withInstanceOf(Date.class), withInstanceOf(Date.class),(List<NoteType>)any, 0);
-            times = 1;
-            result = makeEvents(Arrays.asList(NoteType.LOCATION, NoteType.LOCATION, NoteType.LOCATION));
-        }};
-
-        new Expectations() {{
-            mockEventDao.getEventsForVehicle(VEHICLE_ID, withInstanceOf(Date.class), withInstanceOf(Date.class),(List<NoteType>)any, 0);
-            times = 1;
-            result = makeEvents(Arrays.asList(NoteType.LOCATION, NoteType.LOCATION, NoteType.LOCATION));
-        }};
-
-        new Expectations() {{
-            mockEventDao.getEventsForVehicle(VEHICLE_ID, withInstanceOf(Date.class), withInstanceOf(Date.class),(List<NoteType>)any, 0);
-            times = 1;
-            result = makeEvents(Arrays.asList(NoteType.LOCATION, NoteType.LOCATION, NoteType.LOCATION));
-        }};
-
-        VehicleStatus status = vehicleStatusUtil.determineStatusByVehicleId(VEHICLE_ID);
-        assertEquals(status, VehicleStatus.PARKING);
     }
 
     /**
