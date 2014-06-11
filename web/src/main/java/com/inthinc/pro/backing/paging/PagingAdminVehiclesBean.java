@@ -46,7 +46,7 @@ public class PagingAdminVehiclesBean extends BasePagingAdminBean<VehiclesBean.Ve
 
     @Override
     protected ReportCriteria getReportCriteria() {
-        ReportCriteria reportCriteria = getReportCriteriaService().getVehiclesReportCriteria(getUser().getGroupID(), Duration.TWELVE, getLocale());
+        ReportCriteria reportCriteria = getReportCriteriaService().getVehicleAdminReportCriteria(getUser().getGroupID(), Duration.TWELVE, getLocale());
 
         TableSortField originalSort = getTableDataProvider().getSort();
         List<TableFilterField> originalFilterList = getTableDataProvider().getFilters();
