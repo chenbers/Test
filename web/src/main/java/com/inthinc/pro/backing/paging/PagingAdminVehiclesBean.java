@@ -1,5 +1,8 @@
 package com.inthinc.pro.backing.paging;
 
+import com.inthinc.pro.model.Duration;
+import com.inthinc.pro.model.pagination.TableFilterField;
+import com.inthinc.pro.reports.ReportCriteria;
 import org.ajax4jsf.model.KeepAlive;
 
 import com.inthinc.pro.backing.VehiclesBean;
@@ -8,6 +11,8 @@ import com.inthinc.pro.backing.paging.filters.ProductTypeFilter;
 import com.inthinc.pro.backing.paging.filters.VehicleTypeFilter;
 import com.inthinc.pro.model.pagination.SortOrder;
 import com.inthinc.pro.model.pagination.TableSortField;
+
+import java.util.List;
 
 @KeepAlive
 public class PagingAdminVehiclesBean extends BasePagingAdminBean<VehiclesBean.VehicleView> {
@@ -37,6 +42,24 @@ public class PagingAdminVehiclesBean extends BasePagingAdminBean<VehiclesBean.Ve
     @Override
     public TableSortField getDefaultSort() {
         return new TableSortField(SortOrder.ASCENDING, "name");
+    }
+
+    @Override
+    protected ReportCriteria getReportCriteria() {
+        ReportCriteria reportCriteria = getReportCriteriaService().getVehiclesReportCriteria(getUser().getGroupID(), Duration.TWELVE, getLocale());
+
+        TableSortField originalSort = getTableDataProvider().getSort();
+        List<TableFilterField> originalFilterList = getTableDataProvider().getFilters();
+
+        Integer rowCount = getTableDataProvider().getRowCount();
+
+        getTableDataProvider().getItemsByRange(0, rowCount);
+        reportCriteria.setMainDataset(getTableDataProvider().getItemsByRange(0, rowCount));
+
+        getTableDataProvider().setSort(originalSort);
+        getTableDataProvider().setFilters(originalFilterList);
+
+        return reportCriteria;
     }
 
     public DeviceStatusFilter getDeviceStatusFilter() {

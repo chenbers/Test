@@ -70,6 +70,17 @@
             		</span>
             	</a4j:commandButton>
             </li>
+              <c:if test="${editorBean.tableType == 'ADMIN_VEHICLES'}">
+                  <li class="r" >
+                        <img src="../../images/ico_excel.png" id="imageExcel" style="width: 22px;height: 22px;top:5px;position: relative"></img>
+                      <rich:contextMenu event="onclick" attachTiming="onavailable" disableDefaultMenu="false" submitMode="server" attachTo="imageExcel">
+                          <rich:menuItem ajaxSingle="true" iconDisabled="/images/ico_excel.png" icon="/images/ico_excel.png" value="#{messages.contextMenu_export_to_Excel}" action="#{bean.exportReportToExcel}" id="#{context}-exportExcelMEnuItem" rendered="true"> </rich:menuItem>
+
+                      </rich:contextMenu>
+
+                  </li>
+
+              </c:if>
             <li class="l"><h:commandButton id="#{context}-adminTableEdit" action="#{editorBean['batchEdit']}" styleClass="left"><span class="edit"><h:outputText value="#{messages.button_batchEdit}" /></span></h:commandButton></li>
             <li class="l text">
 				<a4j:commandLink id="#{context}-adminTableEditColumns" styleClass="ls_tab_edit_columns" title="#{messages.button_editColumns}" oncomplete="javascript:Richfaces.showModalPanel('#{context}_editColumns')" 

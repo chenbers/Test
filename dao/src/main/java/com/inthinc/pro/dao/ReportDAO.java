@@ -40,11 +40,11 @@ public interface ReportDAO extends GenericDAO<Object, Integer> {
 
     /**
      * Gets a count of vehicle report items for the specified group and filters
-     * 
+     *
      * @param groupID
      *            	The groupID (deep) to retrieve.
      * @param filters
-     * 				Filters for data set            
+     * 				Filters for data set
      * @return Count of vehicles in group that meet filtering criteria.
      */
 	Integer getVehicleReportCount(Integer groupID, List<TableFilterField> filters);
@@ -52,11 +52,11 @@ public interface ReportDAO extends GenericDAO<Object, Integer> {
 
     /**
      * Gets a count of vehicle report items for the specified group and filters
-     * 
+     *
      * @param groupID
      *            	The groupID (deep) to retrieve.
      * @param pageParams
-     * 				Defines the page to return -- start,end rows, filter criteria and sort criteria            
+     * 				Defines the page to return -- start,end rows, filter criteria and sort criteria
      * @return List of vehicleReportItems in group that meet filtering criteria, sorted by sort criteria.
      */
 	List<VehicleReportItem> getVehicleReportPage(Integer groupID, PageParams pageParams);

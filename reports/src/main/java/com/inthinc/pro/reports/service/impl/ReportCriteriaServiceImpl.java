@@ -352,6 +352,26 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
 
         return reportCriteria;
     }
+
+    @Override
+    public ReportCriteria getVehiclesReportCriteria(Integer groupID, Duration duration, Locale locale) {
+        this.locale = locale;
+        Group group = groupDAO.findByID(groupID);
+        ReportCriteria reportCriteria = new ReportCriteria(ReportType.VEHICLES_REPORT, group.getName(), locale);
+
+
+            if (duration.equals(Duration.TWELVE)) {
+                Integer rowCount = reportDAO.getVehicleReportCount(groupID, null);
+                PageParams pageParams = new PageParams(0, rowCount, null, null);
+                reportCriteria.setMainDataset(reportDAO.getVehicleReportPage(groupID, pageParams));
+            } else {
+                reportCriteria.setMainDataset(scoreDAO.getVehicleReportData(groupID, duration, getGroupMap(group)));
+            }
+            reportCriteria.setDuration(duration);
+
+
+        return reportCriteria;
+    }
     
     @Override
     public ReportCriteria getTrailerReportCriteria(Integer groupID, Duration duration, Locale locale, Boolean initDataSet) {
