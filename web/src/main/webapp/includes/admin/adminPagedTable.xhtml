@@ -72,11 +72,7 @@
             </li>
               <c:if test="${editorBean.tableType == 'ADMIN_VEHICLES'}">
                   <li class="r" >
-                        <img src="../../images/ico_excel.png" id="imageExcel" style="width: 22px;height: 22px;top:5px;position: relative"></img>
-                      <rich:contextMenu event="onclick" attachTiming="onavailable" disableDefaultMenu="false" submitMode="server" attachTo="imageExcel">
-                          <rich:menuItem ajaxSingle="true" iconDisabled="/images/ico_excel.png" icon="/images/ico_excel.png" value="#{messages.contextMenu_export_to_Excel}" action="#{bean.exportReportToExcel}" id="#{context}-exportExcelMEnuItem" rendered="true"> </rich:menuItem>
-
-                      </rich:contextMenu>
+                     <h:commandButton action="#{bean.exportReportToExcel}" image="/images/ico_excel.png" style="width: 22px;height: 22px;position: relative;top:3px;" />
 
                   </li>
 

@@ -821,24 +821,8 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
             this.product = product;
         }
 
-        public String HosDotTypeName(Integer nr)
-        { if(nr==0) return "Light Duty, No HOS";
-          if(nr==1) return "Light Duty,Prompt";
-          if(nr==2) return "Light Duty, HOS";
-            if(nr==3) return "Heavy Duty";
-            return " ";
-        }
-
-        public String DotVehicleTypeName(Integer nr)
-        { if(nr==0) return "Non DOT";
-            if(nr==1) return "DOT";
-            if(nr==2) return "Prompt for DOT trip";
-            return " "; }
-
-
         public String getDot() {
-            return (getDotVehicleType() == null) ? ((getHosDotType() == null) ? " " : HosDotTypeName(getHosDotType().getConfiguratorSetting())):DotVehicleTypeName( getDotVehicleType().getConfiguratorSetting());
-
+            return (getDotVehicleType() == null) ? ((getHosDotType() == null) ? " " : MessageUtil.getMessageString(getHosDotType().toString())):MessageUtil.getMessageString(getDotVehicleType().toString());
         }
 
         public void setDot(String dot) {
