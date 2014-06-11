@@ -28,6 +28,7 @@ public class Event extends BaseEntity implements Comparable<Event>, Serializable
     private static final long serialVersionUID = 1L;
 
     private Long noteID;
+    private String deviceName;
 
     private Integer forgiven = 0;
     private Integer flags;
@@ -444,5 +445,13 @@ public class Event extends BaseEntity implements Comparable<Event>, Serializable
     
     public EventAttr[] getEventAttrList() {
         return null;
+    }
+
+    public String getDeviceName() {
+        return deviceName;
+    }
+
+    public void setDeviceName(String deviceName) {
+        this.deviceName = deviceName;
     }
 }
