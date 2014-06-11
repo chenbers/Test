@@ -631,6 +631,8 @@
   <bean id="eventPaginationTableDataProvider" class="com.inthinc.pro.table.model.provider.EventPaginationTableDataProvider" scope="request">
     <property name="eventDAO" ref="eventDAO"></property>
     <property name="timeFrameBean" ref="timeFrameBean" />
+    <property name="vehicleDAO" ref="vehicleDAO"></property>
+    <property name="deviceDAO" ref="deviceDAO"></property>
   </bean>
 
   <bean id="maintenanceEventPaginationTableDataProvider" class="com.inthinc.pro.table.model.provider.MaintenanceEventPaginationTableDataProvider" scope="request">
