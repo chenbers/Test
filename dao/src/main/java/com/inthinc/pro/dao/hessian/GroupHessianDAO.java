@@ -36,12 +36,38 @@ public class GroupHessianDAO extends GenericHessianDAO<Group, Integer> implement
         group.setAddressID(addressID);
     }
     @Override
-	public Integer update(Group group) {
-    	
-    	updateOrCreateAddressAsNeeded(group, group.getAddress());
+    public Integer update(Group group) {
+        String updatedGLCode = group.getGlCode();
+        //verify if current glCode is null.
+        if (updatedGLCode != null && !updatedGLCode.isEmpty()) {
+            List<Group> subGroups = getGroupHierarchy(group.getAccountID(), group.getGroupID());
+            //If it is not null verify each subgroup if it has a glCode. If it does not then update subgroups with the parent glCode if it does do nothing.
+            for (Group subGroup : subGroups) {
+                if (subGroup.getGlCode() == null  || subGroup.getGlCode().isEmpty()) {
+                    update(subGroup, updatedGLCode);
+                }
+            }
+        } else {
+            //If a Gl Code is deleted and left blank it will inherit the GL code of the next highest level.
+            Group parent = findByID(group.getParentID());
+            String parentGLCode = parent.getGlCode();
+            if(parentGLCode!=null && !parentGLCode.isEmpty()){
+                update(group,parentGLCode);
+            }
+        }
+        updateOrCreateAddressAsNeeded(group, group.getAddress());
         group.setName(group.getName() == null ? "" : group.getName().trim());
-    	return super.update(group);
-	}
+        return super.update(group);
+    }
+
+    //Using this only to update glCode
+    public Integer update(Group group,String updatedGLCode){
+        group.setGlCode(updatedGLCode);
+
+        return super.update(group);
+    }
+
+
     private void updateOrCreateAddressAsNeeded(Group group, Address address){
         if (addressExists(address)){
             getSiloService().updateAddr(address.getAddrID(), getMapper().convertToMap(address));
