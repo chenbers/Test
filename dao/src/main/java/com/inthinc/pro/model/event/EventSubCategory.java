@@ -33,7 +33,7 @@ public enum EventSubCategory implements BaseEnum
             EnumSet.of(AlertMessageType.ALERT_TYPE_DSS_MICROSLEEP)),
             
     VEHICLE(5, 
-            EnumSet.of(EventType.LOW_BATTERY, EventType.DEVICE_LOW_BATTERY, EventType.TAMPERING, EventType.IDLING, EventType.IGNITION_ON, EventType.IGNITION_OFF, EventType.POTENTIAL_TAMPERING, EventType.RF_SWITCH, EventType.POWER_INTERRUPTED, EventType.BACKING),
+            EnumSet.of(EventType.LOW_BATTERY, EventType.DEVICE_LOW_BATTERY, EventType.TAMPERING, EventType.IDLING, EventType.IGNITION_ON, EventType.IGNITION_OFF, EventType.POTENTIAL_TAMPERING, EventType.RF_SWITCH, EventType.POWER_INTERRUPTED, EventType.BACKING, EventType.FIRST_MOVE_FORWARD),
             EnumSet.of(AlertMessageType.ALERT_TYPE_LOW_BATTERY, AlertMessageType.ALERT_TYPE_TAMPERING,AlertMessageType.ALERT_TYPE_IGNITION_ON,AlertMessageType.ALERT_TYPE_IDLING, AlertMessageType.ALERT_TYPE_VEHICLE_MOVE_BACKWARDS )),
             
     WIRELINE(6, 
@@ -68,7 +68,7 @@ public enum EventSubCategory implements BaseEnum
                     AlertMessageType.ALERT_TYPE_DVIR_POST_TRIP_FAIL, AlertMessageType.ALERT_TYPE_DVIR_POST_TRIP_PASS,
                     AlertMessageType.ALERT_TYPE_DVIR_DRIVEN_INSPECTED_UNSAFE,AlertMessageType.ALERT_TYPE_DVIR_DRIVEN_WITHOUT_INSPECTION,
                     AlertMessageType.ALERT_TYPE_DVIR_NO_POST_TRIP_INSPECTION, AlertMessageType.ALERT_TYPE_DVIR_REPAIR)),
-    REVERSE(15,EnumSet.of(EventType.GENERAL_BACKING), null),
+    REVERSE(15,EnumSet.of(EventType.BACKING, EventType.FIRST_MOVE_FORWARD), null),
     TRAILER(16, EnumSet.of(EventType.TRAILER_DATA, EventType.TRAILER_PROGRAMMED), null),
     FIRST_MOVE_FORWARD(17, EnumSet.of(EventType.FIRST_MOVE_FORWARD), null);
     
