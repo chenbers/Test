@@ -1,5 +1,5 @@
 package com.inthinc.pro.dao.jdbc;
-
+/*
 import java.util.Map;
 
 import mockit.Mock;
@@ -9,9 +9,9 @@ import org.junit.Test;
 
 import com.inthinc.pro.model.hos.HOSRecord;
 import static org.junit.Assert.*;
-
+*/
 public class HOSJDBCDAOMockedTest {
-
+/*
     HOSJDBCDAO hosDAO = new HOSJDBCDAO();
     
     @Test
@@ -57,4 +57,5 @@ public class HOSJDBCDAOMockedTest {
         Deencapsulation.invoke(hosDAO, "populateVehicle", hosRecordWithNullNoteFlag);
         assertFalse("Vehicle should not be DOT ", hosRecordWithNullNoteFlag.getVehicleIsDOT());
     }
+*/
 }
