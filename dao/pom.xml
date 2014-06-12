@@ -82,7 +82,13 @@
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-core</artifactId>
 		</dependency>
-		<!-- -->
+        <dependency>
+            <!-- JMockit MUST appear before JUnit -->
+            <groupId>mockit</groupId>
+            <artifactId>jmockit</artifactId>
+<!--            <version>0.999.10</version> -->
+            <scope>test</scope>
+        </dependency>
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
