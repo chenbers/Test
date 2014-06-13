@@ -174,7 +174,7 @@ public class HOSJDBCDAO extends NamedParameterJdbcDaoSupport implements HOSDAO {
             "ol.serviceId, ol.trailerId " +
             "FROM hosvehiclelogin ol, person p, driver d, " +
             /*Grab vehicle, interval records for driver*/
-            "(SELECT vehicleID, loginTime, COALESCE(logoutTime, UTC_TIMESTAMP()) AS logoutTime FROM hosvehiclelogin WHERE driverId = :driverID AND ((loginTime BETWEEN :startTime AND :endTime) OR (COALESCE(logoutTime, UTC_TIMESTAMP())  BETWEEN :startTime AND :endTime) OR (loginTime <= :startTime AND COALESCE(logoutTime, UTC_TIMESTAMP()) >= :endTime))) dl " + 
+            "(SELECT hvl.vehicleID, loginTime, COALESCE(logoutTime, UTC_TIMESTAMP()) AS logoutTime FROM hosvehiclelogin hvl, vehicle v WHERE driverId = :driverID AND v.vehicleID=hvl.vehicleID AND ((loginTime BETWEEN :startTime AND :endTime) OR (COALESCE(logoutTime, UTC_TIMESTAMP())  BETWEEN :startTime AND :endTime) OR (loginTime <= :startTime AND COALESCE(logoutTime, UTC_TIMESTAMP()) >= :endTime))) dl " + 
             "WHERE ol.driverId != :driverID " +
             /*Grab records that fall into time interval of driver records*/
             "AND ol.vehicleId = dl.vehicleID " +  
