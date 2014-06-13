@@ -1025,7 +1025,9 @@ public class HOSJDBCDAO extends NamedParameterJdbcDaoSupport implements HOSDAO {
             }
         }
         hosRecord.setVehicleLicense(license);
+        
         hosRecord.setNoteFlags(hosRecord.getNoteFlags()!=null?hosRecord.getNoteFlags():0);
+        
         if (vehicleIsDOTFlag == null || (hosRecord.getNoteFlags() & vehicleIsDOTFlag) == vehicleIsDOTFlag) {
             vehicleIsDOTFlag = 0;
         }
