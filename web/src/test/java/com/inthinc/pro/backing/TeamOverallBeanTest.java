@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.inthinc.pro.backing.TeamMockData.SEListSwitch;
@@ -77,6 +78,7 @@ public class TeamOverallBeanTest extends BaseBeanTest {
         assertEquals(29,score);
     } 
     
+    @Ignore
     @Test
     public void testGetSelectedOverallScore() {
      

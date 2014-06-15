@@ -228,7 +228,7 @@ public class DriverPerformanceDAOImpl implements DriverPerformanceDAO {
 		
 		Group group = groupDAO.findByID(groupID);
 		GroupHierarchy gh = new GroupHierarchy(groupDAO.getGroupHierarchy(group.getAccountID(), groupID));
-        List<DriverVehicleScoreWrapper> scoreList = groupReportDAO.getDriverScores(groupID, interval.getStart(), interval.getEnd().minusDays(1), gh);
+        List<DriverVehicleScoreWrapper> scoreList = groupReportDAO.getDriverScores(groupID, interval.getStart(), interval.getEnd(), gh);
         
         if (scoreList == null || scoreList.isEmpty())
             return driverPerformanceList;
