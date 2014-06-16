@@ -78,7 +78,6 @@ public class TeamOverallBeanTest extends BaseBeanTest {
         assertEquals(29,score);
     } 
     
-    @Ignore
     @Test
     public void testGetSelectedOverallScore() {
      
