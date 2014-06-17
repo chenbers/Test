@@ -10,3 +10,4 @@ target
 /server.crt
 .idea/*
 *.iml
+*.sublime-*
