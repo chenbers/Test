@@ -4,6 +4,8 @@ import java.util.Date;
 import java.util.List;
 
 import com.inthinc.pro.model.CustomDuration;
+import com.inthinc.pro.dao.PersonDAO;
+import com.inthinc.pro.model.Person;
 import org.joda.time.DateTime;
 import org.joda.time.Interval;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,23 +31,25 @@ import com.inthinc.pro.model.event.Event;
 
 /**
  * Adapter for the Driver resources.
- *  
+ *
  * @author dcueva
  */
 @Component
 public class DriverDAOAdapter extends BaseDAOAdapter<Driver> {
- 
+
     @Autowired
 	private GroupDAO groupDAO;
     @Autowired
 	private DriverDAO driverDAO;
+    @Autowired
+    private PersonDAO personDAO;
     @Autowired
     private DriverReportDAO driverReportDAO;
     @Autowired
     private GroupReportDAO groupReportDAO;
     @Autowired
     private EventDAO eventDAO;
-	
+
 	@Override
 	public List<Driver> getAll() {
 		return driverDAO.getAllDrivers(getGroupID());
@@ -60,7 +64,7 @@ public class DriverDAOAdapter extends BaseDAOAdapter<Driver> {
      * Retrieve the ID to be used in the creation of the driver. </br>
      * Overriding because we need the Person ID, not the account ID (default).</br>
      * The create() method from BaseDAOAdapter will call this overriden method.</br>
-     *  
+     *
 	 * @see com.inthinc.pro.service.adapters.BaseDAOAdapter#getAccountID(java.lang.Object)
 	 */
 	@Override
@@ -101,7 +105,7 @@ public class DriverDAOAdapter extends BaseDAOAdapter<Driver> {
     public List<Event> getSpeedingEvents(Integer driverID) {
         DateTime dateTime = new DateTime();
         return eventDAO.getViolationEventsForDriver(driverID, dateTime.minusMonths(1).toDate(), dateTime.toDate(), 1);
-    }    
+    }
 
     public List<Trend> getTrend(Integer driverID, Duration duration) {
         return driverReportDAO.getTrend(driverID, duration);
@@ -110,21 +114,21 @@ public class DriverDAOAdapter extends BaseDAOAdapter<Driver> {
     public List<Trend> getTrend(Integer driverID, CustomDuration customDuration) {
         return driverReportDAO.getTrend(driverID, customDuration);
     }
-    
+
     public Trip getLastTrip(Integer driverID) {
         return driverDAO.getLastTrip(driverID);
     }
-    
+
     public LastLocation getLastLocation(Integer driverID) {
         return driverDAO.getLastLocation(driverID);
     }
-    
-    public List<Trip> getLastTrips(Integer driverID, Date startDate) {          
+
+    public List<Trip> getLastTrips(Integer driverID, Date startDate) {
         Date today = new Date();
         return driverDAO.getTrips(driverID, startDate, today);
     }
 
-    public List<Trip> getTrips(Integer driverID, Date fromDateTime, Date toDateTime) {          
+    public List<Trip> getTrips(Integer driverID, Date fromDateTime, Date toDateTime) {
         return driverDAO.getTrips(driverID, fromDateTime, toDateTime);
     }
     public List<DriverLocation> getDriverLocations(Integer groupID) {
@@ -132,7 +136,7 @@ public class DriverDAOAdapter extends BaseDAOAdapter<Driver> {
     }
 
     // Getters and setters -----------------------------------------------------
-    
+
 	/**
 	 * @return the groupDAO
 	 */
@@ -146,7 +150,7 @@ public class DriverDAOAdapter extends BaseDAOAdapter<Driver> {
 	public void setGroupDAO(GroupDAO groupDAO) {
 		this.groupDAO = groupDAO;
 	}
-	
+
 	/**
 	 * @return the driverDAO
 	 */
@@ -197,4 +201,36 @@ public class DriverDAOAdapter extends BaseDAOAdapter<Driver> {
 		this.groupReportDAO = groupReportDAO;
 	}
 
+    /**
+     * Gets the driver associated with a person that has the given employee id or null if not found.
+     *
+     * @param empID employee id
+     * @return driver or null if not found
+     */
+    public Driver getDriverByEmpID(String empID) {
+        Person person = personDAO.findByEmpID(getAccountID(), empID);
+        if (person != null) {
+            Driver driver = driverDAO.findByPersonID(person.getPersonID());
+            if (driver != null) {
+                return driver;
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * Gets the driverID associated with a person that has the given employee id or null if not found.
+     *
+     * @param empID employee id
+     * @return driverID or null if not found
+     */
+    public Integer getDriverIDByEmpID(String empID) {
+        Driver driver = getDriverByEmpID(empID);
+        if (driver != null) {
+            return driver.getDriverID();
+        }
+
+        return null;
+    }
 }
