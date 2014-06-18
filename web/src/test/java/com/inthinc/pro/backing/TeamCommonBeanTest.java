@@ -84,7 +84,7 @@ public class TeamCommonBeanTest extends BaseBeanTest {
 //            System.out.println(t.getEndingDate());
 //        }
         
-        assertEquals(31, trendList.size());
+        assertEquals(32, trendList.size());
         
         teamCommonBean.setTimeFrame(TimeFrame.MONTH);
         

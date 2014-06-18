@@ -229,12 +229,10 @@ public class DateUtil
         calendar.set(Calendar.SECOND, 0);
     }
     
-    
     public static long deltaMinutes(Date startTime, Date endDate) {
 //        return ((endDate.getTime() - startTime.getTime()) + 30000)/60000l;
         return (endDate.getTime() - startTime.getTime())/60000l;
     }
-
     
     public static boolean timeInInterval(DateTime dateTime, DateTimeZone dateTimeZone, Interval utcInterval) {
         Interval tzInterval = getIntervalInTimeZone(utcInterval, dateTimeZone);
@@ -245,12 +243,11 @@ public class DateUtil
     {
         LocalDate localDate = new LocalDate(new DateMidnight(interval.getStart(), DateTimeZone.UTC));
         DateTime startDate = localDate.toDateTimeAtStartOfDay(dateTimeZone);
-        localDate = new LocalDate(new DateMidnight(interval.getEnd(), DateTimeZone.UTC));
+        localDate = new LocalDate(new DateMidnight(interval.getEnd().plusDays(1), DateTimeZone.UTC));
         DateTime endDate = localDate.toDateTimeAtStartOfDay(dateTimeZone);
-        System.out.println("local Interval: " + startDate + " " + endDate);        
+        System.out.println("local Interval: " + startDate + " " + endDate);
 
         return new Interval(startDate, endDate);
-
     }
     public static Integer differenceInDays(TimeFrame timeFrame, Interval interval){
         if(timeFrame != null && timeFrame != TimeFrame.CUSTOM_RANGE)
@@ -258,5 +255,3 @@ public class DateUtil
         return differenceInDays(interval.getStart().toDate(), interval.getEnd().toDate());
     }
 }
-
-
