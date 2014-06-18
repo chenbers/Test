@@ -13,6 +13,7 @@ import javax.ws.rs.core.UriBuilder;
 import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.core.Response.Status;
 
+import com.inthinc.pro.model.CustomDuration;
 import com.inthinc.pro.service.model.VehicleStatus;
 import com.inthinc.pro.util.VehicleStatusUtil;
 import org.joda.time.DateTime;
@@ -65,6 +66,13 @@ public class VehicleServiceImpl extends AbstractService<Vehicle, VehicleDAOAdapt
             if (score != null)
                 return Response.ok(score).build();
         }
+
+        CustomDuration customDuration = CustomDuration.getDurationByDays(numberOfDays);
+        if (customDuration != null) {
+            Score score = getDao().getScore(vehicleID, customDuration);
+            if (score != null)
+                return Response.ok(score).build();
+        }
         return Response.status(Status.NOT_FOUND).build();
     }
 
@@ -73,6 +81,13 @@ public class VehicleServiceImpl extends AbstractService<Vehicle, VehicleDAOAdapt
         Duration duration = Duration.getDurationByDays(numberOfDays);
         if (duration != null) {
             List<Trend> list = getDao().getTrend(vehicleID, duration);
+            if (!list.isEmpty())
+                return Response.ok(new GenericEntity<List<Trend>>(list) {}).build();
+        }
+
+        CustomDuration customDuration = CustomDuration.getDurationByDays(numberOfDays);
+        if (customDuration != null) {
+            List<Trend> list = getDao().getTrend(vehicleID, customDuration);
             if (!list.isEmpty())
                 return Response.ok(new GenericEntity<List<Trend>>(list) {}).build();
         }

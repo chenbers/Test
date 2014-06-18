@@ -1,5 +1,7 @@
 package com.inthinc.pro.service.security.aspects.it;
 
+import com.inthinc.pro.model.CustomDuration;
+import com.inthinc.pro.model.Duration;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -58,9 +60,11 @@ public class DriverAuthorizationAdviceTest {
         driverAdapter.create(driver);
         driverAdapter.delete(1);
         driverAdapter.findByID(1);
-        driverAdapter.getScore(1, null);
+        driverAdapter.getScore(1, (Duration) null);
+        driverAdapter.getScore(1, (CustomDuration) null);
         driverAdapter.getSpeedingEvents(1);
-        driverAdapter.getTrend(1, null);
+        driverAdapter.getTrend(1, (Duration) null);
+        driverAdapter.getTrend(1, (CustomDuration) null);
         driverAdapter.update(driver);
     }
 }

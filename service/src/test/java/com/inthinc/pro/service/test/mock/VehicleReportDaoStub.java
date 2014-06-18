@@ -2,6 +2,7 @@ package com.inthinc.pro.service.test.mock;
 
 import java.util.List;
 
+import com.inthinc.pro.model.CustomDuration;
 import org.springframework.stereotype.Component;
 
 import com.inthinc.pro.dao.report.VehicleReportDAO;
@@ -21,10 +22,25 @@ public class VehicleReportDaoStub implements VehicleReportDAO {
     }
 
     /**
+     * @see com.inthinc.pro.dao.report.VehicleReportDAO#getScore(java.lang.Integer, com.inthinc.pro.model.CustomDuration)
+     */
+    public Score getScore(Integer vehicleID, CustomDuration customDuration) {
+        return null;
+    }
+
+    /**
      * @see com.inthinc.pro.dao.report.VehicleReportDAO#getTrend(java.lang.Integer, com.inthinc.pro.model.Duration)
      */
     @Override
     public List<Trend> getTrend(Integer vehicleID, Duration duration) {
+        return null;
+    }
+
+    /**
+     * @see com.inthinc.pro.dao.report.VehicleReportDAO#getTrend(java.lang.Integer, com.inthinc.pro.model.CustomDuration)
+     */
+    @Override
+    public List<Trend> getTrend(Integer vehicleID, CustomDuration customDuration) {
         return null;
     }
 }
