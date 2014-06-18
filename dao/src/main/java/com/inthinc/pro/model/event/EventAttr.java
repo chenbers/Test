@@ -90,7 +90,9 @@ public enum EventAttr {
 	SOURCE(71),
     SBS_DLD_ERR(72),
 
-	// Attribute Id (128->191 have two byte values)
+    ATTR_BACKING_TYPE(80),
+
+    // Attribute Id (128->191 have two byte values)
     DISTANCE(129),
     
     MAX_RPM(130), // true rpm
