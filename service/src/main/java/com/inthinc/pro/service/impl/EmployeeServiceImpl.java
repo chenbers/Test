@@ -265,6 +265,7 @@ public class EmployeeServiceImpl extends AbstractService<Driver, DriverDAOAdapte
         return Response.status(Status.NOT_FOUND).build();
     }
 
+/*
     @Override
     public Response getGroupDriverLocations(Integer groupID) {
         List<DriverLocation> list = null;
@@ -279,6 +280,7 @@ public class EmployeeServiceImpl extends AbstractService<Driver, DriverDAOAdapte
         return Response.ok(new GenericEntity<List<DriverLocation>>(list) {
         }).build();
     }
+*/
 
     public static String getSimpleDateFormat() {
         return SIMPLE_DATE_FORMAT;
