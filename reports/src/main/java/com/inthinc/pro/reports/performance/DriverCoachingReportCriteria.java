@@ -190,11 +190,6 @@ public class DriverCoachingReportCriteria extends ReportCriteria{
                 groupID = driver.getGroupID();
             }
 
-            loadDriverScoresIntoMap(TimeFrame.DAY, getCustomInterval(TimeFrame.DAY, interval, dateTimeZone));
-            loadDriverScoresIntoMap(TimeFrame.PAST_SEVEN_DAYS, getCustomInterval(TimeFrame.PAST_SEVEN_DAYS, interval, dateTimeZone));
-            loadDriverScoresIntoMap(TimeFrame.LAST_THIRTY_DAYS, getCustomInterval(TimeFrame.LAST_THIRTY_DAYS, interval, dateTimeZone));
-            loadDriverScoresIntoMap(TimeFrame.THREE_MONTHS, getCustomInterval(TimeFrame.THREE_MONTHS, interval, dateTimeZone));
-
             List<ReportCriteria> driverCoachingReportCriterias = new ArrayList<ReportCriteria>();
             
             /* 
@@ -275,38 +270,6 @@ public class DriverCoachingReportCriteria extends ReportCriteria{
                 logger.trace(String.format("Driver violations loaded into %s", driverCoachingReportViolationSummaries.toString()));
             }
             return driverCoachingReportCriteria;
-        }
-        
-        /**
-         * Adds the list of driver scores to a map for a particular time frame
-         * This loads the scores from the database and adds the scores by time frame to a map which is associated with a
-         * driver id.
-         * 
-         * This is used to display all scores along the top of the report.
-         * 
-         * @param timeFrame
-         * @param interval
-         */
-        private void loadDriverScoresIntoMap(TimeFrame timeFrame, Interval interval){
-            List<DriverVehicleScoreWrapper> dayScoreList =  groupReportDAO.getDriverScores(groupID, interval, this.groupHierarchy);
-            
-            for(DriverVehicleScoreWrapper driverVehicleScoreWrapper:dayScoreList){
-                /* If the driverID is present, then we're going to only allow the driver to be added */
-                if(driverID != null && driverVehicleScoreWrapper.getDriver().getDriverID().equals(driverID)){
-                    if(this.driverTimeFrameScoreMap.get(driverVehicleScoreWrapper.getDriver().getDriverID()) == null){
-                        driverTimeFrameScoreMap.put(driverVehicleScoreWrapper.getDriver().getDriverID(), new HashMap<String, Integer>());
-                    }
-                    Score score = driverVehicleScoreWrapper.getScore();
-                    driverTimeFrameScoreMap.get(driverVehicleScoreWrapper.getDriver().getDriverID()).put(timeFrame.name(), score.getOverall() == null?-1:score.getOverall().intValue());
-                    break;
-                }else if(this.driverID == null){
-                    if(this.driverTimeFrameScoreMap.get(driverVehicleScoreWrapper.getDriver().getDriverID()) == null){
-                        driverTimeFrameScoreMap.put(driverVehicleScoreWrapper.getDriver().getDriverID(), new HashMap<String, Integer>());
-                    }
-                    Score score = driverVehicleScoreWrapper.getScore();
-                    driverTimeFrameScoreMap.get(driverVehicleScoreWrapper.getDriver().getDriverID()).put(timeFrame.name(), score.getOverall() == null?-1:score.getOverall().intValue());
-                }
-            }
         }
         
         private List<DriverCoachingReportViolationSummary> toViolationSummaryList(DriverPerformance driverPerformance){
