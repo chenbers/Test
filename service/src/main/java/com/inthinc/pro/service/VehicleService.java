@@ -1,5 +1,6 @@
 package com.inthinc.pro.service;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.ws.rs.Consumes;
@@ -85,6 +86,10 @@ public interface VehicleService {
     @GET
     @Path("/vehicle/{id}/lastlocation")
     public Response getLastLocation(@PathParam("id") Integer vehicleID);
+
+    @GET
+    @Path("/vehicle/{id}/lastLocationExtraInfo")
+    public Response getLastLocationExtraInfo(@PathParam("id") Integer vehicleID);
 
     @POST
     @Consumes("application/xml")

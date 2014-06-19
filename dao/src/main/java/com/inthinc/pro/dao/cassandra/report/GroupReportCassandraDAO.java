@@ -1,14 +1,9 @@
 package com.inthinc.pro.dao.cassandra.report;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
 import java.util.List;
-import java.util.Map;
-import java.util.TimeZone;
 
-import me.prettyprint.hector.api.beans.Composite;
-import me.prettyprint.hector.api.beans.CounterRows;
+import com.inthinc.pro.model.CustomDuration;
 
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
@@ -16,22 +11,16 @@ import org.joda.time.DateTimeZone;
 import org.joda.time.Days;
 import org.joda.time.Interval;
 
-import com.inthinc.pro.dao.DriverDAO;
-import com.inthinc.pro.dao.VehicleDAO;
-import com.inthinc.pro.dao.cassandra.AggregationCassandraDAO;
 import com.inthinc.pro.dao.hessian.exceptions.EmptyResultSetException;
 import com.inthinc.pro.dao.hessian.mapper.Mapper;
 import com.inthinc.pro.dao.hessian.proserver.ReportService;
 import com.inthinc.pro.dao.report.GroupReportDAO;
-import com.inthinc.pro.dao.util.DateUtil;
 import com.inthinc.pro.model.AggregationDuration;
 import com.inthinc.pro.model.Driver;
-import com.inthinc.pro.model.DriverScore;
 import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.EntityType;
 import com.inthinc.pro.model.GroupHierarchy;
 import com.inthinc.pro.model.LastLocation;
-import com.inthinc.pro.model.ScoreType;
 import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.model.aggregation.DriverVehicleScoreWrapper;
 import com.inthinc.pro.model.aggregation.GroupScoreWrapper;
@@ -85,7 +74,37 @@ public class GroupReportCassandraDAO extends ReportCassandraDAO implements Group
     }
 
     @Override
+    public List<GroupTrendWrapper> getSubGroupsAggregateDriverTrends(Integer groupID, CustomDuration customDuration, GroupHierarchy gh) {
+        logger.debug("getSubGroupsAggregateDriverTrends start end: " + groupID);
+        List<GroupTrendWrapper> groupTrendWrapperList = new ArrayList<GroupTrendWrapper>();
+        List<Integer> groupIDList = gh.getGroupIDList(groupID);
+        for (Integer groupId : groupIDList) {
+            GroupTrendWrapper groupTrendWrapper = new GroupTrendWrapper();
+            groupTrendWrapper.setGroup(gh.getGroup(groupID));
+            groupTrendWrapper.setTrendList(getTrendForGroup(groupId, customDuration, gh, false));
+            groupTrendWrapperList.add(groupTrendWrapper);
+        }
+
+        return groupTrendWrapperList;
+    }
+
+    @Override
     public List<GroupScoreWrapper> getSubGroupsAggregateDriverScores(Integer groupID, Duration duration, GroupHierarchy gh) {
+        logger.debug("getSubGroupsAggregateDriverTrends duration: " + groupID);
+        List<GroupScoreWrapper> groupScoreWrapperList = new ArrayList<GroupScoreWrapper>();
+        List<Integer> groupIDList = gh.getGroupIDList(groupID);
+        for (Integer groupId : groupIDList) {
+            GroupScoreWrapper groupScoreWrapper = new GroupScoreWrapper();
+            groupScoreWrapper.setGroup(gh.getGroup(groupID));
+            groupScoreWrapper.setScore(getScoreForGroup(groupId, duration.getCode(), gh, false));
+            groupScoreWrapperList.add(groupScoreWrapper);
+        }
+
+        return groupScoreWrapperList;
+    }
+
+    @Override
+    public List<GroupScoreWrapper> getSubGroupsAggregateDriverScores(Integer groupID, CustomDuration duration, GroupHierarchy gh) {
         logger.debug("getSubGroupsAggregateDriverTrends duration: " + groupID);
         List<GroupScoreWrapper> groupScoreWrapperList = new ArrayList<GroupScoreWrapper>();
         List<Integer> groupIDList = gh.getGroupIDList(groupID);
@@ -161,6 +180,11 @@ public class GroupReportCassandraDAO extends ReportCassandraDAO implements Group
     }
 
     @Override
+    public List<DriverVehicleScoreWrapper> getDriverScores(Integer groupID, CustomDuration customDuration, GroupHierarchy gh) {
+        return getDriverScores(groupID, customDuration.getDvqCode(), gh);
+    }
+
+    @Override
     public List<DriverVehicleScoreWrapper> getDriverScores(Integer groupID, DateTime day, GroupHierarchy gh) {
         logger.debug("getDriverScores DateTime: " + day);
         // The hessian method being called requires two params, both should be the same midnight value of the day you are trying to indicate.
@@ -230,6 +254,11 @@ public class GroupReportCassandraDAO extends ReportCassandraDAO implements Group
     @Override
     public List<DriverVehicleScoreWrapper> getVehicleScores(Integer groupID, Duration duration, GroupHierarchy gh) {
         return getVehicleScores(groupID, duration.getCode(), gh);
+    }
+
+    @Override
+    public List<DriverVehicleScoreWrapper> getVehicleScores(Integer groupID, CustomDuration customDuration, GroupHierarchy gh) {
+        return getVehicleScores(groupID, customDuration.getCode(), gh);
     }
 
     @Override
