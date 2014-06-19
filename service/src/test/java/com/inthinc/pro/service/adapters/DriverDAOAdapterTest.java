@@ -6,6 +6,7 @@ import static org.junit.Assert.assertEquals;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.inthinc.pro.model.CustomDuration;
 import mockit.Cascading;
 import mockit.Expectations;
 import mockit.Mocked;
@@ -94,8 +95,18 @@ public class DriverDAOAdapterTest {
 			driverReportDAOMock.getScore(DRIVER_ID, Duration.DAYS); returns(score);
 		}};
 		assertEquals(adapterSUT.getScore(DRIVER_ID, Duration.DAYS), score);
-		
 	}
+
+    @Test
+    public void testGetScoreCustomDuration(){
+        adapterSUT.setDriverReportDAO(driverReportDAOMock);
+        final Score score = new Score();
+
+        new Expectations(){{
+            driverReportDAOMock.getScore(DRIVER_ID, CustomDuration.SEVEN_DAYS); returns(score);
+        }};
+        assertEquals(adapterSUT.getScore(DRIVER_ID, CustomDuration.SEVEN_DAYS), score);
+    }
 	
 	@Test
 	public void testGetSpeedingEvents(@Mocked @Cascading final DateTime dateTimeMock){
@@ -121,6 +132,15 @@ public class DriverDAOAdapterTest {
 		}};
 		assertEquals(adapterSUT.getTrend(DRIVER_ID, Duration.TWELVE), trendList);
 	}
-	
-	
+
+    @Test
+    public void testGetTrendCustomDuration(){
+        adapterSUT.setDriverReportDAO(driverReportDAOMock);
+        final List<Trend> trendList = new ArrayList<Trend>();
+
+        new Expectations(){{
+            driverReportDAOMock.getTrend(DRIVER_ID, CustomDuration.SEVEN_DAYS); returns(trendList);
+        }};
+        assertEquals(adapterSUT.getTrend(DRIVER_ID, CustomDuration.SEVEN_DAYS), trendList);
+    }
 }

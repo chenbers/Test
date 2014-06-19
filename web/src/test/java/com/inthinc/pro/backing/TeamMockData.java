@@ -3,6 +3,7 @@ package com.inthinc.pro.backing;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.inthinc.pro.model.CustomDuration;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.Interval;
@@ -110,6 +111,11 @@ public class TeamMockData {
         }
 
         @Override
+        public List<DriverVehicleScoreWrapper> getDriverScores(Integer groupID, CustomDuration customDuration, GroupHierarchy gh) {
+            return getDriverVehicleScoreWrappers();
+        }
+
+        @Override
         public List<DriverVehicleScoreWrapper> getDriverScores(Integer groupID, DateTime startTime, DateTime endTime, GroupHierarchy gh) {
             return getDriverVehicleScoreWrappers();
         }
@@ -136,6 +142,11 @@ public class TeamMockData {
 
         @Override
         public List<DriverVehicleScoreWrapper> getVehicleScores(Integer groupID, Duration duration, GroupHierarchy gh) {
+            return getDriverVehicleScoreWrappers();
+        }
+
+        @Override
+        public List<DriverVehicleScoreWrapper> getVehicleScores(Integer groupID, CustomDuration customDuration, GroupHierarchy gh) {
             return getDriverVehicleScoreWrappers();
         }
 
@@ -170,12 +181,22 @@ public class TeamMockData {
         }
 
         @Override
+        public List<GroupTrendWrapper> getSubGroupsAggregateDriverTrends(Integer groupID, CustomDuration customDuration, GroupHierarchy gh) {
+            return getGroupTrendWrapperList();
+        }
+
+        @Override
         public Percentage getDriverPercentage(Integer groupID, Duration duration, GroupHierarchy gh) {
             return null;
         }
 
         @Override
         public List<GroupScoreWrapper> getSubGroupsAggregateDriverScores(Integer groupID, Duration duration, GroupHierarchy gh) {
+            return null;
+        }
+
+        @Override
+        public List<GroupScoreWrapper> getSubGroupsAggregateDriverScores(Integer groupID, CustomDuration duration, GroupHierarchy gh) {
             return null;
         }
         

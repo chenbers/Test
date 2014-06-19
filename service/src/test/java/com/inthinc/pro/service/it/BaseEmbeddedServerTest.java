@@ -1,5 +1,6 @@
 package com.inthinc.pro.service.it;
 
+import com.inthinc.pro.service.EmployeeService;
 import org.jboss.resteasy.plugins.server.tjws.TJWSEmbeddedJaxrsServer;
 import org.jboss.resteasy.plugins.spring.SpringResourceFactory;
 import org.junit.AfterClass;
