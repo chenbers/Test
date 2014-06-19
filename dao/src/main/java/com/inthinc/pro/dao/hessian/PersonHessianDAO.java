@@ -6,6 +6,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import com.inthinc.pro.dao.DriverDAO;
 import org.apache.log4j.Logger;
 
 import com.inthinc.pro.dao.FindByKey;
@@ -20,8 +21,8 @@ import com.inthinc.pro.model.User;
 public class PersonHessianDAO extends GenericHessianDAO<Person, Integer> implements PersonDAO, FindByKey<Person>
 {
     private static final Logger logger = Logger.getLogger(PersonHessianDAO.class);
-
     private static final String CENTRAL_ID_KEY = "priEmail";
+    private DriverDAO driverDAO;
 
     @Override
     public Integer create(Integer acctID, Person person)
