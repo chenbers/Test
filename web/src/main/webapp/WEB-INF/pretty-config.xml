@@ -278,7 +278,7 @@
         <view-id>/secured/pagingnotifications/diagnostics.faces</view-id>
         <action onPostback="false">#{pagingDiagnosticsEventsBean.allAction}</action>
     </url-mapping>
-    <!--je-->
+
     <url-mapping id="maintenance">
         <pattern>/app/notifications/maintenance</pattern>
         <view-id>/secured/pagingnotifications/maintenance.faces</view-id>

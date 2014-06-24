@@ -12,7 +12,7 @@ import com.inthinc.pro.util.MessageUtil;
 
 public class AlertTypeSelectItems {
     
-    public static List<SelectItem> getAlertTypeSelectItems(Boolean hosEnabled, Boolean waySmartEnabled, Boolean hasZones) {
+    public static List<SelectItem> getAlertTypeSelectItems(Boolean hosEnabled, Boolean waySmartEnabled, Boolean hasZones, Boolean hasPrevMaintenance) {
         
         List<SelectItem> alertTypeSelectItems = new ArrayList<SelectItem>();
 
@@ -21,7 +21,7 @@ public class AlertTypeSelectItems {
         alertTypeSelectItems = addWaySmartTypes(alertTypeSelectItems,waySmartEnabled);
         alertTypeSelectItems = addZones(alertTypeSelectItems,hasZones);
         alertTypeSelectItems = addConditionals(alertTypeSelectItems,true);
-        alertTypeSelectItems = addPrevMaintenance(alertTypeSelectItems, true);
+        alertTypeSelectItems = addPrevMaintenance(alertTypeSelectItems, hasPrevMaintenance);
 
         return alertTypeSelectItems;
     }
