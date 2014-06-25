@@ -12,6 +12,7 @@ public enum ReportType
 {
     DRIVER_REPORT("Driver Report","DriverReport.jrxml","DriverReportRaw.jrxml"),
     VEHICLE_REPORT("Vehicle Report","VehicleReport.jrxml","VehicleReportRaw.jrxml"),
+    VEHICLE_ADMIN_REPORT("Vehicles Report","VehiclesReport.jrxml","VehiclesReportRaw.jrxml"),
     TRAILER_REPORT("Trailer Report","TrailerReport.jrxml", "TrailerReportRaw.jrxml"),
     IDLING_REPORT("Idling Report","IdlingReport.jrxml","IdlingReportRaw.jrxml"),
     IDLING_VEHICLE_REPORT("Idling Vehicle Report","IdlingVehicleReport.jrxml","IdlingVehicleReportRaw.jrxml"),

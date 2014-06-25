@@ -40,7 +40,7 @@ public class Vehicle extends BaseEntity
     private Integer           odometer;
     
     private Boolean           ifta;
-    
+
     @Column(updateable = false)
     private Device            device;
 
