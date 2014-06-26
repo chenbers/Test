@@ -50,9 +50,11 @@ public class GroupHessianDAO extends GenericHessianDAO<Group, Integer> implement
         } else {
             //If a Gl Code is deleted and left blank it will inherit the GL code of the next highest level.
             Group parent = findByID(group.getParentID());
-            String parentGLCode = parent.getGlCode();
-            if(parentGLCode!=null && !parentGLCode.isEmpty()){
-                update(group,parentGLCode);
+            if(parent!=null) {
+                String parentGLCode = parent.getGlCode();
+                if (parentGLCode != null && !parentGLCode.isEmpty()) {
+                    group.setGlCode(parentGLCode);
+                }
             }
         }
         updateOrCreateAddressAsNeeded(group, group.getAddress());
