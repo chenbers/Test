@@ -20,12 +20,12 @@ public class AlertTypeSelectItems {
         alertTypeSelectItems = addHosTypes(alertTypeSelectItems,hosEnabled);
         alertTypeSelectItems = addWaySmartTypes(alertTypeSelectItems,waySmartEnabled);
         alertTypeSelectItems = addZones(alertTypeSelectItems,hasZones);
-        alertTypeSelectItems = addForward(alertTypeSelectItems, true);
+        alertTypeSelectItems = addConditionals(alertTypeSelectItems,true);
 
         return alertTypeSelectItems;
     }
     private static List<SelectItem> addDefaultTypes(List<SelectItem> alertTypeSelectItems){
-        
+
         Set<EventSubCategory> defaultSet = EnumSet.of(EventSubCategory.COMPLIANCE,
                                                       EventSubCategory.DRIVING_STYLE,
                                                       EventSubCategory.EMERGENCY,
@@ -60,18 +60,13 @@ public class AlertTypeSelectItems {
         }
         return alertTypeSelectItems;
     }
+    private static List<SelectItem> addConditionals(List<SelectItem> alertTypeSelectItems, Boolean hasConditionals){
 
-    private static List<SelectItem> addForward(List<SelectItem> alertTypeSelectItems, Boolean hasForward) {
-        if (hasForward) {
-
-            alertTypeSelectItems = addSet(alertTypeSelectItems, EnumSet.of(EventSubCategory.FIRST_MOVE_FORWARD));
-
+        if (hasConditionals){
+            alertTypeSelectItems = addSet(alertTypeSelectItems,EnumSet.of(EventSubCategory.CONDITIONAL));
         }
-
         return alertTypeSelectItems;
-
     }
-
     private static List<SelectItem> addSet(List<SelectItem> alertTypeSelectItems,Set<EventSubCategory> setOfAlertTypes){
         
         for (EventSubCategory e : setOfAlertTypes)
