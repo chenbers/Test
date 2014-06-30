@@ -170,6 +170,12 @@
 	</profiles>
 	<dependencies>
 		<dependency>
+			<groupId>com.googlecode.jmockit</groupId>
+			<artifactId>jmockit</artifactId>
+			<version>${jmockit.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
 			<groupId>com.inthinc.pro.emulation</groupId>
 			<artifactId>emulation</artifactId>
 			<scope>test</scope>
@@ -379,4 +385,7 @@
 			<scope>compile</scope>
 		</dependency>
 	</dependencies>
+	<properties>
+		<jmockit.version>1.4</jmockit.version>
+	</properties>
 </project>
