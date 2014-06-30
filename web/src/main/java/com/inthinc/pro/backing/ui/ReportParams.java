@@ -35,6 +35,7 @@ public class ReportParams implements Cloneable {
     private Boolean isExpired;
     private boolean includeInactiveDrivers;
     private boolean includeZeroMilesDrivers;
+    private boolean zeroMilesDriversControlDisabled;
     
     List<Driver> driverList;
     GroupHierarchy groupHierarchy;
@@ -261,6 +262,24 @@ public class ReportParams implements Cloneable {
         if (this.paramType == ReportParamType.GROUPS)
             this.setDriverID(null);
     }
+    
+//    In cases where the user can choose to report on a single driver
+//    or a group, the "Include Zero Miles Driver" control should only
+//    be available when reporting on a group. If reporting on a specific
+//    driver, the control should be disabled and set to true. Here, we're
+//    just disabling the control. The setIncludeZeroMilesDrivers() method
+//    handles setting it to true.
+    public boolean isZeroMilesDriversControlDisabled() {
+        
+//        If the combo box is set to the default null value, enable the control
+        if (this.paramType == null) return false;
+        
+//        If it's set to "Driver", disable it
+        if (this.paramType.equals(ReportParamType.DRIVER)) return true;
+        
+//        Otherwise, we'll assume it's set to Group and enable it
+        return false;
+    }
 
     public ReportParams clone() {
         try {
@@ -297,6 +316,15 @@ public class ReportParams implements Cloneable {
     }
 
     public boolean isIncludeZeroMilesDrivers() {
+//        If the user is presented with both "Report On" and "Include Zero Miles Drivers"
+//        controls, "Include Zero Miles Drivers" should only be selectable if the user
+//        is running a group report. If they're running a report on a specific driver,
+//        correct behavior should probably be that the "Include Zero Miles Driver" be
+//        set to true. Here, we're checking to see if the control is disabled, and if so,
+//        setting includeZeroMilesDrivers to true.
+        if (isZeroMilesDriversControlDisabled()) {
+            this.includeZeroMilesDrivers = true;
+        }
         return includeZeroMilesDrivers;
     }
 
