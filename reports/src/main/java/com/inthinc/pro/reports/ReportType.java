@@ -101,8 +101,11 @@ public enum ReportType
     //DVIR
     DVIR_VIOLATION("Driver Vehicle Inspection Reports - Violations","driverVehicleViolationInspectionReport.jrxml","driverVehicleViolationInspectionReport.jrxml","dvir"),
     DVIR_REPAIR("Driver Vehicle Inspeciton Reports - Inspection Repair Complete", "driverVehicleInspectionRepairComplete.jrxml","driverVehicleInspectionRepairComplete.jrxml","dvir"),
-    DVIR_REPAIR_DETAIL("Driver Vehicle Inspeciton Reports - Inspection Repair Complete With Details", "driverVehicleInspectionRepairCompleteDetailed.jrxml","driverVehicleInspectionRepairCompleteDetailed.jrxml","dvir");
-    
+    DVIR_REPAIR_DETAIL("Driver Vehicle Inspeciton Reports - Inspection Repair Complete With Details", "driverVehicleInspectionRepairCompleteDetailed.jrxml","driverVehicleInspectionRepairCompleteDetailed.jrxml","dvir"),
+
+    //MAINTENANCE
+    VEHICLE_MAINTENANCE_INTERVAL_REPORT("Vehicle Maintenance Interval Report","vehicleMaintenanceIntervalReport.jrxml","vehicleMaintenanceIntervalReportRaw.jrxml", "performance","com.inthinc.pro.reports.jasper.performance.i18n.maintenanceIntervalReport");
+
     private String prettyTemplate;
     private String rawTemplate;
     private String label;

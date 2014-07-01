@@ -460,6 +460,7 @@ public enum NoteType implements BaseEnum {
     BACKING(235, BackingMultipleEvent.class),
     DEVICE_MODEM_PAIRING(236),
     TRAILER_PROGRAMMED(237, TrailerProgrammedEvent.class),
+    MAINTENANCE_EVENTS(238),
 
     // new notifications without header information - not really a real notification.
     // used primarily for background communication

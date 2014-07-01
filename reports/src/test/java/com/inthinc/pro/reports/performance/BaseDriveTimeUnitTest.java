@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import com.inthinc.pro.model.Vehicle;
 import org.joda.time.DateTime;
 import org.joda.time.Interval;
 import org.joda.time.LocalDate;
@@ -45,6 +46,16 @@ public class BaseDriveTimeUnitTest extends BasePerformanceUnitTest {
         @Override
         public List<DriveTimeRecord> getDriveTimeRecordList(Driver driver, Interval queryInterval) {
             // TODO Auto-generated method stub
+            return null;
+        }
+
+        @Override
+        public Long getDriveTimeSum(Vehicle vehicle) {
+            return null;
+        }
+
+        @Override
+        public Long getDriveOdometerSum(Vehicle vehicle) {
             return null;
         }
 

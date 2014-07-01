@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.inthinc.pro.model.SensitivitySliderValues;
+import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.model.configurator.DeviceSettingDefinition;
 import com.inthinc.pro.model.configurator.VehicleSetting;
 import com.inthinc.pro.model.configurator.VehicleSettingHistory;

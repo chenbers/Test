@@ -19,6 +19,8 @@ import com.inthinc.pro.dao.DriveTimeDAO;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.aggregation.DriveTimeRecord;
 
+import com.inthinc.pro.model.Vehicle;
+
 public class DriveTimeJDBCDAO extends GenericJDBCDAO implements DriveTimeDAO {
 
     private static final long serialVersionUID = 1L;
@@ -32,9 +34,75 @@ public class DriveTimeJDBCDAO extends GenericJDBCDAO implements DriveTimeDAO {
     
     private static final String FETCH_DRIVER_IDS = "select distinct driverID from groupDriverFlat g where g.groupID in (select groupID from groupGroupFlat where parentID=?)";
 
-    
+    private static final String REPORT_HOURS = "select sum(a.driveTime) drvt from agg a where a.vehicleID = ? order by a.aggDate desc";
+
+    private static final String REPORT_ODOMETER6 = "select sum(a.odometer6) drvo from agg a where a.vehicleID = ? order by a.aggDate desc";
 
     private static final DateTimeFormatter dateFormatter = DateTimeFormat.forPattern("yyyy-MM-dd");
+
+    public Long getDriveTimeSum(Vehicle vehicle) {
+
+        Long driveTime = 0L;
+        Connection conn = null;
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+        try
+        {
+            conn = getConnection();
+            statement = (PreparedStatement) conn.prepareStatement(REPORT_HOURS);
+            statement.setInt(1, vehicle.getVehicleID());
+            resultSet = statement.executeQuery();
+
+            while (resultSet.next()) {
+
+                driveTime = resultSet.getLong("drvt");
+            }
+        }   // end try
+        catch (SQLException e)
+        { // handle database hosLogs in the usual manner
+            throw new ProDAOException(statement.toString(), e);
+        }   // end catch
+        finally
+        { // clean up and release the connection
+            close(resultSet);
+            close(statement);
+            close(conn);
+        } // end finally
+
+        return driveTime;
+    }
+
+    public Long getDriveOdometerSum(Vehicle vehicle) {
+
+        Long driveOdometer = 0L;
+        Connection conn = null;
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+        try
+        {
+            conn = getConnection();
+            statement = (PreparedStatement) conn.prepareStatement(REPORT_ODOMETER6);
+            statement.setInt(1, vehicle.getVehicleID());
+            resultSet = statement.executeQuery();
+
+            while (resultSet.next()) {
+
+                driveOdometer = resultSet.getLong("drvo");
+            }
+        }   // end try
+        catch (SQLException e)
+        { // handle database hosLogs in the usual manner
+            throw new ProDAOException(statement.toString(), e);
+        }   // end catch
+        finally
+        { // clean up and release the connection
+            close(resultSet);
+            close(statement);
+            close(conn);
+        } // end finally
+
+        return driveOdometer;
+    }
 
     @Override
     public List<DriveTimeRecord> getDriveTimeRecordList(Driver driver, Interval queryInterval) {
