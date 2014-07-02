@@ -263,10 +263,10 @@ public class MaintenanceIntervalReportCriteria extends ReportCriteria {
 
             MaintenanceIntervalReportCriteria criteria = new MaintenanceIntervalReportCriteria(this.locale);
             criteria.setMainDataset(backingWrappers);
-            criteria.addDateParameter(REPORT_START_DATE,interval.getStart().toDate(), this.dateTimeZone.toTimeZone());
+            //criteria.addDateParameter(REPORT_START_DATE,interval.getStart().toDate(), this.dateTimeZone.toTimeZone());
 
             /* The interval returns for the end date the beginning of the next day. We minus a second to get the previous day */
-            criteria.addDateParameter(REPORT_END_DATE, interval.getEnd().minusSeconds(1).toDate(), this.dateTimeZone.toTimeZone());
+            //criteria.addDateParameter(REPORT_END_DATE, interval.getEnd().minusSeconds(1).toDate(), this.dateTimeZone.toTimeZone());
             criteria.setUseMetric(measurementType == MeasurementType.METRIC);
             return criteria;
         }
