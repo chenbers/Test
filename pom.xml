@@ -549,9 +549,9 @@ mi2KFq<Nc4zYl8ZVexWN8GNR2KNYvC5rn293xhqnaa8hMH QROnTXrOnpnpNqQpRomwtNpNmPMPpMnrp
                 <version>1.8</version>
             </dependency>
             <dependency>
-                <groupId>net.sf.jasperreports</groupId>
+                <groupId>jasperreports</groupId>
                 <artifactId>jasperreports</artifactId>
-                <version>5.5.0</version>
+                <version>3.7.1</version>
                 <scope>compile</scope>
             </dependency>
             <dependency>

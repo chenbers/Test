@@ -52,7 +52,7 @@ import java.util.Properties;
 import java.util.Set;
 
 /**
- * Test that exports all reports to a specified location on disk
+ * Test that exports all reports to a specified disk location
  * in all available formats for visual inspection.
  */
 
@@ -62,8 +62,8 @@ import java.util.Set;
         "classpath:/applicationContext-daoJDBCBeans.xml",
         "classpath:/applicationContext-reports.xml"
 })
-@Ignore
 @RunWith(SpringJUnit4ClassRunner.class)
+@Ignore
 public class MassReportExporterTest {
     @Autowired
     ReportCriteriaService reportCriteriaService;

@@ -233,7 +233,7 @@
 			<artifactId>jts</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>net.sf.jasperreports</groupId>
+			<groupId>jasperreports</groupId>
 			<artifactId>jasperreports</artifactId>
 		</dependency>
 		<dependency>
