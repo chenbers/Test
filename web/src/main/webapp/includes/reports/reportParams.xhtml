@@ -97,7 +97,7 @@
     <a4j:outputPanel  id="#{context}_paramsPanel">
         <a4j:region id="#{context}_paramsRegion">
             <ul id="grid_nav" style="margin: 0; height:auto; min-height: 40px; overflow: auto;">
-                <ui:repeat id="timeframe" value="#{params.selectedCriteria}" var="criteria">
+                <a4j:repeat id="timeframe" value="#{params.selectedCriteria}" var="criteria">
                 <h:outputText rendered="#{criteria eq 'TIMEFRAME'}">
                     <li class="l">
                     <ui:include src="/includes/component/dateRange.xhtml" >
@@ -167,13 +167,15 @@
                                 <h:outputText value="#{messages.reports_includeZeroMilesDrivers}"/>
                             </td>
                             <td>
-                                <h:selectBooleanCheckbox id="zeroMilesDrivers" value="#{params.includeZeroMilesDrivers}" />
+                            	<a4j:outputPanel id="zeroMilesDriversControl">
+                                	<h:selectBooleanCheckbox id="zeroMilesDrivers" disabled="#{params.zeroMilesDriversControlDisabled}" value="#{params.includeZeroMilesDrivers}" />
+                            	</a4j:outputPanel>
                             </td>
                         </tr>
                     </table>
                   </li>
                 </h:outputText>
-                </ui:repeat>
+                </a4j:repeat>
                 <h:outputText id="groupInput" rendered="#{params.selectedEntityType eq 'ENTITY_GROUP'}">
                 <li  class="l select">
                     <table border="0" cellspacing="0" cellpadding="4" style="height:100%">
@@ -305,7 +307,7 @@
                         <td>
                             <h:selectOneMenu  id="grouporDriverSelection2" value="#{params.paramType}" >  
                                 <f:selectItems value="#{params.reportParamTypes}"/>
-                                <a4j:support event="onchange" reRender="#{context}_form:driverSelectPanel2,#{context}_form:groupListSelectPanel2,#{context}_paramsPanelError,#{reRenderList}"/>
+                                <a4j:support event="onchange" reRender="zeroMilesDriversControl,#{context}_form:driverSelectPanel2,#{context}_form:groupListSelectPanel2,#{context}_paramsPanelError,#{reRenderList}"/>
                             </h:selectOneMenu>
                         </td>
                         <td>                            
