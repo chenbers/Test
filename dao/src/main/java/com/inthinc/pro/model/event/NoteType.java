@@ -457,7 +457,7 @@ public enum NoteType implements BaseEnum {
 
     
     //TODO: BACKUP TYPE
-    BACKING(235, BackingEvent.class),
+    BACKING(235, BackingMultipleEvent.class),
     DEVICE_MODEM_PAIRING(236),
     TRAILER_PROGRAMMED(237, TrailerProgrammedEvent.class),
 
