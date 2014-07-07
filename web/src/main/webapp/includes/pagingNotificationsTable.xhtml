@@ -68,7 +68,13 @@
                 	</h:panelGrid>
 				</div>
             </rich:column>
-             
+            <rich:column id="address_test" rendered="#{tableColumns['address'].visible}">
+                <f:facet name="header">
+                    <h:outputText value="#{messages.notes_address}" />
+                </f:facet>
+                <h:outputText value="#{event.latLng}" converter="#{latLngAddressGoogleConverter}">
+                </h:outputText>
+            </rich:column>
             <rich:column id="date" rendered="#{tableColumns['date'].visible}" sortBy="#{event.time}"  sortOrder="DESCENDING">
                 <f:facet name="header">
                     <h:outputText value="#{messages.notes_date}" />

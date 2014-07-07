@@ -54,24 +54,14 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 
     <!-- Data Access Beans -->
     
-    <!-- Temporary DAO Beans for Transition to Cassandra -->
-    <bean id="eventTempDAO" class="${eventDAO}" />
-    <bean id="locationTempDAO" class="${locationDAO}">
-        <property name="driverDAO" ref="driverTempDAO"/>
-        <property name="vehicleDAO" ref="vehicleTempDAO"/>
-        <property name="eventDAO" ref="eventTempDAO"/>
+    <!-- Temporary Event DAO Bean for Transition to Cassandra -->
+    <bean id="eventTripDAO" class="${eventDAO}" />
+	
+    <bean id="locationDAO" class="com.inthinc.pro.dao.cassandra.LocationCassandraDAO">
+        <property name="eventDAO" ref="eventTripDAO"/>
     </bean>
-    <bean id="driverTempDAO" class="com.inthinc.pro.dao.hessian.DriverHessianDAO">
-        <property name="locationDAO" ref="locationTempDAO"></property>
-        <property name="vehicleDAO" ref="vehicleTempDAO"/>
-    </bean>
-    <bean id="vehicleTempDAO" class="com.inthinc.pro.dao.hessian.VehicleHessianDAO">
-        <property name="locationDAO" ref="locationTempDAO"></property>
-    </bean>
-    
 
     <bean id="eventDAO" class="com.inthinc.pro.dao.hessian.EventHessianJdbcHybridDAO" />
-    <bean id="locationDAO" class="com.inthinc.pro.dao.hessian.LocationHessianDAO" />
     <bean id="mpgDAO" class="${mpgDAO}" />
     <bean id="scoreDAO" class="${scoreDAO}" />
     <bean id="driverReportDAO" class="${driverReportDAO}" />

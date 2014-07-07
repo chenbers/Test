@@ -174,7 +174,7 @@ public class ReportHessianDAO  extends GenericHessianDAO<Object, Integer> implem
 
 	}
 
-	@Override
+    @Override
 	public Integer getIdlingVehicleReportCount(Integer groupID, Interval interval, List<TableFilterField> filters) {
 		List<TableFilterField> reportFilters = removeBlankFilters(filters); 
 
