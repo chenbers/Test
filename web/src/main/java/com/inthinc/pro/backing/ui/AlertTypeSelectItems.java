@@ -20,7 +20,8 @@ public class AlertTypeSelectItems {
         alertTypeSelectItems = addHosTypes(alertTypeSelectItems,hosEnabled);
         alertTypeSelectItems = addWaySmartTypes(alertTypeSelectItems,waySmartEnabled);
         alertTypeSelectItems = addZones(alertTypeSelectItems,hasZones);
-        
+        alertTypeSelectItems = addForward(alertTypeSelectItems, true);
+
         return alertTypeSelectItems;
     }
     private static List<SelectItem> addDefaultTypes(List<SelectItem> alertTypeSelectItems){
@@ -59,6 +60,18 @@ public class AlertTypeSelectItems {
         }
         return alertTypeSelectItems;
     }
+
+    private static List<SelectItem> addForward(List<SelectItem> alertTypeSelectItems, Boolean hasForward) {
+        if (hasForward) {
+
+            alertTypeSelectItems = addSet(alertTypeSelectItems, EnumSet.of(EventSubCategory.FIRST_MOVE_FORWARD));
+
+        }
+
+        return alertTypeSelectItems;
+
+    }
+
     private static List<SelectItem> addSet(List<SelectItem> alertTypeSelectItems,Set<EventSubCategory> setOfAlertTypes){
         
         for (EventSubCategory e : setOfAlertTypes)
