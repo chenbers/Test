@@ -3,7 +3,7 @@
 	<parent>
 		<groupId>com.inthinc.pro</groupId>
 		<artifactId>root</artifactId>
-		<version>2.0.52-SNAPSHOT</version>
+		<version>2.0.53-SNAPSHOT</version>
 	</parent>
 	<groupId>com.inthinc.pro.web</groupId>
 	<artifactId>web</artifactId>
@@ -170,12 +170,6 @@
 	</profiles>
 	<dependencies>
 		<dependency>
-			<groupId>com.googlecode.jmockit</groupId>
-			<artifactId>jmockit</artifactId>
-			<version>${jmockit.version}</version>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
 			<groupId>com.inthinc.pro.emulation</groupId>
 			<artifactId>emulation</artifactId>
 			<scope>test</scope>
@@ -233,7 +227,7 @@
 			<artifactId>jts</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>net.sf.jasperreports</groupId>
+			<groupId>jasperreports</groupId>
 			<artifactId>jasperreports</artifactId>
 		</dependency>
 		<dependency>
@@ -385,7 +379,4 @@
 			<scope>compile</scope>
 		</dependency>
 	</dependencies>
-	<properties>
-		<jmockit.version>1.4</jmockit.version>
-	</properties>
 </project>

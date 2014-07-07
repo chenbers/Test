@@ -38,18 +38,6 @@ Zone.prototype = {
 		    		fillOpacity: this.fillOpacity,
 		    		editable : this.editable
 		    	});
-
-                // add listener for change events to update the points
-                var that = this;
-                var poly_path_obj = this.zoneOverlay.getPath();
-                google.maps.event.addListener(poly_path_obj, 'set_at', function(index, value){
-                   that.points = this.getArray();
-                });
-
-                google.maps.event.addListener(poly_path_obj, 'insert_at', function(index, value){
-                    that.points = this.getArray();
-                });
-
 		    	var bounds = this.getBounds();
 		    	if (fitBounds) {
 		    		map.fitBounds(bounds);
