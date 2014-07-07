@@ -1,5 +1,6 @@
 package com.inthinc.pro.backing.paging;
 
+import com.inthinc.pro.reports.ReportCriteria;
 import org.ajax4jsf.model.KeepAlive;
 
 import com.inthinc.pro.backing.DevicesBean;
@@ -26,6 +27,11 @@ public class PagingAdminDevicesBean extends BasePagingAdminBean<DevicesBean.Devi
     @Override
     public TableSortField getDefaultSort() {
         return new TableSortField(SortOrder.ASCENDING, "name");
+    }
+
+    @Override
+    protected ReportCriteria getReportCriteria() {
+        return null;
     }
 
     public DeviceStatusFilter getDeviceStatusFilter() {

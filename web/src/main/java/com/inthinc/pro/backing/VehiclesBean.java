@@ -119,7 +119,7 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
     private TreeMap<Integer, Boolean>             driverAssigned;
     
     private ProductType                           batchEditProductChoice;
-    
+
     // Stuff to do with vehicleSettings for the device
     private VehicleSettingsFactory              vehicleSettingsFactory;
     private Map<Integer, VehicleSettingManager> vehicleSettingManagers;
@@ -786,6 +786,10 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
         private boolean           selected;
         @Column(updateable = false)
         private String           driverName;
+        private String product;
+        private String dot;
+
+
 
         @Column(updateable = false)
         private WaysmartForwardCommand wirelineDoorAlarm;
@@ -808,6 +812,23 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
             wirelineDoorAlarm = new WirelineDoorAlarmCommand(getDevice(), getFwdCmdAddress(), bean.getFwdCmdSpoolWS());
             wirelineKillMotor = new WirelineKillMotorCommand(getDevice(), getFwdCmdAddress(), bean.getFwdCmdSpoolWS());
         }
+
+        public String getProduct() {
+            return editableVehicleSettings.getProductDisplayName();
+        }
+
+        public void setProduct(String product) {
+            this.product = product;
+        }
+
+        public String getDot() {
+            return (getDotVehicleType() == null) ? ((getHosDotType() == null) ? " " : MessageUtil.getMessageString(getHosDotType().toString())):MessageUtil.getMessageString(getDotVehicleType().toString());
+        }
+
+        public void setDot(String dot) {
+            this.dot = dot;
+        }
+
         public void setEditableVehicleSettings(EditableVehicleSettings editableVehicleSettings) {
             this.editableVehicleSettings = editableVehicleSettings;
         }
