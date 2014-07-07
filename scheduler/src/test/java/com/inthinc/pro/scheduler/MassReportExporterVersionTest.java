@@ -12,9 +12,9 @@ import com.inthinc.pro.model.Status;
 import com.inthinc.pro.model.TimeFrame;
 import com.inthinc.pro.model.User;
 import com.inthinc.pro.reports.FormatType;
-import com.inthinc.pro.reports.ReportCategory;
 import com.inthinc.pro.reports.ReportCriteria;
 import com.inthinc.pro.reports.ReportGroup;
+import com.inthinc.pro.reports.ReportType;
 import com.inthinc.pro.reports.jasper.JasperReportBuilder;
 import com.inthinc.pro.reports.service.ReportCriteriaService;
 import junit.framework.Assert;
@@ -23,8 +23,6 @@ import net.sf.jasperreports.engine.JRExporterParameter;
 import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.export.JRCsvExporter;
-import net.sf.jasperreports.engine.export.JRHtmlExporter;
-import net.sf.jasperreports.engine.export.JRHtmlExporterParameter;
 import net.sf.jasperreports.engine.export.JRXlsExporter;
 import net.sf.jasperreports.engine.export.JRXlsExporterParameter;
 import org.apache.log4j.Logger;
@@ -52,7 +50,7 @@ import java.util.Properties;
 import java.util.Set;
 
 /**
- * Test that exports all reports to a specified location on disk
+ * Test that exports all reports to a specified disk location
  * in all available formats for visual inspection.
  */
 
@@ -62,9 +60,9 @@ import java.util.Set;
         "classpath:/applicationContext-daoJDBCBeans.xml",
         "classpath:/applicationContext-reports.xml"
 })
-@Ignore
 @RunWith(SpringJUnit4ClassRunner.class)
-public class MassReportExporterTest {
+@Ignore
+public class MassReportExporterVersionTest {
     @Autowired
     ReportCriteriaService reportCriteriaService;
 
@@ -76,16 +74,17 @@ public class MassReportExporterTest {
 
     private List<ReportSchedule> testData = new ArrayList<ReportSchedule>();
     private final Integer ACCOUNT_ID = 1;
-    private final Integer USER_ID = 3980;
+    private final Integer USER_ID = 1;
     private final Integer GROUP_ID = 1;
+    private final Integer DRIVER_ID = 2;
     private final Integer EXCEL_MAX_ROWS = Integer.valueOf(65535);
     private DateTime today = new DateTime();
     private JasperReportBuilder reportBuilder = new JasperReportBuilder();
     private Properties testProperties = new Properties();
-    private final Logger logger = Logger.getLogger(MassReportExporterTest.class);
+    private final Logger logger = Logger.getLogger(MassReportExporterVersionTest.class);
     private User user;
     private Person person;
-    private boolean useRawTemplateForTabularFormats = false;
+    private boolean useRawTemplateForTabularFormats = true;
     private GroupHierarchy accountGroupHierarchy;
 
     @Test
@@ -129,13 +128,10 @@ public class MassReportExporterTest {
                         exportToCsvStream(os, jp);
                         bytes = os.toByteArray();
                         ext = ".csv";
-                    }else if (format == FormatType.HTML) {
-                        ByteArrayOutputStream os = new ByteArrayOutputStream();
-                        exportToHtmlStream(os, jp);
-                        bytes = os.toByteArray();
-                        ext = ".html";
-                    } else {
+                    } else if (format == FormatType.PDF) {
                         bytes = JasperExportManager.exportReportToPdf(jp);
+                    } else {
+                        continue;
                     }
 
                     long milis = System.currentTimeMillis();
@@ -158,8 +154,8 @@ public class MassReportExporterTest {
                     }
                 }
             } catch (Throwable t) {
-               logger.error("Exception when creating report: "+reportSchedule.getName());
-               t.printStackTrace();
+                logger.error("Exception when creating report: " + reportSchedule.getName());
+                t.printStackTrace();
             }
         }
     }
@@ -174,30 +170,36 @@ public class MassReportExporterTest {
         useRawTemplateForTabularFormats = useRawTemplateStr != null && useRawTemplateStr.trim().equals("true");
 
         accountGroupHierarchy = getAccountGroupHierarchy(ACCOUNT_ID);
-        Map<Integer, String> items = new HashMap<Integer, String>();
-
-        for (ReportCategory cat : ReportCategory.values()) {
-            items.putAll(getItemsByCategory(cat));
-        }
+        Map<String, String> items = new HashMap<String, String>();
+        items.putAll(getItems());
 
         int i = 0;
-        for (Map.Entry<Integer, String> entry : items.entrySet()) {
+        DateTime dtNow = new DateTime();
+        DateTime dtMonth = new DateTime();
+        dtMonth = dtMonth.minusMonths(1);
+        for (Map.Entry<String, String> entry : items.entrySet()) {
+            String[] split = entry.getKey().split("_");
+            Integer id = Integer.valueOf(split[0]);
+
             ReportSchedule reportSchedule = new ReportSchedule();
             reportSchedule.setReportScheduleID(i);
-            reportSchedule.setReportID(entry.getKey());
+            reportSchedule.setReportID(id);
             reportSchedule.setName(entry.getValue());
             reportSchedule.setStatus(Status.ACTIVE);
             reportSchedule.setAccountID(ACCOUNT_ID);
             reportSchedule.setUserID(USER_ID);
+            reportSchedule.setGroupID(GROUP_ID);
+            reportSchedule.setStartDate(dtMonth.toDate());
+            reportSchedule.setEndDate(dtNow.toDate());
             reportSchedule.setGroupIDList(Arrays.asList(GROUP_ID));
-            reportSchedule.setReportTimeFrame(TimeFrame.TODAY);
+            reportSchedule.setReportTimeFrame(TimeFrame.MONTH);
             reportSchedule.setStartDate(today.minusHours(1).withMinuteOfHour(0).toDate());
             reportSchedule.setTimeOfDay(today.getMinuteOfDay() + 30);
-            reportSchedule.setOccurrence(Occurrence.DAILY);
+            reportSchedule.setOccurrence(Occurrence.MONTHLY);
             reportSchedule.setLastDate(today.minusDays(3).toDate());
             reportSchedule.setDeliverToManagers(false);
             reportSchedule.setLastDate(today.plusDays(4).withMinuteOfHour(0).toDate());
-            reportSchedule.setDriverID(6321);
+            reportSchedule.setDriverID(DRIVER_ID);
             reportSchedule.setIncludeInactiveDrivers(false);
             reportSchedule.setIncludeZeroMilesDrivers(false);
             reportSchedule.setLastDate(today.minusDays(2).toDate());
@@ -226,25 +228,6 @@ public class MassReportExporterTest {
         jexcelexporter.exportReport();
     }
 
-    public void exportToHtmlStream(OutputStream out,JasperPrint jasperPrint) throws JRException
-    {
-        exportToHtmlStream(out, jasperPrint, null);
-    }
-    public void exportToHtmlStream(OutputStream out,JasperPrint jasperPrint, String imagesURIStr) throws JRException
-    {
-        JRHtmlExporter exporter = new JRHtmlExporter();
-        exporter.setParameter(JRXlsExporterParameter.JASPER_PRINT, jasperPrint);
-        exporter.setParameter(JRXlsExporterParameter.OUTPUT_STREAM, out);
-        exporter.setParameter(JRHtmlExporterParameter.IS_USING_IMAGES_TO_ALIGN, Boolean.FALSE);
-        if (imagesURIStr != null)
-            exporter.setParameter(JRHtmlExporterParameter.IMAGES_URI, imagesURIStr);
-        exporter.setParameter(JRHtmlExporterParameter.HTML_HEADER, "");
-        exporter.setParameter(JRHtmlExporterParameter.BETWEEN_PAGES_HTML, "");
-        exporter.setParameter(JRHtmlExporterParameter.HTML_FOOTER, "");
-
-        exporter.exportReport();
-    }
-
     private void exportToCsvStream(OutputStream outputStream, JasperPrint jp) throws JRException {
         JRCsvExporter exporter = new JRCsvExporter();
         exporter.setParameter(JRExporterParameter.JASPER_PRINT, jp);
@@ -254,21 +237,23 @@ public class MassReportExporterTest {
         exporter.exportReport();
     }
 
-    private Map<Integer, String> getItemsByCategory(ReportCategory category) {
-        Map<Integer, String> items = new HashMap<Integer, String>();
-        for (ReportGroup rt : EnumSet.allOf(ReportGroup.class)) {
+    private Map<String, String> getItems() {
+        Map<String, String> items = new HashMap<String, String>();
+        EnumSet<ReportGroup> es = EnumSet.allOf(ReportGroup.class);
+        for (ReportGroup rt : es) {
+            for (ReportType rtt : rt.getReports()) {
+                String jasperName = rtt.getPrettyJasper();
+                if (jasperName == null)
+                    jasperName = rtt.getRawJasper();
 
-            String label = rt.getLabel().replace("\\", "_").replace("/", "_").replace(" ", "_");
-            if (label==null)
-                label = "unknown";
-            if (category == null && rt.getReportCategory() == null) {
-                items.put(rt.getCode(), label);
-                continue;
+                jasperName.replaceAll(".jrxml", "");
+                String repoName = rtt.getLabel() + "_" + jasperName;
+
+                String label = repoName.replace("/", "_").replace(" ", "_");
+                if (label == null)
+                    label = "unknown";
+                items.put(rt.getCode()+"_"+label, label);
             }
-            if (!rt.isCategory(category))
-                continue;
-
-            items.put(rt.getCode(), label);
         }
         return items;
     }
