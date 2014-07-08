@@ -511,7 +511,7 @@ public class CrashReportBean extends BaseBean {
         
         // Defect #DE9207 --> Start
         // Check if crashReport have valid lat/lng values (i.e non (0,0))
-        if(crashReport != null){
+        if(crashReport != null && crashReport.getVehicleID() !=null && crashReport.getLat() != null ){
         	if((crashReport.getLat() < 0.005 && crashReport.getLat() > -0.005) || (crashReport.getLng() < 0.005 && crashReport.getLng() > -0.005)){
         	    // Get all cachedNote events associated with current CrashReport  	
     			DateTime crashTime = new DateTime(crashReport.getDate()); 
