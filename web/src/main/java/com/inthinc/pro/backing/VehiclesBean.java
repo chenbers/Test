@@ -87,6 +87,7 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
         AVAILABLE_COLUMNS.add("DOT");
         AVAILABLE_COLUMNS.add("IFTA");
         AVAILABLE_COLUMNS.add("productType");
+        AVAILABLE_COLUMNS.add("country");
         
 
         // years
@@ -791,6 +792,7 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
         private String product;
         @Column(updateable = false)
         private String dot;
+        private String           country;
 
 
 
@@ -1002,6 +1004,14 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
 
         public void setDriverName(String driverName) {
             this.driverName = driverName;
+        }
+
+        public String getCountry() {
+            return country;
+        }
+
+        public void setCountry(String country) {
+            this.country = country;
         }
     }
 

@@ -43,6 +43,7 @@ public class Vehicle extends BaseEntity
 
     @Column(updateable = false)
     private Device            device;
+    private String            country;
 
     
     public Vehicle()
@@ -206,6 +207,16 @@ public class Vehicle extends BaseEntity
 
     public void setOdometer(Integer odometer) {
         this.odometer = odometer;
+    }
+
+    public String getCountry()
+    {
+        return country;
+    }
+
+    public void setCountry(String country)
+    {
+        this.country = country;
     }
 
     public Vehicle(Integer vehicleID, Integer groupID, Status status, String name, String make, String model, 
