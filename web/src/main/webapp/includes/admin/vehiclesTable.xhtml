@@ -162,6 +162,10 @@
       </f:facet>
       <h:outputText value="#{item.ifta eq null?'':messages[item.ifta]}" />
     </rich:column>
+      <rich:column id="country" rendered="#{vehiclesBean.tableColumns['country'].visible}" sortBy="#{item.country}">
+          <f:facet name="header"><h:outputText value="#{messages.vehiclesHeader_country}" /></f:facet>
+          <h:outputText value="#{item.country}" />
+      </rich:column>
   </ui:define>
 
 </ui:composition>
