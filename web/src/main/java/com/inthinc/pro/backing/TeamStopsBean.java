@@ -218,7 +218,7 @@ public class TeamStopsBean extends BaseBean {
         if (selectedDriverID == null)
             return null;
         
-        ReportCriteria reportCriteria = getReportCriteriaService().getTeamStopsReportCriteria(
+        ReportCriteria reportCriteria = getReportCriteriaService().getTeamStopsReportCriteria(teamCommonBean.getTimeFrame().getInterval(getDateTimeZone()),
                 getAccountGroupHierarchy(), selectedDriverID, teamCommonBean.getTimeFrame(),
                 getDateTimeZone(), getLocale(), driverStopReport);
         
