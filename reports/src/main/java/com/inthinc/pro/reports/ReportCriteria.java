@@ -1,5 +1,6 @@
 package com.inthinc.pro.reports;
 
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -326,6 +327,12 @@ public class ReportCriteria
         paramMap.put("TIME_FRAME", TimeFrameUtil.getTimeFrameStr(timeFrame, locale));
 		this.timeFrame = timeFrame;
 	}
+
+    public void setTimeFrame(TimeFrame timeFrame, Interval interval) {
+        DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
+        paramMap.put("TIME_FRAME", df.format(interval.getStart().toDate()) + " - " + df.format(interval.getEnd().toDate()));
+        this.timeFrame = timeFrame;
+    }
 
     public TimeZone getTimeZone() {
         return timeZone;
