@@ -1180,11 +1180,11 @@
 				<textFieldExpression class="java.lang.String"><![CDATA[$P{REPORT_START_DATE} + " to " + $P{REPORT_END_DATE}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="0" y="87" width="782" height="20"/>
+				<reportElement x="0" y="90" width="782" height="20"/>
 				<textElement textAlignment="Center">
 					<font size="12" isBold="true"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$R{nodata}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$R{noData}]]></textFieldExpression>
 			</textField>
 		</band>
 	</noData>
