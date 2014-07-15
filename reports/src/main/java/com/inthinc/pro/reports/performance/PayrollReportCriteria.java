@@ -138,7 +138,7 @@ public class PayrollReportCriteria extends GroupListReportCriteria implements Ta
     }
 
     
-    protected List<PayrollData> getDriverPayrollData(Interval interval, GroupHierarchy groupHierarchy, Date currentTime, Driver driver, List<HOSRecord> hosRecordList) {
+    protected List<PayrollData> getDriverPayrollData(Interval interval, GroupHierarchy groupHierarchy, Date currentTime, Driver driver, List<HOSRecord> hosRecordList, boolean showDecimalHours) {
 
         DateTimeZone driverTimeZone = DateTimeZone.forTimeZone(driver.getPerson().getTimeZone());
         Interval driverInterval =DateTimeUtil.getStartEndIntervalInTimeZone(interval, driverTimeZone);
@@ -195,8 +195,8 @@ public class PayrollReportCriteria extends GroupListReportCriteria implements Ta
                         diffMinutes += 1;
                     }
                 }
-                PayrollData item = new PayrollData(driver.getGroupID(), groupName, groupAddress, driver.getDriverID(), driverName, employeeID, day.toDate(), 
-                        status, secondsToMinutes(sortedDayMap.get(status)) + addMinute, day, driverTimeZone);
+                PayrollData item = new PayrollData(driver.getGroupID(), groupName, groupAddress, driver.getDriverID(), driverName, employeeID, day.toDate(),
+                        status, secondsToMinutes(sortedDayMap.get(status)) + addMinute, day, driverTimeZone,showDecimalHours);
                 item.setDayStr(dateTimeFormatter.withZone(driverTimeZone).print(day));
                 dataList.add(item);
                 

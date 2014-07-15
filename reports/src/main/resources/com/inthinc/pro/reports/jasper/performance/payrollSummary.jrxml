@@ -32,6 +32,7 @@
 	<field name="driverName" class="java.lang.String"/>
 	<field name="employeeID" class="java.lang.String"/>
 	<field name="day" class="java.util.Date"/>
+	<field name="showDecimalHours" class="java.lang.Boolean"/>
 	<sortField name="groupName"/>
 	<variable name="drivingHours" class="java.lang.Integer">
 		<variableExpression><![CDATA[new Integer(($F{status} == com.inthinc.hos.model.HOSStatus.DRIVING) ? $F{totalAdjustedMinutes}.intValue() : 0)]]></variableExpression>
@@ -155,7 +156,7 @@ $V{SUM_drivingHours}.intValue())]]></variableExpression>
 					<textElement textAlignment="Right">
 						<font size="12"/>
 					</textElement>
-					<textFieldExpression class="java.lang.String"><![CDATA[new String(new DecimalFormat("00").format($V{SUM_sleeperHours_1}.intValue()/60) + ":" +
+					<textFieldExpression class="java.lang.String"><![CDATA[($F{showDecimalHours}.booleanValue()) ? new String(new DecimalFormat("00.00").format(($V{SUM_sleeperHours_1}).doubleValue()/60)) :  new String(new DecimalFormat("00").format($V{SUM_sleeperHours_1}.intValue()/60) + ":" +
 new DecimalFormat("00").format($V{SUM_sleeperHours_1}.intValue()%60))]]></textFieldExpression>
 				</textField>
 				<textField evaluationTime="Group" evaluationGroup="driverId" pattern="" isBlankWhenNull="false">
@@ -169,7 +170,7 @@ new DecimalFormat("00").format($V{SUM_sleeperHours_1}.intValue()%60))]]></textFi
 					<textElement textAlignment="Right">
 						<font size="12"/>
 					</textElement>
-					<textFieldExpression class="java.lang.String"><![CDATA[new String(new DecimalFormat("00").format($V{SUM_offDutyHours}.intValue()/60) + ":" +
+					<textFieldExpression class="java.lang.String"><![CDATA[($F{showDecimalHours}.booleanValue()) ? new String(new DecimalFormat("00.00").format(($V{SUM_offDutyHours}).doubleValue()/60)) :  new String(new DecimalFormat("00").format($V{SUM_offDutyHours}.intValue()/60) + ":" +
 new DecimalFormat("00").format($V{SUM_offDutyHours}.intValue()%60))]]></textFieldExpression>
 				</textField>
 				<textField evaluationTime="Group" evaluationGroup="driverId" pattern="" isBlankWhenNull="false">
@@ -183,7 +184,7 @@ new DecimalFormat("00").format($V{SUM_offDutyHours}.intValue()%60))]]></textFiel
 					<textElement textAlignment="Right">
 						<font size="12"/>
 					</textElement>
-					<textFieldExpression class="java.lang.String"><![CDATA[new String(new DecimalFormat("00").format($V{SUM_offDutyAtWellHours}.intValue()/60) + ":" +
+					<textFieldExpression class="java.lang.String"><![CDATA[($F{showDecimalHours}.booleanValue()) ? new String(new DecimalFormat("00.00").format(($V{SUM_offDutyAtWellHours}).doubleValue()/60)) :  new String(new DecimalFormat("00").format($V{SUM_offDutyAtWellHours}.intValue()/60) + ":" +
 new DecimalFormat("00").format($V{SUM_offDutyAtWellHours}.intValue()%60))]]></textFieldExpression>
 				</textField>
 				<textField evaluationTime="Group" evaluationGroup="driverId" pattern="" isBlankWhenNull="false">
@@ -197,7 +198,7 @@ new DecimalFormat("00").format($V{SUM_offDutyAtWellHours}.intValue()%60))]]></te
 					<textElement textAlignment="Right">
 						<font size="12"/>
 					</textElement>
-					<textFieldExpression class="java.lang.String"><![CDATA[new String(new DecimalFormat("00").format($V{SUM_drivingHours}.intValue()/60) + ":" +
+					<textFieldExpression class="java.lang.String"><![CDATA[($F{showDecimalHours}.booleanValue()) ? new String(new DecimalFormat("00.00").format(($V{SUM_drivingHours}).doubleValue()/60)) :  new String(new DecimalFormat("00").format($V{SUM_drivingHours}.intValue()/60) + ":" +
 new DecimalFormat("00").format($V{SUM_drivingHours}.intValue()%60))]]></textFieldExpression>
 				</textField>
 				<textField evaluationTime="Group" evaluationGroup="driverId" pattern="" isBlankWhenNull="false">
@@ -211,7 +212,7 @@ new DecimalFormat("00").format($V{SUM_drivingHours}.intValue()%60))]]></textFiel
 					<textElement textAlignment="Right">
 						<font size="12"/>
 					</textElement>
-					<textFieldExpression class="java.lang.String"><![CDATA[new String(new DecimalFormat("00").format($V{SUM_notDrivingHours}.intValue()/60) + ":" +
+					<textFieldExpression class="java.lang.String"><![CDATA[($F{showDecimalHours}.booleanValue()) ? new String(new DecimalFormat("00.00").format(($V{SUM_notDrivingHours}).doubleValue()/60)) :  new String(new DecimalFormat("00").format($V{SUM_notDrivingHours}.intValue()/60) + ":" +
 new DecimalFormat("00").format($V{SUM_notDrivingHours}.intValue()%60))]]></textFieldExpression>
 				</textField>
 				<textField evaluationTime="Group" evaluationGroup="driverId" pattern="" isBlankWhenNull="false">
@@ -225,7 +226,7 @@ new DecimalFormat("00").format($V{SUM_notDrivingHours}.intValue()%60))]]></textF
 					<textElement textAlignment="Right">
 						<font size="12"/>
 					</textElement>
-					<textFieldExpression class="java.lang.String"><![CDATA[new String(new DecimalFormat("00").format($V{totalHours}.intValue()/60) + ":" +
+					<textFieldExpression class="java.lang.String"><![CDATA[($F{showDecimalHours}.booleanValue()) ? new String(new DecimalFormat("00.00").format(($V{totalHours}).doubleValue()/60)) :  new String(new DecimalFormat("00").format($V{totalHours}.intValue()/60) + ":" +
 new DecimalFormat("00").format($V{totalHours}.intValue()%60))]]></textFieldExpression>
 				</textField>
 			</band>

@@ -42,6 +42,7 @@ public class ReportCriteria
     private FuelEfficiencyType fuelEfficiencyType;
     private TimeZone timeZone;
     private Boolean includeInactiveDrivers = DEFAULT_EXCLUDE_INACTIVE_DRIVERS;
+    private Boolean showDecimalHour = DEFAULT_EXCLUDE_SHOW_DECIMAL_HOURS;
     private Boolean includeZeroMilesDrivers = DEFAULT_EXCLUDE_ZERO_MILES_DRIVERS;
 
     private static final String INTHINC_NAME = "Inthinc";
@@ -64,8 +65,10 @@ public class ReportCriteria
 
     public static final boolean DEFAULT_EXCLUDE_INACTIVE_DRIVERS = false;
     public static final boolean DEFAULT_EXCLUDE_ZERO_MILES_DRIVERS = false;
+    public static final boolean DEFAULT_EXCLUDE_SHOW_DECIMAL_HOURS = false;
     public static final boolean DEFAULT_INCLUDE_INACTIVE_DRIVERS = true;
     public static final boolean DEFAULT_INCLUDE_ZERO_MILES_DRIVERS = true;
+    public static final boolean DEFAULT_INCLUDE_SHOW_DECIMAL_HOURS = true;
     private int subsetIndex = 1;
     
     private String REPORT_DATE_FORMAT = "MMM d, yyyy h:mm a (z)";
@@ -350,6 +353,15 @@ public class ReportCriteria
     public void setIncludeInactiveDrivers(Boolean includeInactiveDrivers) {
         this.includeInactiveDrivers = includeInactiveDrivers;
     }
+
+    public Boolean getShowDecimalHour() {
+        return showDecimalHour;
+    }
+
+    public void setShowDecimalHour(Boolean showDecimalHour) {
+        this.showDecimalHour = showDecimalHour;
+    }
+
     public Boolean getIncludeZeroMilesDrivers() {
         return (includeZeroMilesDrivers!=null)?includeZeroMilesDrivers:DEFAULT_EXCLUDE_ZERO_MILES_DRIVERS;
     }

@@ -40,7 +40,7 @@ public class PayrollSummaryReportCriteria  extends PayrollReportCriteria {
     }
 
 
-    public void init(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, Interval interval) {
+    public void init(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, Interval interval, boolean showDecimalHours) {
         Account account = accountDAO.findByID(accountGroupHierarchy.getTopGroup().getAccountID());
 
         List<Group> reportGroupList = getReportGroupList(groupIDList, accountGroupHierarchy);
@@ -56,10 +56,10 @@ public class PayrollSummaryReportCriteria  extends PayrollReportCriteria {
                 driverHOSRecordMap.put(driver, hosDAO.getHOSRecords(driver.getDriverID(), queryInterval, true));
             }
         }
-        initDataSet(interval, account, accountGroupHierarchy, driverHOSRecordMap);
+        initDataSet(interval, account, accountGroupHierarchy, driverHOSRecordMap, showDecimalHours);
     }
     
-    void initDataSet(Interval interval, Account account, GroupHierarchy accountGroupHierarchy, Map<Driver, List<HOSRecord>> driverHOSRecordMap)
+    void initDataSet(Interval interval, Account account, GroupHierarchy accountGroupHierarchy, Map<Driver, List<HOSRecord>> driverHOSRecordMap, boolean showDecimalHours)
     {
         super.initDataSet(interval, account);
 
@@ -68,7 +68,7 @@ public class PayrollSummaryReportCriteria  extends PayrollReportCriteria {
         List<PayrollData> dataList = new ArrayList<PayrollData>();
         
         for (Entry<Driver, List<HOSRecord>> entry : driverHOSRecordMap.entrySet()) {
-            dataList.addAll(getDriverPayrollData(interval, accountGroupHierarchy, currentTime, entry.getKey(), entry.getValue() == null ? new ArrayList<HOSRecord>() : entry.getValue()));
+            dataList.addAll(getDriverPayrollData(interval, accountGroupHierarchy, currentTime, entry.getKey(), entry.getValue() == null ? new ArrayList<HOSRecord>() : entry.getValue(), showDecimalHours));
 
         }
         

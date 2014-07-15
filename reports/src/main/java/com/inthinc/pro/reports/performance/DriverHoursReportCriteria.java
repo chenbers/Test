@@ -72,14 +72,14 @@ public class DriverHoursReportCriteria extends PayrollSummaryReportCriteria {
 	}
 	
 	@Override
-	void initDataSet(Interval interval, Account account, GroupHierarchy accountGroupHierarchy, Map<Driver, List<HOSRecord>> driverHOSRecordMap) {
+	void initDataSet(Interval interval, Account account, GroupHierarchy accountGroupHierarchy, Map<Driver, List<HOSRecord>> driverHOSRecordMap,boolean showDecimalHours ) {
 
         Date currentTime = new Date();
         
         List<PayrollData> payrollDataList = new ArrayList<PayrollData>();
         
         for (Entry<Driver, List<HOSRecord>> entry : driverHOSRecordMap.entrySet()) {
-            payrollDataList.addAll(getDriverPayrollData(interval, accountGroupHierarchy, currentTime, entry.getKey(), entry.getValue() == null ? new ArrayList<HOSRecord>() : entry.getValue()));
+            payrollDataList.addAll(getDriverPayrollData(interval, accountGroupHierarchy, currentTime, entry.getKey(), entry.getValue() == null ? new ArrayList<HOSRecord>() : entry.getValue(),false));
 
         }
         
@@ -93,8 +93,8 @@ public class DriverHoursReportCriteria extends PayrollSummaryReportCriteria {
 
     
     @Override
-    public void init(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, Interval interval) {
-        super.init(accountGroupHierarchy, groupIDList, interval);
+    public void init(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, Interval interval, boolean showDecimalHours ) {
+        super.init(accountGroupHierarchy, groupIDList, interval,showDecimalHours);
         
         addParameter(DriverHoursReportCriteria.START_DATE_PARAM,dateTimeFormatter.print(interval.getStart()));
         addParameter(DriverHoursReportCriteria.END_DATE_PARAM,  dateTimeFormatter.print(interval.getEnd()));

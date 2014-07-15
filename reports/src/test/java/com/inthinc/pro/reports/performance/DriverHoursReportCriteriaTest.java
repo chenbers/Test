@@ -49,6 +49,7 @@ public class DriverHoursReportCriteriaTest {
     private static Integer DRIVER_ID = new Integer(1);
     private final String GROUP_FULL_NAME = "Group Full Name";
     private final Locale LOCALE = Locale.US;
+    private final Boolean showDecimalHours = false;
     
     // Static Variables
     private static Interval INTERVAL = new Interval(new Date().getTime() - 3600, new Date().getTime());
@@ -164,9 +165,9 @@ public class DriverHoursReportCriteriaTest {
         // 2. Second, we run the actual method to be tested
         List<Integer> groupIdList = new ArrayList<Integer>();
         groupIdList.add(GROUP_ID);
-        
-        reportCriteriaSUT.init(groupHierarchyMock, groupIdList, INTERVAL);
-        
+//        vali
+        reportCriteriaSUT.init(groupHierarchyMock, groupIdList, INTERVAL,showDecimalHours);
+
         // ------------------------------------------------------------------
         // 3. Third we verify the results
         
@@ -281,7 +282,7 @@ public class DriverHoursReportCriteriaTest {
                 
                 totalCompMinutes += minutes;
                 DateTimeZone driverTimeZone = DateTimeZone.forTimeZone(DRIVER.getPerson().getTimeZone());
-                PayrollData item = new PayrollData(DRIVER.getGroupID(), GROUP_FULL_NAME, "", DRIVER.getDriverID(), DRIVER.getPerson().getFullName(), null, day.toDate(), status, totalCompMinutes, day, driverTimeZone);
+                PayrollData item = new PayrollData(DRIVER.getGroupID(), GROUP_FULL_NAME, "", DRIVER.getDriverID(), DRIVER.getPerson().getFullName(), null, day.toDate(), status, totalCompMinutes, day, driverTimeZone,true);
                 
                 retVal.add(item);
             }

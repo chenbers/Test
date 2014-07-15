@@ -159,6 +159,29 @@
                     </table>
                   </li>
                 </h:outputText>
+                    <!--decimal time-->
+                    <h:outputText rendered="#{criteria eq 'INACTIVE_DRIVERS_DECIMAL_TIME'}">
+                        <li class="l" style="padding-top: 1px">
+                            <table border="0" cellspacing="0" cellpadding="4" style="height:100%">
+                                <tr>
+                                    <td>
+                                        <h:outputText value="#{messages.reports_includeInactiveDrivers}"/>
+                                    </td>
+                                    <td>
+                                        <h:selectBooleanCheckbox id="inactiveDriversDecimalTime" value="#{params.includeInactiveDrivers}" />
+                                    </td>
+                                    <td>
+                                        <h:outputText value="#{messages.reports_showDecimalHours}"/>
+                                    </td>
+                                    <td>
+                                        <h:selectBooleanCheckbox id="showDecimalTime" value="#{params.showDecimalHour}" />
+                                    </td>
+
+                                </tr>
+                            </table>
+                        </li>
+                    </h:outputText>
+                    <!--decimal time-->
                 <h:outputText rendered="#{criteria eq 'ZERO_MILES_DRIVERS'}">
                   <li class="l" style="padding-top: 1px">
                     <table border="0" cellspacing="0" cellpadding="4" style="height:100%">

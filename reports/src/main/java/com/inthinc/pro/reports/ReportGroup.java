@@ -80,13 +80,13 @@ public enum ReportGroup {
             GroupType.TEAM }, ReportCategory.Communication, EnumSet.of(ReportAccountType.PERFORMANCE), ReportType.NON_COMM),
 
     // Performance
-    PAYROLL_SUMMARY("Payroll Report Summary", 14, EntityType.ENTITY_GROUP_LIST, new CriteriaType[] { CriteriaType.TIMEFRAME, CriteriaType.INACTIVE_DRIVERS }, new GroupType[] { GroupType.DIVISION, GroupType.FLEET, GroupType.TEAM },
+    PAYROLL_SUMMARY("Payroll Report Summary", 14, EntityType.ENTITY_GROUP_LIST, new CriteriaType[] { CriteriaType.TIMEFRAME, CriteriaType.INACTIVE_DRIVERS_DECIMAL_TIME }, new GroupType[] { GroupType.DIVISION, GroupType.FLEET, GroupType.TEAM },
             ReportCategory.Performance, EnumSet.of(ReportAccountType.WAYSMART, ReportAccountType.HOS), ReportType.PAYROLL_SUMMARY),
-    PAYROLL_COMPENSATED_HOURS("Payroll Compensated Hours", 39, EntityType.ENTITY_GROUP_LIST, new CriteriaType[] { CriteriaType.TIMEFRAME, CriteriaType.INACTIVE_DRIVERS }, new GroupType[] { GroupType.DIVISION, GroupType.FLEET,
+    PAYROLL_COMPENSATED_HOURS("Payroll Compensated Hours", 39, EntityType.ENTITY_GROUP_LIST, new CriteriaType[] { CriteriaType.TIMEFRAME, CriteriaType.INACTIVE_DRIVERS_DECIMAL_TIME }, new GroupType[] { GroupType.DIVISION, GroupType.FLEET,
             GroupType.TEAM }, ReportCategory.Performance, EnumSet.of(ReportAccountType.WAYSMART, ReportAccountType.HOS), ReportType.PAYROLL_COMPENSATED_HOURS),
-    PAYROLL_DETAIL("Payroll Report Driver Detail", 15, EntityType.ENTITY_GROUP_LIST, new CriteriaType[] { CriteriaType.TIMEFRAME, CriteriaType.INACTIVE_DRIVERS }, new GroupType[] { GroupType.DIVISION, GroupType.FLEET,
+    PAYROLL_DETAIL("Payroll Report Driver Detail", 15, EntityType.ENTITY_GROUP_LIST, new CriteriaType[] { CriteriaType.TIMEFRAME, CriteriaType.INACTIVE_DRIVERS_DECIMAL_TIME }, new GroupType[] { GroupType.DIVISION, GroupType.FLEET,
             GroupType.TEAM }, ReportCategory.Performance, EnumSet.of(ReportAccountType.WAYSMART, ReportAccountType.HOS), ReportType.PAYROLL_DETAIL),
-    PAYROLL_SIGNOFF("Payroll Report Driver Signoff", 16, EntityType.ENTITY_GROUP_LIST_OR_DRIVER, new CriteriaType[] { CriteriaType.TIMEFRAME, CriteriaType.INACTIVE_DRIVERS}, new GroupType[] { GroupType.DIVISION, GroupType.FLEET,
+    PAYROLL_SIGNOFF("Payroll Report Driver Signoff", 16, EntityType.ENTITY_GROUP_LIST_OR_DRIVER, new CriteriaType[] { CriteriaType.TIMEFRAME, CriteriaType.INACTIVE_DRIVERS_DECIMAL_TIME}, new GroupType[] { GroupType.DIVISION, GroupType.FLEET,
             GroupType.TEAM }, ReportCategory.Performance, EnumSet.of(ReportAccountType.WAYSMART, ReportAccountType.HOS), ReportType.PAYROLL_SIGNOFF),
     TEN_HOUR_DAY_VIOLATIONS("Ten Hour Day Violations", 17, EntityType.ENTITY_GROUP, new CriteriaType[] { CriteriaType.TIMEFRAME, CriteriaType.INACTIVE_DRIVERS }, new GroupType[] { GroupType.DIVISION, GroupType.FLEET,
             GroupType.TEAM }, ReportCategory.Performance, EnumSet.of(ReportAccountType.WAYSMART), ReportType.TEN_HOUR_DAY_VIOLATIONS),

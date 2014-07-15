@@ -15,6 +15,7 @@ public class PayrollData implements Comparable<PayrollData>
     private Integer driverId;
     private String driverName;
     private String employeeID;
+    private Boolean showDecimalHours;
     
     private Date day;
     private DateTime dateTime;
@@ -27,17 +28,17 @@ public class PayrollData implements Comparable<PayrollData>
     
 
     public PayrollData(String groupName, String groupAddress, Integer driverId, String driverName, String employeeID,
-            Date day, HOSStatus status, int totalAdjustedMinutes)
+            Date day, HOSStatus status, int totalAdjustedMinutes, boolean showDecimalHours)
     {
-        this(null, groupName, groupAddress, driverId, driverName, employeeID, day, status, totalAdjustedMinutes, new DateTime(day.getTime()), DateTimeZone.UTC);
+        this(null, groupName, groupAddress, driverId, driverName, employeeID, day, status, totalAdjustedMinutes, new DateTime(day.getTime()), DateTimeZone.UTC, showDecimalHours);
     }
     public PayrollData(String groupName, String groupAddress, Integer driverId, String driverName, String employeeID,
-            Date day, HOSStatus status, int totalAdjustedMinutes, DateTimeZone driverTimeZone)
+            Date day, HOSStatus status, int totalAdjustedMinutes, DateTimeZone driverTimeZone, boolean showDecimalHours)
     {
-        this(null, groupName, groupAddress, driverId, driverName, employeeID, day, status, totalAdjustedMinutes, new DateTime(day.getTime()), driverTimeZone);
+        this(null, groupName, groupAddress, driverId, driverName, employeeID, day, status, totalAdjustedMinutes, new DateTime(day.getTime()), driverTimeZone, showDecimalHours);
     }
     public PayrollData(Integer groupID, String groupName, String groupAddress, Integer driverId, String driverName, String employeeID,
-            Date day, HOSStatus status, int totalAdjustedMinutes, DateTime dateTime, DateTimeZone driverTimeZone)
+            Date day, HOSStatus status, int totalAdjustedMinutes, DateTime dateTime, DateTimeZone driverTimeZone,boolean showDecimalHours)
     {
         super();
         this.groupID = groupID;
@@ -51,7 +52,8 @@ public class PayrollData implements Comparable<PayrollData>
         this.totalAdjustedMinutes = totalAdjustedMinutes;
         this.dateTime = dateTime;
         this.driverTimeZone = driverTimeZone;
-        
+        this.showDecimalHours=showDecimalHours;
+
     }
     
     public void addTotalAdjustedMinutes(int minutesToAdd) {
@@ -68,7 +70,7 @@ public class PayrollData implements Comparable<PayrollData>
                 "\"" + employeeID + "\"," +
                 "new Date(" + day.getTime() + "l)," +
                 "HOSStatus." + status.getName() + "," +
-                totalAdjustedMinutes + ")," 
+                totalAdjustedMinutes + ","+showDecimalHours+"),"
         );
     }
     public Date getDay() {
@@ -143,6 +145,14 @@ public class PayrollData implements Comparable<PayrollData>
     public void setEmployeeID(String employeeID)
     {
         this.employeeID = employeeID;
+    }
+
+    public Boolean getShowDecimalHours() {
+        return showDecimalHours;
+    }
+
+    public void setShowDecimalHours(Boolean showDecimalHours) {
+        this.showDecimalHours = showDecimalHours;
     }
 
     @Override

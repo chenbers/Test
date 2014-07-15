@@ -31,6 +31,7 @@
 	<field name="day" class="java.util.Date"/>
 	<field name="totalAdjustedMinutes" class="java.lang.Integer"/>
 	<field name="dayStr" class="java.lang.String"/>
+	<field name="showDecimalHours" class="java.lang.Boolean"/>
 	<sortField name="groupName"/>
 	<group name="groupName">
 		<groupExpression><![CDATA[$F{groupName}]]></groupExpression>
@@ -252,7 +253,9 @@
 				<textElement textAlignment="Right">
 					<font size="12"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[new String(new DecimalFormat("00").format($F{totalAdjustedMinutes}/60) + ":" +new DecimalFormat("00").format($F{totalAdjustedMinutes}%60))]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[($F{showDecimalHours}.booleanValue()) ? new String(new DecimalFormat("00.00").format(($F{totalAdjustedMinutes}).doubleValue()/60)) :  new String(new DecimalFormat("00").format($F{totalAdjustedMinutes}.intValue()/60) + ":" +
+new DecimalFormat("00").format($F{totalAdjustedMinutes}.intValue()%60))
+]]></textFieldExpression>
 			</textField>
 			<textField pattern="" isBlankWhenNull="true">
 				<reportElement key="textField-45" x="374" y="0" width="219" height="23" isRemoveLineWhenBlank="true" forecolor="#000000"/>

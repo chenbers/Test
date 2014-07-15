@@ -59,6 +59,7 @@ public class ReportSchedule implements Cloneable {
     private ReportParamType paramType;
     private Boolean iftaOnly;
     private Boolean includeInactiveDrivers;
+    private Boolean showDecimalHour;
     private Boolean includeZeroMilesDrivers;
     private ReportManagerDeliveryType managerDeliveryType;
 
@@ -388,6 +389,14 @@ public class ReportSchedule implements Cloneable {
             e.printStackTrace();
             return null;
         }
+    }
+
+    public Boolean getShowDecimalHour() {
+        return showDecimalHour;
+    }
+
+    public void setShowDecimalHour(Boolean showDecimalHour) {
+        this.showDecimalHour = showDecimalHour;
     }
 
     public Boolean getIncludeInactiveDrivers() {

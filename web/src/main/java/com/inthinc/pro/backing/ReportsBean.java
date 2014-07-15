@@ -167,23 +167,23 @@ public abstract class ReportsBean extends BaseBean {
                 break;
             case PAYROLL_SUMMARY:
                 reportCriteriaList.add(getReportCriteriaService().getPayrollSummaryReportCriteria(getAccountGroupHierarchy(), params.getGroupIDList(), params.getDateRange().getInterval(),  
-                        params.getLocale(), params.isIncludeInactiveDrivers()));
+                        params.getLocale(), params.isIncludeInactiveDrivers(),params.isShowDecimalHour()));
                 break;
             case PAYROLL_COMPENSATED_HOURS:
                 reportCriteriaList.add(getReportCriteriaService().getPayrollCompensatedHoursReportCriteria(getAccountGroupHierarchy(), params.getGroupIDList(), params.getDateRange().getInterval(),  
-                        params.getLocale(), params.isIncludeInactiveDrivers()));
+                        params.getLocale(), params.isIncludeInactiveDrivers(), params.isShowDecimalHour()));
                 break;
             case PAYROLL_DETAIL:
                 reportCriteriaList.add(getReportCriteriaService().getPayrollDetailReportCriteria(getAccountGroupHierarchy(), params.getGroupIDList(), params.getDateRange().getInterval(),  
-                        params.getLocale(), params.isIncludeInactiveDrivers(), ReportCriteria.DEFAULT_INCLUDE_ZERO_MILES_DRIVERS));
+                        params.getLocale(), params.isIncludeInactiveDrivers(), ReportCriteria.DEFAULT_INCLUDE_ZERO_MILES_DRIVERS, params.isShowDecimalHour()));
                 break;
             case PAYROLL_SIGNOFF:
                 if (params.getParamType() == ReportParamType.DRIVER )
                     reportCriteriaList.add(getReportCriteriaService().getPayrollSignoffReportCriteria(getAccountGroupHierarchy(), params.getDriverID(), params.getDateRange().getInterval(),  
-                        params.getLocale(), params.isIncludeInactiveDrivers(), ReportCriteria.DEFAULT_INCLUDE_ZERO_MILES_DRIVERS));
+                        params.getLocale(), params.isIncludeInactiveDrivers(), ReportCriteria.DEFAULT_INCLUDE_ZERO_MILES_DRIVERS, params.isShowDecimalHour()));
                 else
                     reportCriteriaList.add(getReportCriteriaService().getPayrollSignoffReportCriteria(getAccountGroupHierarchy(), params.getGroupIDList(), params.getDateRange().getInterval(),  
-                            params.getLocale(), params.isIncludeInactiveDrivers(), ReportCriteria.DEFAULT_INCLUDE_ZERO_MILES_DRIVERS));
+                            params.getLocale(), params.isIncludeInactiveDrivers(), ReportCriteria.DEFAULT_INCLUDE_ZERO_MILES_DRIVERS, params.isShowDecimalHour()));
                 break;
             
             case DRIVER_HOURS:

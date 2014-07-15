@@ -18,7 +18,7 @@ import com.inthinc.pro.reports.performance.model.DriverHours;
 
 public class DriverHoursReportCriteriaDataTest extends BaseDriveTimeUnitTest {
     
-
+    private static boolean  showDecimalHours = false;
     protected static final String DAY_FORMAT = "MM/dd/yy";
 
     
@@ -32,14 +32,15 @@ public class DriverHoursReportCriteriaDataTest extends BaseDriveTimeUnitTest {
         criteria.setAccountDAO(new MockAccountDAO());
         criteria.setHosDAO(new MockHOSDAO());
         criteria.setDriverDAO(new MockDriverDAO());
+        criteria.setShowDecimalHour(showDecimalHours);
         
         List<Integer> groupIDList = new ArrayList<Integer>();
         groupIDList.add(GROUP_ID);
-        
-        criteria.init(getMockGroupHierarchy(), groupIDList, interval);
+
+        criteria.init(getMockGroupHierarchy(), groupIDList, interval,showDecimalHours);
         
         List<DriverHours> dataList = criteria.getMainDataset();
-        
+
         assertEquals("data size", 2, dataList.size());
         DecimalFormat hoursFormatter = new DecimalFormat("###0.00"); 
         int eCnt = 1;

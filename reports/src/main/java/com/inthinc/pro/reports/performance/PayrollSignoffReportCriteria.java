@@ -29,7 +29,7 @@ public class PayrollSignoffReportCriteria extends PayrollReportCriteria {
         this.setIncludeInactiveDrivers(ReportCriteria.DEFAULT_EXCLUDE_INACTIVE_DRIVERS);
         this.setIncludeZeroMilesDrivers(ReportCriteria.DEFAULT_INCLUDE_ZERO_MILES_DRIVERS);
     }
-    public void init(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, Interval interval) {
+    public void init(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, Interval interval, boolean showDecimalHours) {
         Account account = accountDAO.findByID(accountGroupHierarchy.getTopGroup().getAccountID());
 
         List<Group> reportGroupList = getReportGroupList(groupIDList, accountGroupHierarchy);
@@ -43,10 +43,10 @@ public class PayrollSignoffReportCriteria extends PayrollReportCriteria {
                 driverHOSRecordMap.put(driver, driverHOSRecordList);
             }
         }
-        initDataSet(interval, account, accountGroupHierarchy, driverHOSRecordMap);
+        initDataSet(interval, account, accountGroupHierarchy, driverHOSRecordMap,  showDecimalHours);
     }
 
-    public void init(GroupHierarchy accountGroupHierarchy, Integer driverID, Interval interval) {
+    public void init(GroupHierarchy accountGroupHierarchy, Integer driverID, Interval interval, boolean showDecimalHours) {
         Account account = accountDAO.findByID(accountGroupHierarchy.getTopGroup().getAccountID());
         Driver driver = getDriverDAO().findByID(driverID);
         DateTimeZone dateTimeZone = DateTimeZone.forTimeZone(driver.getPerson().getTimeZone());
@@ -54,10 +54,10 @@ public class PayrollSignoffReportCriteria extends PayrollReportCriteria {
         List<HOSRecord> driverHOSRecordList = hosDAO.getHOSRecords(driver.getDriverID(), queryInterval, true);
         Map<Driver, List<HOSRecord>> driverHOSRecordMap = new HashMap<Driver, List<HOSRecord>> ();
         driverHOSRecordMap.put(driver, driverHOSRecordList);
-        initDataSet(interval, account, accountGroupHierarchy, driverHOSRecordMap);
+        initDataSet(interval, account, accountGroupHierarchy, driverHOSRecordMap, showDecimalHours);
     }
 
-    void initDataSet(Interval interval, Account account, GroupHierarchy accountGroupHierarchy, Map<Driver, List<HOSRecord>> driverHOSRecordMap)
+    void initDataSet(Interval interval, Account account, GroupHierarchy accountGroupHierarchy, Map<Driver, List<HOSRecord>> driverHOSRecordMap, boolean showDecimalHours)
     {
         super.initDataSet(interval, account);
 
@@ -66,7 +66,7 @@ public class PayrollSignoffReportCriteria extends PayrollReportCriteria {
         for (Entry<Driver, List<HOSRecord>> entry : driverHOSRecordMap.entrySet()) {
             Driver driver = entry.getKey();
             if(includeDriver(getDriverDAO(), driver.getDriverID(), interval)){
-                List<PayrollData> driverDataList = getDriverPayrollData(interval, accountGroupHierarchy, currentTime, entry.getKey(), entry.getValue());
+                List<PayrollData> driverDataList = getDriverPayrollData(interval, accountGroupHierarchy, currentTime, entry.getKey(), entry.getValue(), showDecimalHours);
                 Collections.sort(driverDataList);
                 dataList.addAll(driverDataList);
             }

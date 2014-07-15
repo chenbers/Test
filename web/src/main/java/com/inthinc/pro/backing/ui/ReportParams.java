@@ -34,6 +34,7 @@ public class ReportParams implements Cloneable {
     private Boolean isIfta;
     private Boolean isExpired;
     private boolean includeInactiveDrivers;
+    private boolean showDecimalHour;
     private boolean includeZeroMilesDrivers;
     private boolean zeroMilesDriversControlDisabled;
     
@@ -313,6 +314,14 @@ public class ReportParams implements Cloneable {
 
     public void setIncludeInactiveDrivers(boolean includeInactiveDrivers) {
         this.includeInactiveDrivers = includeInactiveDrivers;
+    }
+
+    public boolean isShowDecimalHour() {
+        return showDecimalHour;
+    }
+
+    public void setShowDecimalHour(boolean showDecimalHour) {
+        this.showDecimalHour = showDecimalHour;
     }
 
     public boolean isIncludeZeroMilesDrivers() {

@@ -64,6 +64,7 @@ import com.inthinc.pro.reports.service.impl.ReportCriteriaServiceImpl;
  */
 public class ReportCriteriaServiceImplTest extends BaseUnitTest {
     private ReportCriteriaServiceImpl serviceSUT;
+    public static boolean showDecimalHours = false;
 
     // Mocks
     private Integer mockGroupId = 1;
@@ -104,7 +105,7 @@ public class ReportCriteriaServiceImplTest extends BaseUnitTest {
                 criteriaMock.setAccountDAO((AccountDAO) any);
                 criteriaMock.setGroupDAO((GroupDAO) any);
                 criteriaMock.setHosDAO((HOSDAO) any);
-                criteriaMock.init(groupHierarchy, (List<Integer>) any, interval);
+                criteriaMock.init(groupHierarchy, (List<Integer>) any, interval,showDecimalHours);
 
             }
         };

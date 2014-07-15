@@ -809,12 +809,12 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
     }
 
     @Override
-    public ReportCriteria getPayrollDetailReportCriteria(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, Interval interval, Locale locale) {
-        return getPayrollDetailReportCriteria(accountGroupHierarchy, groupIDList, interval, locale, ReportCriteria.DEFAULT_EXCLUDE_INACTIVE_DRIVERS, ReportCriteria.DEFAULT_INCLUDE_ZERO_MILES_DRIVERS );
+    public ReportCriteria getPayrollDetailReportCriteria(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, Interval interval, Locale locale, boolean showDecimalHour ) {
+        return getPayrollDetailReportCriteria(accountGroupHierarchy, groupIDList, interval, locale, ReportCriteria.DEFAULT_EXCLUDE_INACTIVE_DRIVERS, ReportCriteria.DEFAULT_INCLUDE_ZERO_MILES_DRIVERS ,ReportCriteria.DEFAULT_EXCLUDE_INACTIVE_DRIVERS );
     }
     
     @Override
-    public ReportCriteria getPayrollDetailReportCriteria(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, Interval interval, Locale locale, boolean includeInactiveDrivers, boolean includeZeroMilesDrivers) {
+    public ReportCriteria getPayrollDetailReportCriteria(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, Interval interval, Locale locale, boolean includeInactiveDrivers, boolean includeZeroMilesDrivers, boolean showDecimalHour) {
         PayrollDetailReportCriteria criteria = new PayrollDetailReportCriteria(locale);
         criteria.setAccountDAO(accountDAO);
         criteria.setDriverDAO(driverDAO);
@@ -823,18 +823,19 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
         criteria.setAddressDAO(addressDAO);
         criteria.setIncludeInactiveDrivers(includeInactiveDrivers);
         criteria.setIncludeZeroMilesDrivers(includeZeroMilesDrivers);
+        criteria.setShowDecimalHour(showDecimalHour);
 
-        criteria.init(accountGroupHierarchy, groupIDList, interval);
+        criteria.init(accountGroupHierarchy, groupIDList, interval,showDecimalHour);
         return criteria;
     }
 
     @Override
-    public ReportCriteria getPayrollSignoffReportCriteria(GroupHierarchy accountGroupHierarchy, Integer driverID, Interval interval, Locale locale) {
-        return getPayrollSignoffReportCriteria(accountGroupHierarchy, driverID, interval, locale, ReportCriteria.DEFAULT_EXCLUDE_INACTIVE_DRIVERS, ReportCriteria.DEFAULT_INCLUDE_ZERO_MILES_DRIVERS);
+    public ReportCriteria getPayrollSignoffReportCriteria(GroupHierarchy accountGroupHierarchy, Integer driverID, Interval interval, Locale locale, boolean showDecimalHour) {
+        return getPayrollSignoffReportCriteria(accountGroupHierarchy, driverID, interval, locale, ReportCriteria.DEFAULT_EXCLUDE_INACTIVE_DRIVERS, ReportCriteria.DEFAULT_INCLUDE_ZERO_MILES_DRIVERS, ReportCriteria.DEFAULT_EXCLUDE_INACTIVE_DRIVERS);
     }
     
     @Override
-    public ReportCriteria getPayrollSignoffReportCriteria(GroupHierarchy accountGroupHierarchy, Integer driverID, Interval interval, Locale locale, boolean includeInactiveDrivers, boolean includeZeroMilesDrivers) {
+    public ReportCriteria getPayrollSignoffReportCriteria(GroupHierarchy accountGroupHierarchy, Integer driverID, Interval interval, Locale locale, boolean includeInactiveDrivers, boolean includeZeroMilesDrivers, boolean showDecimalHour) {
         PayrollSignoffReportCriteria criteria = new PayrollSignoffReportCriteria(locale);
         criteria.setAccountDAO(accountDAO);
         criteria.setDriverDAO(driverDAO);
@@ -843,18 +844,19 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
         criteria.setAddressDAO(addressDAO);
         criteria.setIncludeInactiveDrivers(includeInactiveDrivers);
         criteria.setIncludeZeroMilesDrivers(includeZeroMilesDrivers);
+        criteria.setShowDecimalHour(showDecimalHour);
 
-        criteria.init(accountGroupHierarchy, driverID, interval);
+        criteria.init(accountGroupHierarchy, driverID, interval,showDecimalHour);
         return criteria;
 
     }
 
-    public ReportCriteria getPayrollSignoffReportCriteria(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, Interval interval, Locale locale) {
-        return getPayrollSignoffReportCriteria(accountGroupHierarchy, groupIDList, interval, locale,  ReportCriteria.DEFAULT_EXCLUDE_INACTIVE_DRIVERS, ReportCriteria.DEFAULT_INCLUDE_ZERO_MILES_DRIVERS);
+    public ReportCriteria getPayrollSignoffReportCriteria(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, Interval interval, Locale locale, boolean showDecimalHour) {
+        return getPayrollSignoffReportCriteria(accountGroupHierarchy, groupIDList, interval, locale,  ReportCriteria.DEFAULT_EXCLUDE_INACTIVE_DRIVERS, ReportCriteria.DEFAULT_INCLUDE_ZERO_MILES_DRIVERS, ReportCriteria.DEFAULT_EXCLUDE_SHOW_DECIMAL_HOURS);
     }
     
     @Override
-    public ReportCriteria getPayrollSignoffReportCriteria(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, Interval interval, Locale locale, boolean includeInactiveDrivers, boolean includeZeroMilesDrivers) {
+    public ReportCriteria getPayrollSignoffReportCriteria(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, Interval interval, Locale locale, boolean includeInactiveDrivers, boolean includeZeroMilesDrivers, boolean showDecimalHour) {
         PayrollSignoffReportCriteria criteria = new PayrollSignoffReportCriteria(locale);
         criteria.setAccountDAO(accountDAO);
         criteria.setDriverDAO(driverDAO);
@@ -863,37 +865,39 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
         criteria.setAddressDAO(addressDAO);
         criteria.setIncludeInactiveDrivers(includeInactiveDrivers);
         criteria.setIncludeZeroMilesDrivers(includeZeroMilesDrivers);
-        
-        criteria.init(accountGroupHierarchy, groupIDList, interval);
+        criteria.setShowDecimalHour(showDecimalHour);
+
+        criteria.init(accountGroupHierarchy, groupIDList, interval,showDecimalHour);
         return criteria;
 
     }
 
     @Override
-    public ReportCriteria getPayrollSummaryReportCriteria(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, Interval interval, Locale locale) {
-        return getPayrollSummaryReportCriteria(accountGroupHierarchy, groupIDList, interval, locale, ReportCriteria.DEFAULT_EXCLUDE_INACTIVE_DRIVERS);
+    public ReportCriteria getPayrollSummaryReportCriteria(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, Interval interval, Locale locale, boolean showDecimalHour) {
+        return getPayrollSummaryReportCriteria(accountGroupHierarchy, groupIDList, interval, locale, ReportCriteria.DEFAULT_EXCLUDE_INACTIVE_DRIVERS, ReportCriteria.DEFAULT_EXCLUDE_SHOW_DECIMAL_HOURS);
     }
     
     @Override
-    public ReportCriteria getPayrollSummaryReportCriteria(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, Interval interval, Locale locale, boolean includeInactiveDrivers) {
+    public ReportCriteria getPayrollSummaryReportCriteria(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, Interval interval, Locale locale, boolean includeInactiveDrivers, boolean showDecimalHour) {
         PayrollSummaryReportCriteria criteria = new PayrollSummaryReportCriteria(locale);
         criteria.setAccountDAO(accountDAO);
         criteria.setDriverDAO(driverDAO);
         criteria.setGroupDAO(groupDAO);
         criteria.setHosDAO(hosDAO);
         criteria.setAddressDAO(addressDAO);
+        criteria.setShowDecimalHour(showDecimalHour);
         criteria.setIncludeInactiveDrivers(includeInactiveDrivers);
-        criteria.init(accountGroupHierarchy, groupIDList, interval);
+        criteria.init(accountGroupHierarchy, groupIDList, interval, showDecimalHour);
         return criteria;
     }
 
     @Override
-    public ReportCriteria getPayrollCompensatedHoursReportCriteria(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, Interval interval, Locale locale) {
-        return getPayrollCompensatedHoursReportCriteria(accountGroupHierarchy, groupIDList, interval, locale, ReportCriteria.DEFAULT_EXCLUDE_INACTIVE_DRIVERS);
+    public ReportCriteria getPayrollCompensatedHoursReportCriteria(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, Interval interval, Locale locale, boolean showDecimalHour) {
+        return getPayrollCompensatedHoursReportCriteria(accountGroupHierarchy, groupIDList, interval, locale, ReportCriteria.DEFAULT_EXCLUDE_INACTIVE_DRIVERS,ReportCriteria.DEFAULT_EXCLUDE_SHOW_DECIMAL_HOURS);
     }
     
     @Override
-    public ReportCriteria getPayrollCompensatedHoursReportCriteria(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, Interval interval, Locale locale, boolean includeInactiveDrivers) {
+    public ReportCriteria getPayrollCompensatedHoursReportCriteria(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, Interval interval, Locale locale, boolean includeInactiveDrivers, boolean showDecimalHour) {
         PayrollReportCompensatedHoursCriteria criteria = new PayrollReportCompensatedHoursCriteria(locale);
         criteria.setAccountDAO(accountDAO);
         criteria.setDriverDAO(driverDAO);
@@ -901,8 +905,9 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
         criteria.setHosDAO(hosDAO);
         criteria.setAddressDAO(addressDAO);
         criteria.setIncludeInactiveDrivers(includeInactiveDrivers);
+        criteria.setShowDecimalHour(showDecimalHour);
 
-        criteria.init(accountGroupHierarchy, groupIDList, interval);
+        criteria.init(accountGroupHierarchy, groupIDList, interval,showDecimalHour);
         return criteria;
     }
 
@@ -952,7 +957,7 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
         criteria.setGroupDAO(groupDAO);
         criteria.setHosDAO(hosDAO);
         criteria.setIncludeInactiveDrivers(includeInactiveDrivers);
-        criteria.init(accountGroupHierarchy, groupIDList, interval);
+        criteria.init(accountGroupHierarchy, groupIDList, interval,false);
         
         return criteria;
     }
@@ -1735,7 +1740,8 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
                                     timeFrame.getInterval(),
                                     person.getLocale(),
                                     reportSchedule.getIncludeInactiveDrivers(),
-                                    ReportCriteria.DEFAULT_INCLUDE_ZERO_MILES_DRIVERS
+                                    ReportCriteria.DEFAULT_INCLUDE_ZERO_MILES_DRIVERS,
+                                    reportSchedule.getShowDecimalHour()
                                     ));
                     break;
                 case PAYROLL_SIGNOFF:
@@ -1746,7 +1752,8 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
                                         timeFrame.getInterval(),
                                         person.getLocale(),
                                         reportSchedule.getIncludeInactiveDrivers(),
-                                        ReportCriteria.DEFAULT_INCLUDE_ZERO_MILES_DRIVERS
+                                        ReportCriteria.DEFAULT_INCLUDE_ZERO_MILES_DRIVERS,
+                                        reportSchedule.getShowDecimalHour()
                                         )
                                         );
                     } else {
@@ -1756,7 +1763,8 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
                                         timeFrame.getInterval(),
                                         person.getLocale(),
                                         reportSchedule.getIncludeInactiveDrivers(),
-                                        ReportCriteria.DEFAULT_INCLUDE_ZERO_MILES_DRIVERS
+                                        ReportCriteria.DEFAULT_INCLUDE_ZERO_MILES_DRIVERS,
+                                        reportSchedule.getShowDecimalHour()
                                         )
                                         );
                     }
@@ -1767,7 +1775,8 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
                                     reportSchedule.getGroupIDList(),
                                     timeFrame.getInterval(),
                                     person.getLocale(),
-                                    reportSchedule.getIncludeInactiveDrivers()
+                                    reportSchedule.getIncludeInactiveDrivers(),
+                                    reportSchedule.getShowDecimalHour()
                                     )
                                     );
                     break;
@@ -1777,7 +1786,8 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
                                     reportSchedule.getGroupIDList(),
                                     timeFrame.getInterval(),
                                     person.getLocale(),
-                                    reportSchedule.getIncludeInactiveDrivers()
+                                    reportSchedule.getIncludeInactiveDrivers(),
+                                    reportSchedule.getShowDecimalHour()
                                     )
                                     );
                     break;
