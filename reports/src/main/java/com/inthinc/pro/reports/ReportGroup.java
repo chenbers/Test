@@ -23,7 +23,7 @@ public enum ReportGroup {
     IDLING_REPORT("Idling Report", 4, EntityType.ENTITY_GROUP, new CriteriaType[] {}, new GroupType[] { GroupType.DIVISION, GroupType.FLEET, GroupType.TEAM }, ReportType.IDLING_REPORT),
     DEVICES_REPORT("Device Report", 5, EntityType.ENTITY_GROUP, new CriteriaType[] {}, new GroupType[] { GroupType.DIVISION, GroupType.FLEET, GroupType.TEAM }, ReportType.DEVICES_REPORT),
     TEAM_STATISTICS_REPORT("Team Statistics Report", 6, EntityType.ENTITY_GROUP, new CriteriaType[] { CriteriaType.TIMEFRAME }, new GroupType[] { GroupType.TEAM }, ReportType.TEAM_STATISTICS_REPORT),
-    TEAM_STOPS_REPORT("Team Stops Report", 106, EntityType.ENTITY_GROUP_LIST, new CriteriaType[] { CriteriaType.TIMEFRAME_ALT_DAYS }, new GroupType[] { GroupType.TEAM },
+    TEAM_STOPS_REPORT("Team Stops Report", 106, EntityType.ENTITY_GROUP_LIST, new CriteriaType[] { CriteriaType.TIMEFRAME_ALT_PLUS_CUSTOM_RANGE }, new GroupType[] { GroupType.TEAM },
             ReportCategory.DriverPerformance, null, ReportType.TEAM_STOPS_REPORT),
     SEATBELT_CLICKS_REPORT("Seatbelt Clicks Report", 107, EntityType.ENTITY_GROUP, new CriteriaType[] { CriteriaType.TIMEFRAME_STRICT, CriteriaType.INACTIVE_DRIVERS, CriteriaType.ZERO_MILES_DRIVERS }, new GroupType[] { GroupType.DIVISION, GroupType.FLEET,
             GroupType.TEAM }, ReportCategory.DriverPerformance, EnumSet.of(ReportAccountType.PERFORMANCE), ReportType.SEATBELT_CLICKS_REPORT),
@@ -108,9 +108,8 @@ public enum ReportGroup {
     DRIVER_EXCLUDED_VIOLATIONS("Driver Coaching", 42, EntityType.ENTITY_GROUP, new CriteriaType[] { CriteriaType.TIMEFRAME, CriteriaType.INACTIVE_DRIVERS, CriteriaType.ZERO_MILES_DRIVERS }, new GroupType[] { GroupType.DIVISION, GroupType.FLEET, GroupType.TEAM },
             ReportCategory.DriverPerformance, EnumSet.of(ReportAccountType.PERFORMANCE), ReportType.DRIVER_EXCLUDED_VIOLATIONS),
     BACKING_REPORT("Back-Up Events Report", 108, EntityType.ENTITY_GROUP, new CriteriaType[] { CriteriaType.TIMEFRAME_STRICT, CriteriaType.INACTIVE_DRIVERS, CriteriaType.ZERO_MILES_DRIVERS }, new GroupType[] { GroupType.DIVISION, GroupType.FLEET,
-            GroupType.TEAM }, ReportCategory.DriverPerformance, EnumSet.of(ReportAccountType.PERFORMANCE), ReportType.BACKING_REPORT),
-    FIRST_MOVE_FORWARD_REPORT("First Move Forward Violation Report", 109, EntityType.ENTITY_GROUP, new CriteriaType[] { CriteriaType.TIMEFRAME_STRICT, CriteriaType.INACTIVE_DRIVERS, CriteriaType.ZERO_MILES_DRIVERS }, new GroupType[] { GroupType.DIVISION, GroupType.FLEET,
-                    GroupType.TEAM }, ReportCategory.DriverPerformance, EnumSet.of(ReportAccountType.PERFORMANCE), ReportType.FIRST_MOVE_FORWARD_REPORT),
+                    GroupType.TEAM }, ReportCategory.DriverPerformance, EnumSet.of(ReportAccountType.PERFORMANCE), ReportType.BACKING_REPORT),
+
             
      /* Forms */
     DVIR_PRE_TRIP("DVIR Pre-Trip", 43, EntityType.ENTITY_GROUP, new CriteriaType[] { CriteriaType.TIMEFRAME }, new GroupType[] { GroupType.DIVISION, GroupType.FLEET, GroupType.TEAM },

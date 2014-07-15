@@ -88,7 +88,7 @@
 									<ui:include src="../../includes/admin/inputLabel.xhtml">
 										<ui:param name="required" value="TRUE"/>
 										<ui:param name="reRender" value="status"/>
-										<ui:param name="for" value="editReportScheduleStatus"/>
+										<ui:param name="forId" value="editReportScheduleStatus"/>
 										<ui:param name="fieldName" value="status"/>
 										<ui:param name="editBean" value="#{reportScheduleBean}"/>
 										<ui:param name="label" value="#{messages.reportSchedule_status}"/>
@@ -108,7 +108,7 @@
 										<ui:param name="required" value="TRUE"/>
 										<ui:param name="reRender" value="timeOfDay"/>
 										<ui:param name="fieldName" value="timeOfDay"/>
-										<ui:param name="for" value="editReportScheduletimeOfDay"/>
+										<ui:param name="forId" value="editReportScheduletimeOfDay"/>
 										<ui:param name="editBean" value="#{reportScheduleBean}"/>
 										<ui:param name="label" value="#{messages.reportSchedule_timeOfDay}"/>
 									</ui:include>
@@ -133,7 +133,7 @@
                               <ui:param name="required" value="TRUE"/>
                               <ui:param name="reRender" value="editReportSchedule-occurrence"/>
                               <ui:param name="fieldName" value="occurrence"/>
-                              <ui:param name="for" value="editReportSchedule-occurrence"/>
+                              <ui:param name="forId" value="editReportSchedule-occurrence"/>
                               <ui:param name="editBean" value="#{reportScheduleBean}"/>
                               <ui:param name="label" value="#{messages.reportSchedule_reportOccurrence}"/>
                            </ui:include>
@@ -200,7 +200,7 @@
                                 <ui:param name="required" value="FALSE"/>
                                 <ui:param name="reRender" value="editReportSchedule-formats"/>
                                 <ui:param name="fieldName" value="formats"/>
-                                <ui:param name="for" value="editReportSchedule-formats"/>
+                                <ui:param name="forId" value="editReportSchedule-formats"/>
                                 <ui:param name="editBean" value="#{reportScheduleBean}"/>
                                 <ui:param name="label" value="#{messages.reportSchedule_format}"/>
                             </ui:include>

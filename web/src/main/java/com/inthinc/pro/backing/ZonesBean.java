@@ -355,7 +355,8 @@ public class ZonesBean extends BaseBean
         Map<ZoneAvailableOption, OptionValue> optionsMap = getItem().getOptionsMap();
         for (ZoneAvailableOption availOption : ZoneAvailableOption.values())
         {
-            options.add(new ZoneOption(availOption, optionsMap.get(availOption)));
+            if (optionsMap.get(availOption) instanceof OptionValue)
+                options.add(new ZoneOption(availOption, optionsMap.get(availOption)));
         }
         return options;
     }

@@ -1,5 +1,7 @@
 package com.inthinc.pro.model;
 
+import org.joda.time.Interval;
+
 import java.util.List;
 
 
@@ -15,6 +17,7 @@ public class DriverStopReport {
     private Long driveTimeTotal; 
     private TimeFrame timeFrame;
     private String teamName;
+    private Interval interval;
 
     public DriverStopReport(String teamName, Integer driverID, String driverName, TimeFrame timeFrame, List<DriverStops> driverStops) {
         super();
@@ -25,7 +28,17 @@ public class DriverStopReport {
         this.driverStops = driverStops;
         summarize();
     }
-    
+
+    public DriverStopReport(String teamName, Integer driverID, String driverName, Interval interval, List<DriverStops> driverStops) {
+        super();
+        this.teamName = teamName;
+        this.driverID = driverID;
+        this.driverName = driverName;
+        this.interval = interval;
+        this.driverStops = driverStops;
+        summarize();
+    }
+
     public Integer getDriverID() {
         return driverID;
     }
@@ -111,4 +124,11 @@ public class DriverStopReport {
         this.teamName = teamName;
     }
 
+    public Interval getInterval() {
+        return interval;
+    }
+
+    public void setInterval(Interval interval) {
+        this.interval = interval;
+    }
 }
