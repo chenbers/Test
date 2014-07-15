@@ -40,7 +40,9 @@ body {
 					<h:panelGroup rendered="#{navigationBarBean.accountIsFormsEnabled}"> 
 					<li><a href='#{navigationBarBean.formUrl}'>Forms</a></li> 
 					</h:panelGroup>
-					<li><a href='#{navigationBarBean.assetsUrl}'>Assets</a></li>
+					<h:panelGroup rendered="#{navigationBarBean.accountIsTrailersEnabled}"> 
+					<li><a href='#{navigationBarBean.trailerUrl}'>Trailers</a></li> 
+					</h:panelGroup>
 <!-- 					<li><a href="#">Maintenance</a></li> -->
 				</ul>
 				<ul class="nav nav-pills pull-right">

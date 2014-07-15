@@ -787,7 +787,6 @@
   <bean id="navigationBarBean" class="com.inthinc.pro.backing.NavigationBarBean" scope="session" parent="baseBean">
   	<property name="formUrl" value="${navbar.forms.url}"/>
   	<property name="trailerUrl" value="${navbar.trailers.url}"/>
-  	<property name="assetsUrl" value="${navbar.assets.url}"/>
   </bean>
   
     <!-- Address Lookup -->

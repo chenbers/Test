@@ -12,21 +12,21 @@
   		fieldName: field name on backing bean.
   		label: text for label.
   		required: is field required.
-  		for: id of input
+  		forId: id of input [note: changed from 'for' to work on tomcat7]
   		iconSrc: path to an icon to display next to this field (optional)
   		enableCheckbox: if in batch edit mode, disables the checkbox (optional)
    -->
      <a4j:region>
       	 <h:selectBooleanCheckbox 
       	 		rendered="#{editBean.batchEdit}" 
-      	 		id="update_#{for}" 
+      	 		id="update_#{forId}"
       	 		value="#{editBean.updateField[fieldName]}"
       	 		disabled="#{enableCheckbox}">
       	 </h:selectBooleanCheckbox>
       	 <h:graphicImage rendered="#{!editBean.batchEdit and iconSrc ne null}" value="#{iconSrc}" width="16" height="16" style="valign:middle" />
            <h:outputText value=" #{label}" />
       	 <h:outputText 
-      	 		id="update_#{for}_required_flag" 
+      	 		id="update_#{forId}_required_flag"
       	 		rendered="#{required eq 'TRUE'}" 
       	 		style="display: #{(not editBean.batchEdit) or editBean.updateField[fieldName] ? 'inline' : 'none'}" 
       	 		styleClass="required" value=" *" />
