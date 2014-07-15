@@ -2,8 +2,8 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Safety Report" pageWidth="842" pageHeight="595" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="782" leftMargin="30" rightMargin="30" topMargin="20" bottomMargin="20" isIgnorePagination="true">
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
-	<property name="ireport.zoom" value="1.0"/>
-	<property name="ireport.x" value="240"/>
+	<property name="ireport.zoom" value="3.452271214393105"/>
+	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
@@ -23,6 +23,7 @@
 	<field name="date" class="java.lang.String"/>
 	<field name="type" class="java.lang.String"/>
 	<field name="excluded" class="java.lang.Boolean"/>
+	<field name="address" class="java.lang.String"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -35,76 +36,86 @@
 	<columnHeader>
 		<band height="19" splitType="Stretch">
 			<textField isBlankWhenNull="false">
-				<reportElement key="textField-14" x="0" y="2" width="145" height="16"/>
+				<reportElement key="textField-14" x="94" y="2" width="123" height="16"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.event.date.time}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="false">
-				<reportElement key="textField-2" x="145" y="2" width="115" height="16"/>
+				<reportElement key="textField-2" x="217" y="2" width="104" height="16"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.event.group}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="false">
-				<reportElement key="textField-3" x="260" y="2" width="120" height="16"/>
+				<reportElement key="textField-3" x="321" y="2" width="102" height="16"/>
 				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.event.driver}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="false">
-				<reportElement key="textField-13" x="380" y="2" width="100" height="16"/>
+				<reportElement key="textField-13" x="423" y="2" width="100" height="16"/>
 				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.event.vehicle}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="false">
-				<reportElement key="textField-12" x="480" y="2" width="110" height="16"/>
+				<reportElement key="textField-12" x="523" y="2" width="99" height="16"/>
 				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.event.category}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="false">
-				<reportElement key="textField-4" x="590" y="2" width="130" height="16"/>
+				<reportElement key="textField-4" x="622" y="2" width="113" height="16"/>
 				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.event.detail}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="false">
-				<reportElement key="textField-14" x="720" y="2" width="62" height="16"/>
+				<reportElement key="textField-14" x="735" y="2" width="47" height="16"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.event.excluded}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField-2" x="0" y="2" width="94" height="16"/>
+				<textElement textAlignment="Justified" verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.event.address}]]></textFieldExpression>
 			</textField>
 		</band>
 	</columnHeader>
 	<detail>
 		<band height="21" splitType="Stretch">
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement key="textField" x="0" y="3" width="145" height="18"/>
+				<reportElement key="textField" x="94" y="0" width="123" height="18"/>
 				<textElement/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{date}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement key="textField-1" x="145" y="3" width="115" height="17"/>
+				<reportElement key="textField-1" x="217" y="0" width="104" height="17"/>
 				<textElement rotation="None"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{group}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement key="textField-2" x="260" y="3" width="120" height="17"/>
-				<textElement/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{driverName}]]></textFieldExpression>
-			</textField>
-			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement key="textField-9" x="380" y="3" width="100" height="17"/>
+				<reportElement key="textField-9" x="423" y="0" width="100" height="17"/>
 				<textElement/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{vehicleName}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0" isBlankWhenNull="true">
-				<reportElement key="textField-10" x="480" y="3" width="110" height="17"/>
+				<reportElement key="textField-10" x="523" y="0" width="99" height="17"/>
 				<textElement/>
 				<textFieldExpression class="java.lang.String"><![CDATA[msg(str($F{category}), str($F{type}))]]></textFieldExpression>
 			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement key="textField-2" x="321" y="0" width="102" height="17"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{driverName}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement key="textField-1" x="0" y="0" width="74" height="17"/>
+				<textElement rotation="None"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{address}]]></textFieldExpression>
+			</textField>
 			<textField isStretchWithOverflow="true" pattern="###0.0" isBlankWhenNull="true">
-				<reportElement key="textField-4" x="590" y="3" width="130" height="17"/>
+				<reportElement key="textField-4" x="622" y="0" width="113" height="17"/>
 				<textElement/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{detail}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement key="textField" x="720" y="3" width="62" height="18"/>
+				<reportElement key="textField" x="746" y="0" width="36" height="17"/>
 				<textElement/>
 				<textFieldExpression class="java.lang.String"><![CDATA[($F{excluded}.booleanValue()) ? $R{yes}: $R{no}]]></textFieldExpression>
 			</textField>

@@ -3,6 +3,7 @@ package com.inthinc.pro.service.adapters;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.inthinc.pro.model.CustomDuration;
 import org.joda.time.Interval;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -94,20 +95,37 @@ public class GroupDAOAdapter extends BaseDAOAdapter<Group> {
 	}
     public List<GroupScoreWrapper> getChildGroupsDriverScores(Integer groupID, Duration duration) {
         return groupReportDAO.getSubGroupsAggregateDriverScores(groupID, duration, new GroupHierarchy(getAll()));
-    }	
+    }
+
+    public List<GroupScoreWrapper> getChildGroupsDriverScores(Integer groupID, CustomDuration customDuration) {
+        return groupReportDAO.getSubGroupsAggregateDriverScores(groupID, customDuration, new GroupHierarchy(getAll()));
+    }
 
     public List<GroupTrendWrapper> getChildGroupsDriverTrends(Integer groupID, Duration duration) {
         return groupReportDAO.getSubGroupsAggregateDriverTrends(groupID, duration, new GroupHierarchy(getAll()));
-    }    
+    }
+
+    public List<GroupTrendWrapper> getChildGroupsDriverTrends(Integer groupID, CustomDuration customDuration) {
+        return groupReportDAO.getSubGroupsAggregateDriverTrends(groupID, customDuration, new GroupHierarchy(getAll()));
+    }
 
     public List<DriverVehicleScoreWrapper> getDriverScores(Integer groupID, Duration duration) {
         return groupReportDAO.getDriverScores(groupID, duration, new GroupHierarchy(getAll()));
     }
+
+    public List<DriverVehicleScoreWrapper> getDriverScores(Integer groupID, CustomDuration customDuration) {
+        return groupReportDAO.getDriverScores(groupID, customDuration, new GroupHierarchy(getAll()));
+    }
+
     public List<DriverVehicleScoreWrapper> getDriverScores(Integer groupID, Interval interval) {
         return groupReportDAO.getDriverScores(groupID, interval, new GroupHierarchy(getAll()));
     }
     
     public List<DriverVehicleScoreWrapper> getVehicleScores(Integer groupID, Duration duration) {
+        return groupReportDAO.getVehicleScores(groupID, duration, new GroupHierarchy(getAll()));
+    }
+
+    public List<DriverVehicleScoreWrapper> getVehicleScores(Integer groupID, CustomDuration duration) {
         return groupReportDAO.getVehicleScores(groupID, duration, new GroupHierarchy(getAll()));
     }
 

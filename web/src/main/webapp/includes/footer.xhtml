@@ -16,21 +16,27 @@
 	  </script>
 	  <a4j:form id="footerForm">
 		<ul>
-		 	<li class="first"><h:outputText value="#{messages.footer_copyright}" escape="false"/></li>
-			<li class="last">
-			  	   <h:outputFormat id="version" value="#{messages.footer_version}" style="color:gray;" >
-						<f:param value="#{versionBean.version}"/>
-	   				</h:outputFormat>
-			</li>
 			<li><a4j:commandLink id="privacy" title="#{messages.footer_privacyPolicy}" 
 				onclick="doPopup('#{facesContext.externalContext.request.contextPath}/html/inthincPrivacyPolicy.html')">#{messages.footer_privacyPolicy}</a4j:commandLink></li>
       		<li>|</li>
-			<li><a4j:commandLink id="legal" title="#{messages.footer_legal_notice}" 
-				onclick="doPopup('#{facesContext.externalContext.request.contextPath}/html/inthincCustomerTermsOfService.html')">#{messages.footer_legal_notice}</a4j:commandLink></li>
+			<li><a4j:commandLink id="legal" title="#{messages.footer_terms}" 
+				onclick="doPopup('#{facesContext.externalContext.request.contextPath}/html/inthincCustomerTermsOfService.html')">#{messages.footer_terms}</a4j:commandLink></li>
       		<li>|</li>
 			<li><a4j:htmlCommandLink id="customerSupport" title="#{messages.footer_support}" target="_blank"
 				action="go_customer_support">
 				#{messages.footer_support}</a4j:htmlCommandLink></li>
+		 	<li class="first copyright_info">
+		 		<h:outputText value="#{messages.footer_copyrightSymbol}" escape="false"/>
+		 		<h:outputText value="#{session.lastAccessedTime}">
+		 			<f:convertDateTime pattern="yyyy" type="date" />
+		 		</h:outputText>
+		 		<h:outputText value="&#160;#{messages.footer_copyrightCompanyName}" escape="false"/>
+		 	</li>
+			<li class="last version_info">
+			  	   <h:outputFormat id="version" value="#{messages.footer_version}" style="color:gray;" >
+						<f:param value="#{versionBean.version}"/>
+	   				</h:outputFormat>
+			</li>
 		</ul>
 	  </a4j:form>
 	  

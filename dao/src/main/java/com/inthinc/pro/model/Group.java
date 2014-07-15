@@ -45,6 +45,8 @@ public class Group extends BaseEntity implements HasAccountId
     private DOTOfficeType   dotOfficeType;
     private String   path;
     private String aggDate;
+
+    @Column(name = "glcode")
     private String glCode;
 
 	public Group()

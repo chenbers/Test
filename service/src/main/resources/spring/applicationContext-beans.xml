@@ -107,6 +107,9 @@
 	<bean id="driverService" class="com.inthinc.pro.service.impl.DriverServiceImpl">
 		<property name="dao" ref="driverDAOAdapter" />
 	</bean>
+    <bean id="employeeService" class="com.inthinc.pro.service.impl.EmployeeServiceImpl">
+        <property name="dao" ref="driverDAOAdapter" />
+    </bean>
 	<bean id="cellPhoneService" class="com.inthinc.pro.service.phonecontrol.impl.CellPhoneServiceImpl">
 		<property name="dao" ref="phoneControlDAOAdapter" />
 	</bean>
@@ -187,4 +190,9 @@
   		<property name="effectiveDateForUS2013Changes" value="${hos.usrules.effective.date}"/>
   	</bean>
 
+    <!-- vehicle status util -->
+    <bean id="vehicleStatusUtil" class="com.inthinc.pro.util.VehicleStatusUtil">
+        <!-- number of hours to scan back in time when requesting events -->
+        <property name="scanHours" value="${vehicle.status.statusUtil.scanHours}"/>
+    </bean>
 </beans>

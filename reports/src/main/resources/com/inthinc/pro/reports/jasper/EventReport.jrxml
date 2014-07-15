@@ -2,6 +2,9 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Driver Report" pageWidth="842" pageHeight="595" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="782" leftMargin="30" rightMargin="30" topMargin="20" bottomMargin="20">
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
+	<property name="ireport.zoom" value="2.357947691000002"/>
+	<property name="ireport.x" value="664"/>
+	<property name="ireport.y" value="0"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
@@ -21,38 +24,39 @@
 	<field name="date" class="java.lang.String"/>
 	<field name="type" class="java.lang.String"/>
 	<field name="excluded" class="java.lang.Boolean"/>
+	<field name="address" class="java.lang.String"/>
 	<background>
 		<band/>
 	</background>
 	<title>
 		<band height="50">
-			<textField isBlankWhenNull="false" hyperlinkType="None">
+			<textField isBlankWhenNull="false">
 				<reportElement key="textField-10" x="53" y="21" width="477" height="20"/>
 				<textElement textAlignment="Left">
 					<font size="16"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[str($P{REPORT_NAME})]]></textFieldExpression>
 			</textField>
-			<textField isBlankWhenNull="false" hyperlinkType="None">
+			<textField isBlankWhenNull="false">
 				<reportElement key="textField" x="543" y="14" width="238" height="17"/>
 				<textElement textAlignment="Right" verticalAlignment="Bottom"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.event.count}+" " + $P{RECORD_COUNT}.toString()]]></textFieldExpression>
 			</textField>
-			<image scaleImage="RetainShape" vAlign="Top" hyperlinkType="None">
+			<image scaleImage="RetainShape" vAlign="Top">
 				<reportElement key="image-1" x="1" y="2" width="51" height="47"/>
 				<imageExpression class="java.io.InputStream"><![CDATA[$P{REPORT_LOGO}]]></imageExpression>
 			</image>
-			<textField isBlankWhenNull="false" hyperlinkType="None">
+			<textField isBlankWhenNull="false">
 				<reportElement key="textField-16" x="55" y="5" width="122" height="16"/>
 				<textElement textAlignment="Left" verticalAlignment="Top"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.header.system.name}]]></textFieldExpression>
 			</textField>
-			<textField isBlankWhenNull="false" hyperlinkType="None">
+			<textField isBlankWhenNull="false">
 				<reportElement key="textField-13" x="628" y="1" width="153" height="14"/>
 				<textElement textAlignment="Right" verticalAlignment="Top"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$P{ENTITY_NAME}]]></textFieldExpression>
 			</textField>
-			<textField isBlankWhenNull="false" hyperlinkType="None">
+			<textField isBlankWhenNull="false">
 				<reportElement key="textField" x="542" y="32" width="238" height="17"/>
 				<textElement textAlignment="Right" verticalAlignment="Bottom"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.event.excludedKey}]]></textFieldExpression>
@@ -67,70 +71,75 @@
 			<rectangle radius="2">
 				<reportElement key="rectangle-3" mode="Opaque" x="0" y="10" width="781" height="22" forecolor="#999999" backcolor="#E7E6E6"/>
 			</rectangle>
-			<textField isBlankWhenNull="false" hyperlinkType="None">
-				<reportElement key="textField-2" x="152" y="12" width="118" height="16"/>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField-2" x="214" y="12" width="118" height="16"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.event.group}]]></textFieldExpression>
 			</textField>
-			<textField isBlankWhenNull="false" hyperlinkType="None">
-				<reportElement key="textField-3" x="270" y="12" width="125" height="16"/>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField-3" x="332" y="12" width="125" height="16"/>
 				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.event.driver}]]></textFieldExpression>
 			</textField>
-			<textField isBlankWhenNull="false" hyperlinkType="None">
-				<reportElement key="textField-4" x="619" y="12" width="100" height="16"/>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField-4" x="681" y="12" width="100" height="16"/>
 				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.event.detail}]]></textFieldExpression>
 			</textField>
 			<rectangle>
 				<reportElement key="rectangle-2" x="196" y="17" width="0" height="0"/>
 			</rectangle>
-			<textField isBlankWhenNull="false" hyperlinkType="None">
-				<reportElement key="textField-12" x="519" y="12" width="100" height="16"/>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField-12" x="581" y="12" width="100" height="16"/>
 				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.event.category}]]></textFieldExpression>
 			</textField>
-			<textField isBlankWhenNull="false" hyperlinkType="None">
-				<reportElement key="textField-13" x="395" y="12" width="124" height="16"/>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField-13" x="457" y="12" width="124" height="16"/>
 				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.event.vehicle}]]></textFieldExpression>
 			</textField>
-			<textField isBlankWhenNull="false" hyperlinkType="None">
-				<reportElement key="textField-14" x="7" y="12" width="145" height="16"/>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField-14" x="94" y="12" width="120" height="16"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.event.date.time}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField-14" x="7" y="12" width="87" height="16"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.event.address}]]></textFieldExpression>
 			</textField>
 		</band>
 	</columnHeader>
 	<detail>
 		<band height="24">
-			<textField isStretchWithOverflow="true" isBlankWhenNull="true" hyperlinkType="None">
-				<reportElement key="textField-1" x="152" y="3" width="118" height="17"/>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement key="textField-1" x="214" y="3" width="118" height="17"/>
 				<textElement rotation="None"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{group}]]></textFieldExpression>
 			</textField>
-			<textField isStretchWithOverflow="true" isBlankWhenNull="true" hyperlinkType="None">
-				<reportElement key="textField-2" x="270" y="3" width="125" height="17"/>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement key="textField-2" x="332" y="3" width="125" height="17"/>
 				<textElement/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{driverName}]]></textFieldExpression>
 			</textField>
-			<textField isStretchWithOverflow="true" pattern="###0.0" isBlankWhenNull="true" hyperlinkType="None">
-				<reportElement key="textField-4" x="619" y="3" width="138" height="17"/>
+			<textField isStretchWithOverflow="true" pattern="###0.0" isBlankWhenNull="true">
+				<reportElement key="textField-4" x="681" y="3" width="76" height="17"/>
 				<textElement/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{detail}]]></textFieldExpression>
 			</textField>
-			<textField isStretchWithOverflow="true" isBlankWhenNull="true" hyperlinkType="None">
-				<reportElement key="textField-9" x="395" y="3" width="124" height="17"/>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement key="textField-9" x="457" y="3" width="124" height="17"/>
 				<textElement/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{vehicleName}]]></textFieldExpression>
 			</textField>
-			<textField isStretchWithOverflow="true" pattern="###0" isBlankWhenNull="true" hyperlinkType="None">
-				<reportElement key="textField-10" x="519" y="3" width="100" height="17"/>
+			<textField isStretchWithOverflow="true" pattern="###0" isBlankWhenNull="true">
+				<reportElement key="textField-10" x="581" y="3" width="100" height="17"/>
 				<textElement/>
 				<textFieldExpression class="java.lang.String"><![CDATA[msg(str($F{category}), str($F{type}))]]></textFieldExpression>
 			</textField>
-			<textField isStretchWithOverflow="true" isBlankWhenNull="true" hyperlinkType="None">
-				<reportElement key="textField" x="7" y="3" width="145" height="18"/>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement key="textField" x="94" y="3" width="120" height="18"/>
 				<textElement/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{date}]]></textFieldExpression>
 			</textField>
@@ -140,6 +149,11 @@
 					<font isBold="true"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[($F{excluded}.booleanValue()) ? "*" : ""]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement key="textField" x="7" y="3" width="87" height="18"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{address}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
@@ -151,12 +165,12 @@
 			<line>
 				<reportElement key="line-1" x="0" y="3" width="781" height="1"/>
 			</line>
-			<textField isBlankWhenNull="false" hyperlinkType="None">
+			<textField isBlankWhenNull="false">
 				<reportElement key="textField" x="548" y="5" width="234" height="15"/>
 				<textElement textAlignment="Right" verticalAlignment="Top"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.footer.page} + " " + $V{PAGE_NUMBER}.toString()]]></textFieldExpression>
 			</textField>
-			<textField isBlankWhenNull="true" hyperlinkType="None">
+			<textField isBlankWhenNull="true">
 				<reportElement key="textField-15" x="0" y="5" width="198" height="14"/>
 				<textElement textAlignment="Left" verticalAlignment="Top"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$P{REPORT_DATE_AS_STRING}]]></textFieldExpression>
@@ -165,7 +179,7 @@
 	</pageFooter>
 	<lastPageFooter>
 		<band height="23">
-			<textField isBlankWhenNull="false" hyperlinkType="None">
+			<textField isBlankWhenNull="false">
 				<reportElement key="textField-11" x="548" y="5" width="234" height="15"/>
 				<textElement textAlignment="Right" verticalAlignment="Top"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.footer.page} + " " + $V{PAGE_NUMBER}.toString()]]></textFieldExpression>
@@ -173,7 +187,7 @@
 			<line>
 				<reportElement key="line-2" x="0" y="3" width="781" height="1"/>
 			</line>
-			<textField isBlankWhenNull="true" hyperlinkType="None">
+			<textField isBlankWhenNull="true">
 				<reportElement key="textField-14" x="0" y="5" width="198" height="14"/>
 				<textElement textAlignment="Left" verticalAlignment="Top"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$P{REPORT_DATE_AS_STRING}]]></textFieldExpression>

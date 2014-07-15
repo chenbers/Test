@@ -1,11 +1,14 @@
 package com.inthinc.pro.service.impl;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
+import java.lang.reflect.Array;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -13,6 +16,9 @@ import java.util.List;
 import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.Response;
 
+import com.inthinc.pro.model.CustomDuration;
+import com.inthinc.pro.model.aggregation.Score;
+import com.inthinc.pro.model.aggregation.Trend;
 import mockit.Expectations;
 
 import org.junit.Test;
@@ -309,5 +315,55 @@ public class DriverServiceImplTest extends BaseUnitTest {
         assertNotNull(entity);
         assertEquals(1, entity.getEntity().size());
         assertEquals(location, entity.getEntity().get(0));
+    }
+
+    @Test
+    public void testGetScoreCustomDuration(final DriverDAOAdapter driverDaoMock){
+        final Integer driverId = 1;
+        final Score score = new Score();
+        score.setAggressiveAccel(10);
+        serviceSUT.setDao(driverDaoMock);
+
+        new Expectations() {
+            {
+                driverDaoMock.getScore(driverId, CustomDuration.SEVEN_DAYS); returns(score);
+            }
+        };
+
+        // exercise the code
+        Response response = serviceSUT.getScore(driverId, 7);
+        assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
+
+        // check the content
+        Score entity = (Score) response.getEntity();
+        assertNotNull(entity);
+        assertEquals(entity.getAggressiveAccel(), 10);
+    }
+
+    @Test
+    public void testGetTrendCustomDuration(final DriverDAOAdapter driverDaoMock){
+        final Integer driverId = 1;
+        final Trend trend = new Trend();
+        trend.setAggressiveAccel(10);
+        final List<Trend> trendList = new ArrayList<Trend>();
+        trendList.add(trend);
+
+        serviceSUT.setDao(driverDaoMock);
+
+        new Expectations() {
+            {
+                driverDaoMock.getTrend(driverId, CustomDuration.SEVEN_DAYS); returns(trendList);
+            }
+        };
+
+        // exercise the code
+        Response response = serviceSUT.getTrend(driverId, 7);
+        assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
+
+        // check the content
+        GenericEntity<List<Trend>> entity = (GenericEntity<List<Trend>>) response.getEntity();
+        assertNotNull(entity);
+        assertEquals(1, entity.getEntity().size());
+        assertEquals(trend, entity.getEntity().get(0));
     }
 }

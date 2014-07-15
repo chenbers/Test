@@ -70,6 +70,13 @@
             		</span>
             	</a4j:commandButton>
             </li>
+              <c:if test="${editorBean.tableType == 'ADMIN_VEHICLES'}">
+                  <li class="r" >
+                     <h:commandButton action="#{bean.exportReportToExcel}" image="/images/ico_excel.png" style="width: 22px;height: 22px;position: relative;top:3px;" />
+
+                  </li>
+
+              </c:if>
             <li class="l"><h:commandButton id="#{context}-adminTableEdit" action="#{editorBean['batchEdit']}" styleClass="left"><span class="edit"><h:outputText value="#{messages.button_batchEdit}" /></span></h:commandButton></li>
             <li class="l text">
 				<a4j:commandLink id="#{context}-adminTableEditColumns" styleClass="ls_tab_edit_columns" title="#{messages.button_editColumns}" oncomplete="javascript:Richfaces.showModalPanel('#{context}_editColumns')" 

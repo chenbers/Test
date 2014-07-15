@@ -34,7 +34,7 @@ import com.inthinc.pro.reports.service.impl.ReportCriteriaServiceImpl;
 public class TeamStopsReportCriteriaTest extends BaseUnitTest {
     
     ReportAddressLookupBean reportAddressLookup;
-    
+    private static Interval INTERVAL = new Interval(new Date().getTime() - 3600, new Date().getTime());
     @Before
     public void setup() {
         AddressLookup addressLookup = new GoogleAddressLookup();
@@ -49,7 +49,7 @@ public class TeamStopsReportCriteriaTest extends BaseUnitTest {
        
         reportCriteriaService.setDriverDAO(new MockDriverDAO());
         reportCriteriaService.setReportAddressLookupBean(reportAddressLookup);
-        ReportCriteria reportCriteria = reportCriteriaService.getTeamStopsReportCriteria(getAccountGroupHierarchy(), 1, TimeFrame.TODAY,DateTimeZone.getDefault(), Locale.ENGLISH, null );
+        ReportCriteria reportCriteria = reportCriteriaService.getTeamStopsReportCriteria(INTERVAL, getAccountGroupHierarchy(), 1, TimeFrame.TODAY,DateTimeZone.getDefault(), Locale.ENGLISH, null );
 
         dump("teamStops1", 0, reportCriteria, FormatType.PDF);
         dump("teamStops1", 0, reportCriteria, FormatType.EXCEL);
@@ -63,7 +63,7 @@ public class TeamStopsReportCriteriaTest extends BaseUnitTest {
        
         reportCriteriaService.setDriverDAO(new MockDriverDAO());
         reportCriteriaService.setReportAddressLookupBean(reportAddressLookup);
-        ReportCriteria reportCriteria = reportCriteriaService.getTeamStopsReportCriteria(getAccountGroupHierarchy(), 11771, TimeFrame.TODAY,DateTimeZone.getDefault(), Locale.ENGLISH, null);
+        ReportCriteria reportCriteria = reportCriteriaService.getTeamStopsReportCriteria(INTERVAL,getAccountGroupHierarchy(), 11771, TimeFrame.TODAY,DateTimeZone.getDefault(), Locale.ENGLISH, null);
 
         dump("teamStops2", 0, reportCriteria, FormatType.PDF);
         dump("teamStops2", 0, reportCriteria, FormatType.EXCEL);
@@ -84,7 +84,7 @@ public class TeamStopsReportCriteriaTest extends BaseUnitTest {
         
         GroupHierarchy groupHierarchy = getAccountGroupHierarchy();
         
-        ReportCriteria reportCriteria = reportCriteriaService.getTeamStopsReportCriteriaByGroup(groupHierarchy, groupIDList, TimeFrame.TODAY,DateTimeZone.getDefault(), Locale.ENGLISH);
+        ReportCriteria reportCriteria = reportCriteriaService.getTeamStopsReportCriteriaByGroup(INTERVAL, groupHierarchy, groupIDList, TimeFrame.TODAY,DateTimeZone.getDefault(), Locale.ENGLISH);
 
         dump("teamStopsGroup", 0, reportCriteria, FormatType.PDF);
         dump("teamStopsGroup", 0, reportCriteria, FormatType.EXCEL);

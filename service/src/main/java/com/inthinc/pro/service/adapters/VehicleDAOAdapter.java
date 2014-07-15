@@ -3,6 +3,7 @@ package com.inthinc.pro.service.adapters;
 import java.util.Date;
 import java.util.List;
 
+import com.inthinc.pro.model.CustomDuration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -90,10 +91,19 @@ public class VehicleDAOAdapter extends BaseDAOAdapter<Vehicle> {
 
     public Score getScore(Integer vehicleID, Duration duration) {
         return vehicleReportDAO.getScore(vehicleID, duration);
-    }    
+    }
+
+    public Score getScore(Integer vehicleID, CustomDuration customDuration) {
+        return vehicleReportDAO.getScore(vehicleID, customDuration);
+    }
+
 
     public List<Trend> getTrend(Integer vehicleID, Duration duration) {
         return vehicleReportDAO.getTrend(vehicleID, duration);
+    }
+
+    public List<Trend> getTrend(Integer vehicleID, CustomDuration customDuration) {
+        return vehicleReportDAO.getTrend(vehicleID, customDuration);
     }
     
     public List<Trip> getTrips(Integer vehicleID, Date startDate, Date endDate) {
