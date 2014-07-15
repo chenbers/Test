@@ -84,6 +84,7 @@ public enum ReportType
     DRIVER_PERFORMANCE_RYG_TEAM("Driver Performance RYG(Team)","driverPerformanceReport.jrxml","driverPerformanceRaw.jrxml", "performance","com.inthinc.pro.reports.jasper.performance.i18n.driverPerformanceReport", null, false), 
     DRIVER_PERFORMANCE_RYG_INDIVIDUAL("Driver  Performance RYG(Individual)","driverPerformanceReport.jrxml","driverPerformanceRaw.jrxml", "performance","com.inthinc.pro.reports.jasper.performance.i18n.driverPerformanceReport", null, false), 
     BACKING_REPORT("Back-Up Events Report","backingReport.jrxml","backingReportRaw.jrxml","performance","com.inthinc.pro.reports.jasper.performance.i18n.backingReport"),
+    FIRST_MOVE_FORWARD_REPORT("First Move Forward Violation Report","backingReport.jrxml","backingReportRaw.jrxml","performance","com.inthinc.pro.reports.jasper.performance.i18n.backingReport"),
 
     // ASSET
     WARRANTY_LIST("Warranty List","warrantyListReport.jrxml","warrantyListReportRaw.jrxml", "performance","com.inthinc.pro.reports.jasper.asset.i18n.warrantyList", null, false),
@@ -102,8 +103,12 @@ public enum ReportType
     //DVIR
     DVIR_VIOLATION("Driver Vehicle Inspection Reports - Violations","driverVehicleViolationInspectionReport.jrxml","driverVehicleViolationInspectionReport.jrxml","dvir"),
     DVIR_REPAIR("Driver Vehicle Inspeciton Reports - Inspection Repair Complete", "driverVehicleInspectionRepairComplete.jrxml","driverVehicleInspectionRepairComplete.jrxml","dvir"),
-    DVIR_REPAIR_DETAIL("Driver Vehicle Inspeciton Reports - Inspection Repair Complete With Details", "driverVehicleInspectionRepairCompleteDetailed.jrxml","driverVehicleInspectionRepairCompleteDetailed.jrxml","dvir");
-    
+    DVIR_REPAIR_DETAIL("Driver Vehicle Inspeciton Reports - Inspection Repair Complete With Details", "driverVehicleInspectionRepairCompleteDetailed.jrxml","driverVehicleInspectionRepairCompleteDetailed.jrxml","dvir"),
+
+    //MAINTENANCE
+    VEHICLE_MAINTENANCE_EVENTS_REPORT("Vehicle Maintenance Events Report","vehicleMaintenanceEventsReport.jrxml","vehicleMaintenanceEventsReportRaw.jrxml", "performance","com.inthinc.pro.reports.jasper.performance.i18n.maintenanceEventsReport"),
+    VEHICLE_MAINTENANCE_INTERVAL_REPORT("Vehicle Maintenance Interval Report","vehicleMaintenanceIntervalReport.jrxml","vehicleMaintenanceIntervalReportRaw.jrxml", "performance","com.inthinc.pro.reports.jasper.performance.i18n.maintenanceIntervalReport");
+
     private String prettyTemplate;
     private String rawTemplate;
     private String label;

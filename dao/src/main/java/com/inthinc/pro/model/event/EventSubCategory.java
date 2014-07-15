@@ -69,7 +69,15 @@ public enum EventSubCategory implements BaseEnum
                     AlertMessageType.ALERT_TYPE_DVIR_DRIVEN_INSPECTED_UNSAFE,AlertMessageType.ALERT_TYPE_DVIR_DRIVEN_WITHOUT_INSPECTION,
                     AlertMessageType.ALERT_TYPE_DVIR_NO_POST_TRIP_INSPECTION, AlertMessageType.ALERT_TYPE_DVIR_REPAIR)),
     REVERSE(15,EnumSet.of(EventType.BACKING), null),
-    TRAILER(16, EnumSet.of(EventType.TRAILER_DATA, EventType.TRAILER_PROGRAMMED), null);
+    TRAILER(16, EnumSet.of(EventType.TRAILER_DATA, EventType.TRAILER_PROGRAMMED), null),
+    CONDITIONAL(17,
+                EnumSet.of(EventType.RED_STOP,EventType.AMBER_WARNING,EventType.PROTECT,EventType.BATTERY_VOLTAGE, EventType.ENGINE_TEMP, EventType.TRANSMISSION_TEMP, EventType.DPF_FLOW_RATE,
+                EventType.OIL_PRESSURE,EventType.MALFUNCTION_INDICATOR_LAMP, EventType.CHECK_ENGINE),
+    EnumSet.of(AlertMessageType.ATTR_RED_STOP,AlertMessageType.ATTR_AMBER_WARNING,AlertMessageType.ATTR_PROTECT,AlertMessageType.ATTR_BATTERY_VOLTAGE,AlertMessageType.ATTR_ENGINE_TEMP,AlertMessageType.ATTR_TRANSMISSION_TEMP,AlertMessageType.ATTR_DPF_FLOW_RATE,
+    AlertMessageType.ATTR_OIL_PRESSURE,AlertMessageType.ATTR_MALFUNCTION_INDICATOR_LAMP,AlertMessageType.ATTR_CHECK_ENGINE)),
+    PREVENTATIVE_MAINTENANCE(18,  EnumSet.of(EventType.ATTR_ENGINE_HOURS), EnumSet.of(AlertMessageType.ATTR_ENGINE_HOURS));
+//    NOTIFICATION_MAINTENANCE(19,EnumSet.of(EventType.RED_STOP,EventType.AMBER_WARNING,EventType.PROTECT),
+//    EnumSet.of(AlertMessageType.ATTR_RED_STOP,AlertMessageType.ATTR_AMBER_WARNING,AlertMessageType.ATTR_PROTECT));
     
     private int code;
     private Set<EventType> eventTypeSet;
