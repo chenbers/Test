@@ -80,7 +80,10 @@ public enum EventType implements BaseEnum {
     ATTR_ENGINE_HOURS(64),
     RED_STOP(65),
     AMBER_WARNING(66),
-    PROTECT(67);
+    PROTECT(67),
+    CHECK_ENGINE_LIGHT(68),
+    STOP_ENGINE_LIGHT(69);
+
 
 
     private int code;
