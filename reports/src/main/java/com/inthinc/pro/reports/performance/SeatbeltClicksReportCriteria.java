@@ -144,8 +144,8 @@ public class SeatbeltClicksReportCriteria extends ReportCriteria {
                 criteria.addDateParameter(REPORT_END_DATE, timeFrame.getInterval().getEnd().minusSeconds(1).toDate(), this.dateTimeZone.toTimeZone());
             }
             else{
-                criteria.addDateParameter(REPORT_START_DATE, interval.getStart().toDate(), this.dateTimeZone.toTimeZone());
-                criteria.addDateParameter(REPORT_END_DATE, interval.getEnd().minusSeconds(1).toDate(), this.dateTimeZone.toTimeZone());
+                criteria.addDateParameter(REPORT_START_DATE, interval.getStart().toDate(),DateTimeZone.UTC.toTimeZone());
+                criteria.addDateParameter(REPORT_END_DATE, interval.getEnd().minusSeconds(1).toDate(), DateTimeZone.UTC.toTimeZone());
             }
                 criteria.setUseMetric(measurementType == MeasurementType.METRIC);
             return criteria;
