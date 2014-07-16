@@ -64,7 +64,7 @@
 			<h:outputText value="#{messageSecPhone}:"/>
 			<h:outputText value="#{driver.person.secPhone}" converter="PhoneNumberConverter" />
 			<h:outputText value="#{messageVehicle}:"/>	
-				<pretty:link id="driverBubbleVehicle" mappingId="vehiclePerformance">
+				<pretty:link id="driverBubbleVehicle" mappingId="vehiclePerformance" rendered="#{not empty vehicle}">
                      <h:outputText value="#{vehicle.name}"/>
                      <f:param value="#{vehicle.vehicleID}"/>
                 </pretty:link>
