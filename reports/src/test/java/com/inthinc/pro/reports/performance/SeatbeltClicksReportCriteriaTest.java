@@ -17,6 +17,7 @@ import com.inthinc.pro.reports.ReportType;
 import com.inthinc.pro.reports.hos.testData.MockData;
 import mockit.Expectations;
 import mockit.Mocked;
+import org.joda.time.Interval;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -43,6 +44,7 @@ public class SeatbeltClicksReportCriteriaTest extends BasePerformanceUnitTest {
     private static final TimeFrame TIME_FRAME = TimeFrame.TODAY;
     private static final MeasurementType MEASUREMENT_TYPE = MeasurementType.ENGLISH;
     private static final Driver DRIVER;
+    private static Interval interval;
 
     // criteria
     private static SeatbeltClicksReportCriteria seatbeltClicksReportCriteria;
@@ -83,7 +85,7 @@ public class SeatbeltClicksReportCriteriaTest extends BasePerformanceUnitTest {
         };
 
         // Build seatbeltClicksReportCriteria (and exercise code)
-        SeatbeltClicksReportCriteria.Builder seatbeltClickReportCriteriaBuilder = new SeatbeltClicksReportCriteria.Builder(groupHierarchyMock, groupReportDAOMock, GROUP_ID, TIME_FRAME, MEASUREMENT_TYPE);
+        SeatbeltClicksReportCriteria.Builder seatbeltClickReportCriteriaBuilder = new SeatbeltClicksReportCriteria.Builder(groupHierarchyMock, groupReportDAOMock, GROUP_ID, TIME_FRAME,interval, MEASUREMENT_TYPE);
         seatbeltClickReportCriteriaBuilder.setLocale(LOCALE);
         seatbeltClicksReportCriteria = seatbeltClickReportCriteriaBuilder.build();
 
