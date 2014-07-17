@@ -193,8 +193,8 @@ public class DriverCoachingReportCriteria extends ReportCriteria{
             List<ReportCriteria> driverCoachingReportCriterias = new ArrayList<ReportCriteria>();
             
             /* 
-             * Iterate over the driver performances and place the individual driver stats into a spererate collection which the report will be able 
-             * to iterate over.
+             * Iterate over the driver performances and place the individual driver stats 
+             * into a separate collection over which the report can iterate.
              */
             List<DriverPerformance> driverPerformances =  driverPerformanceDAO.getDriverPerformanceListForGroup(groupID, null, interval, includeInactiveDrivers, includeZeroMilesDrivers);
             for(DriverPerformance driverPerformance:driverPerformances){
@@ -213,6 +213,17 @@ public class DriverCoachingReportCriteria extends ReportCriteria{
                     driverCoachingReportCriterias.add(driverCoachingReportCriteria);
                 }
             }
+            
+            /*
+             * If there were no drivers stats, we still need to pass a single empty
+             * criteria so the report can return an error message instead of silently
+             * failing and returning an empty report.
+             */
+            if(driverCoachingReportCriterias.size() == 0) {
+                DriverCoachingReportCriteria emptyCriteria = new DriverCoachingReportCriteria(locale);
+                driverCoachingReportCriterias.add(emptyCriteria);
+            }
+            
             return driverCoachingReportCriterias;
         }
         
