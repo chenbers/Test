@@ -1,6 +1,7 @@
 package com.inthinc.pro.reports;
 
 import com.inthinc.pro.model.Duration;
+import com.inthinc.pro.model.TimeFormatType;
 import com.inthinc.pro.model.TimeFrame;
 
 public enum CriteriaType
@@ -18,8 +19,10 @@ public enum CriteriaType
     
     INACTIVE_DRIVERS(null),
     INACTIVE_DRIVERS_DECIMAL_TIME(null),
+    FILEFORMAT(TimeFormatType.class),
+
     ZERO_MILES_DRIVERS(null);
-    
+
     private Class clazz;
 
     private CriteriaType(Class clazz){

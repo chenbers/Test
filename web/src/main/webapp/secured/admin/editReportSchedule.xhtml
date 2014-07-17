@@ -264,7 +264,23 @@
 										</td>
 									</tr>
 								</h:outputText>
-								<h:outputText rendered="#{criteria eq 'TIMEFRAME' || criteria eq 'TIMEFRAME_STRICT'}">
+                                <h:outputText rendered="#{criteria eq 'TIMEFRAME'  || criteria eq 'TIMEFRAME_STRICT' }">
+                                    <!--decimal hours-->
+                                    <h:outputText rendered="#{reportScheduleBean.item.report.label eq 'Payroll Report Summary' || reportScheduleBean.item.report.label eq 'Payroll Compensated Hours' || reportScheduleBean.item.report.label eq 'Payroll Report Driver Detail' || reportScheduleBean.item.report.label eq 'Payroll Report Driver Signoff' }">
+                                      <tr>
+                                          <td valign="top">
+                                              <h:outputText value="#{messages.reportSchedule_timeFormat}"/>
+                                          </td>
+                                          <td>
+                                              <rich:message for="editReportSchedule-reportTimeFormat" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
+                                              <h:selectOneMenu id="editReportSchedule-reportTimeFormat" value="#{reportScheduleBean.item.timeFormatType}" converter="SimpleBeanConverter" required="true" requiredMessage="#{messages.required}">
+                                                  <!--<f:selectItems value="#{reportScheduleBean.timeFrameSelect.timeFrames}"/>-->
+                                                  <f:selectItems value="#{reportScheduleBean.timeFormatType}"/>
+                                              </h:selectOneMenu>
+                                          </td>
+                                      </tr>
+                                    </h:outputText>
+                                    <!--decimal hours -->
 									<tr>
 										<td valign="top">
 											<h:outputText value="#{messages.reportSchedule_daysReported}"/>

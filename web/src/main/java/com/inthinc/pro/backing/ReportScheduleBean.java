@@ -19,6 +19,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.model.SelectItem;
 import javax.faces.model.SelectItemGroup;
 
+import com.inthinc.pro.model.*;
 import com.inthinc.pro.reports.FormatType;
 import org.apache.log4j.Logger;
 import org.joda.time.DateMidnight;
@@ -34,20 +35,6 @@ import com.inthinc.pro.dao.GroupDAO;
 import com.inthinc.pro.dao.ReportScheduleDAO;
 import com.inthinc.pro.dao.VehicleDAO;
 import com.inthinc.pro.dao.annotations.Column;
-import com.inthinc.pro.model.Driver;
-import com.inthinc.pro.model.Duration;
-import com.inthinc.pro.model.EntityType;
-import com.inthinc.pro.model.Group;
-import com.inthinc.pro.model.GroupHierarchy;
-import com.inthinc.pro.model.GroupType;
-import com.inthinc.pro.model.Occurrence;
-import com.inthinc.pro.model.ReportManagerDeliveryType;
-import com.inthinc.pro.model.ReportParamType;
-import com.inthinc.pro.model.ReportSchedule;
-import com.inthinc.pro.model.Status;
-import com.inthinc.pro.model.TableType;
-import com.inthinc.pro.model.User;
-import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.reports.ReportCategory;
 import com.inthinc.pro.reports.ReportGroup;
 import com.inthinc.pro.util.BeanUtil;
@@ -923,7 +910,9 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
     public List<SelectItem> getManagerDeliveryTypes() {
         return SelectItemUtil.toList(ReportManagerDeliveryType.class, false);
     }
-
+    public List<SelectItem> getTimeFormatType() {
+        return SelectItemUtil.toList(TimeFormatType.class, false);
+    }
     public static class ReportScheduleView extends ReportSchedule implements EditItem {
         // private static final long serialVersionUID = 8954277815270194338L;
 

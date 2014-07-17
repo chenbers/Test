@@ -297,6 +297,14 @@ public class ReportSchedule implements Cloneable {
 
         return (duration == null) ? null : TimeFrame.valueOf(duration);
     }
+    public void setTimeFormatType(TimeFormatType timeFormatType) {
+        this.duration = (timeFormatType == null) ? null : timeFormatType.getCode();
+    }
+
+    public TimeFormatType getTimeFormatType() {
+
+        return (duration == null) ? null : TimeFormatType.valueOf(duration);
+    }
 
     public void setOccurrence(Occurrence occurrence) {
         this.occurrence = occurrence;
