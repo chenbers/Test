@@ -449,7 +449,7 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
                 reportSchedule.setGroupName(group.getName());
             }
             reportSchedule.setListDisplay(getListDisplay(reportSchedule));
-
+            reportSchedule.setTimeFormatType(reportSchedule.getTimeFormatType());
             // add a message
             final String summary = MessageUtil.formatMessageString(create ? "reportSchedule_added" : "reportSchedule_updated", reportSchedule.getName());
             addInfoMessage(summary);
@@ -702,6 +702,7 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
                 reportScheduleView.setGroupName(group.getName());
             }
         }
+        reportScheduleView.setTimeFormatType(reportScheduleView.getTimeFormatType());
         reportScheduleView.setListDisplay(getListDisplay(reportScheduleView));
         if (reportSchedule.getStartDate() != null && reportSchedule.getOccurrence().equals(Occurrence.MONTHLY)) {
             Calendar calendar = Calendar.getInstance(getUtcTimeZone());
@@ -942,6 +943,8 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
         private List<String> driverIDSelectList;
         @Column(updateable = false)
         private String[] listDisplay;
+        @Column(updateable = false)
+        private TimeFormatType timeFormat;
 
         public String[] getListDisplay() {
             return listDisplay;

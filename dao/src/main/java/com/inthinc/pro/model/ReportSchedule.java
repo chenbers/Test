@@ -47,6 +47,7 @@ public class ReportSchedule implements Cloneable {
     private Status status;
     private Integer duration;
     private String format;
+    private Integer codeTimeFormat;
 
     
 
@@ -298,12 +299,12 @@ public class ReportSchedule implements Cloneable {
         return (duration == null) ? null : TimeFrame.valueOf(duration);
     }
     public void setTimeFormatType(TimeFormatType timeFormatType) {
-        this.duration = (timeFormatType == null) ? null : timeFormatType.getCode();
+        this.codeTimeFormat= (timeFormatType == null) ? null : timeFormatType.getCode();
     }
 
     public TimeFormatType getTimeFormatType() {
 
-        return (duration == null) ? null : TimeFormatType.valueOf(duration);
+        return (codeTimeFormat == null) ? null : TimeFormatType.valueOf(codeTimeFormat);
     }
 
     public void setOccurrence(Occurrence occurrence) {
@@ -344,6 +345,14 @@ public class ReportSchedule implements Cloneable {
 
     public void setGroupIDList(List<Integer> groupIDList) {
         this.groupIDList = groupIDList;
+    }
+
+    public Integer getCodeTimeFrame() {
+        return codeTimeFormat;
+    }
+
+    public void setCodeTimeFrame(Integer codeTimeFrame) {
+        this.codeTimeFormat = codeTimeFrame;
     }
 
     public List<Integer> getDriverIDList() {
