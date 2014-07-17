@@ -787,7 +787,9 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
         private boolean           selected;
         @Column(updateable = false)
         private String           driverName;
+        @Column(updateable = false)
         private String product;
+        @Column(updateable = false)
         private String dot;
         private String           country;
 

@@ -56,7 +56,7 @@ public class EventCategoryTest {
             5,  //  DVIR
     		4,	//  EMERGENCY
     		2,	//  HOS
-    		2,	//  NONE
+    		4,	//  NONE
     		1,	//  TEXT
     		11,	//  VIOLATION
     		20,	//  WARNING

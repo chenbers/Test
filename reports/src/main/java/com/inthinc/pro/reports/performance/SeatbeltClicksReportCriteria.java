@@ -19,6 +19,7 @@ import com.inthinc.pro.reports.ReportCriteria;
 import com.inthinc.pro.reports.ReportType;
 import com.inthinc.pro.model.aggregation.DriverVehicleScoreWrapper;
 import com.inthinc.pro.model.aggregation.Score;
+import org.joda.time.Interval;
 
 public class SeatbeltClicksReportCriteria extends ReportCriteria {
 
@@ -49,11 +50,13 @@ public class SeatbeltClicksReportCriteria extends ReportCriteria {
 
         private Boolean includeZeroMilesDrivers;
 
-        public Builder(GroupHierarchy groupHierarchy, GroupReportDAO groupReportDAO, Integer groupID, TimeFrame timeFrame, MeasurementType measurementType) {
-            this(groupHierarchy, groupReportDAO, groupID, timeFrame, measurementType, ReportCriteria.DEFAULT_EXCLUDE_INACTIVE_DRIVERS, ReportCriteria.DEFAULT_EXCLUDE_ZERO_MILES_DRIVERS);
+        private Interval interval;
+
+        public Builder(GroupHierarchy groupHierarchy, GroupReportDAO groupReportDAO, Integer groupID, TimeFrame timeFrame, Interval interval, MeasurementType measurementType) {
+            this(groupHierarchy, groupReportDAO, groupID, timeFrame, interval,measurementType, ReportCriteria.DEFAULT_EXCLUDE_INACTIVE_DRIVERS, ReportCriteria.DEFAULT_EXCLUDE_ZERO_MILES_DRIVERS);
         }
 
-        public Builder(GroupHierarchy groupHierarchy, GroupReportDAO groupReportDAO, Integer groupID, TimeFrame timeFrame, MeasurementType measurementType, boolean includeInactiveDrivers, boolean includeZeroMilesDrivers) {
+        public Builder(GroupHierarchy groupHierarchy, GroupReportDAO groupReportDAO, Integer groupID, TimeFrame timeFrame, Interval interval, MeasurementType measurementType, boolean includeInactiveDrivers, boolean includeZeroMilesDrivers) {
             this.dateTimeZone = DateTimeZone.UTC;
             this.locale = Locale.US;
             this.groupID = groupID;
@@ -63,6 +66,7 @@ public class SeatbeltClicksReportCriteria extends ReportCriteria {
             this.includeInactiveDrivers = includeInactiveDrivers;
             this.includeZeroMilesDrivers = includeZeroMilesDrivers;
             this.measurementType = measurementType;
+            this.interval = interval;
         }
 
         public void setDateTimeZone(DateTimeZone dateTimeZone) {
@@ -101,7 +105,14 @@ public class SeatbeltClicksReportCriteria extends ReportCriteria {
             logger.debug(String.format("Building SeatbeltClicksCriteria with locale %s", locale));
             List<DriverVehicleScoreWrapper> resultsList = new ArrayList<DriverVehicleScoreWrapper>();
 
-            resultsList = groupReportDAO.getDriverScores(groupID, timeFrame.getInterval(), groupHierarchy);
+            if (timeFrame != null && !timeFrame.equals(TimeFrame.CUSTOM_RANGE))
+            {
+                resultsList = groupReportDAO.getDriverScores(groupID, timeFrame.getInterval(), groupHierarchy);
+            }
+            else {
+                resultsList = groupReportDAO.getDriverScores(groupID, interval, groupHierarchy);
+
+            }
 
             List<SeatbeltClicksReportCriteria.SeatbeltClicksWrapper> seatbeltClicksWrappers = new ArrayList<SeatbeltClicksReportCriteria.SeatbeltClicksWrapper>();
             for (DriverVehicleScoreWrapper dvsw : resultsList) {
@@ -126,11 +137,17 @@ public class SeatbeltClicksReportCriteria extends ReportCriteria {
 
             SeatbeltClicksReportCriteria criteria = new SeatbeltClicksReportCriteria(this.locale);
             criteria.setMainDataset(seatbeltClicksWrappers);
-            criteria.addDateParameter(REPORT_START_DATE, timeFrame.getInterval().getStart().toDate(), this.dateTimeZone.toTimeZone());
 
-            /* The interval returns for the end date the beginning of the next day. We minus a second to get the previous day */
-            criteria.addDateParameter(REPORT_END_DATE, timeFrame.getInterval().getEnd().minusSeconds(1).toDate(), this.dateTimeZone.toTimeZone());
-            criteria.setUseMetric(measurementType == MeasurementType.METRIC);
+            if (timeFrame != null && !timeFrame.equals(TimeFrame.CUSTOM_RANGE))
+            {
+                criteria.addDateParameter(REPORT_START_DATE, timeFrame.getInterval().getStart().toDate(), this.dateTimeZone.toTimeZone());
+                criteria.addDateParameter(REPORT_END_DATE, timeFrame.getInterval().getEnd().minusSeconds(1).toDate(), this.dateTimeZone.toTimeZone());
+            }
+            else{
+                criteria.addDateParameter(REPORT_START_DATE, interval.getStart().toDate(), this.dateTimeZone.toTimeZone());
+                criteria.addDateParameter(REPORT_END_DATE, interval.getEnd().minusSeconds(1).toDate(), this.dateTimeZone.toTimeZone());
+            }
+                criteria.setUseMetric(measurementType == MeasurementType.METRIC);
             return criteria;
 
         }
