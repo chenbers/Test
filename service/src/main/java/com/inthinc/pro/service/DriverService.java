@@ -133,7 +133,7 @@ public interface DriverService {
      * @HTTP HTTP 404 - NOT FOUND if no location found 
      */
     @GET
-    @Path("/driver/{driverID}/location")
+    @Path("/driver/{driverID}/lastlocation")
     Response getLastLocation(@PathParam("driverID") Integer driverID);
 
     /**
