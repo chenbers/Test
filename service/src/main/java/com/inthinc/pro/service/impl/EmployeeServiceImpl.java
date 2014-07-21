@@ -1,5 +1,6 @@
 package com.inthinc.pro.service.impl;
 
+import com.inthinc.pro.dao.hessian.exceptions.EmptyResultSetException;
 import com.inthinc.pro.dao.hessian.exceptions.ProxyException;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.DriverLocation;
@@ -47,7 +48,13 @@ public class EmployeeServiceImpl extends AbstractService<Driver, DriverDAOAdapte
 
     @Override
     public Response get(String employeeID) {
-        Integer driverID = getDao().getDriverIDByEmpID(employeeID);
+        Integer driverID = null;
+        try {
+            driverID = getDao().getDriverIDByEmpID(employeeID);
+        } catch(EmptyResultSetException e){
+            return Response.status(Status.NOT_FOUND).build();
+        }
+
         if (driverID != null) {
             Driver driver = getDao().findByID(driverID);
             if (driver != null)
@@ -59,7 +66,13 @@ public class EmployeeServiceImpl extends AbstractService<Driver, DriverDAOAdapte
 
     @Override
     public Response getSpeedingEvents(String employeeID) {
-        Integer driverID = getDao().getDriverIDByEmpID(employeeID);
+        Integer driverID = null;
+        try {
+            driverID = getDao().getDriverIDByEmpID(employeeID);
+        } catch(EmptyResultSetException e){
+            return Response.status(Status.NOT_FOUND).build();
+        }
+
         if (driverID != null) {
             List<Event> eventList = getDao().getSpeedingEvents(driverID);
             if (eventList != null && !eventList.isEmpty()) {
@@ -92,9 +105,14 @@ public class EmployeeServiceImpl extends AbstractService<Driver, DriverDAOAdapte
 
     @Override
     public Response getScore(String employeeID, Integer numberOfDays) {
-        Integer driverID = getDao().getDriverIDByEmpID(employeeID);
-        if (driverID != null) {
+        Integer driverID = null;
+        try {
+            driverID = getDao().getDriverIDByEmpID(employeeID);
+        } catch(EmptyResultSetException e){
+            return Response.status(Status.NOT_FOUND).build();
+        }
 
+        if (driverID != null) {
             Duration duration = Duration.getDurationByDays(numberOfDays);
             if (duration != null) {
                 Score score = getDao().getScore(driverID, duration);
@@ -108,7 +126,13 @@ public class EmployeeServiceImpl extends AbstractService<Driver, DriverDAOAdapte
     @Override
     public Response getScore(String employeeID, String month) {
         try {
-            Integer driverID = getDao().getDriverIDByEmpID(employeeID);
+            Integer driverID = null;
+            try {
+                driverID = getDao().getDriverIDByEmpID(employeeID);
+            } catch(EmptyResultSetException e){
+                return Response.status(Status.NOT_FOUND).build();
+            }
+
             if (driverID != null) {
 
                 Interval interval = DateUtil.getIntervalFromMonth(month);
@@ -145,7 +169,13 @@ public class EmployeeServiceImpl extends AbstractService<Driver, DriverDAOAdapte
 
     @Override
     public Response getTrend(String employeeID, Integer numberOfDays) {
-        Integer driverID = getDao().getDriverIDByEmpID(employeeID);
+        Integer driverID = null;
+        try {
+            driverID = getDao().getDriverIDByEmpID(employeeID);
+        } catch(EmptyResultSetException e){
+            return Response.status(Status.NOT_FOUND).build();
+        }
+
         if (driverID != null) {
             Duration duration = Duration.getDurationByDays(numberOfDays);
             if (duration != null) {
@@ -167,7 +197,13 @@ public class EmployeeServiceImpl extends AbstractService<Driver, DriverDAOAdapte
     public Response getLastTrip(String employeeID) {
         if (employeeID != null) {
             try {
-                Integer driverID = getDao().getDriverIDByEmpID(employeeID);
+                Integer driverID = null;
+                try {
+                    driverID = getDao().getDriverIDByEmpID(employeeID);
+                } catch(EmptyResultSetException e){
+                    return Response.status(Status.NOT_FOUND).build();
+                }
+
                 if (driverID != null) {
                     Trip trip = this.getDao().getLastTrip(driverID);
                     if (trip != null)
@@ -195,7 +231,13 @@ public class EmployeeServiceImpl extends AbstractService<Driver, DriverDAOAdapte
         Date today = new Date();
 
         if (employeeID != null && startDate != null) {
-            Integer driverID = getDao().getDriverIDByEmpID(employeeID);
+            Integer driverID = null;
+            try {
+                driverID = getDao().getDriverIDByEmpID(employeeID);
+            } catch(EmptyResultSetException e){
+                return Response.status(Status.NOT_FOUND).build();
+            }
+
             if (driverID != null) {
                 long diff = today.getTime() - startDate.getTime();
                 long diffDays = diff / (1000 * 60 * 60 * 24);
@@ -251,7 +293,13 @@ public class EmployeeServiceImpl extends AbstractService<Driver, DriverDAOAdapte
     @Override
     public Response getLastLocation(String employeeID) {
         if (employeeID != null) {
-            Integer driverID = getDao().getDriverIDByEmpID(employeeID);
+            Integer driverID = null;
+            try {
+                driverID = getDao().getDriverIDByEmpID(employeeID);
+            } catch(EmptyResultSetException e){
+                return Response.status(Status.NOT_FOUND).build();
+            }
+
             if (driverID != null) {
                 LastLocation location = this.getDao().getLastLocation(driverID);
                 if (location != null)
@@ -292,7 +340,13 @@ public class EmployeeServiceImpl extends AbstractService<Driver, DriverDAOAdapte
         if (!validDateRange(fromDate, toDate)) return Response.status(Status.BAD_REQUEST).build();
 
         if (employeeID != null && fromDate != null && toDate != null) {
-            Integer driverID = getDao().getDriverIDByEmpID(employeeID);
+            Integer driverID = null;
+            try {
+                driverID = getDao().getDriverIDByEmpID(employeeID);
+            } catch(EmptyResultSetException e){
+                return Response.status(Status.NOT_FOUND).build();
+            }
+
             if (driverID != null) {
                 long diff = toDate.getTime() - fromDate.getTime();
                 long diffDays = diff / (1000 * 60 * 60 * 24);
