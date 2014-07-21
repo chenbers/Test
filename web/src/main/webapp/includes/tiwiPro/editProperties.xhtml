@@ -11,7 +11,7 @@
                   <td width="100" valign="top">
                     <ui:include src="../../includes/admin/inputLabel.xhtml">
 						<ui:param name="required" value="TRUE"/>
-						<ui:param name="for" value="editVehicle-type"/>
+						<ui:param name="forId" value="editVehicle-type"/>
 						<ui:param name="fieldName" value="vtype"/>
 						<ui:param name="editBean" value="#{vehiclesBean}"/>
 						<ui:param name="label" value="#{messages.editVehicle_type}"/>
@@ -28,7 +28,7 @@
                 <td width="100" valign="top">
                   <ui:include src="../../includes/admin/inputLabel.xhtml">
                        <ui:param name="required" value="TRUE"/>
-                       <ui:param name="for" value="editVehicle-ephone"/>
+                       <ui:param name="forId" value="editVehicle-ephone"/>
                        <ui:param name="fieldName" value="ephone"/>
                        <ui:param name="editBean" value="#{vehiclesBean}"/>
                        <ui:param name="label" value="#{messages.editDevice_ephone}"/>
@@ -47,7 +47,7 @@
                 <td width="100" valign="top">
                   <ui:include src="../../includes/admin/inputLabel.xhtml">
                        <ui:param name="required" value="FALSE"/>
-                       <ui:param name="for" value="editVehicle-autoLogoff"/>
+                       <ui:param name="forId" value="editVehicle-autoLogoff"/>
                        <ui:param name="fieldName" value="autoLogoff"/>
                        <ui:param name="editBean" value="#{vehiclesBean}"/>
                        <ui:param name="label" value="#{messages.editDevice_autoLogoff}"/>
