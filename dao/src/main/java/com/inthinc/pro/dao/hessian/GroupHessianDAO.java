@@ -17,10 +17,22 @@ public class GroupHessianDAO extends GenericHessianDAO<Group, Integer> implement
     private AddressDAO addressDAO;
     
     @Override
-    public Integer create(Integer acctID, Group group)
-    {
-    	createAddressIfNeeded(acctID, group);
-    	group.setName(group.getName() == null ? "" : group.getName().trim());
+    public Integer create(Integer acctID, Group group) {
+        String createdGLCode = group.getGlCode();
+
+        if (createdGLCode == null || createdGLCode.isEmpty()) {
+
+            Group parent = findByID(group.getParentID());
+            if (parent != null) {
+                String parentGLCode = parent.getGlCode();
+                if (parentGLCode != null && !parentGLCode.isEmpty()) {
+                    group.setGlCode(parentGLCode);
+                }
+            }
+        }
+
+        createAddressIfNeeded(acctID, group);
+        group.setName(group.getName() == null ? "" : group.getName().trim());
         return super.create(acctID, group);
     }
     private void createAddressIfNeeded(Integer acctID, Group group){
