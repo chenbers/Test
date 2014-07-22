@@ -212,7 +212,7 @@ public class DriverDAOAdapter extends BaseDAOAdapter<Driver> {
     public Driver getDriverByEmpID(String empID) {
         Person person = personDAO.findByEmpID(getAccountID(), empID);
         if (person != null) {
-            Driver driver = driverDAO.findByPersonID(person.getDriverID());
+            Driver driver = driverDAO.findByPersonID(person.getPersonID());
             if (driver != null) {
                 return driver;
             }
