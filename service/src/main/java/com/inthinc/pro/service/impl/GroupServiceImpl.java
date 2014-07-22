@@ -12,6 +12,7 @@ import javax.ws.rs.core.UriInfo;
 
 import com.inthinc.pro.model.CustomDuration;
 import com.inthinc.pro.model.aggregation.Score;
+import com.inthinc.pro.util.BeanUtil;
 import org.jboss.resteasy.spi.BadRequestException;
 import org.joda.time.Interval;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,6 +51,18 @@ public class GroupServiceImpl extends AbstractService<Group, GroupDAOAdapter> im
         for (Group group : list) {
             group.setManagerID(adjustForDeletedManager(group.getManagerID()));
         }
+    }
+
+    /**
+     * Makes all underlying trend lists not null.
+     *
+     * @param wrapperList wrapper list
+     * @return wrapper list with underlying trend lists having not null fields.
+     */
+    private List<GroupTrendWrapper> makeUnderlyingTrendListsNotNull(List<GroupTrendWrapper> wrapperList){
+        for (GroupTrendWrapper wr: wrapperList)
+            wr.setTrendList(BeanUtil.makeListValuesNotNull(wr.getTrendList()));
+        return wrapperList;
     }
 
     @Override
@@ -216,14 +229,14 @@ public class GroupServiceImpl extends AbstractService<Group, GroupDAOAdapter> im
         if (duration != null) {
             List<GroupTrendWrapper> list = getDao().getChildGroupsDriverTrends(groupID, duration);
             if (list != null && !list.isEmpty())
-                return Response.ok(new GenericEntity<List<GroupTrendWrapper>>(list) {}).build();
+                return Response.ok(new GenericEntity<List<GroupTrendWrapper>>(makeUnderlyingTrendListsNotNull(list)) {}).build();
         }
 
         CustomDuration customDuration = CustomDuration.getDurationByDays(numberOfDays);
         if (customDuration != null) {
             List<GroupTrendWrapper> list = getDao().getChildGroupsDriverTrends(groupID, customDuration);
             if (list != null && !list.isEmpty())
-                return Response.ok(new GenericEntity<List<GroupTrendWrapper>>(list) {}).build();
+                return Response.ok(new GenericEntity<List<GroupTrendWrapper>>(makeUnderlyingTrendListsNotNull(list)) {}).build();
         }
         return Response.status(Status.NOT_FOUND).build();
     }

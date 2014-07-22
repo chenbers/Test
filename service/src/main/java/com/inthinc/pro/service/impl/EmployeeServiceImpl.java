@@ -13,6 +13,7 @@ import com.inthinc.pro.model.event.Event;
 import com.inthinc.pro.service.EmployeeService;
 import com.inthinc.pro.service.adapters.DriverDAOAdapter;
 import com.inthinc.pro.service.model.BatchResponse;
+import com.inthinc.pro.util.BeanUtil;
 import com.inthinc.pro.util.DateUtil;
 import org.apache.log4j.Logger;
 import org.joda.time.Interval;
@@ -151,7 +152,7 @@ public class EmployeeServiceImpl extends AbstractService<Driver, DriverDAOAdapte
             if (duration != null) {
                 List<Trend> list = getDao().getTrend(driverID, duration);
                 if (!list.isEmpty())
-                    return Response.ok(new GenericEntity<List<Trend>>(list) {
+                    return Response.ok(new GenericEntity<List<Trend>>(BeanUtil.makeListValuesNotNull(list)) {
                     }).build();
             }
         }

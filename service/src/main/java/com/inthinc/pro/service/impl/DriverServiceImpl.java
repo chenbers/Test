@@ -15,6 +15,7 @@ import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.core.Response.Status;
 
 import com.inthinc.pro.model.CustomDuration;
+import com.inthinc.pro.util.BeanUtil;
 import org.apache.log4j.Logger;
 import org.joda.time.Interval;
 import org.springframework.security.AccessDeniedException;
@@ -130,14 +131,14 @@ public class DriverServiceImpl extends AbstractService<Driver, DriverDAOAdapter>
         if (duration != null) {
             List<Trend> list = getDao().getTrend(driverID, duration);
             if (!list.isEmpty())
-                return Response.ok(new GenericEntity<List<Trend>>(list) {}).build();
+                return Response.ok(new GenericEntity<List<Trend>>(BeanUtil.makeListValuesNotNull(list)) {}).build();
         }
 
         CustomDuration customDuration = CustomDuration.getDurationByDays(numberOfDays);
         if (customDuration != null) {
             List<Trend> list = getDao().getTrend(driverID, customDuration);
             if (!list.isEmpty())
-                return Response.ok(new GenericEntity<List<Trend>>(list) {}).build();
+                return Response.ok(new GenericEntity<List<Trend>>(BeanUtil.makeListValuesNotNull(list)) {}).build();
         }
 
         return Response.status(Status.NOT_FOUND).build();
