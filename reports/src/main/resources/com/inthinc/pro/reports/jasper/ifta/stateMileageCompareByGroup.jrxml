@@ -418,19 +418,6 @@
 	</summary>
 	<noData>
 		<band height="200">
-			<textField isBlankWhenNull="false">
-				<reportElement key="textField-3" x="317" y="0" width="465" height="40"/>
-				<box>
-					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="0.0" lineColor="#000000"/>
-					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-				</box>
-				<textElement textAlignment="Right">
-					<font size="20" isBold="true" pdfFontName="Helvetica-Bold"/>
-				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[msg($R{title.stateMileageCompareByGroup}, ($P{iftaVehiclesOnly}==0?"":"IFTA "))]]></textFieldExpression>
-			</textField>
 			<image scaleImage="RetainShape">
 				<reportElement key="image-1" x="3" y="0" width="300" height="40">
 					<printWhenExpression><![CDATA[new Boolean($P{REPORT_LOGO_IMG} != null)]]></printWhenExpression>
@@ -468,6 +455,19 @@
 					<font size="12" isBold="true"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$R{noData}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField-3" x="163" y="0" width="619" height="40"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right">
+					<font size="20" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[msg($R{title.stateMileageCompareByGroup}, ($P{iftaVehiclesOnly}==0?"":"IFTA "))]]></textFieldExpression>
 			</textField>
 		</band>
 	</noData>
