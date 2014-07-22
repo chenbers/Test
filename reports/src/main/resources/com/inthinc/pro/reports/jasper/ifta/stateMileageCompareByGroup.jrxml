@@ -429,7 +429,7 @@
 				<textElement textAlignment="Right">
 					<font size="20" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$R{title.stateMileageCompareByGroup}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[msg($R{title.stateMileageCompareByGroup}, ($P{iftaVehiclesOnly}==0?"":"IFTA "))]]></textFieldExpression>
 			</textField>
 			<image scaleImage="RetainShape">
 				<reportElement key="image-1" x="3" y="0" width="300" height="40">
