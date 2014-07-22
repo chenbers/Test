@@ -76,7 +76,7 @@ public enum ReportGroup {
             GroupType.TEAM }, ReportCategory.Mileage, EnumSet.of(ReportAccountType.PERFORMANCE), ReportType.STATE_MILEAGE_BY_VEHICLE_NON_IFTA),
 
     /* Communication */
-    NON_COMM("Vehicles Not Communicating Report", 27, EntityType.ENTITY_GROUP, new CriteriaType[] { CriteriaType.TIMEFRAME_STRICT }, new GroupType[] { GroupType.DIVISION, GroupType.FLEET,
+    NON_COMM("Vehicles Not Communicating Report", 27, EntityType.ENTITY_GROUP, new CriteriaType[] { CriteriaType.TIMEFRAME_ALT_PLUS_CUSTOM_RANGE }, new GroupType[] { GroupType.DIVISION, GroupType.FLEET,
             GroupType.TEAM }, ReportCategory.Communication, EnumSet.of(ReportAccountType.PERFORMANCE), ReportType.NON_COMM),
 
     // Performance

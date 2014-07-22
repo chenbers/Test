@@ -1,15 +1,14 @@
 package com.inthinc.pro.reports.communication;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-import java.util.Random;
+import java.util.*;
 
 import mockit.Mocked;
 import mockit.NonStrictExpectations;
 
 import org.apache.log4j.Logger;
+import org.joda.time.DateMidnight;
 import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
 import org.joda.time.Interval;
 import org.junit.Before;
 import org.junit.Ignore;
@@ -40,7 +39,11 @@ public class NonCommReportCriteriaTest extends BaseUnitTest{
     private static final List<Integer> eventIDPickList;
     
     private static final List<Integer> groupIDPickList;
-    
+    private static final Boolean isCustomRange=false;
+    DateTimeZone dateTimeZone = DateTimeZone.forID("US/Mountain");
+    DateTime currentDay = new DateMidnight(new Date(), dateTimeZone).toDateTime();
+    Interval interval = new Interval(currentDay.minusDays(1), currentDay);
+
     static{
         eventIDPickList = new ArrayList<Integer>();
         eventIDPickList.add(1);
@@ -112,12 +115,12 @@ public class NonCommReportCriteriaTest extends BaseUnitTest{
         List<Integer> groupIDs = new ArrayList<Integer>();
         groupIDs.add(12);
         
-        NonCommReportCriteria.Builder builder = new NonCommReportCriteria.Builder(groupHierarchy, eventAggregationDAO, groupIDs, TimeFrame.DAY);
+        NonCommReportCriteria.Builder builder = new NonCommReportCriteria.Builder(groupHierarchy, eventAggregationDAO, groupIDs, TimeFrame.DAY , interval);
         
         builder.setLocale(Locale.US);
         List<ReportCriteria> reportCriterias = new ArrayList<ReportCriteria>();
         new NonStrictExpectations() {{
-            eventAggregationDAO.findLastEventForVehicles((List)any, (Interval)any);
+            eventAggregationDAO.findLastEventForVehicles((List)any, (Interval)any, isCustomRange);
             returns(lastReportedEvents);
         }};
         reportCriterias.add(builder.build());

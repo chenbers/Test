@@ -223,8 +223,10 @@ public class EventAggregationJDBCDAO extends SimpleJdbcDaoSupport implements Eve
                     + "INNER JOIN (select max(time) maxTime  from lastLocVehicle _l group by deviceID) dmax "
                     + "INNER JOIN lastLocVehicle l on l.vehicleID = v.vehicleID and dmax.maxTime = l.time "
                     + "INNER JOIN device d ON d.deviceID = l.deviceID "
-                    + "where v.vehicleID in (select vehicleID from vehicle where groupID in (:groupList)) and l.time < :startDate group by vehicleID order by vehicleName";
-    
+                    + "where v.vehicleID in (select vehicleID from vehicle where groupID in (:groupList)) ";
+    private static final String SELECT_LAST_NOTE_FOR_VEHICLE_BETWEEN ="and l.time between :startDate and :endDate group by vehicleID order by vehicleName" ;
+    private static final String SELECT_LAST_NOTE_FOR_VEHICLE_NO_BETWEEN ="and l.time < :startDate group by vehicleID order by vehicleName" ;
+
     private static final String SELECT_NEVER_ASSIGNED_VEHICLES = "SELECT v.vehicleID,v.name AS 'vehicleName',g.groupID,g.name AS 'groupName' FROM vehicle v "
                     + "INNER JOIN groupVehicleFlat gv ON gv.vehicleID = v.vehicleID AND gv.groupID=v.groupID INNER JOIN groups g ON g.groupID = gv.groupID "
                     + "LEFT OUTER JOIN vddlog l ON l.vehicleID = v.vehicleID WHERE " + "NOT EXISTS (SELECT  * FROM vddlog _l WHERE _l.vehicleID = v.vehicleID) " + "AND g.groupID IN (:groupList) ";
@@ -235,18 +237,26 @@ public class EventAggregationJDBCDAO extends SimpleJdbcDaoSupport implements Eve
      * @see com.inthinc.pro.dao.EventAggregationDAO#findLastEventForVehicles(java.util.List, org.joda.time.Interval)
      */
     @Override
-    public List<LastReportedEvent> findLastEventForVehicles(List<Integer> groupIDs, Interval interval) {
+    public List<LastReportedEvent> findLastEventForVehicles(List<Integer> groupIDs, Interval interval, Boolean isCustomRange) {
         
         /*
          * First load all last reported events which fall before the start time of the interval. If a vehicle doesn't have a device currently, still load it and the last note received for that vehicle
          * from the last device which was assigned to it.
          */
         String lastNotQuery = SELECT_LAST_NOTE_FOR_VEHICLE;
-        
+
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("groupList", groupIDs);
-        params.put("startDate", interval.getStart().toDate());
-        
+        if (isCustomRange){
+            params.put("startDate", interval.getStart().toDate());
+            params.put("endDate", interval.getEnd().toDate());
+            lastNotQuery=lastNotQuery+SELECT_LAST_NOTE_FOR_VEHICLE_BETWEEN;
+
+        } else{
+            lastNotQuery=lastNotQuery+SELECT_LAST_NOTE_FOR_VEHICLE_NO_BETWEEN;
+            params.put("startDate", interval.getStart().toDate());
+        }
+
         if (logger.isDebugEnabled()) {
             logger.debug("Executing query for findLastEventForVehicles()");
             logger.debug(String.format("Executing query: %s", lastNotQuery));

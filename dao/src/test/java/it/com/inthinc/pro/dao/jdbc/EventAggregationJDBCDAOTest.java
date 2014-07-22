@@ -34,8 +34,9 @@ public class EventAggregationJDBCDAOTest extends BaseJDBCTest {
     // TEST_ACCOUNT_ID and EXPECTED_VALID_COUNT will need to be adjusted to reflect the new data set.
     private static Integer TEST_ACCOUNT_ID = 791;
     private static Integer EXPECTED_VALID_COUNT = 240;
-    
-    
+    private static Boolean isCustomRange = false;
+
+
     private static List<Integer> testGroupList;
 
     private static DateTime SEP_12_2013 = new DateTime(1378944000000l);// 1375401600000l);
@@ -76,7 +77,7 @@ public class EventAggregationJDBCDAOTest extends BaseJDBCTest {
         eventAggregationJDBCDAO.setDataSource(new ITDataSource().getRealDataSource());
 
         List<LastReportedEvent> lastEventListOld = eventAggregationJDBCDAO.findRecentEventByDevice(testGroupList, VALID_TEST_INTERVAL);
-        List<LastReportedEvent> lastEventListNew = eventAggregationJDBCDAO.findLastEventForVehicles(testGroupList, VALID_TEST_INTERVAL);
+        List<LastReportedEvent> lastEventListNew = eventAggregationJDBCDAO.findLastEventForVehicles(testGroupList, VALID_TEST_INTERVAL,isCustomRange);
         
         assertEquals("old method of fetching matches new", lastEventListOld.size(), lastEventListNew.size());
         
@@ -96,7 +97,7 @@ public class EventAggregationJDBCDAOTest extends BaseJDBCTest {
         EventAggregationJDBCDAO eventAggregationJDBCDAO = new EventAggregationJDBCDAO();
         eventAggregationJDBCDAO.setDataSource(new ITDataSource().getRealDataSource());
         
-        List<LastReportedEvent> lastEventList= eventAggregationJDBCDAO.findLastEventForVehicles(testGroupList, VALID_TEST_INTERVAL);
+        List<LastReportedEvent> lastEventList= eventAggregationJDBCDAO.findLastEventForVehicles(testGroupList, VALID_TEST_INTERVAL, isCustomRange);
         assertEquals("expected count", EXPECTED_VALID_COUNT.intValue(), lastEventList.size());
         
         for (LastReportedEvent event : lastEventList) {

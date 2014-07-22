@@ -16,6 +16,7 @@ import com.inthinc.pro.model.event.LastReportedEvent;
 import com.inthinc.pro.reports.ReportCriteria;
 import com.inthinc.pro.reports.ReportType;
 import com.inthinc.pro.reports.util.MessageUtil;
+import org.joda.time.Interval;
 
 public class NonCommReportCriteria extends ReportCriteria{
     
@@ -39,14 +40,17 @@ public class NonCommReportCriteria extends ReportCriteria{
         private EventAggregationDAO eventAggregationDAO;
         
         private GroupHierarchy groupHierarchy;
+
+        private Interval interval;
         
-        public Builder(GroupHierarchy groupHierarchy,EventAggregationDAO eventAggregationDAO,List<Integer> groupIDs,TimeFrame timeFrame) {
+        public Builder(GroupHierarchy groupHierarchy,EventAggregationDAO eventAggregationDAO,List<Integer> groupIDs,TimeFrame timeFrame, Interval interval) {
             this.dateTimeZone = DateTimeZone.UTC;
             this.locale = Locale.US;
             this.groupIDs = groupIDs;
             this.timeFrame = timeFrame;
             this.groupHierarchy = groupHierarchy;
             this.eventAggregationDAO = eventAggregationDAO;
+            this.interval = interval;
             
         }
         
@@ -81,11 +85,19 @@ public class NonCommReportCriteria extends ReportCriteria{
         public TimeFrame getInterval() {
             return timeFrame;
         }
-        
+
         public NonCommReportCriteria build(){
             logger.debug(String.format("Building NonCommReportCriteria with locale %s",locale));
-            List<LastReportedEvent> lastReportedEvents = eventAggregationDAO.findLastEventForVehicles(this.groupIDs, timeFrame.getInterval());
-            
+            List<LastReportedEvent> lastReportedEvents = new ArrayList<LastReportedEvent>();
+            Boolean isCustomRange=true;
+            if (timeFrame.toString().equals("CUSTOM_RANGE")){
+                 lastReportedEvents = eventAggregationDAO.findLastEventForVehicles(this.groupIDs, interval,isCustomRange);
+
+            } else{
+                isCustomRange=false;
+                 lastReportedEvents = eventAggregationDAO.findLastEventForVehicles(this.groupIDs, timeFrame.getInterval(), isCustomRange);
+            }
+
             List<NonCommReportCriteria.LastReportedEventWrapper> lastReportedEventWrappers = new ArrayList<NonCommReportCriteria.LastReportedEventWrapper>();
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat(MessageUtil.formatMessageString("dateTimeFormat", locale), locale);
             for(LastReportedEvent lastReportedEvent:lastReportedEvents){
@@ -99,8 +111,15 @@ public class NonCommReportCriteria extends ReportCriteria{
             
             NonCommReportCriteria criteria = new NonCommReportCriteria(this.locale);
             criteria.setMainDataset(lastReportedEventWrappers);
-            criteria.addDateParameter(REPORT_START_DATE, timeFrame.getInterval().getStart().toDate(), DateTimeZone.UTC.toTimeZone());
-            
+            if (timeFrame.toString().equals("CUSTOM_RANGE")){
+            criteria.addDateParameter(REPORT_START_DATE, interval.getStart().toDate(), DateTimeZone.UTC.toTimeZone());
+            criteria.addDateParameter(REPORT_END_DATE, interval.getEnd().toDate(), DateTimeZone.UTC.toTimeZone());
+            }
+            else{
+                criteria.addDateParameter(REPORT_START_DATE, timeFrame.getInterval().getStart().toDate(), DateTimeZone.UTC.toTimeZone());
+                criteria.addDateParameter(REPORT_END_DATE, timeFrame.getInterval().getEnd().toDate(), DateTimeZone.UTC.toTimeZone());
+            }
+
             return criteria;
             
         }
