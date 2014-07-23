@@ -392,11 +392,11 @@ public abstract class ReportsBean extends BaseBean {
         viewType = FormatType.HTML.name();
         
         String output = reportRenderer.exportReportToString(reportCriteriaList, FormatType.HTML, getFacesContext());
-        int ifIeIndex = output.lastIndexOf("<![if IE]>");
-        if (ifIeIndex != -1) {
-            output = output.substring(0, ifIeIndex);
-        }
         if (output != null) {
+            int ifIeIndex = output.lastIndexOf("<![if IE]>");
+            if (ifIeIndex != -1) {
+                output = output.substring(0, ifIeIndex);
+            }
             setHtml(output);
         }
     }
