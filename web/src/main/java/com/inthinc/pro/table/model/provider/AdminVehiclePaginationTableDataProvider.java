@@ -24,6 +24,7 @@ public class AdminVehiclePaginationTableDataProvider extends AdminPaginationTabl
         for (final Vehicle vehicle : vehicleList) {
             VehicleView vehicleView = vehiclesBean.createVehicleView(vehicle);
             vehicleView.setEditableVehicleSettings(vehiclesBean.getVehicleSettingManagers().get(vehicle.getVehicleID()).associateSettings(vehicle.getVehicleID()));
+            vehicleView.setGroupName(vehiclesBean.getGroupNames().get(vehicleView.getGroupID()));
             items.add(vehicleView);
         }
         vehiclesBean.setItems(items);
