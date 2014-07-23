@@ -1,9 +1,5 @@
 package com.inthinc.pro.reports.performance;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -34,6 +30,8 @@ import com.inthinc.pro.reports.hos.testData.HosRecordDataSet;
 import com.inthinc.pro.reports.impl.ReportCriteriaServiceImplTest;
 import com.inthinc.pro.reports.performance.model.PayrollData;
 import com.inthinc.pro.reports.tabular.Result;
+
+import static org.junit.Assert.*;
 
 public class PayrollCriteriaTest extends BaseUnitTest {
 
@@ -535,12 +533,11 @@ public class PayrollCriteriaTest extends BaseUnitTest {
             String[] expectedTabularData, String[] expectedSummTabularData) {
         PayrollDetailReportCriteria detailCriteria = new PayrollDetailReportCriteria(Locale.US);
         HosRecordDataSet testData = initTestData(10, recList, "11/06/2011 00:00:00", "11/06/2011 23:59:59");
-//        vali
-        detailCriteria.initDataSet(testData.interval, testData.account, testData.getGroupHierarchy(), testData.driverHOSRecordMap,true);
+        detailCriteria.initDataSet(testData.interval, testData.account, testData.getGroupHierarchy(), testData.driverHOSRecordMap,showDecimalHours);
         checkData(prefix+"_detail", detailCriteria, detailCriteria.getMainDataset(), expectedMin, detailCriteria.getTableRows(), expectedTabularData);
                 
         PayrollSummaryReportCriteria  summCriteria = new PayrollSummaryReportCriteria (Locale.US);
-        summCriteria.initDataSet(testData.interval, testData.account, testData.getGroupHierarchy(), testData.driverHOSRecordMap,true);
+        summCriteria.initDataSet(testData.interval, testData.account, testData.getGroupHierarchy(), testData.driverHOSRecordMap,showDecimalHours);
         checkData(prefix+"_summ", summCriteria, summCriteria.getMainDataset(), expectedMin, summCriteria.getTableRows(), expectedSummTabularData);
 
         PayrollSignoffReportCriteria  signoffCriteria = new PayrollSignoffReportCriteria (Locale.US){
@@ -551,11 +548,11 @@ public class PayrollCriteriaTest extends BaseUnitTest {
               }
         };
         
-        signoffCriteria.initDataSet(testData.interval, testData.account, testData.getGroupHierarchy(), testData.driverHOSRecordMap,true);
+        signoffCriteria.initDataSet(testData.interval, testData.account, testData.getGroupHierarchy(), testData.driverHOSRecordMap,showDecimalHours);
         checkData(prefix+"_signoff", signoffCriteria, signoffCriteria.getMainDataset(), expectedMin, signoffCriteria.getTableRows(), expectedTabularData);
 
         PayrollReportCompensatedHoursCriteria compCriteria = new PayrollReportCompensatedHoursCriteria(Locale.US);
-        compCriteria.initDataSet(testData.interval, testData.account, testData.getGroupHierarchy(), testData.driverHOSRecordMap,true);
+        compCriteria.initDataSet(testData.interval, testData.account, testData.getGroupHierarchy(), testData.driverHOSRecordMap,showDecimalHours);
         checkData(prefix+"_comp", compCriteria, compCriteria.getMainDataset(), expectedCompMin, compCriteria.getTableRows(), null);
     }
 
@@ -654,6 +651,7 @@ public class PayrollCriteriaTest extends BaseUnitTest {
       for(PayrollData rec: results){
           assertTrue("total adjusted minutes should never be negative", rec.getTotalAdjustedMinutes() >= 0);
           assertTrue(rec.getStatus()+" is not a compensated HOSStatus", compensated.contains(rec.getStatus()));
+          assertFalse(rec.getShowDecimalHours());
       }
       int NUM_COMP_RECORDS_EXPECTED = 56;
       assertTrue("There should be as many compensated records as in getPayrollDataExpectedData (or more if that source has been added to)", results.size() >= NUM_COMP_RECORDS_EXPECTED);
@@ -666,7 +664,7 @@ public class PayrollCriteriaTest extends BaseUnitTest {
       HosRecordDataSet testData = initTestData(10, tzRecs, "11/10/2011 00:00:00", "11/11/2011 23:59:59");
       for (Driver driver : testData.driverHOSRecordMap.keySet())
           driver.getPerson().setTimeZone(centralTimeZone);
-      criteria.initDataSet(testData.interval, testData.account, testData.getGroupHierarchy(), testData.driverHOSRecordMap,true);
+      criteria.initDataSet(testData.interval, testData.account, testData.getGroupHierarchy(), testData.driverHOSRecordMap,showDecimalHours);
       dump("de8159", 1, criteria, FormatType.PDF);
       
       PayrollData secondDay = ((List<PayrollData>)criteria.getMainDataset()).get(0);
@@ -686,23 +684,23 @@ public class PayrollCriteriaTest extends BaseUnitTest {
       }
 
       PayrollReportCompensatedHoursCriteria criteria = new PayrollReportCompensatedHoursCriteria(Locale.US);
-      criteria.initDataSet(testData.interval, testData.account, testData.getLongNameGroupHierarchy(), testData.driverHOSRecordMap,true);
+      criteria.initDataSet(testData.interval, testData.account, testData.getLongNameGroupHierarchy(), testData.driverHOSRecordMap,showDecimalHours);
       String expectedLongGroupName = escapeXMLChars(criteria.getFullGroupName(testData.getLongNameGroupHierarchy(), driverGroupID));
       runDE9097Test(criteria, expectedLongGroupName);
       
       PayrollDetailReportCriteria criteria2 = new PayrollDetailReportCriteria(Locale.US);
-      criteria2.initDataSet(testData.interval, testData.account, testData.getLongNameGroupHierarchy(), testData.driverHOSRecordMap,true);
+      criteria2.initDataSet(testData.interval, testData.account, testData.getLongNameGroupHierarchy(), testData.driverHOSRecordMap,showDecimalHours);
       runDE9097Test(criteria2, expectedLongGroupName);
 
       PayrollSignoffReportCriteria criteria3 = new PayrollSignoffReportCriteria(Locale.US);
       criteria3.setIncludeInactiveDrivers(ReportCriteria.DEFAULT_INCLUDE_INACTIVE_DRIVERS);
       criteria3.setIncludeZeroMilesDrivers(ReportCriteria.DEFAULT_INCLUDE_ZERO_MILES_DRIVERS);
 
-      criteria3.initDataSet(testData.interval, testData.account, testData.getLongNameGroupHierarchy(), testData.driverHOSRecordMap,true);
+      criteria3.initDataSet(testData.interval, testData.account, testData.getLongNameGroupHierarchy(), testData.driverHOSRecordMap,showDecimalHours);
       runDE9097Test(criteria3, expectedLongGroupName);
 
       PayrollSummaryReportCriteria criteria4 = new PayrollSummaryReportCriteria(Locale.US);
-      criteria4.initDataSet(testData.interval, testData.account, testData.getLongNameGroupHierarchy(), testData.driverHOSRecordMap,true);
+      criteria4.initDataSet(testData.interval, testData.account, testData.getLongNameGroupHierarchy(), testData.driverHOSRecordMap,showDecimalHours);
       runDE9097Test(criteria4, expectedLongGroupName);
   }
 

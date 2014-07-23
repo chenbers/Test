@@ -1,9 +1,5 @@
 package com.inthinc.pro.reports.performance;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -39,6 +35,8 @@ import com.inthinc.pro.reports.performance.model.DriverHours;
 import com.inthinc.pro.reports.performance.model.PayrollData;
 import com.inthinc.pro.reports.performance.model.PayrollHOSRec;
 import com.inthinc.pro.reports.util.DateTimeUtil;
+
+import static org.junit.Assert.*;
 
 //public class DriverHoursReportCriteriaTest extends BaseUnitTest {
 public class DriverHoursReportCriteriaTest {
@@ -165,7 +163,6 @@ public class DriverHoursReportCriteriaTest {
         // 2. Second, we run the actual method to be tested
         List<Integer> groupIdList = new ArrayList<Integer>();
         groupIdList.add(GROUP_ID);
-//        vali
         reportCriteriaSUT.init(groupHierarchyMock, groupIdList, INTERVAL,showDecimalHours);
 
         // ------------------------------------------------------------------
@@ -182,6 +179,8 @@ public class DriverHoursReportCriteriaTest {
         
         Double driverPayRollHours = this.getDriverPayrollData().get(0).getTotalAdjustedMinutes() / 60d;
         assertEquals(driverPayRollHours, driverHours.getHours());
+        Boolean showDecimalCheck= this.getDriverPayrollData().get(0).getShowDecimalHours();
+        assertFalse(showDecimalCheck);
         
     }
     
