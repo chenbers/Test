@@ -395,9 +395,9 @@ public abstract class ReportsBean extends BaseBean {
         int ifIeIndex = output.lastIndexOf("<![if IE]>");
         if (ifIeIndex != -1) {
             output = output.substring(0, ifIeIndex);
-            if (output != null) {
-                setHtml(output);
-            }
+        }
+        if (output != null) {
+            setHtml(output);
         }
     }
 
