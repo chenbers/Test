@@ -426,10 +426,13 @@ public abstract class ReportsBean extends BaseBean {
         viewType = FormatType.HTML.name();
         
         String output = reportRenderer.exportReportToString(reportCriteriaList, FormatType.HTML, getFacesContext());
-        if (output != null) {
-            setHtml(output);
+        int ifIeIndex = output.lastIndexOf("<![if IE]>");
+        if (ifIeIndex != -1) {
+            output = output.substring(0, ifIeIndex);
+            if (output != null) {
+                setHtml(output);
+            }
         }
-      
     }
 
     public void tabular()
