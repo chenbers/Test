@@ -25,6 +25,8 @@ import com.inthinc.pro.reports.FormatType;
 import com.inthinc.pro.reports.ReportCriteria;
 import com.inthinc.pro.reports.performance.DriverExcludedViolationsCriteriaTest;
 
+import static org.junit.Assert.assertEquals;
+
 public class NonCommReportCriteriaTest extends BaseUnitTest{
     
     private static Logger logger = Logger.getLogger(DriverExcludedViolationsCriteriaTest.class);
@@ -39,7 +41,7 @@ public class NonCommReportCriteriaTest extends BaseUnitTest{
     private static final List<Integer> eventIDPickList;
     
     private static final List<Integer> groupIDPickList;
-    private static final Boolean isCustomRange=false;
+
     DateTimeZone dateTimeZone = DateTimeZone.forID("US/Mountain");
     DateTime currentDay = new DateMidnight(new Date(), dateTimeZone).toDateTime();
     Interval interval = new Interval(currentDay.minusDays(1), currentDay);
@@ -120,10 +122,29 @@ public class NonCommReportCriteriaTest extends BaseUnitTest{
         builder.setLocale(Locale.US);
         List<ReportCriteria> reportCriterias = new ArrayList<ReportCriteria>();
         new NonStrictExpectations() {{
-            eventAggregationDAO.findLastEventForVehicles((List)any, (Interval)any, isCustomRange);
+            eventAggregationDAO.findLastEventForVehicles((List) any, (Interval) any, false);
             returns(lastReportedEvents);
         }};
+        String timeFrameD =  builder.getInterval().toString();
+        assertEquals(timeFrameD,"DAY");
+
         reportCriterias.add(builder.build());
+
+//      test for custom_range
+        NonCommReportCriteria.Builder builderCustomRange = new NonCommReportCriteria.Builder(groupHierarchy, eventAggregationDAO, groupIDs, TimeFrame.CUSTOM_RANGE , interval);
+
+        builderCustomRange.setLocale(Locale.US);
+        List<ReportCriteria> reportCriteriasCustomRange = new ArrayList<ReportCriteria>();
+        new NonStrictExpectations() {{
+            eventAggregationDAO.findLastEventForVehicles((List) any, (Interval) any, true);
+            returns(lastReportedEvents);
+
+        }};
+        String timeFrameC =  builderCustomRange.getInterval().toString();
+        assertEquals(timeFrameC,"CUSTOM_RANGE");
+
+
+        reportCriteriasCustomRange.add(builderCustomRange.build());
 
         dump("NonComm", 2, reportCriterias, FormatType.PDF);
     }
