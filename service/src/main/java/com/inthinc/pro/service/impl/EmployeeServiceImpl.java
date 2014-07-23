@@ -313,22 +313,6 @@ public class EmployeeServiceImpl extends AbstractService<Driver, DriverDAOAdapte
         return Response.status(Status.NOT_FOUND).build();
     }
 
-
-    @Override
-    public Response getGroupDriverLocations(Integer groupID) {
-        List<DriverLocation> list = null;
-        try {
-            list = this.getDao().getDriverLocations(groupID);
-        } catch (ProxyException e) {
-            logger.error(e);
-        }
-        if (list == null || list.isEmpty()) {
-            return Response.status(Status.NOT_FOUND).build();
-        }
-        return Response.ok(new GenericEntity<List<DriverLocation>>(list) {
-        }).build();
-    }
-
     public static String getSimpleDateFormat() {
         return SIMPLE_DATE_FORMAT;
     }
