@@ -36,6 +36,7 @@ public class ReportParams implements Cloneable {
     private boolean includeInactiveDrivers;
     private boolean includeZeroMilesDrivers;
     private boolean zeroMilesDriversControlDisabled;
+    private boolean inactiveDriversControlDisabled;
     
     List<Driver> driverList;
     GroupHierarchy groupHierarchy;
@@ -280,6 +281,24 @@ public class ReportParams implements Cloneable {
 //        Otherwise, we'll assume it's set to Group and enable it
         return false;
     }
+    
+//  In cases where the user can choose to report on a single driver
+//  or a group, the "Include Inactive Drivers" control should only
+//  be available when reporting on a group. If reporting on a specific
+//  driver, the control should be disabled and set to true. Here, we're
+//  just disabling the control. The setIncludeInactiveDrivers() method
+//  handles setting it to true.
+  public boolean isInactiveDriversControlDisabled() {
+      
+//      If the combo box is set to the default null value, enable the control
+      if (this.paramType == null) return false;
+      
+//      If it's set to "Driver", disable it
+      if (this.paramType.equals(ReportParamType.DRIVER)) return true;
+      
+//      Otherwise, we'll assume it's set to Group and enable it
+      return false;
+  }
 
     public ReportParams clone() {
         try {
@@ -307,14 +326,6 @@ public class ReportParams implements Cloneable {
         this.timeFrameSelect = timeFrameSelect;
     }
 
-    public boolean isIncludeInactiveDrivers() {
-        return includeInactiveDrivers;
-    }
-
-    public void setIncludeInactiveDrivers(boolean includeInactiveDrivers) {
-        this.includeInactiveDrivers = includeInactiveDrivers;
-    }
-
     public boolean isIncludeZeroMilesDrivers() {
 //        If the user is presented with both "Report On" and "Include Zero Miles Drivers"
 //        controls, "Include Zero Miles Drivers" should only be selectable if the user
@@ -330,5 +341,22 @@ public class ReportParams implements Cloneable {
 
     public void setIncludeZeroMilesDrivers(boolean includeZeroMilesDrivers) {
         this.includeZeroMilesDrivers = includeZeroMilesDrivers;
+    }
+
+    public boolean isIncludeInactiveDrivers() {
+//        If the user is presented with both "Report On" and "Include Inactive Drivers"
+//        controls, "Include Inactive Drivers" should only be selectable if the user
+//        is running a group report. If they're running a report on a specific driver,
+//        correct behavior should probably be that the "Include Inactive Drivers" be
+//        set to true. Here, we're checking to see if the control is disabled, and if so,
+//        setting includeZeroMilesDrivers to true.
+        if (isZeroMilesDriversControlDisabled()) {
+            this.includeInactiveDrivers = true;
+        }
+        return includeInactiveDrivers;
+    }
+
+    public void setIncludeInactiveDrivers(boolean includeInactiveDrivers) {
+        this.includeInactiveDrivers = includeInactiveDrivers;
     }
 }
