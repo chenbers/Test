@@ -13,6 +13,7 @@ public enum NotificationsBarEnum implements SeleniumEnums {
     HOS_EXCEPTIONS("HOS Exceptions", "link=HOS Exceptions", "***-hosEvents", "//li[@id='hosEventstab']/a"),
     EMERGENCY("Emergency", "link=Emergency", "***-emergency", "//li[@id='emergencytab']/a"),
     CRASH_HISTORY("Crash History", "link=Crash History", "***-crashHistory", "//li[@id='crashhistorytab']/a"),
+    MAINTENANCE("Maintenance", "link=Maintenance", "***-maintenance", "//li[@id='maintenancetab']/a"),
     
     STATUS_FILTER(null, "***-form:***:forgivenFilter"),
     CATEGORY_FILTER(null, "***-form:***:catFilter"),

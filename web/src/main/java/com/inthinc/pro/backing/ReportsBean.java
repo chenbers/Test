@@ -290,6 +290,16 @@ public abstract class ReportsBean extends BaseBean {
                         getUser().getPerson().getMeasurementType(), params.isIncludeInactiveDrivers(), 
                         params.isIncludeZeroMilesDrivers()));
                 break;
+            case VEHICLE_MAINTENANCE_EVENTS_REPORT:
+                reportCriteriaList.add(getReportCriteriaService().getMaintenanceEventsReportCriteria(getAccountGroupHierarchy(),
+                        params.getGroupIDList(),params.getDateRange().getInterval(), getLocale(), getDateTimeZone(),
+                        getUser().getPerson().getMeasurementType()));
+                break;
+            case VEHICLE_MAINTENANCE_INTERVAL_REPORT:
+                reportCriteriaList.add(getReportCriteriaService().getMaintenanceIntervalReportCriteria(getAccountGroupHierarchy(),
+                        params.getGroupIDList(),params.getDateRange().getInterval(), getLocale(), getDateTimeZone(),
+                        getUser().getPerson().getMeasurementType()));
+                break;
             default:
                 break;
 

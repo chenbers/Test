@@ -9,7 +9,8 @@ public enum ReportCategory {
         DriverPerformance(5, "Driver Performance", "Driver Performance"),
         Mileage(6,"Mileage","Mileage"),
         Communication(7,"Communication","Communication"),
-        DVIR(8,"DVIR","DVIR");
+        DVIR(8,"DVIR","DVIR"),
+        Maintenance(9,"Maintenance","Maintenance");
         
         /**
          * 

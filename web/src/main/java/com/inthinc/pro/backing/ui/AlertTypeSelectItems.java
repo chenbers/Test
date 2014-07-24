@@ -12,7 +12,7 @@ import com.inthinc.pro.util.MessageUtil;
 
 public class AlertTypeSelectItems {
     
-    public static List<SelectItem> getAlertTypeSelectItems(Boolean hosEnabled, Boolean waySmartEnabled, Boolean hasZones) {
+    public static List<SelectItem> getAlertTypeSelectItems(Boolean hosEnabled, Boolean waySmartEnabled, Boolean hasZones, Boolean hasPrevMaintenance) {
         
         List<SelectItem> alertTypeSelectItems = new ArrayList<SelectItem>();
 
@@ -20,11 +20,13 @@ public class AlertTypeSelectItems {
         alertTypeSelectItems = addHosTypes(alertTypeSelectItems,hosEnabled);
         alertTypeSelectItems = addWaySmartTypes(alertTypeSelectItems,waySmartEnabled);
         alertTypeSelectItems = addZones(alertTypeSelectItems,hasZones);
-        
+        alertTypeSelectItems = addConditionals(alertTypeSelectItems,hasPrevMaintenance);
+        alertTypeSelectItems = addPrevMaintenance(alertTypeSelectItems, hasPrevMaintenance);
+
         return alertTypeSelectItems;
     }
     private static List<SelectItem> addDefaultTypes(List<SelectItem> alertTypeSelectItems){
-        
+
         Set<EventSubCategory> defaultSet = EnumSet.of(EventSubCategory.COMPLIANCE,
                                                       EventSubCategory.DRIVING_STYLE,
                                                       EventSubCategory.EMERGENCY,
@@ -59,6 +61,22 @@ public class AlertTypeSelectItems {
         }
         return alertTypeSelectItems;
     }
+    private static List<SelectItem> addConditionals(List<SelectItem> alertTypeSelectItems, Boolean hasConditionals){
+
+        if (hasConditionals){
+            alertTypeSelectItems = addSet(alertTypeSelectItems,EnumSet.of(EventSubCategory.CONDITIONAL));
+        }
+        return alertTypeSelectItems;
+    }
+
+    private static List<SelectItem> addPrevMaintenance(List<SelectItem> alertTypeSelectItems, Boolean hasPrevMaintenance){
+
+        if (hasPrevMaintenance){
+            alertTypeSelectItems = addSet(alertTypeSelectItems,EnumSet.of(EventSubCategory.PREVENTATIVE_MAINTENANCE));
+        }
+        return alertTypeSelectItems;
+    }
+
     private static List<SelectItem> addSet(List<SelectItem> alertTypeSelectItems,Set<EventSubCategory> setOfAlertTypes){
         
         for (EventSubCategory e : setOfAlertTypes)

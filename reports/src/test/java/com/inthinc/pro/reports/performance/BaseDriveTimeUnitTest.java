@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import com.inthinc.pro.model.Vehicle;
 import org.joda.time.DateTime;
 import org.joda.time.Interval;
 import org.joda.time.LocalDate;
@@ -25,6 +26,7 @@ import com.inthinc.pro.model.hos.HOSOccupantInfo;
 import com.inthinc.pro.model.hos.HOSRecord;
 import com.inthinc.pro.model.hos.HOSVehicleMileage;
 import com.inthinc.pro.reports.hos.testData.MockData;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 public class BaseDriveTimeUnitTest extends BasePerformanceUnitTest {
     
@@ -46,6 +48,36 @@ public class BaseDriveTimeUnitTest extends BasePerformanceUnitTest {
         public List<DriveTimeRecord> getDriveTimeRecordList(Driver driver, Interval queryInterval) {
             // TODO Auto-generated method stub
             return null;
+        }
+
+        @Override
+        public Long getEngineHoursAtDate(Vehicle vehicle, Date evDate) {
+            return null;
+        }
+
+        @Override
+        public Long getDriveTimeSum(Vehicle vehicle) {
+            throw new NotImplementedException();
+        }
+
+        @Override
+        public Long getDriveOdometerSum(Vehicle vehicle) {
+            throw new NotImplementedException();
+        }
+
+        @Override
+        public Long getDriveOdometerAtDate(Vehicle vehicle, Date evDate) {
+            throw new NotImplementedException();
+        }
+
+        @Override
+        public Long getDriveTimeAtDate(Vehicle vehicle, Integer nType, Integer eventCode, Date evDate) {
+            throw new NotImplementedException();
+        }
+
+        @Override
+        public Date getPrevEventDate(Vehicle vehicle, Integer nType, Integer eventCode, Date evDate, Integer deviceId) {
+            throw new NotImplementedException();
         }
 
         @Override
