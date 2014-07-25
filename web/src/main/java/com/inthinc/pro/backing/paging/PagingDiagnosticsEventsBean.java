@@ -22,11 +22,14 @@ public class PagingDiagnosticsEventsBean extends PagingEventsBean {
 		CATEGORIES.add(EventCategory.NONE);
 		CATEGORIES.add(EventCategory.WARNING);
 		CATEGORIES.add(EventCategory.DVIR);
-        CATEGORIES.add(EventCategory.MAINTENANCE);
+        //CATEGORIES.add(EventCategory.MAINTENANCE);
 	}
 
 	@Override
 	protected List<EventCategory> getCategories() {
+        if(getAccountIsMaintenance()){
+            CATEGORIES.add(EventCategory.MAINTENANCE);
+        }
 		return CATEGORIES;
 	}
 	
