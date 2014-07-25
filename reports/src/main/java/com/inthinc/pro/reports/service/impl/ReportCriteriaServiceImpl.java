@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import com.inthinc.pro.reports.performance.*;
 import org.apache.log4j.Logger;
 import org.joda.time.DateMidnight;
 import org.joda.time.DateTime;
@@ -105,9 +106,13 @@ import com.inthinc.pro.reports.performance.SeatbeltClicksReportCriteria;
 import com.inthinc.pro.reports.performance.TeamStopsReportCriteria;
 import com.inthinc.pro.reports.performance.TenHoursViolationReportCriteria;
 import com.inthinc.pro.reports.performance.VehicleUsageReportCriteria;
+import com.inthinc.pro.reports.performance.MaintenanceEventsReportCriteria;
+import com.inthinc.pro.reports.performance.MaintenanceIntervalReportCriteria;
 import com.inthinc.pro.reports.service.ReportCriteriaService;
 import com.inthinc.pro.reports.util.MessageUtil;
 import com.inthinc.pro.reports.util.ReportUtil;
+
+import com.inthinc.pro.dao.ConfiguratorDAO;
 
 public class ReportCriteriaServiceImpl implements ReportCriteriaService {
 
@@ -136,7 +141,9 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
     private DVIRViolationReportDAO dvirViolationReportDAO;
     private DVIRInspectionRepairReportDAO dvirInspectionRepairReportDAO;
     private TrailerReportDAO trailerReportDAO;
-    
+
+    private ConfiguratorDAO configuratorJDBCDAO;
+
     public ReportIdlingDAO getReportIdlingDAO() {
         return reportIdlingDAO;
     }
@@ -372,7 +379,7 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
 
         return reportCriteria;
     }
-    
+
     @Override
     public ReportCriteria getTrailerReportCriteria(Integer groupID, Duration duration, Locale locale, Boolean initDataSet) {
         logger.warn("ReportCriteria getTrailerReportCriteria(Integer "+groupID+", Duration "+duration+", Locale "+locale+", Boolean "+initDataSet+")");
@@ -937,7 +944,7 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
     /**
      * {@inheritDoc}
      * 
-     * @see com.inthinc.pro.reports.service.ReportCriteriaService#getDriverHoursReportCriteria(java.lang.Integer, org.joda.time.Interval, java.util.Locale)
+     * @see com.inthinc.pro.reports.service.ReportCriteriaService#getDriverHoursReportCriteria(Integer, org.joda.time.Interval, java.util.Locale)
      */
     @Override
     public ReportCriteria getDriverHoursReportCriteria(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, Interval interval, Locale locale) {
@@ -984,7 +991,7 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
     /**
      * {@inheritDoc}
      * 
-     * @see com.inthinc.pro.reports.service.ReportCriteriaService#getMileageByVehicleReportCriteria(java.lang.Integer, org.joda.time.Interval, java.util.Locale, boolean)
+     * @see com.inthinc.pro.reports.service.ReportCriteriaService#getMileageByVehicleReportCriteria(Integer, org.joda.time.Interval, java.util.Locale, boolean)
      */
     @Override
     public ReportCriteria getMileageByVehicleReportCriteria(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, Interval interval, Locale locale, MeasurementType measurementType,
@@ -1001,7 +1008,7 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
     /**
      * {@inheritDoc}
      * 
-     * @see com.inthinc.pro.reports.service.ReportCriteriaService#getMileageByVehicleReportCriteria(java.lang.Integer, org.joda.time.Interval, java.util.Locale, boolean)
+     * @see com.inthinc.pro.reports.service.ReportCriteriaService#getMileageByVehicleReportCriteria(Integer, org.joda.time.Interval, java.util.Locale, boolean)
      */
     @Override
     public ReportCriteria getStateMileageByVehicleRoadStatusReportCriteria(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, Interval interval, Locale locale, MeasurementType type,
@@ -1071,7 +1078,7 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
     /**
      * {@inheritDoc}
      * 
-     * @see com.inthinc.pro.reports.service.ReportCriteriaService#getWarrantyListReportCriteria(java.lang.Integer, java.util.Locale, boolean)
+     * @see com.inthinc.pro.reports.service.ReportCriteriaService#getWarrantyListReportCriteria(Integer, java.util.Locale, boolean)
      */
     @Override
     public ReportCriteria getWarrantyListReportCriteria(GroupHierarchy accountGroupHierarchy, Integer groupID, Integer accountID, String accountName, Locale locale, boolean expiredOnly) {
@@ -1196,6 +1203,14 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
 
     public void setHosDAO(HOSDAO hosDAO) {
         this.hosDAO = hosDAO;
+    }
+
+    public ConfiguratorDAO getConfiguratorJDBCDAO() {
+           return configuratorJDBCDAO;
+    }
+
+    public void setConfiguratorJDBCDAO(ConfiguratorDAO configuratorDAO) {
+           this.configuratorJDBCDAO = configuratorDAO;
     }
 
     /**
@@ -1537,6 +1552,25 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
     @Override
     public ReportCriteria getBackingReportCriteria(GroupHierarchy accountGroupHierarchy, Integer groupID, TimeFrame timeFrame, Locale locale, DateTimeZone timeZone, MeasurementType measurementType, boolean includeInactiveDrivers, boolean includeZeroMilesDrivers) {
         BackingReportCriteria.Builder builder = new BackingReportCriteria.Builder(accountGroupHierarchy, groupReportDAO, groupID, timeFrame, measurementType, includeInactiveDrivers, includeZeroMilesDrivers);
+        builder.setLocale(locale);
+        builder.setDateTimeZone(timeZone);
+        return builder.build();
+    }
+
+
+    @Override
+    public ReportCriteria getMaintenanceEventsReportCriteria(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, Interval interval, Locale locale, DateTimeZone timeZone, MeasurementType measurementType) {
+        MaintenanceEventsReportCriteria.Builder builder = new MaintenanceEventsReportCriteria.Builder(accountGroupHierarchy, groupReportDAO, groupDAO, vehicleDAO, eventDAO, groupIDList, interval, measurementType, configuratorJDBCDAO, driveTimeDAO);
+        builder.setLocale(locale);
+        builder.setDateTimeZone(timeZone);
+        return builder.build();
+    }
+
+
+
+    @Override
+    public ReportCriteria getMaintenanceIntervalReportCriteria(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, Interval interval, Locale locale, DateTimeZone timeZone, MeasurementType measurementType) {
+        MaintenanceIntervalReportCriteria.Builder builder = new MaintenanceIntervalReportCriteria.Builder(accountGroupHierarchy, groupReportDAO, groupDAO, vehicleDAO, eventDAO, groupIDList, interval, measurementType, configuratorJDBCDAO, driveTimeDAO);
         builder.setLocale(locale);
         builder.setDateTimeZone(timeZone);
         return builder.build();
@@ -1995,6 +2029,18 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
                 case BACKING_REPORT:
                     reportCriteriaList.add(getBackingReportCriteria(groupHierarchy, reportSchedule.getGroupID(), timeFrame, person.getLocale(), DateTimeZone.forID(person.getTimeZone().getID()),
                             person.getMeasurementType(), reportSchedule.getIncludeInactiveDrivers(), reportSchedule.getIncludeZeroMilesDrivers()));
+                    break;
+                case VEHICLE_MAINTENANCE_EVENTS_REPORT:
+                   dateTimeZone = DateTimeZone.forID(person.getTimeZone().getID());
+                   interval = new Interval(new DateMidnight(new DateTime().minusWeeks(1), dateTimeZone), new DateMidnight(new DateTime(), dateTimeZone).toDateTime().plusDays(1).minus(ONE_MINUTE));
+                    reportCriteriaList.add(getMaintenanceEventsReportCriteria(groupHierarchy,reportSchedule.getGroupIDList(),interval, person.getLocale(),
+                            DateTimeZone.forID(person.getTimeZone().getID()),person.getMeasurementType()));
+                    break;
+                case VEHICLE_MAINTENANCE_INTERVAL_REPORT:
+                    dateTimeZone = DateTimeZone.forID(person.getTimeZone().getID());
+                    interval = new Interval(new DateMidnight(new DateTime().minusWeeks(1), dateTimeZone), new DateMidnight(new DateTime(), dateTimeZone).toDateTime().plusDays(1).minus(ONE_MINUTE));
+                    reportCriteriaList.add(getMaintenanceIntervalReportCriteria(groupHierarchy, reportSchedule.getGroupIDList(), interval, person.getLocale(),
+                            DateTimeZone.forID(person.getTimeZone().getID()),person.getMeasurementType()));
                     break;
                 default:
                     break;

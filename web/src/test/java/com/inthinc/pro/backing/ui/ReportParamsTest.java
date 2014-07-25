@@ -1,15 +1,15 @@
 package com.inthinc.pro.backing.ui;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import java.util.Locale;
+
+import mockit.Mocked;
 
 import org.junit.Test;
 
 import com.inthinc.pro.model.ReportParamType;
-
-import mockit.Mocked;
-import mockit.NonStrictExpectations;
 
 public class ReportParamsTest {
     
@@ -76,6 +76,67 @@ public class ReportParamsTest {
         reportParamsCUT.setParamType(ReportParamType.DRIVER);
         
         assertTrue(reportParamsCUT.isIncludeZeroMilesDrivers());
+    }
+    
+    @Test
+    /**
+     * Tests whether isInactiveDriversControlDisabled returns false
+     * when paramType is null
+     */
+    public void testIsInactiveDriversControlDisabledWithNullParamType() {
+        
+        assertFalse(reportParamsCUT.isInactiveDriversControlDisabled());
+    }
+    
+    @Test
+    /**
+     * Tests whether isInactiveControlDisabled returns true
+     * when paramType is DRIVER
+     */
+    public void testIsInactiveDriversControlDisabledWithDriverParamType() {
+        
+        // Override the parameterType with the mocked version
+        reportParamsCUT.setParamType(ReportParamType.DRIVER);
+        
+        assertTrue(reportParamsCUT.isInactiveDriversControlDisabled());
+    }
+    
+    @Test
+    /**
+     * Tests whether isInactiveDriversControlDisabled returns false
+     * when paramType is GROUPS
+     */
+    public void testIsInactiveDriversControlDisabledWithGroupParamType() {
+        
+        // Override the parameterType with the mocked version
+        reportParamsCUT.setParamType(ReportParamType.GROUPS);
+        
+        assertFalse(reportParamsCUT.isInactiveDriversControlDisabled());
+    }
+    
+    @Test
+    /**
+     * Tests whether isIncludeInactiveDrivers is overridden
+     * when paramType is null (it should NOT be overridden)
+     */
+    public void testIsIncludeInactiveDriversWithNullParamType() {
+        
+        reportParamsCUT.setIncludeInactiveDrivers(false);
+        
+        assertFalse(reportParamsCUT.isIncludeInactiveDrivers());
+    }
+    
+    @Test
+    /**
+     * Tests whether isIncludeInactiveDrivers is overridden
+     * when paramType is DRIVER (it SHOULD be overridden)
+     */
+    public void testIsIncludeInactiveDriversWithDriverParamType() {
+        
+        reportParamsCUT.setIncludeInactiveDrivers(false);
+        reportParamsCUT.setParamType(ReportParamType.DRIVER);
+        
+        assertTrue(reportParamsCUT.isIncludeInactiveDrivers());
     }
     
 }

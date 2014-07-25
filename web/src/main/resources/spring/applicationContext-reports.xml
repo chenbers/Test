@@ -32,6 +32,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
     <property name="reportAddressLookupBean" ref="reportAddressLookupBean" />
     <property name="eventAggregationDAO" ref="eventAggregationDAO" />
     <property name="trailerReportDAO" ref="trailerReportDAO" />
+    <property name="configuratorJDBCDAO" ref="configuratorJDBCDAO" />
   </bean>
 
 </beans>
