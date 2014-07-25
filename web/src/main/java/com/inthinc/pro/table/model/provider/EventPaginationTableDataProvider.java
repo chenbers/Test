@@ -68,7 +68,7 @@ public class EventPaginationTableDataProvider  extends BaseNotificationPaginatio
      *
      * @param events event list.
      */
-    private void populateDeviceNames(List<Event> events) {
+    public void populateDeviceNames(List<Event> events) {
         for (Event event : events) {
             if (event.getDeviceName() == null || event.getDeviceName().trim().isEmpty()) {
                 Integer deviceId = event.getDeviceID();
