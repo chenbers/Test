@@ -287,6 +287,10 @@ public class BaseBean implements Serializable {
         String trailersEnabled = getProUser().getAccountAttributes().getTrailersEnabled();
         return (trailersEnabled == null) ? false : Boolean.valueOf(trailersEnabled); 
     }
+    public boolean getAccountIsMaintenance() {
+        String maintenanceEnabled = getProUser().getAccountAttributes().getMaintenanceEnabled();
+        return (maintenanceEnabled == null || maintenanceEnabled.equals("false")) ? false : true;
+    }
     private static final int MILLIS_PER_MINUTE = 1000 * 60;
     private static final int MILLIS_PER_HOUR = MILLIS_PER_MINUTE * 60;
     public String getTimeZoneDisplayName(TimeZone timeZone) {

@@ -22,6 +22,7 @@ public class PagingDiagnosticsEventsBean extends PagingEventsBean {
 		CATEGORIES.add(EventCategory.NONE);
 		CATEGORIES.add(EventCategory.WARNING);
 		CATEGORIES.add(EventCategory.DVIR);
+        CATEGORIES.add(EventCategory.MAINTENANCE);
 	}
 
 	@Override

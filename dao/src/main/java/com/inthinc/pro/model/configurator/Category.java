@@ -11,7 +11,7 @@ public enum Category implements BaseEnum
     VEHICLE(0, "Vehicle"), HOS(1, "Hours of Service"), THRESHOLDS(2, "Thresholds"),
     NOTIFICATIONS(3,"Notifications"), GEOFENCE(4, "Geofence"), ALARMS(5,"Alarms"),
     DMM_CRASH(6, "Dmm and Crash"), REMOTEUPDATE(7, "Remote Update"), COMM(8, "Communication"),
-    DEVICE(9,"Device");
+    DEVICE(9,"Device"),MAINTENANCE(10,"Maintenance");
 
     private int code;
     private String name;

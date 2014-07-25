@@ -82,7 +82,7 @@ public class DriveTimeJDBCDAOTest extends BaseJDBCTest {
         
         DateTimeFormatter dateFormatter = DateTimeFormat.forPattern("yyyy-MM-dd");
 
-        
+
         TimeZone timeZone = TimeZone.getTimeZone(ReportTestConst.TIMEZONE_STR);
         DateTimeZone dateTimeZone = DateTimeZone.forTimeZone(timeZone);
         Integer todayInSec = DateUtil.getDaysBackDate(DateUtil.getTodaysDate(), 0, ReportTestConst.TIMEZONE_STR);
@@ -116,12 +116,12 @@ public class DriveTimeJDBCDAOTest extends BaseJDBCTest {
                 
                 startDate = startDate.plusDays(1);
                 
-                
-                
+
+
             }
         }
-        
-        
+
+
     }
 
 
@@ -163,4 +163,26 @@ public class DriveTimeJDBCDAOTest extends BaseJDBCTest {
         }
     }
 
+
+    @Test
+    public void testGetDriveTimeSum() {
+        DriveTimeDAO driveTimeDAO = new DriveTimeJDBCDAO();
+        ((DriveTimeJDBCDAO)driveTimeDAO).setDataSource(new ITDataSource().getRealDataSource());
+        GroupData testGroupData =itData.teamGroupData.get(0);
+        Vehicle testVehicle = testGroupData.vehicle;
+        Long getDriveTimeSum = driveTimeDAO.getDriveTimeSum(testVehicle);
+        assertNotNull("record not null",getDriveTimeSum);
+        assertEquals("record count", Long.valueOf("0"), getDriveTimeSum);
+    }
+
+    @Test
+    public void testGetDriveOdometerSum() {
+        DriveTimeDAO driveTimeDAO = new DriveTimeJDBCDAO();
+        ((DriveTimeJDBCDAO)driveTimeDAO).setDataSource(new ITDataSource().getRealDataSource());
+        GroupData testGroupData =itData.teamGroupData.get(0);
+        Vehicle testVehicle = testGroupData.vehicle;
+        Long getOdometerSum = driveTimeDAO.getDriveOdometerSum(testVehicle);
+        assertNotNull("record not null",getOdometerSum);
+        assertEquals("record count", Long.valueOf("237600"), getOdometerSum);
+    }
 }

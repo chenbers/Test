@@ -108,9 +108,11 @@ public enum ReportGroup {
     DRIVER_EXCLUDED_VIOLATIONS("Driver Coaching", 42, EntityType.ENTITY_GROUP, new CriteriaType[] { CriteriaType.TIMEFRAME, CriteriaType.INACTIVE_DRIVERS, CriteriaType.ZERO_MILES_DRIVERS }, new GroupType[] { GroupType.DIVISION, GroupType.FLEET, GroupType.TEAM },
             ReportCategory.DriverPerformance, EnumSet.of(ReportAccountType.PERFORMANCE), ReportType.DRIVER_EXCLUDED_VIOLATIONS),
     BACKING_REPORT("Back-Up Events Report", 108, EntityType.ENTITY_GROUP, new CriteriaType[] { CriteriaType.TIMEFRAME_STRICT, CriteriaType.INACTIVE_DRIVERS, CriteriaType.ZERO_MILES_DRIVERS }, new GroupType[] { GroupType.DIVISION, GroupType.FLEET,
-                    GroupType.TEAM }, ReportCategory.DriverPerformance, EnumSet.of(ReportAccountType.PERFORMANCE), ReportType.BACKING_REPORT),
+            GroupType.TEAM }, ReportCategory.DriverPerformance, EnumSet.of(ReportAccountType.PERFORMANCE), ReportType.BACKING_REPORT),
+    FIRST_MOVE_FORWARD_REPORT("First Move Forward Violation Report", 109, EntityType.ENTITY_GROUP, new CriteriaType[] { CriteriaType.TIMEFRAME_STRICT, CriteriaType.INACTIVE_DRIVERS, CriteriaType.ZERO_MILES_DRIVERS }, new GroupType[] { GroupType.DIVISION, GroupType.FLEET,
+                    GroupType.TEAM }, ReportCategory.DriverPerformance, EnumSet.of(ReportAccountType.PERFORMANCE), ReportType.FIRST_MOVE_FORWARD_REPORT),
 
-            
+
      /* Forms */
     DVIR_PRE_TRIP("DVIR Pre-Trip", 43, EntityType.ENTITY_GROUP, new CriteriaType[] { CriteriaType.TIMEFRAME }, new GroupType[] { GroupType.DIVISION, GroupType.FLEET, GroupType.TEAM },
             ReportCategory.DVIR, EnumSet.of(ReportAccountType.DVIR), ReportType.DVIR_PRETRIP),
@@ -127,7 +129,12 @@ public enum ReportGroup {
     DVIR_REPAIR("DVIR Repairs", 47, EntityType.ENTITY_GROUP, new CriteriaType[] { CriteriaType.TIMEFRAME }, new GroupType[] { GroupType.DIVISION, GroupType.FLEET, GroupType.TEAM },
                     ReportCategory.DVIR, EnumSet.of(ReportAccountType.DVIR), ReportType.DVIR_REPAIR),
     DVIR_REPAIR_DETAIL("DVIR Repairs Detailed", 48, EntityType.ENTITY_GROUP, new CriteriaType[] { CriteriaType.TIMEFRAME }, new GroupType[] { GroupType.DIVISION, GroupType.FLEET, GroupType.TEAM },
-                    ReportCategory.DVIR, EnumSet.of(ReportAccountType.DVIR), ReportType.DVIR_REPAIR_DETAIL)
+                    ReportCategory.DVIR, EnumSet.of(ReportAccountType.DVIR), ReportType.DVIR_REPAIR_DETAIL),
+    /* MAINTENANCE */
+    MAINTENANCE_EVENTS_REPORT("Vehicle Maintenance Events Report", 49, EntityType.ENTITY_GROUP_LIST, new CriteriaType[] {  CriteriaType.TIMEFRAME}, new GroupType[] { GroupType.DIVISION,
+            GroupType.FLEET, GroupType.TEAM }, ReportCategory.Maintenance, EnumSet.of(ReportAccountType.PERFORMANCE), ReportType.VEHICLE_MAINTENANCE_EVENTS_REPORT),
+    MAINTENANCE_INTERVAL_REPORT("Vehicle Maintenance Interval Report", 50, EntityType.ENTITY_GROUP_LIST, new CriteriaType[] { null }, new GroupType[] { GroupType.DIVISION,
+            GroupType.FLEET, GroupType.TEAM }, ReportCategory.Maintenance, EnumSet.of(ReportAccountType.PERFORMANCE), ReportType.VEHICLE_MAINTENANCE_INTERVAL_REPORT)
     ;
 
     private ReportType[] reports;
