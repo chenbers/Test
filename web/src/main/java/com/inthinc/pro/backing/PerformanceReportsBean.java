@@ -65,12 +65,13 @@ public class PerformanceReportsBean extends ReportsBean {
                 catLabel, false, getItemsByCategory(ReportCategory.Mileage)));
         itemGroups.add(new SelectItemGroup(communicationLabel, 
                 catLabel, false, getItemsByCategory(ReportCategory.Communication)));
-        itemGroups.add(new SelectItemGroup(maintenanceLabel,
-                catLabel, false, getItemsByCategory(ReportCategory.Maintenance)));
-        
+        if(getAccountIsMaintenance()){
+            itemGroups.add(new SelectItemGroup(maintenanceLabel,
+                    catLabel, false, getItemsByCategory(ReportCategory.Maintenance)));
+        }
         return itemGroups;
     }
-    
+
 
     /**
      * Returns all the report types pertaining to a given Report Category. 
