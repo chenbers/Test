@@ -26,7 +26,7 @@ public class MaintenanceEvent extends Event implements MultipleEventTypes {
     private Integer malfunctionIndicatorLamp;
     @EventAttrID(name="ATTR_CHECK_ENGINE")
     private Integer checkEngine;
-    @EventAttrID(name="ATTR_ENGINE_HOURS")
+    @EventAttrID(name="ENGINE_HOURS_X100")
     private Integer engineHours;
 
     private String threshold = "";
@@ -41,7 +41,7 @@ public class MaintenanceEvent extends Event implements MultipleEventTypes {
             EventAttr.ATTR_OIL_PRESSURE,
             EventAttr.ATTR_MALFUNCTION_INDICATOR_LAMP,
             EventAttr.ATTR_CHECK_ENGINE,
-            EventAttr.ATTR_ENGINE_HOURS
+            EventAttr.ENGINE_HOURS_X100
     };
 
     public MaintenanceEvent() {
