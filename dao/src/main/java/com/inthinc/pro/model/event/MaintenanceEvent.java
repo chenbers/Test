@@ -28,6 +28,8 @@ public class MaintenanceEvent extends Event implements MultipleEventTypes {
     private Integer checkEngine;
     @EventAttrID(name="ENGINE_HOURS_X100")
     private Integer engineHours;
+    @EventAttrID(name="ODOMETER")
+    private Integer odometer;
 
     private String threshold = "";
 
@@ -40,8 +42,8 @@ public class MaintenanceEvent extends Event implements MultipleEventTypes {
             EventAttr.ATTR_DPF_FLOW_RATE,
             EventAttr.ATTR_OIL_PRESSURE,
             EventAttr.ATTR_MALFUNCTION_INDICATOR_LAMP,
-            EventAttr.ATTR_CHECK_ENGINE,
-            EventAttr.ENGINE_HOURS_X100
+            EventAttr.ENGINE_HOURS_X100,
+            EventAttr.ODOMETER
     };
 
     public MaintenanceEvent() {
@@ -90,6 +92,9 @@ public class MaintenanceEvent extends Event implements MultipleEventTypes {
             }else if(engineHours != null) {
                 threshold = engineHours + "";
                 return EventType.ATTR_ENGINE_HOURS;
+            }else if(odometer != null) {
+                threshold = odometer + "";
+                return EventType.ODOMETER;
             }else return EventType.UNKNOWN;
     }
 
@@ -180,6 +185,6 @@ public class MaintenanceEvent extends Event implements MultipleEventTypes {
 
     @Override
     public Set<EventType> getEventTypes() {
-        return EnumSet.of(EventType.RED_STOP, EventType.AMBER_WARNING, EventType.PROTECT,EventType.BATTERY_VOLTAGE, EventType.ENGINE_TEMP, EventType.TRANSMISSION_TEMP, EventType.DPF_FLOW_RATE,EventType.OIL_PRESSURE, EventType.MALFUNCTION_INDICATOR_LAMP, EventType.CHECK_ENGINE, EventType.ATTR_ENGINE_HOURS  );
+        return EnumSet.of(EventType.RED_STOP, EventType.AMBER_WARNING, EventType.PROTECT,EventType.BATTERY_VOLTAGE, EventType.ENGINE_TEMP, EventType.TRANSMISSION_TEMP, EventType.DPF_FLOW_RATE,EventType.OIL_PRESSURE, EventType.MALFUNCTION_INDICATOR_LAMP, EventType.ATTR_ENGINE_HOURS, EventType.ODOMETER );
     }
 }

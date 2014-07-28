@@ -82,7 +82,8 @@ public enum EventType implements BaseEnum {
     AMBER_WARNING(66),
     PROTECT(67),
     CHECK_ENGINE_LIGHT(68),
-    STOP_ENGINE_LIGHT(69);
+    STOP_ENGINE_LIGHT(69),
+    ODOMETER(70);
 
 
 

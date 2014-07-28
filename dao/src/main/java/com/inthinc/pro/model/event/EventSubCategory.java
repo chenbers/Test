@@ -10,6 +10,7 @@ import java.util.Set;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
+import com.inthinc.pro.model.AlertMessage;
 import com.inthinc.pro.model.AlertMessageType;
 import com.inthinc.pro.model.BaseEnum;
 
@@ -72,10 +73,10 @@ public enum EventSubCategory implements BaseEnum
     TRAILER(16, EnumSet.of(EventType.TRAILER_DATA, EventType.TRAILER_PROGRAMMED), null),
     CONDITIONAL(17,
                 EnumSet.of(EventType.RED_STOP,EventType.AMBER_WARNING,EventType.PROTECT,EventType.BATTERY_VOLTAGE, EventType.ENGINE_TEMP, EventType.TRANSMISSION_TEMP, EventType.DPF_FLOW_RATE,
-                EventType.OIL_PRESSURE,EventType.MALFUNCTION_INDICATOR_LAMP, EventType.CHECK_ENGINE),
+                EventType.OIL_PRESSURE,EventType.MALFUNCTION_INDICATOR_LAMP),
     EnumSet.of(AlertMessageType.ATTR_RED_STOP,AlertMessageType.ATTR_AMBER_WARNING,AlertMessageType.ATTR_PROTECT,AlertMessageType.ATTR_BATTERY_VOLTAGE,AlertMessageType.ATTR_ENGINE_TEMP,AlertMessageType.ATTR_TRANSMISSION_TEMP,AlertMessageType.ATTR_DPF_FLOW_RATE,
-    AlertMessageType.ATTR_OIL_PRESSURE,AlertMessageType.ATTR_MALFUNCTION_INDICATOR_LAMP,AlertMessageType.ATTR_CHECK_ENGINE)),
-    PREVENTATIVE_MAINTENANCE(18,  EnumSet.of(EventType.ATTR_ENGINE_HOURS), EnumSet.of(AlertMessageType.ATTR_ENGINE_HOURS));
+    AlertMessageType.ATTR_OIL_PRESSURE,AlertMessageType.ATTR_MALFUNCTION_INDICATOR_LAMP)),
+    PREVENTATIVE_MAINTENANCE(18,  EnumSet.of(EventType.ATTR_ENGINE_HOURS, EventType.ODOMETER), EnumSet.of(AlertMessageType.ATTR_ENGINE_HOURS, AlertMessageType.ATTR_ODOMETER));
 //    NOTIFICATION_MAINTENANCE(19,EnumSet.of(EventType.RED_STOP,EventType.AMBER_WARNING,EventType.PROTECT),
 //    EnumSet.of(AlertMessageType.ATTR_RED_STOP,AlertMessageType.ATTR_AMBER_WARNING,AlertMessageType.ATTR_PROTECT));
     
