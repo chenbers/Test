@@ -135,4 +135,5 @@ public interface EmployeeService {
     @GET
     @Path("/employee/{employeeID}/location")
     Response getLastLocation(@PathParam("employeeID") String employeeID);
+
 }
