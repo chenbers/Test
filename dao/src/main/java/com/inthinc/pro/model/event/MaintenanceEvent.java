@@ -26,8 +26,10 @@ public class MaintenanceEvent extends Event implements MultipleEventTypes {
     private Integer malfunctionIndicatorLamp;
     @EventAttrID(name="ATTR_CHECK_ENGINE")
     private Integer checkEngine;
-    @EventAttrID(name="ATTR_ENGINE_HOURS")
+    @EventAttrID(name="ENGINE_HOURS_X100")
     private Integer engineHours;
+    @EventAttrID(name="ODOMETER")
+    private Integer odometer;
 
     private String threshold = "";
 
@@ -40,8 +42,8 @@ public class MaintenanceEvent extends Event implements MultipleEventTypes {
             EventAttr.ATTR_DPF_FLOW_RATE,
             EventAttr.ATTR_OIL_PRESSURE,
             EventAttr.ATTR_MALFUNCTION_INDICATOR_LAMP,
-            EventAttr.ATTR_CHECK_ENGINE,
-            EventAttr.ATTR_ENGINE_HOURS
+            EventAttr.ENGINE_HOURS_X100,
+            EventAttr.ODOMETER
     };
 
     public MaintenanceEvent() {
@@ -75,29 +77,24 @@ public class MaintenanceEvent extends Event implements MultipleEventTypes {
                 return EventType.OIL_PRESSURE;
             }else if(malfunctionIndicatorLamp != null) {
                 threshold = malfunctionIndicatorLamp + "";
-                if(malfunctionIndicatorLamp == 1){
-                    return EventType.PROTECT;
-                }else if(malfunctionIndicatorLamp == 2){
-                    return EventType.AMBER_WARNING;
-                }else if(malfunctionIndicatorLamp == 3){
-                    return EventType.RED_STOP;
-                }else if(malfunctionIndicatorLamp==4){
-                    return EventType.MALFUNCTION_INDICATOR_LAMP;
-                }else{
-                    return  EventType.UNKNOWN;
-                }
-            }else if(checkEngine != null) {
+                return EventType.MALFUNCTION_INDICATOR_LAMP;
+            } else if (checkEngine != null) {
                 threshold = checkEngine + "";
-                if(checkEngine == 1){
-                    return EventType.CHECK_ENGINE_LIGHT;
-                }else if(checkEngine == 2) {
-                    return EventType.STOP_ENGINE_LIGHT;
-                }else{
-                        return  EventType.UNKNOWN;
+                if (checkEngine == 1) {
+                    return EventType.RED_STOP;
+                } else if (checkEngine == 2) {
+                    return EventType.AMBER_WARNING;
+                } else if (checkEngine == 3) {
+                    return EventType.PROTECT;
+                } else {
+                    return EventType.UNKNOWN;
                 }
             }else if(engineHours != null) {
                 threshold = engineHours + "";
                 return EventType.ATTR_ENGINE_HOURS;
+            }else if(odometer != null) {
+                threshold = odometer + "";
+                return EventType.ODOMETER;
             }else return EventType.UNKNOWN;
     }
 
@@ -188,6 +185,6 @@ public class MaintenanceEvent extends Event implements MultipleEventTypes {
 
     @Override
     public Set<EventType> getEventTypes() {
-        return EnumSet.of(EventType.RED_STOP, EventType.AMBER_WARNING, EventType.PROTECT,EventType.BATTERY_VOLTAGE, EventType.ENGINE_TEMP, EventType.TRANSMISSION_TEMP, EventType.DPF_FLOW_RATE,EventType.OIL_PRESSURE, EventType.MALFUNCTION_INDICATOR_LAMP, EventType.CHECK_ENGINE, EventType.ATTR_ENGINE_HOURS  );
+        return EnumSet.of(EventType.RED_STOP, EventType.AMBER_WARNING, EventType.PROTECT,EventType.BATTERY_VOLTAGE, EventType.ENGINE_TEMP, EventType.TRANSMISSION_TEMP, EventType.DPF_FLOW_RATE,EventType.OIL_PRESSURE, EventType.MALFUNCTION_INDICATOR_LAMP, EventType.ATTR_ENGINE_HOURS, EventType.ODOMETER );
     }
 }

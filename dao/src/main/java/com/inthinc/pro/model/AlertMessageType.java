@@ -70,7 +70,8 @@ public enum AlertMessageType implements BaseEnum
     ATTR_ENGINE_HOURS(57),
     ATTR_RED_STOP(58),
     ATTR_AMBER_WARNING(59),
-    ATTR_PROTECT(60);
+    ATTR_PROTECT(60),
+    ATTR_ODOMETER(61);
     
     private int code;
 
