@@ -76,14 +76,16 @@ public class MaintenanceEvent extends Event implements MultipleEventTypes {
             }else if(malfunctionIndicatorLamp != null) {
                 threshold = malfunctionIndicatorLamp + "";
                 return EventType.MALFUNCTION_INDICATOR_LAMP;
-            }else if(checkEngine != null) {
+            } else if (checkEngine != null) {
                 threshold = checkEngine + "";
-                if(checkEngine == 1){
-                    return EventType.CHECK_ENGINE_LIGHT;
-                }else if(checkEngine == 2) {
-                    return EventType.STOP_ENGINE_LIGHT;
-                }else{
-                        return  EventType.UNKNOWN;
+                if (checkEngine == 1) {
+                    return EventType.RED_STOP;
+                } else if (checkEngine == 2) {
+                    return EventType.AMBER_WARNING;
+                } else if (checkEngine == 3) {
+                    return EventType.PROTECT;
+                } else {
+                    return EventType.UNKNOWN;
                 }
             }else if(engineHours != null) {
                 threshold = engineHours + "";
