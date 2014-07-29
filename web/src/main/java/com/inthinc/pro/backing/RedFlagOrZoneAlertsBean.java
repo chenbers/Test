@@ -71,7 +71,7 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
 
     public List<SelectItem> getAlertTypeSelectItems() {
         
-        return AlertTypeSelectItems.getAlertTypeSelectItems(getAccountIsHOS(), getAccountIsWaysmart(), zonesBean.getZonesCount()>0);
+        return AlertTypeSelectItems.getAlertTypeSelectItems(getAccountIsHOS(), getAccountIsWaysmart(), zonesBean.getZonesCount()>0, getAccountIsMaintenance());
     }
     @Override
     public void initFilterValues(){

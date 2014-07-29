@@ -565,6 +565,15 @@ public enum EventAttr {
     CRASH_TRACE(49168, 16384),                      //binary approximately 16K bytes (not in DB attr) 16384
     WKLY_DRIVER_HISTOGRAM_STATS(49169, 1024),  //binary approximately 1k bytes (not in db attr)
 
+    ATTR_BATTERY_VOLTAGE(8303),
+    ATTR_ENGINE_TEMP(16471),
+    ATTR_TRANSMISSION_TEMP(16472),
+    ATTR_DPF_FLOW_RATE(16473),
+    ATTR_OIL_PRESSURE(16474),
+    ATTR_MALFUNCTION_INDICATOR_LAMP(32869),
+    ATTR_CHECK_ENGINE(32870),
+//    ATTR_ENGINE_HOURS_X100(32868),
+    ATTR_MAINTENANCE_CAPABILITIES(32871),
 
     // Attribute Id (255) has a stringId byte,
     // followed by a null terminate string.
@@ -646,5 +655,8 @@ public enum EventAttr {
     public String toString(){
         return String.format("%s(%d)", name(), code);
     }
-    
+
+    public int getCode() {
+        return code;
+    }
 }

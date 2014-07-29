@@ -25,7 +25,7 @@ public class PerformanceReportsBean extends ReportsBean {
 
     /**
      * {@inheritDoc}
-     * @see com.inthinc.pro.backing.ReportsBean#getReportGroupMap()
+     * @see ReportsBean#getReportGroupMap()
      */
     @Override
     public Map<Integer, ReportGroup> getReportGroupMap() {
@@ -43,7 +43,7 @@ public class PerformanceReportsBean extends ReportsBean {
 
     /**
      * {@inheritDoc}
-     * @see com.inthinc.pro.backing.ReportsBean#getReportGroups()
+     * @see ReportsBean#getReportGroups()
      */
     public List<SelectItemGroup> getReportGroups() {
 
@@ -58,16 +58,20 @@ public class PerformanceReportsBean extends ReportsBean {
         String catLabel = MessageUtil.getMessageString(ReportCategory.DriverPerformance.toString());
         String mileageLabel = MessageUtil.getMessageString(ReportCategory.Mileage.toString());
         String communicationLabel = MessageUtil.getMessageString(ReportCategory.Communication.toString());
+        String maintenanceLabel = MessageUtil.getMessageString(ReportCategory.Maintenance.toString());
         itemGroups.add(new SelectItemGroup(catLabel, 
         		catLabel, false, getItemsByCategory(ReportCategory.DriverPerformance, ReportGroup.DRIVER_PERFORMANCE_INDIVIDUAL, ReportGroup.DRIVER_PERFORMANCE_RYG_INDIVIDUAL)));
         itemGroups.add(new SelectItemGroup(mileageLabel, 
                 catLabel, false, getItemsByCategory(ReportCategory.Mileage)));
         itemGroups.add(new SelectItemGroup(communicationLabel, 
                 catLabel, false, getItemsByCategory(ReportCategory.Communication)));
-        
+        if(getAccountIsMaintenance()){
+            itemGroups.add(new SelectItemGroup(maintenanceLabel,
+                    catLabel, false, getItemsByCategory(ReportCategory.Maintenance)));
+        }
         return itemGroups;
     }
-    
+
 
     /**
      * Returns all the report types pertaining to a given Report Category. 
