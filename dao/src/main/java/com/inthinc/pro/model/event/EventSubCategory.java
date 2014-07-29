@@ -76,7 +76,7 @@ public enum EventSubCategory implements BaseEnum
                 EventType.OIL_PRESSURE,EventType.MALFUNCTION_INDICATOR_LAMP),
     EnumSet.of(AlertMessageType.ATTR_RED_STOP,AlertMessageType.ATTR_AMBER_WARNING,AlertMessageType.ATTR_PROTECT,AlertMessageType.ATTR_BATTERY_VOLTAGE,AlertMessageType.ATTR_ENGINE_TEMP,AlertMessageType.ATTR_TRANSMISSION_TEMP,AlertMessageType.ATTR_DPF_FLOW_RATE,
     AlertMessageType.ATTR_OIL_PRESSURE,AlertMessageType.ATTR_MALFUNCTION_INDICATOR_LAMP)),
-    PREVENTATIVE_MAINTENANCE(18,  EnumSet.of(EventType.ATTR_ENGINE_HOURS, EventType.ODOMETER), EnumSet.of(AlertMessageType.ATTR_ENGINE_HOURS, AlertMessageType.ATTR_ODOMETER));
+    PREVENTATIVE_MAINTENANCE(18,  EnumSet.of(EventType.ATTR_ENGINE_HOURS, EventType.ODOMETER), EnumSet.of(AlertMessageType.ATTR_ENGINE_HOURS));
 //    NOTIFICATION_MAINTENANCE(19,EnumSet.of(EventType.RED_STOP,EventType.AMBER_WARNING,EventType.PROTECT),
 //    EnumSet.of(AlertMessageType.ATTR_RED_STOP,AlertMessageType.ATTR_AMBER_WARNING,AlertMessageType.ATTR_PROTECT));
     
