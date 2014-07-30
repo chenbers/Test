@@ -36,6 +36,7 @@ import com.inthinc.pro.model.AlertMessageDeliveryType;
 import com.inthinc.pro.model.AlertMessageType;
 import com.inthinc.pro.model.AlertSentStatus;
 import com.inthinc.pro.model.Driver;
+import com.inthinc.pro.model.GroupHierarchy;
 import com.inthinc.pro.model.LatLng;
 import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.model.Person;
@@ -561,6 +562,9 @@ public class AlertMessageJDBCDAO extends GenericJDBCDAO implements AlertMessageD
 
             String driverFullName = getDriverFullName(driver);
             parameterList.add(driverFullName);
+            
+            String driverOrgStructure = getDriverOrgStructure(driver);
+            parameterList.add(driverOrgStructure);
         }
 
         private SimpleDateFormat getDriverDate(Driver driver, Locale locale) {
@@ -580,6 +584,15 @@ public class AlertMessageJDBCDAO extends GenericJDBCDAO implements AlertMessageD
             if (driver != null && driver.getPerson() != null)
                 return driver.getPerson().getFullName();
             else {
+                return "";
+            }
+        }
+        
+        private String getDriverOrgStructure (Driver driver) {
+            if (driver != null && driver.getPerson() != null) {
+                GroupHierarchy groupHierarchy = new GroupHierarchy();
+                return groupHierarchy.getFullGroupName(driver.getGroupID());
+            } else {
                 return "";
             }
         }
