@@ -154,7 +154,7 @@ public class AlertMessageHessianDAO extends GenericHessianDAO<AlertMessage, Inte
         
         // Construct the message parameter list
         parameterList.add(simpleDateFormat.format(event.getTime()));
-        if (driver != null && driver.getPerson() != null)
+        if (driver != null && driver.getPerson() != null) {
             
             // Add the drivers name to the parameter list
         	parameterList.add(driver.getPerson().getFullName());
@@ -162,7 +162,7 @@ public class AlertMessageHessianDAO extends GenericHessianDAO<AlertMessage, Inte
             // Add the full group name of the driver to the parameter list
             GroupHierarchy groupHierarchy = new GroupHierarchy();
             parameterList.add(groupHierarchy.getFullGroupName(driver.getGroupID()));
-        else {
+        } else {
             
             // We still need to return the correct number
             // of parameters, as i18n is dependent upon the
