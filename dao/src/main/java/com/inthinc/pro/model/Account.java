@@ -263,4 +263,17 @@ public class Account extends BaseEntity implements Comparable<Account>, HasAccou
 
     }
 
+    public String getRedirectVehiclesAssetsValue() {
+        AccountAttributes options = getProps();
+        if (options == null)
+            return "NONE";
+
+        String redirectVehiclesAssetsValue = options.getRedirectVehiclesAssets();
+        if (redirectVehiclesAssetsValue == null)
+            return "NONE";
+
+        return redirectVehiclesAssetsValue;
+
+    }
+
 }
