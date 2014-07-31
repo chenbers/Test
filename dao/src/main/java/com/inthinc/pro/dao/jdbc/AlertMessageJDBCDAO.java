@@ -36,6 +36,7 @@ import com.inthinc.pro.model.AlertMessageDeliveryType;
 import com.inthinc.pro.model.AlertMessageType;
 import com.inthinc.pro.model.AlertSentStatus;
 import com.inthinc.pro.model.Driver;
+import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.GroupHierarchy;
 import com.inthinc.pro.model.LatLng;
 import com.inthinc.pro.model.MeasurementType;
@@ -600,9 +601,13 @@ public class AlertMessageJDBCDAO extends GenericJDBCDAO implements AlertMessageD
             logger.info("Getting driver group name...");
             if (driver != null && driver.getPerson() != null) {
                 logger.info("Driver is legit...");
-                GroupHierarchy groupHierarchy = new GroupHierarchy();
-                logger.info("Group name: " + groupHierarchy.getFullGroupName(driver.getGroupID()));
-                return groupHierarchy.getFullGroupName(driver.getGroupID());
+                logger.info("Driver Group ID: " + driver.getGroupID());
+                logger.info("Driver account ID: " + driver.getPerson().getAcctID());
+                List<Group> groupList = new GroupJDBCDAO().getGroupsByAcctID(driver.getPerson().getAcctID());
+                GroupHierarchy groupHierarchy = new GroupHierarchy(groupList);
+                String groupName = groupHierarchy.getFullGroupName(driver.getGroupID(), " > ");
+                logger.info("Group name: " + groupName);
+                return groupName;
             } else {
                 logger.info("Driver is NOT legit...");
                 return "";
