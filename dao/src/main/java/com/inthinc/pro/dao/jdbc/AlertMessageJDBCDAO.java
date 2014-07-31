@@ -25,6 +25,7 @@ import com.inthinc.pro.dao.EventDAO;
 import com.inthinc.pro.dao.PersonDAO;
 import com.inthinc.pro.dao.VehicleDAO;
 import com.inthinc.pro.dao.ZoneDAO;
+import com.inthinc.pro.dao.hessian.GroupHessianDAO;
 import com.inthinc.pro.dao.hessian.mapper.EventHessianMapper;
 import com.inthinc.pro.dao.hessian.mapper.Mapper;
 import com.inthinc.pro.dao.util.MeasurementConversionUtil;
@@ -603,7 +604,7 @@ public class AlertMessageJDBCDAO extends GenericJDBCDAO implements AlertMessageD
                 logger.info("Driver is legit...");
                 logger.info("Driver Group ID: " + driver.getGroupID());
                 logger.info("Driver account ID: " + driver.getPerson().getAcctID());
-                List<Group> groupList = new GroupJDBCDAO().getGroupsByAcctID(driver.getPerson().getAcctID());
+                List<Group> groupList = new GroupHessianDAO().getGroupsByAcctID(driver.getPerson().getAcctID());
                 GroupHierarchy groupHierarchy = new GroupHierarchy(groupList);
                 String groupName = groupHierarchy.getFullGroupName(driver.getGroupID(), " > ");
                 logger.info("Group name: " + groupName);
