@@ -106,6 +106,7 @@ public class AccountOptionsBean extends BaseBean {
                                 " , Forms is " + (account.hasFormsEnabled() ? "Enabled" : "Disabled") + 
                                 " , Trailers is " + (account.hasTrailersEnabled() ? "Enabled" : "Disabled") +
                                 " , Maintenance is " + (account.hasMaintenanceEnabled() ? "Enabled" : "Disabled") +
+                                " , Redirect to Vehicle Page is  " + (account.getRedirectVehiclesAssetsValue().equals("NONE") ? "None" :account.getRedirectVehiclesAssetsValue().equals("PORTAL")? "Admin>Vehicles Page" : "Assets>Vehicles Page") +
                                 " , Drive Time Violations Report is " + (account.hasDriveTimeViolationsReportEnabled() ? "Enabled" : "Disabled") +
                                 " , Event Queue is " + (account.hasEventsQueueEnabled() ? "Enabled" : "Disabled") + 
                                 " , Login Expire is " +(account.getProps().getLoginExpire()) + 
