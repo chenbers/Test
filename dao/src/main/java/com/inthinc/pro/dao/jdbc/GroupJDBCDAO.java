@@ -141,6 +141,9 @@ public class GroupJDBCDAO extends SimpleJdbcDaoSupport implements GroupDAO {
         logger.info("Query string: " + groupSelectAcct.toString());
         
         SimpleJdbcTemplate template = getSimpleJdbcTemplate();
+        
+        if(template == null) logger.info("Template is null.");
+        if(groupParameterizedRow == null) logger.info("groupParameterizedRow is null.");
 
         List<Group> groupAcctID = template.query(groupSelectAcct.toString(), groupParameterizedRow, params);
         return groupAcctID;
