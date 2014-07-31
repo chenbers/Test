@@ -604,7 +604,11 @@ public class AlertMessageJDBCDAO extends GenericJDBCDAO implements AlertMessageD
                 logger.info("Driver is legit...");
                 logger.info("Driver Group ID: " + driver.getGroupID());
                 logger.info("Driver account ID: " + driver.getPerson().getAcctID());
-                List<Group> groupList = new GroupHessianDAO().getGroupsByAcctID(driver.getPerson().getAcctID());
+                GroupJDBCDAO groupDAO = new GroupJDBCDAO();
+                Person driverPerson = driver.getPerson();
+                Integer acctID = driverPerson.getAcctID();
+                logger.info("Account ID: " + acctID);
+                List<Group> groupList = groupDAO.getGroupsByAcctID(acctID);
                 logger.info("Groups returned: " + groupList.size());
                 GroupHierarchy groupHierarchy = new GroupHierarchy(groupList);
                 String groupName = groupHierarchy.getFullGroupName(driver.getGroupID(), " > ");
