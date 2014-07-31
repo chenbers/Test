@@ -268,6 +268,14 @@ public abstract class ReportsBean extends BaseBean {
                 if (params.getParamType().equals(ReportParamType.GROUPS)){
                     reportCriteriaList.addAll(getReportCriteriaService().getDriverCoachingReportCriteriaByGroup(getAccountGroupHierarchy(),params.getGroupID(),  params.getDateRange().getInterval(), getLocale(),getDateTimeZone(), params.isIncludeInactiveDrivers(), params.isIncludeZeroMilesDrivers()));
                 }
+                break; 
+            case DRIVER_COACHING_SCORE:
+                if (params.getParamType().equals(ReportParamType.DRIVER)){
+                    reportCriteriaList.add(getReportCriteriaService().getDriverCoachingScoreReportCriteriaByDriver(getAccountGroupHierarchy(),params.getDriverID(),params.getDateRange().getInterval(), getLocale(),getDateTimeZone(), params.isIncludeInactiveDrivers(), params.isIncludeZeroMilesDrivers()));
+                }
+                if (params.getParamType().equals(ReportParamType.GROUPS)){
+                    reportCriteriaList.addAll(getReportCriteriaService().getDriverCoachingScoreReportCriteriaByGroup(getAccountGroupHierarchy(),params.getGroupID(),  params.getDateRange().getInterval(), getLocale(),getDateTimeZone(), params.isIncludeInactiveDrivers(), params.isIncludeZeroMilesDrivers()));
+                }
                 break;
             case DRIVER_EXCLUDED_VIOLATIONS:
                 reportCriteriaList.add(getReportCriteriaService().getDriverExcludedViolationCriteria(getAccountGroupHierarchy(),params.getGroupID(),params.getDateRange().getInterval(), getLocale(),getDateTimeZone(), params.isIncludeInactiveDrivers(), params.isIncludeZeroMilesDrivers()));

@@ -93,6 +93,7 @@ import com.inthinc.pro.reports.model.PieScoreData;
 import com.inthinc.pro.reports.model.PieScoreRange;
 import com.inthinc.pro.reports.performance.BackingReportCriteria;
 import com.inthinc.pro.reports.performance.DriverCoachingReportCriteria;
+import com.inthinc.pro.reports.performance.DriverCoachingScoreReportCriteria;
 import com.inthinc.pro.reports.performance.DriverExcludedViolationsCriteria;
 import com.inthinc.pro.reports.performance.DriverHoursReportCriteria;
 import com.inthinc.pro.reports.performance.DriverPerformanceKeyMetricsReportCriteria;
@@ -1427,9 +1428,24 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
     public ReportCriteria getDriverCoachingReportCriteriaByDriver(GroupHierarchy accountGroupHierarchy, Integer driverID, Interval interval, Locale locale, DateTimeZone timeZone) {
         return getDriverCoachingReportCriteriaByDriver(accountGroupHierarchy, driverID, interval, locale, timeZone, ReportCriteria.DEFAULT_EXCLUDE_INACTIVE_DRIVERS, ReportCriteria.DEFAULT_EXCLUDE_ZERO_MILES_DRIVERS);
     }
+
+    @Override
+    public ReportCriteria getDriverCoachingScoreReportCriteriaByDriver(GroupHierarchy accountGroupHierarchy, Integer driverID, Interval interval, Locale locale, DateTimeZone timeZone) {
+        return getDriverCoachingScoreReportCriteriaByDriver(accountGroupHierarchy, driverID, interval, locale, timeZone, ReportCriteria.DEFAULT_EXCLUDE_INACTIVE_DRIVERS, ReportCriteria.DEFAULT_EXCLUDE_ZERO_MILES_DRIVERS);
+    }
     @Override
     public ReportCriteria getDriverCoachingReportCriteriaByDriver(GroupHierarchy accountGroupHierarchy, Integer driverID, Interval interval, Locale locale, DateTimeZone timeZone, boolean includeInactiveDrivers, boolean includeZeroMilesDrivers) {
         DriverCoachingReportCriteria.Builder builder = new DriverCoachingReportCriteria.Builder(groupReportDAO, driverPerformanceDAO, driverDAO, driverID, interval, includeInactiveDrivers, includeZeroMilesDrivers);
+        builder.setDateTimeZone(timeZone);
+        builder.setLocale(locale);
+        builder.setGroupHierarchy(accountGroupHierarchy);
+        builder.setAccountHOSEnabled(isAccountHOSEnabled(accountGroupHierarchy.getGroupList().get(0).getAccountID()));
+        builder.setHosDAO(getHosDAO());
+        return builder.buildSingle();
+    }
+    @Override
+    public ReportCriteria getDriverCoachingScoreReportCriteriaByDriver(GroupHierarchy accountGroupHierarchy, Integer driverID, Interval interval, Locale locale, DateTimeZone timeZone, boolean includeInactiveDrivers, boolean includeZeroMilesDrivers) {
+        DriverCoachingScoreReportCriteria.Builder builder = new DriverCoachingScoreReportCriteria.Builder(groupReportDAO, driverPerformanceDAO, driverDAO, driverID, interval, includeInactiveDrivers, includeZeroMilesDrivers);
         builder.setDateTimeZone(timeZone);
         builder.setLocale(locale);
         builder.setGroupHierarchy(accountGroupHierarchy);
@@ -1454,8 +1470,24 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
         return builder.build();
     }
     @Override
+    public List<ReportCriteria> getDriverCoachingScoreReportCriteriaByGroup(GroupHierarchy accountGroupHierarchy, Integer groupID, Interval interval, Locale locale, DateTimeZone timeZone,
+            boolean includeInactiveDrivers, boolean includeZeroMilesDrivers) {
+        DriverCoachingScoreReportCriteria.Builder builder = new DriverCoachingScoreReportCriteria.Builder(groupReportDAO, driverPerformanceDAO, groupID, interval, includeInactiveDrivers, includeZeroMilesDrivers);
+        builder.setDateTimeZone(timeZone);
+        builder.setLocale(locale);
+        builder.setGroupHierarchy(accountGroupHierarchy);
+        builder.setAccountHOSEnabled(isAccountHOSEnabled(accountGroupHierarchy.getGroupList().get(0).getAccountID()));
+        builder.setHosDAO(getHosDAO());
+        builder.setDriverDAO(driverDAO);
+        return builder.build();
+    }
+    @Override
     public List<ReportCriteria> getDriverCoachingReportCriteriaByGroup(GroupHierarchy accountGroupHierarchy, Integer groupID, Interval interval, Locale locale, DateTimeZone timeZone) {
         return getDriverCoachingReportCriteriaByGroup(accountGroupHierarchy, groupID, interval, locale, timeZone, ReportCriteria.DEFAULT_EXCLUDE_INACTIVE_DRIVERS, ReportCriteria.DEFAULT_EXCLUDE_ZERO_MILES_DRIVERS);
+    }
+    @Override
+    public List<ReportCriteria> getDriverCoachingScoreReportCriteriaByGroup(GroupHierarchy accountGroupHierarchy, Integer groupID, Interval interval, Locale locale, DateTimeZone timeZone) {
+        return getDriverCoachingScoreReportCriteriaByGroup(accountGroupHierarchy, groupID, interval, locale, timeZone, ReportCriteria.DEFAULT_EXCLUDE_INACTIVE_DRIVERS, ReportCriteria.DEFAULT_EXCLUDE_ZERO_MILES_DRIVERS);
     }
 
     @Override
@@ -1956,6 +1988,32 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
                                         timeFrame.getInterval(), 
                                         person.getLocale(),
                                         dtz,   
+                                        reportSchedule.getIncludeInactiveDrivers(),
+                                        reportSchedule.getIncludeZeroMilesDrivers()
+                                        )
+                                        );
+                    }
+                    break;
+                    
+                case DRIVER_COACHING_SCORE:
+                    DateTimeZone dtz1 = DateTimeZone.forTimeZone(person.getTimeZone());
+                    if (reportSchedule.getGroupID() != null) {
+                        reportCriteriaList.addAll(getDriverCoachingScoreReportCriteriaByGroup(
+                                        groupHierarchy,
+                                        reportSchedule.getGroupID(),
+                                        timeFrame.getInterval(),
+                                        person.getLocale(),
+                                        dtz1,   
+                                        reportSchedule.getIncludeInactiveDrivers(),
+                                        reportSchedule.getIncludeZeroMilesDrivers()
+                                        )
+                                        );
+                    } else {
+                        reportCriteriaList.add(getDriverCoachingScoreReportCriteriaByDriver(
+                                        groupHierarchy, reportSchedule.getDriverID(),
+                                        timeFrame.getInterval(), 
+                                        person.getLocale(),
+                                        dtz1,   
                                         reportSchedule.getIncludeInactiveDrivers(),
                                         reportSchedule.getIncludeZeroMilesDrivers()
                                         )
