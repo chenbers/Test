@@ -575,19 +575,15 @@ public class AlertMessageJDBCDAO extends GenericJDBCDAO implements AlertMessageD
 //        }
 
         private void addDriverRelatedData(Integer driverID, Date eventTime, Locale locale) {
-            logger.info("adding Driver-related data...");
-            logger.info("Driver ID: " + driverID);
             Driver driver = driverDAO.findByID(driverID);
             SimpleDateFormat driverDateFormat = getDriverDate(driver, locale);
             // Construct the message parameter list
             parameterList.add(driverDateFormat.format(eventTime));
 
             String driverFullName = getDriverFullName(driver);
-            logger.info("Driver name: " + driverFullName);
             parameterList.add(driverFullName);
             
             String driverOrgStructure = getDriverOrgStructure(driver);
-            logger.info("Driver group: " + driverOrgStructure);
             parameterList.add(driverOrgStructure);
         }
 
@@ -613,7 +609,6 @@ public class AlertMessageJDBCDAO extends GenericJDBCDAO implements AlertMessageD
         }
         
         private String getDriverOrgStructure (Driver driver) {
-            logger.info("Getting driver group name...");
             if (driver != null && driver.getPerson() != null) {
                 Person driverPerson = driver.getPerson();
                 Integer acctID = driverPerson.getAcctID();
@@ -622,7 +617,6 @@ public class AlertMessageJDBCDAO extends GenericJDBCDAO implements AlertMessageD
                 String groupName = groupHierarchy.getFullGroupName(driver.getGroupID(), " > ");
                 return groupName;
             } else {
-                logger.info("Driver is NOT legit...");
                 return "";
             }
         }
