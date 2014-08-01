@@ -40,7 +40,8 @@ public class RedFlagAlertsTests {
         // Create a device state with a speeding violation
         DeviceState deviceState = new DeviceState(imei, ProductType.WAYSMART_850);
         
-        deviceState.setTopSpeed(103);
+        deviceState.setDriverID(17092);
+        deviceState.setTopSpeed(102);
         deviceState.setSpeedingDistanceX100(200);
         deviceState.setSpeedingSpeedLimit(25);
         
