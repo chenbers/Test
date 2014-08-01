@@ -24,6 +24,7 @@ import com.inthinc.pro.model.AlertMessage;
 import com.inthinc.pro.model.AlertMessageBuilder;
 import com.inthinc.pro.model.AlertMessageDeliveryType;
 import com.inthinc.pro.model.Driver;
+import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.GroupHierarchy;
 import com.inthinc.pro.model.LatLng;
 import com.inthinc.pro.model.Person;
@@ -160,8 +161,12 @@ public class AlertMessageHessianDAO extends GenericHessianDAO<AlertMessage, Inte
         	parameterList.add(driver.getPerson().getFullName());
             
             // Add the full group name of the driver to the parameter list
-            GroupHierarchy groupHierarchy = new GroupHierarchy();
-            parameterList.add(groupHierarchy.getFullGroupName(driver.getGroupID()));
+        	Person driverPerson = driver.getPerson();
+            Integer acctID = driverPerson.getAcctID();
+            List<Group> groupList = groupDAO.getGroupsByAcctID(acctID);
+            GroupHierarchy groupHierarchy = new GroupHierarchy(groupList);
+            String groupName = groupHierarchy.getFullGroupName(driver.getGroupID(), " > ");
+            parameterList.add(groupName);
         } else {
             
             // We still need to return the correct number
