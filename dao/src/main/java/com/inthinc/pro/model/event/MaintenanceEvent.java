@@ -55,34 +55,12 @@ public class MaintenanceEvent extends Event implements MultipleEventTypes {
     }
 
     public EventType getEventType() {
-            if(batteryVoltage != null){
-                threshold = batteryVoltage + "";
-                return EventType.BATTERY_VOLTAGE;
-            }else if(engineTemp != null){
-                threshold = engineTemp + "";
-                return  EventType.ENGINE_TEMP;
-            }else if(transmissionTemp != null) {
-                threshold = transmissionTemp + "";
-                return EventType.TRANSMISSION_TEMP;
-            }else if(dpfFlowRate != null) {
-                threshold = dpfFlowRate + "";
-                return EventType.DPF_FLOW_RATE;
-            }else if(oilPresure != null) {
-                threshold = oilPresure + "";
-                return EventType.OIL_PRESSURE;
-            }else if(malfunctionIndicatorLamp != null) {
-                threshold = malfunctionIndicatorLamp + "";
-                return EventType.MALFUNCTION_INDICATOR_LAMP;
-            } else if (checkEngine != null) {
-                threshold = checkEngine + "";
-                if (checkEngine == 1) {
-                    return EventType.RED_STOP;
-                } else if (checkEngine == 2) {
-                    return EventType.AMBER_WARNING;
-                } else if (checkEngine == 3) {
-                    return EventType.PROTECT;
-                } else {
-                    return EventType.UNKNOWN;
+            if(this.getAttribs() != null){
+                String[] attribsList = this.getAttribs().split(";");
+                for(String s : attribsList){
+                    if(!s.trim().equals("")){
+                        attrMap.put(s.split("=")[0],s.split("=")[1]);
+                    }
                 }
                 if(attrMap.containsKey(EventAttr.ATTR_BATTERY_VOLTAGE.getCode() + "")){
                     threshold = attrMap.get(EventAttr.ATTR_BATTERY_VOLTAGE.getCode()+"").toString();
@@ -100,14 +78,27 @@ public class MaintenanceEvent extends Event implements MultipleEventTypes {
                     threshold = attrMap.get(EventAttr.ATTR_OIL_PRESSURE.getCode()+"").toString();
                     return EventType.OIL_PRESSURE;
                 }
-                else if(attrMap.containsKey(EventAttr.ENGINE_HOURS_X100.getCode()+"")){
+                else if(attrMap.containsKey(EventAttr.ATTR_CHECK_ENGINE.getCode()+"")){
+                    threshold = attrMap.get(EventAttr.ATTR_CHECK_ENGINE.getCode()+"").toString();
+                    if (Integer.valueOf(attrMap.get(EventAttr.ATTR_CHECK_ENGINE.getCode()+"").toString()) == 1) {
+                        return EventType.RED_STOP;
+                    } else if (Integer.valueOf(attrMap.get(EventAttr.ATTR_CHECK_ENGINE.getCode()+"").toString()) == 2) {
+                        return EventType.AMBER_WARNING;
+                    } else if (Integer.valueOf(attrMap.get(EventAttr.ATTR_CHECK_ENGINE.getCode()+"").toString()) == 3) {
+                        return EventType.PROTECT;
+                    } else {
+                        return EventType.UNKNOWN;
+                    }
+                }else if(attrMap.containsKey(EventAttr.ENGINE_HOURS_X100.getCode()+"")){
                     threshold = attrMap.get(EventAttr.ENGINE_HOURS_X100.getCode()+"").toString();
                     return EventType.ATTR_ENGINE_HOURS;
                 }else if(attrMap.containsKey(EventAttr.ODOMETER.getCode()+"")){
                     threshold = attrMap.get(EventAttr.ODOMETER.getCode()+"").toString();
                     return EventType.ODOMETER;
-                }
-                else return EventType.UNKNOWN;
+                }else if(attrMap.containsKey(EventAttr.ATTR_MALFUNCTION_INDICATOR_LAMP.getCode()+"")){
+                    threshold = attrMap.get(EventAttr.ATTR_MALFUNCTION_INDICATOR_LAMP.getCode()+"").toString();
+                    return EventType.MALFUNCTION_INDICATOR_LAMP;
+                }else return EventType.UNKNOWN;
             }else{
                 if(batteryVoltage != null){
                     threshold = batteryVoltage + "";
@@ -124,8 +115,21 @@ public class MaintenanceEvent extends Event implements MultipleEventTypes {
                 }else if(oilPresure != null) {
                     threshold = oilPresure + "";
                     return EventType.OIL_PRESSURE;
-                }
-                else if(engineHours != null) {
+                }else if(malfunctionIndicatorLamp != null) {
+                    threshold = malfunctionIndicatorLamp + "";
+                    return EventType.MALFUNCTION_INDICATOR_LAMP;
+                } else if (checkEngine != null) {
+                    threshold = checkEngine + "";
+                    if (checkEngine == 1) {
+                        return EventType.RED_STOP;
+                    } else if (checkEngine == 2) {
+                        return EventType.AMBER_WARNING;
+                    } else if (checkEngine == 3) {
+                        return EventType.PROTECT;
+                    } else {
+                        return EventType.UNKNOWN;
+                    }
+                }else if(engineHours != null) {
                     threshold = engineHours + "";
                     return EventType.ATTR_ENGINE_HOURS;
                 }else if(odometer != null) {
@@ -196,6 +200,14 @@ public class MaintenanceEvent extends Event implements MultipleEventTypes {
         this.engineHours = engineHours;
     }
 
+    public Integer getOdometer() {
+        return odometer;
+    }
+
+    public void setOdometer(Integer odometer) {
+        this.odometer = odometer;
+    }
+
     public String getThreshold() {
         return threshold;
     }
@@ -208,5 +220,10 @@ public class MaintenanceEvent extends Event implements MultipleEventTypes {
     public Set<EventType> getEventTypes() {
         return EnumSet.of(EventType.BATTERY_VOLTAGE, EventType.ENGINE_TEMP, EventType.TRANSMISSION_TEMP, EventType.DPF_FLOW_RATE,EventType.OIL_PRESSURE,
                 EventType.ATTR_ENGINE_HOURS, EventType.ODOMETER );
+    }
+
+    @Override
+    public String toString() {
+        return super.toString();
     }
 }
