@@ -6,8 +6,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-import org.apache.log4j.Logger;
-
 public class GroupHierarchy implements Serializable
 {
 	
@@ -15,7 +13,6 @@ public class GroupHierarchy implements Serializable
 	 * 
 	 */
 	private static final long serialVersionUID = 2855781183498326570L;
-    private static final Logger logger = Logger.getLogger(GroupHierarchy.class);
 
 	public static final String GROUP_SEPERATOR = " - ";
 	public static final String CONTINUATION_PREFIX = "..";
@@ -121,26 +118,18 @@ public class GroupHierarchy implements Serializable
     
     public String getFullGroupName(Integer groupID, String separator)
     {
-        logger.info("Getting full group name...");
-        logger.info("Group ID: " + groupID);
-        logger.info("Separator: " + separator);
-        logger.info("Groups in groupMap: " + groupMap.size());
     	StringBuilder builder = new StringBuilder();
     	Group group = groupMap.get(groupID);
     	if (group == null) {
-    	    logger.info("Group is null");
     	    return "";
     	}
     	if (group.getParentID() != null && group.getParentID().intValue() != 0)
     	{
-    	    logger.info("Group parentID: " + group.getParentID());
     		builder.append(getFullGroupName(group.getParentID(), separator));
     	}
     	if (builder.length() != 0)
             builder.append(separator);
-    	logger.info("Group name: " + group.getName());
     	builder.append(group.getName());
-    	logger.info("Full group name: " + builder.toString());
         return builder.toString();
     }
     

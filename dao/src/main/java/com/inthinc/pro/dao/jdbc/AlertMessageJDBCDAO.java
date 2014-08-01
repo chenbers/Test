@@ -571,19 +571,15 @@ public class AlertMessageJDBCDAO extends GenericJDBCDAO implements AlertMessageD
 //        }
 
         private void addDriverRelatedData(Integer driverID, Date eventTime, Locale locale) {
-            logger.info("adding Driver-related data...");
-            logger.info("Driver ID: " + driverID);
             Driver driver = driverDAO.findByID(driverID);
             SimpleDateFormat driverDateFormat = getDriverDate(driver, locale);
             // Construct the message parameter list
             parameterList.add(driverDateFormat.format(eventTime));
 
             String driverFullName = getDriverFullName(driver);
-            logger.info("Driver name: " + driverFullName);
             parameterList.add(driverFullName);
             
             String driverOrgStructure = getDriverOrgStructure(driver);
-            logger.info("Driver group: " + driverOrgStructure);
             parameterList.add(driverOrgStructure);
         }
 
@@ -609,22 +605,14 @@ public class AlertMessageJDBCDAO extends GenericJDBCDAO implements AlertMessageD
         }
         
         private String getDriverOrgStructure (Driver driver) {
-            logger.info("Getting driver group name...");
             if (driver != null && driver.getPerson() != null) {
-                logger.info("Driver is legit...");
-                logger.info("Driver Group ID: " + driver.getGroupID());
-                logger.info("Driver account ID: " + driver.getPerson().getAcctID());
                 Person driverPerson = driver.getPerson();
                 Integer acctID = driverPerson.getAcctID();
-                logger.info("Account ID: " + acctID);
                 List<Group> groupList = groupDAO.getGroupsByAcctID(acctID);
-                logger.info("Groups returned: " + groupList.size());
                 GroupHierarchy groupHierarchy = new GroupHierarchy(groupList);
                 String groupName = groupHierarchy.getFullGroupName(driver.getGroupID(), " > ");
-                logger.info("Group name: " + groupName);
                 return groupName;
             } else {
-                logger.info("Driver is NOT legit...");
                 return "";
             }
         }
