@@ -63,6 +63,8 @@ public class AlertMessageJDBCDAOTest {
     @Test
     public final void testGetDriverOrgStructureWithNullPerson() {
         
+        // Return null when getPerson() is called to make sure we're returning
+        // and empty string when the first condition fails
         new NonStrictExpectations() {{
              mockDriver.getPerson(); result = null;
         }};

@@ -26,7 +26,6 @@ import com.inthinc.pro.dao.GroupDAO;
 import com.inthinc.pro.dao.PersonDAO;
 import com.inthinc.pro.dao.VehicleDAO;
 import com.inthinc.pro.dao.ZoneDAO;
-import com.inthinc.pro.dao.hessian.GroupHessianDAO;
 import com.inthinc.pro.dao.hessian.mapper.EventHessianMapper;
 import com.inthinc.pro.dao.hessian.mapper.Mapper;
 import com.inthinc.pro.dao.util.MeasurementConversionUtil;
@@ -565,10 +564,6 @@ public class AlertMessageJDBCDAO extends GenericJDBCDAO implements AlertMessageD
             addAlertRelatedData(event, personMeasurementType, alertMessageType, zoneID);
             return parameterList;
         }
-        
-//        public List<String> getParameterList(Event event, MeasurementType personMeasurementType, AlertMessageType alertMessageType, Locale locale, Integer zoneID, AlertMessage message) {
-//            
-//        }
 
         private void addDriverRelatedData(Integer driverID, Date eventTime, Locale locale) {
             Driver driver = driverDAO.findByID(driverID);
