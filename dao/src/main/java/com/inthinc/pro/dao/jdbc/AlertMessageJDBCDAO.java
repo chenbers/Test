@@ -22,6 +22,7 @@ import com.inthinc.pro.comm.parser.attrib.Attrib;
 import com.inthinc.pro.dao.AlertMessageDAO;
 import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.dao.EventDAO;
+import com.inthinc.pro.dao.GroupDAO;
 import com.inthinc.pro.dao.PersonDAO;
 import com.inthinc.pro.dao.VehicleDAO;
 import com.inthinc.pro.dao.ZoneDAO;
@@ -61,6 +62,7 @@ public class AlertMessageJDBCDAO extends GenericJDBCDAO implements AlertMessageD
     private VehicleDAO vehicleDAO;
     private DriverDAO driverDAO;
     private ZoneDAO zoneDAO;
+    private GroupDAO groupDAO;
     private AddressLookup addressLookup;
     // private FormsDAO formsDAO;
     private String formSubmissionsURL;
@@ -465,6 +467,14 @@ public class AlertMessageJDBCDAO extends GenericJDBCDAO implements AlertMessageD
         return personDAO;
     }
 
+    public void setGroupDAO(GroupDAO groupDAO) {
+        this.groupDAO = groupDAO;
+    }
+
+    public GroupDAO getGroupDAO() {
+        return groupDAO;
+    }
+
     public void setPersonDAO(PersonDAO personDAO) {
         this.personDAO = personDAO;
     }
@@ -604,7 +614,6 @@ public class AlertMessageJDBCDAO extends GenericJDBCDAO implements AlertMessageD
                 logger.info("Driver is legit...");
                 logger.info("Driver Group ID: " + driver.getGroupID());
                 logger.info("Driver account ID: " + driver.getPerson().getAcctID());
-                GroupJDBCDAO groupDAO = new GroupJDBCDAO();
                 Person driverPerson = driver.getPerson();
                 Integer acctID = driverPerson.getAcctID();
                 logger.info("Account ID: " + acctID);
