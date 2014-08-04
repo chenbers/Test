@@ -308,7 +308,9 @@
 
   <bean id="organizationBean" class="com.inthinc.pro.backing.OrganizationBean" scope="request"/>
 
-  <bean id="reportScheduleBean" class="com.inthinc.pro.backing.ReportScheduleBean" scope="session" init-method="initBean"/>
+  <bean id="reportScheduleBean" class="com.inthinc.pro.backing.ReportScheduleBean" scope="session" init-method="initBean">
+      <property name="messageSource" ref="messageSource"></property>
+  </bean>
 
   <bean id="zonesBean" class="com.inthinc.pro.backing.ZonesBean" scope="session"/>
   

@@ -331,6 +331,14 @@ public class ReportSchedule implements Cloneable {
         this.duration = duration;
     }
 
+    public Integer getCodeTimeFormat() {
+        return codeTimeFormat;
+    }
+
+    public void setCodeTimeFormat(Integer codeTimeFormat) {
+        this.codeTimeFormat = codeTimeFormat;
+    }
+
     public String getFullName() {
         return fullName;
     }

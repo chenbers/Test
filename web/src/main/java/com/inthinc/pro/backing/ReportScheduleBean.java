@@ -2,18 +2,7 @@ package com.inthinc.pro.backing;
 
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.EnumSet;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.TimeZone;
-import java.util.TreeMap;
+import java.util.*;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.model.SelectItem;
@@ -42,6 +31,7 @@ import com.inthinc.pro.util.MessageUtil;
 import com.inthinc.pro.util.MiscUtil;
 import com.inthinc.pro.util.SelectItemUtil;
 import com.inthinc.pro.util.TimeFrameUtil;
+import org.springframework.context.MessageSource;
 
 /**
  * 
@@ -76,6 +66,7 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
     private DriverDAO driverDAO;
     private VehicleDAO vehicleDAO;
     private GroupDAO groupDAO;
+    private MessageSource messageSource;
 
     private AdminReportScheduleDAO adminReportScheduleDAO;
 
@@ -914,6 +905,30 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
     public List<SelectItem> getTimeFormatType() {
         return SelectItemUtil.toList(TimeFormatType.class, false);
     }
+
+    public MessageSource getMessageSource() {
+        return messageSource;
+    }
+
+    public void setMessageSource(MessageSource messageSource) {
+        this.messageSource = messageSource;
+    }
+
+    public String getTimeFormatTypeInternationalized(){
+        String message = "";
+        if (this.getItem()!=null){
+            TimeFormatType timeFormatType = this.getItem().getTimeFormatType();
+            message = timeFormatType.getDescription();
+
+            // get current locale
+            Locale currentLocale = getLocale();
+
+            // attempt to find it in text resources
+            message = messageSource.getMessage(message, null, currentLocale);
+        }
+        return message;
+    }
+
     public static class ReportScheduleView extends ReportSchedule implements EditItem {
         // private static final long serialVersionUID = 8954277815270194338L;
 

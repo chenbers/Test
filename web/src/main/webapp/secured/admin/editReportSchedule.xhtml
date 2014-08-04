@@ -274,7 +274,6 @@
                                           <td>
                                               <rich:message for="editReportSchedule-reportTimeFormat" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
                                               <h:selectOneMenu id="editReportSchedule-reportTimeFormat" value="#{reportScheduleBean.item.timeFormatType}" converter="SimpleBeanConverter" required="true" requiredMessage="#{messages.required}">
-                                                  <!--<f:selectItems value="#{reportScheduleBean.timeFrameSelect.timeFrames}"/>-->
                                                   <f:selectItems value="#{reportScheduleBean.timeFormatType}"/>
                                               </h:selectOneMenu>
                                           </td>

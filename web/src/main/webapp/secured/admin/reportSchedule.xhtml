@@ -182,6 +182,16 @@
                                     </td>
                                  </tr>
                            </h:outputText>
+                            <h:outputText rendered="#{reportScheduleBean.item.report.label eq 'Payroll Report Summary' || reportScheduleBean.item.report.label eq 'Payroll Compensated Hours' || reportScheduleBean.item.report.label eq 'Payroll Report Driver Detail' || reportScheduleBean.item.report.label eq 'Payroll Report Driver Signoff' }" >
+                                <tr>
+                                    <td width="100" valign="top">
+                                        <h:outputText value="#{messages.reportSchedule_timeFormat}"/>
+                                    </td>
+                                    <td>
+                                        <h:outputText value="#{reportScheduleBean.timeFormatTypeInternationalized}"/>
+                                    </td>
+                                </tr>
+                            </h:outputText>
 							<h:outputText rendered="#{not empty reportScheduleBean.item.groupName}">
 									<tr>
 										<td width="100" valign="top">
