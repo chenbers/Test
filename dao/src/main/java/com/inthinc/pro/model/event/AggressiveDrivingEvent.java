@@ -7,8 +7,6 @@ import java.util.Set;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
-import org.apache.log4j.Logger;
-
 import com.inthinc.pro.dao.annotations.event.EventAttrID;
 import com.inthinc.pro.dao.util.MeasurementConversionUtil;
 import com.inthinc.pro.model.MeasurementType;
@@ -33,9 +31,6 @@ public class AggressiveDrivingEvent extends Event implements MultipleEventTypes
                         // in the range of 1 to 5, 5 being the most extreme.
                         // This may need to be changed.
 
-    @SuppressWarnings("unused")
-    private static final Logger logger = Logger.getLogger(AggressiveDrivingEvent.class);
-    
     private static EventAttr[] eventAttrList = {
         EventAttr.DELTA_VS
     };

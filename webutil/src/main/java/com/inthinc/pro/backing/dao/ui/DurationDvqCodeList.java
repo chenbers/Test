@@ -22,5 +22,9 @@ public class DurationDvqCodeList implements SelectList{
 		
 		return selectList;
 	}
+    @Override
+    public Object valueOf(Object value) {
+        return Duration.valueOf(Integer.valueOf(value+""));
+    }
 
 }

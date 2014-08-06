@@ -22,5 +22,9 @@ public class DurationCodeList implements SelectList{
 		
 		return selectList;
 	}
+    @Override
+    public Object valueOf(Object value) {
+        return value;
+    }
 
 }

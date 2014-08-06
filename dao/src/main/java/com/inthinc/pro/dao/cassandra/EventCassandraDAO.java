@@ -230,10 +230,17 @@ public class EventCassandraDAO extends AggregationCassandraDAO implements EventD
         logger.debug("EventCassandraDAO getEventsForDriver() driverID = " + driverID);
         Integer[] eventTypesArray = getMapper().convertToArray(types, Integer.class);
         
+        List<Event> returnList = null;
         if (DateUtil.differenceInDays(startDate, new Date()) > 60)
-            return fetchEventsForAssetOver60(true, driverID, startDate, endDate, eventTypesArray, includeForgiven);
+            returnList = fetchEventsForAssetOver60(true, driverID, startDate, endDate, eventTypesArray, includeForgiven);
         else
-            return fetchEventsForAsset(true, driverID, startDate, endDate, eventTypesArray, includeForgiven);
+            returnList =  fetchEventsForAsset(true, driverID, startDate, endDate, eventTypesArray, includeForgiven);
+        
+        
+        Collections.sort(returnList);
+        Collections.reverse(returnList);
+       
+        return returnList;
     }
 
     @Override
@@ -241,10 +248,15 @@ public class EventCassandraDAO extends AggregationCassandraDAO implements EventD
     {
         logger.debug("EventCassandraDAO getEventsForvehicle() vehicleID = " + vehicleID);
         Integer[] eventTypesArray = getMapper().convertToArray(types, Integer.class);
+        List<Event> returnList = null;
         if (DateUtil.differenceInDays(startDate, new Date()) > 60)
-            return fetchEventsForAssetOver60(false, vehicleID, startDate, endDate, eventTypesArray, includeForgiven);
+            returnList =  fetchEventsForAssetOver60(false, vehicleID, startDate, endDate, eventTypesArray, includeForgiven);
         else
-            return fetchEventsForAsset(false, vehicleID, startDate, endDate, eventTypesArray, includeForgiven);
+            returnList = fetchEventsForAsset(false, vehicleID, startDate, endDate, eventTypesArray, includeForgiven);
+        Collections.sort(returnList);
+        Collections.reverse(returnList);
+       
+        return returnList;
     }
 
     
