@@ -29,6 +29,9 @@ public class NoteIDValidator extends DefaultValidator {
 			if (event == null)
 				return false;
 			
+			if (isSuperuser())
+			    return true;
+			
 			Integer groupID = event.getGroupID();
 			Group group = groupDAO.findByID(groupID);
 			
