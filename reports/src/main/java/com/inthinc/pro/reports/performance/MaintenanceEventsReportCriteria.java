@@ -207,7 +207,7 @@ public class MaintenanceEventsReportCriteria extends ReportCriteria {
                         }else if(((MaintenanceEvent)event).getCheckEngine() != null){
                             evCode = EventAttr.ATTR_CHECK_ENGINE.getCode();
                         }else if(((MaintenanceEvent)event).getEngineHours() != null){
-                            evCode = EventAttr.ATTR_ENGINE_HOURS.getCode();
+                            evCode = EventAttr.ENGINE_HOURS_X100.getCode();
                         }
 
                         String threshold = null;
