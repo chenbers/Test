@@ -78,27 +78,14 @@ public class MaintenanceEvent extends Event implements MultipleEventTypes {
                     threshold = attrMap.get(EventAttr.ATTR_OIL_PRESSURE.getCode()+"").toString();
                     return EventType.OIL_PRESSURE;
                 }
-                else if(attrMap.containsKey(EventAttr.ATTR_CHECK_ENGINE.getCode()+"")){
-                    threshold = attrMap.get(EventAttr.ATTR_CHECK_ENGINE.getCode()+"").toString();
-                    if (Integer.valueOf(attrMap.get(EventAttr.ATTR_CHECK_ENGINE.getCode()+"").toString()) == 1) {
-                        return EventType.RED_STOP;
-                    } else if (Integer.valueOf(attrMap.get(EventAttr.ATTR_CHECK_ENGINE.getCode()+"").toString()) == 2) {
-                        return EventType.AMBER_WARNING;
-                    } else if (Integer.valueOf(attrMap.get(EventAttr.ATTR_CHECK_ENGINE.getCode()+"").toString()) == 3) {
-                        return EventType.PROTECT;
-                    } else {
-                        return EventType.UNKNOWN;
-                    }
-                }else if(attrMap.containsKey(EventAttr.ENGINE_HOURS_X100.getCode()+"")){
+                else if(attrMap.containsKey(EventAttr.ENGINE_HOURS_X100.getCode()+"")){
                     threshold = attrMap.get(EventAttr.ENGINE_HOURS_X100.getCode()+"").toString();
                     return EventType.ATTR_ENGINE_HOURS;
                 }else if(attrMap.containsKey(EventAttr.ODOMETER.getCode()+"")){
                     threshold = attrMap.get(EventAttr.ODOMETER.getCode()+"").toString();
                     return EventType.ODOMETER;
-                }else if(attrMap.containsKey(EventAttr.ATTR_MALFUNCTION_INDICATOR_LAMP.getCode()+"")){
-                    threshold = attrMap.get(EventAttr.ATTR_MALFUNCTION_INDICATOR_LAMP.getCode()+"").toString();
-                    return EventType.MALFUNCTION_INDICATOR_LAMP;
-                }else return EventType.UNKNOWN;
+                }
+                else return EventType.UNKNOWN;
             }else{
                 if(batteryVoltage != null){
                     threshold = batteryVoltage + "";
@@ -115,21 +102,8 @@ public class MaintenanceEvent extends Event implements MultipleEventTypes {
                 }else if(oilPresure != null) {
                     threshold = oilPresure + "";
                     return EventType.OIL_PRESSURE;
-                }else if(malfunctionIndicatorLamp != null) {
-                    threshold = malfunctionIndicatorLamp + "";
-                    return EventType.MALFUNCTION_INDICATOR_LAMP;
-                } else if (checkEngine != null) {
-                    threshold = checkEngine + "";
-                    if (checkEngine == 1) {
-                        return EventType.RED_STOP;
-                    } else if (checkEngine == 2) {
-                        return EventType.AMBER_WARNING;
-                    } else if (checkEngine == 3) {
-                        return EventType.PROTECT;
-                    } else {
-                        return EventType.UNKNOWN;
-                    }
-                }else if(engineHours != null) {
+                }
+                else if(engineHours != null) {
                     threshold = engineHours + "";
                     return EventType.ATTR_ENGINE_HOURS;
                 }else if(odometer != null) {

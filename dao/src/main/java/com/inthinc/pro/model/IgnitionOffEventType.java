@@ -25,7 +25,7 @@ public enum IgnitionOffEventType {
     }
 
     public Integer getCode() {
-            return this.code;
+        return this.code;
     }
 
     public static IgnitionOffEventType getEventType(Integer code) {
