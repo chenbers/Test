@@ -22,10 +22,6 @@ public class MaintenanceEvent extends Event implements MultipleEventTypes {
     private Integer dpfFlowRate;
     @EventAttrID(name="ATTR_OIL_PRESSURE")
     private Integer oilPresure;
-    @EventAttrID(name="ATTR_MALFUNCTION_INDICATOR_LAMP")
-    private Integer malfunctionIndicatorLamp;
-    @EventAttrID(name="ATTR_CHECK_ENGINE")
-    private Integer checkEngine;
     @EventAttrID(name="ENGINE_HOURS_X100")
     private Integer engineHours;
     @EventAttrID(name="ODOMETER")
@@ -41,7 +37,6 @@ public class MaintenanceEvent extends Event implements MultipleEventTypes {
             EventAttr.ATTR_TRANSMISSION_TEMP,
             EventAttr.ATTR_DPF_FLOW_RATE,
             EventAttr.ATTR_OIL_PRESSURE,
-            EventAttr.ATTR_MALFUNCTION_INDICATOR_LAMP,
             EventAttr.ENGINE_HOURS_X100,
             EventAttr.ODOMETER
     };
@@ -89,13 +84,55 @@ public class MaintenanceEvent extends Event implements MultipleEventTypes {
                 } else {
                     return EventType.UNKNOWN;
                 }
-            }else if(engineHours != null) {
-                threshold = engineHours + "";
-                return EventType.ATTR_ENGINE_HOURS;
-            }else if(odometer != null) {
-                threshold = odometer + "";
-                return EventType.ODOMETER;
-            }else return EventType.UNKNOWN;
+                if(attrMap.containsKey(EventAttr.ATTR_BATTERY_VOLTAGE.getCode() + "")){
+                    threshold = attrMap.get(EventAttr.ATTR_BATTERY_VOLTAGE.getCode()+"").toString();
+                    return EventType.BATTERY_VOLTAGE;
+                }else if(attrMap.containsKey(EventAttr.ATTR_ENGINE_TEMP.getCode()+"")){
+                    threshold = attrMap.get(EventAttr.ATTR_ENGINE_TEMP.getCode()+"").toString();
+                    return EventType.ENGINE_TEMP;
+                }else if(attrMap.containsKey(EventAttr.ATTR_TRANSMISSION_TEMP.getCode()+"")){
+                    threshold = attrMap.get(EventAttr.ATTR_TRANSMISSION_TEMP.getCode()+"").toString();
+                    return EventType.TRANSMISSION_TEMP;
+                }else if(attrMap.containsKey(EventAttr.ATTR_DPF_FLOW_RATE.getCode()+"")){
+                    threshold = attrMap.get(EventAttr.ATTR_DPF_FLOW_RATE.getCode()+"").toString();
+                    return EventType.DPF_FLOW_RATE;
+                }else if(attrMap.containsKey(EventAttr.ATTR_OIL_PRESSURE.getCode()+"")){
+                    threshold = attrMap.get(EventAttr.ATTR_OIL_PRESSURE.getCode()+"").toString();
+                    return EventType.OIL_PRESSURE;
+                }
+                else if(attrMap.containsKey(EventAttr.ENGINE_HOURS_X100.getCode()+"")){
+                    threshold = attrMap.get(EventAttr.ENGINE_HOURS_X100.getCode()+"").toString();
+                    return EventType.ATTR_ENGINE_HOURS;
+                }else if(attrMap.containsKey(EventAttr.ODOMETER.getCode()+"")){
+                    threshold = attrMap.get(EventAttr.ODOMETER.getCode()+"").toString();
+                    return EventType.ODOMETER;
+                }
+                else return EventType.UNKNOWN;
+            }else{
+                if(batteryVoltage != null){
+                    threshold = batteryVoltage + "";
+                    return EventType.BATTERY_VOLTAGE;
+                }else if(engineTemp != null){
+                    threshold = engineTemp + "";
+                    return  EventType.ENGINE_TEMP;
+                }else if(transmissionTemp != null) {
+                    threshold = transmissionTemp + "";
+                    return EventType.TRANSMISSION_TEMP;
+                }else if(dpfFlowRate != null) {
+                    threshold = dpfFlowRate + "";
+                    return EventType.DPF_FLOW_RATE;
+                }else if(oilPresure != null) {
+                    threshold = oilPresure + "";
+                    return EventType.OIL_PRESSURE;
+                }
+                else if(engineHours != null) {
+                    threshold = engineHours + "";
+                    return EventType.ATTR_ENGINE_HOURS;
+                }else if(odometer != null) {
+                    threshold = odometer + "";
+                    return EventType.ODOMETER;
+                }else return EventType.UNKNOWN;
+            }
     }
 
     @Override
@@ -151,22 +188,6 @@ public class MaintenanceEvent extends Event implements MultipleEventTypes {
         this.oilPresure = oilPresure;
     }
 
-    public Integer getMalfunctionIndicatorLamp() {
-        return malfunctionIndicatorLamp;
-    }
-
-    public void setMalfunctionIndicatorLamp(Integer malfunctionIndicatorLamp) {
-        this.malfunctionIndicatorLamp = malfunctionIndicatorLamp;
-    }
-
-    public Integer getCheckEngine() {
-        return checkEngine;
-    }
-
-    public void setCheckEngine(Integer checkEngine) {
-        this.checkEngine = checkEngine;
-    }
-
     public Integer getEngineHours() {
         return engineHours;
     }
@@ -185,6 +206,7 @@ public class MaintenanceEvent extends Event implements MultipleEventTypes {
 
     @Override
     public Set<EventType> getEventTypes() {
-        return EnumSet.of(EventType.RED_STOP, EventType.AMBER_WARNING, EventType.PROTECT,EventType.BATTERY_VOLTAGE, EventType.ENGINE_TEMP, EventType.TRANSMISSION_TEMP, EventType.DPF_FLOW_RATE,EventType.OIL_PRESSURE, EventType.MALFUNCTION_INDICATOR_LAMP, EventType.ATTR_ENGINE_HOURS, EventType.ODOMETER );
+        return EnumSet.of(EventType.BATTERY_VOLTAGE, EventType.ENGINE_TEMP, EventType.TRANSMISSION_TEMP, EventType.DPF_FLOW_RATE,EventType.OIL_PRESSURE,
+                EventType.ATTR_ENGINE_HOURS, EventType.ODOMETER );
     }
 }

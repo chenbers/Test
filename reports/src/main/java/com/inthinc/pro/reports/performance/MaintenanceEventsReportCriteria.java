@@ -202,11 +202,14 @@ public class MaintenanceEventsReportCriteria extends ReportCriteria {
                         }else if(((MaintenanceEvent)event).getDpfFlowRate() != null){
                             maintenanceSettings = MaintenanceSettings.DPF_FLOW_RATE;
                             evCode = EventAttr.ATTR_DPF_FLOW_RATE.getCode();
-                        }else if(((MaintenanceEvent)event).getMalfunctionIndicatorLamp() != null){
-                            evCode = EventAttr.ATTR_MALFUNCTION_INDICATOR_LAMP.getCode();
-                        }else if(((MaintenanceEvent)event).getCheckEngine() != null){
-                            evCode = EventAttr.ATTR_CHECK_ENGINE.getCode();
-                        }else if(((MaintenanceEvent)event).getEngineHours() != null){
+                        }
+//                        else if(((MaintenanceEvent)event).getMalfunctionIndicatorLamp() != null){
+//                            evCode = EventAttr.ATTR_MALFUNCTION_INDICATOR_LAMP.getCode();
+//                        }
+//                        else if(((MaintenanceEvent)event).getCheckEngine() != null){
+//                            evCode = EventAttr.ATTR_CHECK_ENGINE.getCode();
+//                        }
+                        else if(((MaintenanceEvent)event).getEngineHours() != null){
                             evCode = EventAttr.ENGINE_HOURS_X100.getCode();
                         }
 
