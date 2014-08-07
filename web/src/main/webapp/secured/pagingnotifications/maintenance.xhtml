@@ -13,7 +13,7 @@
 
 <ui:param name="title" value="#{messages.navigation_notifications} - #{messages.notes_tab_maintenance}"/>
 <ui:define name="content">
-      <a4j:keepAlive beanName="diagnosticsTableColumns" />
+      <a4j:keepAlive beanName="maintenanceTableColumns" />
 
     <table width="940" border="0" align="center" cellpadding="0" cellspacing="0" style="margin: 0 auto 0 auto;">
         <tr>
@@ -24,7 +24,7 @@
                     <ui:include src="/includes/notificationsHeaderTitle.xhtml">
                         <ui:param name="title" value="#{messages.notes_maintenance_title}"/>
                         <ui:param name="context" value="#{context}" />
-                        <ui:param name="style" value="diagnostics_title" />
+                        <ui:param name="style" value="maintenance_title" />
                     </ui:include>
 
                     <h:panelGroup layout="block" styleClass="panel_w">
@@ -37,8 +37,8 @@
                             <h:panelGroup id="#{context}_table" layout="block" styleClass="datagrid_panel">
                                 <ui:include src="/includes/pagingNotificationsTable.xhtml">
                                     <ui:param name="bean" value="#{pagingMaintenanceEventsBean}"/>
-                                    <ui:param name="clearTitle" value="#{messages.notes_diagnostics_clearTitle}"/>
-                                    <ui:param name="clearInst" value="#{messages.notes_diagnostics_clearInst}"/>
+                                    <ui:param name="clearTitle" value="#{messages.notes_maintenance_clearTitle}"/>
+                                    <ui:param name="clearInst" value="#{messages.notes_maintenance_clearInst}"/>
                                     <ui:param name="clearRerender" value="#{context}_search:header,#{context}-form:#{context}"/>
                                     <ui:param name="context" value="#{context}" />
                                     <ui:param name="tableColumns" value="#{maintenanceTableColumns.tableColumns}" />

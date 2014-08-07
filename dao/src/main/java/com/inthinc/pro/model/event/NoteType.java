@@ -71,7 +71,7 @@ public enum NoteType implements BaseEnum {
      * Sent when ignition off is detected <br/>
      * Attributes [ATTR_MPG], [ATTR_MPG_DISTANCE], [ATTR_TRIP_DURATION], ATTR_PERCENTAGE_GPS_FILTERED, [ATTR_SPEEDING_SQUELCHED], ATTR_CURRENT_IGN, [ATTR_NUM_GPS_REBOOTS], [ATTR_OBD_PCT], [ATTR_GPS_PCT], [ATTR_AGPS_DOWNLOADED], [ATTR_VIOLATION_FLAGS]
      */
-    IGNITION_OFF(20, EventType.IGNITION_OFF),
+    IGNITION_OFF(20, IgnitionOffMaintenanceEvent.class),
     
     MODEM_OFF(21), //WAYSMART
 
