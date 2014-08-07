@@ -39,6 +39,9 @@ public enum Attrib {
 	EMU_HASH_3(204, AttribParserType.INTEGER),
 	EMU_HASH_4(205, AttribParserType.INTEGER),
 	
+	RFID_HI(222, AttribParserType.INTEGER),
+	RFID_LO(223, AttribParserType.INTEGER),
+
 	MPGODO(224, AttribParserType.INTEGER),
 	TRIP_DURATION(225, AttribParserType.INTEGER),
     DIAGNOSTIC_CODE(226, AttribParserType.INTEGER),
@@ -286,6 +289,7 @@ public enum Attrib {
 	SPEEDINGGRACEPERIOD(32829, AttribParserType.INTEGER),
 	COMPANYID(32830, AttribParserType.INTEGER),
 	EVENTCODEINT(32831, AttribParserType.INTEGER),
+    NOTIFICATION_ENUM(32857, AttribParserType.INTEGER),
     RHA_ENDTIME(32858, AttribParserType.INTEGER),
     
     ATTR_DVIR_FORM_ID(32863,AttribParserType.INTEGER),
