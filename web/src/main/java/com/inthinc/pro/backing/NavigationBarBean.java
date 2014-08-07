@@ -3,6 +3,7 @@ package com.inthinc.pro.backing;
 public class NavigationBarBean extends BaseBean {
     private String formUrl;
     private String trailerUrl;
+    private String assetUrl;
 
     public String getFormUrl() {
         return formUrl;
@@ -18,6 +19,14 @@ public class NavigationBarBean extends BaseBean {
 
     public void setTrailerUrl(String trailerUrl) {
         this.trailerUrl = trailerUrl;
+    }
+    
+    public String getAssetUrl() {
+        return assetUrl;
+    }
+    
+    public void setAssetUrl(String assetUrl) {
+        this.assetUrl = assetUrl;
     }
 
     
