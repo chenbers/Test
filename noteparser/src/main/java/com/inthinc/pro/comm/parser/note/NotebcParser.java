@@ -27,7 +27,7 @@ public class NotebcParser implements NoteParser{
     		parseHeader(data, attribMap);
     //        logger.debug("attribMap: " + attribMap);
     		
-    		int offset = 32;
+    		int offset = getHeaderLength();
     		while ((offset + 2) < data.length)
     		{
     			AttribParser parser = null;
@@ -53,7 +53,7 @@ public class NotebcParser implements NoteParser{
     			}
     			else
     			{
-    				logger.error("Parser for code " + attribCode + " is not defined");
+    				logger.info("Parser for code " + attribCode + " is not defined");
     				break;
     			}
     		}
@@ -61,6 +61,10 @@ public class NotebcParser implements NoteParser{
             logger.error("Parser error: " + e);
 		}
 		return attribMap;
+	}
+	
+	private static int getHeaderLength() {
+		return 32;
 	}
 	
 	private static Map<String, Object> parseHeader(byte[] data, Map<String, Object> attribMap)
