@@ -8,7 +8,8 @@ public enum IgnitionOffEventType {
     RED_STOP(1),
     AMBER_WARNING(2),
     PROTECT(3),
-    MALFUNCTION_INDICATOR_LAMP(9);
+    MALFUNCTION_INDICATOR_LAMP(9),
+    IGNITION_OFF(20);
 
     private int code;
 
@@ -24,7 +25,7 @@ public enum IgnitionOffEventType {
     }
 
     public Integer getCode() {
-        return this.code;
+            return this.code;
     }
 
     public static IgnitionOffEventType getEventType(Integer code) {
