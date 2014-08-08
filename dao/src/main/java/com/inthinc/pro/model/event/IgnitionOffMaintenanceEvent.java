@@ -53,31 +53,34 @@ public class IgnitionOffMaintenanceEvent extends Event implements MultipleEventT
     }
 
     public EventType getEventType() {
-            if(this.getAttribs() != null){
+            if(this.getAttribs() != null) {
                 String[] attribsList = this.getAttribs().split(";");
-                for(String s : attribsList){
-                    if(!s.trim().equals("")){
-                        attrMap.put(s.split("=")[0],s.split("=")[1]);
+                for (String s : attribsList) {
+                    if (!s.trim().equals("")) {
+                        attrMap.put(s.split("=")[0], s.split("=")[1]);
                     }
                 }
-                 if(attrMap.containsKey(EventAttr.ATTR_CHECK_ENGINE.getCode()+"")){
-                    threshold = attrMap.get(EventAttr.ATTR_CHECK_ENGINE.getCode()+"").toString();
-                    if (Integer.valueOf(attrMap.get(EventAttr.ATTR_CHECK_ENGINE.getCode()+"").toString()) == 1) {
+                if(!attrMap.containsKey(EventAttr.ATTR_CHECK_ENGINE.getCode() + "") && !attrMap.containsKey(EventAttr.ATTR_MALFUNCTION_INDICATOR_LAMP.getCode() + "")){
+                    return EventType.IGNITION_OFF;
+                }
+                else if (attrMap.containsKey(EventAttr.ATTR_CHECK_ENGINE.getCode() + "")) {
+                    threshold = attrMap.get(EventAttr.ATTR_CHECK_ENGINE.getCode() + "").toString();
+                    if (Integer.valueOf(attrMap.get(EventAttr.ATTR_CHECK_ENGINE.getCode() + "").toString()) == 1) {
                         return EventType.RED_STOP;
-                    } else if (Integer.valueOf(attrMap.get(EventAttr.ATTR_CHECK_ENGINE.getCode()+"").toString()) == 2) {
+                    } else if (Integer.valueOf(attrMap.get(EventAttr.ATTR_CHECK_ENGINE.getCode() + "").toString()) == 2) {
                         return EventType.AMBER_WARNING;
-                    } else if (Integer.valueOf(attrMap.get(EventAttr.ATTR_CHECK_ENGINE.getCode()+"").toString()) == 3) {
+                    } else if (Integer.valueOf(attrMap.get(EventAttr.ATTR_CHECK_ENGINE.getCode() + "").toString()) == 3) {
                         return EventType.PROTECT;
                     } else {
-                        return EventType.UNKNOWN;
+                        return EventType.IGNITION_OFF;
                     }
 
-                }else if(attrMap.containsKey(EventAttr.ATTR_MALFUNCTION_INDICATOR_LAMP.getCode()+"")){
-                    threshold = attrMap.get(EventAttr.ATTR_MALFUNCTION_INDICATOR_LAMP.getCode()+"").toString();
+                } else if (attrMap.containsKey(EventAttr.ATTR_MALFUNCTION_INDICATOR_LAMP.getCode() + "")) {
+                    threshold = attrMap.get(EventAttr.ATTR_MALFUNCTION_INDICATOR_LAMP.getCode() + "").toString();
                     return EventType.MALFUNCTION_INDICATOR_LAMP;
-                }else return EventType.UNKNOWN;
-            }else{
-                if(malfunctionIndicatorLamp != null) {
+                }else return EventType.IGNITION_OFF;
+            } else {
+                if (malfunctionIndicatorLamp != null) {
                     threshold = malfunctionIndicatorLamp + "";
                     return EventType.MALFUNCTION_INDICATOR_LAMP;
                 } else if (checkEngine != null) {
@@ -89,11 +92,11 @@ public class IgnitionOffMaintenanceEvent extends Event implements MultipleEventT
                     } else if (checkEngine == 3) {
                         return EventType.PROTECT;
                     } else {
-                        return EventType.UNKNOWN;
+                        return EventType.IGNITION_OFF;
                     }
-                }
-                else return EventType.UNKNOWN;
+                } else return EventType.IGNITION_OFF;
             }
+
     }
 
     @Override
@@ -135,7 +138,7 @@ public class IgnitionOffMaintenanceEvent extends Event implements MultipleEventT
 
     @Override
     public Set<EventType> getEventTypes() {
-        return EnumSet.of(EventType.RED_STOP, EventType.AMBER_WARNING, EventType.PROTECT, EventType.MALFUNCTION_INDICATOR_LAMP );
+        return EnumSet.of(EventType.RED_STOP, EventType.AMBER_WARNING, EventType.PROTECT, EventType.MALFUNCTION_INDICATOR_LAMP, EventType.IGNITION_OFF );
     }
 
     @Override
