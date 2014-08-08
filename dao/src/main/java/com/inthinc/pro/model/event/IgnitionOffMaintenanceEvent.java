@@ -53,7 +53,7 @@ public class IgnitionOffMaintenanceEvent extends Event implements MultipleEventT
     }
 
     public EventType getEventType() {
-            if(this.getAttribs() != null) {
+             if(this.getAttribs() != null) {
                 String[] attribsList = this.getAttribs().split(";");
                 for (String s : attribsList) {
                     if (!s.trim().equals("") && s.split("=").length == 2) {

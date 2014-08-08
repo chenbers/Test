@@ -29,7 +29,6 @@ public enum EventCategory implements BaseEnum
 
     DIAGNOSTICS(13, "DIAGNOSTICS", EnumSet.of(EventSubCategory.VEHICLE, EventSubCategory.WIRELINE, EventSubCategory.INSTALLATION, EventSubCategory.DVIR, EventSubCategory.TRAILER,
             EventSubCategory.PREVENTATIVE_MAINTENANCE, EventSubCategory.CONDITIONAL,EventSubCategory.IGNITION_OFF));
-//    DIAGNOSTIC_MAINTENANCE(14,"MAINTENANCE", EnumSet.of(EventSubCategory.PREVENTATIVE_MAINTENANCE));
 
     DIAGNOSTICS(13, "DIAGNOSTICS", EnumSet.of(EventSubCategory.VEHICLE, EventSubCategory.WIRELINE, EventSubCategory.INSTALLATION, EventSubCategory.DVIR, EventSubCategory.TRAILER,
             EventSubCategory.PREVENTATIVE_MAINTENANCE, EventSubCategory.CONDITIONAL,EventSubCategory.IGNITION_OFF));
