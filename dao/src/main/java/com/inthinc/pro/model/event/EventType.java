@@ -114,13 +114,10 @@ public enum EventType implements BaseEnum {
         this.code = code;
         this.ignitionOffEventType = ignitionOffEventType;
     }
-<<<<<<< HEAD
     private EventType(int code, BackingEventType backingEventType) {
         this.code = code;
         this.backingEventType = backingEventType;
     }
-=======
->>>>>>> F278_portal_ONE_08.07.2014 - add filter (types :238,20)
 
     private EventType(int code, Set<EventAccountFilter> eventAccountFilters) {
         this.code = code;
@@ -141,12 +138,9 @@ public enum EventType implements BaseEnum {
             if (p.ignitionOffEventType != null) {
                 subTypeLookup.put(p.ignitionOffEventType.getCode(), p);
             }
-<<<<<<< HEAD
             if (p.backingEventType != null) {
                 subTypeLookup.put(p.backingEventType.getCode(), p);
             }
-=======
->>>>>>> F278_portal_ONE_08.07.2014 - add filter (types :238,20)
         }
 
     }
@@ -186,13 +180,10 @@ public enum EventType implements BaseEnum {
             subTypeList = new ArrayList<Integer>();
             subTypeList.add(ignitionOffEventType.getCode());
         }
-<<<<<<< HEAD
         if (backingEventType != null) {
             subTypeList = new ArrayList<Integer>();
             subTypeList.add(backingEventType.getCode());
         }
-=======
->>>>>>> F278_portal_ONE_08.07.2014 - add filter (types :238,20)
 
         return new EventCategoryFilter(this, getNoteTypeList(), subTypeList);
 
