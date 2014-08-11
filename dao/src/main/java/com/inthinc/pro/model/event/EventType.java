@@ -9,10 +9,7 @@ import java.util.Set;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
-import com.inthinc.pro.model.AggressiveDrivingEventType;
-import com.inthinc.pro.model.BaseEnum;
-import com.inthinc.pro.model.IgnitionOffEventType;
-import com.inthinc.pro.model.MaintenanceEventType;
+import com.inthinc.pro.model.*;
 import com.inthinc.pro.model.pagination.EventCategoryFilter;
 
 @XmlRootElement
@@ -66,11 +63,11 @@ public enum EventType implements BaseEnum {
     DVIR_DRIVEN_NOPREINSPEC(48),
     DVIR_DRIVEN_NOPOSTINSPEC(49),
     DVIR_REPAIR(50),
-    BACKING(51),
+    BACKING(51, BackingEventType.BACKING),
     TRAILER_PROGRAMMED(52),
     ATTR_RF_OFF_DISTANCE(53),
     GENERAL_BACKING(54),
-    FIRST_MOVE_FORWARD(55),
+    FIRST_MOVE_FORWARD(55, BackingEventType.FIRST_MOVE_FORWARD),
     BATTERY_VOLTAGE(56, MaintenanceEventType.BATTERY_VOLTAGE),
     ENGINE_TEMP(57,MaintenanceEventType.ENGINE_TEMP),
     TRANSMISSION_TEMP(58,MaintenanceEventType.TRANSMISSION_TEMP),
@@ -94,6 +91,7 @@ public enum EventType implements BaseEnum {
     private MaintenanceEventType maintenanceEventType;
     private IgnitionOffEventType ignitionOffEventType;
     private Set<EventAccountFilter> eventAccountFilters;
+    private BackingEventType backingEventType;
 
     private EventType(int code) {
         this.code = code;
@@ -111,6 +109,10 @@ public enum EventType implements BaseEnum {
     private EventType(int code, IgnitionOffEventType ignitionOffEventType) {
         this.code = code;
         this.ignitionOffEventType = ignitionOffEventType;
+    }
+    private EventType(int code, BackingEventType backingEventType) {
+        this.code = code;
+        this.backingEventType = backingEventType;
     }
 
     private EventType(int code, Set<EventAccountFilter> eventAccountFilters) {
@@ -131,6 +133,9 @@ public enum EventType implements BaseEnum {
             }
             if (p.ignitionOffEventType != null) {
                 subTypeLookup.put(p.ignitionOffEventType.getCode(), p);
+            }
+            if (p.backingEventType != null) {
+                subTypeLookup.put(p.backingEventType.getCode(), p);
             }
         }
 
@@ -170,6 +175,10 @@ public enum EventType implements BaseEnum {
         if (ignitionOffEventType != null) {
             subTypeList = new ArrayList<Integer>();
             subTypeList.add(ignitionOffEventType.getCode());
+        }
+        if (backingEventType != null) {
+            subTypeList = new ArrayList<Integer>();
+            subTypeList.add(backingEventType.getCode());
         }
 
         return new EventCategoryFilter(this, getNoteTypeList(), subTypeList);
