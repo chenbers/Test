@@ -7,6 +7,7 @@ import java.util.Set;
 
 import javax.faces.model.SelectItem;
 
+import com.inthinc.pro.model.AlertMessageType;
 import com.inthinc.pro.model.event.EventSubCategory;
 import com.inthinc.pro.util.MessageUtil;
 
@@ -64,6 +65,8 @@ public class AlertTypeSelectItems {
     private static List<SelectItem> addConditionals(List<SelectItem> alertTypeSelectItems, Boolean hasConditionals){
 
         if (hasConditionals){
+            EventSubCategory.CONDITIONAL.getAlertMessageTypeSet().add(AlertMessageType.ATTR_MALFUNCTION_INDICATOR_LAMP);
+            EventSubCategory.CONDITIONAL.getAlertMessageTypeSet().add(AlertMessageType.ATTR_CHECK_ENGINE);
             alertTypeSelectItems = addSet(alertTypeSelectItems,EnumSet.of(EventSubCategory.CONDITIONAL));
         }
         return alertTypeSelectItems;
