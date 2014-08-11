@@ -1071,4 +1071,20 @@ public class HosDriverDailyLogReportCriteriaTest extends BaseUnitTest{
         assertEquals("date 2", date2, sortedRemarksList.get(1).getLogTimeDate());
         assertEquals("date 3", date3, sortedRemarksList.get(2).getLogTimeDate());
     }
+
+    @Test
+    public void defectDE9808Test() {
+            DDLDataSet ddlTestData = new DDLDataSet("kumar_08072014_08072014", DDLDataSet.INTHINC_DB_CSV);
+            HosDailyDriverLogReportCriteria hosDailyDriverLogReportCriteria = new HosDailyDriverLogReportCriteria(Locale.US, Boolean.FALSE, dateTimeZone);
+            hosDailyDriverLogReportCriteria.initCriteriaList(ddlTestData.interval, ddlTestData.interval, ddlTestData.hosRecordList, ddlTestData.hosVehicleDayDataList,
+                ddlTestData.hosOccupantLogList, ddlTestData.driver, ddlTestData.account, ddlTestData.group.getAddress());
+            
+            // check the data
+            List<ReportCriteria> criteriaList = hosDailyDriverLogReportCriteria.getCriteriaList();
+            assertEquals("expected one ReportCriteria item for each day", ddlTestData.numDays, criteriaList.size());
+
+            // turn on in base class to get a dump of report
+            dump("DDL", 2014, hosDailyDriverLogReportCriteria.getCriteriaList(), FormatType.PDF);
+            
+    }
 }
