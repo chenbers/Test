@@ -25,7 +25,7 @@ public class MaintenanceEventPaginationTableDataProvider extends EventPagination
         return super.getRowCount();
     }
 
-    private void treatCustomFilters() {
+    protected void treatCustomFilters() {
         List<TableFilterField> currentFilters = getFilters();
         boolean exists = false;
         for (TableFilterField tf : currentFilters) {

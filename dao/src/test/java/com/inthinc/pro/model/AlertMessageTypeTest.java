@@ -74,7 +74,7 @@ public class AlertMessageTypeTest {
         }
         
         String tmp = Long.toHexString(mask);
-        assertEquals("3fffffdfffff", Long.toHexString(mask));
+        assertEquals("3f1fffffffdfffff", Long.toHexString(mask));
         
         List<AlertMessageType> allTypes = AlertMessageType.getAlertMessageTypes(mask);
 //        for (AlertMessageType type : allTypes)
@@ -83,6 +83,25 @@ public class AlertMessageTypeTest {
         assertEquals(allTypes.size(), AlertMessageType.values().length);
         
     }
-    
+    @Test
+    public void testAlertMessageTypeMapping3() {
+        Long mask = 0l;
+        mask |= AlertMessageType.ATTR_RED_STOP.getBitMask();
+        Long expected = 144115188075855872L;
+        String tmp = Long.toHexString(mask);
+        assertEquals(tmp,"200000000000000");
+        assertEquals(mask,expected);
 
+    }
+
+    @Test
+    public void testAlertMessageTypeMapping4() {
+        Long mask = 0l;
+        mask |= AlertMessageType.ALERT_FIRST_MOVE_FORWARD.getBitMask();
+        Long expected = 2305843009213693952L;
+        String tmp = Long.toHexString(mask);
+        assertEquals(tmp,"2000000000000000");
+        assertEquals(mask,expected);
+
+    }
 }
