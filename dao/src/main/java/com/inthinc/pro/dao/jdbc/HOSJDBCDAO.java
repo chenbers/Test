@@ -855,6 +855,7 @@ public class HOSJDBCDAO extends NamedParameterJdbcDaoSupport implements HOSDAO {
             hosRecord.setEmployeeID(resultSet.getString("empid"));
             hosRecord.setEditUserID(resultSet.getInt("editUserID"));
             hosRecord.setSingleDriver(resultSet.getBoolean("singleDriver"));
+            hosRecord.setOriginalStatus(resultSet.getObject("originalStatus") == null ? null : HOSStatus.valueOf(resultSet.getInt("originalStatus")));
             hosRecord.setMobileUnitID(resultSet.getString("mobileUnitID"));
             hosRecord.setInspectionType(InspectionType.valueOf(resultSet.getInt("inspectionType")));
             return hosRecord;

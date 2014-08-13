@@ -746,7 +746,35 @@ public class HOSJDBCDAOTest extends BaseJDBCTest{
         assertNull("home office location should not be set when no actualVSet values", homeOfficeLocation);
     }
     
-    private static void initVehicleConfiguratorSettings(GroupData groupData) {
+    // DE9808
+    @Test
+    public void originalStatusTest() {
+        
+        // case with a vehicle
+        GroupData testGoodGroupData = itData.teamGroupData.get(ITData.GOOD);
+        Driver testGoodDriver = fetchDriver(testGoodGroupData.driver.getDriverID());
+        Vehicle testGoodVehicle = testGoodGroupData.vehicle;
+        
+        Date hosRecordDate = new Date();
+        HOSRecord hosRecord = createMinimalHosRecord(hosDAO, testGoodDriver, hosRecordDate, testGoodVehicle.getVehicleID(), 34.0f,45.0f);
+        HOSRecord editHosRecord = hosDAO.findByID(hosRecord.getHosLogID());
+        
+        // change the status (original is ON_DUTY)
+        editHosRecord.setStatus(HOSStatus.DRIVING);
+        editHosRecord.setEditUserID(itData.districtUser.getUserID());
+        hosDAO.update(editHosRecord);
+
+        HOSRecord expectedHosRecord = constructExpectedHosRecord(editHosRecord, testGoodDriver, testGoodVehicle);
+        expectedHosRecord.setEditUserName(itData.districtUser.getUsername());
+        expectedHosRecord.setEditUserID(itData.districtUser.getUserID());
+        expectedHosRecord.setOriginalStatus(HOSStatus.OFF_DUTY);
+
+        String ignoreFields[] = { "originalLocation", "serviceID", "trailerID","vehicleIsDOT"};
+        HOSRecord foundHosRecord = hosDAO.findByID(hosRecord.getHosLogID());
+        Util.compareObjects(expectedHosRecord, foundHosRecord, ignoreFields);
+    }
+  
+   private static void initVehicleConfiguratorSettings(GroupData groupData) {
         JdbcTemplate jdbcTemplate = new JdbcTemplate(new ITDataSource().getRealDataSource());
         jdbcTemplate.update("delete from actualVSet where vehicleID = " + groupData.vehicle.getVehicleID() );
         jdbcTemplate.update("insert into actualVSet (vehicleID, deviceID, modified, settingID, value, vsetHistoryID) values (" + groupData.vehicle.getVehicleID() + "," + groupData.device.getDeviceID() + ",now(),1048," + TEST_LAT + ",0)");
