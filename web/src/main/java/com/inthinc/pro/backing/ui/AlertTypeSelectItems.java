@@ -7,6 +7,7 @@ import java.util.Set;
 
 import javax.faces.model.SelectItem;
 
+import com.inthinc.pro.model.AlertMessageType;
 import com.inthinc.pro.model.event.EventSubCategory;
 import com.inthinc.pro.util.MessageUtil;
 
@@ -22,11 +23,12 @@ public class AlertTypeSelectItems {
         alertTypeSelectItems = addZones(alertTypeSelectItems,hasZones);
         alertTypeSelectItems = addConditionals(alertTypeSelectItems,hasPrevMaintenance);
         alertTypeSelectItems = addPrevMaintenance(alertTypeSelectItems, hasPrevMaintenance);
+        alertTypeSelectItems = addForward(alertTypeSelectItems, true);
 
         return alertTypeSelectItems;
     }
     private static List<SelectItem> addDefaultTypes(List<SelectItem> alertTypeSelectItems){
-
+        
         Set<EventSubCategory> defaultSet = EnumSet.of(EventSubCategory.COMPLIANCE,
                                                       EventSubCategory.DRIVING_STYLE,
                                                       EventSubCategory.EMERGENCY,
@@ -64,6 +66,8 @@ public class AlertTypeSelectItems {
     private static List<SelectItem> addConditionals(List<SelectItem> alertTypeSelectItems, Boolean hasConditionals){
 
         if (hasConditionals){
+            EventSubCategory.CONDITIONAL.getAlertMessageTypeSet().add(AlertMessageType.ATTR_MALFUNCTION_INDICATOR_LAMP);
+            EventSubCategory.CONDITIONAL.getAlertMessageTypeSet().add(AlertMessageType.ATTR_CHECK_ENGINE);
             alertTypeSelectItems = addSet(alertTypeSelectItems,EnumSet.of(EventSubCategory.CONDITIONAL));
         }
         return alertTypeSelectItems;
@@ -75,6 +79,18 @@ public class AlertTypeSelectItems {
             alertTypeSelectItems = addSet(alertTypeSelectItems,EnumSet.of(EventSubCategory.PREVENTATIVE_MAINTENANCE));
         }
         return alertTypeSelectItems;
+    }
+
+
+    private static List<SelectItem> addForward(List<SelectItem> alertTypeSelectItems, Boolean hasForward) {
+        if (hasForward) {
+
+            alertTypeSelectItems = addSet(alertTypeSelectItems, EnumSet.of(EventSubCategory.FIRST_MOVE_FORWARD));
+
+        }
+
+        return alertTypeSelectItems;
+
     }
 
     private static List<SelectItem> addSet(List<SelectItem> alertTypeSelectItems,Set<EventSubCategory> setOfAlertTypes){

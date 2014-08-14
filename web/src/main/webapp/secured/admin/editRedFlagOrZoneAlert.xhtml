@@ -1,946 +1,966 @@
 <ui:composition template="/layout/layout.xhtml"
-              xmlns="http://www.w3.org/1999/xhtml" 
-              xmlns:ui="http://java.sun.com/jsf/facelets"
-              xmlns:h="http://java.sun.com/jsf/html"
-              xmlns:rich="http://richfaces.org/rich"
-              xmlns:a4j="http://richfaces.org/a4j"
-              xmlns:f="http://java.sun.com/jsf/core"
-              xmlns:c="http://java.sun.com/jstl/core"
-              xmlns:security="http://pro.tiwi.com/jsf/security"
-              xmlns:tiwiprofn="http://pro.tiwi.com/jsffunctions">
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:rich="http://richfaces.org/rich"
+                xmlns:a4j="http://richfaces.org/a4j"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:c="http://java.sun.com/jstl/core"
+                xmlns:security="http://pro.tiwi.com/jsf/security"
+                xmlns:tiwiprofn="http://pro.tiwi.com/jsffunctions">
 
-  <ui:param name="helpMapIDOverride" value="#{(redFlagOrZoneAlertsBean.add) ? '5' :''}"/>
-  <ui:param name="adminSelected" value="current" />
-  <ui:param name="title" value="#{redFlagOrZoneAlertsBean.add ? messages.adminHeader_addRedFlag : (redFlagOrZoneAlertsBean.batchEdit ? messages.adminHeader_editRedFlags : messages.adminHeader_editRedFlag)}"/>
-  
-  <ui:define name="scripts">
-  	<ui:include src="/includes/mapv3/portalMap.xhtml"/>
+<ui:param name="helpMapIDOverride" value="#{(redFlagOrZoneAlertsBean.add) ? '5' :''}"/>
+<ui:param name="adminSelected" value="current" />
+<ui:param name="title" value="#{redFlagOrZoneAlertsBean.add ? messages.adminHeader_addRedFlag : (redFlagOrZoneAlertsBean.batchEdit ? messages.adminHeader_editRedFlags : messages.adminHeader_editRedFlag)}"/>
+
+<ui:define name="scripts">
+    <ui:include src="/includes/mapv3/portalMap.xhtml"/>
     <script src="#{facesContext.externalContext.requestContextPath}/js/mapv3/zone.js" type="text/javascript"></script>
-    <script type="text/javascript">    
-      var map = null;
-      var zone = null;
-      function bodyLoad()
-      {
-          loadSpeedElements();
-    	  loadMap();
-          document.getElementById("editRedFlag-timeframePickers").style.display = (document.getElementById("edit-form:editRedFlag-timeframe:0").checked ? 'none' : '');
+    <script type="text/javascript">
+        var map = null;
+        var zone = null;
+        function bodyLoad()
+        {
+            loadSpeedElements();
+            loadMap();
+            document.getElementById("editRedFlag-timeframePickers").style.display = (document.getElementById("edit-form:editRedFlag-timeframe:0").checked ? 'none' : '');
 
 
-        var elements = document.getElementById("edit-form").elements;
-        for (var i = 0; i &lt; elements.length; i++)
-          for (var j = 0; j &lt; formElements.length; j++)
-            if (elements[i].getAttribute("type") == formElements[j])
-            {
-              elements[i].focus();
-              return;
-            }
-      }
-      function loadSpeedElements()
-      {
-          if(document.getElementById("editRedFlag-bySpeedLimit") != null) {
-		  	document.getElementById('editRedFlag-bySpeedLimit').style.display = (document.getElementById("edit-form:editRedFlag-speedSel:0").checked ? '' : 'none');
-          }
-          if(document.getElementById("editRedFlag-byMaxSpeed") != null) {
-			  document.getElementById('editRedFlag-byMaxSpeed').style.display = (document.getElementById("edit-form:editRedFlag-speedSel:1").checked ? '' : 'none');
-          }
-      }
-      function loadMap() {
-		if (map == null) {
-			map = inthincMap.init({
-				'canvasID' : 'map-canvas'
-			});
-			initLayers(map, "redFlags-layersControl");
-			inthincMap.setReadOnly(map, true);
-		}
-		showZone();
-      }
-      function showZone()
-      {
-		if (zone != null) {
-			zone.clear();
-    	}
-		if(document.getElementById("edit-form:editZoneAlert-zonePoints") != null)
-        { 
-           zone = new Zone(document.getElementById("edit-form:editZoneAlert-zonePoints").value);
-           zone.displayOnMap(map, true);
+            var elements = document.getElementById("edit-form").elements;
+            for (var i = 0; i &lt; elements.length; i++)
+                for (var j = 0; j &lt; formElements.length; j++)
+                    if (elements[i].getAttribute("type") == formElements[j])
+                    {
+                        elements[i].focus();
+                        return;
+                    }
         }
-      }
+        function loadSpeedElements()
+        {
+            if(document.getElementById("editRedFlag-bySpeedLimit") != null) {
+                document.getElementById('editRedFlag-bySpeedLimit').style.display = (document.getElementById("edit-form:editRedFlag-speedSel:0").checked ? '' : 'none');
+            }
+            if(document.getElementById("editRedFlag-byMaxSpeed") != null) {
+                document.getElementById('editRedFlag-byMaxSpeed').style.display = (document.getElementById("edit-form:editRedFlag-speedSel:1").checked ? '' : 'none');
+            }
+        }
+        function loadMap() {
+            if (map == null) {
+                map = inthincMap.init({
+                    'canvasID' : 'map-canvas'
+                });
+                initLayers(map, "redFlags-layersControl");
+                inthincMap.setReadOnly(map, true);
+            }
+            showZone();
+        }
+        function showZone()
+        {
+            if (zone != null) {
+                zone.clear();
+            }
+            if(document.getElementById("edit-form:editZoneAlert-zonePoints") != null)
+            {
+                zone = new Zone(document.getElementById("edit-form:editZoneAlert-zonePoints").value);
+                zone.displayOnMap(map, true);
+            }
+        }
     </script>
     <script type="text/javascript" src="#{facesContext.externalContext.requestContextPath}/js/adminEdit.js"></script>
-  </ui:define>
-  
-  <ui:define name="content">
+</ui:define>
 
-    <table width="920" border="0" cellspacing="0" cellpadding="0" align="center" style="margin: 0 auto 0 auto;">
-      <tr>
-        <td valign="top" width="130">
-          <ui:include src="/includes/navigation/adminSideNav.xhtml">
-            <ui:param name="selectedAction" value="#{(redFlagOrZoneAlertsBean.add) ? 'go_adminAddRedFlag' : 'go_adminRedFlags'}" />
-            <ui:param name="parentAction" value="go_adminRedFlags" />
-            <ui:param name="context" value="editRedFlag"/>
-          </ui:include>
-        </td>
-        <td valign="top">
-          <!-- START PANEL -->
+<ui:define name="content">
 
-          <a4j:form id="edit-form">
-          
-			<h:panelGroup id="zonePoints-panel" >
-           		<h:inputHidden  id="editZoneAlert-zonePoints" value="#{redFlagOrZoneAlertsBean.item.zonePointsString}" />
-            </h:panelGroup>
+<table width="920" border="0" cellspacing="0" cellpadding="0" align="center" style="margin: 0 auto 0 auto;">
+<tr>
+<td valign="top" width="130">
+    <ui:include src="/includes/navigation/adminSideNav.xhtml">
+        <ui:param name="selectedAction" value="#{(redFlagOrZoneAlertsBean.add) ? 'go_adminAddRedFlag' : 'go_adminRedFlags'}" />
+        <ui:param name="parentAction" value="go_adminRedFlags" />
+        <ui:param name="context" value="editRedFlag"/>
+    </ui:include>
+</td>
+<td valign="top">
+<!-- START PANEL -->
 
-            <div class="">
-              <div class="panel_nw">
-                <div class="panel_title">
-                  <span class="admin"><h:outputText value="#{redFlagOrZoneAlertsBean.add ? messages.adminHeader_addRedFlag : (redFlagOrZoneAlertsBean.batchEdit ? messages.adminHeader_editRedFlags : messages.adminHeader_editRedFlag)}" /></span>
-                  <span class="panel_links"></span>
-                </div>
-              </div>
+<a4j:form id="edit-form">
 
-              <div class="panel_w">
+<h:panelGroup id="zonePoints-panel" >
+    <h:inputHidden  id="editZoneAlert-zonePoints" value="#{redFlagOrZoneAlertsBean.item.zonePointsString}" />
+</h:panelGroup>
 
-                <div class="panel_content">
+<div class="">
+<div class="panel_nw">
+    <div class="panel_title">
+        <span class="admin"><h:outputText value="#{redFlagOrZoneAlertsBean.add ? messages.adminHeader_addRedFlag : (redFlagOrZoneAlertsBean.batchEdit ? messages.adminHeader_editRedFlags : messages.adminHeader_editRedFlag)}" /></span>
+        <span class="panel_links"></span>
+    </div>
+</div>
 
-                  <ul id="grid_nav" style="margin: 0;">
-                    <li class="r">
-                      <h:commandButton id="editRedFlagSave1" action="#{redFlagOrZoneAlertsBean.save}" styleClass="left"><span class="save"><h:outputText value="#{messages.button_save}" /></span></h:commandButton>
-                      <h:outputText value=" " /><h:commandButton id="editRedFlagCancel1" action="#{redFlagOrZoneAlertsBean.cancelEdit}" immediate="true" styleClass="left"><span class="cancel"><h:outputText value="#{messages.button_cancel}" /></span></h:commandButton>
-                    </li>
-                  </ul>
-                   <div class="msg">
-                  <p id="info">
-                     <h:outputText  id="editMessage1" value="#{messages.editRedFlag_message}"/>
-                  </p>
-               </div>
-                   <ui:fragment rendered="${tiwiprofn:messagesAvailable()}">
-                     <dl id="display-form:j_id122" class="rich-messages msg" style="">
-                        <dt class="error">
-                           <h:outputFormat value="#{messages.error_validationMsg}">
-                              <f:param value="${tiwiprofn:getMessageCount()}"/>
-                           </h:outputFormat>
-                        </dt>
-                     </dl>
-                   </ui:fragment>
-                  <rich:messages globalOnly="true" errorClass="error" fatalClass="error" warnClass="warning" infoClass="info" styleClass="msg" />
+<div class="panel_w">
 
-                  <div class="spacer"></div>
+<div class="panel_content">
 
-                  <table width="790" border="0" cellspacing="0" cellpadding="0">
-                    <tr>
-                    <td>
-                  <div class="add_section_title">
-                          <h:outputText value="#{messages.editRedFlag_redFlagType}" />
-                  </div> 
-                  <!-- 
-                  <div class="add_section_title">
-                  <ui:include src="../../includes/admin/inputLabel.xhtml">
-                     <ui:param name="required" value="false"/>
+<ul id="grid_nav" style="margin: 0;">
+    <li class="r">
+        <h:commandButton id="editRedFlagSave1" action="#{redFlagOrZoneAlertsBean.save}" styleClass="left"><span class="save"><h:outputText value="#{messages.button_save}" /></span></h:commandButton>
+        <h:outputText value=" " /><h:commandButton id="editRedFlagCancel1" action="#{redFlagOrZoneAlertsBean.cancelEdit}" immediate="true" styleClass="left"><span class="cancel"><h:outputText value="#{messages.button_cancel}" /></span></h:commandButton>
+    </li>
+</ul>
+<div class="msg">
+    <p id="info">
+        <h:outputText  id="editMessage1" value="#{messages.editRedFlag_message}"/>
+    </p>
+</div>
+<ui:fragment rendered="${tiwiprofn:messagesAvailable()}">
+    <dl id="display-form:j_id122" class="rich-messages msg" style="">
+        <dt class="error">
+            <h:outputFormat value="#{messages.error_validationMsg}">
+                <f:param value="${tiwiprofn:getMessageCount()}"/>
+            </h:outputFormat>
+        </dt>
+    </dl>
+</ui:fragment>
+<rich:messages globalOnly="true" errorClass="error" fatalClass="error" warnClass="warning" infoClass="info" styleClass="msg" />
+
+<div class="spacer"></div>
+
+<table width="790" border="0" cellspacing="0" cellpadding="0">
+    <tr>
+        <td>
+            <div class="add_section_title">
+                <h:outputText value="#{messages.editRedFlag_redFlagType}" />
+            </div>
+            <!--
+            <div class="add_section_title">
+            <ui:include src="../../includes/admin/inputLabel.xhtml">
+               <ui:param name="required" value="false"/>
                      <ui:param name="forId" value="alertType"/>
-                     <ui:param name="fieldName" value="eventSubCategory"/>
-                     <ui:param name="editBean" value="#{redFlagOrZoneAlertsBean}"/>
-                     <ui:param name="label" value="#{messages.editRedFlag_redFlagType}"/>
-        			<ui:param name="context" value="editRedFlagType" />
-                  </ui:include>
-                  </div>
-                  -->
-                  	  <div class="spacer"></div>
-                      <table width="790" border="0" cellspacing="0" cellpadding="0">
-                    	<tr>
-                		<td width="160" valign="top">
-                        <h:selectOneMenu id="alertType" value="#{redFlagOrZoneAlertsBean.item.eventSubCategory}" 
-                        	disabled="#{redFlagOrZoneAlertsBean.batchEdit}" converter="SimpleBeanConverter">
-                        	<!-- disabled="#{redFlagOrZoneAlertsBean.batchEdit or !redFlagOrZoneAlertsBean.add}" onchange="checkMultiple(this)">   -->
+               <ui:param name="fieldName" value="eventSubCategory"/>
+               <ui:param name="editBean" value="#{redFlagOrZoneAlertsBean}"/>
+               <ui:param name="label" value="#{messages.editRedFlag_redFlagType}"/>
+              <ui:param name="context" value="editRedFlagType" />
+            </ui:include>
+            </div>
+            -->
+            <div class="spacer"></div>
+            <table width="790" border="0" cellspacing="0" cellpadding="0">
+                <tr>
+                    <td width="160" valign="top">
+                        <h:selectOneMenu id="alertType" value="#{redFlagOrZoneAlertsBean.item.eventSubCategory}"
+                                         disabled="#{redFlagOrZoneAlertsBean.batchEdit}" converter="SimpleBeanConverter">
+                            <!-- disabled="#{redFlagOrZoneAlertsBean.batchEdit or !redFlagOrZoneAlertsBean.add}" onchange="checkMultiple(this)">   -->
                             <a4j:support event="onchange" reRender="editRedFlagType, zonePoints-panel" limitToList="true" oncomplete="checkMultiple(this);loadSpeedElements();loadMap()" />
-                          <f:selectItems value="#{redFlagOrZoneAlertsBean.alertTypeSelectItems}"/>
+                            <f:selectItems value="#{redFlagOrZoneAlertsBean.alertTypeSelectItems}"/>
                         </h:selectOneMenu>
-                      	</td>
-                		</tr>
-                		</table>
-                	</td>
-                	</tr>
-                </table>
-                  <div class="spacer"></div>
-                  <table width="790" border="0" cellspacing="0" cellpadding="0">
-                    <tr>
-                      <td width="390" valign="top">
-                
-                        <div class="add_section_title"><h:outputText value="#{messages.editRedFlag_nameDescriptionType}" /></div>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
+<div class="spacer"></div>
+<table width="790" border="0" cellspacing="0" cellpadding="0">
+    <tr>
+        <td width="390" valign="top">
 
-                        <table width="370" border="0" cellspacing="2" cellpadding="4" align="center">
-                          <tr>
-                            <td width="105" valign="top">
-                              <ui:include src="../../includes/admin/inputLabel.xhtml">
-                                 <ui:param name="required" value="TRUE"/>
+            <div class="add_section_title"><h:outputText value="#{messages.editRedFlag_nameDescriptionType}" /></div>
+
+            <table width="370" border="0" cellspacing="2" cellpadding="4" align="center">
+                <tr>
+                    <td width="105" valign="top">
+                        <ui:include src="../../includes/admin/inputLabel.xhtml">
+                            <ui:param name="required" value="TRUE"/>
                                  <ui:param name="forId" value="editRedFlag-name"/>
-                                 <ui:param name="fieldName" value="name"/>
-                                 <ui:param name="editBean" value="#{redFlagOrZoneAlertsBean}"/>
-                                 <ui:param name="label" value="#{messages.editAlerts_name}"/>
-                              </ui:include>
-                            </td>
-                            <td>
-                              <rich:message for="editRedFlag-name" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
-                              <h:inputText value="#{redFlagOrZoneAlertsBean.item.name}" id="editRedFlag-name" onchange="checkMultiple(this)" styleClass="text" size="30"
-                                maxlength="30" />
-                            </td>
-                          </tr>
-                          <tr>
-                            <td width="105" valign="top">
-                              <h:selectBooleanCheckbox rendered="#{redFlagOrZoneAlertsBean.batchEdit}" id="update_editRedFlag-description" value="#{redFlagOrZoneAlertsBean.updateField['description']}" />
-                              <h:outputText value="#{messages.editAlerts_description}" />
-                            </td>
-                            <td>
-                              <h:inputText value="#{redFlagOrZoneAlertsBean.item.description}" id="editRedFlag-description" onchange="checkMultiple(this)" styleClass="text" size="30"
-                                maxlength="64" />
-                            </td>
-                          </tr>
-
-                          <tr>
-                            <td width="105" valign="top">
-                              <h:selectBooleanCheckbox rendered="#{redFlagOrZoneAlertsBean.batchEdit}" id="update_editRedFlag-severityLevel" value="#{redFlagOrZoneAlertsBean.updateField['severityLevel']}" />
-                              <h:outputText value="#{messages.editRedFlag_notification}" />
-                            </td>
-                            <td>
-								<h:selectOneMenu id="editRedFlag-severityLevel" value="#{redFlagOrZoneAlertsBean.item.severityLevel}" converter="SimpleBeanConverter" onchange="checkMultiple(this);" >
-                                      <f:selectItems value="#{redFlagOrZoneAlertsBean.item.severityValues}" />    
-                                      <a4j:support event="onclick" reRender="redFlagAlertsLimitValue,namePickerPnl,namePickerHint" ajaxSingle="true">
-                                      	<f:setPropertyActionListener target="#{redFlagOrZoneAlertsBean.item.severityLevel}" value="#{redFlagOrZoneAlertsBean.item.severityLevel}"></f:setPropertyActionListener>
-                                      	<f:setPropertyActionListener target="#{redFlagOrZoneAlertsBean.peoplePicker.outdated}" value="#{true}"></f:setPropertyActionListener>
-							          </a4j:support>
-                                </h:selectOneMenu>
-                            </td>
-                          </tr>
-							<tr>
-								<td width="115" valign="top">
-									<ui:include src="../../includes/admin/inputLabel.xhtml">
-										<ui:param name="required" value="TRUE"/>
-										<ui:param name="forId" value="redFlagAlertsStatus"/>
-										<ui:param name="fieldName" value="status"/>
-										<ui:param name="editBean" value="#{redFlagOrZoneAlertsBean}"/>
-										<ui:param name="label" value="#{messages.editAlerts_status}"/>
-									</ui:include>
-								</td>
-								<td>
-      								<h:selectOneMenu id="redFlagAlertsStatus" value="#{redFlagOrZoneAlertsBean.item.status}" converter="SimpleBeanConverter" onchange="checkMultiple(this)">
-      									<f:selectItems value="#{redFlagOrZoneAlertsBean.statuses}"/> 
-      								</h:selectOneMenu>
-								</td>
-							</tr>
-                          <tr>
-                            <td width="105" valign="top">
-                              <ui:include src="../../includes/admin/inputLabel.xhtml">
-                                 <ui:param name="required" value="TRUE"/>
-                                 <ui:param name="forId" value="dayOfWeek"/>
-                                 <ui:param name="fieldName" value="dayOfWeek"/>
-                                 <ui:param name="editBean" value="#{redFlagOrZoneAlertsBean}"/>
-                                 <ui:param name="label" value="#{messages.editAlerts_dayOfWeek}"/>
-        						<ui:param name="context" value="editRedFlagDayOfWeek" />
-                              </ui:include>
-                            </td>
-                            <td>
-                              <rich:message for="editRedFlag-day0" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
-                              <ui:include src="../../includes/dayPicker.xhtml">
-                                <ui:param name="days" value="#{redFlagOrZoneAlertsBean.item.dayOfWeek}" />
-                                <ui:param name="onchange" value="checkMultiple('dayOfWeek')" />
-        						<ui:param name="context" value="editRedFlag" />
-        						<ui:param name="formName" value="edit-form"/>
-                              </ui:include>
-                            </td>
-                          </tr>
-                          <tr>
-                            <td width="105" valign="top">
-                               <ui:include src="../../includes/admin/inputLabel.xhtml">
-                                 <ui:param name="required" value="TRUE"/>
-                                 <ui:param name="forId" value="timeframe"/>
-                                 <ui:param name="fieldName" value="anytime"/>
-                                 <ui:param name="editBean" value="#{redFlagOrZoneAlertsBean}"/>
-                                 <ui:param name="label" value="#{messages.editAlerts_timeframe}"/>
-        							<ui:param name="context" value="editRedFlagAnyTime" />
- 	                             </ui:include>
-                            </td>
-                            <td>
-                              <rich:message for="editRedFlag-stopTOD" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
-                              <h:selectOneRadio id="editRedFlag-timeframe" onchange="checkMultiple('timeframe')" value="#{redFlagOrZoneAlertsBean.item.anytime}" onclick="document.getElementById('editRedFlag-timeframePickers').style.display = (this.value == 'true' ? 'none' : '')" enabledClass="radioitem">
-                                <f:selectItem itemValue="true" itemLabel="#{messages.editAlerts_timeframeAnytime}" />
-                                <f:selectItem itemValue="false" itemLabel="#{messages.editAlerts_timeframeBetween}" />
-                              </h:selectOneRadio>
-                              <table id="editRedFlag-timeframePickers" border="0" style="#{redFlagOrZoneAlertsBean.item.anytime ? 'display:none' : ''}">
-                                <tr>
-                                  <td>
-                                    <ui:include src="../../includes/timePicker.xhtml">
-                                      <ui:param name="id" value="startTOD" />
-                                      <ui:param name="value" value="#{redFlagOrZoneAlertsBean.item.startTOD}" />
-                                      <ui:param name="onchange" value="checkMultiple('timeframe')" />
-        							<ui:param name="context" value="editRedFlag" />
-         								<ui:param name="formName" value="edit-form"/>
-                                    </ui:include>
-                                  </td>
-                                  <td><h:outputText value="#{messages.editAlerts_betweenAnd}" /></td>
-                                  <td>
-                                    <ui:include src="../../includes/timePicker.xhtml">
-                                      <ui:param name="id" value="stopTOD" />
-                                      <ui:param name="value" value="#{redFlagOrZoneAlertsBean.item.stopTOD}" />
-                                      <ui:param name="onchange" value="checkMultiple('timeframe')" />
-       								  <ui:param name="context" value="editRedFlag" />
-        								<ui:param name="formName" value="edit-form"/>
-                                     </ui:include>
-                                  </td>
-                                </tr>
-                              </table>
-                            </td>
-                          </tr>
-                        </table>
-
-                      </td>
-                      <td width="10"><h:graphicImage value="/images/x.gif" width="10" /></td>
-                      <td width="390" valign="top">
-
-                        <div class="add_section_title">
-                          <ui:include src="../../includes/admin/inputLabel.xhtml">
-                              <ui:param name="required" value="TRUE"/>
-                              <ui:param name="forId" value="assignTo"/>
-                              <ui:param name="fieldName" value="assignTo"/>
-                              <ui:param name="editBean" value="#{redFlagOrZoneAlertsBean}"/>
-                              <ui:param name="label" value="#{messages.editAlerts_assignTo}"/>
-         					<ui:param name="context" value="editRedFlagAssignTo" />
-                          </ui:include>
-                        </div>
-
-                        <rich:message for="editRedFlag-from" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
-
-                        <ui:include src="../../includes/admin/alertAssign.xhtml">
-                         	<ui:param name="alertsBean" value="#{redFlagOrZoneAlertsBean}" />
-                          	<ui:param name="onchange" value="checkMultiple('assignTo')" />
-          					<ui:param name="context" value="editRedFlag" />
-         				  	<ui:param name="formName" value="edit-form"/>
+                            <ui:param name="fieldName" value="name"/>
+                            <ui:param name="editBean" value="#{redFlagOrZoneAlertsBean}"/>
+                            <ui:param name="label" value="#{messages.editAlerts_name}"/>
                         </ui:include>
+                    </td>
+                    <td>
+                        <rich:message for="editRedFlag-name" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
+                        <h:inputText value="#{redFlagOrZoneAlertsBean.item.name}" id="editRedFlag-name" onchange="checkMultiple(this)" styleClass="text" size="30"
+                                     maxlength="30" />
+                    </td>
+                </tr>
+                <tr>
+                    <td width="105" valign="top">
+                        <h:selectBooleanCheckbox rendered="#{redFlagOrZoneAlertsBean.batchEdit}" id="update_editRedFlag-description" value="#{redFlagOrZoneAlertsBean.updateField['description']}" />
+                        <h:outputText value="#{messages.editAlerts_description}" />
+                    </td>
+                    <td>
+                        <h:inputText value="#{redFlagOrZoneAlertsBean.item.description}" id="editRedFlag-description" onchange="checkMultiple(this)" styleClass="text" size="30"
+                                     maxlength="64" />
+                    </td>
+                </tr>
 
-                      </td>
-                    </tr>
-                  </table>
-
-                  <div class="spacer"></div>
-                  <table width="790" border="0" cellspacing="0" cellpadding="0">
-                    <tr>
-                      <td width="650" valign="top">
-                        <rich:message id="message" for="editRedFlagType" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
-						<a4j:outputPanel id="editRedFlagType">
-                        <a4j:outputPanel id="editRedFlag-speed">
-                        
-                          <h:panelGroup rendered="#{redFlagOrZoneAlertsBean.item.eventSubCategory == 'SPEED' and (!redFlagOrZoneAlertsBean.batchEdit or (redFlagOrZoneAlertsBean.batchEdit and redFlagOrZoneAlertsBean.item.useMaxSpeed != null))}" id="speedPanel">
-                            <div class="add_section_title">
-					           <h:outputText value="#{messages[redFlagOrZoneAlertsBean.item.eventSubCategory]}" />
-							</div>
-	                        <ui:include src="../../includes/admin/inputLabel.xhtml">
-	                             <ui:param name="required" value="TRUE"/>
-	                             <ui:param name="forId" value="editRedFlag-speedSel"/>
-	                             <ui:param name="fieldName" value="useMaxSpeed"/>
-	                             <ui:param name="editBean" value="#{redFlagOrZoneAlertsBean}"/>
-	                             <ui:param name="label" value="#{messages.editAlerts_speedingTypeSelect}"/>
-	        					 <ui:param name="context" value="editRedFlag-speedSel" />
-	                        </ui:include>
-                          
-                            <h:selectOneRadio id="editRedFlag-speedSel" value="#{redFlagOrZoneAlertsBean.item.useMaxSpeed}" 
-                            	enabledClass="radioitem" 
-	                            onclick="checkMultiple('editRedFlag-speedSel');document.getElementById('editRedFlag-bySpeedLimit').style.display = (this.value == 'true' ? 'none' : '');document.getElementById('editRedFlag-byMaxSpeed').style.display = (this.value == 'true' ? '' : 'none');" >
-                                <f:selectItem itemValue="false" itemLabel="#{messages.editAlerts_perLimit}" />
-                                <f:selectItem itemValue="true" itemLabel="#{messages.editAlerts_maxSpeed}" />
-                            </h:selectOneRadio>
-                  			<div class="spacer"></div>
-                  			<table id="editRedFlag-byMaxSpeed" width="100%" border="0" cellpadding="2" cellspacing="0">
-                  				<tr>
-                                  <td style="padding: 6px 0px 6px 12px; border-bottom: 1px solid #8BAD37;" width="200">
-			                        <ui:include src="../../includes/admin/inputLabel.xhtml">
-			                             <ui:param name="required" value="TRUE"/>
-			                             <ui:param name="forId" value="editRedFlag-maxSpeed"/>
-			                             <ui:param name="fieldName" value="maxSpeed"/>
-			                             <ui:param name="editBean" value="#{redFlagOrZoneAlertsBean}"/>
-			                             <ui:param name="label" value="#{messages.editAlerts_maxSpeedDesc}"/>
-			        					 <ui:param name="context" value="editRedFlag-maxSpeed" />
-			                        </ui:include>
-                                    <h:inputText id="editRedFlag-maxSpeed" value="#{redFlagOrZoneAlertsBean.item.maxSpeed}" 
-                                          width="100" showToolTip="false" onchange="checkMultiple('editRedFlag-maxSpeed')"
-                                          converter="MphToKphConverter" />
-                                     <h:outputText value=" " />
-                                     <h:outputText value="mph" converter="MeasurementTextConverter"/>
-                                  </td>
-                                  </tr>
-                  			</table>
-                  			<table id="editRedFlag-bySpeedLimit" width="100%" border="0" cellpadding="2" cellspacing="0">
-                  			<tr><td>
-                            <ui:fragment rendered="#{redFlagOrZoneAlertsBean.accountIsWaysmart}">
-                            <div >
-							   <h:outputText value="#{messages.redFlagAlertSpeedingNote}"/>
-							</div>
-							</ui:fragment>
-							</td></tr>
-                              <tr class="datagrid">
-                                <th><h:outputText value="#{messages.editRedFlag_speedHeader}" /></th>
-                                <th width="300" colspan="2"><h:outputText value="#{messages.editRedFlag_speedSettingHeader}" /></th>
-                              </tr>
-                              <c:forEach begin="0" var="index" end="14" step="5">
-                                <c:set var="id" value="speed#{index}" />
-                                <c:set var="minimum" value="#{(index lt 4) ? ((-index * 5) - 5) : -25}" />
-                                <tr class="#{((index % 2) == 0) ? 'tableOdd' : 'tableEven'}">
-                                  <td style="padding: 6px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
-                                    <h:selectBooleanCheckbox id="#{id}Selected" value="#{redFlagOrZoneAlertsBean.item.speedSelected[index]}"/>
-                                  	<ui:param name="msgKey" value="#{redFlagOrZoneAlertsBean.measurementType}_speedSetting#{index}"/>
-	                                <h:outputText value="#{messages[msgKey]}"/>
-                                  </td>
-                                  <td style="padding: 6px 0px 6px 12px; border-bottom: 1px solid #8BAD37;" width="250">
-                                    <rich:inputNumberSlider id="#{id}" value="#{redFlagOrZoneAlertsBean.item.speedSettings[index]}" 
-                                          width="250" onfocus="this.select();" showToolTip="false" 
-                                          showBoundaryValues="false" minValue="${tiwiprofn:convertMphToKph(minimum)}" maxValue="${tiwiprofn:convertMphToKph(25)}" step="1" 
-                                          converter="MphToKphConverter" onchange="adminSetCheckbox(this.mainTable.id,'redflag','','')"
-                                          convertonchange="document.getElementById(this.mainTable.id + 'Selected').checked = true" />
-                                  </td>
-                                  <td style="padding: 6px 12px 6px 2px; border-bottom: 1px solid #8BAD37;">
-                                     <h:outputText value=" " />
-                                     <h:outputText value="mph" converter="MeasurementTextConverter"/>
-                                  </td>
-                                </tr>
-                              </c:forEach>
-                              <tr class="tableEven">
-                                <ui:fragment rendered="#{redFlagOrZoneAlertsBean.batchEdit}">
-                                  <td style="border-bottom: 1px solid #8BAD37"></td>
-                                </ui:fragment>
-                                <td colspan="2" align="right" style="border-bottom: 1px solid #8BAD37">
-                                  <h:outputText value="#{messages.editDevice_speedAdjustAll}" />
-                                  <a href="#" onclick="bumpSpeeds(true); return false;" id="adjustAllPlus"><h:graphicImage value="/images/btn_plus.png" style="border: 0px; vertical-align: middle;" /></a>
-                                  <a href="#" onclick="bumpSpeeds(false); return false;" id="adjustAllMinus"><h:graphicImage value="/images/btn_minus.png" style="border: 0px; vertical-align: middle;" /></a>
+                <tr>
+                    <td width="105" valign="top">
+                        <h:selectBooleanCheckbox rendered="#{redFlagOrZoneAlertsBean.batchEdit}" id="update_editRedFlag-severityLevel" value="#{redFlagOrZoneAlertsBean.updateField['severityLevel']}" />
+                        <h:outputText value="#{messages.editRedFlag_notification}" />
+                    </td>
+                    <td>
+                        <h:selectOneMenu id="editRedFlag-severityLevel" value="#{redFlagOrZoneAlertsBean.item.severityLevel}" converter="SimpleBeanConverter" onchange="checkMultiple(this);" >
+                            <f:selectItems value="#{redFlagOrZoneAlertsBean.item.severityValues}" />
+                            <a4j:support event="onclick" reRender="redFlagAlertsLimitValue,namePickerPnl,namePickerHint" ajaxSingle="true">
+                                <f:setPropertyActionListener target="#{redFlagOrZoneAlertsBean.item.severityLevel}" value="#{redFlagOrZoneAlertsBean.item.severityLevel}"></f:setPropertyActionListener>
+                                <f:setPropertyActionListener target="#{redFlagOrZoneAlertsBean.peoplePicker.outdated}" value="#{true}"></f:setPropertyActionListener>
+                            </a4j:support>
+                        </h:selectOneMenu>
+                    </td>
+                </tr>
+                <tr>
+                    <td width="115" valign="top">
+                        <ui:include src="../../includes/admin/inputLabel.xhtml">
+                            <ui:param name="required" value="TRUE"/>
+										<ui:param name="forId" value="redFlagAlertsStatus"/>
+                            <ui:param name="fieldName" value="status"/>
+                            <ui:param name="editBean" value="#{redFlagOrZoneAlertsBean}"/>
+                            <ui:param name="label" value="#{messages.editAlerts_status}"/>
+                        </ui:include>
+                    </td>
+                    <td>
+                        <h:selectOneMenu id="redFlagAlertsStatus" value="#{redFlagOrZoneAlertsBean.item.status}" converter="SimpleBeanConverter" onchange="checkMultiple(this)">
+                            <f:selectItems value="#{redFlagOrZoneAlertsBean.statuses}"/>
+                        </h:selectOneMenu>
+                    </td>
+                </tr>
+                <tr>
+                    <td width="105" valign="top">
+                        <ui:include src="../../includes/admin/inputLabel.xhtml">
+                            <ui:param name="required" value="TRUE"/>
+                                 <ui:param name="forId" value="dayOfWeek"/>
+                            <ui:param name="fieldName" value="dayOfWeek"/>
+                            <ui:param name="editBean" value="#{redFlagOrZoneAlertsBean}"/>
+                            <ui:param name="label" value="#{messages.editAlerts_dayOfWeek}"/>
+                            <ui:param name="context" value="editRedFlagDayOfWeek" />
+                        </ui:include>
+                    </td>
+                    <td>
+                        <rich:message for="editRedFlag-day0" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
+                        <ui:include src="../../includes/dayPicker.xhtml">
+                            <ui:param name="days" value="#{redFlagOrZoneAlertsBean.item.dayOfWeek}" />
+                            <ui:param name="onchange" value="checkMultiple('dayOfWeek')" />
+                            <ui:param name="context" value="editRedFlag" />
+                            <ui:param name="formName" value="edit-form"/>
+                        </ui:include>
+                    </td>
+                </tr>
+                <tr>
+                    <td width="105" valign="top">
+                        <ui:include src="../../includes/admin/inputLabel.xhtml">
+                            <ui:param name="required" value="TRUE"/>
+                                 <ui:param name="forId" value="timeframe"/>
+                            <ui:param name="fieldName" value="anytime"/>
+                            <ui:param name="editBean" value="#{redFlagOrZoneAlertsBean}"/>
+                            <ui:param name="label" value="#{messages.editAlerts_timeframe}"/>
+                            <ui:param name="context" value="editRedFlagAnyTime" />
+                        </ui:include>
+                    </td>
+                    <td>
+                        <rich:message for="editRedFlag-stopTOD" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
+                        <h:selectOneRadio id="editRedFlag-timeframe" onchange="checkMultiple('timeframe')" value="#{redFlagOrZoneAlertsBean.item.anytime}" onclick="document.getElementById('editRedFlag-timeframePickers').style.display = (this.value == 'true' ? 'none' : '')" enabledClass="radioitem">
+                            <f:selectItem itemValue="true" itemLabel="#{messages.editAlerts_timeframeAnytime}" />
+                            <f:selectItem itemValue="false" itemLabel="#{messages.editAlerts_timeframeBetween}" />
+                        </h:selectOneRadio>
+                        <table id="editRedFlag-timeframePickers" border="0" style="#{redFlagOrZoneAlertsBean.item.anytime ? 'display:none' : ''}">
+                            <tr>
+                                <td>
+                                    <ui:include src="../../includes/timePicker.xhtml">
+                                        <ui:param name="id" value="startTOD" />
+                                        <ui:param name="value" value="#{redFlagOrZoneAlertsBean.item.startTOD}" />
+                                        <ui:param name="onchange" value="checkMultiple('timeframe')" />
+                                        <ui:param name="context" value="editRedFlag" />
+                                        <ui:param name="formName" value="edit-form"/>
+                                    </ui:include>
                                 </td>
-                                <td colspan="2" style="border-bottom: 1px solid #8BAD37"></td>
-                              </tr>
-                            </table>
-                            <script type="text/javascript">
-                              function bumpSpeeds(up)
-                              {
-                                for (var i = 0; i &lt; 15; i+=5) {
-                                    var check = document.getElementById("edit-form:speed" + i + "Selected");                                                                  
-                                    check.checked = true;
-                                                                            
-                                    var input = document.getElementById("edit-form:speed" + i).component;
-                                    if (up) {
-                                      input.setValue(Number(input.input.value) + 1);
-                                    } else {
-                                      input.setValue(Number(input.input.value) - 1);
-                                    }
-                                }
-                              }
-                            </script>
+                                <td><h:outputText value="#{messages.editAlerts_betweenAnd}" /></td>
+                                <td>
+                                    <ui:include src="../../includes/timePicker.xhtml">
+                                        <ui:param name="id" value="stopTOD" />
+                                        <ui:param name="value" value="#{redFlagOrZoneAlertsBean.item.stopTOD}" />
+                                        <ui:param name="onchange" value="checkMultiple('timeframe')" />
+                                        <ui:param name="context" value="editRedFlag" />
+                                        <ui:param name="formName" value="edit-form"/>
+                                    </ui:include>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
 
-                          </h:panelGroup>
-                        </a4j:outputPanel>
+        </td>
+        <td width="10"><h:graphicImage value="/images/x.gif" width="10" /></td>
+        <td width="390" valign="top">
 
-                        <a4j:outputPanel id="drivingStyle">
-                          <h:panelGroup rendered="#{redFlagOrZoneAlertsBean.item.eventSubCategory == 'DRIVING_STYLE'}">
+            <div class="add_section_title">
+                <ui:include src="../../includes/admin/inputLabel.xhtml">
+                    <ui:param name="required" value="TRUE"/>
+                              <ui:param name="forId" value="assignTo"/>
+                    <ui:param name="fieldName" value="assignTo"/>
+                    <ui:param name="editBean" value="#{redFlagOrZoneAlertsBean}"/>
+                    <ui:param name="label" value="#{messages.editAlerts_assignTo}"/>
+                    <ui:param name="context" value="editRedFlagAssignTo" />
+                </ui:include>
+            </div>
 
-                            <script type="text/javascript">
-                              var sensitivities = new Array();
-                              <c:forEach begin="1" var="sensitivity" end="5">
-                                <c:set var="sLevel" value="editRedFlag_severity#{sensitivity}" />
-                                sensitivities[#{sensitivity}] = '<h:outputText value="#{messages[sLevel]}" />';
-                              </c:forEach>
-                            </script>
+            <rich:message for="editRedFlag-from" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
 
-                             <div class="add_section_title">
-                          
-							           <h:outputText value="#{messages[redFlagOrZoneAlertsBean.item.eventSubCategory]}" />
-							</div>
-                   			<div class="spacer"></div>
-                            <table width="100%" border="0" cellpadding="0" cellspacing="0">
-                              <tr class="datagrid">
-                                <th><h:outputText value="#{messages.editRedFlag_setting}" /></th>
-                                <th width="300" colspan="2"><h:outputText value="#{messages.editRedFlag_severity}" /></th>
-                              </tr>
-                              <c:forEach begin="1" var="index" end="4">
-                                  <c:set var="sensitivityItem" value="#{(index == 1) ? 'hardAcceleration' : ((index == 2) ? 'hardBrake' : ((index == 3) ? 'hardTurn' : 'hardVertical'))}" />
-                                <tr class="#{((index % 2) == 0) ? 'tableOdd' : 'tableEven'}">
-                                  <td style="padding: 0px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
-                                    <c:set var="sensitivitySelected" value="#{sensitivityItem}Selected" />
-                                    <h:selectBooleanCheckbox id="#{sensitivityItem}Selected" value="#{redFlagOrZoneAlertsBean.item[sensitivitySelected]}" onchange="checkMultiple('type')" />
-                                    <c:set var="sensitivityLabel" value="editDevice_#{sensitivityItem}" />
-                                    <h:outputText value="#{messages[sensitivityLabel]}" />
-                                  </td>
-                                      <td style="padding: 0px 12px 6px 12px; border-bottom: 1px solid #8BAD37;" width="120">
-                                        <style>
-                                           .dr-insldr-track-decor-1{
-                                              border: none;
-                                           }
+            <ui:include src="../../includes/admin/alertAssign.xhtml">
+                <ui:param name="alertsBean" value="#{redFlagOrZoneAlertsBean}" />
+                <ui:param name="onchange" value="checkMultiple('assignTo')" />
+                <ui:param name="context" value="editRedFlag" />
+                <ui:param name="formName" value="edit-form"/>
+            </ui:include>
 
-                                           .dr-insldr-track-decor-2{
-                                              border: none;
-                                           }
+        </td>
+    </tr>
+</table>
 
-                                        </style>
-                                        <rich:inputNumberSlider id="#{sensitivityItem}"
-                                                 value="#{redFlagOrZoneAlertsBean.item[sensitivityItem]}" showToolTip="false"
-                                                 showBoundaryValues="false" showInput="false" minValue="1" maxValue="5"
-                                                 handleClass="severity-slider-handle"
-                                                 width="105px"
+<div class="spacer"></div>
+<table width="790" border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="650" valign="top">
+<rich:message id="message" for="editRedFlagType" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
+<a4j:outputPanel id="editRedFlagType">
+<a4j:outputPanel id="editRedFlag-speed">
 
-                                                 onchange="checkMultiple('type'); document.getElementById(this.mainTable.id + 'Selected').checked = true; document.getElementById(this.mainTable.id + 'Level').innerHTML = sensitivities[this.value]"
-                                                 barClass="#{((index % 2) == 0) ? 'severity-table-odd' : 'severity-table-even'} severity-slider-bar"/>
-                                      </td>
-                                      <td style="padding: 0px 12px 6px 0px; border-bottom: 1px solid #8BAD37; width:180">
-                                        <c:set var="sensitivityLevel" value="editRedFlag_severity#{redFlagOrZoneAlertsBean.item[sensitivityItem]}" />
-                                        <h:outputText id="#{sensitivityItem}Level" style="font-weight:bold" value="#{messages[sensitivityLevel]}" />
-                                      </td>
-                                      <td style="padding: 6px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
-                                        <c:set var="sensitivityLevel" value="#{sensitivityItem}Level" />
-                                      </td>
-                                </tr>
-                              </c:forEach>
-                                <tr class="tableEven">
-                                    <td style="padding: 0px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
-                                        <h:selectBooleanCheckbox id="sattelitetestingc" value="#{redFlagOrZoneAlertsBean.item.selectedAlertTypes['ALERT_TYPE_SATELLITE']}" onchange="checkMultiple('type')" />
-                                        <h:outputText value="#{messages.editDevice_satellite}" />
-                                    </td>
-                                    <td style="padding: 0px 12px 6px 0px; border-bottom: 1px solid #8BAD37; width:180"></td>
-                                    <td style="padding: 6px 12px 6px 12px; border-bottom: 1px solid #8BAD37;"></td>
-                                    <td style="padding: 6px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
-                                    </td>
-                                </tr>
-                            </table>
+    <h:panelGroup rendered="#{redFlagOrZoneAlertsBean.item.eventSubCategory == 'SPEED' and (!redFlagOrZoneAlertsBean.batchEdit or (redFlagOrZoneAlertsBean.batchEdit and redFlagOrZoneAlertsBean.item.useMaxSpeed != null))}" id="speedPanel">
+        <div class="add_section_title">
+            <h:outputText value="#{messages[redFlagOrZoneAlertsBean.item.eventSubCategory]}" />
+        </div>
+        <ui:include src="../../includes/admin/inputLabel.xhtml">
+            <ui:param name="required" value="TRUE"/>
+	                             <ui:param name="forId" value="editRedFlag-speedSel"/>
+            <ui:param name="fieldName" value="useMaxSpeed"/>
+            <ui:param name="editBean" value="#{redFlagOrZoneAlertsBean}"/>
+            <ui:param name="label" value="#{messages.editAlerts_speedingTypeSelect}"/>
+            <ui:param name="context" value="editRedFlag-speedSel" />
+        </ui:include>
 
-                          </h:panelGroup>
-                        </a4j:outputPanel>
+        <h:selectOneRadio id="editRedFlag-speedSel" value="#{redFlagOrZoneAlertsBean.item.useMaxSpeed}"
+                          enabledClass="radioitem"
+                          onclick="checkMultiple('editRedFlag-speedSel');document.getElementById('editRedFlag-bySpeedLimit').style.display = (this.value == 'true' ? 'none' : '');document.getElementById('editRedFlag-byMaxSpeed').style.display = (this.value == 'true' ? '' : 'none');" >
+            <f:selectItem itemValue="false" itemLabel="#{messages.editAlerts_perLimit}" />
+            <f:selectItem itemValue="true" itemLabel="#{messages.editAlerts_maxSpeed}" />
+        </h:selectOneRadio>
+        <div class="spacer"></div>
+        <table id="editRedFlag-byMaxSpeed" width="100%" border="0" cellpadding="2" cellspacing="0">
+            <tr>
+                <td style="padding: 6px 0px 6px 12px; border-bottom: 1px solid #8BAD37;" width="200">
+                    <ui:include src="../../includes/admin/inputLabel.xhtml">
+                        <ui:param name="required" value="TRUE"/>
+			                             <ui:param name="forId" value="editRedFlag-maxSpeed"/>
+                        <ui:param name="fieldName" value="maxSpeed"/>
+                        <ui:param name="editBean" value="#{redFlagOrZoneAlertsBean}"/>
+                        <ui:param name="label" value="#{messages.editAlerts_maxSpeedDesc}"/>
+                        <ui:param name="context" value="editRedFlag-maxSpeed" />
+                    </ui:include>
+                    <h:inputText id="editRedFlag-maxSpeed" value="#{redFlagOrZoneAlertsBean.item.maxSpeed}"
+                                 width="100" showToolTip="false" onchange="checkMultiple('editRedFlag-maxSpeed')"
+                                 converter="MphToKphConverter" />
+                    <h:outputText value=" " />
+                    <h:outputText value="mph" converter="MeasurementTextConverter"/>
+                </td>
+            </tr>
+        </table>
+        <table id="editRedFlag-bySpeedLimit" width="100%" border="0" cellpadding="2" cellspacing="0">
+            <tr><td>
+                <ui:fragment rendered="#{redFlagOrZoneAlertsBean.accountIsWaysmart}">
+                    <div >
+                        <h:outputText value="#{messages.redFlagAlertSpeedingNote}"/>
+                    </div>
+                </ui:fragment>
+            </td></tr>
+            <tr class="datagrid">
+                <th><h:outputText value="#{messages.editRedFlag_speedHeader}" /></th>
+                <th width="300" colspan="2"><h:outputText value="#{messages.editRedFlag_speedSettingHeader}" /></th>
+            </tr>
+            <c:forEach begin="0" var="index" end="14" step="5">
+                <c:set var="id" value="speed#{index}" />
+                <c:set var="minimum" value="#{(index lt 4) ? ((-index * 5) - 5) : -25}" />
+                <tr class="#{((index % 2) == 0) ? 'tableOdd' : 'tableEven'}">
+                    <td style="padding: 6px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
+                        <h:selectBooleanCheckbox id="#{id}Selected" value="#{redFlagOrZoneAlertsBean.item.speedSelected[index]}"/>
+                        <ui:param name="msgKey" value="#{redFlagOrZoneAlertsBean.measurementType}_speedSetting#{index}"/>
+                        <h:outputText value="#{messages[msgKey]}"/>
+                    </td>
+                    <td style="padding: 6px 0px 6px 12px; border-bottom: 1px solid #8BAD37;" width="250">
+                        <rich:inputNumberSlider id="#{id}" value="#{redFlagOrZoneAlertsBean.item.speedSettings[index]}"
+                                                width="250" onfocus="this.select();" showToolTip="false"
+                                                showBoundaryValues="false" minValue="${tiwiprofn:convertMphToKph(minimum)}" maxValue="${tiwiprofn:convertMphToKph(25)}" step="1"
+                                                converter="MphToKphConverter" onchange="adminSetCheckbox(this.mainTable.id,'redflag','','')"
+                                                convertonchange="document.getElementById(this.mainTable.id + 'Selected').checked = true" />
+                    </td>
+                    <td style="padding: 6px 12px 6px 2px; border-bottom: 1px solid #8BAD37;">
+                        <h:outputText value=" " />
+                        <h:outputText value="mph" converter="MeasurementTextConverter"/>
+                    </td>
+                </tr>
+            </c:forEach>
+            <tr class="tableEven">
+                <ui:fragment rendered="#{redFlagOrZoneAlertsBean.batchEdit}">
+                    <td style="border-bottom: 1px solid #8BAD37"></td>
+                </ui:fragment>
+                <td colspan="2" align="right" style="border-bottom: 1px solid #8BAD37">
+                    <h:outputText value="#{messages.editDevice_speedAdjustAll}" />
+                    <a href="#" onclick="bumpSpeeds(true); return false;" id="adjustAllPlus"><h:graphicImage value="/images/btn_plus.png" style="border: 0px; vertical-align: middle;" /></a>
+                    <a href="#" onclick="bumpSpeeds(false); return false;" id="adjustAllMinus"><h:graphicImage value="/images/btn_minus.png" style="border: 0px; vertical-align: middle;" /></a>
+                </td>
+                <td colspan="2" style="border-bottom: 1px solid #8BAD37"></td>
+            </tr>
+        </table>
+        <script type="text/javascript">
+            function bumpSpeeds(up)
+            {
+                for (var i = 0; i &lt; 15; i+=5) {
+                    var check = document.getElementById("edit-form:speed" + i + "Selected");
+                    check.checked = true;
 
-                        <a4j:outputPanel id="editRedFlag-compliance">
-                          <h:panelGroup rendered="#{redFlagOrZoneAlertsBean.item.eventSubCategory eq 'COMPLIANCE'}">
+                    var input = document.getElementById("edit-form:speed" + i).component;
+                    if (up) {
+                        input.setValue(Number(input.input.value) + 1);
+                    } else {
+                        input.setValue(Number(input.input.value) - 1);
+                    }
+                }
+            }
+        </script>
 
-                             <div class="add_section_title">
-                          
-							           <h:outputText value="#{messages[redFlagOrZoneAlertsBean.item.eventSubCategory]}" />
-							</div>
-                            <ui:fragment rendered="#{redFlagOrZoneAlertsBean.accountIsWaysmart}">
-                            <div >
-							   <h:outputText value="#{messages.redFlagAlertComplianceNote}"/>
-							</div>
-							</ui:fragment>
-                   			<div class="spacer"></div>
-                            <table width="100%" border="0" cellpadding="2" cellspacing="0" class="datagrid">
-                              <tr>
-                                <th><h:outputText value="#{messages.editRedFlag_setting}" /></th>
-                              </tr>
-                                <tr class="tableOdd">
-                                  <td style="padding: 0px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
-                                    <h:selectBooleanCheckbox id="seatbeltSelected" value="#{redFlagOrZoneAlertsBean.item.selectedAlertTypes['ALERT_TYPE_SEATBELT']}" onchange="checkMultiple('type')" />
-                                    <h:outputText value="#{messages.alertTypeSeatbelt}" />
-                                  </td>
-                                  </tr>
-                                <tr class="tableEven">
-                                  <td style="padding: 0px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
-                                     <h:selectBooleanCheckbox id="noDriverSelected" value="#{redFlagOrZoneAlertsBean.item.selectedAlertTypes['ALERT_TYPE_NO_DRIVER']}" onchange="checkMultiple('type')" />
-                                    <h:outputText value="#{messages.alertTypeNoDriver}" />
-                                  </td>
-                                  </tr>
-                                <ui:fragment rendered="#{redFlagOrZoneAlertsBean.accountIsWaysmart}">
-                                <tr class="tableOdd">
-                                  <td style="padding: 0px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
-                                    <h:selectBooleanCheckbox id="parkingBrakeSelected" value="#{redFlagOrZoneAlertsBean.item.selectedAlertTypes['ALERT_TYPE_PARKING_BRAKE']}" onchange="checkMultiple('type')" />
-                                    <h:outputText value="#{messages.alertTypeParkingBrake}" />
-                                  </td>
-                                </tr>
-                                </ui:fragment>
-                            </table>
+    </h:panelGroup>
+</a4j:outputPanel>
 
-                          </h:panelGroup>
-                        </a4j:outputPanel>
+<a4j:outputPanel id="drivingStyle">
+    <h:panelGroup rendered="#{redFlagOrZoneAlertsBean.item.eventSubCategory == 'DRIVING_STYLE'}">
 
-                <a4j:outputPanel id="zoneAlerts">
-                  <h:panelGroup rendered="#{redFlagOrZoneAlertsBean.item.eventSubCategory == 'ZONES'}">
+        <script type="text/javascript">
+            var sensitivities = new Array();
+            <c:forEach begin="1" var="sensitivity" end="5">
+                    <c:set var="sLevel" value="editRedFlag_severity#{sensitivity}" />
+                    sensitivities[#{sensitivity}] = '<h:outputText value="#{messages[sLevel]}" />';
+            </c:forEach>
+        </script>
 
-                 <div class="add_section_title">
-                       
-				           <h:outputText value="#{messages[redFlagOrZoneAlertsBean.item.eventSubCategory]}" />
-				 </div>
-                  <div class="spacer"></div>
+        <div class="add_section_title">
 
-                  <table width="790" border="0" cellspacing="0" cellpadding="0">
-                    <tr>
-                      <td width="390" valign="top">
-						<table width="390px">
-						<tr><td>
-                        <table width="100%" border="0" cellspacing="2" cellpadding="4" style="background-color: #f2efe9; border: 1px solid #acacac;">
-                          <tr>
-                            <td width="105" valign="top">
-                              <ui:include src="../../includes/admin/inputLabel.xhtml">
-                                 <ui:param name="required" value="TRUE"/>
+            <h:outputText value="#{messages[redFlagOrZoneAlertsBean.item.eventSubCategory]}" />
+        </div>
+        <div class="spacer"></div>
+        <table width="100%" border="0" cellpadding="0" cellspacing="0">
+            <tr class="datagrid">
+                <th><h:outputText value="#{messages.editRedFlag_setting}" /></th>
+                <th width="300" colspan="2"><h:outputText value="#{messages.editRedFlag_severity}" /></th>
+            </tr>
+            <c:forEach begin="1" var="index" end="4">
+                <c:set var="sensitivityItem" value="#{(index == 1) ? 'hardAcceleration' : ((index == 2) ? 'hardBrake' : ((index == 3) ? 'hardTurn' : 'hardVertical'))}" />
+                <tr class="#{((index % 2) == 0) ? 'tableOdd' : 'tableEven'}">
+                    <td style="padding: 0px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
+                        <c:set var="sensitivitySelected" value="#{sensitivityItem}Selected" />
+                        <h:selectBooleanCheckbox id="#{sensitivityItem}Selected" value="#{redFlagOrZoneAlertsBean.item[sensitivitySelected]}" onchange="checkMultiple('type')" />
+                        <c:set var="sensitivityLabel" value="editDevice_#{sensitivityItem}" />
+                        <h:outputText value="#{messages[sensitivityLabel]}" />
+                    </td>
+                    <td style="padding: 0px 12px 6px 12px; border-bottom: 1px solid #8BAD37;" width="120">
+                        <style>
+                            .dr-insldr-track-decor-1{
+                                border: none;
+                            }
+
+                            .dr-insldr-track-decor-2{
+                                border: none;
+                            }
+
+                        </style>
+                        <rich:inputNumberSlider id="#{sensitivityItem}"
+                                                value="#{redFlagOrZoneAlertsBean.item[sensitivityItem]}" showToolTip="false"
+                                                showBoundaryValues="false" showInput="false" minValue="1" maxValue="5"
+                                                handleClass="severity-slider-handle"
+                                                width="105px"
+
+                                                onchange="checkMultiple('type'); document.getElementById(this.mainTable.id + 'Selected').checked = true; document.getElementById(this.mainTable.id + 'Level').innerHTML = sensitivities[this.value]"
+                                                barClass="#{((index % 2) == 0) ? 'severity-table-odd' : 'severity-table-even'} severity-slider-bar"/>
+                    </td>
+                    <td style="padding: 0px 12px 6px 0px; border-bottom: 1px solid #8BAD37; width:180">
+                        <c:set var="sensitivityLevel" value="editRedFlag_severity#{redFlagOrZoneAlertsBean.item[sensitivityItem]}" />
+                        <h:outputText id="#{sensitivityItem}Level" style="font-weight:bold" value="#{messages[sensitivityLevel]}" />
+                    </td>
+                    <td style="padding: 6px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
+                        <c:set var="sensitivityLevel" value="#{sensitivityItem}Level" />
+                    </td>
+                </tr>
+            </c:forEach>
+            <tr class="tableEven">
+                <td style="padding: 0px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
+                    <h:selectBooleanCheckbox id="sattelitetestingc" value="#{redFlagOrZoneAlertsBean.item.selectedAlertTypes['ALERT_TYPE_SATELLITE']}" onchange="checkMultiple('type')" />
+                    <h:outputText value="#{messages.editDevice_satellite}" />
+                </td>
+                <td style="padding: 0px 12px 6px 0px; border-bottom: 1px solid #8BAD37; width:180"></td>
+                <td style="padding: 6px 12px 6px 12px; border-bottom: 1px solid #8BAD37;"></td>
+                <td style="padding: 6px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
+                </td>
+            </tr>
+        </table>
+
+    </h:panelGroup>
+</a4j:outputPanel>
+
+<a4j:outputPanel id="editRedFlag-compliance">
+    <h:panelGroup rendered="#{redFlagOrZoneAlertsBean.item.eventSubCategory eq 'COMPLIANCE'}">
+
+        <div class="add_section_title">
+
+            <h:outputText value="#{messages[redFlagOrZoneAlertsBean.item.eventSubCategory]}" />
+        </div>
+        <ui:fragment rendered="#{redFlagOrZoneAlertsBean.accountIsWaysmart}">
+            <div >
+                <h:outputText value="#{messages.redFlagAlertComplianceNote}"/>
+            </div>
+        </ui:fragment>
+        <div class="spacer"></div>
+        <table width="100%" border="0" cellpadding="2" cellspacing="0" class="datagrid">
+            <tr>
+                <th><h:outputText value="#{messages.editRedFlag_setting}" /></th>
+            </tr>
+            <tr class="tableOdd">
+                <td style="padding: 0px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
+                    <h:selectBooleanCheckbox id="seatbeltSelected" value="#{redFlagOrZoneAlertsBean.item.selectedAlertTypes['ALERT_TYPE_SEATBELT']}" onchange="checkMultiple('type')" />
+                    <h:outputText value="#{messages.alertTypeSeatbelt}" />
+                </td>
+            </tr>
+            <tr class="tableEven">
+                <td style="padding: 0px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
+                    <h:selectBooleanCheckbox id="noDriverSelected" value="#{redFlagOrZoneAlertsBean.item.selectedAlertTypes['ALERT_TYPE_NO_DRIVER']}" onchange="checkMultiple('type')" />
+                    <h:outputText value="#{messages.alertTypeNoDriver}" />
+                </td>
+            </tr>
+            <ui:fragment rendered="#{redFlagOrZoneAlertsBean.accountIsWaysmart}">
+                <tr class="tableOdd">
+                    <td style="padding: 0px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
+                        <h:selectBooleanCheckbox id="parkingBrakeSelected" value="#{redFlagOrZoneAlertsBean.item.selectedAlertTypes['ALERT_TYPE_PARKING_BRAKE']}" onchange="checkMultiple('type')" />
+                        <h:outputText value="#{messages.alertTypeParkingBrake}" />
+                    </td>
+                </tr>
+            </ui:fragment>
+        </table>
+
+    </h:panelGroup>
+</a4j:outputPanel>
+
+<a4j:outputPanel id="zoneAlerts">
+    <h:panelGroup rendered="#{redFlagOrZoneAlertsBean.item.eventSubCategory == 'ZONES'}">
+
+        <div class="add_section_title">
+
+            <h:outputText value="#{messages[redFlagOrZoneAlertsBean.item.eventSubCategory]}" />
+        </div>
+        <div class="spacer"></div>
+
+        <table width="790" border="0" cellspacing="0" cellpadding="0">
+            <tr>
+                <td width="390" valign="top">
+                    <table width="390px">
+                        <tr><td>
+                            <table width="100%" border="0" cellspacing="2" cellpadding="4" style="background-color: #f2efe9; border: 1px solid #acacac;">
+                                <tr>
+                                    <td width="105" valign="top">
+                                        <ui:include src="../../includes/admin/inputLabel.xhtml">
+                                            <ui:param name="required" value="TRUE"/>
                                  <ui:param name="forId" value="zoneID"/>
-                                 <ui:param name="fieldName" value="zoneID"/>
-                                 <ui:param name="editBean" value="#{redFlagOrZoneAlertsBean}"/>
-                                 <ui:param name="label" value="#{messages.editZoneAlert_zone}"/>
-								<ui:param name="context" value="editZoneAlertZoneId"/>
-                              </ui:include>
-                            </td>
-                            <td>
-                              <rich:message for="editZoneAlert-zoneID" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
-                              <h:selectOneMenu id="editZoneAlert-zoneID" value="#{redFlagOrZoneAlertsBean.item.zoneID}" required="#{(not redFlagOrZoneAlertsBean.batchEdit) or redFlagOrZoneAlertsBean.updateField['zoneID']}"  requiredMessage="#{messages.required}" style="width: 200px">
-                                <a4j:support event="onchange" reRender="zonePoints-panel" limitToList="true" ajaxSingle="true" onsubmit="checkMultiple(this)" oncomplete="showZone()"/>
-                                <f:selectItems value="#{redFlagOrZoneAlertsBean.zones}" />
-                              </h:selectOneMenu>
-                            </td>
-                          </tr>
-                          </table></td></tr>
-                          <tr>
-                          <td>
-                          <rich:message for="editZoneAlert-arrival" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
-
-                        <table width="380" border="0" cellspacing="2" cellpadding="4" align="center">
-                          <tr>
-                            <td width="50%">
-                              <h:selectBooleanCheckbox id="editZoneAlert-arrival" value="#{redFlagOrZoneAlertsBean.item.selectedAlertTypes['ALERT_TYPE_ENTER_ZONE']}" onchange="checkMultiple('editZoneAlert-arrival')" />
-                              <h:outputText value="#{messages.editZoneAlert_arrival}" />
-                            </td>
-                            <td width="50%">
-                              <h:selectBooleanCheckbox id="editZoneAlert-departure" value="#{redFlagOrZoneAlertsBean.item.selectedAlertTypes['ALERT_TYPE_EXIT_ZONE']}" onchange="checkMultiple('editZoneAlert-departure')" />
-                              <h:outputText value="#{messages.editZoneAlert_departure}" />
-                            </td>
-                          </tr>
-                        </table>
-                          </td>
-                          </tr>
-                        </table>
-                      </td>
-                      <td width="10"><h:graphicImage value="/images/x.gif" width="10" /></td>
-                      <td width="390" valign="top" style="background-color: #f2efe9; border: 1px solid #acacac;">
-                        <div id="map-canvas" style="height:100%;height:220px;border:0"></div>
-                      </td>
-                    </tr>
-                  </table>
-                          </h:panelGroup>
-                        </a4j:outputPanel>
-
-                        <a4j:outputPanel id="editRedFlag-emergency">
-                          <h:panelGroup rendered="#{redFlagOrZoneAlertsBean.item.eventSubCategory eq 'EMERGENCY'}">
-
-                             <div class="add_section_title">
-                          
-							           <h:outputText value="#{messages[redFlagOrZoneAlertsBean.item.eventSubCategory]}" />
-							</div>
-                            <ui:fragment rendered="#{redFlagOrZoneAlertsBean.accountIsWaysmart}">
-                            <div >
-							   <h:outputText value="#{messages.redFlagAlertEmergencyNote}"/>
-							</div>
-							</ui:fragment>
-                   			<div class="spacer"></div>
-                            <table width="100%" border="0" cellpadding="2" cellspacing="0" class="datagrid">
-                              <tr>
-                                <th><h:outputText value="#{messages.editRedFlag_setting}" /></th>
-                              </tr>
-                                <ui:fragment rendered="#{redFlagOrZoneAlertsBean.accountIsWaysmart}">
-                                <tr class="tableOdd">
-                                  <td style="padding: 0px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
-                                    <h:selectBooleanCheckbox id="panicSelected" value="#{redFlagOrZoneAlertsBean.item.selectedAlertTypes['ALERT_TYPE_PANIC']}" onchange="checkMultiple('type')" />
-                                    <h:outputText value="#{messages.alertTypePanic}" />
-                                  </td>
-                                  </tr>
-                                <tr class="tableEven">
-                                  <td style="padding: 0px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
-                                     <h:selectBooleanCheckbox id="automaticManDownSelected" value="#{redFlagOrZoneAlertsBean.item.selectedAlertTypes['ALERT_TYPE_MAN_DOWN']}" onchange="checkMultiple('type')" />
-                                    <h:outputText value="#{messages.alertTypeAutomaticManDown}" />
-                                  </td>
-                                  </tr>
-                                <tr class="tableOdd">
-                                  <td style="padding: 0px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
-                                    <h:selectBooleanCheckbox id="automaticManDownOKSelected" value="#{redFlagOrZoneAlertsBean.item.selectedAlertTypes['ALERT_TYPE_MAN_DOWN_OK']}" onchange="checkMultiple('type')" />
-                                    <h:outputText value="#{messages.alertTypeAutomaticManDownOK}" />
-                                  </td>
-                              </tr>
-                              </ui:fragment>
-                                <tr class="tableEven">
-                                  <td style="padding: 0px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
-                                     <h:selectBooleanCheckbox id="crashSelected" value="#{redFlagOrZoneAlertsBean.item.selectedAlertTypes['ALERT_TYPE_CRASH']}" onchange="checkMultiple('type')" />
-                                    <h:outputText value="#{messages.alertTypeCrash}" />
-                                  </td>
-                                  </tr>
-                             </table>
-
-                          </h:panelGroup>
-                        </a4j:outputPanel>
-                        <a4j:outputPanel id="editRedFlag-vehicle">
-                          <h:panelGroup rendered="#{redFlagOrZoneAlertsBean.item.eventSubCategory eq 'VEHICLE'}">
-
-                             <div class="add_section_title">
-                          
-							           <h:outputText value="#{messages[redFlagOrZoneAlertsBean.item.eventSubCategory]}" />
-							</div>
-                   			<div class="spacer"></div>
-                            <table width="100%" border="0" cellpadding="2" cellspacing="0" class="datagrid">
-                              <tr>
-                                <th colspan="2">
-                                	<h:outputText value="#{messages.editRedFlag_setting}" />
-                                </th>
-                              </tr>
-                                <tr class="tableOdd">
-                                  <td style="padding: 0px 12px 6px 12px; border-bottom: 1px solid #8BAD37;" colspan="2">
-                                    <h:selectBooleanCheckbox id="tamperingSelected" value="#{redFlagOrZoneAlertsBean.item.selectedAlertTypes['ALERT_TYPE_TAMPERING']}" onchange="checkMultiple(this)" />
-                                    <h:outputText value="#{messages.alertTypeTampering}" />
-                                  </td>
-                                  </tr>
-                                <tr class="tableEven">
-                                  <td style="padding: 0px 12px 6px 12px; border-bottom: 1px solid #8BAD37;" colspan="2">
-                                     <h:selectBooleanCheckbox id="ignitionOnSelected" value="#{redFlagOrZoneAlertsBean.item.selectedAlertTypes['ALERT_TYPE_IGNITION_ON']}" onchange="checkMultiple(this)" />
-                                    <h:outputText value="#{messages.alertTypeIgnitionOn}" />
-                                  </td>
-                                  </tr>
-                                <tr class="tableOdd">
-                                  <td style="padding: 0px 12px 6px 12px; border-bottom: 1px solid #8BAD37;" colspan="2">
-                                    <h:selectBooleanCheckbox id="lowBatterySelected" value="#{redFlagOrZoneAlertsBean.item.selectedAlertTypes['ALERT_TYPE_LOW_BATTERY']}" onchange="checkMultiple(this)" />
-                                    <h:outputText value="#{messages.alertTypeLowBattery}" />
-                                  </td>
-                               </tr>
-                               <tr class="tableEven">
-                               		<td style="padding: 0px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
-                               		  <h:selectBooleanCheckbox id="idlingThresholdSelected" value="#{redFlagOrZoneAlertsBean.item.selectedAlertTypes['ALERT_TYPE_IDLING']}" onchange="checkMultiple(this)" />                              		
-                               		  <h:outputText value="#{messages.alertTypeIdlingLimit}"/>
-                               		</td>
-                               		<td style="padding: 0px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
-                               		  <rich:inputNumberSlider id="idlingThreshold" value="#{redFlagOrZoneAlertsBean.item.idlingThreshold}" 
-                                          width="250" onfocus="this.select();" showToolTip="false" 
-                                          showBoundaryValues="false" 
-                                          minValue="#{messages.alertTypeLowIdleLimit}" maxValue="#{messages.alertTypeHighIdleLimit}" step="1" 
-                                          onchange="adminSetCheckbox(this.mainTable.id,'redflag','','')"
-                                          convertonchange="checkMultiple('type'); document.getElementById(this.mainTable.id + 'Selected').checked = true" />
-                               		</td> 	
-                               </tr>
-                                <tr class="tableOdd">
-                                    <td style="padding: 0px 12px 6px 12px; border-bottom: 1px solid #8BAD37;" colspan="2">
-                                        <h:selectBooleanCheckbox id="vehicleMoveBack" value="#{redFlagOrZoneAlertsBean.item.selectedAlertTypes['ALERT_TYPE_VEHICLE_MOVE_BACKWARDS']}" onchange="checkMultiple(this)" />
-                                        <h:outputText value="#{messages.alertTypeVehicleMoveBack}" />
+                                            <ui:param name="fieldName" value="zoneID"/>
+                                            <ui:param name="editBean" value="#{redFlagOrZoneAlertsBean}"/>
+                                            <ui:param name="label" value="#{messages.editZoneAlert_zone}"/>
+                                            <ui:param name="context" value="editZoneAlertZoneId"/>
+                                        </ui:include>
+                                    </td>
+                                    <td>
+                                        <rich:message for="editZoneAlert-zoneID" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
+                                        <h:selectOneMenu id="editZoneAlert-zoneID" value="#{redFlagOrZoneAlertsBean.item.zoneID}" required="#{(not redFlagOrZoneAlertsBean.batchEdit) or redFlagOrZoneAlertsBean.updateField['zoneID']}"  requiredMessage="#{messages.required}" style="width: 200px">
+                                            <a4j:support event="onchange" reRender="zonePoints-panel" limitToList="true" ajaxSingle="true" onsubmit="checkMultiple(this)" oncomplete="showZone()"/>
+                                            <f:selectItems value="#{redFlagOrZoneAlertsBean.zones}" />
+                                        </h:selectOneMenu>
                                     </td>
                                 </tr>
-                               <!--  
-                                <tr class="tableEven">
-                                  <td style="padding: 0px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
-                                    <h:selectBooleanCheckbox id="rfSwitchSelected" value="#{redFlagOrZoneAlertsBean.item.selectedAlertTypes['ALERT_TYPE_RF_SWITCH']}" onchange="checkMultiple(this)" />
-                                    <h:outputText value="#{messages.alertTypeRFSwitch}" />
-                                  </td>
-                              </tr>
-                              -->
-                              </table>
-                           </h:panelGroup>
-                        </a4j:outputPanel>
-                        <a4j:outputPanel id="editRedFlag-hos">
-                          <h:panelGroup rendered="#{redFlagOrZoneAlertsBean.item.eventSubCategory eq 'HOS'}">
+                            </table></td></tr>
+                        <tr>
+                            <td>
+                                <rich:message for="editZoneAlert-arrival" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
 
-                             <div class="add_section_title">
-                          
-							           <h:outputText value="#{messages[redFlagOrZoneAlertsBean.item.eventSubCategory]}" />
-							</div>
-                            <ui:fragment rendered="#{redFlagOrZoneAlertsBean.accountIsWaysmart}">
-                            <div >
-							   <h:outputText value="#{messages.redFlagAlertHoursOfServiceNote}"/>
-							</div>
-							</ui:fragment>
-                   			<div class="spacer"></div>
-                            <table width="100%" border="0" cellpadding="2" cellspacing="0" class="datagrid">
-                              <tr>
-                                <th><h:outputText value="#{messages.editRedFlag_setting}" /></th>
-                              </tr>
-                                <tr class="tableOdd">
-                                  <td style="padding: 0px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
-                                    <h:selectBooleanCheckbox id="dotStoppedSelected" value="#{redFlagOrZoneAlertsBean.item.selectedAlertTypes['ALERT_TYPE_HOS_DOT_STOPPED']}" onchange="checkMultiple(this)" />
-                                    <h:outputText value="#{messages.alertTypeDotStopped}" />
-                                  </td>
-                                  </tr>
-                                <tr class="tableEven">
-                                  <td style="padding: 0px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
-                                     <h:selectBooleanCheckbox id="noHoursSelected" value="#{redFlagOrZoneAlertsBean.item.selectedAlertTypes['ALERT_TYPE_HOS_NO_HOURS_REMAINING']}" onchange="checkMultiple(this)" />
-                                    <h:outputText value="#{messages.alertTypeNoHours}" />
-                                  </td>
-                                  </tr>
-                              </table>
-                           </h:panelGroup>
-                        </a4j:outputPanel>
-                        <a4j:outputPanel id="editRedFlag-installation">
-                          <h:panelGroup rendered="#{redFlagOrZoneAlertsBean.item.eventSubCategory eq 'INSTALLATION'}">
+                                <table width="380" border="0" cellspacing="2" cellpadding="4" align="center">
+                                    <tr>
+                                        <td width="50%">
+                                            <h:selectBooleanCheckbox id="editZoneAlert-arrival" value="#{redFlagOrZoneAlertsBean.item.selectedAlertTypes['ALERT_TYPE_ENTER_ZONE']}" onchange="checkMultiple('editZoneAlert-arrival')" />
+                                            <h:outputText value="#{messages.editZoneAlert_arrival}" />
+                                        </td>
+                                        <td width="50%">
+                                            <h:selectBooleanCheckbox id="editZoneAlert-departure" value="#{redFlagOrZoneAlertsBean.item.selectedAlertTypes['ALERT_TYPE_EXIT_ZONE']}" onchange="checkMultiple('editZoneAlert-departure')" />
+                                            <h:outputText value="#{messages.editZoneAlert_departure}" />
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+                <td width="10"><h:graphicImage value="/images/x.gif" width="10" /></td>
+                <td width="390" valign="top" style="background-color: #f2efe9; border: 1px solid #acacac;">
+                    <div id="map-canvas" style="height:100%;height:220px;border:0"></div>
+                </td>
+            </tr>
+        </table>
+    </h:panelGroup>
+</a4j:outputPanel>
 
-                             <div class="add_section_title">
-                          
-							           <h:outputText value="#{messages[redFlagOrZoneAlertsBean.item.eventSubCategory]}" />
-							</div>
-                         	<ui:fragment rendered="#{redFlagOrZoneAlertsBean.accountIsWaysmart}">
-                               <div>
-							   <h:outputText value="#{messages.redFlagAlertInstallationNote}"/>
-							</div>
-							</ui:fragment>
-                   			<div class="spacer"></div>
-                            <table width="100%" border="0" cellpadding="2" cellspacing="0" class="datagrid">
-                              <tr>
-                                <th><h:outputText value="#{messages.editRedFlag_setting}" /></th>
-                              </tr>
-                                <tr class="tableOdd">
-                                  <td style="padding: 0px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
-                                    <h:selectBooleanCheckbox id="installSelected" value="#{redFlagOrZoneAlertsBean.item.selectedAlertTypes['ALERT_TYPE_INSTALL']}" onchange="checkMultiple(this)" />
-                                    <h:outputText value="#{messages.alertTypeInstall}" />
-                                  </td>
-                                  </tr>
-                                <ui:fragment rendered="#{redFlagOrZoneAlertsBean.accountIsWaysmart}">
-                                <tr class="tableEven">
-                                  <td style="padding: 0px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
-                                     <h:selectBooleanCheckbox id="firmwareCurrentSelected" value="#{redFlagOrZoneAlertsBean.item.selectedAlertTypes['ALERT_TYPE_FIRMWARE_CURRENT']}" onchange="checkMultiple(this)" />
-                                    <h:outputText value="#{messages.alertTypeFirmwareCurrent}" />
-                                  </td>
-                                  </tr>
-                                <tr class="tableOdd">
-                                  <td style="padding: 0px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
-                                    <h:selectBooleanCheckbox id="locationDebugSelected" value="#{redFlagOrZoneAlertsBean.item.selectedAlertTypes['ALERT_TYPE_LOCATION_DEBUG']}" onchange="checkMultiple(this)" />
-                                    <h:outputText value="#{messages.alertTypeLocationDebug}" />
-                                  </td>
-                              </tr>
-                                <tr class="tableEven">
-                                  <td style="padding: 0px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
-                                     <h:selectBooleanCheckbox id="noThumbDriveSelected" value="#{redFlagOrZoneAlertsBean.item.selectedAlertTypes['ALERT_TYPE_NO_INTERNAL_THUMB_DRIVE']}" onchange="checkMultiple(this)" />
-                                    <h:outputText value="#{messages.alertTypeNoThumbDrive}" />
-                                  </td>
-                                  </tr>
-                                <tr class="tableOdd">
-                                  <td style="padding: 0px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
-                                    <h:selectBooleanCheckbox id="qsiUpdatedSelected" value="#{redFlagOrZoneAlertsBean.item.selectedAlertTypes['ALERT_TYPE_QSI_UPDATED']}" onchange="checkMultiple(this)" />
-                                    <h:outputText value="#{messages.alertTypeQsiUpdated}" />
-                                  </td>
-                              </tr>
-                                <tr class="tableEven">
-                                  <td style="padding: 0px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
-                                     <h:selectBooleanCheckbox id="witnessHeartbeatViolationSelected" value="#{redFlagOrZoneAlertsBean.item.selectedAlertTypes['ALERT_TYPE_WITNESS_HEARTBEAT_VIOLATION']}" onchange="checkMultiple(this)" />
-                                    <h:outputText value="#{messages.alertTypeWitnessHeartbeatViolation}" />
-                                  </td>
-                                  </tr>
-                                <tr class="tableOdd">
-                                  <td style="padding: 0px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
-                                    <h:selectBooleanCheckbox id="witnessUpdatedSelected" value="#{redFlagOrZoneAlertsBean.item.selectedAlertTypes['ALERT_TYPE_WITNESS_UPDATED']}" onchange="checkMultiple(this)" />
-                                    <h:outputText value="#{messages.alertTypeWitnessUpdated}" />
-                                  </td>
-                              </tr>
-                                <tr class="tableEven">
-                                  <td style="padding: 0px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
-                                     <h:selectBooleanCheckbox id="zonesCurrentSelected" value="#{redFlagOrZoneAlertsBean.item.selectedAlertTypes['ALERT_TYPE_ZONES_CURRENT']}" onchange="checkMultiple(this)" />
-                                    <h:outputText value="#{messages.alertTypeZonesCurrent}" />
-                                  </td>
-                                  </tr>
-                                  </ui:fragment>
-                               </table>
-                           </h:panelGroup>
-                        </a4j:outputPanel>
-                        <a4j:outputPanel id="editRedFlag-textMessage">
-                          <h:panelGroup rendered="#{redFlagOrZoneAlertsBean.item.eventSubCategory eq 'TEXTMESSAGE'}">
+<a4j:outputPanel id="editRedFlag-emergency">
+    <h:panelGroup rendered="#{redFlagOrZoneAlertsBean.item.eventSubCategory eq 'EMERGENCY'}">
 
-                             <div class="add_section_title">
-                          
-							           <h:outputText value="#{messages[redFlagOrZoneAlertsBean.item.eventSubCategory]}" />
-							</div>
-                   			<div class="spacer"></div>
-                            <table width="100%" border="0" cellpadding="2" cellspacing="0" class="datagrid">
-                              <tr>
-                                <th><h:outputText value="#{messages.editRedFlag_setting}" /></th>
-                              </tr>
-                                <tr class="tableOdd">
-                                  <td style="padding: 0px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
-                                    <h:outputText value="#{messages.alertTypeTextMessage}" />
-                                  </td>
-                                  </tr>
-                                  </table>
-                              </h:panelGroup>
-                           </a4j:outputPanel>
-                        <a4j:outputPanel id="editRedFlag-wireline">
-                          <h:panelGroup rendered="#{redFlagOrZoneAlertsBean.item.eventSubCategory eq 'WIRELINE'}">
+        <div class="add_section_title">
 
-                             <div class="add_section_title">
-                          
-							           <h:outputText value="#{messages[redFlagOrZoneAlertsBean.item.eventSubCategory]}" />
-							</div>
-                   			<div class="spacer"></div>
-                            <table width="100%" border="0" cellpadding="2" cellspacing="0" class="datagrid">
-                              <tr>
-                                <th><h:outputText value="#{messages.editRedFlag_setting}" /></th>
-                              </tr>
-                                <tr class="tableOdd">
-                                  <td style="padding: 0px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
-                                    <h:outputText value="#{messages.alertTypeWireline}" />
-                                  </td>
-                                  </tr>
-                                  </table>
-                              </h:panelGroup>
-                           </a4j:outputPanel>
-                        <a4j:outputPanel id="editRedFlag-fatigue">
-                          <h:panelGroup rendered="#{redFlagOrZoneAlertsBean.item.eventSubCategory eq 'FATIGUE'}">
+            <h:outputText value="#{messages[redFlagOrZoneAlertsBean.item.eventSubCategory]}" />
+        </div>
+        <ui:fragment rendered="#{redFlagOrZoneAlertsBean.accountIsWaysmart}">
+            <div >
+                <h:outputText value="#{messages.redFlagAlertEmergencyNote}"/>
+            </div>
+        </ui:fragment>
+        <div class="spacer"></div>
+        <table width="100%" border="0" cellpadding="2" cellspacing="0" class="datagrid">
+            <tr>
+                <th><h:outputText value="#{messages.editRedFlag_setting}" /></th>
+            </tr>
+            <ui:fragment rendered="#{redFlagOrZoneAlertsBean.accountIsWaysmart}">
+                <tr class="tableOdd">
+                    <td style="padding: 0px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
+                        <h:selectBooleanCheckbox id="panicSelected" value="#{redFlagOrZoneAlertsBean.item.selectedAlertTypes['ALERT_TYPE_PANIC']}" onchange="checkMultiple('type')" />
+                        <h:outputText value="#{messages.alertTypePanic}" />
+                    </td>
+                </tr>
+                <tr class="tableEven">
+                    <td style="padding: 0px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
+                        <h:selectBooleanCheckbox id="automaticManDownSelected" value="#{redFlagOrZoneAlertsBean.item.selectedAlertTypes['ALERT_TYPE_MAN_DOWN']}" onchange="checkMultiple('type')" />
+                        <h:outputText value="#{messages.alertTypeAutomaticManDown}" />
+                    </td>
+                </tr>
+                <tr class="tableOdd">
+                    <td style="padding: 0px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
+                        <h:selectBooleanCheckbox id="automaticManDownOKSelected" value="#{redFlagOrZoneAlertsBean.item.selectedAlertTypes['ALERT_TYPE_MAN_DOWN_OK']}" onchange="checkMultiple('type')" />
+                        <h:outputText value="#{messages.alertTypeAutomaticManDownOK}" />
+                    </td>
+                </tr>
+            </ui:fragment>
+            <tr class="tableEven">
+                <td style="padding: 0px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
+                    <h:selectBooleanCheckbox id="crashSelected" value="#{redFlagOrZoneAlertsBean.item.selectedAlertTypes['ALERT_TYPE_CRASH']}" onchange="checkMultiple('type')" />
+                    <h:outputText value="#{messages.alertTypeCrash}" />
+                </td>
+            </tr>
+        </table>
 
-                             <div class="add_section_title">
-                          
-							           <h:outputText value="#{messages[redFlagOrZoneAlertsBean.item.eventSubCategory]}" />
-							</div>
-                            <div >
-							   <h:outputText value="#{messages.redFlagAlertFatigueNote}"/>
-							</div>
-                   			<div class="spacer"></div>
-                            <table width="100%" border="0" cellpadding="2" cellspacing="0" class="datagrid">
-                              <tr>
-                                <th><h:outputText value="#{messages.editRedFlag_setting}" /></th>
-                              </tr>
-                                <tr class="tableOdd">
-                                  <td style="padding: 0px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
-                                    <h:outputText value="#{messages.alertTypeMicroSleep}" />
-                                  </td>
-                                  </tr>
-                                  </table>
-                              </h:panelGroup>
-                           </a4j:outputPanel>
-                        <a4j:outputPanel id="editRedFlag-dvir">
-                          <h:panelGroup rendered="#{redFlagOrZoneAlertsBean.item.eventSubCategory eq 'DVIR'}">
+    </h:panelGroup>
+</a4j:outputPanel>
+<a4j:outputPanel id="editRedFlag-vehicle">
+    <h:panelGroup rendered="#{redFlagOrZoneAlertsBean.item.eventSubCategory eq 'VEHICLE'}">
 
-                             <div class="add_section_title">
-                          
-							           <h:outputText value="#{messages[redFlagOrZoneAlertsBean.item.eventSubCategory]}" />
-							</div>
-                    			<div class="spacer"></div>
-                            <table width="100%" border="0" cellpadding="2" cellspacing="0" class="datagrid">
-                              <tr>
-                                <th  colspan="2"><h:outputText value="#{messages.editRedFlag_setting}" /></th>
-                              </tr>
-                                 <tr class="tableOdd">
-                                  <td style="padding: 0px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
-                                    <h:selectBooleanCheckbox id="preFailedSelected" value="#{redFlagOrZoneAlertsBean.item.selectedAlertTypes['ALERT_TYPE_DVIR_PRE_TRIP_FAIL']}" onchange="checkMultiple(this)" />
-                                    <h:outputText value="#{messages.alertTypeDVIRPreTripFailed}" />
-                                  </td>
-                                  <td style="padding: 0px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
-                                    <h:selectBooleanCheckbox id="withoutInspectionSelected" value="#{redFlagOrZoneAlertsBean.item.selectedAlertTypes['ALERT_TYPE_DVIR_DRIVEN_WITHOUT_INSPECTION']}" onchange="checkMultiple(this)" />
-                                    <h:outputText value="#{messages.alertTypeDVIRDrivingWithoutInspection}" />
-                                  </td>
-                                 </tr>
-                                <tr class="tableEven">
-                                  <td style="padding: 0px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
-                                     <h:selectBooleanCheckbox id="prePassedSelected" value="#{redFlagOrZoneAlertsBean.item.selectedAlertTypes['ALERT_TYPE_DVIR_PRE_TRIP_PASS']}" onchange="checkMultiple(this)" />
-                                    <h:outputText value="#{messages.alertTypeDVIRPreTripPassed}" />
-                                  </td>
-                                  <td style="padding: 0px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
-                                     <h:selectBooleanCheckbox id="unsafeSelected" value="#{redFlagOrZoneAlertsBean.item.selectedAlertTypes['ALERT_TYPE_DVIR_DRIVEN_INSPECTED_UNSAFE']}" onchange="checkMultiple(this)" />
-                                    <h:outputText value="#{messages.alertTypeDVIRDrivenInspectedUnsafe}" />
-                                  </td>
-                                 </tr>
-                                <tr class="tableOdd">
-                                  <td style="padding: 0px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
-                                    <h:selectBooleanCheckbox id="postFailedSelected" value="#{redFlagOrZoneAlertsBean.item.selectedAlertTypes['ALERT_TYPE_DVIR_POST_TRIP_FAIL']}" onchange="checkMultiple(this)" />
-                                    <h:outputText value="#{messages.alertTypeDVIRPostTripFailed}" />
-                                  </td>
-                                  <td style="padding: 0px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
-                                    <h:selectBooleanCheckbox id="noInspectionSelected" value="#{redFlagOrZoneAlertsBean.item.selectedAlertTypes['ALERT_TYPE_DVIR_NO_POST_TRIP_INSPECTION']}" onchange="checkMultiple(this)" />
-                                    <h:outputText value="#{messages.alertTypeDVIRNoPostTripInspection}" />
-                                  </td>
-                                   </tr>
-                                <tr class="tableEven">
-                                  <td style="padding: 0px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
-                                     <h:selectBooleanCheckbox id="postPassedSelected" value="#{redFlagOrZoneAlertsBean.item.selectedAlertTypes['ALERT_TYPE_DVIR_POST_TRIP_PASS']}" onchange="checkMultiple(this)" />
-                                    <h:outputText value="#{messages.alertTypeDVIRPostTripPassed}" />
-                                  </td>
-                                  <td style="padding: 0px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
-                                    <h:selectBooleanCheckbox id="inspectionRepairCompleted" value="#{redFlagOrZoneAlertsBean.item.selectedAlertTypes['ALERT_TYPE_DVIR_REPAIR']}" onchange="checkMultiple(this)" />
-                                    <h:outputText value="#{messages.alertTypeDVIRInspectionRepairCompleted}" />
-                                  </td>
-                                  </tr>
-                              </table>
-                           </h:panelGroup>
-                        </a4j:outputPanel>
+        <div class="add_section_title">
+
+            <h:outputText value="#{messages[redFlagOrZoneAlertsBean.item.eventSubCategory]}" />
+        </div>
+        <div class="spacer"></div>
+        <table width="100%" border="0" cellpadding="2" cellspacing="0" class="datagrid">
+            <tr>
+                <th colspan="2">
+                    <h:outputText value="#{messages.editRedFlag_setting}" />
+                </th>
+            </tr>
+            <tr class="tableOdd">
+                <td style="padding: 0px 12px 6px 12px; border-bottom: 1px solid #8BAD37;" colspan="2">
+                    <h:selectBooleanCheckbox id="tamperingSelected" value="#{redFlagOrZoneAlertsBean.item.selectedAlertTypes['ALERT_TYPE_TAMPERING']}" onchange="checkMultiple(this)" />
+                    <h:outputText value="#{messages.alertTypeTampering}" />
+                </td>
+            </tr>
+            <tr class="tableEven">
+                <td style="padding: 0px 12px 6px 12px; border-bottom: 1px solid #8BAD37;" colspan="2">
+                    <h:selectBooleanCheckbox id="ignitionOnSelected" value="#{redFlagOrZoneAlertsBean.item.selectedAlertTypes['ALERT_TYPE_IGNITION_ON']}" onchange="checkMultiple(this)" />
+                    <h:outputText value="#{messages.alertTypeIgnitionOn}" />
+                </td>
+            </tr>
+            <tr class="tableOdd">
+                <td style="padding: 0px 12px 6px 12px; border-bottom: 1px solid #8BAD37;" colspan="2">
+                    <h:selectBooleanCheckbox id="lowBatterySelected" value="#{redFlagOrZoneAlertsBean.item.selectedAlertTypes['ALERT_TYPE_LOW_BATTERY']}" onchange="checkMultiple(this)" />
+                    <h:outputText value="#{messages.alertTypeLowBattery}" />
+                </td>
+            </tr>
+            <tr class="tableEven">
+                <td style="padding: 0px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
+                    <h:selectBooleanCheckbox id="idlingThresholdSelected" value="#{redFlagOrZoneAlertsBean.item.selectedAlertTypes['ALERT_TYPE_IDLING']}" onchange="checkMultiple(this)" />
+                    <h:outputText value="#{messages.alertTypeIdlingLimit}"/>
+                </td>
+                <td style="padding: 0px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
+                    <rich:inputNumberSlider id="idlingThreshold" value="#{redFlagOrZoneAlertsBean.item.idlingThreshold}"
+                                            width="250" onfocus="this.select();" showToolTip="false"
+                                            showBoundaryValues="false"
+                                            minValue="#{messages.alertTypeLowIdleLimit}" maxValue="#{messages.alertTypeHighIdleLimit}" step="1"
+                                            onchange="adminSetCheckbox(this.mainTable.id,'redflag','','')"
+                                            convertonchange="checkMultiple('type'); document.getElementById(this.mainTable.id + 'Selected').checked = true" />
+                </td>
+            </tr>
+            <tr class="tableOdd">
+                <td style="padding: 0px 12px 6px 12px; border-bottom: 1px solid #8BAD37;" colspan="2">
+                    <h:selectBooleanCheckbox id="vehicleMoveBack" value="#{redFlagOrZoneAlertsBean.item.selectedAlertTypes['ALERT_TYPE_VEHICLE_MOVE_BACKWARDS']}" onchange="checkMultiple(this)" />
+                    <h:outputText value="#{messages.alertTypeVehicleMoveBack}" />
+                </td>
+            </tr>
+            <!--
+             <tr class="tableEven">
+               <td style="padding: 0px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
+                 <h:selectBooleanCheckbox id="rfSwitchSelected" value="#{redFlagOrZoneAlertsBean.item.selectedAlertTypes['ALERT_TYPE_RF_SWITCH']}" onchange="checkMultiple(this)" />
+                 <h:outputText value="#{messages.alertTypeRFSwitch}" />
+               </td>
+           </tr>
+           -->
+        </table>
+    </h:panelGroup>
+</a4j:outputPanel>
+<a4j:outputPanel id="editRedFlag-hos">
+    <h:panelGroup rendered="#{redFlagOrZoneAlertsBean.item.eventSubCategory eq 'HOS'}">
+
+        <div class="add_section_title">
+
+            <h:outputText value="#{messages[redFlagOrZoneAlertsBean.item.eventSubCategory]}" />
+        </div>
+        <ui:fragment rendered="#{redFlagOrZoneAlertsBean.accountIsWaysmart}">
+            <div >
+                <h:outputText value="#{messages.redFlagAlertHoursOfServiceNote}"/>
+            </div>
+        </ui:fragment>
+        <div class="spacer"></div>
+        <table width="100%" border="0" cellpadding="2" cellspacing="0" class="datagrid">
+            <tr>
+                <th><h:outputText value="#{messages.editRedFlag_setting}" /></th>
+            </tr>
+            <tr class="tableOdd">
+                <td style="padding: 0px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
+                    <h:selectBooleanCheckbox id="dotStoppedSelected" value="#{redFlagOrZoneAlertsBean.item.selectedAlertTypes['ALERT_TYPE_HOS_DOT_STOPPED']}" onchange="checkMultiple(this)" />
+                    <h:outputText value="#{messages.alertTypeDotStopped}" />
+                </td>
+            </tr>
+            <tr class="tableEven">
+                <td style="padding: 0px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
+                    <h:selectBooleanCheckbox id="noHoursSelected" value="#{redFlagOrZoneAlertsBean.item.selectedAlertTypes['ALERT_TYPE_HOS_NO_HOURS_REMAINING']}" onchange="checkMultiple(this)" />
+                    <h:outputText value="#{messages.alertTypeNoHours}" />
+                </td>
+            </tr>
+        </table>
+    </h:panelGroup>
+</a4j:outputPanel>
+<a4j:outputPanel id="editRedFlag-installation">
+    <h:panelGroup rendered="#{redFlagOrZoneAlertsBean.item.eventSubCategory eq 'INSTALLATION'}">
+
+        <div class="add_section_title">
+
+            <h:outputText value="#{messages[redFlagOrZoneAlertsBean.item.eventSubCategory]}" />
+        </div>
+        <ui:fragment rendered="#{redFlagOrZoneAlertsBean.accountIsWaysmart}">
+            <div>
+                <h:outputText value="#{messages.redFlagAlertInstallationNote}"/>
+            </div>
+        </ui:fragment>
+        <div class="spacer"></div>
+        <table width="100%" border="0" cellpadding="2" cellspacing="0" class="datagrid">
+            <tr>
+                <th><h:outputText value="#{messages.editRedFlag_setting}" /></th>
+            </tr>
+            <tr class="tableOdd">
+                <td style="padding: 0px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
+                    <h:selectBooleanCheckbox id="installSelected" value="#{redFlagOrZoneAlertsBean.item.selectedAlertTypes['ALERT_TYPE_INSTALL']}" onchange="checkMultiple(this)" />
+                    <h:outputText value="#{messages.alertTypeInstall}" />
+                </td>
+            </tr>
+            <ui:fragment rendered="#{redFlagOrZoneAlertsBean.accountIsWaysmart}">
+                <tr class="tableEven">
+                    <td style="padding: 0px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
+                        <h:selectBooleanCheckbox id="firmwareCurrentSelected" value="#{redFlagOrZoneAlertsBean.item.selectedAlertTypes['ALERT_TYPE_FIRMWARE_CURRENT']}" onchange="checkMultiple(this)" />
+                        <h:outputText value="#{messages.alertTypeFirmwareCurrent}" />
+                    </td>
+                </tr>
+                <tr class="tableOdd">
+                    <td style="padding: 0px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
+                        <h:selectBooleanCheckbox id="locationDebugSelected" value="#{redFlagOrZoneAlertsBean.item.selectedAlertTypes['ALERT_TYPE_LOCATION_DEBUG']}" onchange="checkMultiple(this)" />
+                        <h:outputText value="#{messages.alertTypeLocationDebug}" />
+                    </td>
+                </tr>
+                <tr class="tableEven">
+                    <td style="padding: 0px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
+                        <h:selectBooleanCheckbox id="noThumbDriveSelected" value="#{redFlagOrZoneAlertsBean.item.selectedAlertTypes['ALERT_TYPE_NO_INTERNAL_THUMB_DRIVE']}" onchange="checkMultiple(this)" />
+                        <h:outputText value="#{messages.alertTypeNoThumbDrive}" />
+                    </td>
+                </tr>
+                <tr class="tableOdd">
+                    <td style="padding: 0px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
+                        <h:selectBooleanCheckbox id="qsiUpdatedSelected" value="#{redFlagOrZoneAlertsBean.item.selectedAlertTypes['ALERT_TYPE_QSI_UPDATED']}" onchange="checkMultiple(this)" />
+                        <h:outputText value="#{messages.alertTypeQsiUpdated}" />
+                    </td>
+                </tr>
+                <tr class="tableEven">
+                    <td style="padding: 0px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
+                        <h:selectBooleanCheckbox id="witnessHeartbeatViolationSelected" value="#{redFlagOrZoneAlertsBean.item.selectedAlertTypes['ALERT_TYPE_WITNESS_HEARTBEAT_VIOLATION']}" onchange="checkMultiple(this)" />
+                        <h:outputText value="#{messages.alertTypeWitnessHeartbeatViolation}" />
+                    </td>
+                </tr>
+                <tr class="tableOdd">
+                    <td style="padding: 0px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
+                        <h:selectBooleanCheckbox id="witnessUpdatedSelected" value="#{redFlagOrZoneAlertsBean.item.selectedAlertTypes['ALERT_TYPE_WITNESS_UPDATED']}" onchange="checkMultiple(this)" />
+                        <h:outputText value="#{messages.alertTypeWitnessUpdated}" />
+                    </td>
+                </tr>
+                <tr class="tableEven">
+                    <td style="padding: 0px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
+                        <h:selectBooleanCheckbox id="zonesCurrentSelected" value="#{redFlagOrZoneAlertsBean.item.selectedAlertTypes['ALERT_TYPE_ZONES_CURRENT']}" onchange="checkMultiple(this)" />
+                        <h:outputText value="#{messages.alertTypeZonesCurrent}" />
+                    </td>
+                </tr>
+            </ui:fragment>
+        </table>
+    </h:panelGroup>
+</a4j:outputPanel>
+<a4j:outputPanel id="editRedFlag-textMessage">
+    <h:panelGroup rendered="#{redFlagOrZoneAlertsBean.item.eventSubCategory eq 'TEXTMESSAGE'}">
+
+        <div class="add_section_title">
+
+            <h:outputText value="#{messages[redFlagOrZoneAlertsBean.item.eventSubCategory]}" />
+        </div>
+        <div class="spacer"></div>
+        <table width="100%" border="0" cellpadding="2" cellspacing="0" class="datagrid">
+            <tr>
+                <th><h:outputText value="#{messages.editRedFlag_setting}" /></th>
+            </tr>
+            <tr class="tableOdd">
+                <td style="padding: 0px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
+                    <h:outputText value="#{messages.alertTypeTextMessage}" />
+                </td>
+            </tr>
+        </table>
+    </h:panelGroup>
+</a4j:outputPanel>
+<a4j:outputPanel id="editRedFlag-wireline">
+    <h:panelGroup rendered="#{redFlagOrZoneAlertsBean.item.eventSubCategory eq 'WIRELINE'}">
+
+        <div class="add_section_title">
+
+            <h:outputText value="#{messages[redFlagOrZoneAlertsBean.item.eventSubCategory]}" />
+        </div>
+        <div class="spacer"></div>
+        <table width="100%" border="0" cellpadding="2" cellspacing="0" class="datagrid">
+            <tr>
+                <th><h:outputText value="#{messages.editRedFlag_setting}" /></th>
+            </tr>
+            <tr class="tableOdd">
+                <td style="padding: 0px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
+                    <h:outputText value="#{messages.alertTypeWireline}" />
+                </td>
+            </tr>
+        </table>
+    </h:panelGroup>
+</a4j:outputPanel>
+<a4j:outputPanel id="editRedFlag-firstMoveForward">
+    <h:panelGroup rendered="#{redFlagOrZoneAlertsBean.item.eventSubCategory eq 'FIRST_MOVE_FORWARD'}">
+
+        <div class="add_section_title">
+
+            <h:outputText value="#{messages[redFlagOrZoneAlertsBean.item.eventSubCategory]}" />
+        </div>
+        <div class="spacer"></div>
+        <table width="100%" border="0" cellpadding="2" cellspacing="0" class="datagrid">
+            <tr>
+                <th><h:outputText value="#{messages.editRedFlag_setting}" /></th>
+            </tr>
+            <tr class="tableOdd">
+                <td style="padding: 0px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
+                    <h:outputText value="#{messages.alertTypeFirstMoveForward}" />
+                </td>
+            </tr>
+        </table>
+    </h:panelGroup>
+</a4j:outputPanel>
+<a4j:outputPanel id="editRedFlag-fatigue">
+    <h:panelGroup rendered="#{redFlagOrZoneAlertsBean.item.eventSubCategory eq 'FATIGUE'}">
+
+        <div class="add_section_title">
+
+            <h:outputText value="#{messages[redFlagOrZoneAlertsBean.item.eventSubCategory]}" />
+        </div>
+        <div >
+            <h:outputText value="#{messages.redFlagAlertFatigueNote}"/>
+        </div>
+        <div class="spacer"></div>
+        <table width="100%" border="0" cellpadding="2" cellspacing="0" class="datagrid">
+            <tr>
+                <th><h:outputText value="#{messages.editRedFlag_setting}" /></th>
+            </tr>
+            <tr class="tableOdd">
+                <td style="padding: 0px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
+                    <h:outputText value="#{messages.alertTypeMicroSleep}" />
+                </td>
+            </tr>
+        </table>
+    </h:panelGroup>
+</a4j:outputPanel>
+<a4j:outputPanel id="editRedFlag-dvir">
+    <h:panelGroup rendered="#{redFlagOrZoneAlertsBean.item.eventSubCategory eq 'DVIR'}">
+
+        <div class="add_section_title">
+
+            <h:outputText value="#{messages[redFlagOrZoneAlertsBean.item.eventSubCategory]}" />
+        </div>
+        <div class="spacer"></div>
+        <table width="100%" border="0" cellpadding="2" cellspacing="0" class="datagrid">
+            <tr>
+                <th  colspan="2"><h:outputText value="#{messages.editRedFlag_setting}" /></th>
+            </tr>
+            <tr class="tableOdd">
+                <td style="padding: 0px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
+                    <h:selectBooleanCheckbox id="preFailedSelected" value="#{redFlagOrZoneAlertsBean.item.selectedAlertTypes['ALERT_TYPE_DVIR_PRE_TRIP_FAIL']}" onchange="checkMultiple(this)" />
+                    <h:outputText value="#{messages.alertTypeDVIRPreTripFailed}" />
+                </td>
+                <td style="padding: 0px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
+                    <h:selectBooleanCheckbox id="withoutInspectionSelected" value="#{redFlagOrZoneAlertsBean.item.selectedAlertTypes['ALERT_TYPE_DVIR_DRIVEN_WITHOUT_INSPECTION']}" onchange="checkMultiple(this)" />
+                    <h:outputText value="#{messages.alertTypeDVIRDrivingWithoutInspection}" />
+                </td>
+            </tr>
+            <tr class="tableEven">
+                <td style="padding: 0px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
+                    <h:selectBooleanCheckbox id="prePassedSelected" value="#{redFlagOrZoneAlertsBean.item.selectedAlertTypes['ALERT_TYPE_DVIR_PRE_TRIP_PASS']}" onchange="checkMultiple(this)" />
+                    <h:outputText value="#{messages.alertTypeDVIRPreTripPassed}" />
+                </td>
+                <td style="padding: 0px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
+                    <h:selectBooleanCheckbox id="unsafeSelected" value="#{redFlagOrZoneAlertsBean.item.selectedAlertTypes['ALERT_TYPE_DVIR_DRIVEN_INSPECTED_UNSAFE']}" onchange="checkMultiple(this)" />
+                    <h:outputText value="#{messages.alertTypeDVIRDrivenInspectedUnsafe}" />
+                </td>
+            </tr>
+            <tr class="tableOdd">
+                <td style="padding: 0px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
+                    <h:selectBooleanCheckbox id="postFailedSelected" value="#{redFlagOrZoneAlertsBean.item.selectedAlertTypes['ALERT_TYPE_DVIR_POST_TRIP_FAIL']}" onchange="checkMultiple(this)" />
+                    <h:outputText value="#{messages.alertTypeDVIRPostTripFailed}" />
+                </td>
+                <td style="padding: 0px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
+                    <h:selectBooleanCheckbox id="noInspectionSelected" value="#{redFlagOrZoneAlertsBean.item.selectedAlertTypes['ALERT_TYPE_DVIR_NO_POST_TRIP_INSPECTION']}" onchange="checkMultiple(this)" />
+                    <h:outputText value="#{messages.alertTypeDVIRNoPostTripInspection}" />
+                </td>
+            </tr>
+            <tr class="tableEven">
+                <td style="padding: 0px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
+                    <h:selectBooleanCheckbox id="postPassedSelected" value="#{redFlagOrZoneAlertsBean.item.selectedAlertTypes['ALERT_TYPE_DVIR_POST_TRIP_PASS']}" onchange="checkMultiple(this)" />
+                    <h:outputText value="#{messages.alertTypeDVIRPostTripPassed}" />
+                </td>
+                <td style="padding: 0px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
+                    <h:selectBooleanCheckbox id="inspectionRepairCompleted" value="#{redFlagOrZoneAlertsBean.item.selectedAlertTypes['ALERT_TYPE_DVIR_REPAIR']}" onchange="checkMultiple(this)" />
+                    <h:outputText value="#{messages.alertTypeDVIRInspectionRepairCompleted}" />
+                </td>
+            </tr>
+        </table>
+    </h:panelGroup>
+</a4j:outputPanel>
 
 
                         <a4j:outputPanel id="editRedFlag-conditional">
@@ -1044,304 +1064,304 @@
                                     </tr>
                                 </table>
                             </h:panelGroup>
-                        </a4j:outputPanel>
+</a4j:outputPanel>
 
 						</a4j:outputPanel>
-                      </td>
-                    </tr>
-                  </table>
+</td>
+</tr>
+</table>
 
-                  <div class="spacer"></div>
+<div class="spacer"></div>
 
-                  <rich:message for="editRedFlag-emailToString" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
+<rich:message for="editRedFlag-emailToString" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
 
-                  <table width="790" border="0" cellspacing="0" cellpadding="0">
-                    <tr>
-                      <td width="390" valign="top">
+<table width="790" border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="390" valign="top">
 
-                        <div class="add_section_title">
-                          <h:selectBooleanCheckbox rendered="#{redFlagOrZoneAlertsBean.batchEdit}" id="update_editRedFlag-notifyPersonIDs" value="#{redFlagOrZoneAlertsBean.updateField['notifyPersonIDs']}" />
-                          <h:outputText value="#{messages.editAlerts_notificationsByName}" />
-                        </div>
+    <div class="add_section_title">
+        <h:selectBooleanCheckbox rendered="#{redFlagOrZoneAlertsBean.batchEdit}" id="update_editRedFlag-notifyPersonIDs" value="#{redFlagOrZoneAlertsBean.updateField['notifyPersonIDs']}" />
+        <h:outputText value="#{messages.editAlerts_notificationsByName}" />
+    </div>
 
-                        <div class="instructions"><h:outputText value="#{messages.editAlerts_notificationsByNameInstructions}" /></div>
-                        
-                        <h:panelGroup id="namePickerPnl">
-                        	<rich:panel id="namePickerEnabled" rendered="#{redFlagOrZoneAlertsBean.item.severityLevel ne null}">
-                          	<ui:include src="../../includes/autocompletePicker.xhtml" > 
-                         		<ui:param name="autocompleter" value="#{redFlagOrZoneAlertsBean.peoplePicker}" />
-                         		<ui:param name="onchange" value="checkMultiple('notifyPersonIDs')" /> 
- 							  	<ui:param name="context" value="editRedFlag"/>
- 						  		<ui:param name="formName" value="edit-form"/>
-                        	</ui:include> 
-                        	</rich:panel>  
-                        </h:panelGroup> 
-                        
-                        <h:panelGroup id="namePickerHint">
-                        	<rich:panel id="namePickerHintEnabled" rendered="#{redFlagOrZoneAlertsBean.item.severityLevel eq null}">
-                        		<h:inputText id="hint" value="#{messages.editRedFlag_namePickerHint}" size="50" disabled="true"/>
-                        	</rich:panel>
-                        </h:panelGroup>  
-                        
-                        <div class="add_section_title">
-                          <h:selectBooleanCheckbox rendered="#{redFlagOrZoneAlertsBean.batchEdit}" id="update_editRedFlag-notifyDriverManagers" value="#{redFlagOrZoneAlertsBean.updateField['notifyManagers']}" />
-                          <h:outputText value="#{messages.editAlerts_notificationsByManager}" />
-                        </div>    
-                        
-                        <div class="spacer"></div>        
-                        <table width="100%" border="0" cellpadding="2" cellspacing="0">
-                        	<tr>
-	                            <td width="150" valign="top">
-	                              <h:outputText value="#{messages.editAlerts_notificationsByManager_notifyDriver}:" />
-	                            </td>
-	                            <td>
-	                              <h:selectBooleanCheckbox id="update_editRedFlag-notifyDriverManagersCheckBox" value="#{redFlagOrZoneAlertsBean.item.notifyManagers}" />
-	                            </td>
-                            </tr>
-                        </table>
-                        
-<!--                        <div class="add_section_title">-->
-<!--                          <h:selectBooleanCheckbox rendered="#{redFlagOrZoneAlertsBean.batchEdit}" id="update_emailToString" value="#{redFlagOrZoneAlertsBean.updateField['emailToString']}" />-->
-<!--                          <h:outputText value="#{messages.editAlerts_notificationsByEmail}" />-->
-<!--                        </div>-->
-<!---->
-<!--                        <div class="instructions"><h:outputText value="#{messages.editAlerts_notificationsByEmailInstructions}" /></div>-->
-<!---->
-<!--						 free form Emails list -->
-<!--						<table>-->
-<!--							<tr>-->
-<!--								<td width="115" valign="top">-->
-<!--									<ui:include src="../../includes/admin/inputLabel.xhtml">-->
-<!--										<ui:param name="required" value="FALSE"/>-->
-<!--										<ui:param name="reRender" value="emailTos"/>-->
-<!--										<ui:param name="forId" value="emailTos"/>-->
-<!--										<ui:param name="fieldName" value="emailTos"/>-->
-<!--										<ui:param name="editBean" value="#{redFlagOrZoneAlertsBean}"/>-->
-<!--										<ui:param name="label" value="#{messages.editRedFlag_emailAddressesLabel}"/>-->
-<!--        								<ui:param name="context" value="redFlagAlertsEmailTos" />-->
-<!--									</ui:include>-->
-<!--								</td>-->
-<!--								<td>-->
-<!--								<script type="text/javascript">-->
-<!--								  function emailListKeypress(e)-->
-<!--							      {-->
-<!--							        // keep the 'enter' key from submitting the form.-->
-<!--							        if(e.keyCode == 13)-->
-<!--							        {-->
-<!--							        	jsAddAnother();-->
-<!--							        	return false;-->
-<!--							        }-->
-<!--							      }-->
-<!---->
-<!--								  function emailListBlur(e)-->
-<!--							      {-->
-<!--							      	jsAddAnother();-->
-<!--							      }-->
-<!--							    </script>-->
-<!--								<a4j:jsFunction name="jsAddAnother" action="#{redFlagOrZoneAlertsBean.item.addEmailToSlot}" reRender="emailTos, emailAddressesInputMessage" />-->
-<!--								-->
-<!--									<rich:dataTable value="#{redFlagOrZoneAlertsBean.item.emailTos}" var="dataItem" id="emailTos" binding="#{redFlagOrZoneAlertsBean.emailTosDataTable}" style="border: none;" rowKeyVar="index">-->
-<!--								        <rich:column  style="border: none;">-->
-<!--									        <rich:message id="emailAddressesInputMessage#{index}" for="emailAddressesInput" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />-->
-<!--								           	<h:inputText value="#{dataItem}" styleClass="emailInput" id="emailAddressesInput" onkeypress="return emailListKeypress(event);" onblur="return emailListBlur(event);">-->
-<!--								            	<f:validator validatorId="com.inthinc.pro.validators.EmailValidator" />-->
-<!--								            </h:inputText>-->
-<!--								        </rich:column>-->
-<!--								        <rich:column style="border: none;">-->
-<!--								            <a4j:commandLink id="removeLink" action="#{redFlagOrZoneAlertsBean.item.removeEmailTo}" reRender="emailTos" rendered="#{dataItem != ''}" ><h:graphicImage value="/images/ico_addAnother_remove.png" style="border: 0px; vertical-align: middle;" id="removeLinkImg" /></a4j:commandLink>-->
-<!--								            <a4j:commandLink id="addLink" action="#{redFlagOrZoneAlertsBean.item.addEmailToSlot}" reRender="emailTos, emailAddressesInputMessage"  rendered="#{dataItem == ''}" ><h:graphicImage value="/images/ico_addAnother_add.png" style="border: 0px; vertical-align: middle;" id="addLinkImg" /></a4j:commandLink>-->
-<!--								        </rich:column>	-->
-<!--								    </rich:dataTable>-->
-<!--								</td>-->
-<!--							</tr>-->
-<!--						</table>-->
-<!--					    <br/>-->
-<!--						 / free form Emails list                         -->
+    <div class="instructions"><h:outputText value="#{messages.editAlerts_notificationsByNameInstructions}" /></div>
 
-                      </td>
-                       
-                      <td width="10"><h:graphicImage value="/images/x.gif" width="10" /></td>
-                      <td width="390" valign="top">
-                      <div class="add_section_title">
-<!--                          <h:selectBooleanCheckbox rendered="#{redFlagOrZoneAlertsBean.batchEdit}" id="update_phoneCallEscalation" value="#{redFlagOrZoneAlertsBean.updateField['escalationList']}" />-->
-                          <h:outputText value="#{messages.editRedFlag_notificationsByPhone}" />
-                        </div>
+    <h:panelGroup id="namePickerPnl">
+        <rich:panel id="namePickerEnabled" rendered="#{redFlagOrZoneAlertsBean.item.severityLevel ne null}">
+            <ui:include src="../../includes/autocompletePicker.xhtml" >
+                <ui:param name="autocompleter" value="#{redFlagOrZoneAlertsBean.peoplePicker}" />
+                <ui:param name="onchange" value="checkMultiple('notifyPersonIDs')" />
+                <ui:param name="context" value="editRedFlag"/>
+                <ui:param name="formName" value="edit-form"/>
+            </ui:include>
+        </rich:panel>
+    </h:panelGroup>
 
-                        <div class="instructions"><h:outputText value="#{messages.editAlerts_notificationsByPhoneInstructions}" /></div>
-						<table>
-							<tr>
-								<td width="115" valign="top">
-									<ui:include src="../../includes/admin/inputLabel.xhtml">
-										<ui:param name="required" value="FALSE"/>
-										<ui:param name="reRender" value="phNumbers"/>
-										<ui:param name="forId" value="phNumbers"/>
-										<ui:param name="fieldName" value="escalationPersonIDs"/>
-										<ui:param name="editBean" value="#{redFlagOrZoneAlertsBean}"/>
-										<ui:param name="label" value="#{messages.editRedFlag_phoneNumbersLabel}"/>
-        								<ui:param name="context" value="redFlagAlertsPhNumbers" />
-									</ui:include>
-								</td>
-								<td>
-								
-      								<!-- Escalation phNumbers list -->
-      								<a4j:region renderRegionOnly="true">
-								    <rich:dataTable value="#{redFlagOrZoneAlertsBean.item.phNumbers}" var="dataItem" id="phNumbers" binding="#{redFlagOrZoneAlertsBean.phNumbersDataTable}" style="border: none;" rowKeyVar="rowIndex">
-								        <rich:column id="phNumInputCol" style="border: none;">
-								   	    	<rich:message id="phNumInputMessage#{index}" for="phNumInput" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
-								            <h:inputText value="#{dataItem}" styleClass="phoneInput" id="phNumInput">
-								            	<f:validator validatorId="com.inthinc.pro.validators.EscalationPhNumValidator" />
-								            </h:inputText>
-								            
-								            <rich:suggestionbox id="suggestionBoxId" for="phNumInput"
-							                    suggestionAction="#{redFlagOrZoneAlertsBean.escalationPeoplePicker.autocomplete}" 
-							                    var="suggestion" selfRendered="true" nothingLabel="#{messages.editAlerts_picker_unknownPhone}" ignoreDupResponses="true">
-							                    <h:column>
-									              <h:outputText value="#{suggestion.label}" id="phNumSuggestion" />
-									            </h:column>
-            									<a4j:support event="onselect" action="#{redFlagOrZoneAlertsBean.addPhNumberSlot_plusAddItem}" reRender="pickerPanel, phNumbers, message" limitToList="true">
-            									    <f:setPropertyActionListener target="#{redFlagOrZoneAlertsBean.escalationPeoplePicker.itemValue}" value="#{suggestion.value}"> </f:setPropertyActionListener>
-            									</a4j:support>
-							                </rich:suggestionbox>
-								        </rich:column>
-								        <rich:column id="phNumInputBtns" style="border: none;">
-								            <a4j:commandLink id="phNumRemBtn" action="#{redFlagOrZoneAlertsBean.item.removePhNumber}" reRender="phNumbers, message" rendered="#{dataItem != ''}"><h:graphicImage value="/images/ico_addAnother_remove.png" style="border: 0px; vertical-align: middle;" id="phRemoveLinkImg" />
-								                 <a4j:support event="onclick" action="#{redFlagOrZoneAlertsBean.escalationPeoplePicker.removeItem}" reRender="pickerPanel" limitToList="true">
-            									    <f:setPropertyActionListener target="#{redFlagOrZoneAlertsBean.escalationPeoplePicker.itemValue}" value="#{dataItem}"> </f:setPropertyActionListener>
-            									 </a4j:support>
-								            </a4j:commandLink>
-								            <a4j:commandLink id="phNumAddSlotBtn" action="#{redFlagOrZoneAlertsBean.addPhNumberSlot}" reRender="phNumbers, message"  rendered="#{dataItem == ''}"><h:graphicImage value="/images/ico_addAnother_add.png" style="border: 0px; vertical-align: middle;" id="phAddLinkImg" /></a4j:commandLink>
-								        </rich:column>	
-								    </rich:dataTable>
-								    <br/>
-								    </a4j:region>
-									<!-- / Escalation phNumbers list -->
-								</td>
-							</tr>
-							<tr>
-								<td colspan="2"><hr class="minorSeparator"/></td>
-							</tr>
-							<tr>
-								<td width="115" valign="top">
-									<ui:include src="../../includes/admin/inputLabel.xhtml">
-										<ui:param name="required" value="FALSE"/>
-										<ui:param name="reRender" value="delay"/>
-										<ui:param name="forId" value="delay"/>
-										<ui:param name="fieldName" value="delay"/>
-										<ui:param name="editBean" value="#{redFlagOrZoneAlertsBean}"/>
-										<ui:param name="label" value="#{messages.editRedFlag_callDelayLabel}"/>
-        								<ui:param name="context" value="redFlagAlertsPhoneDelay" />
-									</ui:include>
-								</td>
-								<td>
-      								<h:selectOneMenu id="redFlagAlertsPhoneDelay" value="#{redFlagOrZoneAlertsBean.item.delay}" converter="SimpleBeanConverter" onchange="checkMultiple(this)">
-      									<f:selectItems value="#{redFlagOrZoneAlertsBean.item.delays}"/> 
-      								</h:selectOneMenu>
-								</td>
-							</tr>
-							<tr>
-								<td width="115" valign="top">
-									<ui:include src="../../includes/admin/inputLabel.xhtml">
-										<ui:param name="required" value="FALSE"/>
-										<ui:param name="reRender" value="limit"/>
-										<ui:param name="forId" value="limit"/>
-										<ui:param name="fieldName" value="limitType"/>
-										<ui:param name="editBean" value="#{redFlagOrZoneAlertsBean}"/>
-										<ui:param name="label" value="#{messages.editRedFlag_limitByLabel}"/>
-        								<ui:param name="context" value="redFlagAlertsLimitType" />
-									</ui:include>
-								</td>
-								<td>
-								<a4j:outputPanel id="limits">
-      								<h:selectOneMenu id="redFlagAlertsLimitType" value="#{redFlagOrZoneAlertsBean.item.limitType}" immediate="true" converter="SimpleBeanConverter" valueChangeListener="#{redFlagOrZoneAlertsBean.item.updateLimitValues}">
-      									<f:selectItems value="#{redFlagOrZoneAlertsBean.item.limitTypes}"/> 
-							            <a4j:support event="onchange" reRender="redFlagAlertsLimitValue" ajaxSingle="true">
-							            
-							            </a4j:support>
-      								</h:selectOneMenu>
-      								<rich:spacer width="5px" height="1px" style="float:left;" />
-      								<h:selectOneMenu id="redFlagAlertsLimitValue" value="#{redFlagOrZoneAlertsBean.item.limitValue}" immediate="true" converter="SimpleBeanConverter" onchange="checkMultiple(this)">
-      									<f:selectItems value="#{redFlagOrZoneAlertsBean.item.limitValues}"/> 
-      								</h:selectOneMenu>
-      							</a4j:outputPanel>
-								</td>
-							</tr>
-							<tr>
-								<td colspan="2"><hr class="minorSeparator"/></td>
-							</tr>
-							<tr>
-								<td width="115" valign="top">
-									<ui:include src="../../includes/admin/inputLabel.xhtml">
-										<ui:param name="required" value="FALSE"/>
-										<ui:param name="reRender" value="escEmail"/>
-										<ui:param name="forId" value="escEmail"/>
-										<ui:param name="fieldName" value="emailEscalationPersonID"/>
-										<ui:param name="editBean" value="#{redFlagOrZoneAlertsBean}"/>
-										<ui:param name="label" value="#{messages.editRedFlag_escalationEmailLabel}"/>
-        								<ui:param name="context" value="redFlagAlertsEscEmail" />
-									</ui:include>
-								</td>
-								<td>
-      								<!-- Escalation Email -->
-      								<a4j:region renderRegionOnly="true">
-      								<rich:message id="escEmailAddressesInputMessage" for="escEmailAddressInput" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
-									<h:inputText value="#{redFlagOrZoneAlertsBean.item.escEmail}" id="escEmailAddressInput" styleClass="emailInput">
-										<f:validator validatorId="com.inthinc.pro.validators.EscalationEmailValidator" />
-									</h:inputText>
-								  	<rich:suggestionbox id="suggestionBoxId" for="escEmailAddressInput"
-					                    suggestionAction="#{redFlagOrZoneAlertsBean.escalationEmailPicker.autocomplete}" 
-					                    var="suggestion" selfRendered="true" nothingLabel="#{messages.editAlerts_picker_unknownEmail}">
-					                    <h:column>
-							              <h:outputText value="#{suggestion.label}" id="escEmailSuggestion" />
-							            </h:column>
-							            <h:column>
-							              <h:outputText value="#{suggestion.value.personID}" id="escEmailSuggestionPersonId"  />
-							            </h:column>
-							            <a4j:support event="onselect"  reRender="pickerPanel" limitToList="true">
-          									<f:setPropertyActionListener target="#{redFlagOrZoneAlertsBean.item.emailEscalationPersonID}" value="#{suggestion.value.personID}"> </f:setPropertyActionListener>
-          								</a4j:support>
-					                </rich:suggestionbox>
-					                </a4j:region>
-									<!-- / Escalation Email -->
-								</td>
-							</tr>
-						</table>
-                       
-                        <div class="instructions"><h:outputText value="#{messages.editRedFlag_escalationEmailInstructions}" /></div>
-                      </td>
-                      
-                    </tr>
-                  </table>
+    <h:panelGroup id="namePickerHint">
+        <rich:panel id="namePickerHintEnabled" rendered="#{redFlagOrZoneAlertsBean.item.severityLevel eq null}">
+            <h:inputText id="hint" value="#{messages.editRedFlag_namePickerHint}" size="50" disabled="true"/>
+        </rich:panel>
+    </h:panelGroup>
 
-                  <div class="required-key"><h:outputText value="#{messages.requiredKey}" /></div>
+    <div class="add_section_title">
+        <h:selectBooleanCheckbox rendered="#{redFlagOrZoneAlertsBean.batchEdit}" id="update_editRedFlag-notifyDriverManagers" value="#{redFlagOrZoneAlertsBean.updateField['notifyManagers']}" />
+        <h:outputText value="#{messages.editAlerts_notificationsByManager}" />
+    </div>
 
-                  <div class="spacer"></div>
-
-                  <ul id="grid_nav" style="margin: 0;">
-                    <li class="r">
-                      <h:commandButton id="editRedFlagSave2" action="#{redFlagOrZoneAlertsBean.save}" styleClass="left"><span class="save"><h:outputText value="#{messages.button_save}" /></span></h:commandButton>
-                      <h:outputText value=" " /><h:commandButton id="editRedFlagCancel2" action="#{redFlagOrZoneAlertsBean.cancelEdit}" immediate="true" styleClass="left"><span class="cancel"><h:outputText value="#{messages.button_cancel}" /></span></h:commandButton>
-                    </li>
-                  </ul>
-
-                </div>
-              </div>
-
-              <div class="panel_sw">
-                <div class="panel_statusbar"></div>
-              </div>
-            </div>
-
-          </a4j:form>
-
-          <!-- END PANEL -->
-        </td>
-      </tr>
+    <div class="spacer"></div>
+    <table width="100%" border="0" cellpadding="2" cellspacing="0">
+        <tr>
+            <td width="150" valign="top">
+                <h:outputText value="#{messages.editAlerts_notificationsByManager_notifyDriver}:" />
+            </td>
+            <td>
+                <h:selectBooleanCheckbox id="update_editRedFlag-notifyDriverManagersCheckBox" value="#{redFlagOrZoneAlertsBean.item.notifyManagers}" />
+            </td>
+        </tr>
     </table>
-    
-    <script type="text/javascript">
-      var formElements = ["text", "checkbox", "radio", "select-one", "select-multiple", "textarea"];
-    </script>
 
-  </ui:define>
+    <!--                        <div class="add_section_title">-->
+    <!--                          <h:selectBooleanCheckbox rendered="#{redFlagOrZoneAlertsBean.batchEdit}" id="update_emailToString" value="#{redFlagOrZoneAlertsBean.updateField['emailToString']}" />-->
+    <!--                          <h:outputText value="#{messages.editAlerts_notificationsByEmail}" />-->
+    <!--                        </div>-->
+    <!---->
+    <!--                        <div class="instructions"><h:outputText value="#{messages.editAlerts_notificationsByEmailInstructions}" /></div>-->
+    <!---->
+    <!--						 free form Emails list -->
+    <!--						<table>-->
+    <!--							<tr>-->
+    <!--								<td width="115" valign="top">-->
+    <!--									<ui:include src="../../includes/admin/inputLabel.xhtml">-->
+    <!--										<ui:param name="required" value="FALSE"/>-->
+    <!--										<ui:param name="reRender" value="emailTos"/>-->
+<!--										<ui:param name="forId" value="emailTos"/>-->
+    <!--										<ui:param name="fieldName" value="emailTos"/>-->
+    <!--										<ui:param name="editBean" value="#{redFlagOrZoneAlertsBean}"/>-->
+    <!--										<ui:param name="label" value="#{messages.editRedFlag_emailAddressesLabel}"/>-->
+    <!--        								<ui:param name="context" value="redFlagAlertsEmailTos" />-->
+    <!--									</ui:include>-->
+    <!--								</td>-->
+    <!--								<td>-->
+    <!--								<script type="text/javascript">-->
+    <!--								  function emailListKeypress(e)-->
+    <!--							      {-->
+    <!--							        // keep the 'enter' key from submitting the form.-->
+    <!--							        if(e.keyCode == 13)-->
+    <!--							        {-->
+    <!--							        	jsAddAnother();-->
+    <!--							        	return false;-->
+    <!--							        }-->
+    <!--							      }-->
+    <!---->
+    <!--								  function emailListBlur(e)-->
+    <!--							      {-->
+    <!--							      	jsAddAnother();-->
+    <!--							      }-->
+    <!--							    </script>-->
+    <!--								<a4j:jsFunction name="jsAddAnother" action="#{redFlagOrZoneAlertsBean.item.addEmailToSlot}" reRender="emailTos, emailAddressesInputMessage" />-->
+    <!--								-->
+    <!--									<rich:dataTable value="#{redFlagOrZoneAlertsBean.item.emailTos}" var="dataItem" id="emailTos" binding="#{redFlagOrZoneAlertsBean.emailTosDataTable}" style="border: none;" rowKeyVar="index">-->
+    <!--								        <rich:column  style="border: none;">-->
+    <!--									        <rich:message id="emailAddressesInputMessage#{index}" for="emailAddressesInput" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />-->
+    <!--								           	<h:inputText value="#{dataItem}" styleClass="emailInput" id="emailAddressesInput" onkeypress="return emailListKeypress(event);" onblur="return emailListBlur(event);">-->
+    <!--								            	<f:validator validatorId="com.inthinc.pro.validators.EmailValidator" />-->
+    <!--								            </h:inputText>-->
+    <!--								        </rich:column>-->
+    <!--								        <rich:column style="border: none;">-->
+    <!--								            <a4j:commandLink id="removeLink" action="#{redFlagOrZoneAlertsBean.item.removeEmailTo}" reRender="emailTos" rendered="#{dataItem != ''}" ><h:graphicImage value="/images/ico_addAnother_remove.png" style="border: 0px; vertical-align: middle;" id="removeLinkImg" /></a4j:commandLink>-->
+    <!--								            <a4j:commandLink id="addLink" action="#{redFlagOrZoneAlertsBean.item.addEmailToSlot}" reRender="emailTos, emailAddressesInputMessage"  rendered="#{dataItem == ''}" ><h:graphicImage value="/images/ico_addAnother_add.png" style="border: 0px; vertical-align: middle;" id="addLinkImg" /></a4j:commandLink>-->
+    <!--								        </rich:column>	-->
+    <!--								    </rich:dataTable>-->
+    <!--								</td>-->
+    <!--							</tr>-->
+    <!--						</table>-->
+    <!--					    <br/>-->
+    <!--						 / free form Emails list                         -->
+
+</td>
+
+<td width="10"><h:graphicImage value="/images/x.gif" width="10" /></td>
+<td width="390" valign="top">
+    <div class="add_section_title">
+        <!--                          <h:selectBooleanCheckbox rendered="#{redFlagOrZoneAlertsBean.batchEdit}" id="update_phoneCallEscalation" value="#{redFlagOrZoneAlertsBean.updateField['escalationList']}" />-->
+        <h:outputText value="#{messages.editRedFlag_notificationsByPhone}" />
+    </div>
+
+    <div class="instructions"><h:outputText value="#{messages.editAlerts_notificationsByPhoneInstructions}" /></div>
+    <table>
+        <tr>
+            <td width="115" valign="top">
+                <ui:include src="../../includes/admin/inputLabel.xhtml">
+                    <ui:param name="required" value="FALSE"/>
+                    <ui:param name="reRender" value="phNumbers"/>
+										<ui:param name="forId" value="phNumbers"/>
+                    <ui:param name="fieldName" value="escalationPersonIDs"/>
+                    <ui:param name="editBean" value="#{redFlagOrZoneAlertsBean}"/>
+                    <ui:param name="label" value="#{messages.editRedFlag_phoneNumbersLabel}"/>
+                    <ui:param name="context" value="redFlagAlertsPhNumbers" />
+                </ui:include>
+            </td>
+            <td>
+
+                <!-- Escalation phNumbers list -->
+                <a4j:region renderRegionOnly="true">
+                    <rich:dataTable value="#{redFlagOrZoneAlertsBean.item.phNumbers}" var="dataItem" id="phNumbers" binding="#{redFlagOrZoneAlertsBean.phNumbersDataTable}" style="border: none;" rowKeyVar="rowIndex">
+                        <rich:column id="phNumInputCol" style="border: none;">
+                            <rich:message id="phNumInputMessage#{index}" for="phNumInput" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
+                            <h:inputText value="#{dataItem}" styleClass="phoneInput" id="phNumInput">
+                                <f:validator validatorId="com.inthinc.pro.validators.EscalationPhNumValidator" />
+                            </h:inputText>
+
+                            <rich:suggestionbox id="suggestionBoxId" for="phNumInput"
+                                                suggestionAction="#{redFlagOrZoneAlertsBean.escalationPeoplePicker.autocomplete}"
+                                                var="suggestion" selfRendered="true" nothingLabel="#{messages.editAlerts_picker_unknownPhone}" ignoreDupResponses="true">
+                                <h:column>
+                                    <h:outputText value="#{suggestion.label}" id="phNumSuggestion" />
+                                </h:column>
+                                <a4j:support event="onselect" action="#{redFlagOrZoneAlertsBean.addPhNumberSlot_plusAddItem}" reRender="pickerPanel, phNumbers, message" limitToList="true">
+                                    <f:setPropertyActionListener target="#{redFlagOrZoneAlertsBean.escalationPeoplePicker.itemValue}" value="#{suggestion.value}"> </f:setPropertyActionListener>
+                                </a4j:support>
+                            </rich:suggestionbox>
+                        </rich:column>
+                        <rich:column id="phNumInputBtns" style="border: none;">
+                            <a4j:commandLink id="phNumRemBtn" action="#{redFlagOrZoneAlertsBean.item.removePhNumber}" reRender="phNumbers, message" rendered="#{dataItem != ''}"><h:graphicImage value="/images/ico_addAnother_remove.png" style="border: 0px; vertical-align: middle;" id="phRemoveLinkImg" />
+                                <a4j:support event="onclick" action="#{redFlagOrZoneAlertsBean.escalationPeoplePicker.removeItem}" reRender="pickerPanel" limitToList="true">
+                                    <f:setPropertyActionListener target="#{redFlagOrZoneAlertsBean.escalationPeoplePicker.itemValue}" value="#{dataItem}"> </f:setPropertyActionListener>
+                                </a4j:support>
+                            </a4j:commandLink>
+                            <a4j:commandLink id="phNumAddSlotBtn" action="#{redFlagOrZoneAlertsBean.addPhNumberSlot}" reRender="phNumbers, message"  rendered="#{dataItem == ''}"><h:graphicImage value="/images/ico_addAnother_add.png" style="border: 0px; vertical-align: middle;" id="phAddLinkImg" /></a4j:commandLink>
+                        </rich:column>
+                    </rich:dataTable>
+                    <br/>
+                </a4j:region>
+                <!-- / Escalation phNumbers list -->
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2"><hr class="minorSeparator"/></td>
+        </tr>
+        <tr>
+            <td width="115" valign="top">
+                <ui:include src="../../includes/admin/inputLabel.xhtml">
+                    <ui:param name="required" value="FALSE"/>
+                    <ui:param name="reRender" value="delay"/>
+										<ui:param name="forId" value="delay"/>
+                    <ui:param name="fieldName" value="delay"/>
+                    <ui:param name="editBean" value="#{redFlagOrZoneAlertsBean}"/>
+                    <ui:param name="label" value="#{messages.editRedFlag_callDelayLabel}"/>
+                    <ui:param name="context" value="redFlagAlertsPhoneDelay" />
+                </ui:include>
+            </td>
+            <td>
+                <h:selectOneMenu id="redFlagAlertsPhoneDelay" value="#{redFlagOrZoneAlertsBean.item.delay}" converter="SimpleBeanConverter" onchange="checkMultiple(this)">
+                    <f:selectItems value="#{redFlagOrZoneAlertsBean.item.delays}"/>
+                </h:selectOneMenu>
+            </td>
+        </tr>
+        <tr>
+            <td width="115" valign="top">
+                <ui:include src="../../includes/admin/inputLabel.xhtml">
+                    <ui:param name="required" value="FALSE"/>
+                    <ui:param name="reRender" value="limit"/>
+										<ui:param name="forId" value="limit"/>
+                    <ui:param name="fieldName" value="limitType"/>
+                    <ui:param name="editBean" value="#{redFlagOrZoneAlertsBean}"/>
+                    <ui:param name="label" value="#{messages.editRedFlag_limitByLabel}"/>
+                    <ui:param name="context" value="redFlagAlertsLimitType" />
+                </ui:include>
+            </td>
+            <td>
+                <a4j:outputPanel id="limits">
+                    <h:selectOneMenu id="redFlagAlertsLimitType" value="#{redFlagOrZoneAlertsBean.item.limitType}" immediate="true" converter="SimpleBeanConverter" valueChangeListener="#{redFlagOrZoneAlertsBean.item.updateLimitValues}">
+                        <f:selectItems value="#{redFlagOrZoneAlertsBean.item.limitTypes}"/>
+                        <a4j:support event="onchange" reRender="redFlagAlertsLimitValue" ajaxSingle="true">
+
+                        </a4j:support>
+                    </h:selectOneMenu>
+                    <rich:spacer width="5px" height="1px" style="float:left;" />
+                    <h:selectOneMenu id="redFlagAlertsLimitValue" value="#{redFlagOrZoneAlertsBean.item.limitValue}" immediate="true" converter="SimpleBeanConverter" onchange="checkMultiple(this)">
+                        <f:selectItems value="#{redFlagOrZoneAlertsBean.item.limitValues}"/>
+                    </h:selectOneMenu>
+                </a4j:outputPanel>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2"><hr class="minorSeparator"/></td>
+        </tr>
+        <tr>
+            <td width="115" valign="top">
+                <ui:include src="../../includes/admin/inputLabel.xhtml">
+                    <ui:param name="required" value="FALSE"/>
+                    <ui:param name="reRender" value="escEmail"/>
+										<ui:param name="forId" value="escEmail"/>
+                    <ui:param name="fieldName" value="emailEscalationPersonID"/>
+                    <ui:param name="editBean" value="#{redFlagOrZoneAlertsBean}"/>
+                    <ui:param name="label" value="#{messages.editRedFlag_escalationEmailLabel}"/>
+                    <ui:param name="context" value="redFlagAlertsEscEmail" />
+                </ui:include>
+            </td>
+            <td>
+                <!-- Escalation Email -->
+                <a4j:region renderRegionOnly="true">
+                    <rich:message id="escEmailAddressesInputMessage" for="escEmailAddressInput" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
+                    <h:inputText value="#{redFlagOrZoneAlertsBean.item.escEmail}" id="escEmailAddressInput" styleClass="emailInput">
+                        <f:validator validatorId="com.inthinc.pro.validators.EscalationEmailValidator" />
+                    </h:inputText>
+                    <rich:suggestionbox id="suggestionBoxId" for="escEmailAddressInput"
+                                        suggestionAction="#{redFlagOrZoneAlertsBean.escalationEmailPicker.autocomplete}"
+                                        var="suggestion" selfRendered="true" nothingLabel="#{messages.editAlerts_picker_unknownEmail}">
+                        <h:column>
+                            <h:outputText value="#{suggestion.label}" id="escEmailSuggestion" />
+                        </h:column>
+                        <h:column>
+                            <h:outputText value="#{suggestion.value.personID}" id="escEmailSuggestionPersonId"  />
+                        </h:column>
+                        <a4j:support event="onselect"  reRender="pickerPanel" limitToList="true">
+                            <f:setPropertyActionListener target="#{redFlagOrZoneAlertsBean.item.emailEscalationPersonID}" value="#{suggestion.value.personID}"> </f:setPropertyActionListener>
+                        </a4j:support>
+                    </rich:suggestionbox>
+                </a4j:region>
+                <!-- / Escalation Email -->
+            </td>
+        </tr>
+    </table>
+
+    <div class="instructions"><h:outputText value="#{messages.editRedFlag_escalationEmailInstructions}" /></div>
+</td>
+
+</tr>
+</table>
+
+<div class="required-key"><h:outputText value="#{messages.requiredKey}" /></div>
+
+<div class="spacer"></div>
+
+<ul id="grid_nav" style="margin: 0;">
+    <li class="r">
+        <h:commandButton id="editRedFlagSave2" action="#{redFlagOrZoneAlertsBean.save}" styleClass="left"><span class="save"><h:outputText value="#{messages.button_save}" /></span></h:commandButton>
+        <h:outputText value=" " /><h:commandButton id="editRedFlagCancel2" action="#{redFlagOrZoneAlertsBean.cancelEdit}" immediate="true" styleClass="left"><span class="cancel"><h:outputText value="#{messages.button_cancel}" /></span></h:commandButton>
+    </li>
+</ul>
+
+</div>
+</div>
+
+<div class="panel_sw">
+    <div class="panel_statusbar"></div>
+</div>
+</div>
+
+</a4j:form>
+
+<!-- END PANEL -->
+</td>
+</tr>
+</table>
+
+<script type="text/javascript">
+    var formElements = ["text", "checkbox", "radio", "select-one", "select-multiple", "textarea"];
+</script>
+
+</ui:define>
 
 </ui:composition>
