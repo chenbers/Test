@@ -210,6 +210,10 @@ public class MaintenanceEventsReportCriteria extends ReportCriteria {
                         else if(event instanceof MaintenanceEvent && ((MaintenanceEvent)event).getEngineHours() != null){
                             evCode = EventAttr.ENGINE_HOURS_X100.getCode();
                         }
+                        else if(event instanceof MaintenanceEvent && ((MaintenanceEvent)event).getOdometer() != null){
+                            maintenanceSettings=null;
+                            evCode = EventAttr.ODOMETER.getCode();
+                        }
 
                         String threshold = null;
                         String actual = null;
@@ -232,7 +236,7 @@ public class MaintenanceEventsReportCriteria extends ReportCriteria {
                         String engineHours = driveTimeDAO.getEngineHoursAtDate(vehicle,date) / 3600 + "";
                         String engineHoursLastEvent = driveTimeDAO.getEngineHoursAtDate(vehicle, prevEventDate) / 3600 + "";
                         String hoursSince=Integer.valueOf(engineHours) - Integer.valueOf(engineHoursLastEvent) + "";
-
+                        vehicleID=vehicle.getName();
                         BackingWrapper backingWrapper = new BackingWrapper(vehicleID, vehicleYMM, maintenanceEvent, date, threshold, actual,
                                 odometer, distanceSince, engineHours, hoursSince, groupName);
 
