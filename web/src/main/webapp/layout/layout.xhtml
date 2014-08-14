@@ -72,7 +72,43 @@
 	            console[method] = noop;
 	        }
 	    }
-	}());	
+	}());
+    document.onmousedown = resetTimerWarning;
+    var timerIdWarning;
+    var timerIdLogout;
+
+    timerIdWarning = window.setTimeout("timeOutWarning()", 10000);
+    timerIdLogout = window.setTimeout("timeOutLogout()", 15000);
+
+
+    function resetTimerWarning() {
+        window.clearTimeout(timerIdWarning);
+        window.clearTimeout(timerIdLogout);
+
+        timerIdWarning = window.setTimeout("timeOutWarning()", 10000);
+        timerIdLogout = window.setTimeout("timeOutLogout()", 15000);
+    }
+
+    function timeOutWarning() {
+        Richfaces.showModalPanel('sessionTimeoutWarning');
+    }
+    function timeOutLogout(){
+//                    var xmlhttp;
+//            if (window.XMLHttpRequest)
+//            {// code for IE7+, Firefox, Chrome, Opera, Safari
+//                xmlhttp=new XMLHttpRequest();
+//            }
+//            else
+//            {// code for IE6, IE5
+//                xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+//            }
+//
+//            xmlhttp.open("POST","/app/session_kill",true);
+//            xmlhttp.send();
+        window.location.href = ('#{facesContext.externalContext.requestContextPath}/logout');
+
+    }
+
 </script>
 <!-- Override "scripts" to include any javascript needed for individual pages -->
 
@@ -97,7 +133,11 @@
 	<link rel="stylesheet" href="#{request.contextPath}/css/fleet-min.css" />
 </head>
     <body onload="if (typeof bodyLoad != 'undefined') bodyLoad()" onunload="if (typeof bodyUnload != 'undefined') bodyUnload()">
-     <script type="text/javascript"></script>
+    <ui:insert name="timeoutWarning">
+    <ui:include src="/includes/sessionTimeoutWarning.xhtml">
+    </ui:include>
+    </ui:insert>
+    <script type="text/javascript"></script>
     <ui:insert name="header">
         <ui:include src="/includes/header.xhtml">
         </ui:include>

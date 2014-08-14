@@ -152,11 +152,22 @@
     <servlet-name>Faces Servlet</servlet-name>
     <url-pattern>*.faces</url-pattern>
   </servlet-mapping>
+
+    <servlet>
+        <servlet-name>SessionKill</servlet-name>
+        <servlet-class>com.inthinc.pro.servlets.SessionKill</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>SessionKill</servlet-name>
+        <url-pattern>/app/session_kill</url-pattern>
+    </servlet-mapping>
+
   <welcome-file-list>
     <welcome-file>index.html</welcome-file>
   </welcome-file-list>
   <session-config>
-    <session-timeout>60</session-timeout>
+    <session-timeout>30</session-timeout>
   </session-config>
   <error-page>
     <error-code>500</error-code>
