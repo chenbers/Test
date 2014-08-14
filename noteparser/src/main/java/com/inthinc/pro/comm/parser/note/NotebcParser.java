@@ -63,11 +63,11 @@ public class NotebcParser implements NoteParser{
 		return attribMap;
 	}
 	
-	private static int getHeaderLength() {
+	protected int getHeaderLength() {
 		return 32;
 	}
 	
-	private static Map<String, Object> parseHeader(byte[] data, Map<String, Object> attribMap)
+	protected Map<String, Object> parseHeader(byte[] data, Map<String, Object> attribMap)
 	{
 		{
 			

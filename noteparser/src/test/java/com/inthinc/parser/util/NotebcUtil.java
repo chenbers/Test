@@ -79,7 +79,6 @@ public class NotebcUtil {
         try {
             dataStream.write(convertByteToBytes(noteType.byteValue()));
             dataStream.write(convertByteToBytes((byte)3)); //version
-//            logger.debug("time: " + time);
             Date currentTime = new Date();
             dataStream.write(convertIntToBytes((int)(currentTime.getTime()/1000)));
             short flags = 0;
@@ -108,13 +107,63 @@ public class NotebcUtil {
             logger.error("Error creating note header: " + e);
         }
             
-//        if (code >= 40960 && code < 40964)
-//            ho.writeDouble((Double) value);
-        
         return dataStream.toByteArray();
-        
     }
 
+    public static byte[] createHeaderV4(Integer noteType)
+    {
+        ByteArrayOutputStream dataStream = new ByteArrayOutputStream();
+        try {
+            byte flags = 5;
+            dataStream.write(convertByteToBytes(flags));
+            dataStream.write(convertByteToBytes(noteType.byteValue()));
+            dataStream.write(convertByteToBytes((byte)4)); //version
+            Date currentTime = new Date();
+            dataStream.write(convertIntToBytes((int)(currentTime.getTime()/1000)));
+            double latitude = 40.7777;
+            double longitude = -112.3333;
+            dataStream.write(LatLngUtil.encodeLat3(latitude));
+            dataStream.write(LatLngUtil.encodeLng3(longitude));
+            int odometer = 111100;
+            dataStream.write(convertIntToBytes(odometer));
+            short noteEnum = 1001;
+            dataStream.write(convertShortToBytes(noteEnum));
+
+            dataStream.flush();
+            dataStream.toByteArray();
+        } catch (IOException e)
+        {
+            logger.error("Error creating note header: " + e);
+        }
+            
+        return dataStream.toByteArray();
+    }
+
+    public static byte[] createHeaderV5(Integer noteType)
+    {
+        ByteArrayOutputStream dataStream = new ByteArrayOutputStream();
+        try {
+            byte flags = 5;
+            dataStream.write(convertByteToBytes(flags));
+            dataStream.write(convertByteToBytes(noteType.byteValue()));
+            dataStream.write(convertByteToBytes((byte)4)); //version
+            Date currentTime = new Date();
+            dataStream.write(convertIntToBytes((int)(currentTime.getTime()/1000)));
+            int odometer = 111100;
+            dataStream.write(convertIntToBytes(odometer));
+            short noteEnum = 1001;
+            dataStream.write(convertShortToBytes(noteEnum));
+
+            dataStream.flush();
+            dataStream.toByteArray();
+        } catch (IOException e)
+        {
+            logger.error("Error creating note header: " + e);
+        }
+            
+        return dataStream.toByteArray();
+    }
+    
     public static Map<String, Object> parseNote(byte[] data)
     {
         NoteParser parser = new NotebcParser(); 
