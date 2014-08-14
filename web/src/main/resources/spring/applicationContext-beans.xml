@@ -607,6 +607,9 @@
   <bean id="pagingDiagnosticsEventsBean" class="com.inthinc.pro.backing.paging.PagingDiagnosticsEventsBean" scope="request" parent="pagingEventsBean">
   </bean>
 
+  <bean id="pagingMaintenanceEventsBean" class="com.inthinc.pro.backing.paging.PagingMaintenanceEventsBean" scope="request" parent="pagingEventsBean">
+  </bean>
+
   <bean id="pagingEmergencyEventsBean" class="com.inthinc.pro.backing.paging.PagingEmergencyEventsBean" scope="request" parent="pagingEventsBean">
   </bean>
 
@@ -629,6 +632,8 @@
   <bean id="eventPaginationTableDataProvider" class="com.inthinc.pro.table.model.provider.EventPaginationTableDataProvider" scope="request">
     <property name="eventDAO" ref="eventDAO"></property>
     <property name="timeFrameBean" ref="timeFrameBean" />
+    <property name="vehicleDAO" ref="vehicleDAO"></property>
+    <property name="deviceDAO" ref="deviceDAO"></property>
   </bean>
 
   <bean id="pagingRedFlagsBean" class="com.inthinc.pro.backing.paging.PagingRedFlagsBean" scope="request" init-method="init" parent="basePagingNotificationsBean">
@@ -709,6 +714,7 @@
   <bean id="fuelStopsTableColumns" class="com.inthinc.pro.table.columns.FuelStopsTableColumns" scope="request" parent="baseTableColumns" />
   <bean id="driverLoginsTableColumns" class="com.inthinc.pro.table.columns.DriverLoginsTableColumns" scope="request" parent="eventsTableColumns" />
   <bean id="trailerReportTableColumns" class="com.inthinc.pro.table.columns.TrailerReportTableColumns" scope="request" parent="baseTableColumns" />
+    <bean id="maintenanceTableColumns" class="com.inthinc.pro.table.columns.DiagnosticsTableColumns" scope="request" parent="baseTableColumns" />
   
 <!--    
   <bean id="phoneBean" class="com.inthinc.pro.backing.PhoneBean" parent="baseBean">

@@ -28,6 +28,7 @@ public class Event extends BaseEntity implements Comparable<Event>, Serializable
     private static final long serialVersionUID = 1L;
 
     private Long noteID;
+    private String deviceName;
 
     private Integer forgiven = 0;
     private Integer flags;
@@ -80,6 +81,8 @@ public class Event extends BaseEntity implements Comparable<Event>, Serializable
     @EventAttrID(name="SPEED_LIMIT")
     private Integer speedLimit;
     private Map<Object, Object> attrMap;
+    @Column(name = "attribs")
+    private String attribs ;
     
     @SuppressWarnings("unused")
     private String eventTypeString;    
@@ -444,5 +447,21 @@ public class Event extends BaseEntity implements Comparable<Event>, Serializable
     
     public EventAttr[] getEventAttrList() {
         return null;
+    }
+
+    public String getAttribs() {
+        return attribs;
+    }
+
+    public void setAttribs(String attribs) {
+        this.attribs = attribs;
+    }
+
+    public String getDeviceName() {
+        return deviceName;
+    }
+
+    public void setDeviceName(String deviceName) {
+        this.deviceName = deviceName;
     }
 }

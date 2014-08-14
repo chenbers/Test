@@ -11,6 +11,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import com.inthinc.pro.model.AggressiveDrivingEventType;
 import com.inthinc.pro.model.BaseEnum;
+import com.inthinc.pro.model.MaintenanceEventType;
 import com.inthinc.pro.model.pagination.EventCategoryFilter;
 
 @XmlRootElement
@@ -68,11 +69,28 @@ public enum EventType implements BaseEnum {
     TRAILER_PROGRAMMED(52),
     ATTR_RF_OFF_DISTANCE(53),
     GENERAL_BACKING(54),
-    FIRST_MOVE_FORWARD(55);
+    FIRST_MOVE_FORWARD(55),
+    BATTERY_VOLTAGE(56, MaintenanceEventType.BATTERY_VOLTAGE),
+    ENGINE_TEMP(57,MaintenanceEventType.ENGINE_TEMP),
+    TRANSMISSION_TEMP(58,MaintenanceEventType.TRANSMISSION_TEMP),
+    DPF_FLOW_RATE(59,MaintenanceEventType.DPF_FLOW_RATE),
+    OIL_PRESSURE(60,MaintenanceEventType.OIL_PRESSURE),
+    MALFUNCTION_INDICATOR_LAMP(61,MaintenanceEventType.MALFUNCTION_INDICATOR_LAMP),
+    CHECK_ENGINE(62),
+    ATTR_MAINTENANCE_CAPABILITIES(63),
+    ATTR_ENGINE_HOURS(64,MaintenanceEventType.ATTR_ENGINE_HOURS),
+    RED_STOP(65,MaintenanceEventType.RED_STOP),
+    AMBER_WARNING(66,MaintenanceEventType.AMBER_WARNING),
+    PROTECT(67,MaintenanceEventType.PROTECT),
+    CHECK_ENGINE_LIGHT(68),
+    STOP_ENGINE_LIGHT(69),
+    ODOMETER(70,MaintenanceEventType.ODOMETER);
+
 
 
     private int code;
     private AggressiveDrivingEventType noteSubType;
+    private MaintenanceEventType maintenanceEventType;
     private Set<EventAccountFilter> eventAccountFilters;
 
     private EventType(int code) {
@@ -82,6 +100,11 @@ public enum EventType implements BaseEnum {
     private EventType(int code, AggressiveDrivingEventType noteSubType) {
         this.code = code;
         this.noteSubType = noteSubType;
+    }
+
+    private EventType(int code, MaintenanceEventType maintenanceEventType) {
+        this.code = code;
+        this.maintenanceEventType = maintenanceEventType;
     }
 
     private EventType(int code, Set<EventAccountFilter> eventAccountFilters) {
@@ -96,6 +119,9 @@ public enum EventType implements BaseEnum {
             lookup.put(p.code, p);
             if (p.noteSubType != null) {
                 subTypeLookup.put(p.noteSubType.getCode(), p);
+            }
+            if (p.maintenanceEventType != null) {
+                subTypeLookup.put(p.maintenanceEventType.getCode(), p);
             }
         }
 
@@ -127,6 +153,10 @@ public enum EventType implements BaseEnum {
         if (noteSubType != null) {
             subTypeList = new ArrayList<Integer>();
             subTypeList.add(noteSubType.getCode());
+        }
+        if (maintenanceEventType != null) {
+            subTypeList = new ArrayList<Integer>();
+            subTypeList.add(maintenanceEventType.getCode());
         }
 
         return new EventCategoryFilter(this, getNoteTypeList(), subTypeList);

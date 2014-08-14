@@ -8,12 +8,10 @@ import java.io.InputStream;
 import java.util.List;
 
 import com.inthinc.pro.dao.hessian.proserver.SiloService;
+import com.inthinc.pro.model.GroupStatus;
 import it.com.inthinc.pro.dao.model.ITData;
 import it.config.IntegrationConfig;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.*;
 
 import com.inthinc.pro.dao.mock.data.MockData;
 import com.inthinc.pro.dao.mock.proserver.SiloServiceCreator;
@@ -91,5 +89,50 @@ public class GroupHessianDAOTest
             gr.setGlCode("");
             groupHessianDAO.update(gr);
         }
+    }
+
+    @Test
+    public void createTest(){
+
+        IntegrationConfig config = new IntegrationConfig();
+
+        String host = config.get(IntegrationConfig.SILO_HOST).toString();
+        Integer port = Integer.valueOf(config.get(IntegrationConfig.SILO_PORT).toString());
+        groupHessianDAO.setSiloService(new com.inthinc.pro.dao.hessian.proserver.SiloServiceCreator(host, port).getService());
+
+        Group testGroup=new Group();
+        testGroup.setAccountID(acctID);
+        testGroup.setParentID(0);
+        testGroup.setGlCode("GLTestCreate");
+
+        testGroup.setName("testCreateParent");
+        testGroup.setDescription("testDescription");
+        testGroup.setStatus(GroupStatus.valueOf(1));
+
+        Integer newGroupId = groupHessianDAO.create(acctID, testGroup);
+
+        //child group with no gl code set
+        Group testChildGroup=new Group();
+        testChildGroup.setAccountID(acctID);
+        testChildGroup.setParentID(newGroupId);
+        testChildGroup.setName("testCreateChild");
+        testChildGroup.setDescription("testDescriptionChild");
+        testChildGroup.setStatus(GroupStatus.valueOf(1));
+
+        Integer newChildGroupId=groupHessianDAO.create(acctID,testChildGroup);
+
+        Group childGroup = groupHessianDAO.findByID(newChildGroupId);
+        //verify if gl code is inherited by the child on create
+        assertTrue(childGroup.getGlCode().equals("GLTestCreate"));
+        //also test the create for a few other columns
+        assertTrue(childGroup.getName().equals("testCreateChild"));
+        assertTrue(childGroup.getDescription().equals("testDescriptionChild"));
+        assertTrue(childGroup.getStatus().equals(GroupStatus.valueOf(1)));
+        assertTrue(childGroup.getAccountID().equals(acctID));
+        assertTrue(childGroup.getParentID().equals(newGroupId));
+
+        groupHessianDAO.delete(childGroup);
+        groupHessianDAO.delete(groupHessianDAO.findByID(newGroupId));
+
     }
 }

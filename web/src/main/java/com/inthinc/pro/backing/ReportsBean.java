@@ -76,7 +76,7 @@ public abstract class ReportsBean extends BaseBean {
         boolean ryg = false;
         switch (reportGroup.getReports()[0]) {
             case SEATBELT_CLICKS_REPORT:
-                reportCriteriaList.add(getReportCriteriaService().getSeatbeltClicksReportCriteria(getAccountGroupHierarchy(),params.getGroupID(),params.getTimeFrameSelect().getTimeFrame(), getLocale(), getDateTimeZone(), getUser().getPerson().getMeasurementType(), params.isIncludeInactiveDrivers(), params.isIncludeZeroMilesDrivers()));
+                reportCriteriaList.add(getReportCriteriaService().getSeatbeltClicksReportCriteria(getAccountGroupHierarchy(),params.getGroupID(),params.getTimeFrameSelect().getTimeFrame(),params.getDateRange().getInterval(), getLocale(), getDateTimeZone(), getUser().getPerson().getMeasurementType(), params.isIncludeInactiveDrivers(), params.isIncludeZeroMilesDrivers()));
                 break;
             case HOS_DAILY_DRIVER_LOG_REPORT:
                 if (params.getParamType() == ReportParamType.DRIVER )
@@ -289,6 +289,16 @@ public abstract class ReportsBean extends BaseBean {
                         params.getGroupID(),params.getTimeFrameSelect().getTimeFrame(), getLocale(), getDateTimeZone(), 
                         getUser().getPerson().getMeasurementType(), params.isIncludeInactiveDrivers(), 
                         params.isIncludeZeroMilesDrivers()));
+                break;
+            case VEHICLE_MAINTENANCE_EVENTS_REPORT:
+                reportCriteriaList.add(getReportCriteriaService().getMaintenanceEventsReportCriteria(getAccountGroupHierarchy(),
+                        params.getGroupIDList(),params.getDateRange().getInterval(), getLocale(), getDateTimeZone(),
+                        getUser().getPerson().getMeasurementType()));
+                break;
+            case VEHICLE_MAINTENANCE_INTERVAL_REPORT:
+                reportCriteriaList.add(getReportCriteriaService().getMaintenanceIntervalReportCriteria(getAccountGroupHierarchy(),
+                        params.getGroupIDList(),params.getDateRange().getInterval(), getLocale(), getDateTimeZone(),
+                        getUser().getPerson().getMeasurementType()));
                 break;
             default:
                 break;

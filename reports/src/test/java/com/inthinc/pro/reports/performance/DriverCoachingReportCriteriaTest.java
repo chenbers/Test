@@ -1,6 +1,7 @@
 package com.inthinc.pro.reports.performance;
 
 import static junit.framework.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -153,7 +154,7 @@ public class DriverCoachingReportCriteriaTest extends BaseUnitTest {
         DriverCoachingReportCriteria reportCriteria = (DriverCoachingReportCriteria)reportCriterias.get(0);
 
         List<DriverCoachingReportViolationSummary> violations = (List<DriverCoachingReportViolationSummary>)reportCriteria.getMainDataset();
-        assertEquals("Expeced 5 items", 5, violations.size());
+        assertEquals("Expected 5 items", 5, violations.size());
         assertEquals("Expected Speeding Violations", "6", violations.get(0).getSummary());
         assertEquals("Expected Seatbelt Violations", "3", violations.get(1).getSummary());
         assertEquals("Expected Aggressive Violations", "12", violations.get(2).getSummary());
@@ -173,6 +174,45 @@ public class DriverCoachingReportCriteriaTest extends BaseUnitTest {
         assertEquals("Expeced 4 items", 4, violations.size());
         
         dump("DriverCoaching", 2, reportCriterias, FormatType.PDF);
+    }
+    
+    @SuppressWarnings("unchecked")
+    @Test
+    public void testBuildDriverCoachingReportCriteriaWithNoCoachingEvents()
+    {
+        new NonStrictExpectations() {{
+            driverPerformanceDAO.getDriverPerformanceListForGroup(anyInt, anyString, (Interval) any, true, true);
+            returns(new ArrayList<DriverPerformance>());
+        }};
+
+        new NonStrictExpectations() {{
+            groupReportDAO.getDriverScores(anyInt, (Interval) any, null);
+            returns(driverVehicleScoreWrappers);
+        }};
+
+        new NonStrictExpectations() {{
+            driverDAO.findByID(anyInt);
+            returns(driver);
+        }};
+
+        new NonStrictExpectations() {{
+            hosDAO.getHOSRecords(anyInt, (Interval) any, false);
+            returns(hosRecords);
+        }};
+        
+        DriverCoachingReportCriteria.Builder reportCriteriaBuilder = new DriverCoachingReportCriteria.Builder(groupReportDAO,driverPerformanceDAO,1,TimeFrame.PAST_SEVEN_DAYS.getInterval(), true, true);
+        reportCriteriaBuilder.setLocale(Locale.US);
+        reportCriteriaBuilder.setDateTimeZone(DateTimeZone.UTC);
+        reportCriteriaBuilder.setAccountHOSEnabled(true);
+        reportCriteriaBuilder.setHosDAO(hosDAO);
+        reportCriteriaBuilder.setDriverDAO(driverDAO);
+        
+        List<ReportCriteria> reportCriterias = reportCriteriaBuilder.build();
+        assertEquals("Expeced 1 report criteria", 1, reportCriterias.size());
+        DriverCoachingReportCriteria reportCriteria = (DriverCoachingReportCriteria)reportCriterias.get(0);
+
+        List<DriverCoachingReportViolationSummary> violations = (List<DriverCoachingReportViolationSummary>)reportCriteria.getMainDataset();
+        assertNull("Expected violations to be null", violations);
     }
 
 

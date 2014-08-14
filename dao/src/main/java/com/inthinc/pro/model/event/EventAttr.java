@@ -465,7 +465,7 @@ public enum EventAttr {
     MESSAGES_SIZE(32799),
     
     NOPT_WEEKLY_WRITE_COUNT(32800),
-    ODOMETER(32801),
+    ODOMETER(218),
     ODOMETER_GPS_COUNT(32802),
     ODOMETER_ODB_COUNT(32803),
     ODOMETER_RECEIVES(32804),
@@ -565,6 +565,15 @@ public enum EventAttr {
     CRASH_TRACE(49168, 16384),                      //binary approximately 16K bytes (not in DB attr) 16384
     WKLY_DRIVER_HISTOGRAM_STATS(49169, 1024),  //binary approximately 1k bytes (not in db attr)
 
+    ATTR_BATTERY_VOLTAGE(81),
+    ATTR_ENGINE_TEMP(171),
+    ATTR_TRANSMISSION_TEMP(172),
+    ATTR_DPF_FLOW_RATE(173),
+    ATTR_OIL_PRESSURE(174),
+    ATTR_MALFUNCTION_INDICATOR_LAMP(243),
+    ATTR_CHECK_ENGINE(244),
+//    ATTR_ENGINE_HOURS_X100(32868),
+    ATTR_MAINTENANCE_CAPABILITIES(245),
 
     // Attribute Id (255) has a stringId byte,
     // followed by a null terminate string.
@@ -646,5 +655,8 @@ public enum EventAttr {
     public String toString(){
         return String.format("%s(%d)", name(), code);
     }
-    
+
+    public int getCode() {
+        return code;
+    }
 }

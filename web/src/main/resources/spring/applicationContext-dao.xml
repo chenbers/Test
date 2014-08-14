@@ -56,7 +56,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
     
     <!-- Temporary Event DAO Bean for Transition to Cassandra -->
     <bean id="eventTripDAO" class="${eventDAO}" />
-	
+
     <bean id="locationDAO" class="com.inthinc.pro.dao.cassandra.LocationCassandraDAO">
         <property name="eventDAO" ref="eventTripDAO"/>
     </bean>
@@ -93,6 +93,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
     <bean id="crashReportDAO" class="com.inthinc.pro.dao.hessian.CrashReportHessianDAO" />
     <bean id="textMsgAlertDAO" class="com.inthinc.pro.dao.hessian.TextMsgAlertHessianDAO" />
     <bean id="configuratorDAO" class="com.inthinc.pro.dao.hessian.ConfiguratorHessianDAO" />
+    <bean id="configuratorJDBCDAO" class="com.inthinc.pro.dao.jdbc.ConfiguratorJDBCDAO" />
     <bean id="redFlagAlertsDAO" class="com.inthinc.pro.dao.hessian.RedFlagAlertHessianDAO"></bean>
     <bean id="phoneControlDAO" class="com.inthinc.pro.dao.hessian.PhoneControlHessianDAO"></bean>
     <bean id="reportDAO" class="com.inthinc.pro.dao.jdbc.ReportJDBCDAO">

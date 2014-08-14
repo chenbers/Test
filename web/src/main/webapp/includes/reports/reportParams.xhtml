@@ -153,7 +153,9 @@
                                 <h:outputText value="#{messages.reports_includeInactiveDrivers}"/>
                             </td>
                             <td>
-                                <h:selectBooleanCheckbox id="inactiveDrivers" value="#{params.includeInactiveDrivers}" />
+                                <a4j:outputPanel id="inactiveDriversControl">
+                                	<h:selectBooleanCheckbox id="inactiveDrivers" disabled="#{params.inactiveDriversControlDisabled}" value="#{params.includeInactiveDrivers}" />
+                                </a4j:outputPanel>
                             </td>
                         </tr>
                     </table>
@@ -330,7 +332,7 @@
                         <td>
                             <h:selectOneMenu  id="grouporDriverSelection2" value="#{params.paramType}" >  
                                 <f:selectItems value="#{params.reportParamTypes}"/>
-                                <a4j:support event="onchange" reRender="zeroMilesDriversControl,#{context}_form:driverSelectPanel2,#{context}_form:groupListSelectPanel2,#{context}_paramsPanelError,#{reRenderList}"/>
+                                <a4j:support event="onchange" reRender="inactiveDriversControl,zeroMilesDriversControl,#{context}_form:driverSelectPanel2,#{context}_form:groupListSelectPanel2,#{context}_paramsPanelError,#{reRenderList}"/>
                             </h:selectOneMenu>
                         </td>
                         <td>                            
