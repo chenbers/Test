@@ -327,14 +327,6 @@ public class ReportParams implements Cloneable {
         this.timeFrameSelect = timeFrameSelect;
     }
 
-    public boolean isIncludeInactiveDrivers() {
-        return includeInactiveDrivers;
-    }
-
-    public void setIncludeInactiveDrivers(boolean includeInactiveDrivers) {
-        this.includeInactiveDrivers = includeInactiveDrivers;
-    }
-
     public boolean isShowDecimalHour() {
         return showDecimalHour;
     }
