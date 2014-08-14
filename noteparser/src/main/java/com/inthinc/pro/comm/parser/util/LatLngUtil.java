@@ -20,8 +20,8 @@ public class LatLngUtil {
         return ReadUtil.convertIntToBytes((int)((90.0 - lat ) / 180.0 * 4294967295L));      
     }
 
-/*	
-	public static byte[] encodeLng(double lng)
+	
+	public static byte[] encodeLng3(double lng)
 	{
 		byte[] position_encoded_bytes = new byte[3];
 		long position_encoded;
@@ -41,7 +41,7 @@ public class LatLngUtil {
 		return position_encoded_bytes;
 	}
 
-	public static byte[] encodeLat(double lat)
+	public static byte[] encodeLat3(double lat)
 	{
 		byte[] position_encoded_bytes = new byte[3];
 		long position_encoded;
@@ -55,7 +55,7 @@ public class LatLngUtil {
 		
 		return position_encoded_bytes;
 	}
-*/
+
     
 /*	
 	public static LatLng readLatLng(byte[] data, int size)

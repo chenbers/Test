@@ -21,11 +21,11 @@ public class NotebcParser5 extends NotebcParser implements NoteParser{
 
 	private static Logger logger = LoggerFactory.getLogger(NotebcParser5.class);
 
-	private static int getHeaderLength() {
+	protected int getHeaderLength() {
 		return 13;
 	}
 
-	private static Map<String, Object> parseHeader(byte[] data, Map<String, Object> attribMap)
+	protected Map<String, Object> parseHeader(byte[] data, Map<String, Object> attribMap)
 	{
 		AttribParser attribParser = new ByteParser(); 
 		attribParser.parseAttrib(data, 0, Attrib.NOTEFLAGS.getFieldName(), attribMap);
