@@ -209,7 +209,7 @@ public class MaintenanceIntervalReportCriteria extends ReportCriteria {
                     distanceOver = distanceInt + "";
                 }else distanceOver = distance + "";
 
-                String baseHours = vehicleSetting.getActual().get(MaintenanceSettings.MAINT_BY_ENGINE_HOURS_START.getCode());
+                String baseHours = "0";
                 String intervalHours = vehicleSetting.getActual().get(MaintenanceSettings.MAINT_BY_ENGINE_HOURS_INTERVAL.getCode());
                 String hours = null;
                 Long driveTime = driveTimeDAO.getDriveTimeSum(vehicle) / 3600;
@@ -240,7 +240,7 @@ public class MaintenanceIntervalReportCriteria extends ReportCriteria {
                         hourInterval = Integer.valueOf(hoursOver);
                         if( (200 > hourInterval && hourInterval > -200)) {
                             BackingWrapper backingWrapper = new BackingWrapper(vehicleID, vehicleYMM, baseOdometer,
-                                        intervalOdometer, odometer, distanceOver, baseHours, intervalHours, hours, hoursOver, groupName);
+                                        intervalOdometer, odometer, distanceOver, intervalHours, hours, hoursOver, groupName);
 
                             backingWrappers.add(backingWrapper);
                         }
@@ -248,7 +248,7 @@ public class MaintenanceIntervalReportCriteria extends ReportCriteria {
                         distanceInterval = Integer.valueOf(distanceOver);
                         if( (250 > distanceInterval && distanceInterval > -250)) {
                              BackingWrapper backingWrapper = new BackingWrapper(vehicleID, vehicleYMM, baseOdometer,
-                                        intervalOdometer, odometer, distanceOver, baseHours, intervalHours, hours, hoursOver, groupName);
+                                        intervalOdometer, odometer, distanceOver, intervalHours, hours, hoursOver, groupName);
 
                              backingWrappers.add(backingWrapper);
                         }
@@ -257,7 +257,7 @@ public class MaintenanceIntervalReportCriteria extends ReportCriteria {
                         hourInterval=Integer.valueOf(hoursOver);
                         if( (250 > distanceInterval && distanceInterval > -250) || (200 > hourInterval && hourInterval > -200)) {
                              BackingWrapper backingWrapper = new BackingWrapper(vehicleID, vehicleYMM, baseOdometer,
-                                        intervalOdometer, odometer, distanceOver, baseHours, intervalHours, hours, hoursOver, groupName);
+                                        intervalOdometer, odometer, distanceOver, intervalHours, hours, hoursOver, groupName);
 
                              backingWrappers.add(backingWrapper);
                         }
@@ -301,12 +301,11 @@ public class MaintenanceIntervalReportCriteria extends ReportCriteria {
         private String intervalOdometer;
         private String odometer;
         private String distanceOver;
-        private String baseHours;
         private String intervalHours;
         private String hours;
         private String hoursOver;
 
-        public BackingWrapper(String vehicleID, String vehicleYMM, String baseOdometer, String intervalOdometer, String odometer, String distanceOver, String baseHours,
+        public BackingWrapper(String vehicleID, String vehicleYMM, String baseOdometer, String intervalOdometer, String odometer, String distanceOver,
                               String intervalHours, String hours, String hoursOver, String groupPath) {
 
             this.vehicleID = vehicleID;
@@ -315,7 +314,6 @@ public class MaintenanceIntervalReportCriteria extends ReportCriteria {
             this.intervalOdometer = intervalOdometer;
             this.odometer = odometer;
             this.distanceOver = distanceOver;
-            this.baseHours = baseHours;
             this.intervalHours = intervalHours;
             this.hours = hours;
             this.hoursOver = hoursOver;
@@ -381,14 +379,6 @@ public class MaintenanceIntervalReportCriteria extends ReportCriteria {
 
         public void setDistanceOver(String distanceOver) {
             this.distanceOver = distanceOver;
-        }
-
-        public String getBaseHours() {
-            return baseHours;
-        }
-
-        public void setBaseHours(String baseHours) {
-            this.baseHours = baseHours;
         }
 
         public String getIntervalHours() {

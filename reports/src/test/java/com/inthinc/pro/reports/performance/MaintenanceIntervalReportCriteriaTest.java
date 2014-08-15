@@ -88,14 +88,12 @@ public class MaintenanceIntervalReportCriteriaTest extends BasePerformanceUnitTe
         Map<Integer, String> actual1 = new HashMap<Integer, String>();
         actual1.put(MaintenanceSettings.MAINT_BY_DIST_START.getCode(),"11");
         actual1.put(MaintenanceSettings.MAINT_BY_DIST_INTERVAL.getCode(),"22");
-        actual1.put(MaintenanceSettings.MAINT_BY_ENGINE_HOURS_START.getCode(),"33");
         actual1.put(MaintenanceSettings.MAINT_BY_ENGINE_HOURS_INTERVAL.getCode(),"44");
         vehicleSetting1.setActual(actual1);
         vehicleSetting2 = new VehicleSetting();
         Map<Integer, String> actual2 = new HashMap<Integer, String>();
         actual2.put(MaintenanceSettings.MAINT_BY_DIST_START.getCode(),"111");
         actual2.put(MaintenanceSettings.MAINT_BY_DIST_INTERVAL.getCode(),"222");
-        actual2.put(MaintenanceSettings.MAINT_BY_ENGINE_HOURS_START.getCode(),"333");
         actual2.put(MaintenanceSettings.MAINT_BY_ENGINE_HOURS_INTERVAL.getCode(),"444");
         vehicleSetting2.setVehicleID(VEHICLE_ID_2);
         vehicleSetting2.setActual(actual2);
@@ -162,7 +160,6 @@ public class MaintenanceIntervalReportCriteriaTest extends BasePerformanceUnitTe
         assertTrue(((MaintenanceIntervalReportCriteria.BackingWrapper)maintenanceIntervalReportCriteria.getMainDataset().get(0)).getHours().equals(SUM_DRIVE_TIME_1+""));
         assertTrue(((MaintenanceIntervalReportCriteria.BackingWrapper)maintenanceIntervalReportCriteria.getMainDataset().get(0)).getBaseOdometer().equals(vehicleSetting1.getActual().get(MaintenanceSettings.MAINT_BY_DIST_START.getCode())));
         assertTrue(((MaintenanceIntervalReportCriteria.BackingWrapper)maintenanceIntervalReportCriteria.getMainDataset().get(0)).getIntervalOdometer().equals(vehicleSetting1.getActual().get(MaintenanceSettings.MAINT_BY_DIST_INTERVAL.getCode())));
-        assertTrue(((MaintenanceIntervalReportCriteria.BackingWrapper)maintenanceIntervalReportCriteria.getMainDataset().get(0)).getBaseHours().equals(vehicleSetting1.getActual().get(MaintenanceSettings.MAINT_BY_ENGINE_HOURS_START.getCode())));
         assertTrue(((MaintenanceIntervalReportCriteria.BackingWrapper)maintenanceIntervalReportCriteria.getMainDataset().get(0)).getIntervalHours().equals(vehicleSetting1.getActual().get(MaintenanceSettings.MAINT_BY_ENGINE_HOURS_INTERVAL.getCode())));
         assertTrue(((MaintenanceIntervalReportCriteria.BackingWrapper)maintenanceIntervalReportCriteria.getMainDataset().get(0)).getDistanceOver().equals(ODOMETER_CALC_1+""));
         assertTrue(((MaintenanceIntervalReportCriteria.BackingWrapper)maintenanceIntervalReportCriteria.getMainDataset().get(0)).getHoursOver().equals(DRIVE_TIME_CALC_1+""));
@@ -172,7 +169,6 @@ public class MaintenanceIntervalReportCriteriaTest extends BasePerformanceUnitTe
         assertTrue(((MaintenanceIntervalReportCriteria.BackingWrapper)maintenanceIntervalReportCriteria.getMainDataset().get(1)).getHours().equals(SUM_DRIVE_TIME_2+""));
         assertTrue(((MaintenanceIntervalReportCriteria.BackingWrapper)maintenanceIntervalReportCriteria.getMainDataset().get(1)).getBaseOdometer().equals(vehicleSetting2.getActual().get(MaintenanceSettings.MAINT_BY_DIST_START.getCode())));
         assertTrue(((MaintenanceIntervalReportCriteria.BackingWrapper)maintenanceIntervalReportCriteria.getMainDataset().get(1)).getIntervalOdometer().equals(vehicleSetting2.getActual().get(MaintenanceSettings.MAINT_BY_DIST_INTERVAL.getCode())));
-        assertTrue(((MaintenanceIntervalReportCriteria.BackingWrapper)maintenanceIntervalReportCriteria.getMainDataset().get(1)).getBaseHours().equals(vehicleSetting2.getActual().get(MaintenanceSettings.MAINT_BY_ENGINE_HOURS_START.getCode())));
         assertTrue(((MaintenanceIntervalReportCriteria.BackingWrapper)maintenanceIntervalReportCriteria.getMainDataset().get(1)).getIntervalHours().equals(vehicleSetting2.getActual().get(MaintenanceSettings.MAINT_BY_ENGINE_HOURS_INTERVAL.getCode())));
         assertTrue(((MaintenanceIntervalReportCriteria.BackingWrapper)maintenanceIntervalReportCriteria.getMainDataset().get(1)).getDistanceOver().equals(ODOMETER_CALC_2+""));
         assertTrue(((MaintenanceIntervalReportCriteria.BackingWrapper)maintenanceIntervalReportCriteria.getMainDataset().get(1)).getHoursOver().equals(DRIVE_TIME_CALC_2+""));
