@@ -1054,6 +1054,7 @@ public class NonTranslated {
         nonTranslatedList = new ArrayList<String>();
         nonTranslatedList.add("report.date");
         nonTranslated_fr.put("/reports/src/main/resources/com/inthinc/pro/reports/jasper/performance/i18n/driverCoachingReport", nonTranslatedList);
+        nonTranslated_fr.put("/reports/src/main/resources/com/inthinc/pro/reports/jasper/performance/i18n/driverCoachingScoreReport", nonTranslatedList);
 
         nonTranslatedList = new ArrayList<String>();
         
@@ -1620,6 +1621,7 @@ public class NonTranslated {
             nonTranslatedList = new ArrayList<String>();
             nonTranslatedList.add("report.date");
             nonTranslated_fr_CA.put("/reports/src/main/resources/com/inthinc/pro/reports/jasper/performance/i18n/driverCoachingReport", nonTranslatedList);
+            nonTranslated_fr_CA.put("/reports/src/main/resources/com/inthinc/pro/reports/jasper/performance/i18n/driverCoachingScoreReport", nonTranslatedList);
 
             nonTranslatedList = new ArrayList<String>();
             nonTranslatedList.add("dateFormat");
