@@ -21,7 +21,8 @@ public class EventCategoryTest {
             4,
             4,
             5,
-            27
+            2,
+            28
     };
     
     @Test
@@ -50,15 +51,21 @@ public class EventCategoryTest {
         EventType eventType = NoteType.HOS_CHANGE_STATE_NO_GPS_LOCK.getEventType();
         assertEquals(EventType.DVIR, eventType);
     }
+    @Test
+    public void maintenanceEventType(){
+        EventType eventType = NoteType.IGNITION_OFF.getEventType();
+        assertEquals(EventType.IGNITION_OFF,eventType);
+    }
 
     Integer[] expectedTypeInCatCounts = {
             4,  //  DRIVER
             5,  //  DVIR
     		4,	//  EMERGENCY
     		2,	//  HOS
-    		4,	//  NONE
+            11, //   MAINTENANCE
+            7,	//  NONE
     		1,	//  TEXT
-    		11,	//  VIOLATION
+    		12,	//  VIOLATION
     		20,	//  WARNING
     		2	//  ZONE
     };

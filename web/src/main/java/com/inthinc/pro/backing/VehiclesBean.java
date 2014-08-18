@@ -131,7 +131,8 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
 
     private Map<Integer, Driver> driverMap;
 
-    
+    private String redirectVehiclesAssetsValue;
+
     @Override
     public void initBean() {
         super.initBean();
@@ -1107,4 +1108,15 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
     public void setDriverMap(Map<Integer, Driver> driverMap) {
         this.driverMap = driverMap;
     }
+
+    public String getRedirectVehiclesAssetsValue() {
+        String accountPropRedirect = getProUser().getAccountAttributes().getRedirectVehiclesAssets();
+        redirectVehiclesAssetsValue = accountPropRedirect == null ? "NONE" : accountPropRedirect;
+        return redirectVehiclesAssetsValue;
+    }
+
+    public void setRedirectVehiclesAssetsValue(String redirectVehiclesAssetsValue) {
+        this.redirectVehiclesAssetsValue = redirectVehiclesAssetsValue;
+    }
+
 }

@@ -12,7 +12,12 @@
   <ui:param name="title" value="#{messages.adminHeader_vehicles}"/>
   <ui:param name="context" value="vehicles"/>
   <ui:define name="content">
-   
+      <script type="text/javascript">
+          var isAssetsRedirect = '#{vehiclesBean.redirectVehiclesAssetsValue}';
+          if(isAssetsRedirect == 'ASSETS'){
+              window.location.href='/assets/vehicles';
+          }
+      </script>
     <table width="920" border="0" cellspacing="0" cellpadding="0" align="center" style="margin: 0 auto 0 auto;">
       <tr>
       <td valign="top" width="130">

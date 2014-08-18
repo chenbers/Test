@@ -27,9 +27,14 @@ public class PagingDiagnosticsEventsBean extends PagingEventsBean {
 
 	@Override
 	protected List<EventCategory> getCategories() {
-        if(getAccountIsMaintenance()){
-            CATEGORIES.add(EventCategory.MAINTENANCE);
+        Boolean testMaint = this.testMaintenance(CATEGORIES);
+        if(getAccountIsMaintenance()) {
+            if (testMaint == true) {
+                CATEGORIES.add(EventCategory.MAINTENANCE);
+            }
         }
+        else {CATEGORIES.remove(EventCategory.MAINTENANCE);
+            }
 		return CATEGORIES;
 	}
 	
@@ -50,5 +55,13 @@ public class PagingDiagnosticsEventsBean extends PagingEventsBean {
     	return EventCategory.DIAGNOSTICS;
     }
 
+    public boolean testMaintenance(List<EventCategory> CATEGORIES){
+        for (EventCategory eventCategory : CATEGORIES){
+            if (eventCategory.valueOf(eventCategory.getCode()).toString().equals("MAINTENANCE")) {
+                return false;
+            }
+        }
+        return true;
+    }
 
 }

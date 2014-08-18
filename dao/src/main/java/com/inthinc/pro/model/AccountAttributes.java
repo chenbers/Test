@@ -38,6 +38,7 @@ public class AccountAttributes extends BaseEntity {
     private String phoneControlProvider3;
     private String driveTimeViolationsReportEnabled;
     private String eventQueueEnabled;
+    private String redirectVehiclesAssets;
 
 
     @Column(updateable = false)
@@ -289,5 +290,13 @@ public class AccountAttributes extends BaseEntity {
 
     public void setMaintenanceEnabled(String maintenanceEnabled) {
         this.maintenanceEnabled = maintenanceEnabled;
+    }
+
+    public String getRedirectVehiclesAssets() {
+        return redirectVehiclesAssets;
+    }
+
+    public void setRedirectVehiclesAssets(String redirectVehiclesAssets) {
+        this.redirectVehiclesAssets = redirectVehiclesAssets;
     }
 }

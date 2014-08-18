@@ -29,7 +29,7 @@ public enum AlertMessageType implements BaseEnum
     ALERT_TYPE_NO_DRIVER(14),
     ALERT_TYPE_OFF_HOURS(15),
     ALERT_TYPE_TEXT_MESSAGE_RECEIVED(16),
-
+    
     ALERT_TYPE_PARKING_BRAKE(17),
     ALERT_TYPE_PANIC(18),   
     ALERT_TYPE_MAN_DOWN(19),   
@@ -71,7 +71,8 @@ public enum AlertMessageType implements BaseEnum
     ATTR_RED_STOP(58),
     ATTR_AMBER_WARNING(59),
     ATTR_PROTECT(60),
-    ATTR_ODOMETER(61);
+    ATTR_ODOMETER(61),
+    ALERT_FIRST_MOVE_FORWARD(62);
     
     private int code;
 
