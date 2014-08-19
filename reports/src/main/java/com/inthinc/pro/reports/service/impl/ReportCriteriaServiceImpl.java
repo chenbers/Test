@@ -964,6 +964,23 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
         
         return criteria;
     }
+    
+    @Override
+    public ReportCriteria getThirtyMinuteBreaksReportCriteria(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, Interval interval, Locale local) {
+        return getThirtyMinuteBreaksReportCriteria(accountGroupHierarchy, groupIDList, interval, locale, ReportCriteria.DEFAULT_EXCLUDE_INACTIVE_DRIVERS);
+        
+    }
+    
+    @Override
+    public ReportCriteria getThirtyMinuteBreaksReportCriteria(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, Interval interval, Locale locale, boolean includeInactiveDrivers) {
+        ThirtyMinuteBreaksReportCriteria criteria = new ThirtyMinuteBreaksReportCriteria(locale);
+        criteria.setAccountDAO(accountDAO);
+        criteria.setDriverDAO(driverDAO);
+        criteria.setHosDAO(hosDAO);
+        criteria.setIncludeInactiveDrivers(includeInactiveDrivers);
+        criteria.init(accountGroupHierarchy, groupIDList, interval);
+        return criteria;
+    }
 
     /**
      * Provide all data criteria including layout and data.
