@@ -3,7 +3,7 @@ package com.inthinc.pro.selenium.pageEnums;
 import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 
 public enum AdminOrganizationEnum implements SeleniumEnums {
-    
+
     TITLE("Admin - Organization", "//span[@class='admin']"),
     DEFAULT_URL(appUrl + "/admin/organization"),
     
@@ -87,6 +87,7 @@ public enum AdminOrganizationEnum implements SeleniumEnums {
     VEHICLE_LICENSE("License #:", "//span[@id='display-form:contentPanel']/div/table/tbody/tr[1]/td/table[1]/tbody/tr[9]/td[2]"),
     VEHICLE_STATE("State:", "//span[@id='display-form:contentPanel']/div/table/tbody/tr[1]/td/table[1]/tbody/tr[10]/td[2]"),
     VEHICLE_ECALL_PHONE("E-Call Phone:", "//span[@id='display-form:contentPanel']/div/table/tbody/tr[1]/td/table[11]/tbody/tr[1]/td[2]"),
+    VEHICLE_COUNTRY("Country:", "//span[@id='display-form:contentPanel']/div/table/tbody/tr[1]/td/table[1]/tbody/tr[12]/td[2]"),
     
     VEHICLE_ID("Vehicle ID:", "//span[@id='display-form:contentPanel']/div/table/tbody/tr[1]/td/table[2]/tbody/tr[1]/td[2]"),
     VEHICLE_STATUS("Status:", "//span[@id='display-form:contentPanel']/div/table/tbody/tr[1]/td/table[2]/tbody/tr[2]/td[2]"),

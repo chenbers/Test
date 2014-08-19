@@ -798,6 +798,7 @@ public class NonTranslated {
         nonTranslatedList.add("editVehicle_IFTA");
         nonTranslatedList.add("editVehicle_VIN");
         nonTranslatedList.add("editVehicle_color");
+        nonTranslatedList.add("editVehicle_country");
         nonTranslatedList.add("error_title");
         nonTranslatedList.add("false");
         nonTranslatedList.add("footer_copyright");
@@ -858,6 +859,7 @@ public class NonTranslated {
         nonTranslatedList.add("vehiclesHeader_IFTA");
         nonTranslatedList.add("vehiclesHeader_VIN");
         nonTranslatedList.add("vehiclesHeader_color");
+        nonTranslatedList.add("vehiclesHeader_country");
         nonTranslatedList.add("vehicletrip_quality");
         nonTranslatedList.add("waySmartAccess");
         nonTranslatedList.add("VehicleDOTType.DOT");
