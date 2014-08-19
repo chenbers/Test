@@ -40,10 +40,11 @@ public class Vehicle extends BaseEntity
     private Integer           odometer;
     
     private Boolean           ifta;
+    private String            country;
 
     @Column(updateable = false)
     private Device            device;
-    private String            country;
+
 
     
     public Vehicle()
@@ -279,7 +280,7 @@ public class Vehicle extends BaseEntity
         return "Vehicle [VIN=" + VIN + ", color=" + color + ", deviceID=" + deviceID + ", driverID=" + driverID + ", groupID=" + groupID
                 + ", license=" + license + ", make=" + make + ", model=" + model + ", name=" + name + ", state=" + state + ", status=" + status + ", vehicleID=" + vehicleID
                 + ", vtype=" + vtype + ", weight=" + weight + ", year=" + year + //", hos="+ hos+
-                ", ifta="+ifta+
+                ", ifta="+ifta+", country="+country+
                "]";
     }
     public Device getDevice() {
