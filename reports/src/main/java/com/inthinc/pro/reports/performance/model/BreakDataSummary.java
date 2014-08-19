@@ -1,0 +1,201 @@
+package com.inthinc.pro.reports.performance.model;
+
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.util.List;
+
+import org.joda.time.DateTime;
+import org.joda.time.Interval;
+
+import com.inthinc.hos.model.DayData;
+import com.inthinc.pro.model.Driver;
+import com.inthinc.pro.model.GroupHierarchy;
+
+public class BreakDataSummary implements Comparable<BreakDataSummary> {
+    
+    private Driver driver;
+    private GroupHierarchy groupHierarchy;
+    private Interval interval;
+    
+    private Integer onDutyMinutes;
+    private Integer offDutyMinutes;
+    private Integer breakCount;
+    private Integer breakMinutes;
+    
+    private Integer roundingPlaces = 2;
+
+    public BreakDataSummary(Interval interval, GroupHierarchy groupHierarchy, Driver driver, List<DayData> dayData) {
+        this.interval = interval;
+        this.groupHierarchy = groupHierarchy;
+        this.driver = driver;
+        
+        this.onDutyMinutes = 0;
+        this.offDutyMinutes = 0;
+        this.breakCount = 0;
+        this.breakMinutes = 0;
+        for (DayData day : dayData) {
+            addOnDutyMinutes(day.getOnDutyMinutes());
+            addOffDutyMinutes(day.getOffDutyMinutes());
+            addBreakCount(day.getNumberOfBreaks());
+            addBreakMinutes(day.getBreakMinutes());
+        }
+    }
+    
+    public void puke() {
+        System.out.println("Driver: " + this.getDriverName());
+        System.out.println("Driver ID: " + this.getDriverID());
+        System.out.println("Group: " + this.getGroupName());
+        System.out.println("Group ID: " + this.getGroupID());
+        System.out.println("On-Duty Hours: " + this.getOnDutyDecimalHours());
+        System.out.println("Off-Duty Hours: " + this.getOffDutyDecimalHours());
+        System.out.println("Number of Breaks: " + this.getBreakCount());
+        System.out.println("Break Time: " + this.getBreakDecimalHours());
+        
+    }
+
+    @Override
+    public int compareTo(BreakDataSummary breakData) {
+        int groupNameComparison = this.getGroupName().compareToIgnoreCase(breakData.getGroupName());
+        if (groupNameComparison != 0) 
+            return groupNameComparison;
+        return this.getDriverName().compareToIgnoreCase(breakData.getDriverName());
+    }
+    
+    private void addOnDutyMinutes(Integer newMinutes) {
+        this.onDutyMinutes += newMinutes;
+    }
+    
+    private void addOffDutyMinutes(Integer newMinutes) {
+        this.offDutyMinutes += newMinutes;
+    }
+    
+    private void addBreakCount(Integer newBreaks) {
+        this.breakCount += newBreaks;
+    }
+    
+    private void addBreakMinutes(Integer newMinutes) {
+        this.breakMinutes += newMinutes;
+    }
+    
+    public DateTime getStartDate() {
+        return interval.getStart();
+    }
+    
+    public DateTime getEndDate() {
+        return interval.getEnd();
+    }
+    
+    public String getDriverName() {
+        String name = driver.getPerson().getFullNameLastFirst();
+        return name;
+    }
+    
+    public String getDriverID() {
+        String id = driver.getPerson().getEmpid();
+        return id;
+    }
+    
+    public String getGroupName() {
+        String name = groupHierarchy.getFullGroupName(driver.getGroupID());
+        return name;
+    }
+    
+    public Integer getGroupID() {
+        Integer id = driver.getGroupID();
+        return id;
+    }
+
+    public Driver getDriver() {
+        return driver;
+    }
+
+    public void setDriver(Driver driver) {
+        this.driver = driver;
+    }
+
+    public GroupHierarchy getGroupHierarchy() {
+        return groupHierarchy;
+    }
+
+    public void setGroupHierarchy(GroupHierarchy groupHierarchy) {
+        this.groupHierarchy = groupHierarchy;
+    }
+
+    public Interval getInterval() {
+        return interval;
+    }
+
+    public void setInterval(Interval interval) {
+        this.interval = interval;
+    }
+
+    public Integer getBreakCount() {
+        return breakCount;
+    }
+
+    public void setBreakCount(Integer breakCount) {
+        this.breakCount = breakCount;
+    }
+
+    public Integer getOnDutyMinutes() {
+        return onDutyMinutes;
+    }
+    
+    public Double getOnDutyDecimalHours() {
+        Double hours = (double) getOnDutyMinutes() / 60;
+        hours = round(hours, 2);
+        return hours;
+    }
+
+    public void setOnDutyMinutes(Integer onDutyMinutes) {
+        this.onDutyMinutes = onDutyMinutes;
+    }
+
+    public Integer getOffDutyMinutes() {
+        return offDutyMinutes;
+    }
+    
+    public Double getOffDutyDecimalHours() {
+        Double hours = (double) getOffDutyMinutes() / 60;
+        hours = round(hours, 2);
+        return hours;
+    }
+
+    public void setOffDutyMinutes(Integer offDutyMinutes) {
+        this.offDutyMinutes = offDutyMinutes;
+    }
+
+    public Integer getBreakMinutes() {
+        return breakMinutes;
+    }
+    
+    public Double getBreakDecimalHours() {
+        return this.convertToDecimalHours(this.getBreakMinutes());
+    }
+
+    public void setBreakMinutes(Integer breakMinutes) {
+        this.breakMinutes = breakMinutes;
+    }
+    
+    private static double round(double value, int places) {
+        if (places < 0) throw new IllegalArgumentException();
+        BigDecimal bd = new BigDecimal(value);
+        bd = bd.setScale(places, RoundingMode.HALF_UP);
+        return bd.doubleValue();
+    }
+    
+    private double convertToDecimalHours(Integer minutes) {
+        Double hours = (double) minutes / 60;
+        hours = round(hours, this.roundingPlaces);
+        return hours;
+    }
+
+    public Integer getRoundingPlaces() {
+        return this.roundingPlaces;
+    }
+
+    public void setRoundingPlaces(Integer roundingPlaces) {
+        this.roundingPlaces = roundingPlaces;
+    }
+    
+}
