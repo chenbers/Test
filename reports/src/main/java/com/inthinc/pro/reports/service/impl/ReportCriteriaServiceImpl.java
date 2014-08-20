@@ -1888,6 +1888,16 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
                                     reportSchedule.getIncludeZeroMilesDrivers()
                                     ));
                     break;
+                case THIRTY_MINUTE_BREAKS:
+                    reportCriteriaList.add(getThirtyMinuteBreaksReportCriteria(
+                                    groupHierarchy,
+                                    reportSchedule.getGroupIDList(),
+                                    timeFrame.getInterval(),
+                                    person.getLocale(),
+                                    reportSchedule.getIncludeInactiveDrivers()
+                                    )
+                                    );
+                    break;
 
                 case MILEAGE_BY_VEHICLE:
                     reportCriteriaList.add(getMileageByVehicleReportCriteria(groupHierarchy, reportSchedule.getGroupIDList(), timeFrame.getInterval(), person.getLocale(), person.getMeasurementType(),
