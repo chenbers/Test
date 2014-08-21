@@ -22,6 +22,7 @@ import com.inthinc.pro.comm.parser.attrib.Attrib;
 import com.inthinc.pro.dao.AlertMessageDAO;
 import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.dao.EventDAO;
+import com.inthinc.pro.dao.GroupDAO;
 import com.inthinc.pro.dao.PersonDAO;
 import com.inthinc.pro.dao.VehicleDAO;
 import com.inthinc.pro.dao.ZoneDAO;
@@ -36,6 +37,8 @@ import com.inthinc.pro.model.AlertMessageDeliveryType;
 import com.inthinc.pro.model.AlertMessageType;
 import com.inthinc.pro.model.AlertSentStatus;
 import com.inthinc.pro.model.Driver;
+import com.inthinc.pro.model.Group;
+import com.inthinc.pro.model.GroupHierarchy;
 import com.inthinc.pro.model.LatLng;
 import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.model.Person;
@@ -58,6 +61,7 @@ public class AlertMessageJDBCDAO extends GenericJDBCDAO implements AlertMessageD
     private VehicleDAO vehicleDAO;
     private DriverDAO driverDAO;
     private ZoneDAO zoneDAO;
+    private GroupDAO groupDAO;
     private AddressLookup addressLookup;
     // private FormsDAO formsDAO;
     private String formSubmissionsURL;
@@ -462,6 +466,14 @@ public class AlertMessageJDBCDAO extends GenericJDBCDAO implements AlertMessageD
         return personDAO;
     }
 
+    public void setGroupDAO(GroupDAO groupDAO) {
+        this.groupDAO = groupDAO;
+    }
+
+    public GroupDAO getGroupDAO() {
+        return groupDAO;
+    }
+
     public void setPersonDAO(PersonDAO personDAO) {
         this.personDAO = personDAO;
     }
@@ -561,6 +573,9 @@ public class AlertMessageJDBCDAO extends GenericJDBCDAO implements AlertMessageD
 
             String driverFullName = getDriverFullName(driver);
             parameterList.add(driverFullName);
+            
+            String driverOrgStructure = getDriverOrgStructure(driver);
+            parameterList.add(driverOrgStructure);
         }
 
         private SimpleDateFormat getDriverDate(Driver driver, Locale locale) {
@@ -580,6 +595,19 @@ public class AlertMessageJDBCDAO extends GenericJDBCDAO implements AlertMessageD
             if (driver != null && driver.getPerson() != null)
                 return driver.getPerson().getFullName();
             else {
+                return "";
+            }
+        }
+        
+        private String getDriverOrgStructure (Driver driver) {
+            if (driver != null && driver.getPerson() != null) {
+                Person driverPerson = driver.getPerson();
+                Integer acctID = driverPerson.getAcctID();
+                List<Group> groupList = groupDAO.getGroupsByAcctID(acctID);
+                GroupHierarchy groupHierarchy = new GroupHierarchy(groupList);
+                String groupName = groupHierarchy.getFullGroupName(driver.getGroupID(), " > ");
+                return groupName;
+            } else {
                 return "";
             }
         }

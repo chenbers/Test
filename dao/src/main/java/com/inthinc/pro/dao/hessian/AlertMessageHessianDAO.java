@@ -24,6 +24,8 @@ import com.inthinc.pro.model.AlertMessage;
 import com.inthinc.pro.model.AlertMessageBuilder;
 import com.inthinc.pro.model.AlertMessageDeliveryType;
 import com.inthinc.pro.model.Driver;
+import com.inthinc.pro.model.Group;
+import com.inthinc.pro.model.GroupHierarchy;
 import com.inthinc.pro.model.LatLng;
 import com.inthinc.pro.model.Person;
 import com.inthinc.pro.model.RedFlag;
@@ -153,9 +155,25 @@ public class AlertMessageHessianDAO extends GenericHessianDAO<AlertMessage, Inte
         
         // Construct the message parameter list
         parameterList.add(simpleDateFormat.format(event.getTime()));
-        if (driver != null && driver.getPerson() != null)
+        if (driver != null && driver.getPerson() != null) {
+            
+            // Add the drivers name to the parameter list
         	parameterList.add(driver.getPerson().getFullName());
-        else {
+            
+            // Add the full group name of the driver to the parameter list
+        	Person driverPerson = driver.getPerson();
+            Integer acctID = driverPerson.getAcctID();
+            List<Group> groupList = groupDAO.getGroupsByAcctID(acctID);
+            GroupHierarchy groupHierarchy = new GroupHierarchy(groupList);
+            String groupName = groupHierarchy.getFullGroupName(driver.getGroupID(), " > ");
+            parameterList.add(groupName);
+        } else {
+            
+            // We still need to return the correct number
+            // of parameters, as i18n is dependent upon the
+            // correct parameters being returned in a fixed
+            // position within the list
+        	parameterList.add("");
         	parameterList.add("");
         }
         parameterList.add(vehicle.getName());

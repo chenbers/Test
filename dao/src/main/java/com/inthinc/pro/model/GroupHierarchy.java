@@ -120,8 +120,9 @@ public class GroupHierarchy implements Serializable
     {
     	StringBuilder builder = new StringBuilder();
     	Group group = groupMap.get(groupID);
-    	if (group == null) 
+    	if (group == null) {
     	    return "";
+    	}
     	if (group.getParentID() != null && group.getParentID().intValue() != 0)
     	{
     		builder.append(getFullGroupName(group.getParentID(), separator));
