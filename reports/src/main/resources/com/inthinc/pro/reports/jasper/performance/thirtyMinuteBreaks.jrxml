@@ -27,7 +27,7 @@
 	<field name="groupName" class="java.lang.String"/>
 	<field name="groupID" class="java.lang.Integer"/>
 	<field name="driverName" class="java.lang.String"/>
-	<field name="driverID" class="java.lang.String"/>
+	<field name="employeeID" class="java.lang.String"/>
 	<field name="onDutyDecimalHours" class="java.lang.Double"/>
 	<field name="offDutyDecimalHours" class="java.lang.Double"/>
 	<field name="breakCount" class="java.lang.Integer"/>
@@ -119,7 +119,7 @@
 				<textElement verticalAlignment="Bottom">
 					<font size="12"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$R{column.driverID}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$R{column.employeeID}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="117" y="1" width="100" height="35"/>
@@ -160,10 +160,10 @@
 	</columnHeader>
 	<detail>
 		<band height="20" splitType="Stretch">
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="0" y="0" width="100" height="20"/>
 				<textElement verticalAlignment="Middle"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{driverID}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{employeeID}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="117" y="0" width="100" height="20"/>
