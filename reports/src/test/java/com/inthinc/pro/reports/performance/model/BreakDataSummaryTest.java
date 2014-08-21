@@ -133,8 +133,8 @@ public class BreakDataSummaryTest {
         // Instantiate with a bunch of mocked stuff
         BreakDataSummary sut = new BreakDataSummary(mockInterval, mockGroupHierarchy, mockDriver, mockDayDataList);
         
-        assertTrue(sut.getDriverID() == "123456");
-        assertFalse(sut.getDriverID() == "Something else");
+        assertTrue(sut.getEmployeeID() == "123456");
+        assertFalse(sut.getEmployeeID() == "Something else");
         
     }
     
