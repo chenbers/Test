@@ -13,7 +13,7 @@
 	<field name="groupName" class="java.lang.String"/>
 	<field name="groupID" class="java.lang.Integer"/>
 	<field name="driverName" class="java.lang.String"/>
-	<field name="driverID" class="java.lang.String"/>
+	<field name="employeeID" class="java.lang.String"/>
 	<field name="onDutyDecimalHours" class="java.lang.Double"/>
 	<field name="offDutyDecimalHours" class="java.lang.Double"/>
 	<field name="breakCount" class="java.lang.Integer"/>
@@ -41,7 +41,7 @@
 				<textElement verticalAlignment="Middle">
 					<font size="12" isBold="true"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$R{column.driverID}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$R{column.employeeID}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="false">
 				<reportElement key="textField-51" mode="Opaque" x="486" y="2" width="250" height="29" backcolor="#FFFFFF"/>
@@ -106,7 +106,7 @@
 				<textElement verticalAlignment="Middle">
 					<font size="12" isBold="false" pdfFontName="Helvetica-Bold"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{driverID}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{employeeID}]]></textFieldExpression>
 			</textField>
 			<textField pattern="" isBlankWhenNull="false">
 				<reportElement key="textField-31" mode="Opaque" x="486" y="0" width="250" height="23" forecolor="#000000" backcolor="#FFFFFF"/>

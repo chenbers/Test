@@ -41,16 +41,29 @@ public class BreakDataSummary implements Comparable<BreakDataSummary> {
         }
     }
     
-    public void puke() {
-        System.out.println("Driver: " + this.getDriverName());
-        System.out.println("Driver ID: " + this.getDriverID());
-        System.out.println("Group: " + this.getGroupName());
-        System.out.println("Group ID: " + this.getGroupID());
-        System.out.println("On-Duty Hours: " + this.getOnDutyDecimalHours());
-        System.out.println("Off-Duty Hours: " + this.getOffDutyDecimalHours());
-        System.out.println("Number of Breaks: " + this.getBreakCount());
-        System.out.println("Break Time: " + this.getBreakDecimalHours());
+    @Override
+    public String toString() {
+        StringBuffer stringBuffer = new StringBuffer();
+        stringBuffer.append("Class: ");
+        stringBuffer.append(getClass().getName() + "@" + Integer.toHexString(hashCode()));
+        stringBuffer.append(", Driver Name: ");
+        stringBuffer.append(this.getDriverName());
+        stringBuffer.append(", Employee ID: ");
+        stringBuffer.append(this.getEmployeeID());
+        stringBuffer.append(", Group: ");
+        stringBuffer.append(this.getGroupName());
+        stringBuffer.append(", Group ID: ");
+        stringBuffer.append(this.getGroupID());
+        stringBuffer.append(", On-Duty Hours: ");
+        stringBuffer.append(this.getOnDutyDecimalHours());
+        stringBuffer.append(", Off-Duty Hours: ");
+        stringBuffer.append(this.getOffDutyDecimalHours());
+        stringBuffer.append(", Number of Breaks: ");
+        stringBuffer.append(this.getBreakCount());
+        stringBuffer.append(", Break Time: ");
+        stringBuffer.append(this.getBreakDecimalHours());
         
+        return stringBuffer.toString();
     }
 
     @Override
@@ -90,7 +103,7 @@ public class BreakDataSummary implements Comparable<BreakDataSummary> {
         return name;
     }
     
-    public String getDriverID() {
+    public String getEmployeeID() {
         String id = driver.getPerson().getEmpid();
         return id;
     }
