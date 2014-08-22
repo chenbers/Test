@@ -466,11 +466,6 @@ public class Event extends BaseEntity implements Comparable<Event>, Serializable
         this.deviceName = deviceName;
     }
 
-    //@XmlElement  // unblock this to get duration also
-    public Integer getDuration() {
-        return Math.abs(getStopTime() - getStartTime());
-    }
-
     @XmlElement
     public String getStartTime() {
         String startTime="";
