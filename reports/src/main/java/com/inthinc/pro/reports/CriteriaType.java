@@ -17,8 +17,9 @@ public enum CriteriaType
     TIMEFRAME_ALT_PLUS_CUSTOM_RANGE(TimeFrame.class),
     
     INACTIVE_DRIVERS(null),
-    ZERO_MILES_DRIVERS(null);
-    
+    ZERO_MILES_DRIVERS(null),
+    DONT_INCLUDE_UNASSIGNED_DEVICE(null);
+
     private Class clazz;
 
     private CriteriaType(Class clazz){

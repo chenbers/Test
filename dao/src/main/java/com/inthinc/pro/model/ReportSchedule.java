@@ -60,6 +60,7 @@ public class ReportSchedule implements Cloneable {
     private Boolean iftaOnly;
     private Boolean includeInactiveDrivers;
     private Boolean includeZeroMilesDrivers;
+    private Boolean dontIncludeUnassignedDevice;
     private ReportManagerDeliveryType managerDeliveryType;
 
     public ReportSchedule() {
@@ -396,6 +397,14 @@ public class ReportSchedule implements Cloneable {
 
     public void setIncludeInactiveDrivers(Boolean includeInactiveDrivers) {
         this.includeInactiveDrivers = includeInactiveDrivers;
+    }
+
+    public Boolean getDontIncludeUnassignedDevice() {
+        return dontIncludeUnassignedDevice;
+    }
+
+    public void setDontIncludeUnassignedDevice(Boolean dontIncludeUnassignedDevice) {
+        this.dontIncludeUnassignedDevice = dontIncludeUnassignedDevice;
     }
 
     public Boolean getIncludeZeroMilesDrivers() {

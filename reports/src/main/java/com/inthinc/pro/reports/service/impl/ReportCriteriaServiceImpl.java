@@ -1539,9 +1539,9 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
 
     /* Communication */
     @Override
-    public ReportCriteria getNonCommReportCriteria(GroupHierarchy accountGroupHierarchy, Integer groupID, TimeFrame timeFrame, Locale locale, DateTimeZone timeZone) {
+    public ReportCriteria getNonCommReportCriteria(GroupHierarchy accountGroupHierarchy, Integer groupID, TimeFrame timeFrame,Interval interval, Locale locale, DateTimeZone timeZone, boolean dontIncludeUnassignedDevice) {
         List<Integer> groupIDs = accountGroupHierarchy.getGroupIDList(groupID);
-        NonCommReportCriteria.Builder builder = new NonCommReportCriteria.Builder(accountGroupHierarchy, eventAggregationDAO, groupIDs, timeFrame);
+        NonCommReportCriteria.Builder builder = new NonCommReportCriteria.Builder(accountGroupHierarchy, eventAggregationDAO, groupIDs, timeFrame,interval,dontIncludeUnassignedDevice);
         builder.setLocale(locale);
         builder.setDateTimeZone(timeZone);
         return builder.build();
@@ -2094,7 +2094,7 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
                                     );
                     break;
                 case NON_COMM:
-                    reportCriteriaList.add(getNonCommReportCriteria(groupHierarchy, reportSchedule.getGroupID(), timeFrame, person.getLocale(), DateTimeZone.forTimeZone(person.getTimeZone())));
+                    reportCriteriaList.add(getNonCommReportCriteria(groupHierarchy, reportSchedule.getGroupID(), timeFrame,timeFrame.getInterval(), person.getLocale(), DateTimeZone.forTimeZone(person.getTimeZone()),reportSchedule.getDontIncludeUnassignedDevice()));
                     break;
                 case DVIR_PRETRIP:
                     reportCriteriaList.add(getDVIRPreTripReportCriteria(groupHierarchy, reportSchedule.getGroupID(), timeFrame, person.getLocale(), DateTimeZone.forTimeZone(person.getTimeZone())));
