@@ -25,7 +25,14 @@ public interface EventService {
             @PathParam("noteTypes")String noteTypes,
             @PathParam("startDate") @DateFormat(SIMPLE_DATE_FORMAT) Date startDate,
             @PathParam("endDate") @DateFormat(SIMPLE_DATE_FORMAT) Date endDate);
-    
+
+    @GET
+    @Produces({"text/*"})
+    @Path("driver/{driverID}/eventsByDuration/{dateTime}/{duration}/count")
+    public Response getEventCountByDuration(@PathParam("driverID")Integer driverID,
+                                  @PathParam("dateTime") @DateFormat(SIMPLE_DATE_FORMAT) Date dateTime,
+                                  @PathParam("duration") Integer duration);
+
     @GET
     @Path("{entity:driver|vehicle|group}/{entityID}/events/{eventTypes:all|.*}/{startDate}")
     public Response getEventsFirstPage(@PathParam("entity") String entity,
@@ -51,5 +58,13 @@ public interface EventService {
             @PathParam("endDate") @DateFormat(SIMPLE_DATE_FORMAT) Date endDate,
             @PathParam("page") PathSegment page,
             @Context UriInfo uriInfo);
+
+    @GET
+    @Path("driver/{driverID}/eventsByDuration/{dateTime}/{duration}/{page}")
+    public Response getEventsByDuration(@PathParam("driverID")Integer driverID,
+                              @PathParam("dateTime") @DateFormat(SIMPLE_DATE_FORMAT) Date dateTime,
+                              @PathParam("duration") Integer duration,
+                              @PathParam("page") PathSegment page,
+                              @Context UriInfo uriInfo);
     
 }
