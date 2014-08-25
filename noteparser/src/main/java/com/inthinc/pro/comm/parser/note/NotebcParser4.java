@@ -22,31 +22,30 @@ public class NotebcParser4 extends NotebcParser implements NoteParser{
 	private static Logger logger = LoggerFactory.getLogger(NotebcParser4.class);
 
 	protected int getHeaderLength() {
-		return 19;
+		return 18;
 	}
 
 	protected Map<String, Object> parseHeader(byte[] data, Map<String, Object> attribMap)
 	{
-		AttribParser attribParser = new ByteParser(); 
-		attribParser.parseAttrib(data, 0, Attrib.NOTEFLAGS.getFieldName(), attribMap);
 
-		attribParser = AttribParserFactory.getParserForParserType(Attrib.NOTETYPE.getAttribParserType()); 
-		attribParser.parseAttrib(data, 1, Attrib.NOTETYPE.getFieldName(), attribMap);
+		AttribParser attribParser = AttribParserFactory.getParserForParserType(Attrib.NOTETYPE.getAttribParserType()); 
+		attribParser.parseAttrib(data, 0, Attrib.NOTETYPE.getFieldName(), attribMap);
 
-		//Skip version at data[2]
+		attribParser = new ByteParser(); 
+		attribParser.parseAttrib(data, 1, Attrib.NOTEFLAGS.getFieldName(), attribMap);
 		
 		attribParser = AttribParserFactory.getParserForParserType(Attrib.NOTETIME.getAttribParserType()); 
-		attribParser.parseAttrib(data, 3, Attrib.NOTETIME.getFieldName(), attribMap);
+		attribParser.parseAttrib(data, 2, Attrib.NOTETIME.getFieldName(), attribMap);
 		
 
 		attribParser = AttribParserFactory.getParserForParserType(Attrib.NOTELATLONG.getAttribParserType()); 
-		((LatLongParser)attribParser).parseAttrib(data, 7, Attrib.NOTELATLONG.getFieldName(), attribMap, 3);
+		((LatLongParser)attribParser).parseAttrib(data, 6, Attrib.NOTELATLONG.getFieldName(), attribMap, 3);
 
-		int odometer = ReadUtil.read(data, 13, 4);
+		int odometer = ReadUtil.read(data, 12, 4);
 		attribMap.put(Attrib.NOTEODOMETER.getFieldName(), odometer);
 
 		attribParser = new ShortParser(); 
-		attribParser.parseAttrib(data, 17, Attrib.NOTIFICATION_ENUM.getFieldName(), attribMap);
+		attribParser.parseAttrib(data, 16, Attrib.NOTIFICATION_ENUM.getFieldName(), attribMap);
 
 		return attribMap;
 	}

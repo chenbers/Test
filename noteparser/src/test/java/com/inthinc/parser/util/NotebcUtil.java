@@ -115,9 +115,9 @@ public class NotebcUtil {
         ByteArrayOutputStream dataStream = new ByteArrayOutputStream();
         try {
             byte flags = 5;
-            dataStream.write(convertByteToBytes(flags));
+//            dataStream.write(convertByteToBytes((byte)4)); //version
             dataStream.write(convertByteToBytes(noteType.byteValue()));
-            dataStream.write(convertByteToBytes((byte)4)); //version
+            dataStream.write(convertByteToBytes(flags));
             Date currentTime = new Date();
             dataStream.write(convertIntToBytes((int)(currentTime.getTime()/1000)));
             double latitude = 40.7777;
@@ -144,9 +144,9 @@ public class NotebcUtil {
         ByteArrayOutputStream dataStream = new ByteArrayOutputStream();
         try {
             byte flags = 5;
-            dataStream.write(convertByteToBytes(flags));
-            dataStream.write(convertByteToBytes(noteType.byteValue()));
-            dataStream.write(convertByteToBytes((byte)4)); //version
+//            dataStream.write(convertByteToBytes((byte)5)); //version
+			dataStream.write(convertByteToBytes(noteType.byteValue()));
+			dataStream.write(convertByteToBytes(flags));
             Date currentTime = new Date();
             dataStream.write(convertIntToBytes((int)(currentTime.getTime()/1000)));
             int odometer = 111100;
