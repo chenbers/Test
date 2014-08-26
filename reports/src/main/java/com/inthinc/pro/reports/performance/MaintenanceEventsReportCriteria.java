@@ -149,6 +149,10 @@ public class MaintenanceEventsReportCriteria extends ReportCriteria {
             List<NoteType> searchNoteType = new ArrayList<NoteType>();
             searchNoteType.add(NoteType.MAINTENANCE_EVENTS);
             searchNoteType.add(NoteType.IGNITION_OFF);
+            searchNoteType.add(NoteType.CLEAR_DRIVER);
+            searchNoteType.add(NoteType.FULLEVENT);
+            searchNoteType.add(NoteType.ROLLOVER);
+            searchNoteType.add(NoteType.UNPLUGGED);
 
             List<Vehicle> allVehicles = new ArrayList<Vehicle>();
             for (Integer id: groupIDList){
