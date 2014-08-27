@@ -304,6 +304,7 @@ public enum Attrib {
 	ACCOUNTID(32902, AttribParserType.INTEGER),
 	ROUTESTOPID(32861, AttribParserType.INTEGER, "routestopid"),
 	ATTR_ROUTE_ID(32862, AttribParserType.INTEGER, "routeid"),
+	OCCUPANTID(32868, AttribParserType.INTEGER),
 	
 	SEATBELTTOPSPEED(8285, AttribParserType.BYTE),
 	SEATBELTOUTDISTANCE(16437, AttribParserType.SHORT), //(distance miles x 100)
