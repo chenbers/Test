@@ -219,15 +219,17 @@
                 				<f:facet name="header">
 				                <h:outputText value="#{messages.zoneOption}" />
 				                </f:facet>
-				                <h:outputText value="#{messages[option.name]}" />
-				              </rich:column>
+				                <h:outputText value="#{messages[option.name]}" rendered="#{option.name!='SPEED_LIMIT'}"/>
+                                <h:outputText value="#{messages[option.name]} (#{zonesBean.speedMeasurementName})" rendered="#{option.name=='SPEED_LIMIT'}"/>
+                            </rich:column>
               				<rich:column>
                 				<f:facet name="header">
 				                <h:outputText value="#{messages.zoneOptionValue}" />
 				                </f:facet>
-				                <h:outputText value="#{messages[zonesBean.item.optionsMap[option].name]}"  rendered="#{zonesBean.item.optionsMap[option].name != null}"/>
-				                <h:outputText value="#{zonesBean.item.optionsMap[option]}"  rendered="#{zonesBean.item.optionsMap[option].name == null}"/>
-				              </rich:column>
+				                <h:outputText value="#{messages[zonesBean.item.optionsMap[option].name]}"  rendered="#{zonesBean.item.optionsMap[option].name != null and option.name!='SPEED_LIMIT'}"/>
+				                <h:outputText value="#{zonesBean.item.optionsMap[option]}"  rendered="#{zonesBean.item.optionsMap[option].name == null and option.name!='SPEED_LIMIT'}"/>
+                                <h:outputText value="#{zonesBean.measurementTypeSpeedLimit}"  rendered="#{option.name=='SPEED_LIMIT'}"/>
+                            </rich:column>
               				<rich:column>
                 				<f:facet name="header">
 				                </f:facet>
