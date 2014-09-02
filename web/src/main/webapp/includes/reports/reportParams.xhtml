@@ -177,7 +177,6 @@
                     </table>
                   </li>
                 </h:outputText>
-                </a4j:repeat>
                     <h:outputText rendered="#{criteria eq 'DONT_INCLUDE_UNASSIGNED_DEVICE'}">
                         <li class="l" style="padding-top: 1px">
                             <table border="0" cellspacing="0" cellpadding="4" style="height:100%">
@@ -192,6 +191,7 @@
                             </table>
                         </li>
                     </h:outputText>
+                </a4j:repeat>
                 <h:outputText id="groupInput" rendered="#{params.selectedEntityType eq 'ENTITY_GROUP'}">
                 <li  class="l select">
                     <table border="0" cellspacing="0" cellpadding="4" style="height:100%">
