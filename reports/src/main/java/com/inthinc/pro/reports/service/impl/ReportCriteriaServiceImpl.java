@@ -104,6 +104,7 @@ import com.inthinc.pro.reports.performance.PayrollSummaryReportCriteria;
 import com.inthinc.pro.reports.performance.SeatbeltClicksReportCriteria;
 import com.inthinc.pro.reports.performance.TeamStopsReportCriteria;
 import com.inthinc.pro.reports.performance.TenHoursViolationReportCriteria;
+import com.inthinc.pro.reports.performance.ThirtyMinuteBreaksReportCriteria;
 import com.inthinc.pro.reports.performance.VehicleUsageReportCriteria;
 import com.inthinc.pro.reports.service.ReportCriteriaService;
 import com.inthinc.pro.reports.util.MessageUtil;
