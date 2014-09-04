@@ -13,6 +13,7 @@ import com.inthinc.pro.comm.parser.attrib.LatLongParser;
 import com.inthinc.pro.comm.parser.attrib.ShortParser;
 import com.inthinc.pro.comm.parser.util.ReadUtil;
 
+import org.apache.commons.codec.binary.Hex;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -22,6 +23,8 @@ public class NotebcParser implements NoteParser{
 
 	public Map<String, Object> parseNote(byte[] data)
 	{
+		logger.debug("parser notebc called: {}",  new String(Hex.encodeHex(data)));
+
         Map<String, Object> attribMap = new HashMap<String, Object>();
 		try {
     		parseHeader(data, attribMap);
