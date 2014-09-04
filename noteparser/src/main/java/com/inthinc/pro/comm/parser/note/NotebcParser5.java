@@ -13,11 +13,12 @@ import com.inthinc.pro.comm.parser.attrib.LatLongParser;
 import com.inthinc.pro.comm.parser.attrib.ShortParser;
 import com.inthinc.pro.comm.parser.util.ReadUtil;
 
+import org.apache.commons.codec.binary.Hex;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 
-public class NotebcParser5 extends NotebcParser implements NoteParser{
+public class NotebcParser5 extends NotebcParser4 implements NoteParser{
 
 	private static Logger logger = LoggerFactory.getLogger(NotebcParser5.class);
 

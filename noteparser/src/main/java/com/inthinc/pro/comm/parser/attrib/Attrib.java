@@ -28,17 +28,21 @@ public enum Attrib {
     LOW_POWER_MODE_TIMEOUT(150, AttribParserType.INTEGER),
 	
 	OBDPCT(49, AttribParserType.BYTE),
+	
 	GPSFILTER(166, AttribParserType.SHORT),
+	DRIVERID_BYTE(170, AttribParserType.SHORT, "driverid"),
     FIRMWAREVER(193, AttribParserType.INTEGER),
 	
-	TYPE_FWDCMD_ID(194, AttribParserType.LONG),
+	TYPE_FWDCMD_ID(194, AttribParserType.LONG, "cmdid"),
 	TYPE_FWDCMD(195, AttribParserType.INTEGER),
 	
 	EMU_HASH_1(202, AttribParserType.INTEGER),
 	EMU_HASH_2(203, AttribParserType.INTEGER),
 	EMU_HASH_3(204, AttribParserType.INTEGER),
 	EMU_HASH_4(205, AttribParserType.INTEGER),
+
 	
+	FWDCMD_ID_INT(221, AttribParserType.INTEGER, "cmdid"),
 	RFID_HI(222, AttribParserType.INTEGER),
 	RFID_LO(223, AttribParserType.INTEGER),
 
@@ -304,6 +308,7 @@ public enum Attrib {
 	ACCOUNTID(32902, AttribParserType.INTEGER),
 	ROUTESTOPID(32861, AttribParserType.INTEGER, "routestopid"),
 	ATTR_ROUTE_ID(32862, AttribParserType.INTEGER, "routeid"),
+	OCCUPANTID(32868, AttribParserType.INTEGER),
 	
 	SEATBELTTOPSPEED(8285, AttribParserType.BYTE),
 	SEATBELTOUTDISTANCE(16437, AttribParserType.SHORT), //(distance miles x 100)
