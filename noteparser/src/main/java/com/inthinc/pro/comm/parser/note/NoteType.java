@@ -240,7 +240,7 @@ public enum NoteType {
 	STRIPPED_GET_SPECIFIC_DETAIL_RECORDS(250, new Attrib[]{Attrib.HOSRECORDS}),
 	STRIPPED_GET_SHORT_ID(251, new Attrib[]{Attrib.EMPID}),
 	STRIPPED_GET_OCCUPANTS(252, new Attrib[]{Attrib.EMPID}),
-	STRIPPED_GET_OCCUPANT_INFO(253, new Attrib[]{Attrib.DRIVERID}),
+	STRIPPED_GET_OCCUPANT_INFO(253, new Attrib[]{Attrib.OCCUPANTID}),
 	STRIPPED_ACKNOWLEDGE(254, new Attrib[]{});
 	
 	private Attrib[] attribs;

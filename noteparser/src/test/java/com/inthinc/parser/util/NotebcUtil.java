@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import com.inthinc.pro.comm.parser.attrib.Attrib;
 import com.inthinc.pro.comm.parser.attrib.AttribParser;
 import com.inthinc.pro.comm.parser.attrib.AttribParserFactory;
+import com.inthinc.pro.comm.parser.attrib.AttribParserType;
 import com.inthinc.pro.comm.parser.attrib.StringVarLengthParser;
 import com.inthinc.pro.comm.parser.note.NoteParser;
 import com.inthinc.pro.comm.parser.note.NotebcParser;
@@ -73,6 +74,109 @@ public class NotebcUtil {
         
     }
     
+    public static byte[] addAttribV4(byte[] data, Attrib attrib, Object value)
+    {
+    	final int ATTR_EXTENDED_2_BYTE_SENDING_1_BYTE = 246;
+    	final int ATTR_EXTENDED_4_BYTE_SENDING_1_BYTE = 247;
+    	final int ATTR_EXTENDED_4_BYTE_SENDING_2_BYTE = 248;
+    	final int ATTR_EXTENDED_4_BYTE_SENDING_3_BYTE = 249;
+    	final int ATTR_EXTENDED_1_BYTE = 250;
+    	final int ATTR_EXTENDED_2_BYTE = 251;
+    	final int ATTR_EXTENDED_4_BYTE = 252;
+    	final int ATTR_EXTENDED_STRING = 253;
+    	final int ATTR_EXTENDED_DATA = 254;
+    	final int BYTE_OFFSET = 8192;
+    	final int SHORT_OFFSET = 16384;
+    	final int STRING_OFFSET = 24576;
+    	final int INTEGER_OFFSET = 32768;
+    	final int BINARY_OFFSET = 49152;
+
+    	Integer code = attrib.getCode();
+        ByteArrayOutputStream dataStream = new ByteArrayOutputStream();
+        try {
+            dataStream.write(data);
+            
+            if (code < 246) {
+                dataStream.write(convertByteToBytes(code.byteValue()));
+                if (attrib.getAttribParserType() == AttribParserType.BYTE) {
+                    dataStream.write(((Number) value).byteValue());
+                }
+                else if(attrib.getAttribParserType() == AttribParserType.SHORT) {
+                    dataStream.write(convertShortToBytes(((Number) value).shortValue()));
+                }                    
+                else if(attrib.getAttribParserType() == AttribParserType.INTEGER) {
+                    dataStream.write(convertIntToBytes(((Number) value).intValue()));
+                }
+                else if(attrib.getAttribParserType() == AttribParserType.LONG) {
+                    dataStream.write(convertLongToBytes(((Number) value).longValue()));
+                }
+            }
+        	else if (code >= BINARY_OFFSET) {
+        		byte[] binary = (byte[]) value;
+    			dataStream.write((byte) ATTR_EXTENDED_DATA);
+                dataStream.write((byte) (code - BINARY_OFFSET));
+                dataStream.write(((binary.length)<=255) ? (byte)binary.length : (byte)0);
+                dataStream.write(binary);
+                           }
+        	else if (code >= INTEGER_OFFSET) {
+        		Integer intVal = (Integer) value;
+           		if (intVal <= Byte.MAX_VALUE) {
+    	    			dataStream.write((byte) ATTR_EXTENDED_4_BYTE_SENDING_1_BYTE);
+    	                dataStream.write((byte) (code - INTEGER_OFFSET));
+    	                dataStream.write(intVal.byteValue());
+        		}    
+        		else if (intVal <= Short.MAX_VALUE) {
+	    			dataStream.write((byte) ATTR_EXTENDED_4_BYTE_SENDING_2_BYTE);
+	                dataStream.write((byte) (code - INTEGER_OFFSET));
+	                dataStream.write(convertShortToBytes(intVal.shortValue()));
+        		}    
+           		else if (intVal <= 8388607) {
+	    			dataStream.write((byte) ATTR_EXTENDED_4_BYTE_SENDING_3_BYTE);
+	                dataStream.write((byte) (code - INTEGER_OFFSET));
+	                byte[] bytesVal = convertIntToBytes(intVal);
+	                dataStream.write(bytesVal[0]);
+	                dataStream.write(bytesVal[1]);
+	                dataStream.write(bytesVal[2]);
+        		}    
+           		else {
+	    			dataStream.write((byte) ATTR_EXTENDED_4_BYTE);
+	                dataStream.write((byte) (code - INTEGER_OFFSET));
+	                dataStream.write(convertIntToBytes(intVal));
+        		}    
+         	}
+        	else if (code >= STRING_OFFSET) {
+        		byte[] bytesVal = (byte[]) value;
+    			dataStream.write((byte) ATTR_EXTENDED_STRING);
+                dataStream.write((byte) (code - STRING_OFFSET));
+                dataStream.write(bytesVal);
+                dataStream.write((byte)0);
+            }
+        	else if (code >= SHORT_OFFSET) {
+        		Short shortVal = (Short) value;
+           		if (shortVal <= Byte.MAX_VALUE) {
+    	    			dataStream.write((byte) ATTR_EXTENDED_2_BYTE_SENDING_1_BYTE);
+    	                dataStream.write((byte) (code - SHORT_OFFSET));
+    	                dataStream.write(shortVal.byteValue());
+        		}    
+           		else {
+	    			dataStream.write((byte) ATTR_EXTENDED_2_BYTE);
+	                dataStream.write((byte) (code - SHORT_OFFSET));
+	                dataStream.write(convertIntToBytes(shortVal));
+        		}    
+         	}
+        	else if (code >= BYTE_OFFSET) {
+    			dataStream.write((byte) ATTR_EXTENDED_1_BYTE);
+                dataStream.write((byte) (code - BYTE_OFFSET));
+                dataStream.write((Byte) value);
+         	}
+            dataStream.flush();
+        } catch (IOException e)
+        {
+            logger.error("Error adding Attrib: " + e);
+        }
+        return dataStream.toByteArray();
+    }
+
     public static byte[] createHeader(Integer noteType)
     {
         ByteArrayOutputStream dataStream = new ByteArrayOutputStream();
@@ -200,7 +304,7 @@ public class NotebcUtil {
         return dataBytes;
     }
 
-    private byte[] convertLongToBytes(long data) {
+    private static byte[] convertLongToBytes(long data) {
         return new byte[] {
             (byte)((data >> 56) & 0xff),
             (byte)((data >> 48) & 0xff),
