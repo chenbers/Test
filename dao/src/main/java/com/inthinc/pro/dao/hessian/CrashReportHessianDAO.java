@@ -56,6 +56,10 @@ public class CrashReportHessianDAO extends GenericHessianDAO<CrashReport, Intege
         if(report.getDriverID() != null) {
             report.setDriver(driverDAO.findByID(report.getDriverID()));
         }
+        if (report != null && report.getCrashDataPoints() != null) {
+            Collections.sort(report.getCrashDataPoints());
+        }
+
         return report;
     }
 
@@ -94,6 +98,9 @@ public class CrashReportHessianDAO extends GenericHessianDAO<CrashReport, Intege
                     driverMap.put(crashReport.getDriverID(), driverDAO.findByID(crashReport.getDriverID()));
                 crashReport.setVehicle(vehicleMap.get(crashReport.getVehicleID()));
                 crashReport.setDriver(driverMap.get(crashReport.getDriverID()));
+                if (crashReport.getCrashDataPoints() != null) {
+                    Collections.sort(crashReport.getCrashDataPoints());
+                }
             }
             return crashReports;
         } catch (EmptyResultSetException e) {

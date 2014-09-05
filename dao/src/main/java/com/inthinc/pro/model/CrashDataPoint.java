@@ -8,7 +8,7 @@ import com.inthinc.pro.model.event.FullEvent;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
-public class CrashDataPoint extends BaseEntity {
+public class CrashDataPoint extends BaseEntity implements Comparable<CrashDataPoint> {
     /**
      * 
      */
@@ -174,5 +174,12 @@ public class CrashDataPoint extends BaseEntity {
             return false;
         }
         return true;
+    }
+
+    @Override
+    public int compareTo(CrashDataPoint crashDataPoint) {
+        // natural order is time ascending (most recent last)
+        if (getTime() == null || crashDataPoint == null) return 0;
+        return getTime().compareTo(crashDataPoint.getTime());
     }
 }
