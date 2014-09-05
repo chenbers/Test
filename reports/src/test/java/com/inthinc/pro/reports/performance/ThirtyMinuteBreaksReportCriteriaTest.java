@@ -84,6 +84,8 @@ public class ThirtyMinuteBreaksReportCriteriaTest {
         
         final Map<Driver, List<HOSRec>> mockHOSMap = new HashMap<Driver, List<HOSRec>> ();
         
+        final Interval testInterval = new Interval(mockDateTime);
+        
         new NonStrictExpectations(sut) {{
             mockGroupHierarchy.getTopGroup(); result = mockGroup;
             mockGroup.getAccountID(); result = 1;
@@ -116,6 +118,7 @@ public class ThirtyMinuteBreaksReportCriteriaTest {
         sut.init(mockGroupHierarchy, groupIDList, mockInterval);
         
         new Verifications() {{
+            testInterval.getEnd(); times = 1;
             sut.initDataSet((Interval)any, (Account)any, (GroupHierarchy)any, (Map)any); times = 1;
         }};
         

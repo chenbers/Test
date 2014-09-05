@@ -17,6 +17,9 @@ import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 import javax.servlet.http.HttpServletResponse;
 
+import com.inthinc.pro.dao.util.MeasurementConversionUtil;
+import com.inthinc.pro.model.MeasurementType;
+import com.inthinc.pro.model.zone.option.type.SpeedValue;
 import org.ajax4jsf.model.KeepAlive;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
@@ -51,7 +54,8 @@ public class ZonesBean extends BaseBean
     private ZonePublishDAO       zonePublishDAO;
     private ZoneVehicleType      downloadType;
     private String               message;
-    
+    public static final Integer  MAX_SPEED_IN_MPH = 100;
+    public static final Integer  MAX_SPEED_IN_KPH = 160;
     
     public String getPublishInfo() {
         Account account = getAccountDAO().findByID(getAccountID());
@@ -84,7 +88,7 @@ public class ZonesBean extends BaseBean
         if (zones.isEmpty())
             zones = new ArrayList<Zone>();
         sortZones();
-        
+
         zoneIDs = new ArrayList<SelectItem>();
         for(final Zone zone: getZones())
         {
@@ -182,6 +186,7 @@ public class ZonesBean extends BaseBean
         final FacesContext context = FacesContext.getCurrentInstance();
         
         item.setOptions(getOptionsFromMap());
+        transformItemSpeedLimit();
 
         if (add)
         {
@@ -350,7 +355,7 @@ public class ZonesBean extends BaseBean
     }
     private List<ZoneOption> getOptionsFromMap() 
     {
-        
+
         List<ZoneOption> options = new ArrayList<ZoneOption>();
         Map<ZoneAvailableOption, OptionValue> optionsMap = getItem().getOptionsMap();
         for (ZoneAvailableOption availOption : ZoneAvailableOption.values())
@@ -572,5 +577,93 @@ public class ZonesBean extends BaseBean
 
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    /**
+     * Transforms an item's speed limit back to mph
+     * in case the current measurement type is set to kph.
+     */
+    protected void transformItemSpeedLimit(){
+        MeasurementType measurementType = getPerson().getMeasurementType();
+
+        // currently in mph - return
+        if (measurementType == MeasurementType.ENGLISH)
+            return;
+
+        // metric - transform
+        if (measurementType == MeasurementType.METRIC){
+            Map<ZoneAvailableOption, OptionValue> optionsMap = item.getOptionsMap();
+            Integer kphValue = optionsMap.get(ZoneAvailableOption.SPEED_LIMIT).getValue();
+            Number mphValue = MeasurementConversionUtil.fromKPHtoMPH(kphValue);
+            optionsMap.put(ZoneAvailableOption.SPEED_LIMIT, new SpeedValue(mphValue.intValue()));
+            item.setOptionsMap(optionsMap);
+            item.setOptions(getOptionsFromMap());
+        }
+    }
+
+    /**
+     * Returns maximum speed limit for the zone edit page, based on the
+     * measurement type (mph or kph).
+     *
+     * @return max speed limit
+     */
+    public int getMeasurementTypeMaxSpeedLimit(){
+        MeasurementType measurementType = getPerson().getMeasurementType();
+
+        switch(measurementType){
+            case METRIC: return MAX_SPEED_IN_KPH;
+            case ENGLISH: return MAX_SPEED_IN_MPH;
+            default: return 100;
+        }
+    }
+
+    
+    /**
+     * Setter for editZone.
+     */
+    public void setMeasurementTypeSpeedLimit(int speedLimit){
+        Map<ZoneAvailableOption, OptionValue> optionsMap = item.getOptionsMap();
+        optionsMap.put(ZoneAvailableOption.SPEED_LIMIT, new SpeedValue(speedLimit));
+        item.setOptionsMap(optionsMap);
+    }
+
+    /**
+     * Returns the speed limit based on the user measurement type.
+     *
+     * @return value transformed according to measurement type
+     */
+    public int getMeasurementTypeSpeedLimit(){
+        Integer value = item.getOptionsMap().get(ZoneAvailableOption.SPEED_LIMIT).getValue();
+        MeasurementType measurementType = getPerson().getMeasurementType();
+
+        //transform if necessary
+        if (measurementType.equals(MeasurementType.METRIC))
+            value = MeasurementConversionUtil.fromMPHtoKPH(value).intValue();
+
+        return value;
+    }
+
+    /**
+     * Returns in clear text the name of the current measurement type based on
+     * the current user account settings.
+     *
+     * @return (mph or kph)
+     */
+    public String getSpeedMeasurementName(){
+        MeasurementType measurementType = getPerson().getMeasurementType();
+
+        switch(measurementType){
+            case METRIC: return "kph";
+            case ENGLISH: return "mph";
+            default: return measurementType.toString();
+        }
+    }
+
+    /**
+     * Used for tests only.
+     * @param zone item to set
+     */
+    protected void setTestZone(Zone zone){
+       this.item = zone;
     }
 }

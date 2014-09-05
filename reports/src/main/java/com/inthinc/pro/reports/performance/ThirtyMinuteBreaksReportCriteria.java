@@ -61,8 +61,8 @@ public class ThirtyMinuteBreaksReportCriteria extends GroupListReportCriteria {
                 if(driverDot == null) continue;
                 DateTimeZone dateTimeZone = DateTimeZone.forTimeZone(driver.getPerson().getTimeZone());
                 Interval queryInterval = DateTimeUtil.getExpandedInterval(interval, dateTimeZone, 1, 1);
-                List<HOSRecord> hosRecordList = hosDAO.getHOSRecords(driver.getDriverID(), queryInterval, false);
-                List<HOSRec> hosRecList = HOSUtil.getRecListFromLogList(hosRecordList, interval.getEnd().toDate(), !(driverDot.equals(RuleSetType.NON_DOT)));
+                List<HOSRecord> hosRecordList = hosDAO.getHOSRecords(driver.getDriverID(), queryInterval, true);
+                List<HOSRec> hosRecList = HOSUtil.getRecListFromLogList(hosRecordList, queryInterval.getEnd().toDate(), !(driverDot.equals(RuleSetType.NON_DOT)));
                 driverHOSRecMap.put(driver, hosRecList);
             }
         }
