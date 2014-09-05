@@ -9,6 +9,7 @@ import com.inthinc.pro.comm.parser.attrib.AttribParserFactory;
 import com.inthinc.pro.comm.parser.attrib.ByteArrayParser;
 import com.inthinc.pro.comm.parser.attrib.ByteArrayPrefacedParser;
 import com.inthinc.pro.comm.parser.attrib.ByteParser;
+import com.inthinc.pro.comm.parser.attrib.DeltaVsAsStringParser;
 import com.inthinc.pro.comm.parser.attrib.DoubleParser;
 import com.inthinc.pro.comm.parser.attrib.IntegerParser;
 import com.inthinc.pro.comm.parser.attrib.LatLongParser;
@@ -105,7 +106,12 @@ public class NotebcParser4 extends NotebcParser implements NoteParser{
 	    					break;
 	    				case ATTR_EXTENDED_DATA:
 	    					attribCode = BINARY_OFFSET + attribOffset;
-	    					parser = new ByteArrayPrefacedParser();
+	    					if (attribCode == Attrib.DELTAVS.getCode()) {
+	    						offset++; //skip the array length byte
+	    						parser = new DeltaVsAsStringParser();
+	    					}	
+	    					else 	
+	    						parser = new ByteArrayPrefacedParser();
 	    					break;
     				}
     			}
