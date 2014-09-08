@@ -121,51 +121,53 @@ public class VehicleStatusUtil {
 
         // otherwise base your logic on the last event of the list
         ListIterator<Event> it = newEvents.listIterator(newEvents.size());
-        Event event = it.previous();
 
-        // based on the last event type
-        switch (event.getType()) {
-            case TRIP_START:
-            case TRIP_INPROGRESS:
-            case NOTEEVENT:
-            case SPEEDING:
-            case ACCELERATION:
-            case DECELERATION:
-            case ON_ROAD:
-            case OFF_ROAD:
-            case SPEEDING_EX:
-            case SPEEDING_EX2:
-            case SPEEDING_EX3:
-            case WSZONES_ARRIVAL:
-            case WSZONES_DEPARTURE:
-            case WSZONES_ARRIVAL_EX:
-            case WSZONES_DEPARTURE_EX:
-            case VERTICAL_EVENT:
-            case VERTICAL_EVENT_SECONDARY:
-            case SPEEDING_EX4:
-            case SPEEDING_LOG4:
-            case SPEEDING_AV:
-            case START_SPEEDING:
-            case COACHING_SPEEDING:
-            case BACKING:
-            case FULLEVENT:
-            case ROLLOVER:
-            case STOP_MOTION:
-            case PARKING_BRAKE:
-            case LOCATION:
-            case LOCATION_DEBUG:
-                return VehicleStatus.DRIVING;             // the ones above mean driving
-            case IDLE:                                    // idle means idle
-                return VehicleStatus.IDLE;
-            case IGNITION_ON:
-            case POWER_ON:                                // ignition on or power on means standing
-                return VehicleStatus.STANDING;
-            case IGNITION_OFF:
-            case POWER_INTERRUPTED:                      // ignition off or power off means parking
-                return VehicleStatus.PARKING;
-            default:
-                return VehicleStatus.NOT_YET_DETERMINED;
+        while (it.hasPrevious()) {
+            Event event = it.previous();
+
+            // based on the last event type
+            switch (event.getType()) {
+                case TRIP_START:
+                case TRIP_INPROGRESS:
+                case NOTEEVENT:
+                case SPEEDING:
+                case ACCELERATION:
+                case DECELERATION:
+                case ON_ROAD:
+                case OFF_ROAD:
+                case SPEEDING_EX:
+                case SPEEDING_EX2:
+                case SPEEDING_EX3:
+                case WSZONES_ARRIVAL:
+                case WSZONES_DEPARTURE:
+                case WSZONES_ARRIVAL_EX:
+                case WSZONES_DEPARTURE_EX:
+                case VERTICAL_EVENT:
+                case VERTICAL_EVENT_SECONDARY:
+                case SPEEDING_EX4:
+                case SPEEDING_LOG4:
+                case SPEEDING_AV:
+                case START_SPEEDING:
+                case COACHING_SPEEDING:
+                case BACKING:
+                case FULLEVENT:
+                case ROLLOVER:
+                case STOP_MOTION:
+                case PARKING_BRAKE:
+                case LOCATION:
+                case LOCATION_DEBUG:
+                    return VehicleStatus.DRIVING;             // the ones above mean driving
+                case IDLE:                                    // idle means idle
+                    return VehicleStatus.IDLE;
+                case IGNITION_ON:
+                case POWER_ON:                                // ignition on or power on means standing
+                    return VehicleStatus.STANDING;
+                case IGNITION_OFF:
+                case POWER_INTERRUPTED:                      // ignition off or power off means parking
+                    return VehicleStatus.PARKING;
+            }
         }
+        return VehicleStatus.NOT_YET_DETERMINED;
     }
 
     public Integer getScanHours() {
