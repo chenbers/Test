@@ -23,7 +23,7 @@ public class NotebcParser implements NoteParser{
 
 	public Map<String, Object> parseNote(byte[] data)
 	{
-		logger.debug("parser notebc called: {}",  new String(Hex.encodeHex(data)));
+//		logger.debug("parser notebc called: {}",  new String(Hex.encodeHex(data)));
 
         Map<String, Object> attribMap = new HashMap<String, Object>();
 		try {
