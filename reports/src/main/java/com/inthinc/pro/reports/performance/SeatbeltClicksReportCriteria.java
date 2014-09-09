@@ -20,6 +20,8 @@ import com.inthinc.pro.reports.ReportType;
 import com.inthinc.pro.model.aggregation.DriverVehicleScoreWrapper;
 import com.inthinc.pro.model.aggregation.Score;
 import org.joda.time.Interval;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 
 public class SeatbeltClicksReportCriteria extends ReportCriteria {
 
@@ -33,6 +35,8 @@ public class SeatbeltClicksReportCriteria extends ReportCriteria {
     public static class Builder {
 
         private Locale locale;
+
+        protected DateTimeFormatter dateTimeFormatter;
 
         private DateTimeZone dateTimeZone;
 
@@ -104,6 +108,8 @@ public class SeatbeltClicksReportCriteria extends ReportCriteria {
         public SeatbeltClicksReportCriteria build() {
             logger.debug(String.format("Building SeatbeltClicksCriteria with locale %s", locale));
             List<DriverVehicleScoreWrapper> resultsList = new ArrayList<DriverVehicleScoreWrapper>();
+            dateTimeFormatter = DateTimeFormat.forPattern(ReportCriteria.DATE_FORMAT).withLocale(locale);
+
 
             if (timeFrame != null && !timeFrame.equals(TimeFrame.CUSTOM_RANGE))
             {
@@ -111,10 +117,9 @@ public class SeatbeltClicksReportCriteria extends ReportCriteria {
             }
             else {
                 resultsList = groupReportDAO.getDriverScores(groupID, interval, groupHierarchy);
-
             }
 
-            List<SeatbeltClicksReportCriteria.SeatbeltClicksWrapper> seatbeltClicksWrappers = new ArrayList<SeatbeltClicksReportCriteria.SeatbeltClicksWrapper>();
+            List<SeatbeltClicksWrapper> seatbeltClicksWrappers = new ArrayList<SeatbeltClicksWrapper>();
             for (DriverVehicleScoreWrapper dvsw : resultsList) {
                 Score s = dvsw.getScore();
                 Integer totalMiles = s.getOdometer6() == null ? 0 : s.getOdometer6().intValue();
@@ -128,7 +133,7 @@ public class SeatbeltClicksReportCriteria extends ReportCriteria {
                     int driveMiles = dvsw.getScore().getOdometer6().intValue();
                     String groupName = groupHierarchy.getFullGroupName(dvsw.getDriver().getGroupID());
 
-                    SeatbeltClicksReportCriteria.SeatbeltClicksWrapper seatbeltClicksWrapper = new SeatbeltClicksReportCriteria.SeatbeltClicksWrapper(driverName,
+                    SeatbeltClicksWrapper seatbeltClicksWrapper = new SeatbeltClicksWrapper(driverName,
                             dvsw.getScore().getTrips().intValue(), dvsw.getScore().getSeatbeltClicks().intValue(), driveMiles, seatbelt, groupName);
                     seatbeltClicksWrappers.add(seatbeltClicksWrapper);
                 }
@@ -138,18 +143,10 @@ public class SeatbeltClicksReportCriteria extends ReportCriteria {
             SeatbeltClicksReportCriteria criteria = new SeatbeltClicksReportCriteria(this.locale);
             criteria.setMainDataset(seatbeltClicksWrappers);
 
-            if (timeFrame != null && !timeFrame.equals(TimeFrame.CUSTOM_RANGE))
-            {
-                criteria.addDateParameter(REPORT_START_DATE, timeFrame.getInterval().getStart().toDate(), this.dateTimeZone.toTimeZone());
-                criteria.addDateParameter(REPORT_END_DATE, timeFrame.getInterval().getEnd().minusSeconds(1).toDate(), this.dateTimeZone.toTimeZone());
-            }
-            else{
-                criteria.addDateParameter(REPORT_START_DATE, interval.getStart().toDate(), this.dateTimeZone.toTimeZone());
-                criteria.addDateParameter(REPORT_END_DATE, interval.getEnd().minusSeconds(1).toDate(), this.dateTimeZone.toTimeZone());
-            }
-                criteria.setUseMetric(measurementType == MeasurementType.METRIC);
+            criteria.addParameter(REPORT_START_DATE, dateTimeFormatter.print(interval.getStart()));
+            criteria.addParameter(REPORT_END_DATE, dateTimeFormatter.print(interval.getEnd()));
+            criteria.setUseMetric(measurementType == MeasurementType.METRIC);
             return criteria;
-
         }
 
         public Boolean getIncludeInactiveDrivers() {
