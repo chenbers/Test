@@ -231,6 +231,7 @@ public enum NoteType {
     BACKING(235, new Attrib[]{Attrib.TRIP_DURATION}),
     DEVICE_MODEM_PAIRING(236, new Attrib[]{Attrib.IMEI, Attrib.MCMID}),
     SAT_EVENT_TRAILER_PROGRAMMED(237, new Attrib[]{Attrib.TRAILERID, Attrib.TRAILERID_OLD}),
+    MAINTENANCE(238, new Attrib[]{}),
 
 	//Stripped
 	STRIPPED_ACKNOWLEDGE_ID_WITH_DATA(246, new Attrib[]{Attrib.TYPE_FWDCMD, Attrib.ACKDATA, Attrib.TYPE_FWDCMD_ID}),

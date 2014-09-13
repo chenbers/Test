@@ -41,14 +41,14 @@ public enum Attrib {
 	EMU_HASH_3(204, AttribParserType.INTEGER),
 	EMU_HASH_4(205, AttribParserType.INTEGER),
 
-	
+	MAINTENANCE_ODOMETER(218, AttribParserType.INTEGER),
 	FWDCMD_ID_INT(221, AttribParserType.INTEGER, "cmdid"),
 	RFID_HI(222, AttribParserType.INTEGER),
 	RFID_LO(223, AttribParserType.INTEGER),
-
 	MPGODO(224, AttribParserType.INTEGER),
 	TRIP_DURATION(225, AttribParserType.INTEGER),
     DIAGNOSTIC_CODE(226, AttribParserType.INTEGER),
+	ENGINE_HOURS_X100(240, AttribParserType.INTEGER),
 	
 	/* byte */
 	AVGSPEED(2, AttribParserType.BYTE, "avgSpeed"),
