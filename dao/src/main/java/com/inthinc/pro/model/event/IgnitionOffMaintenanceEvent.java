@@ -69,7 +69,7 @@ public class IgnitionOffMaintenanceEvent extends Event implements MultipleEventT
                         return EventType.RED_STOP;
                     } else if (Integer.valueOf(attrMap.get(EventAttr.ATTR_CHECK_ENGINE.getCode() + "").toString()) == 2) {
                         return EventType.AMBER_WARNING;
-                    } else if (Integer.valueOf(attrMap.get(EventAttr.ATTR_CHECK_ENGINE.getCode() + "").toString()) == 3) {
+                    } else if (Integer.valueOf(attrMap.get(EventAttr.ATTR_CHECK_ENGINE.getCode() + "").toString()) == 4) {
                         return EventType.PROTECT;
                     } else {
                         return EventType.IGNITION_OFF;
@@ -89,7 +89,7 @@ public class IgnitionOffMaintenanceEvent extends Event implements MultipleEventT
                         return EventType.RED_STOP;
                     } else if (checkEngine == 2) {
                         return EventType.AMBER_WARNING;
-                    } else if (checkEngine == 3) {
+                    } else if (checkEngine == 4) {
                         return EventType.PROTECT;
                     } else {
                         return EventType.IGNITION_OFF;
