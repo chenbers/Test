@@ -22,7 +22,7 @@ public class IgnitionOffMaintenanceEventTest {
         assertEquals(EventType.AMBER_WARNING,ignitionOffMaintenanceEventAmber.getEventType());
 
         IgnitionOffMaintenanceEvent ignitionOffMaintenanceProtect = new IgnitionOffMaintenanceEvent();
-        ignitionOffMaintenanceProtect.setAttribs("32870=3");
+        ignitionOffMaintenanceProtect.setAttribs("32870=4");
         assertEquals(EventType.PROTECT,ignitionOffMaintenanceProtect.getEventType());
 
         IgnitionOffMaintenanceEvent ignitionOffMaintenanceRedAndGreen = new IgnitionOffMaintenanceEvent();

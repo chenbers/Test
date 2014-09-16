@@ -69,7 +69,6 @@ public class IgnitionOffMaintenanceEvent extends Event implements MultipleEventT
                     return decodeCheckEngineBitMask(checkEngineValue);
                 } else if (attrMap.containsKey(EventAttr.ATTR_MALFUNCTION_INDICATOR_LAMP.getCodeAsString())) {
                     threshold = attrMap.get(EventAttr.ATTR_MALFUNCTION_INDICATOR_LAMP.getCodeAsString()).toString();
-                    return EventType.MALFUNCTION_INDICATOR_LAMP;
                 }
             } else {
                 if (malfunctionIndicatorLamp != null) {
