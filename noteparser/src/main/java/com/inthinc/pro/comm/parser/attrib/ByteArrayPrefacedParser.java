@@ -10,7 +10,7 @@ public class ByteArrayPrefacedParser implements AttribParser {
 
 	public int parseAttrib(byte[] data, int offset, String code, Map<String, Object> attribMap) {
 
-        Integer length = (int) data[offset];
+        Integer length = new Integer(ReadUtil.read(data, offset, 1));
         offset++;
 
         if (length == 0)
