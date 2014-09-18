@@ -234,6 +234,7 @@ public enum NoteType {
     MAINTENANCE(238, new Attrib[]{}),
 
 	//Stripped
+	STRIPPED_GET_SPECIFIC_DETAIL_RECORDS_NEW (245, new Attrib[]{}),
 	STRIPPED_ACKNOWLEDGE_ID_WITH_DATA(246, new Attrib[]{Attrib.TYPE_FWDCMD, Attrib.ACKDATA, Attrib.TYPE_FWDCMD_ID}),
     STRIPPED_VSETTINGS(247, new Attrib[]{Attrib.VSETTINGS}),
 	WIFI_STRIPPED_GET_WITNESSII_TRACE(248, new Attrib[]{Attrib.CRASHTRACE}),
