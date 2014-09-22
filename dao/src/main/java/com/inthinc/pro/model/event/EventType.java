@@ -86,7 +86,10 @@ public enum EventType implements BaseEnum {
     PROTECT(67,IgnitionOffEventType.PROTECT),
     CHECK_ENGINE_LIGHT(68),
     STOP_ENGINE_LIGHT(69),
-    ODOMETER(70,MaintenanceEventType.ODOMETER);
+    ODOMETER(70,MaintenanceEventType.ODOMETER),
+    UNKNOWN_CHECK_ENGINE_LAMP(71, IgnitionOffEventType.UNKNOWN_CHECK_ENGINE_LAMP),
+    UNKNOWN_MAINTENANCE(72),
+    ;
 
 
 

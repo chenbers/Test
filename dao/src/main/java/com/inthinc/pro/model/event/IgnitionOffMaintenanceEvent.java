@@ -53,7 +53,7 @@ public class IgnitionOffMaintenanceEvent extends Event implements MultipleEventT
     }
 
     public EventType getEventType() {
-             if(this.getAttribs() != null) {
+                if(this.getAttribs() != null) {
                 String[] attribsList = this.getAttribs().split(";");
                 for (String s : attribsList) {
                     if (!s.trim().equals("") && s.split("=").length == 2) {
@@ -98,7 +98,7 @@ public class IgnitionOffMaintenanceEvent extends Event implements MultipleEventT
         }  else if ((GREEN_BIT&checkEngineValue)==GREEN_BIT) {
             return EventType.PROTECT;
         } // else 
-        return EventType.UNKNOWN_CHECK_ENGINE_LAMP;
+        return EventType.UNKNOWN_CHECK_ENGINE_LAMP;   
     }
     @Override
     public EventAttr[] getEventAttrList() {

@@ -8,6 +8,7 @@ public enum IgnitionOffEventType {
     RED_STOP(1),
     AMBER_WARNING(2),
     PROTECT(3),
+    UNKNOWN_CHECK_ENGINE_LAMP(4),
     MALFUNCTION_INDICATOR_LAMP(9),
     IGNITION_OFF(20);
 
