@@ -13,7 +13,9 @@ public enum MaintenanceEventType {
     DPF_FLOW_RATE(7),
     OIL_PRESSURE(8),
     ATTR_ENGINE_HOURS(10),
-    ODOMETER(11);
+    ODOMETER(11),
+    UNKNOWN_MAINTENANCE(12),
+    ;
 
     private int code;
 
