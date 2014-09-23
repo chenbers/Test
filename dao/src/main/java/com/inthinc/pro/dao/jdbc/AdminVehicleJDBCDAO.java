@@ -56,6 +56,7 @@ public class AdminVehicleJDBCDAO extends SimpleJdbcDaoSupport{
         pagedColumnMap.put("make", "v.make");
         pagedColumnMap.put("model", "v.model");
         pagedColumnMap.put("color", "v.color");
+        pagedColumnMap.put("country", "v.country");
         pagedColumnMap.put("vtype", "v.vType");
         pagedColumnMap.put("VIN", "v.vin");
         pagedColumnMap.put("weight", "v.weight");
@@ -70,7 +71,7 @@ public class AdminVehicleJDBCDAO extends SimpleJdbcDaoSupport{
         pagedColumnMap.put("productType", "d.productVer");
 
         PAGED_VEHICLE_COLUMNS_STRING = 
-                "v.vehicleID, v.groupID, v.status, v.name, v.make, v.model, v.year, v.color, v.vtype, v.vin, v.weight, v.license, v.stateID, v.odometer, v.ifta, v.absOdometer, "+
+                "v.vehicleID, v.groupID, v.status, v.name, v.make, v.model, v.year, v.color, v.vtype, v.vin, v.weight, v.license, v.stateID, v.odometer, v.ifta, v.absOdometer, v.country, "+
                 "d.deviceID, d.acctID, d.status, d.name, d.imei, d.sim, d.serialNum, d.phone, d.activated, d.baseID, d.productVer, d.firmVer, d.witnessVer, d.emuMd5, d.mcmid, d.altImei," +
                 "vdd.deviceID, vdd.driverID, CONCAT(p.first, ' ', p.last), g.name, p.first, p.middle, p.last, p.suffix";
                 
@@ -225,6 +226,7 @@ public class AdminVehicleJDBCDAO extends SimpleJdbcDaoSupport{
             Vehicle vehicle = new Vehicle();
             vehicle.setVehicleID(rs.getInt("v.vehicleID"));
             vehicle.setColor(rs.getString("v.color"));
+            vehicle.setCountry(rs.getString("v.country"));
             vehicle.setCreated(null); 
             vehicle.setDeviceID(rs.getObject("vdd.deviceID") == null ? null : rs.getInt("vdd.deviceID"));
             vehicle.setDriverID(rs.getObject("vdd.driverID") == null ? null : rs.getInt("vdd.driverID"));

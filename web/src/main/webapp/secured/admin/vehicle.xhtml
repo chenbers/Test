@@ -117,7 +117,11 @@
                               <tr>
                                 <td width="100"><h:outputText value="#{messages.editVehicle_odometer}" /></td>
                                 <td><h:outputText value="#{vehiclesBean.item.odometer}" converter="MilesToKilometersConverter"/></td>
-                              </tr>                              
+                              </tr>
+                                <tr>
+                                    <td width="100"><h:outputText value="#{messages.editVehicle_country}" /></td>
+                                    <td><h:outputText value="#{vehiclesBean.item.country}" /></td>
+                                </tr>
                               <ui:include src="../../includes/#{vehiclesBean.item.productTypeDir}/properties.xhtml"/>
                             </table>
                             <ui:include src="../../includes/#{vehiclesBean.item.productTypeDir}/options.xhtml"/>

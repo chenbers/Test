@@ -104,6 +104,7 @@ public class PageAdminAddEditVehicle extends AdminBar {
         public TextField odometer()			{return new TextField(AdminVehicleEditEnum.TXTFIELD_ODO);        }
         public TextField eCallPhone()		{return new TextField(AdminVehicleEditEnum.TXTFIELD_ECALLPHONE); }
         public TextField autoLogOff()		{return new TextField(AdminVehicleEditEnum.TXTFIELD_AUTOLOGOFF); }
+        public TextField country()			{return new TextField(AdminVehicleEditEnum.TXTFIELD_COUNTRY);      }
         
         public TextField vehicleID()		{return new TextField(AdminVehicleEditEnum.TXTFIELD_VEHICLEID);  }  
         
@@ -126,6 +127,7 @@ public class PageAdminAddEditVehicle extends AdminBar {
 		public Text labelModel()			{return new TextFieldLabel(AdminVehicleEditEnum.TXTFIELD_MODEL);}
 		public Text labelYear()				{return new TextDropDownLabel(AdminVehicleEditEnum.DROPDOWN_YEAR);}
 		public Text labelColor()			{return new TextFieldLabel(AdminVehicleEditEnum.TXTFIELD_COLOR);}
+        public Text labelCountry()			{return new TextFieldLabel(AdminVehicleEditEnum.TXTFIELD_COUNTRY);}
 		public Text labelWeight()			{return new TextFieldLabel(AdminVehicleEditEnum.TXTFIELD_WEIGHT);}
 		public Text labelLicence()			{return new TextFieldLabel(AdminVehicleEditEnum.TXTFIELD_LICENCE);}
 		public Text labelState()			{return new TextDropDownLabel(AdminVehicleEditEnum.DROPDOWN_STATE);}
