@@ -60,14 +60,6 @@ public class IgnitionOffMaintenanceEvent extends Event implements MultipleEventT
                         attrMap.put(s.split("=")[0], s.split("=")[1]);
                     }
                 }
-                System.out.println("("+!attrMap.containsKey(EventAttr.ATTR_CHECK_ENGINE.getCode()) + ""+") || "+!attrMap.containsKey(EventAttr.ATTR_MALFUNCTION_INDICATOR_LAMP.toString()));
-                System.out.println("attrMap.containsKey("+EventAttr.ATTR_MALFUNCTION_INDICATOR_LAMP+") :"+attrMap.containsKey(EventAttr.ATTR_MALFUNCTION_INDICATOR_LAMP+""));
-                System.out.println("attrMap.containsKey("+EventAttr.ATTR_MALFUNCTION_INDICATOR_LAMP+") :"+attrMap.containsKey(EventAttr.ATTR_MALFUNCTION_INDICATOR_LAMP.toString()));
-                System.out.println((!attrMap.containsKey(EventAttr.ATTR_CHECK_ENGINE.toString()) || !attrMap.containsKey(EventAttr.ATTR_MALFUNCTION_INDICATOR_LAMP.toString())));
-                System.out.println("keyset: "+attrMap.keySet());
-                for(Object key : attrMap.keySet()) {
-                    System.out.println("key: "+key);
-                }
                 if(!attrMap.containsKey(EventAttr.ATTR_CHECK_ENGINE.toString()) && !attrMap.containsKey(EventAttr.ATTR_MALFUNCTION_INDICATOR_LAMP.toString())){
                     return EventType.IGNITION_OFF;
                 }
