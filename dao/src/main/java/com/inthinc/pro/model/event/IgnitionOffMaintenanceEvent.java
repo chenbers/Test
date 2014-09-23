@@ -60,15 +60,20 @@ public class IgnitionOffMaintenanceEvent extends Event implements MultipleEventT
                         attrMap.put(s.split("=")[0], s.split("=")[1]);
                     }
                 }
-                if(!attrMap.containsKey(EventAttr.ATTR_CHECK_ENGINE.toString()) && !attrMap.containsKey(EventAttr.ATTR_MALFUNCTION_INDICATOR_LAMP.toString())){
+                System.out.println("attrMap: "+attrMap);
+                System.out.println("attrMap.containsKey("+EventAttr.ATTR_CHECK_ENGINE.getCode()+") "+attrMap.containsKey(EventAttr.ATTR_CHECK_ENGINE.getCode()));
+                for(Object key: attrMap.keySet()) {
+                    System.out.println("key"+key);
+                }
+                if(!attrMap.containsKey(EventAttr.ATTR_CHECK_ENGINE.getCode()+"") && !attrMap.containsKey(EventAttr.ATTR_MALFUNCTION_INDICATOR_LAMP.getCode()+"")){
                     return EventType.IGNITION_OFF;
                 }
-                else if (attrMap.containsKey(EventAttr.ATTR_CHECK_ENGINE.toString())) {
-                    threshold = attrMap.get(EventAttr.ATTR_CHECK_ENGINE.toString()).toString();
-                    int checkEngineValue = Integer.valueOf(attrMap.get(EventAttr.ATTR_CHECK_ENGINE.toString()).toString());
+                else if (attrMap.containsKey(EventAttr.ATTR_CHECK_ENGINE.getCode()+"")) {
+                    threshold = attrMap.get(EventAttr.ATTR_CHECK_ENGINE.getCode()+"").toString();
+                    int checkEngineValue = Integer.valueOf(attrMap.get(EventAttr.ATTR_CHECK_ENGINE.getCode()+"").toString());
                     return decodeCheckEngineBitMask(checkEngineValue);
-                } else if (attrMap.containsKey(EventAttr.ATTR_MALFUNCTION_INDICATOR_LAMP.toString())) {
-                    threshold = attrMap.get(EventAttr.ATTR_MALFUNCTION_INDICATOR_LAMP.toString()).toString();
+                } else if (attrMap.containsKey(EventAttr.ATTR_MALFUNCTION_INDICATOR_LAMP.getCode()+"")) {
+                    threshold = attrMap.get(EventAttr.ATTR_MALFUNCTION_INDICATOR_LAMP.getCode()+"").toString();
                     return EventType.MALFUNCTION_INDICATOR_LAMP;
                 }
             } else {
