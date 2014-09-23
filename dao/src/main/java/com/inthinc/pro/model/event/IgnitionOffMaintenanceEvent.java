@@ -94,9 +94,8 @@ public class IgnitionOffMaintenanceEvent extends Event implements MultipleEventT
             return EventType.AMBER_WARNING;
         }  else if ((GREEN_BIT&checkEngineValue)==GREEN_BIT) {
             return EventType.PROTECT;
-        } else {
-            return EventType.UNKNOWN_CHECK_ENGINE_LAMP;
-        }
+        } // else 
+        return EventType.UNKNOWN_CHECK_ENGINE_LAMP;
     }
     @Override
     public EventAttr[] getEventAttrList() {
