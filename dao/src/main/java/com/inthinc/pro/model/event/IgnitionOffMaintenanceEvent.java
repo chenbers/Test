@@ -60,16 +60,23 @@ public class IgnitionOffMaintenanceEvent extends Event implements MultipleEventT
                         attrMap.put(s.split("=")[0], s.split("=")[1]);
                     }
                 }
-                
-                if(!attrMap.containsKey(EventAttr.ATTR_CHECK_ENGINE.getCode() + "") && !attrMap.containsKey(EventAttr.ATTR_MALFUNCTION_INDICATOR_LAMP.getCode() + "")){
+                System.out.println("("+!attrMap.containsKey(EventAttr.ATTR_CHECK_ENGINE.getCode()) + ""+") || "+!attrMap.containsKey(EventAttr.ATTR_MALFUNCTION_INDICATOR_LAMP.toString()));
+                System.out.println("attrMap.containsKey("+EventAttr.ATTR_MALFUNCTION_INDICATOR_LAMP+") :"+attrMap.containsKey(EventAttr.ATTR_MALFUNCTION_INDICATOR_LAMP+""));
+                System.out.println("attrMap.containsKey("+EventAttr.ATTR_MALFUNCTION_INDICATOR_LAMP+") :"+attrMap.containsKey(EventAttr.ATTR_MALFUNCTION_INDICATOR_LAMP.toString()));
+                System.out.println((!attrMap.containsKey(EventAttr.ATTR_CHECK_ENGINE.toString()) || !attrMap.containsKey(EventAttr.ATTR_MALFUNCTION_INDICATOR_LAMP.toString())));
+                System.out.println("keyset: "+attrMap.keySet());
+                for(Object key : attrMap.keySet()) {
+                    System.out.println("key: "+key);
+                }
+                if(!attrMap.containsKey(EventAttr.ATTR_CHECK_ENGINE.toString()) && !attrMap.containsKey(EventAttr.ATTR_MALFUNCTION_INDICATOR_LAMP.toString())){
                     return EventType.IGNITION_OFF;
                 }
-                else if (attrMap.containsKey(EventAttr.ATTR_CHECK_ENGINE.getCode() + "")) {
-                    threshold = attrMap.get(EventAttr.ATTR_CHECK_ENGINE.getCode() + "").toString();
-                    int checkEngineValue = Integer.valueOf(attrMap.get(EventAttr.ATTR_CHECK_ENGINE.getCode() + "").toString());
+                else if (attrMap.containsKey(EventAttr.ATTR_CHECK_ENGINE.toString())) {
+                    threshold = attrMap.get(EventAttr.ATTR_CHECK_ENGINE.toString()).toString();
+                    int checkEngineValue = Integer.valueOf(attrMap.get(EventAttr.ATTR_CHECK_ENGINE.toString()).toString());
                     return decodeCheckEngineBitMask(checkEngineValue);
-                } else if (attrMap.containsKey(EventAttr.ATTR_MALFUNCTION_INDICATOR_LAMP.getCode() + "")) {
-                    threshold = attrMap.get(EventAttr.ATTR_MALFUNCTION_INDICATOR_LAMP.getCode() + "").toString();
+                } else if (attrMap.containsKey(EventAttr.ATTR_MALFUNCTION_INDICATOR_LAMP.toString())) {
+                    threshold = attrMap.get(EventAttr.ATTR_MALFUNCTION_INDICATOR_LAMP.toString()).toString();
                     return EventType.MALFUNCTION_INDICATOR_LAMP;
                 }
             } else {
@@ -83,12 +90,12 @@ public class IgnitionOffMaintenanceEvent extends Event implements MultipleEventT
             }
             return EventType.UNKNOWN_MAINTENANCE;
     }
-    private EventType decodeCheckEngineBitMask(int checkEngineValue) {
+    private static EventType decodeCheckEngineBitMask(int checkEngineValue) {
         int RED_STOP_BIT = 1;
         int AMBER_BIT = 2;
         int GREEN_BIT = 4;
         if(checkEngineValue<0 || checkEngineValue >7) {
-            return EventType.CHECK_ENGINE_LIGHT;
+            return EventType.UNKNOWN_CHECK_ENGINE_LAMP;
         }  else if ((RED_STOP_BIT&checkEngineValue)==RED_STOP_BIT) {
             return EventType.RED_STOP;
         }  else if ((AMBER_BIT&checkEngineValue)==AMBER_BIT) {

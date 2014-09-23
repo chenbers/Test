@@ -10,23 +10,27 @@ public class IgnitionOffMaintenanceEventTest {
     @Test
     public void testGetEventType(){
         IgnitionOffMaintenanceEvent ignitionOffMaintenanceEventMalFunctionIndicator = new IgnitionOffMaintenanceEvent();
-        ignitionOffMaintenanceEventMalFunctionIndicator.setAttribs("32869=1");
+        ignitionOffMaintenanceEventMalFunctionIndicator.setAttribs(EventAttr.ATTR_MALFUNCTION_INDICATOR_LAMP+"="+1);
         assertEquals(EventType.MALFUNCTION_INDICATOR_LAMP,ignitionOffMaintenanceEventMalFunctionIndicator.getEventType());
 
         IgnitionOffMaintenanceEvent ignitionOffMaintenanceEventRedStop = new IgnitionOffMaintenanceEvent();
-        ignitionOffMaintenanceEventRedStop.setAttribs("32870=1");
+        ignitionOffMaintenanceEventRedStop.setAttribs(EventAttr.ATTR_CHECK_ENGINE+"="+1);
         assertEquals(EventType.RED_STOP,ignitionOffMaintenanceEventRedStop.getEventType());
 
         IgnitionOffMaintenanceEvent ignitionOffMaintenanceEventAmber = new IgnitionOffMaintenanceEvent();
-        ignitionOffMaintenanceEventAmber.setAttribs("32870=2");
+        ignitionOffMaintenanceEventAmber.setAttribs(EventAttr.ATTR_CHECK_ENGINE+"="+2);
         assertEquals(EventType.AMBER_WARNING,ignitionOffMaintenanceEventAmber.getEventType());
 
         IgnitionOffMaintenanceEvent ignitionOffMaintenanceProtect = new IgnitionOffMaintenanceEvent();
-        ignitionOffMaintenanceProtect.setAttribs("32870=4");
+        ignitionOffMaintenanceProtect.setAttribs(EventAttr.ATTR_CHECK_ENGINE+"="+4);
         assertEquals(EventType.PROTECT,ignitionOffMaintenanceProtect.getEventType());
 
+        IgnitionOffMaintenanceEvent ignitionOffMaintenanceUnknown = new IgnitionOffMaintenanceEvent();
+        ignitionOffMaintenanceUnknown.setAttribs(EventAttr.ATTR_CHECK_ENGINE+"="+14);
+        assertEquals(EventType.UNKNOWN_CHECK_ENGINE_LAMP,ignitionOffMaintenanceUnknown.getEventType());
+        
         IgnitionOffMaintenanceEvent ignitionOffNotMaintenance = new IgnitionOffMaintenanceEvent();
-        assertEquals(EventType.IGNITION_OFF,ignitionOffNotMaintenance.getEventType());
+        assertEquals(EventType.UNKNOWN_MAINTENANCE,ignitionOffNotMaintenance.getEventType());
 
     }
 }
