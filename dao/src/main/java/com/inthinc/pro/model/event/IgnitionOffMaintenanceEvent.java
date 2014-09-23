@@ -56,49 +56,47 @@ public class IgnitionOffMaintenanceEvent extends Event implements MultipleEventT
             if(this.getAttribs() != null) {
                 String[] attribsList = this.getAttribs().split(";");
                 for (String s : attribsList) {
-                    if (!s.trim().equals("")) {
+                    if (!s.trim().equals("") && s.split("=").length == 2) {
                         attrMap.put(s.split("=")[0], s.split("=")[1]);
                     }
                 }
-                if(!attrMap.containsKey(EventAttr.ATTR_CHECK_ENGINE.getCode() + "") && !attrMap.containsKey(EventAttr.ATTR_MALFUNCTION_INDICATOR_LAMP.getCode() + "")){
+                if(!attrMap.containsKey(EventAttr.ATTR_CHECK_ENGINE.getCodeAsString()) && !attrMap.containsKey(EventAttr.ATTR_MALFUNCTION_INDICATOR_LAMP.getCodeAsString())){
                     return EventType.IGNITION_OFF;
                 }
-                else if (attrMap.containsKey(EventAttr.ATTR_CHECK_ENGINE.getCode() + "")) {
-                    threshold = attrMap.get(EventAttr.ATTR_CHECK_ENGINE.getCode() + "").toString();
-                    if (Integer.valueOf(attrMap.get(EventAttr.ATTR_CHECK_ENGINE.getCode() + "").toString()) == 1) {
-                        return EventType.RED_STOP;
-                    } else if (Integer.valueOf(attrMap.get(EventAttr.ATTR_CHECK_ENGINE.getCode() + "").toString()) == 2) {
-                        return EventType.AMBER_WARNING;
-                    } else if (Integer.valueOf(attrMap.get(EventAttr.ATTR_CHECK_ENGINE.getCode() + "").toString()) == 4) {
-                        return EventType.PROTECT;
-                    } else {
-                        return EventType.IGNITION_OFF;
-                    }
-
-                } else if (attrMap.containsKey(EventAttr.ATTR_MALFUNCTION_INDICATOR_LAMP.getCode() + "")) {
-                    threshold = attrMap.get(EventAttr.ATTR_MALFUNCTION_INDICATOR_LAMP.getCode() + "").toString();
+                else if (attrMap.containsKey(EventAttr.ATTR_CHECK_ENGINE.getCodeAsString())) {
+                    threshold = attrMap.get(EventAttr.ATTR_CHECK_ENGINE.getCodeAsString()).toString();
+                    int checkEngineValue = Integer.valueOf(attrMap.get(EventAttr.ATTR_CHECK_ENGINE.getCodeAsString()).toString());
+                    return decodeCheckEngineBitMask(checkEngineValue);
+                } else if (attrMap.containsKey(EventAttr.ATTR_MALFUNCTION_INDICATOR_LAMP.getCodeAsString())) {
+                    threshold = attrMap.get(EventAttr.ATTR_MALFUNCTION_INDICATOR_LAMP.getCodeAsString()).toString();
                     return EventType.MALFUNCTION_INDICATOR_LAMP;
-                }else return EventType.IGNITION_OFF;
+                }
             } else {
                 if (malfunctionIndicatorLamp != null) {
                     threshold = malfunctionIndicatorLamp + "";
                     return EventType.MALFUNCTION_INDICATOR_LAMP;
                 } else if (checkEngine != null) {
                     threshold = checkEngine + "";
-                    if (checkEngine == 1) {
-                        return EventType.RED_STOP;
-                    } else if (checkEngine == 2) {
-                        return EventType.AMBER_WARNING;
-                    } else if (checkEngine == 4) {
-                        return EventType.PROTECT;
-                    } else {
-                        return EventType.IGNITION_OFF;
-                    }
-                } else return EventType.IGNITION_OFF;
+                    return decodeCheckEngineBitMask(checkEngine);
+                }
             }
-
+            return EventType.UNKNOWN_MAINTENANCE;
     }
-
+    private static EventType decodeCheckEngineBitMask(int checkEngineValue) {
+        int RED_STOP_BIT = 1;
+        int AMBER_BIT = 2;
+        int GREEN_BIT = 4;
+        if(checkEngineValue<0 || checkEngineValue >7) {
+            return EventType.UNKNOWN_CHECK_ENGINE_LAMP;
+        }  else if ((RED_STOP_BIT&checkEngineValue)==RED_STOP_BIT) {
+            return EventType.RED_STOP;
+        }  else if ((AMBER_BIT&checkEngineValue)==AMBER_BIT) {
+            return EventType.AMBER_WARNING;
+        }  else if ((GREEN_BIT&checkEngineValue)==GREEN_BIT) {
+            return EventType.PROTECT;
+        } // else 
+        return EventType.UNKNOWN_CHECK_ENGINE_LAMP;
+    }
     @Override
     public EventAttr[] getEventAttrList() {
         return eventAttrList;

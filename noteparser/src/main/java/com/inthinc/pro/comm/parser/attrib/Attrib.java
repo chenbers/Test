@@ -302,6 +302,16 @@ public enum Attrib {
     SUMMARY_START_TIME(32866,AttribParserType.INTEGER, "summarystart"),
     SUMMARY_STOP_TIME(32867,AttribParserType.INTEGER, "summarystop"),
     
+    //type 238 notes for Maintenance
+    BATTERY_VOLTAGE_MAINT(81, AttribParserType.INTEGER),
+    ENGINE_TEMP(171, AttribParserType.INTEGER),
+    TRANSMISSION_TEMP(172, AttribParserType.INTEGER),
+    DPF_FLOW_RATE(173, AttribParserType.INTEGER),
+    OIL_PRESSURE(174, AttribParserType.INTEGER),
+    
+    //more maintenance on end of trip notes (type in (20, 1, 66, 202, 209)) ... these are both bitmasks
+    MALFUNCTION_INDICATOR_LAMP_BITMASK(243, AttribParserType.INTEGER),
+    CHECK_ENGINE_BITMASK(244, AttribParserType.INTEGER),
     
 	DEVICEID(32900, AttribParserType.INTEGER, "deviceid"),
 	VEHICLEID(32901, AttribParserType.INTEGER, "vehicleid"),
