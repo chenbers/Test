@@ -53,7 +53,7 @@ public class IgnitionOffMaintenanceEvent extends Event implements MultipleEventT
     }
 
     public EventType getEventType() {
-                if(this.getAttribs() != null) {
+            if(this.getAttribs() != null) {
                 String[] attribsList = this.getAttribs().split(";");
                 for (String s : attribsList) {
                     if (!s.trim().equals("") && s.split("=").length == 2) {
@@ -80,9 +80,8 @@ public class IgnitionOffMaintenanceEvent extends Event implements MultipleEventT
                     return decodeCheckEngineBitMask(checkEngine);
                 }
             }
-            return EventType.UNKNOWN_MAINTENANCE;
+            return EventType.UNKNOWN_MAINTENANCE;    
     }
-
     private static EventType decodeCheckEngineBitMask(int checkEngineValue) {
         int RED_STOP_BIT = 1;
         int AMBER_BIT = 2;
