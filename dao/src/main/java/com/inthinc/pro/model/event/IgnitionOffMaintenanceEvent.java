@@ -61,6 +61,7 @@ public class IgnitionOffMaintenanceEvent extends Event implements MultipleEventT
                     }
                 }
                 if(!attrMap.containsKey(EventAttr.ATTR_CHECK_ENGINE.getCodeAsString()) && !attrMap.containsKey(EventAttr.ATTR_MALFUNCTION_INDICATOR_LAMP.getCodeAsString())){
+                if(!attrMap.containsKey(EventAttr.ATTR_CHECK_ENGINE.toString()) && !attrMap.containsKey(EventAttr.ATTR_MALFUNCTION_INDICATOR_LAMP.toString())){
                     return EventType.IGNITION_OFF;
                 }
                 else if (attrMap.containsKey(EventAttr.ATTR_CHECK_ENGINE.getCodeAsString())) {
