@@ -83,6 +83,23 @@ public class IgnitionOffMaintenanceEvent extends Event implements MultipleEventT
             return EventType.UNKNOWN_MAINTENANCE;
     }
 
+    private static EventType decodeCheckEngineBitMask(int checkEngineValue) {
+        int RED_STOP_BIT = 1;
+        int AMBER_BIT = 2;
+        int GREEN_BIT = 4;
+        int minExpectedValue = 0;// 0b000 in java 1.7
+        int maxExpectedValue = 7;// 0b111 in java 1.7 (3 bits)
+        if(checkEngineValue<minExpectedValue || checkEngineValue >maxExpectedValue) {
+            return EventType.UNKNOWN_CHECK_ENGINE_LAMP;
+        }  else if ((RED_STOP_BIT&checkEngineValue)==RED_STOP_BIT) {
+            return EventType.RED_STOP;
+        }  else if ((AMBER_BIT&checkEngineValue)==AMBER_BIT) {
+            return EventType.AMBER_WARNING;
+        }  else if ((GREEN_BIT&checkEngineValue)==GREEN_BIT) {
+            return EventType.PROTECT;
+        } // else 
+        return EventType.UNKNOWN_CHECK_ENGINE_LAMP;
+    }
     @Override
     public EventAttr[] getEventAttrList() {
         return eventAttrList;
@@ -122,7 +139,7 @@ public class IgnitionOffMaintenanceEvent extends Event implements MultipleEventT
 
     @Override
     public Set<EventType> getEventTypes() {
-        return EnumSet.of(EventType.RED_STOP, EventType.AMBER_WARNING, EventType.PROTECT, EventType.MALFUNCTION_INDICATOR_LAMP, EventType.IGNITION_OFF );
+        return EnumSet.of(EventType.RED_STOP, EventType.AMBER_WARNING, EventType.PROTECT, EventType.MALFUNCTION_INDICATOR_LAMP, EventType.IGNITION_OFF, EventType.UNKNOWN_MAINTENANCE, EventType.UNKNOWN_CHECK_ENGINE_LAMP );
     }
 
     @Override
