@@ -142,9 +142,13 @@ public class SeatbeltClicksReportCriteria extends ReportCriteria {
 
             SeatbeltClicksReportCriteria criteria = new SeatbeltClicksReportCriteria(this.locale);
             criteria.setMainDataset(seatbeltClicksWrappers);
-
-            criteria.addParameter(REPORT_START_DATE, dateTimeFormatter.print(interval.getStart()));
-            criteria.addParameter(REPORT_END_DATE, dateTimeFormatter.print(interval.getEnd()));
+            if (timeFrame != null && !timeFrame.equals(TimeFrame.CUSTOM_RANGE)) {
+                criteria.addParameter(REPORT_START_DATE, dateTimeFormatter.print(timeFrame.getInterval().getStart()));
+                criteria.addParameter(REPORT_END_DATE, dateTimeFormatter.print(timeFrame.getInterval().getEnd()));
+            }else{
+                criteria.addParameter(REPORT_START_DATE, dateTimeFormatter.print(interval.getStart()));
+                criteria.addParameter(REPORT_END_DATE, dateTimeFormatter.print(interval.getEnd()));
+            }
             criteria.setUseMetric(measurementType == MeasurementType.METRIC);
             return criteria;
         }
