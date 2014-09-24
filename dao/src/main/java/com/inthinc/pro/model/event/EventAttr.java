@@ -659,4 +659,7 @@ public enum EventAttr {
     public int getCode() {
         return code;
     }
+    public String getCodeAsString() {
+        return code+"";
+    }
 }
