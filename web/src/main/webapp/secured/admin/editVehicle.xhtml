@@ -241,22 +241,6 @@
                                 </td>
                               </tr>
                               </ui:fragment>
-                                <tr>
-                                    <td width="100" valign="top">
-
-                                        <ui:include src="../../includes/admin/inputLabel.xhtml">
-                                            <ui:param name="required" value="FALSE"/>
-                                            <ui:param name="for" value="editVehicle-country"/>
-                                            <ui:param name="fieldName" value="country"/>
-                                            <ui:param name="editBean" value="#{vehiclesBean}"/>
-                                            <ui:param name="label" value="#{messages.editVehicle_country}"/>
-                                            <ui:param name="context" value="editVehiclecountry"/>
-                                        </ui:include>
-                                    </td>
-                                    <td>
-                                        <h:inputText value="#{vehiclesBean.item.country}" id="editVehicle-country" onchange="checkMultiple(this)" styleClass="text" size="30" maxlength="14" disabled="#{vehiclesBean.vehicleInfoDisabled}" />
-                                    </td>
-                                </tr>
 	                         <ui:include src="../../includes/#{vehiclesBean.item.productTypeDir}/editProperties.xhtml">
                          	 <ui:param name="vehiclesBean" value="#{vehiclesBean}"/>
                              <ui:param name="editableVehicleSettings" value="#{vehiclesBean.item.editableVehicleSettings}" />

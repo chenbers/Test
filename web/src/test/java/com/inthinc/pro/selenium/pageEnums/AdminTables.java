@@ -58,7 +58,6 @@ public class AdminTables {
         DOT("DOT", 17),
         IFTA("IFTA", 18),
         PRODUCT("productVersion", 19),
-        COUNTRY("country", 20),
         EDIT("edit"),
         
         ;

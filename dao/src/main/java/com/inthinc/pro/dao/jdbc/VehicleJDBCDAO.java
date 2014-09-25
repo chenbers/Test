@@ -30,7 +30,7 @@ import java.util.Map;
  */
 public class VehicleJDBCDAO extends SimpleJdbcDaoSupport implements VehicleDAO {
     private static String VEHICLE_COLUMNS_STRING =
-            " v.vehicleID, v.groupID, v.status, v.name, v.make, v.model, v.year, v.color, v.vtype, v.vin, v.weight, v.license, v.stateID, v.odometer, v.ifta, v.absOdometer, v.country, " +
+            " v.vehicleID, v.groupID, v.status, v.name, v.make, v.model, v.year, v.color, v.vtype, v.vin, v.weight, v.license, v.stateID, v.odometer, v.ifta, v.absOdometer, " +
                     " d.deviceID, d.acctID, d.status, d.name, d.imei, d.sim, d.serialNum, d.phone, d.activated, d.baseID, d.productVer, d.firmVer, d.witnessVer, d.emuMd5, d.mcmid, d.altImei," +
                     " vdd.deviceID, vdd.driverID, concat(p.first, ' ', p.last) driverName, g.name groupName ";
 
@@ -70,7 +70,6 @@ public class VehicleJDBCDAO extends SimpleJdbcDaoSupport implements VehicleDAO {
             vehicle.setState(States.getStateById(rs.getInt("v.stateID")));
             vehicle.setStatus(Status.valueOf(rs.getInt("v.status")));
             vehicle.setVtype(VehicleType.valueOf(rs.getInt("v.vtype")));
-            vehicle.setCountry(rs.getString("v.country"));
 
 //            vehicle.setWeight(rs.getObject("v.weight") == null ? null : rs.getInt("v.weight"));
 //            vehicle.setColor(rs.getString("v.color"));
