@@ -75,7 +75,7 @@ public enum EventSubCategory implements BaseEnum
                 EnumSet.of(EventType.BATTERY_VOLTAGE, EventType.ENGINE_TEMP, EventType.TRANSMISSION_TEMP, EventType.DPF_FLOW_RATE,EventType.OIL_PRESSURE),
                 EnumSet.of(AlertMessageType.ATTR_BATTERY_VOLTAGE,AlertMessageType.ATTR_ENGINE_TEMP,AlertMessageType.ATTR_TRANSMISSION_TEMP,AlertMessageType.ATTR_DPF_FLOW_RATE,AlertMessageType.ATTR_OIL_PRESSURE)),
     IGNITION_OFF(19,EnumSet.of(EventType.RED_STOP,EventType.AMBER_WARNING,EventType.PROTECT,EventType.MALFUNCTION_INDICATOR_LAMP), EnumSet.of(AlertMessageType.ATTR_CHECK_ENGINE,AlertMessageType.ATTR_RED_STOP,AlertMessageType.ATTR_AMBER_WARNING,AlertMessageType.ATTR_PROTECT,AlertMessageType.ATTR_MALFUNCTION_INDICATOR_LAMP)),
-    PREVENTATIVE_MAINTENANCE(18,  EnumSet.of(EventType.ATTR_ENGINE_HOURS, EventType.ODOMETER,EventType.PREVENTATIVE_MESSAGE_ODOMETER), EnumSet.of(AlertMessageType.ATTR_ENGINE_HOURS,AlertMessageType.ATTR_ODOMETER)),
+    PREVENTATIVE_MAINTENANCE(18,  EnumSet.of(EventType.PREVENTATIVE_MESSAGE_ODOMETER), EnumSet.of(AlertMessageType.ALERT_PREVENTATIVE_MAINTENANCE)),
 //    NOTIFICATION_MAINTENANCE(19,EnumSet.of(EventType.RED_STOP,EventType.AMBER_WARNING,EventType.PROTECT),
 //    EnumSet.of(AlertMessageType.ATTR_RED_STOP,AlertMessageType.ATTR_AMBER_WARNING,AlertMessageType.ATTR_PROTECT));
     FIRST_MOVE_FORWARD(20, EnumSet.of(EventType.FIRST_MOVE_FORWARD), EnumSet.of(AlertMessageType.ALERT_FIRST_MOVE_FORWARD));
