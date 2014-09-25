@@ -82,7 +82,6 @@ public class PageAdminVehicleEdit extends AdminBar {
         public TextField twentySixToFifty()				{return new TextField(AdminVehicleEditEnum.TXTFIELD_26_TO_50);}
         public TextField fiftyOneToSeventyFive()		{return new TextField(AdminVehicleEditEnum.TXTFIELD_51_TO_75);}
         public TextField maxSpeed()						{return new TextField(AdminVehicleEditEnum.TXTFIELD_MAX_SPEED);}
-        public TextField country() 						{return new TextField(AdminVehicleEditEnum.TXTFIELD_COUNTRY);}
     }
 
     public class AdminVehicleEditTexts extends AdminBarTexts {

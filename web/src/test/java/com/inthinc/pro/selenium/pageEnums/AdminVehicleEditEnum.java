@@ -31,7 +31,6 @@ public enum AdminVehicleEditEnum implements SeleniumEnums {
     TXTFIELD_MAKE("Make:"							, "edit-form:editVehicle-make"),
     TXTFIELD_MODEL("Model:"							, "edit-form:editVehicle-model"),
     TXTFIELD_COLOR("Color:"							, "edit-form:editVehicle-color"),
-    TXTFIELD_COUNTRY("Country:"					    , "edit-form:editVehicle-country"),
     TXTFIELD_WEIGHT("Weight: (lbs)"					, "edit-form:editVehicle-weight"),
     TXTFIELD_LICENCE("License #:"					, "edit-form:editVehicle-license"),
     TXTFIELD_ODO("Odometer: (UNITS)"				, "edit-form:editVehicle-odometer"),

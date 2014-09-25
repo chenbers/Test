@@ -42,8 +42,6 @@ public enum AdminVehicleDetailsEnum implements SeleniumEnums {
     TXT_VALUE_ECALLPHONE(""				,"//td[@id='vehicleForm:details']/table/tbody/tr/td/table/tbody/tr/td[1]/table/tbody/tr[11]/td[2]"),
     TXT_LABEL_AUTOLOGOFF("Auto Log Off:","//td[@id='vehicleForm:details']/table/tbody/tr/td/table/tbody/tr/td[1]/table/tbody/tr[12]/td[1]"),
     TXT_VALUE_AUTOLOGOFF(""				,"//td[@id='vehicleForm:details']/table/tbody/tr/td/table/tbody/tr/td[1]/table/tbody/tr[12]/td[2]"),
-    TXT_LABEL_COUNTRY("Country:"		,"//td[@id='vehicleForm:details']/table/tbody/tr/td/table/tbody/tr/td[1]/table/tbody/tr[13]/td[1]"),
-    TXT_VALUE_COUNTRY(""					,"//td[@id='vehicleForm:details']/table/tbody/tr/td/table/tbody/tr/td[1]/table/tbody/tr[13]/td[2]"),
     
     TXT_LABEL_SPEED(null				, "//*[@id='edit-form:speeedSettingsPanel']/table/tbody/tr/td[1]/div[1]"),
     TXT_LABEL_SENSITIVITY(null			, "//*[@id='edit-form:speeedSettingsPanel']/table/tbody/tr/td[3]/div[1]"),

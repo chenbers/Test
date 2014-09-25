@@ -249,10 +249,6 @@ public class PageAdminOrganization extends AdminBar{
             return new Text(AdminOrganizationEnum.VEHICLE_COLOR);
         }
 
-        public Text valueVehicleCountry(){
-            return new Text(AdminOrganizationEnum.VEHICLE_COUNTRY);
-        }
-
         public Text valueVehicleZoneType(){
             return new Text(AdminOrganizationEnum.VEHICLE_ZONE_TYPE);
         }
@@ -412,10 +408,6 @@ public class PageAdminOrganization extends AdminBar{
 
         public Text labelVehicleColor(){
             return new TextLabel(AdminOrganizationEnum.VEHICLE_COLOR);
-        }
-
-        public Text labelVehicleCountry(){
-            return new TextLabel(AdminOrganizationEnum.VEHICLE_COUNTRY);
         }
 
         public Text labelVehicleZoneType(){

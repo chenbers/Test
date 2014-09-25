@@ -75,7 +75,6 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
         AVAILABLE_COLUMNS.add("make");
         AVAILABLE_COLUMNS.add("model");
         AVAILABLE_COLUMNS.add("color");
-        AVAILABLE_COLUMNS.add("country");
         AVAILABLE_COLUMNS.add("vtype");
         AVAILABLE_COLUMNS.add("VIN");
         AVAILABLE_COLUMNS.add("weight");
@@ -88,6 +87,7 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
         AVAILABLE_COLUMNS.add("DOT");
         AVAILABLE_COLUMNS.add("IFTA");
         AVAILABLE_COLUMNS.add("productType");
+        
 
         // years
         final Calendar cal = Calendar.getInstance();
@@ -791,7 +791,6 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
         private String product;
         @Column(updateable = false)
         private String dot;
-        private String           country;
 
 
 
@@ -1003,14 +1002,6 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
 
         public void setDriverName(String driverName) {
             this.driverName = driverName;
-        }
-
-        public String getCountry() {
-            return country;
-        }
-
-        public void setCountry(String country) {
-            this.country = country;
         }
     }
 

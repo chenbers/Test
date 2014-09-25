@@ -75,7 +75,6 @@ public class PageAdminVehicleDetails extends AdminBar {
         public Text model() 							{return new Text(AdminVehicleDetailsEnum.TXT_VALUE_MODEL);}
         public Text year() 								{return new Text(AdminVehicleDetailsEnum.TXT_VALUE_YEAR);}
         public Text color() 							{return new Text(AdminVehicleDetailsEnum.TXT_VALUE_COLOR);}
-        public Text country() 							{return new Text(AdminVehicleDetailsEnum.TXT_VALUE_COUNTRY);}
         public Text weight() 							{return new Text(AdminVehicleDetailsEnum.TXT_VALUE_WEIGHT);}
         public Text licence() 							{return new Text(AdminVehicleDetailsEnum.TXT_VALUE_LICENCE);}
         public Text state() 							{return new Text(AdminVehicleDetailsEnum.TXT_VALUE_STATE);}
