@@ -9,13 +9,10 @@ import java.util.Set;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
-<<<<<<< HEAD
 import com.inthinc.pro.model.*;
-=======
 import com.inthinc.pro.model.AggressiveDrivingEventType;
 import com.inthinc.pro.model.BaseEnum;
 import com.inthinc.pro.model.MaintenanceEventType;
->>>>>>> DE9749
 import com.inthinc.pro.model.pagination.EventCategoryFilter;
 
 @XmlRootElement
@@ -73,17 +70,12 @@ public enum EventType implements BaseEnum {
     TRAILER_PROGRAMMED(52),
     ATTR_RF_OFF_DISTANCE(53),
     GENERAL_BACKING(54),
-<<<<<<< HEAD
     FIRST_MOVE_FORWARD(55, BackingEventType.FIRST_MOVE_FORWARD),
-=======
-    FIRST_MOVE_FORWARD(55),
->>>>>>> DE9749
     BATTERY_VOLTAGE(56, MaintenanceEventType.BATTERY_VOLTAGE),
     ENGINE_TEMP(57,MaintenanceEventType.ENGINE_TEMP),
     TRANSMISSION_TEMP(58,MaintenanceEventType.TRANSMISSION_TEMP),
     DPF_FLOW_RATE(59,MaintenanceEventType.DPF_FLOW_RATE),
     OIL_PRESSURE(60,MaintenanceEventType.OIL_PRESSURE),
-<<<<<<< HEAD
     MALFUNCTION_INDICATOR_LAMP(61,IgnitionOffEventType.MALFUNCTION_INDICATOR_LAMP),
     CHECK_ENGINE(62),
     ATTR_MAINTENANCE_CAPABILITIES(63),
@@ -91,15 +83,6 @@ public enum EventType implements BaseEnum {
     RED_STOP(65,IgnitionOffEventType.RED_STOP),
     AMBER_WARNING(66,IgnitionOffEventType.AMBER_WARNING),
     PROTECT(67,IgnitionOffEventType.PROTECT),
-=======
-    MALFUNCTION_INDICATOR_LAMP(61,MaintenanceEventType.MALFUNCTION_INDICATOR_LAMP),
-    CHECK_ENGINE(62),
-    ATTR_MAINTENANCE_CAPABILITIES(63),
-    ATTR_ENGINE_HOURS(64,MaintenanceEventType.ATTR_ENGINE_HOURS),
-    RED_STOP(65,MaintenanceEventType.RED_STOP),
-    AMBER_WARNING(66,MaintenanceEventType.AMBER_WARNING),
-    PROTECT(67,MaintenanceEventType.PROTECT),
->>>>>>> DE9749
     CHECK_ENGINE_LIGHT(68),
     STOP_ENGINE_LIGHT(69),
     ODOMETER(70,MaintenanceEventType.ODOMETER);
@@ -109,10 +92,7 @@ public enum EventType implements BaseEnum {
     private int code;
     private AggressiveDrivingEventType noteSubType;
     private MaintenanceEventType maintenanceEventType;
-<<<<<<< HEAD
     private IgnitionOffEventType ignitionOffEventType;
-=======
->>>>>>> DE9749
     private Set<EventAccountFilter> eventAccountFilters;
     private BackingEventType backingEventType;
 
@@ -129,7 +109,6 @@ public enum EventType implements BaseEnum {
         this.code = code;
         this.maintenanceEventType = maintenanceEventType;
     }
-<<<<<<< HEAD
     private EventType(int code, IgnitionOffEventType ignitionOffEventType) {
         this.code = code;
         this.ignitionOffEventType = ignitionOffEventType;
@@ -138,8 +117,6 @@ public enum EventType implements BaseEnum {
         this.code = code;
         this.backingEventType = backingEventType;
     }
-=======
->>>>>>> DE9749
 
     private EventType(int code, Set<EventAccountFilter> eventAccountFilters) {
         this.code = code;
@@ -157,15 +134,12 @@ public enum EventType implements BaseEnum {
             if (p.maintenanceEventType != null) {
                 subTypeLookup.put(p.maintenanceEventType.getCode(), p);
             }
-<<<<<<< HEAD
             if (p.ignitionOffEventType != null) {
                 subTypeLookup.put(p.ignitionOffEventType.getCode(), p);
             }
             if (p.backingEventType != null) {
                 subTypeLookup.put(p.backingEventType.getCode(), p);
             }
-=======
->>>>>>> DE9749
         }
 
     }
@@ -201,7 +175,6 @@ public enum EventType implements BaseEnum {
             subTypeList = new ArrayList<Integer>();
             subTypeList.add(maintenanceEventType.getCode());
         }
-<<<<<<< HEAD
         if (ignitionOffEventType != null) {
             subTypeList = new ArrayList<Integer>();
             subTypeList.add(ignitionOffEventType.getCode());
@@ -210,8 +183,6 @@ public enum EventType implements BaseEnum {
             subTypeList = new ArrayList<Integer>();
             subTypeList.add(backingEventType.getCode());
         }
-=======
->>>>>>> DE9749
 
         return new EventCategoryFilter(this, getNoteTypeList(), subTypeList);
 
