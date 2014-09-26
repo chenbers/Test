@@ -156,7 +156,7 @@ public class MaintenanceEventsReportCriteria extends ReportCriteria {
 
             List<Vehicle> allVehicles = new ArrayList<Vehicle>();
             for (Integer id: groupIDList){
-                allVehicles.addAll(vehicleDAO.getVehiclesInGroup(id));
+                allVehicles.addAll(vehicleDAO.getVehiclesInGroupHierarchy(id));
             }
 
             List<Vehicle> vehiclesWithEvents = new ArrayList<Vehicle>();
@@ -234,7 +234,12 @@ public class MaintenanceEventsReportCriteria extends ReportCriteria {
                         //calculate odometer values
                         String odometer = driveTimeDAO.getDriveOdometerAtDate(vehicle, date).toString();
                         String odometerLastEvent = driveTimeDAO.getDriveOdometerAtDate(vehicle, prevEventDate).toString();
-                        String distanceSince = Integer.valueOf(odometer) - Integer.valueOf(odometerLastEvent) + "";
+                        String distanceSince;
+                        try{
+                            distanceSince = Integer.valueOf(odometer) - Integer.valueOf(odometerLastEvent) + "";
+                        } catch(NumberFormatException e) {
+                            distanceSince = "N/A";
+                        }
 
                         //calculate engine hours
                         String engineHours = driveTimeDAO.getEngineHoursAtDate(vehicle,date) / 3600 + "";
