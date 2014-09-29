@@ -37,6 +37,9 @@ public class MaintenanceIntervalReportCriteria extends ReportCriteria {
     }
 
     public static class Builder {
+        
+        private final int DISTANCE_MARGIN = 250;
+        private final int HOUR_MARGIN = 200;
 
         private Locale locale;
 
@@ -245,7 +248,7 @@ public class MaintenanceIntervalReportCriteria extends ReportCriteria {
                 if(distanceOver != null || hoursOver != null){
                     if (distanceOver == null) {
                         hourInterval = Integer.valueOf(hoursOver);
-                        if( (200 > hourInterval && hourInterval > -200)) {
+                        if(Math.abs(hourInterval) < HOUR_MARGIN) {
                             BackingWrapper backingWrapper = new BackingWrapper(vehicleID, vehicleYMM, baseOdometer,
                                         intervalOdometer, odometer, distanceOver, baseHours, intervalHours, hours, hoursOver, groupName);
 
@@ -253,7 +256,7 @@ public class MaintenanceIntervalReportCriteria extends ReportCriteria {
                         }
                     }else if (hoursOver == null) {
                         distanceInterval = Integer.valueOf(distanceOver);
-                        if( (250 > distanceInterval && distanceInterval > -250)) {
+                        if(Math.abs(distanceInterval) < DISTANCE_MARGIN) {
                              BackingWrapper backingWrapper = new BackingWrapper(vehicleID, vehicleYMM, baseOdometer,
                                         intervalOdometer, odometer, distanceOver, baseHours, intervalHours, hours, hoursOver, groupName);
 
@@ -262,7 +265,7 @@ public class MaintenanceIntervalReportCriteria extends ReportCriteria {
                     }else {
                         distanceInterval=Integer.valueOf(distanceOver);
                         hourInterval=Integer.valueOf(hoursOver);
-                        if( (250 > distanceInterval && distanceInterval > -250) || (200 > hourInterval && hourInterval > -200)) {
+                        if(Math.abs(distanceInterval) < DISTANCE_MARGIN || Math.abs(hourInterval) < HOUR_MARGIN) {
                              BackingWrapper backingWrapper = new BackingWrapper(vehicleID, vehicleYMM, baseOdometer,
                                         intervalOdometer, odometer, distanceOver, baseHours, intervalHours, hours, hoursOver, groupName);
 
