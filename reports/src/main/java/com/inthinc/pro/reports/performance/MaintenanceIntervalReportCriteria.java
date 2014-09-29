@@ -178,7 +178,7 @@ public class MaintenanceIntervalReportCriteria extends ReportCriteria {
             List<Vehicle> allVehicles = new ArrayList<Vehicle>();
 
             for (Integer id: groupIDList){
-                allVehicles.addAll(vehicleDAO.getVehiclesInGroup(id));
+                allVehicles.addAll(vehicleDAO.getVehiclesInGroupHierarchy(id));
             }
 
             for (Vehicle vehicle: allVehicles){
