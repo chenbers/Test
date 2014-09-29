@@ -8,29 +8,21 @@ import java.util.Map;
 
 @XmlRootElement
 public enum MaintenanceSettings implements Serializable {
-    ENABLE_MAINTENANCE(10138, "enable_maintenance"),
-    MALFUNCTION_INDICATORS(10117, "malfunction_indicators"),
-    RED_STOP(10118, "red_stop"),
-    AMBER_WARNING(10119, "amber_warning"),
-    PROTECT(10120, "protect"),
-    BATT_VOLTAGE(10121, "batt_voltage"),
-    SET_BATT_VOLTAGE(10122, "set_batt_voltage"),
-    ENGINE_TEMP(10123, "engine_temp"),
-    SET_ENGINE_TEMP(10124, "set_engine_temp"),
-    TRANS_TEMP(10125, "trans_temp"),
-    SET_TRANS_TEMP(10126, "set_trans_temp"),
-    OIL_PRESSURE(10127, "oil_pressure"),
-    SET_OIL_PRESSURE(10128, "set_oil_pressure"),
-    DIESEL_EXHAUST(10129, "diesel_exhaust"),
-    SET_DIESEL_EXHAUST(10130, "set_diesel_exhaust"),
-    DPF_FLOW_RATE(10137, "dpf_flow_rate"),
-    ENABLE_DPF_FLOW_RATE(10139, "enable_dpf_flow_rate"),
-    MAINT_BY_DIST(10131, "maint_by_dist"),
-    MAINT_BY_DIST_INTERVAL(10132, "maint_by_dist_interval"),
-    MAINT_BY_DIST_START(10133, "maint_by_dist_start"),
-    MAINT_BY_ENGINE_HOURS(10134, "maint_by_engine_hours"),
-    MAINT_BY_ENGINE_HOURS_INTERVAL(10135, "maint_by_engine_hours_interval"),
-    MAINT_BY_ENGINE_HOURS_START(10136, "maint_by_engine_hours_start")
+    ENABLE_MAINTENANCE(189, "enable_maintenance"),
+    MALFUNCTION_INDICATORS(199, "malfunction_indicators"),
+    RED_STOP(200, "red_stop"),
+    AMBER_WARNING(201, "amber_warning"),
+    PROTECT(202, "protect"),
+    SET_BATT_VOLTAGE(194, "set_batt_voltage"),
+    SET_ENGINE_TEMP(190, "set_engine_temp"),
+    SET_TRANS_TEMP(191, "set_trans_temp"),
+    SET_OIL_PRESSURE(193, "set_oil_pressure"),
+    DPF_FLOW_RATE(192, "dpf_flow_rate"),
+    MAINT_BY_DIST_INTERVAL(197, "maint_by_dist_threshold"),
+    MAINT_BY_DIST_START(196, "maint_by_dist_start"),
+    MAINT_BY_ENGINE_HOURS_INTERVAL(195, "maint_by_engine_hours_threshold"),
+    //MAINT_BY_ENGINE_HOURS_START(203, "maint_by_engine_hours_start"),
+    SETTINGS_MASK(198,"maintenance_bitmask")
     ;
 
     private String description;
