@@ -195,19 +195,24 @@ public class MaintenanceIntervalReportCriteria extends ReportCriteria {
                 String distanceOver;
 
                 int distance = 0;
-                if(baseOdometer != null && intervalOdometer != null) {
-                    distance = Integer.valueOf(odometer) - Integer.valueOf(baseOdometer);
-                    while(distance > Integer.valueOf(intervalOdometer)) {
-                        distance = distance - Integer.valueOf(intervalOdometer);
+                try {
+                    if(baseOdometer != null && intervalOdometer != null) {
+                        distance = Integer.valueOf(odometer) - Integer.valueOf(baseOdometer);
+                        while(distance > Integer.valueOf(intervalOdometer)) {
+                            distance = distance - Integer.valueOf(intervalOdometer);
+                        }
                     }
-                }
 
-                if(baseOdometer == null || intervalOdometer == null){
+                    if(baseOdometer == null || intervalOdometer == null){
+                        distanceOver = null;
+                    }else if(distance > (Integer.valueOf(intervalOdometer) / 2)){
+                        int distanceInt = distance - Integer.valueOf(intervalOdometer);
+                        distanceOver = distanceInt + "";
+                    }else distanceOver = distance + "";
+                } catch (NumberFormatException e) {
                     distanceOver = null;
-                }else if(distance > (Integer.valueOf(intervalOdometer) / 2)){
-                    int distanceInt = distance - Integer.valueOf(intervalOdometer);
-                    distanceOver = distanceInt + "";
-                }else distanceOver = distance + "";
+                }
+                
 
                 // Manually setting this to zero for now, as we're not currently
                 // allowing engine hours to start from an arbitrary value
