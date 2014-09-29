@@ -27,7 +27,7 @@ public class MaintenanceEvent extends Event implements MultipleEventTypes {
     @EventAttrID(name="ODOMETER")
     private Integer odometer;
 
-    private String threshold = "";
+    private String value = "";
 
     private Map<Object, Object> attrMap = new HashMap<Object, Object>();
 
@@ -63,51 +63,51 @@ public class MaintenanceEvent extends Event implements MultipleEventTypes {
                     }
                 }
                 if(attrMap.containsKey(EventAttr.ATTR_BATTERY_VOLTAGE.getCode() + "")){
-                    threshold = attrMap.get(EventAttr.ATTR_BATTERY_VOLTAGE.getCode()+"").toString();
+                    value = attrMap.get(EventAttr.ATTR_BATTERY_VOLTAGE.getCode()+"").toString();
                     return EventType.BATTERY_VOLTAGE;
                 }else if(attrMap.containsKey(EventAttr.ATTR_ENGINE_TEMP.getCode()+"")){
-                    threshold = attrMap.get(EventAttr.ATTR_ENGINE_TEMP.getCode()+"").toString();
+                    value = attrMap.get(EventAttr.ATTR_ENGINE_TEMP.getCode()+"").toString();
                     return EventType.ENGINE_TEMP;
                 }else if(attrMap.containsKey(EventAttr.ATTR_TRANSMISSION_TEMP.getCode()+"")){
-                    threshold = attrMap.get(EventAttr.ATTR_TRANSMISSION_TEMP.getCode()+"").toString();
+                    value = attrMap.get(EventAttr.ATTR_TRANSMISSION_TEMP.getCode()+"").toString();
                     return EventType.TRANSMISSION_TEMP;
                 }else if(attrMap.containsKey(EventAttr.ATTR_DPF_FLOW_RATE.getCode()+"")){
-                    threshold = attrMap.get(EventAttr.ATTR_DPF_FLOW_RATE.getCode()+"").toString();
+                    value = attrMap.get(EventAttr.ATTR_DPF_FLOW_RATE.getCode()+"").toString();
                     return EventType.DPF_FLOW_RATE;
                 }else if(attrMap.containsKey(EventAttr.ATTR_OIL_PRESSURE.getCode()+"")){
-                    threshold = attrMap.get(EventAttr.ATTR_OIL_PRESSURE.getCode()+"").toString();
+                    value = attrMap.get(EventAttr.ATTR_OIL_PRESSURE.getCode()+"").toString();
                     return EventType.OIL_PRESSURE;
                 }
                 else if(attrMap.containsKey(EventAttr.ENGINE_HOURS_X100.getCode()+"")){
-                    threshold = attrMap.get(EventAttr.ENGINE_HOURS_X100.getCode()+"").toString();
+                    value = attrMap.get(EventAttr.ENGINE_HOURS_X100.getCode()+"").toString();
                     return EventType.ATTR_ENGINE_HOURS;
                 }else if(attrMap.containsKey(EventAttr.ODOMETER.getCode()+"")){
-                    threshold = attrMap.get(EventAttr.ODOMETER.getCode()+"").toString();
+                    value = attrMap.get(EventAttr.ODOMETER.getCode()+"").toString();
                     return EventType.ODOMETER;
                 }
                 else return EventType.UNKNOWN;
             }else{
                 if(batteryVoltage != null){
-                    threshold = batteryVoltage + "";
+                    value = batteryVoltage + "";
                     return EventType.BATTERY_VOLTAGE;
                 }else if(engineTemp != null){
-                    threshold = engineTemp + "";
+                    value = engineTemp + "";
                     return  EventType.ENGINE_TEMP;
                 }else if(transmissionTemp != null) {
-                    threshold = transmissionTemp + "";
+                    value = transmissionTemp + "";
                     return EventType.TRANSMISSION_TEMP;
                 }else if(dpfFlowRate != null) {
-                    threshold = dpfFlowRate + "";
+                    value = dpfFlowRate + "";
                     return EventType.DPF_FLOW_RATE;
                 }else if(oilPresure != null) {
-                    threshold = oilPresure + "";
+                    value = oilPresure + "";
                     return EventType.OIL_PRESSURE;
                 }
                 else if(engineHours != null) {
-                    threshold = engineHours + "";
+                    value = engineHours + "";
                     return EventType.ATTR_ENGINE_HOURS;
                 }else if(odometer != null) {
-                    threshold = odometer + "";
+                    value = odometer + "";
                     return EventType.ODOMETER;
                 }else return EventType.UNKNOWN;
             }
@@ -182,12 +182,12 @@ public class MaintenanceEvent extends Event implements MultipleEventTypes {
         this.odometer = odometer;
     }
 
-    public String getThreshold() {
-        return threshold;
+    public String getValue() {
+        return value;
     }
 
-    public void setThreshold(String threshold) {
-        this.threshold = threshold;
+    public void setValue(String value) {
+        this.value = value;
     }
 
     @Override

@@ -156,7 +156,7 @@ public class MaintenanceEventsReportCriteria extends ReportCriteria {
 
             List<Vehicle> allVehicles = new ArrayList<Vehicle>();
             for (Integer id: groupIDList){
-                allVehicles.addAll(vehicleDAO.getVehiclesInGroup(id));
+                allVehicles.addAll(vehicleDAO.getVehiclesInGroupHierarchy(id));
             }
 
             List<Vehicle> vehiclesWithEvents = new ArrayList<Vehicle>();
@@ -219,13 +219,13 @@ public class MaintenanceEventsReportCriteria extends ReportCriteria {
                             evCode = EventAttr.ODOMETER.getCode();
                         }
 
-                        String threshold = null;
+                        String value = null;
                         String actual = null;
                         if(maintenanceSettings != null) {
-                            threshold = ((MaintenanceEvent) event).getThreshold();
+                            value = ((MaintenanceEvent) event).getValue();
                             actual = configuratorJDBCDAO.getVehicleSettings(Integer.valueOf(vehicleID)).getActual().get(maintenanceSettings.getCode());
                         }else{
-                            threshold = "-";
+                            value = "-";
                             actual = "-";
                         }
                         //take previous threshold same type
@@ -234,14 +234,19 @@ public class MaintenanceEventsReportCriteria extends ReportCriteria {
                         //calculate odometer values
                         String odometer = driveTimeDAO.getDriveOdometerAtDate(vehicle, date).toString();
                         String odometerLastEvent = driveTimeDAO.getDriveOdometerAtDate(vehicle, prevEventDate).toString();
-                        String distanceSince = Integer.valueOf(odometer) - Integer.valueOf(odometerLastEvent) + "";
+                        String distanceSince;
+                        try{
+                            distanceSince = Integer.valueOf(odometer) - Integer.valueOf(odometerLastEvent) + "";
+                        } catch(NumberFormatException e) {
+                            distanceSince = "N/A";
+                        }
 
                         //calculate engine hours
                         String engineHours = driveTimeDAO.getEngineHoursAtDate(vehicle,date) / 3600 + "";
                         String engineHoursLastEvent = driveTimeDAO.getEngineHoursAtDate(vehicle, prevEventDate) / 3600 + "";
                         String hoursSince=Integer.valueOf(engineHours) - Integer.valueOf(engineHoursLastEvent) + "";
                         vehicleID=vehicle.getName();
-                        BackingWrapper backingWrapper = new BackingWrapper(vehicleID, vehicleYMM, maintenanceEvent, date, threshold, actual,
+                        BackingWrapper backingWrapper = new BackingWrapper(vehicleID, vehicleYMM, maintenanceEvent, date, value, actual,
                                 odometer, distanceSince, engineHours, hoursSince, groupName);
 
                         backingWrappers.add(backingWrapper);
@@ -283,20 +288,20 @@ public class MaintenanceEventsReportCriteria extends ReportCriteria {
         private String vehicleYMM;
         private String maintenanceEvent;
         private Date date;
-        private String threshold;
+        private String value;
         private String actual;
         private String odometer;
         private String distanceSince;
         private String engineHours;
         private String hoursSince;
 
-        public BackingWrapper(String vehicleID, String vehicleYMM, String maintenanceEvent, Date date, String threshold,String actual, String odometer, String distanceSince,
+        public BackingWrapper(String vehicleID, String vehicleYMM, String maintenanceEvent, Date date, String value,String actual, String odometer, String distanceSince,
                               String engineHours, String hoursSince, String groupPath) {
             this.vehicleID = vehicleID;
             this.vehicleYMM = vehicleYMM;
             this.maintenanceEvent = maintenanceEvent;
             this.date = date;
-            this.threshold = threshold;
+            this.value = value;
             this.actual = actual;
             this.odometer = odometer;
             this.distanceSince = distanceSince;
@@ -350,12 +355,12 @@ public class MaintenanceEventsReportCriteria extends ReportCriteria {
             this.date = date;
         }
 
-        public String getThreshold() {
-            return threshold;
+        public String getValue() {
+            return value;
         }
 
-        public void setThreshold(String threshold) {
-            this.threshold = threshold;
+        public void setValue(String value) {
+            this.value = value;
         }
 
         public String getActual() {
