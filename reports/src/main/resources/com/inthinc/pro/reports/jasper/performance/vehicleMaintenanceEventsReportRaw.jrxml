@@ -14,7 +14,7 @@
 	<field name="vehicleYMM" class="java.lang.String"/>
 	<field name="maintenanceEvent" class="java.lang.String"/>
 	<field name="date" class="java.util.Date"/>
-	<field name="threshold" class="java.lang.String"/>
+	<field name="value" class="java.lang.String"/>
 	<field name="actual" class="java.lang.String"/>
 	<field name="distanceSince" class="java.lang.String"/>
 	<field name="odometer" class="java.lang.String"/>
@@ -172,7 +172,7 @@
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement mode="Transparent" x="351" y="0" width="60" height="20"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{threshold}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{value}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement mode="Transparent" x="464" y="0" width="63" height="20"/>
