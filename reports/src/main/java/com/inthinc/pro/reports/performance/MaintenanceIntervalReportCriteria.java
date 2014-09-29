@@ -209,7 +209,9 @@ public class MaintenanceIntervalReportCriteria extends ReportCriteria {
                     distanceOver = distanceInt + "";
                 }else distanceOver = distance + "";
 
-                String baseHours = vehicleSetting.getActual().get(MaintenanceSettings.MAINT_BY_ENGINE_HOURS_START.getCode());
+                // Manually setting this to zero for now, as we're not currently
+                // allowing engine hours to start from an arbitrary value
+                String baseHours = "0";
                 String intervalHours = vehicleSetting.getActual().get(MaintenanceSettings.MAINT_BY_ENGINE_HOURS_INTERVAL.getCode());
                 String hours = null;
                 Long driveTime = driveTimeDAO.getDriveTimeSum(vehicle) / 3600;
