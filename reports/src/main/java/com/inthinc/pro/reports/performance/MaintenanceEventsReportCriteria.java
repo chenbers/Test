@@ -6,9 +6,11 @@ import com.inthinc.pro.dao.*;
 import com.inthinc.pro.model.*;
 import com.inthinc.pro.model.configurator.MaintenanceSettings;
 import com.inthinc.pro.model.event.*;
+
 import org.apache.log4j.Logger;
 import org.joda.time.DateTimeZone;
 import org.joda.time.Interval;
+
 import com.inthinc.pro.dao.report.GroupReportDAO;
 import com.inthinc.pro.reports.ReportCriteria;
 import com.inthinc.pro.reports.ReportType;
@@ -165,8 +167,20 @@ public class MaintenanceEventsReportCriteria extends ReportCriteria {
             for (Vehicle vehicle: allVehicles){
                 List<Event> events = eventDAO.getEventsForVehicle(vehicle.getVehicleID(), interval.getStart().toDate(), interval.getEnd().toDate(), searchNoteType, 0);
                 if (events != null && !events.isEmpty()){
-                    vehiclesWithEvents.add(vehicle);
-                    foundEvents.put(vehicle.getVehicleID(), events);
+                    
+                    // Filter vehicles without maintenance events
+                    if(containsMaintenanceEvents(events)){
+                        vehiclesWithEvents.add(vehicle);
+                        List<Event> maintenanceEvents = new ArrayList<Event>();
+                        for(int i = 0; i < events.size(); i++){
+                            
+                            // Filter non-maintenance events
+                            if(events.get(i) instanceof MaintenanceEvent || events.get(i) instanceof IgnitionOffMaintenanceEvent){
+                                maintenanceEvents.add(events.get(i));
+                            }
+                        }
+                        foundEvents.put(vehicle.getVehicleID(), maintenanceEvents);
+                    }
                 }
             }
 
@@ -249,7 +263,8 @@ public class MaintenanceEventsReportCriteria extends ReportCriteria {
                         BackingWrapper backingWrapper = new BackingWrapper(vehicleID, vehicleYMM, maintenanceEvent, date, value, actual,
                                 odometer, distanceSince, engineHours, hoursSince, groupName);
 
-                        backingWrappers.add(backingWrapper);
+                        // Filter non-maintenance events
+                        if(evCode > 0) backingWrappers.add(backingWrapper);
                     }
                 }
             }
@@ -279,6 +294,18 @@ public class MaintenanceEventsReportCriteria extends ReportCriteria {
         public void setIncludeZeroMilesDrivers(Boolean includeZeroMilesDrivers) {
             this.includeZeroMilesDrivers = includeZeroMilesDrivers;
         }
+    }
+
+    /*
+     * Tests to see if a List<Event> contains a maintenance event
+     */
+    private static boolean containsMaintenanceEvents(List<Event> events) {
+        for(int i = 0; i < events.size(); i++){
+            if(events.get(i) instanceof MaintenanceEvent || events.get(i) instanceof IgnitionOffMaintenanceEvent){
+                return true;
+            }
+        }
+        return false;
     }
 
     public static class BackingWrapper implements Comparable<BackingWrapper> {
