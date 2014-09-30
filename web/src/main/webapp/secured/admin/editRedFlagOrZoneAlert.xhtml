@@ -1061,6 +1061,18 @@
                                             <h:outputText value="#{messages.alertTypePreventativeMessage}"/>
                                         </td>
                                     </tr>
+                                    <tr class="tableOdd">
+                                        <td style="padding: 0px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
+                                            <h:selectBooleanCheckbox id="odometerSelected" value="#{redFlagOrZoneAlertsBean.item.selectedAlertTypes['ATTR_ODOMETER']}" onchange="checkMultiple('type')" />
+                                            <h:outputText value="#{messages.attrOdometer}" />
+                                        </td>
+                                    </tr>
+                                    <tr class="tableOdd">
+                                        <td style="padding: 0px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
+                                            <h:selectBooleanCheckbox id="engineHoursSelected" value="#{redFlagOrZoneAlertsBean.item.selectedAlertTypes['ATTR_ENGINE_HOURS']}" onchange="checkMultiple('type')" />
+                                            <h:outputText value="#{messages.attrEngineHours}" />
+                                        </td>
+                                    </tr>
                                 </table>
                             </h:panelGroup> </a4j:outputPanel>
 
