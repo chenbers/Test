@@ -200,10 +200,7 @@ public class MaintenanceIntervalReportCriteria extends ReportCriteria {
                 int distance = 0;
                 try {
                     if(baseOdometer != null && intervalOdometer != null) {
-                        distance = Integer.valueOf(odometer) - Integer.valueOf(baseOdometer);
-                        while(distance > Integer.valueOf(intervalOdometer)) {
-                            distance = distance - Integer.valueOf(intervalOdometer);
-                        }
+                        distance = (Integer.valueOf(odometer) - Integer.valueOf(baseOdometer)) % Integer.valueOf(intervalOdometer);
                     }
 
                     if(baseOdometer == null || intervalOdometer == null){
@@ -221,19 +218,13 @@ public class MaintenanceIntervalReportCriteria extends ReportCriteria {
                 // allowing engine hours to start from an arbitrary value
                 String baseHours = "0";
                 String intervalHours = vehicleSetting.getActual().get(MaintenanceSettings.MAINT_BY_ENGINE_HOURS_INTERVAL.getCode());
-                String hours = null;
                 Long driveTime = driveTimeDAO.getDriveTimeSum(vehicle) / 3600;
-                if (driveTime == 0){
-                    hours = null;
-                }else hours = driveTime.toString();
+                String hours = driveTime.toString();
                 String hoursOver;
 
                 int hour = 0;
                 if(baseHours != null && intervalHours != null &&  hours != null) {
-                    hour = Integer.valueOf(hours) - Integer.valueOf(baseHours);
-                    while(hour > Integer.valueOf(intervalHours)) {
-                        hour = hour - Integer.valueOf(intervalHours);
-                    }
+                    hour = (Integer.valueOf(hours) - Integer.valueOf(baseHours)) % Integer.valueOf(intervalHours);
                 }
 
                 if(baseHours == null || intervalHours == null){
