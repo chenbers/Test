@@ -37,6 +37,9 @@ public class MaintenanceIntervalReportCriteria extends ReportCriteria {
     }
 
     public static class Builder {
+        
+        private final int DISTANCE_MARGIN = 250;
+        private final int HOUR_MARGIN = 200;
 
         private Locale locale;
 
@@ -195,37 +198,33 @@ public class MaintenanceIntervalReportCriteria extends ReportCriteria {
                 String distanceOver;
 
                 int distance = 0;
-                if(baseOdometer != null && intervalOdometer != null) {
-                    distance = Integer.valueOf(odometer) - Integer.valueOf(baseOdometer);
-                    while(distance > Integer.valueOf(intervalOdometer)) {
-                        distance = distance - Integer.valueOf(intervalOdometer);
+                try {
+                    if(baseOdometer != null && intervalOdometer != null) {
+                        distance = (Integer.valueOf(odometer) - Integer.valueOf(baseOdometer)) % Integer.valueOf(intervalOdometer);
                     }
-                }
 
-                if(baseOdometer == null || intervalOdometer == null){
+                    if(baseOdometer == null || intervalOdometer == null){
+                        distanceOver = null;
+                    }else if(distance > (Integer.valueOf(intervalOdometer) / 2)){
+                        int distanceInt = distance - Integer.valueOf(intervalOdometer);
+                        distanceOver = distanceInt + "";
+                    }else distanceOver = distance + "";
+                } catch (NumberFormatException e) {
                     distanceOver = null;
-                }else if(distance > (Integer.valueOf(intervalOdometer) / 2)){
-                    int distanceInt = distance - Integer.valueOf(intervalOdometer);
-                    distanceOver = distanceInt + "";
-                }else distanceOver = distance + "";
+                }
+                
 
                 // Manually setting this to zero for now, as we're not currently
                 // allowing engine hours to start from an arbitrary value
                 String baseHours = "0";
                 String intervalHours = vehicleSetting.getActual().get(MaintenanceSettings.MAINT_BY_ENGINE_HOURS_INTERVAL.getCode());
-                String hours = null;
                 Long driveTime = driveTimeDAO.getDriveTimeSum(vehicle) / 3600;
-                if (driveTime == 0){
-                    hours = null;
-                }else hours = driveTime.toString();
+                String hours = driveTime.toString();
                 String hoursOver;
 
                 int hour = 0;
                 if(baseHours != null && intervalHours != null &&  hours != null) {
-                    hour = Integer.valueOf(hours) - Integer.valueOf(baseHours);
-                    while(hour > Integer.valueOf(intervalHours)) {
-                        hour = hour - Integer.valueOf(intervalHours);
-                    }
+                    hour = (Integer.valueOf(hours) - Integer.valueOf(baseHours)) % Integer.valueOf(intervalHours);
                 }
 
                 if(baseHours == null || intervalHours == null){
@@ -240,7 +239,7 @@ public class MaintenanceIntervalReportCriteria extends ReportCriteria {
                 if(distanceOver != null || hoursOver != null){
                     if (distanceOver == null) {
                         hourInterval = Integer.valueOf(hoursOver);
-                        if( (200 > hourInterval && hourInterval > -200)) {
+                        if(Math.abs(hourInterval) < HOUR_MARGIN) {
                             BackingWrapper backingWrapper = new BackingWrapper(vehicleID, vehicleYMM, baseOdometer,
                                         intervalOdometer, odometer, distanceOver, baseHours, intervalHours, hours, hoursOver, groupName);
 
@@ -248,7 +247,7 @@ public class MaintenanceIntervalReportCriteria extends ReportCriteria {
                         }
                     }else if (hoursOver == null) {
                         distanceInterval = Integer.valueOf(distanceOver);
-                        if( (250 > distanceInterval && distanceInterval > -250)) {
+                        if(Math.abs(distanceInterval) < DISTANCE_MARGIN) {
                              BackingWrapper backingWrapper = new BackingWrapper(vehicleID, vehicleYMM, baseOdometer,
                                         intervalOdometer, odometer, distanceOver, baseHours, intervalHours, hours, hoursOver, groupName);
 
@@ -257,7 +256,7 @@ public class MaintenanceIntervalReportCriteria extends ReportCriteria {
                     }else {
                         distanceInterval=Integer.valueOf(distanceOver);
                         hourInterval=Integer.valueOf(hoursOver);
-                        if( (250 > distanceInterval && distanceInterval > -250) || (200 > hourInterval && hourInterval > -200)) {
+                        if(Math.abs(distanceInterval) < DISTANCE_MARGIN || Math.abs(hourInterval) < HOUR_MARGIN) {
                              BackingWrapper backingWrapper = new BackingWrapper(vehicleID, vehicleYMM, baseOdometer,
                                         intervalOdometer, odometer, distanceOver, baseHours, intervalHours, hours, hoursOver, groupName);
 
