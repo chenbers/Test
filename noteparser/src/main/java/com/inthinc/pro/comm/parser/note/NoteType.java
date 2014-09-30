@@ -280,7 +280,7 @@ public enum NoteType {
 
 	public static boolean isStrippedNote(int code)
 	{
-		return (code > 245 && code < 255);
+		return (code > 244 && code < 255);
 	}
 	
 	public boolean isTripStartNoteType()
