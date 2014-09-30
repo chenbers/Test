@@ -200,13 +200,13 @@ public class MaintenanceIntervalReportCriteria extends ReportCriteria {
                 int distance = 0;
                 try {
                     if(baseOdometer != null && intervalOdometer != null) {
-                        distance = (Integer.valueOf(odometer) - Integer.valueOf(baseOdometer)) % Integer.valueOf(intervalOdometer);
+                        distance = (stringToInt(odometer) - stringToInt(baseOdometer)) % stringToInt(intervalOdometer);
                     }
 
                     if(baseOdometer == null || intervalOdometer == null){
                         distanceOver = null;
-                    }else if(distance > (Integer.valueOf(intervalOdometer) / 2)){
-                        int distanceInt = distance - Integer.valueOf(intervalOdometer);
+                    }else if(distance > (stringToInt(intervalOdometer) / 2)){
+                        int distanceInt = distance - stringToInt(intervalOdometer);
                         distanceOver = distanceInt + "";
                     }else distanceOver = distance + "";
                 } catch (NumberFormatException e) {
@@ -224,13 +224,13 @@ public class MaintenanceIntervalReportCriteria extends ReportCriteria {
 
                 int hour = 0;
                 if(baseHours != null && intervalHours != null &&  hours != null) {
-                    hour = (Integer.valueOf(hours) - Integer.valueOf(baseHours)) % Integer.valueOf(intervalHours);
+                    hour = (stringToInt(hours) - stringToInt(baseHours)) % stringToInt(intervalHours);
                 }
 
                 if(baseHours == null || intervalHours == null){
                     hoursOver = null;
-                }else if(hour > (Integer.valueOf(intervalHours) / 2)){
-                    int hourInt = hour - Integer.valueOf(intervalHours);
+                }else if(hour > (stringToInt(intervalHours) / 2)){
+                    int hourInt = hour - stringToInt(intervalHours);
                     hoursOver = hourInt + "";
                 }else hoursOver = hour + "";
 
@@ -238,7 +238,7 @@ public class MaintenanceIntervalReportCriteria extends ReportCriteria {
                 int hourInterval;
                 if(distanceOver != null || hoursOver != null){
                     if (distanceOver == null) {
-                        hourInterval = Integer.valueOf(hoursOver);
+                        hourInterval = stringToInt(hoursOver);
                         if(Math.abs(hourInterval) < HOUR_MARGIN) {
                             BackingWrapper backingWrapper = new BackingWrapper(vehicleID, vehicleYMM, baseOdometer,
                                         intervalOdometer, odometer, distanceOver, baseHours, intervalHours, hours, hoursOver, groupName);
@@ -246,7 +246,7 @@ public class MaintenanceIntervalReportCriteria extends ReportCriteria {
                             backingWrappers.add(backingWrapper);
                         }
                     }else if (hoursOver == null) {
-                        distanceInterval = Integer.valueOf(distanceOver);
+                        distanceInterval = stringToInt(distanceOver);
                         if(Math.abs(distanceInterval) < DISTANCE_MARGIN) {
                              BackingWrapper backingWrapper = new BackingWrapper(vehicleID, vehicleYMM, baseOdometer,
                                         intervalOdometer, odometer, distanceOver, baseHours, intervalHours, hours, hoursOver, groupName);
@@ -254,8 +254,8 @@ public class MaintenanceIntervalReportCriteria extends ReportCriteria {
                              backingWrappers.add(backingWrapper);
                         }
                     }else {
-                        distanceInterval=Integer.valueOf(distanceOver);
-                        hourInterval=Integer.valueOf(hoursOver);
+                        distanceInterval=stringToInt(distanceOver);
+                        hourInterval=stringToInt(hoursOver);
                         if(Math.abs(distanceInterval) < DISTANCE_MARGIN || Math.abs(hourInterval) < HOUR_MARGIN) {
                              BackingWrapper backingWrapper = new BackingWrapper(vehicleID, vehicleYMM, baseOdometer,
                                         intervalOdometer, odometer, distanceOver, baseHours, intervalHours, hours, hoursOver, groupName);
