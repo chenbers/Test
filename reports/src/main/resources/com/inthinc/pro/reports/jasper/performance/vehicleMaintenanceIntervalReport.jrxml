@@ -126,52 +126,47 @@
 				</graphicElement>
 			</rectangle>
 			<textField>
-				<reportElement mode="Opaque" x="1" y="0" width="63" height="20" backcolor="#CCCCCC"/>
+				<reportElement mode="Opaque" x="0" y="0" width="63" height="20" backcolor="#CCCCCC"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$R{column.3}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement mode="Opaque" x="64" y="0" width="94" height="20" backcolor="#CCCCCC"/>
+				<reportElement mode="Opaque" x="68" y="0" width="94" height="20" backcolor="#CCCCCC"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$R{column.4}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement mode="Opaque" x="158" y="0" width="111" height="20" backcolor="#CCCCCC"/>
+				<reportElement mode="Opaque" x="167" y="0" width="111" height="20" backcolor="#CCCCCC"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$R{column.5}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement mode="Opaque" x="269" y="0" width="77" height="20" backcolor="#CCCCCC"/>
+				<reportElement mode="Opaque" x="283" y="0" width="77" height="20" backcolor="#CCCCCC"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$R{column.6}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement mode="Opaque" x="478" y="0" width="69" height="20" backcolor="#CCCCCC"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$R{column.9}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement mode="Opaque" x="613" y="0" width="68" height="20" backcolor="#CCCCCC"/>
+				<reportElement mode="Opaque" x="578" y="0" width="68" height="20" backcolor="#CCCCCC"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$R{column.11}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement mode="Opaque" x="346" y="0" width="64" height="20" backcolor="#CCCCCC"/>
+				<reportElement mode="Opaque" x="365" y="0" width="64" height="20" backcolor="#CCCCCC"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$R{column.7}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement mode="Opaque" x="410" y="0" width="68" height="20" backcolor="#CCCCCC"/>
+				<reportElement mode="Opaque" x="434" y="0" width="68" height="20" backcolor="#CCCCCC"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$R{column.8}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement mode="Opaque" x="547" y="0" width="66" height="20" backcolor="#CCCCCC"/>
+				<reportElement mode="Opaque" x="507" y="0" width="66" height="20" backcolor="#CCCCCC"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$R{column.10}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement mode="Opaque" x="681" y="0" width="71" height="20" backcolor="#CCCCCC"/>
+				<reportElement mode="Opaque" x="651" y="0" width="71" height="20" backcolor="#CCCCCC"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$R{column.12}]]></textFieldExpression>
 			</textField>
@@ -180,52 +175,47 @@
 	<detail>
 		<band height="21">
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement mode="Transparent" x="0" y="0" width="64" height="20"/>
+				<reportElement mode="Transparent" x="0" y="0" width="64" height="19"/>
 				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{vehicleID}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement mode="Transparent" x="64" y="0" width="94" height="20"/>
+				<reportElement mode="Transparent" x="69" y="0" width="94" height="19"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{vehicleYMM}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement mode="Transparent" x="158" y="0" width="111" height="20"/>
+				<reportElement mode="Transparent" x="168" y="0" width="111" height="19"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{baseOdometer}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement mode="Transparent" x="478" y="0" width="69" height="20"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{baseHours}]]></textFieldExpression>
-			</textField>
-			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement mode="Transparent" x="547" y="0" width="66" height="20"/>
+				<reportElement mode="Transparent" x="508" y="0" width="66" height="19"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{intervalHours}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement mode="Transparent" x="613" y="0" width="68" height="20"/>
+				<reportElement mode="Transparent" x="579" y="0" width="68" height="19"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{hours}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement mode="Transparent" x="681" y="0" width="71" height="20"/>
+				<reportElement mode="Transparent" x="652" y="0" width="71" height="19"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{hoursOver}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement mode="Transparent" x="410" y="0" width="68" height="20"/>
+				<reportElement mode="Transparent" x="435" y="0" width="68" height="19"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{distanceOver}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement mode="Transparent" x="346" y="1" width="64" height="19"/>
+				<reportElement mode="Transparent" x="366" y="0" width="64" height="19"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{odometer}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement mode="Transparent" x="269" y="0" width="77" height="20"/>
+				<reportElement mode="Transparent" x="284" y="0" width="77" height="19"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{intervalOdometer}]]></textFieldExpression>
 			</textField>
