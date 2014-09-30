@@ -194,7 +194,7 @@ public class MaintenanceIntervalReportCriteria extends ReportCriteria {
                 String vehicleYMM = vehicle.getYear() + " " + vehicle.getMake() + " " + vehicle.getModel();
                 String baseOdometer = vehicleSetting.getActual().get(MaintenanceSettings.MAINT_BY_DIST_START.getCode());
                 String intervalOdometer = vehicleSetting.getActual().get(MaintenanceSettings.MAINT_BY_DIST_INTERVAL.getCode());
-                String odometer = driveTimeDAO.getDriveOdometerSum(vehicle) + "";
+                String odometer = (driveTimeDAO.getDriveOdometerSum(vehicle) / 100) + "";
                 String distanceOver;
 
                 int distance = 0;
