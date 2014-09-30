@@ -1,31 +1,30 @@
 package com.inthinc.pro.dao.jdbc;
 
-import com.inthinc.pro.dao.AddressDAO;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.apache.commons.lang.NotImplementedException;
+import org.apache.log4j.Logger;
+import org.springframework.dao.IncorrectResultSizeDataAccessException;
+import org.springframework.jdbc.core.simple.ParameterizedRowMapper;
+import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
+
 import com.inthinc.pro.dao.ConfiguratorDAO;
 import com.inthinc.pro.dao.hessian.exceptions.EmptyResultSetException;
-import com.inthinc.pro.model.Address;
 import com.inthinc.pro.model.SensitivitySliderValues;
-import com.inthinc.pro.model.State;
 import com.inthinc.pro.model.configurator.DeviceSettingDefinition;
 import com.inthinc.pro.model.configurator.SettingValue;
 import com.inthinc.pro.model.configurator.VehicleSetting;
 import com.inthinc.pro.model.configurator.VehicleSettingHistory;
-import com.mysql.jdbc.Statement;
-import org.apache.commons.lang.NotImplementedException;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.PreparedStatementCreator;
-import org.springframework.jdbc.core.simple.ParameterizedRowMapper;
-import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
-import org.springframework.jdbc.support.GeneratedKeyHolder;
-import org.springframework.jdbc.support.KeyHolder;
-
-import java.sql.*;
-import java.util.*;
 
 
 public class ConfiguratorJDBCDAO extends SimpleJdbcDaoSupport implements ConfiguratorDAO {
+
+    private static Logger logger = Logger.getLogger(ConfiguratorJDBCDAO.class);
 
     private static final String GET_DATA = "select veh.vehicleID, d.deviceID FROM vehicle veh" +
             " LEFT OUTER JOIN vddlog vdd ON (veh.vehicleID = vdd.vehicleID and vdd.stop is null)" +
@@ -72,6 +71,11 @@ public class ConfiguratorJDBCDAO extends SimpleJdbcDaoSupport implements Configu
             return getSimpleJdbcTemplate().queryForObject(GET_DATA, vehicleSettingParameterizedRowMapper, params);
         } catch (EmptyResultSetException e) {
             return null;
+        } catch (IncorrectResultSizeDataAccessException e) {
+            logger.error("Vehicle " + vehicleID + " appears to have too many open entries in the vddlog table.");
+            Map<String, Object> params = new HashMap<String, Object>();
+            params.put("vehicleID", vehicleID);
+            return getSimpleJdbcTemplate().query(GET_DATA, vehicleSettingParameterizedRowMapper, params).get(0);
         }
     }
 

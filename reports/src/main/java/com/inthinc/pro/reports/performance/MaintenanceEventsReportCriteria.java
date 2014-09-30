@@ -223,7 +223,7 @@ public class MaintenanceEventsReportCriteria extends ReportCriteria {
                         String actual = null;
                         if(maintenanceSettings != null) {
                             value = ((MaintenanceEvent) event).getValue();
-                            actual = configuratorJDBCDAO.getVehicleSettings(Integer.valueOf(vehicleID)).getActual().get(maintenanceSettings.getCode());
+                            actual = configuratorJDBCDAO.getVehicleSettings(stringToInt(vehicleID)).getActual().get(maintenanceSettings.getCode());
                         }else{
                             value = "-";
                             actual = "-";
@@ -232,11 +232,11 @@ public class MaintenanceEventsReportCriteria extends ReportCriteria {
                         Date prevEventDate = driveTimeDAO.getPrevEventDate(vehicle, noteCod, evCode, date, event.getDeviceID());
 
                         //calculate odometer values
-                        String odometer = driveTimeDAO.getDriveOdometerAtDate(vehicle, date).toString();
-                        String odometerLastEvent = driveTimeDAO.getDriveOdometerAtDate(vehicle, prevEventDate).toString();
+                        String odometer = (driveTimeDAO.getDriveOdometerAtDate(vehicle, date) / 100) + "";
+                        String odometerLastEvent = (driveTimeDAO.getDriveOdometerAtDate(vehicle, prevEventDate) / 100) + "";
                         String distanceSince;
                         try{
-                            distanceSince = Integer.valueOf(odometer) - Integer.valueOf(odometerLastEvent) + "";
+                            distanceSince = stringToInt(odometer) - stringToInt(odometerLastEvent) + "";
                         } catch(NumberFormatException e) {
                             distanceSince = "N/A";
                         }
@@ -244,7 +244,7 @@ public class MaintenanceEventsReportCriteria extends ReportCriteria {
                         //calculate engine hours
                         String engineHours = driveTimeDAO.getEngineHoursAtDate(vehicle,date) / 3600 + "";
                         String engineHoursLastEvent = driveTimeDAO.getEngineHoursAtDate(vehicle, prevEventDate) / 3600 + "";
-                        String hoursSince=Integer.valueOf(engineHours) - Integer.valueOf(engineHoursLastEvent) + "";
+                        String hoursSince=stringToInt(engineHours) - stringToInt(engineHoursLastEvent) + "";
                         vehicleID=vehicle.getName();
                         BackingWrapper backingWrapper = new BackingWrapper(vehicleID, vehicleYMM, maintenanceEvent, date, value, actual,
                                 odometer, distanceSince, engineHours, hoursSince, groupName);
