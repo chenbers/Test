@@ -232,8 +232,8 @@ public class MaintenanceEventsReportCriteria extends ReportCriteria {
                         Date prevEventDate = driveTimeDAO.getPrevEventDate(vehicle, noteCod, evCode, date, event.getDeviceID());
 
                         //calculate odometer values
-                        String odometer = driveTimeDAO.getDriveOdometerAtDate(vehicle, date).toString();
-                        String odometerLastEvent = driveTimeDAO.getDriveOdometerAtDate(vehicle, prevEventDate).toString();
+                        String odometer = (driveTimeDAO.getDriveOdometerAtDate(vehicle, date) / 100) + "";
+                        String odometerLastEvent = (driveTimeDAO.getDriveOdometerAtDate(vehicle, prevEventDate) / 100) + "";
                         String distanceSince;
                         try{
                             distanceSince = stringToInt(odometer) - stringToInt(odometerLastEvent) + "";
