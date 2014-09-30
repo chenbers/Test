@@ -371,4 +371,12 @@ public class ReportCriteria
         addParameter(REPORT_START_DATE, startEndDateTimeFormatter.withLocale(locale).print(interval.getStart()));
         addParameter(REPORT_END_DATE, startEndDateTimeFormatter.withLocale(locale).print(interval.getEnd()));
     }
+    
+    /*
+     * Converts a string representation of a number
+     * to an integer with rounding
+     */
+    protected static Integer stringToInt(String string) {
+        return string != null ? Math.round(Float.parseFloat(string)) : null;
+    }
 }
