@@ -2,6 +2,7 @@ package com.inthinc.pro.service.impl;
 
 import com.inthinc.pro.dao.hessian.exceptions.EmptyResultSetException;
 import com.inthinc.pro.dao.hessian.exceptions.ProxyException;
+import com.inthinc.pro.model.CustomDuration;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.DriverLocation;
 import com.inthinc.pro.model.Duration;
@@ -118,6 +119,13 @@ public class EmployeeServiceImpl extends AbstractService<Driver, DriverDAOAdapte
                 if (score != null)
                     return Response.ok(score).build();
             }
+
+            CustomDuration customDuration = CustomDuration.getDurationByDays(numberOfDays);
+            if (customDuration != null) {
+                Score score = getDao().getScore(driverID, customDuration);
+                if (score != null)
+                    return Response.ok(score).build();
+            }
         }
         return Response.status(Status.NOT_FOUND).build();
     }
@@ -182,6 +190,13 @@ public class EmployeeServiceImpl extends AbstractService<Driver, DriverDAOAdapte
                 if (!list.isEmpty())
                     return Response.ok(new GenericEntity<List<Trend>>(list) {
                     }).build();
+            }
+
+            CustomDuration customDuration = CustomDuration.getDurationByDays(numberOfDays);
+            if (customDuration != null) {
+                List<Trend> list = getDao().getTrend(driverID, customDuration);
+                if (!list.isEmpty())
+                    return Response.ok(new GenericEntity<List<Trend>>(list) {}).build();
             }
         }
         return Response.status(Status.NOT_FOUND).build();
