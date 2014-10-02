@@ -15,7 +15,9 @@ import com.inthinc.pro.service.annotations.DateFormat;
 @Path("/")
 @Produces({"application/xml","application/json", "application/fastinfoset"})
 public interface EventService {
-
+    
+    //2011-08-29T08:31:25-0600
+    //final String DATE_TIME_FORMAT = "yyyy-MM-dd'T'hh:mm:ssZ";
     String SIMPLE_DATE_FORMAT = "yyyyMMdd";
 
     @GET
@@ -30,7 +32,7 @@ public interface EventService {
     @Produces({"text/*"})
     @Path("driver/{driverID}/eventsByDuration/{dateTime}/{duration}/count")
     public Response getEventCountByDuration(@PathParam("driverID")Integer driverID,
-                                  @PathParam("dateTime") @DateFormat(SIMPLE_DATE_FORMAT) Date dateTime,
+                                  @PathParam("dateTime") String dateTime,
                                   @PathParam("duration") Integer duration);
 
     @GET
@@ -54,15 +56,15 @@ public interface EventService {
     public Response getEvents(@PathParam("entity") String entity,
             @PathParam("entityID")Integer entityID,
             @PathParam("eventTypes")String eventTypes,
-            @PathParam("startDate") @DateFormat(SIMPLE_DATE_FORMAT) Date startDate,
-            @PathParam("endDate") @DateFormat(SIMPLE_DATE_FORMAT) Date endDate,
+            @PathParam("fromDateTime") String startDateString,
+            @PathParam("toDateTime") String endDateString,
             @PathParam("page") PathSegment page,
             @Context UriInfo uriInfo);
 
     @GET
     @Path("driver/{driverID}/eventsByDuration/{dateTime}/{duration}/{page}")
     public Response getEventsByDuration(@PathParam("driverID")Integer driverID,
-                              @PathParam("dateTime") @DateFormat(SIMPLE_DATE_FORMAT) Date dateTime,
+                              @PathParam("dateTime") String dateTime,
                               @PathParam("duration") Integer duration,
                               @PathParam("page") PathSegment page,
                               @Context UriInfo uriInfo);
