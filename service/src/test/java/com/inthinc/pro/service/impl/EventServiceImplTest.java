@@ -1,28 +1,32 @@
 package com.inthinc.pro.service.impl;
 
-import com.inthinc.pro.model.event.Event;
-import com.inthinc.pro.model.event.NoteType;
-import com.inthinc.pro.service.model.EventGetter;
-import com.inthinc.pro.service.pagination.EventPage;
-import mockit.Expectations;
-import org.jboss.resteasy.specimpl.MultivaluedMapImpl;
-import org.jboss.resteasy.specimpl.PathSegmentImpl;
-import org.jboss.resteasy.specimpl.UriInfoImpl;
-import org.junit.Test;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.fail;
+
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.PathSegment;
 import javax.ws.rs.core.Response;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.fail;
+import mockit.Expectations;
+
+import org.jboss.resteasy.specimpl.MultivaluedMapImpl;
+import org.jboss.resteasy.specimpl.PathSegmentImpl;
+import org.jboss.resteasy.specimpl.UriInfoImpl;
+import org.junit.Test;
+
+import com.inthinc.pro.model.event.Event;
+import com.inthinc.pro.model.event.NoteType;
+import com.inthinc.pro.service.model.EventGetter;
+import com.inthinc.pro.service.pagination.EventPage;
 
 /**
  * Unit tests for EventServiceImpl.
@@ -63,6 +67,7 @@ public class EventServiceImplTest extends BaseUnitTest {
         }
     }
 
+    private static final String DATE_TIME_FORMAT = "yyyy-MM-dd'T'hh:mm:ssZ";
     @Test
     public void getEventCountByDurationTest(final EventGetter mockEventGetter) {
         serviceSUT.setEventGetter(mockEventGetter);
@@ -73,8 +78,9 @@ public class EventServiceImplTest extends BaseUnitTest {
                 result = numNotes;
             }
         };
-
-        Response response = serviceSUT.getEventCountByDuration(driverId, new Date(), 10);
+        SimpleDateFormat dateformat = new SimpleDateFormat(DATE_TIME_FORMAT);
+        
+        Response response = serviceSUT.getEventCountByDuration(driverId, dateformat.format(new Date()), 10);
 
         assertNotNull(response);
         assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
@@ -93,8 +99,8 @@ public class EventServiceImplTest extends BaseUnitTest {
                 result = numNotes;
             }
         };
-
-        Response response = serviceSUT.getEventsByDuration(driverId, new Date(), 10, pathSegment, uriInfo);
+        SimpleDateFormat dateformat = new SimpleDateFormat(DATE_TIME_FORMAT);
+        Response response = serviceSUT.getEventsByDuration(driverId, dateformat.format(new Date()), 10, pathSegment, uriInfo);
 
         assertNotNull(response);
         assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());

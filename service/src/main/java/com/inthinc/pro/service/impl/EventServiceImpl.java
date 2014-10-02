@@ -188,7 +188,7 @@ public class EventServiceImpl implements EventService {
                 return Response.status(Status.BAD_REQUEST).build();
             }
             if(pageOfEvents.isEmpty()){
-                return Response.status(Status.NOT_FOUND).build();
+                return Response.status(Status.NO_CONTENT).build();
             }
 
             Integer totalCount = eventGetter.getEventCount("driver", driverID,  noteTypesList, interval.getStart().toDate(), interval.getEnd().toDate());
