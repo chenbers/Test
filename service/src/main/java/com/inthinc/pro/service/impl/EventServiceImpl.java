@@ -54,13 +54,13 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public Response getEventCountByDuration(Integer driverID, @DateFormat(SIMPLE_DATE_FORMAT) Date dateTime, Integer duration) {
+    public Response getEventCountByDuration(Integer driverID, @DateFormat(SIMPLE_DATE_FORMAT) String dateTime, Integer duration) {
         try {
             org.joda.time.DateTime endDate = new org.joda.time.DateTime(dateTime);
             org.joda.time.DateTime startDate = endDate.minusMinutes(duration);
-            Interval interval = DateUtil.getInterval(startDate.toDate(),endDate.toDate());
+            DateUtil.checkDateRange(startDate, endDate);
             List<NoteType> noteTypesList = parseNoteTypes("all");
-            Integer count = eventGetter.getEventCount("driver", driverID,  noteTypesList, interval.getStart().toDate(), interval.getEnd().toDate());
+            Integer count = eventGetter.getEventCount("driver", driverID,  noteTypesList, startDate.toDate(), endDate.toDate());
             return Response.ok(count.toString()).build();
         }
         catch(BadDateRangeException bdre){
@@ -128,8 +128,10 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public Response getEvents(String entity, Integer entityID, String eventTypes, Date startDate, Date endDate,
+    public Response getEvents(String entity, Integer entityID, String eventTypes, String startDateString, String endDateString,
             PathSegment page, UriInfo uriInfo) {
+        Date startDate = DateUtil.buildDateTimeFromString(startDateString);
+        Date endDate = DateUtil.buildDateTimeFromString(endDateString);
         try {
             Interval interval = DateUtil.getInterval(startDate,endDate);
 
@@ -169,9 +171,10 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public Response getEventsByDuration(Integer driverID, @DateFormat(SIMPLE_DATE_FORMAT) Date dateTime, Integer duration, PathSegment page, @Context UriInfo uriInfo) {
+    public Response getEventsByDuration(Integer driverID, String dateTime, Integer duration, PathSegment page, @Context UriInfo uriInfo) {
         try {
-            org.joda.time.DateTime endDate = new org.joda.time.DateTime(dateTime);
+            Date fromDate = DateUtil.buildDateTimeFromString(dateTime);
+            org.joda.time.DateTime endDate = new org.joda.time.DateTime(fromDate);
             org.joda.time.DateTime startDate = endDate.minusMinutes(duration);
             Interval interval = DateUtil.getInterval(startDate.toDate(),endDate.toDate());
 
@@ -185,7 +188,7 @@ public class EventServiceImpl implements EventService {
                 return Response.status(Status.BAD_REQUEST).build();
             }
             if(pageOfEvents.isEmpty()){
-                return Response.status(Status.NOT_FOUND).build();
+                return Response.status(Status.NO_CONTENT).build();
             }
 
             Integer totalCount = eventGetter.getEventCount("driver", driverID,  noteTypesList, interval.getStart().toDate(), interval.getEnd().toDate());

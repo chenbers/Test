@@ -25,6 +25,7 @@ public class VehicleStatusUtil {
 
     private DateTime lastFoundDateTime;
     private Integer scanHours = 1;
+    private int maxNumberOfScans = 10;
     private List<NoteType> scannedNoteTypes;
     private Integer vehicleId;
 
@@ -93,8 +94,10 @@ public class VehicleStatusUtil {
 
         // search while status is not determined
         VehicleStatus vehicleStatus = VehicleStatus.NOT_YET_DETERMINED;
-        while (vehicleStatus == VehicleStatus.NOT_YET_DETERMINED) {
+        int scans = 0;
+        while (vehicleStatus == VehicleStatus.NOT_YET_DETERMINED && scans < maxNumberOfScans) {
             vehicleStatus = getStatus(lastFoundDateTime);
+            scans++;
         }
 
         return vehicleStatus;
@@ -165,6 +168,8 @@ public class VehicleStatusUtil {
                 case IGNITION_OFF:
                 case POWER_INTERRUPTED:                      // ignition off or power off means parking
                     return VehicleStatus.PARKING;
+                default:
+                    continue;
             }
         }
         return VehicleStatus.NOT_YET_DETERMINED;

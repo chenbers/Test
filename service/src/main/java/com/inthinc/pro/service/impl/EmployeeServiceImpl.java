@@ -35,8 +35,7 @@ import java.util.List;
 public class EmployeeServiceImpl extends AbstractService<Driver, DriverDAOAdapter> implements EmployeeService {
     private static final Logger logger = Logger.getLogger(EmployeeServiceImpl.class);
     private static final String SIMPLE_DATE_FORMAT = "yyyyMMdd";
-    //2011-08-29T08:31:25-0600
-    private static final String DATE_TIME_FORMAT = "yyyy-MM-dd'T'hh:mm:ssZ";
+
     static final Integer DEFAULT_PAST_TIMING = -30;
 
     @Override
@@ -319,8 +318,8 @@ public class EmployeeServiceImpl extends AbstractService<Driver, DriverDAOAdapte
 
     @Override
     public Response getTrips(String employeeID, String fromDateTime, String toDateTime) {
-        Date fromDate = buildDateTimeFromString(fromDateTime);
-        Date toDate = buildDateTimeFromString(toDateTime);
+        Date fromDate = DateUtil.buildDateTimeFromString(fromDateTime);
+        Date toDate = DateUtil.buildDateTimeFromString(toDateTime);
         if (!validDateRange(fromDate, toDate)) return Response.status(Status.BAD_REQUEST).build();
 
         if (employeeID != null && fromDate != null && toDate != null) {
@@ -350,19 +349,7 @@ public class EmployeeServiceImpl extends AbstractService<Driver, DriverDAOAdapte
         return Response.status(Status.NOT_FOUND).build();
     }
 
-    private Date buildDateTimeFromString(String strDate) {
-        if (strDate == null)
-            return null;
 
-        DateFormat df = new SimpleDateFormat(DATE_TIME_FORMAT);
-        try {
-            Date convertedDate = df.parse(strDate);
-            return convertedDate;
-        } catch (ParseException e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
 
     private boolean validDateRange(Date fromDate, Date toDate) {
         return toDate.after(fromDate);
