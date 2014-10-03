@@ -15,6 +15,7 @@ import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -109,6 +110,19 @@ public class VehicleStatusUtilTest {
 
         VehicleStatus status = vehicleStatusUtil.determineStatusByVehicleId(VEHICLE_ID);
         assertEquals(status, VehicleStatus.DRIVING);
+    }
+    
+    @Test
+    public void determineStatusByVehicleId_noEvents_notDetermined(){
+
+        new Expectations() {{
+            mockEventDao.getEventsForVehicle(VEHICLE_ID, withInstanceOf(Date.class), withInstanceOf(Date.class),(List<NoteType>)any, 0);
+            times = 10;
+            result = Collections.emptyList();
+        }};
+
+        VehicleStatus status = vehicleStatusUtil.determineStatusByVehicleId(VEHICLE_ID);
+        assertEquals(status, VehicleStatus.NOT_YET_DETERMINED);
     }
 
     /**
