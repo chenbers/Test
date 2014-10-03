@@ -190,7 +190,7 @@ public class MaintenanceIntervalReportCriteria extends ReportCriteria {
                 Integer groupId = vehicle.getGroupID();
                 Group group = groupDAO.findByID(groupId);
                 String groupName = group.getName();
-                String vehicleID = vehicle.getVehicleID().toString();
+                //String vehicleID = vehicle.getVehicleID().toString();
                 String vehicleYMM = vehicle.getYear() + " " + vehicle.getMake() + " " + vehicle.getModel();
                 String baseOdometer = vehicleSetting.getActual().get(MaintenanceSettings.MAINT_BY_DIST_START.getCode());
                 String intervalOdometer = vehicleSetting.getActual().get(MaintenanceSettings.MAINT_BY_DIST_INTERVAL.getCode());
@@ -200,15 +200,26 @@ public class MaintenanceIntervalReportCriteria extends ReportCriteria {
                 int distance = 0;
                 try {
                     if(baseOdometer != null && intervalOdometer != null) {
+                        if(stringToInt(odometer) > stringToInt(baseOdometer)){
+                            int dif = stringToInt(odometer) - stringToInt(baseOdometer);
+                            if(dif > stringToInt(intervalOdometer)){
                         distance = (stringToInt(odometer) - stringToInt(baseOdometer)) % stringToInt(intervalOdometer);
+                                if(distance > (stringToInt(intervalOdometer) / 2)){
+                                    int distanceInt = distance - stringToInt(intervalOdometer);
+                                    distanceOver = distanceInt + "";
+                                }else {
+                                    distanceOver = distance + "";
                     }
+                            }else{
+                                distanceOver = -(stringToInt(baseOdometer) + stringToInt(intervalOdometer) - stringToInt(odometer)) + "";
+                            }
+                        }else{
+                            distanceOver = -(stringToInt(baseOdometer) + stringToInt(intervalOdometer) - stringToInt(odometer)) + "";
+                        }
 
-                    if(baseOdometer == null || intervalOdometer == null){
+                    }else{
                         distanceOver = null;
-                    }else if(distance > (stringToInt(intervalOdometer) / 2)){
-                        int distanceInt = distance - stringToInt(intervalOdometer);
-                        distanceOver = distanceInt + "";
-                    }else distanceOver = distance + "";
+                    }
                 } catch (NumberFormatException e) {
                     distanceOver = null;
                 }
@@ -240,7 +251,7 @@ public class MaintenanceIntervalReportCriteria extends ReportCriteria {
                     if (distanceOver == null) {
                         hourInterval = stringToInt(hoursOver);
                         if(Math.abs(hourInterval) < HOUR_MARGIN) {
-                            BackingWrapper backingWrapper = new BackingWrapper(vehicleID, vehicleYMM, baseOdometer,
+                            BackingWrapper backingWrapper = new BackingWrapper(vehicle.getName(), vehicleYMM, baseOdometer,
                                         intervalOdometer, odometer, distanceOver, baseHours, intervalHours, hours, hoursOver, groupName);
 
                             backingWrappers.add(backingWrapper);
@@ -248,7 +259,7 @@ public class MaintenanceIntervalReportCriteria extends ReportCriteria {
                     }else if (hoursOver == null) {
                         distanceInterval = stringToInt(distanceOver);
                         if(Math.abs(distanceInterval) < DISTANCE_MARGIN) {
-                             BackingWrapper backingWrapper = new BackingWrapper(vehicleID, vehicleYMM, baseOdometer,
+                             BackingWrapper backingWrapper = new BackingWrapper(vehicle.getName(), vehicleYMM, baseOdometer,
                                         intervalOdometer, odometer, distanceOver, baseHours, intervalHours, hours, hoursOver, groupName);
 
                              backingWrappers.add(backingWrapper);
@@ -257,7 +268,7 @@ public class MaintenanceIntervalReportCriteria extends ReportCriteria {
                         distanceInterval=stringToInt(distanceOver);
                         hourInterval=stringToInt(hoursOver);
                         if(Math.abs(distanceInterval) < DISTANCE_MARGIN || Math.abs(hourInterval) < HOUR_MARGIN) {
-                             BackingWrapper backingWrapper = new BackingWrapper(vehicleID, vehicleYMM, baseOdometer,
+                             BackingWrapper backingWrapper = new BackingWrapper(vehicle.getName(), vehicleYMM, baseOdometer,
                                         intervalOdometer, odometer, distanceOver, baseHours, intervalHours, hours, hoursOver, groupName);
 
                              backingWrappers.add(backingWrapper);

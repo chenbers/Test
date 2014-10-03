@@ -139,7 +139,7 @@ public enum ReportGroup {
     /* MAINTENANCE */
     MAINTENANCE_EVENTS_REPORT("Vehicle Maintenance Events Report", 49, EntityType.ENTITY_GROUP_LIST, new CriteriaType[] {  CriteriaType.TIMEFRAME}, new GroupType[] { GroupType.DIVISION,
             GroupType.FLEET, GroupType.TEAM }, ReportCategory.Maintenance, EnumSet.of(ReportAccountType.PERFORMANCE), ReportType.VEHICLE_MAINTENANCE_EVENTS_REPORT),
-    MAINTENANCE_INTERVAL_REPORT("Vehicle Maintenance Interval Report", 50, EntityType.ENTITY_GROUP_LIST, new CriteriaType[] { null }, new GroupType[] { GroupType.DIVISION,
+    MAINTENANCE_INTERVAL_REPORT("Vehicle Maintenance Interval Report", 50, EntityType.ENTITY_GROUP_LIST, new CriteriaType[] {}, new GroupType[] { GroupType.DIVISION,
             GroupType.FLEET, GroupType.TEAM }, ReportCategory.Maintenance, EnumSet.of(ReportAccountType.PERFORMANCE), ReportType.VEHICLE_MAINTENANCE_INTERVAL_REPORT)
     ;
 
