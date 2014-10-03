@@ -72,12 +72,12 @@ public class IgnitionOffMaintenanceEvent extends Event implements MultipleEventT
                     return EventType.MALFUNCTION_INDICATOR_LAMP;
                 }
             } else {
-                if (malfunctionIndicatorLamp != null) {
-                    threshold = malfunctionIndicatorLamp + "";
-                    return EventType.MALFUNCTION_INDICATOR_LAMP;
-                } else if (checkEngine != null) {
+                if (checkEngine != null) {
                     threshold = checkEngine + "";
                     return decodeCheckEngineBitMask(checkEngine);
+                }else if (malfunctionIndicatorLamp != null) {
+                    threshold = malfunctionIndicatorLamp + "";
+                    return EventType.MALFUNCTION_INDICATOR_LAMP;
                 }
             }
             return EventType.UNKNOWN_MAINTENANCE;
