@@ -71,12 +71,12 @@ public class IgnitionOffMaintenanceEvent extends Event implements MultipleEventT
                     threshold = attrMap.get(EventAttr.ATTR_MALFUNCTION_INDICATOR_LAMP.getCodeAsString()).toString();
                 }
             } else {
-                if (malfunctionIndicatorLamp != null) {
-                    threshold = malfunctionIndicatorLamp + "";
-                    return EventType.MALFUNCTION_INDICATOR_LAMP;
-                } else if (checkEngine != null) {
+                if (checkEngine != null) {
                     threshold = checkEngine + "";
                     return decodeCheckEngineBitMask(checkEngine);
+                }else if (malfunctionIndicatorLamp != null) {
+                    threshold = malfunctionIndicatorLamp + "";
+                    return EventType.MALFUNCTION_INDICATOR_LAMP;
                 }
             }
             return EventType.UNKNOWN_MAINTENANCE;    
