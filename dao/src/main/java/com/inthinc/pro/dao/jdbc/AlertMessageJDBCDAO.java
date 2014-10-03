@@ -241,78 +241,82 @@ public class AlertMessageJDBCDAO extends GenericJDBCDAO implements AlertMessageD
         List<AlertMessageBuilder> messageBuilders = new ArrayList<AlertMessageBuilder>();
 
         for (AlertMessage alertMessage : messages) {
-            Person person = getPerson(alertMessage.getPersonID());
-            if (person == null) {
-                continue;
-            }
-            logger.debug("Preparing message for: " + person.getFullName());
-
-            Event event = null;
-            
-            if (alertMessage.getAttribs() == null || alertMessage.getAttribs().isEmpty())
-                event = eventDAO.findByID(alertMessage.getNoteID());
-            
-            if (event == null) {
-                logger.debug("alertMessage.getAttribs(): " + alertMessage.getAttribs());
-                if (alertMessage.getAttribs() != null && !alertMessage.getAttribs().equalsIgnoreCase("")) {
-                    Mapper mapper = new EventHessianMapper();
-                    event = mapper.convertToModelObject(Attrib.convertToHashMap(alertMessage.getAttribs()), Event.class);
-                    event.setDriverID(alertMessage.getDriverID());
-                    event.setVehicleID(alertMessage.getVehicleID());
-                    event.setDeviceID(alertMessage.getDeviceID());
-                    logger.debug("event: " + event);
-                }    
-                if (event == null) {
-                    logger.debug("event is Null ");
-                    continue;
-                }
-            }
-            
-            if(event instanceof SpeedingEvent){
-	            if(!((SpeedingEvent)event).isValidEvent()){
-	            	
-	            	StringBuilder sb = new StringBuilder();
-	            	
-	            	sb.append("Invalid speeding event has occured! ")
-	            	.append(" DriverID: ")
-	            	.append(event.getDriverID() == null ? "Not Available " : String.valueOf(event.getDriverID()))
-	            	.append(" VehicleID: ")
-	            	.append(event.getVehicleID() == null ? "Not Available " : String.valueOf(event.getVehicleID()))
-	            	.append(" DeviceID: ")
-	            	.append(event.getDeviceID() == null ? "Not Available " : String.valueOf(event.getDeviceID()))
-	            	.append(" SpeedLimit: ")
-	            	.append(((SpeedingEvent)event).getSpeedLimit() == null ? "Not Available " : String.valueOf(((SpeedingEvent)event).getSpeedLimit()))
-	            	.append(" Speed: ")
-	            	.append(((SpeedingEvent)event).getSpeed()  == null ? "Not Available" : String.valueOf(((SpeedingEvent)event).getSpeed()));
-	            	
-	            	logger.error(sb.toString());
-	            	
-	            	continue;
+        	try {
+	            Person person = getPerson(alertMessage.getPersonID());
+	            if (person == null) {
+	                continue;
 	            }
-            }
-
-            Locale locale = getLocale(person);
-            
-            List<String> parameterList = new ParameterList().getParameterList(event, person.getMeasurementType(), alertMessage.getAlertMessageType(), locale, alertMessage.getZoneID());
-            if (!alertReady(parameterList))
-                continue;
-
-            if (!AlertEscalationStatus.SENT.equals(alertMessage.getStatus())) {
-                alertMessage.setAddress(getAlertMessageAddress(person, messageDeliveryType));
-            }
-            AlertMessageBuilder  alertMessageBuilder = new AlertMessageBuilder(alertMessage.getAlertID(), 
-                    alertMessage.getMessageID(), 
-                    locale, 
-                    alertMessage.getAddress(),
-                    alertMessage.getAlertMessageType(), 
-                    alertMessage.getAcknowledge(),
-                    parameterList);
-
-            if (alertMessageBuilder != null) {
-                messageBuilders.add(alertMessageBuilder);
-            }
-
-            logMessage(conn, alertMessage.getMessageID(), alertMessage.getPersonID());
+	            logger.debug("Preparing message for: " + person.getFullName());
+	
+	            Event event = null;
+	            
+	            if (alertMessage.getAttribs() == null || alertMessage.getAttribs().isEmpty())
+	                event = eventDAO.findByID(alertMessage.getNoteID());
+	            
+	            if (event == null) {
+	                logger.debug("alertMessage.getAttribs(): " + alertMessage.getAttribs());
+	                if (alertMessage.getAttribs() != null && !alertMessage.getAttribs().equalsIgnoreCase("")) {
+	                    Mapper mapper = new EventHessianMapper();
+	                    event = mapper.convertToModelObject(Attrib.convertToHashMap(alertMessage.getAttribs()), Event.class);
+	                    event.setDriverID(alertMessage.getDriverID());
+	                    event.setVehicleID(alertMessage.getVehicleID());
+	                    event.setDeviceID(alertMessage.getDeviceID());
+	                    logger.debug("event: " + event);
+	                }    
+	                if (event == null) {
+	                    logger.debug("event is Null ");
+	                    continue;
+	                }
+	            }
+	            
+	            if(event instanceof SpeedingEvent){
+		            if(!((SpeedingEvent)event).isValidEvent()){
+		            	
+		            	StringBuilder sb = new StringBuilder();
+		            	
+		            	sb.append("Invalid speeding event has occured! ")
+		            	.append(" DriverID: ")
+		            	.append(event.getDriverID() == null ? "Not Available " : String.valueOf(event.getDriverID()))
+		            	.append(" VehicleID: ")
+		            	.append(event.getVehicleID() == null ? "Not Available " : String.valueOf(event.getVehicleID()))
+		            	.append(" DeviceID: ")
+		            	.append(event.getDeviceID() == null ? "Not Available " : String.valueOf(event.getDeviceID()))
+		            	.append(" SpeedLimit: ")
+		            	.append(((SpeedingEvent)event).getSpeedLimit() == null ? "Not Available " : String.valueOf(((SpeedingEvent)event).getSpeedLimit()))
+		            	.append(" Speed: ")
+		            	.append(((SpeedingEvent)event).getSpeed()  == null ? "Not Available" : String.valueOf(((SpeedingEvent)event).getSpeed()));
+		            	
+		            	logger.error(sb.toString());
+		            	
+		            	continue;
+		            }
+	            }
+	
+	            Locale locale = getLocale(person);
+	            
+	            List<String> parameterList = new ParameterList().getParameterList(event, person.getMeasurementType(), alertMessage.getAlertMessageType(), locale, alertMessage.getZoneID());
+	            if (!alertReady(parameterList))
+	                continue;
+	
+	            if (!AlertEscalationStatus.SENT.equals(alertMessage.getStatus())) {
+	                alertMessage.setAddress(getAlertMessageAddress(person, messageDeliveryType));
+	            }
+	            AlertMessageBuilder  alertMessageBuilder = new AlertMessageBuilder(alertMessage.getAlertID(), 
+	                    alertMessage.getMessageID(), 
+	                    locale, 
+	                    alertMessage.getAddress(),
+	                    alertMessage.getAlertMessageType(), 
+	                    alertMessage.getAcknowledge(),
+	                    parameterList);
+	
+	            if (alertMessageBuilder != null) {
+	                messageBuilders.add(alertMessageBuilder);
+	            }
+	
+	            logMessage(conn, alertMessage.getMessageID(), alertMessage.getPersonID());
+        	} catch(Throwable e) {
+            	logger.error("Exception sending alert message. MessageID: " + alertMessage.getMessageID() + " " + e);
+        	}
         }
         return messageBuilders;
     }
