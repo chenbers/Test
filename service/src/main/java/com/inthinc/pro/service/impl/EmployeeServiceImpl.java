@@ -55,13 +55,13 @@ public class EmployeeServiceImpl extends AbstractService<Driver, DriverDAOAdapte
         try {
             driverID = getDao().getDriverIDByEmpID(employeeID);
         } catch(EmptyResultSetException e){
-            return Response.ok(new WsError(String.format(notFoundMsg, employeeID))).build();
+            return Response.serverError().entity(new WsError(String.format(notFoundMsg, employeeID))).build();
         }
 
         if (driverID != null) {
             Driver driver = getDao().findByID(driverID);
             if (driver != null)
-                return Response.ok(driver).build();
+                return Response.serverError().entity(driver).build();
         }
 
         return Response.status(Status.NOT_FOUND).build();
@@ -73,7 +73,7 @@ public class EmployeeServiceImpl extends AbstractService<Driver, DriverDAOAdapte
         try {
             driverID = getDao().getDriverIDByEmpID(employeeID);
         } catch(EmptyResultSetException e){
-            return Response.ok(new WsError(String.format(notFoundMsg, employeeID))).build();
+            return Response.serverError().entity(new WsError(String.format(notFoundMsg, employeeID))).build();
         }
 
         if (driverID != null) {
@@ -112,7 +112,7 @@ public class EmployeeServiceImpl extends AbstractService<Driver, DriverDAOAdapte
         try {
             driverID = getDao().getDriverIDByEmpID(employeeID);
         } catch(EmptyResultSetException e){
-            return Response.ok(new WsError(String.format(notFoundMsg, employeeID))).build();
+            return Response.serverError().entity(new WsError(String.format(notFoundMsg, employeeID))).build();
         }
 
         if (driverID != null) {
@@ -140,7 +140,7 @@ public class EmployeeServiceImpl extends AbstractService<Driver, DriverDAOAdapte
             try {
                 driverID = getDao().getDriverIDByEmpID(employeeID);
             } catch(EmptyResultSetException e){
-                return Response.ok(new WsError(String.format(notFoundMsg, employeeID))).build();
+                return Response.serverError().entity(new WsError(String.format(notFoundMsg, employeeID))).build();
             }
 
             if (driverID != null) {
@@ -183,7 +183,7 @@ public class EmployeeServiceImpl extends AbstractService<Driver, DriverDAOAdapte
         try {
             driverID = getDao().getDriverIDByEmpID(employeeID);
         } catch(EmptyResultSetException e){
-            return Response.ok(new WsError(String.format(notFoundMsg, employeeID))).build();
+            return Response.serverError().entity(new WsError(String.format(notFoundMsg, employeeID))).build();
         }
 
         if (driverID != null) {
@@ -218,7 +218,7 @@ public class EmployeeServiceImpl extends AbstractService<Driver, DriverDAOAdapte
                 try {
                     driverID = getDao().getDriverIDByEmpID(employeeID);
                 } catch(EmptyResultSetException e){
-                    return Response.ok(new WsError(String.format(notFoundMsg, employeeID))).build();
+                    return Response.serverError().entity(new WsError(String.format(notFoundMsg, employeeID))).build();
                 }
 
                 if (driverID != null) {
@@ -252,7 +252,7 @@ public class EmployeeServiceImpl extends AbstractService<Driver, DriverDAOAdapte
             try {
                 driverID = getDao().getDriverIDByEmpID(employeeID);
             } catch(EmptyResultSetException e){
-                return Response.ok(new WsError(String.format(notFoundMsg, employeeID))).build();
+                return Response.serverError().entity(new WsError(String.format(notFoundMsg, employeeID))).build();
             }
 
             if (driverID != null) {
@@ -314,7 +314,7 @@ public class EmployeeServiceImpl extends AbstractService<Driver, DriverDAOAdapte
             try {
                 driverID = getDao().getDriverIDByEmpID(employeeID);
             } catch(EmptyResultSetException e){
-                return Response.ok(new WsError(String.format(notFoundMsg, employeeID))).build();
+                return Response.serverError().entity(new WsError(String.format(notFoundMsg, employeeID))).build();
             }
 
             if (driverID != null) {
@@ -345,7 +345,7 @@ public class EmployeeServiceImpl extends AbstractService<Driver, DriverDAOAdapte
             try {
                 driverID = getDao().getDriverIDByEmpID(employeeID);
             } catch(EmptyResultSetException e){
-                return Response.ok(new WsError(String.format(notFoundMsg, employeeID))).build();
+                return Response.serverError().entity(new WsError(String.format(notFoundMsg, employeeID))).build();
             }
 
             if (driverID != null) {
