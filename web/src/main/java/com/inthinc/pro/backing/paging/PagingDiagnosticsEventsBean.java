@@ -33,8 +33,9 @@ public class PagingDiagnosticsEventsBean extends PagingEventsBean {
                 CATEGORIES.add(EventCategory.MAINTENANCE);
             }
         }
-        else {CATEGORIES.remove(EventCategory.MAINTENANCE);
-            }
+        else {
+            CATEGORIES.remove(EventCategory.MAINTENANCE);
+        }
 		return CATEGORIES;
 	}
 	
