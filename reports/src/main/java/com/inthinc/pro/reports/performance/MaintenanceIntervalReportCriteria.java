@@ -13,6 +13,8 @@ import com.inthinc.pro.model.configurator.MaintenanceSettings;
 import com.inthinc.pro.model.event.Event;
 import com.inthinc.pro.model.event.EventAttr;
 import com.inthinc.pro.model.event.NoteType;
+
+import org.apache.cassandra.thrift.Cassandra.login_args;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTimeZone;
 import org.joda.time.Interval;
@@ -204,7 +206,7 @@ public class MaintenanceIntervalReportCriteria extends ReportCriteria {
                 Integer hours = driveTime.intValue();
                 Integer intervalHours = stringToInt(vehicleSetting.getActual().get(MaintenanceSettings.MAINT_BY_ENGINE_HOURS_INTERVAL.getCode()));
                 Integer hoursOver = calcHoursOver(baseHours, hours, intervalHours);
-
+                
                 int distanceInterval;
                 int hourInterval;
                 if (distanceOver != null || hoursOver != null) {
@@ -277,11 +279,26 @@ public class MaintenanceIntervalReportCriteria extends ReportCriteria {
         private String intervalHours;
         private String hours;
         private String hoursOver;
+        
+        public BackingWrapper(String vehicleName, String vehicleYMM, Integer baseOdometer, Integer intervalOdometer, Integer odometer, Integer distanceOver, Integer baseHours,
+                        Integer intervalHours, Integer hours, Integer hoursOver, String groupPath) {
+            this.vehicleID = vehicleName+"";
+            this.vehicleYMM = vehicleYMM;
+            this.baseOdometer = baseOdometer+"";
+            this.intervalOdometer = intervalOdometer+"";
+            this.odometer = odometer+"";
+            this.distanceOver = distanceOver+"";
+            this.baseHours = baseHours+"";
+            this.intervalHours = intervalHours+"";
+            this.hours = hours+"";
+            this.hoursOver = hoursOver+"";
+            this.groupPath = groupPath;
+        }
 
-        public BackingWrapper(String vehicleID, String vehicleYMM, String baseOdometer, String intervalOdometer, String odometer, String distanceOver, String baseHours,
+        public BackingWrapper(String vehicleName, String vehicleYMM, String baseOdometer, String intervalOdometer, String odometer, String distanceOver, String baseHours,
                               String intervalHours, String hours, String hoursOver, String groupPath) {
 
-            this.vehicleID = vehicleID;
+            this.vehicleID = vehicleName;
             this.vehicleYMM = vehicleYMM;
             this.baseOdometer = baseOdometer;
             this.intervalOdometer = intervalOdometer;
