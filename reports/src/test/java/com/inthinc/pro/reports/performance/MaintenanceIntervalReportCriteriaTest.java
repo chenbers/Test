@@ -97,8 +97,10 @@ public class MaintenanceIntervalReportCriteriaTest extends BasePerformanceUnitTe
         VEHICLE2 = new Vehicle();
         VEHICLE1.setVehicleID(VEHICLE_ID_1);
         VEHICLE1.setGroupID(GROUP_ID);
+        VEHICLE1.setOdometer(1);
         VEHICLE2.setVehicleID(VEHICLE_ID_2);
         VEHICLE2.setGroupID(GROUP_ID);
+        VEHICLE2.setOdometer(2);
         vehicleSetting1 = new VehicleSetting();
         vehicleSetting1.setVehicleID(VEHICLE_ID_1);
         Map<Integer, String> actual1 = new HashMap<Integer, String>();
@@ -262,5 +264,60 @@ public class MaintenanceIntervalReportCriteriaTest extends BasePerformanceUnitTe
         }
 
         assertFalse(dumpErrors);
+    }
+    
+    @Test
+    public void calcDistanceOver_betweenOneAndTwoTimesInterval_positive() {
+        assertEquals((Integer)(0), MaintenanceIntervalReportCriteria.calcDistanceOver(1, 2, 3));
+        assertEquals((Integer)(1), MaintenanceIntervalReportCriteria.calcDistanceOver(0, 1000, 1001));
+    }
+    @Test
+    public void calcDistanceOver_moreThanTwoTimesInterval_positive() {
+        assertEquals((Integer)(10), MaintenanceIntervalReportCriteria.calcDistanceOver(1, 10, 1011));
+    }
+    @Test
+    public void calcDistanceOver_lessThanInterval_negative() {   
+        assertEquals((Integer)(-357), MaintenanceIntervalReportCriteria.calcDistanceOver(5, 1000, 648));
+        assertEquals((Integer)(-1940), MaintenanceIntervalReportCriteria.calcDistanceOver(1000, 3000, 2060));
+        assertEquals((Integer)(-9860), MaintenanceIntervalReportCriteria.calcDistanceOver(5000, 5000, 140));
+    }
+
+    @Test
+    public void calcDistanceOver_somethingIsNull_null() {   
+        assertEquals((Integer)(-352), MaintenanceIntervalReportCriteria.calcDistanceOver(null, 1000, 648));
+        assertEquals(null, MaintenanceIntervalReportCriteria.calcDistanceOver(1000, null, 2060));
+        assertEquals(null, MaintenanceIntervalReportCriteria.calcDistanceOver(5000, 5000, null));
+    }
+
+    @Test
+    public void calcDistanceOver_divideByZero_dont() {   
+        assertEquals(null, MaintenanceIntervalReportCriteria.calcDistanceOver(5, 0, 648));
+        assertEquals(null, MaintenanceIntervalReportCriteria.calcDistanceOver(0, 0, 648));
+    }
+    
+    @Test
+    public void calcDistanceOverOld_betweenOneAndTwoTimesInterval_positive() {
+        assertEquals((Long)(0l), MaintenanceIntervalReportCriteria.calcDistanceOverOld(1, 2, 3));
+        assertEquals((Long)(1l), MaintenanceIntervalReportCriteria.calcDistanceOverOld(0, 1000, 1001));
+    }
+    @Test
+    public void calcDistanceOverOld_moreThanTwoTimesInterval_positive() {
+        assertEquals((Long)(10l), MaintenanceIntervalReportCriteria.calcDistanceOverOld(1, 10, 1011));
+    }
+    @Test
+    public void calcDistanceOverOld_lessThanInterval_negative() {   
+        assertEquals((Long)(-357l), MaintenanceIntervalReportCriteria.calcDistanceOverOld(5, 1000, 648));
+        assertEquals((Long)(-1940l), MaintenanceIntervalReportCriteria.calcDistanceOverOld(1000, 3000, 2060));
+        assertEquals((Long)(-9860l), MaintenanceIntervalReportCriteria.calcDistanceOverOld(5000, 5000, 140));
+    }
+    @Test
+    public void calcDistanceOverOld_somethingIsNull_negative() {   
+        assertEquals(null, MaintenanceIntervalReportCriteria.calcDistanceOver(null, 1000, 648));
+        assertEquals(null, MaintenanceIntervalReportCriteria.calcDistanceOver(1000, null, 2060));
+        assertEquals(null, MaintenanceIntervalReportCriteria.calcDistanceOver(5000, 5000, null));
+    }
+    @Test
+    public void calcDistanceOverOld_divideByZero_dont() {   
+        assertEquals(null, MaintenanceIntervalReportCriteria.calcDistanceOver(5, 0, 648));
     }
 }
