@@ -439,33 +439,4 @@ public class MaintenanceIntervalReportCriteria extends ReportCriteria {
         }
         return distanceOver;
     }
-    public static  Long calcDistanceOverOld(Integer startOdometer, Integer intervalOdometer, long odometer) {
-        Long distanceOver;
-        long distance = 0l;
-        try {
-            if (startOdometer != null && intervalOdometer != null) {
-                if (odometer > startOdometer) {
-                    long dif = odometer - startOdometer;
-                    if (dif > intervalOdometer) {
-                        distance = (dif) % intervalOdometer;
-                        if (distance > (intervalOdometer / 2)) {
-                            distanceOver = distance - intervalOdometer;
-                        } else {
-                            distanceOver = distance;
-                        }
-                    } else {
-                        distanceOver = -(startOdometer + intervalOdometer - odometer);
-                    }
-                } else {
-                    distanceOver = -(startOdometer + intervalOdometer - odometer);
-                }
-                
-            } else {
-                distanceOver = null;
-            }
-        } catch (NumberFormatException e) {
-            distanceOver = null;
-        }
-        return distanceOver;
-    }
 }
