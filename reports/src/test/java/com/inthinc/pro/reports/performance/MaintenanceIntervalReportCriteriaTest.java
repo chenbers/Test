@@ -47,9 +47,9 @@ public class MaintenanceIntervalReportCriteriaTest extends BasePerformanceUnitTe
     private static final Integer VEHICLE_ID_1 = 11;
     private static final Integer VEHICLE_ID_2 = 22;
     private static final Long SUM_ODOMETER_1 = 5000L;
-    private static final Long ODOMETER_CALC_1 = -5L;
-    private static final Long SUM_ODOMETER_2 = 30000L;
-    private static final Long ODOMETER_CALC_2 = -81L;
+    private static final Long ODOMETER_CALC_1 = 17L;
+    private static final Long SUM_ODOMETER_2 = 300L;
+    private static final Long ODOMETER_CALC_2 = -33L;
     private static final Long SUM_DRIVE_TIME_1 = 64L * 3600;
     private static final Long DRIVE_TIME_CALC_1 = 20L;
     private static final Long SUM_DRIVE_TIME_2 = 440L * 3600;
@@ -96,11 +96,13 @@ public class MaintenanceIntervalReportCriteriaTest extends BasePerformanceUnitTe
         VEHICLE1 = new Vehicle();
         VEHICLE2 = new Vehicle();
         VEHICLE1.setVehicleID(VEHICLE_ID_1);
+        VEHICLE1.setName(VEHICLE_ID_1+"name");
         VEHICLE1.setGroupID(GROUP_ID);
-        VEHICLE1.setOdometer(1);
+        VEHICLE1.setOdometer(SUM_ODOMETER_1.intValue());
         VEHICLE2.setVehicleID(VEHICLE_ID_2);
+        VEHICLE2.setName(VEHICLE_ID_2+"name");
         VEHICLE2.setGroupID(GROUP_ID);
-        VEHICLE2.setOdometer(2);
+        VEHICLE2.setOdometer(SUM_ODOMETER_2.intValue());
         vehicleSetting1 = new VehicleSetting();
         vehicleSetting1.setVehicleID(VEHICLE_ID_1);
         Map<Integer, String> actual1 = new HashMap<Integer, String>();
@@ -184,14 +186,7 @@ public class MaintenanceIntervalReportCriteriaTest extends BasePerformanceUnitTe
     
     @Test
     public void testVehicleNamesAreCorrect(){
-<<<<<<< HEAD
-        assertEquals(((MaintenanceIntervalReportCriteria.BackingWrapper)resultingDataset.get(0)).getVehicleID(),
-                        VEHICLE_ID_1+"");
-        assertEquals(((MaintenanceIntervalReportCriteria.BackingWrapper)resultingDataset.get(1)).getVehicleID(),
-                        VEHICLE_ID_2+"");
-=======
         assertEquals(((MaintenanceIntervalReportCriteria.BackingWrapper)resultingDataset.get(0)).getVehicleID(), VEHICLE_ID_2+"name");
->>>>>>> DE10012 - Fix test, after logic change, first test data should be excluded.
     }
     
     @Test
