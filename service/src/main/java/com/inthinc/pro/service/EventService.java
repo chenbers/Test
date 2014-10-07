@@ -30,6 +30,23 @@ public interface EventService {
 
     @GET
     @Produces({"text/*"})
+    @Path("driver/{driverID}/events/{noteTypes:all|.*}/{startDate}/{endDate}/count")
+    public Response getDriverEventCount(@PathParam("driverID")Integer driverID,
+                                  @PathParam("noteTypes")String noteTypes,
+                                  @PathParam("startDate") @DateFormat(SIMPLE_DATE_FORMAT) Date startDate,
+                                  @PathParam("endDate") @DateFormat(SIMPLE_DATE_FORMAT) Date endDate);
+
+
+    @GET
+    @Produces({"text/*"})
+    @Path("vehicle/{vehicleID}/events/{noteTypes:all|.*}/{startDate}/{endDate}/count")
+    public Response getVehicleEventCount(@PathParam("vehicleID")Integer vehicleID,
+                                        @PathParam("noteTypes")String noteTypes,
+                                        @PathParam("startDate") @DateFormat(SIMPLE_DATE_FORMAT) Date startDate,
+                                        @PathParam("endDate") @DateFormat(SIMPLE_DATE_FORMAT) Date endDate);
+
+    @GET
+    @Produces({"text/*"})
     @Path("driver/{driverID}/eventsByDuration/{dateTime}/{duration}/count")
     public Response getEventCountByDuration(@PathParam("driverID")Integer driverID,
                                   @PathParam("dateTime") String dateTime,
@@ -52,7 +69,7 @@ public interface EventService {
             @Context UriInfo uriInfo);
 
     @GET
-    @Path("{entity:driver|vehicle|group}/{entityID}/events/{eventTypes:all|.*}/{startDate}/{endDate}/{page}")
+    @Path("{entity:driver|vehicle|group}/{entityID}/events/{eventTypes:all|.*}/{fromDateTime}/{toDateTime}/{page}")
     public Response getEvents(@PathParam("entity") String entity,
             @PathParam("entityID")Integer entityID,
             @PathParam("eventTypes")String eventTypes,
