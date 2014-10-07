@@ -54,6 +54,40 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
+    public Response getDriverEventCount(Integer driverID, String noteTypes, Date startDate, Date endDate) {
+        try {
+            Interval interval = DateUtil.getInterval(startDate,endDate);
+            List<NoteType> noteTypesList = parseNoteTypes(noteTypes);
+            Integer count = eventGetter.getEventCount("driver", driverID,  noteTypesList, interval.getStart().toDate(), interval.getEnd().toDate());
+
+            return Response.ok(count.toString()).build();
+        }
+        catch(BadDateRangeException bdre){
+            return BadDateRangeExceptionMapper.getResponse(bdre);
+        }
+        catch(IllegalArgumentException e){
+            return Response.status(Status.BAD_REQUEST).build();
+        }
+    }
+
+    @Override
+    public Response getVehicleEventCount(Integer vehicleID, String noteTypes, Date startDate, Date endDate) {
+        try {
+            Interval interval = DateUtil.getInterval(startDate,endDate);
+            List<NoteType> noteTypesList = parseNoteTypes(noteTypes);
+            Integer count = eventGetter.getEventCount("vehicle", vehicleID,  noteTypesList, interval.getStart().toDate(), interval.getEnd().toDate());
+
+            return Response.ok(count.toString()).build();
+        }
+        catch(BadDateRangeException bdre){
+            return BadDateRangeExceptionMapper.getResponse(bdre);
+        }
+        catch(IllegalArgumentException e){
+            return Response.status(Status.BAD_REQUEST).build();
+        }
+    }
+
+    @Override
     public Response getEventCountByDuration(Integer driverID, @DateFormat(SIMPLE_DATE_FORMAT) String dateTime, Integer duration) {
         try {
             org.joda.time.DateTime endDate = new org.joda.time.DateTime(dateTime);
@@ -155,7 +189,7 @@ public class EventServiceImpl implements EventService {
             EventPage eventPage = createPage(pageOfEvents, start, pageCount, totalCount, links);
             
             Response.ResponseBuilder builder = Response.ok(new GenericEntity<EventPage>(eventPage) {});
-            
+
             return builder.build();
         }
         catch(BadDateRangeException bdre){

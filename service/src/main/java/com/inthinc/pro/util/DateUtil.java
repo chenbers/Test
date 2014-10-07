@@ -114,13 +114,24 @@ public class DateUtil {
         if (strDate == null)
             return null;
 
-        DateFormat df = new SimpleDateFormat(DATE_TIME_FORMAT);
-        try {
-            Date convertedDate = df.parse(strDate);
-            return convertedDate;
-        } catch (ParseException e) {
-            e.printStackTrace();
-            return null;
+        if (strDate.contains(":")){
+            DateFormat df = new SimpleDateFormat(DATE_TIME_FORMAT);
+            try {
+                Date convertedDate = df.parse(strDate);
+                return convertedDate;
+            } catch (ParseException e) {
+                e.printStackTrace();
+                return null;
+            }
+        } else{
+            DateFormat df = new SimpleDateFormat(SIMPLE_DATE_FORMAT);
+            try {
+                Date convertedDate = df.parse(strDate);
+                return convertedDate;
+            } catch (ParseException e) {
+                e.printStackTrace();
+                return null;
+            }
         }
     }
 }
