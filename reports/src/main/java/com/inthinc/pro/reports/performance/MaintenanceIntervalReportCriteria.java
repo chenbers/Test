@@ -13,6 +13,8 @@ import com.inthinc.pro.model.configurator.MaintenanceSettings;
 import com.inthinc.pro.model.event.Event;
 import com.inthinc.pro.model.event.EventAttr;
 import com.inthinc.pro.model.event.NoteType;
+
+import org.apache.cassandra.thrift.Cassandra.login_args;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTimeZone;
 import org.joda.time.Interval;
@@ -192,84 +194,61 @@ public class MaintenanceIntervalReportCriteria extends ReportCriteria {
                 String groupName = group.getName();
                 //String vehicleID = vehicle.getVehicleID().toString();
                 String vehicleYMM = vehicle.getYear() + " " + vehicle.getMake() + " " + vehicle.getModel();
-                String baseOdometer = vehicleSetting.getActual().get(MaintenanceSettings.MAINT_BY_DIST_START.getCode());
-                String intervalOdometer = vehicleSetting.getActual().get(MaintenanceSettings.MAINT_BY_DIST_INTERVAL.getCode());
-                String odometer = (driveTimeDAO.getDriveOdometerSum(vehicle) / 100) + "";
-                String distanceOver;
-
-                int distance = 0;
-                try {
-                    if(baseOdometer != null && intervalOdometer != null) {
-                        if(stringToInt(odometer) > stringToInt(baseOdometer)){
-                            int dif = stringToInt(odometer) - stringToInt(baseOdometer);
-                            if(dif > stringToInt(intervalOdometer)){
-                        distance = (stringToInt(odometer) - stringToInt(baseOdometer)) % stringToInt(intervalOdometer);
-                                if(distance > (stringToInt(intervalOdometer) / 2)){
-                                    int distanceInt = distance - stringToInt(intervalOdometer);
-                                    distanceOver = distanceInt + "";
-                                }else {
-                                    distanceOver = distance + "";
-                    }
-                            }else{
-                                distanceOver = -(stringToInt(baseOdometer) + stringToInt(intervalOdometer) - stringToInt(odometer)) + "";
-                            }
-                        }else{
-                            distanceOver = -(stringToInt(baseOdometer) + stringToInt(intervalOdometer) - stringToInt(odometer)) + "";
-                        }
-
-                    }else{
-                        distanceOver = null;
-                    }
-                } catch (NumberFormatException e) {
-                    distanceOver = null;
-                }
+                Integer maintByDistanceStart = stringToInt(vehicleSetting.getActual().get(MaintenanceSettings.MAINT_BY_DIST_START.getCode()));
+                Integer maintByDistanceInterval = stringToInt(vehicleSetting.getActual().get(MaintenanceSettings.MAINT_BY_DIST_INTERVAL.getCode()));
+                Long milesDriven = driveTimeDAO.getDriveOdometerSum(vehicle) / 100;
+                Integer milesDrivenInteger = milesDriven.intValue();
+                
+                Integer distanceOver = calcDistanceOver(maintByDistanceStart, maintByDistanceInterval, vehicle.getOdometer());
                 
 
                 // Manually setting this to zero for now, as we're not currently
                 // allowing engine hours to start from an arbitrary value
-                String baseHours = "0";
-                String intervalHours = vehicleSetting.getActual().get(MaintenanceSettings.MAINT_BY_ENGINE_HOURS_INTERVAL.getCode());
+                Integer baseHours = 0;
+                Integer intervalHours = stringToInt(vehicleSetting.getActual().get(MaintenanceSettings.MAINT_BY_ENGINE_HOURS_INTERVAL.getCode()));
                 Long driveTime = driveTimeDAO.getDriveTimeSum(vehicle) / 3600;
-                String hours = driveTime.toString();
-                String hoursOver;
+                Integer hours = driveTime.intValue();
+                Integer hoursOver;
 
                 int hour = 0;
                 if(baseHours != null && intervalHours != null &&  hours != null) {
-                    hour = (stringToInt(hours) - stringToInt(baseHours)) % stringToInt(intervalHours);
+                    hour = (hours - baseHours) % intervalHours;
                 }
 
                 if(baseHours == null || intervalHours == null){
                     hoursOver = null;
-                }else if(hour > (stringToInt(intervalHours) / 2)){
-                    int hourInt = hour - stringToInt(intervalHours);
-                    hoursOver = hourInt + "";
-                }else hoursOver = hour + "";
+                }else if(hour > (intervalHours / 2)){
+                    int hourInt = hour - intervalHours;
+                    hoursOver = hourInt;
+                }else {
+                    hoursOver = hour;
+                }
 
                 int distanceInterval;
                 int hourInterval;
                 if(distanceOver != null || hoursOver != null){
                     if (distanceOver == null) {
-                        hourInterval = stringToInt(hoursOver);
+                        hourInterval = hoursOver;
                         if(Math.abs(hourInterval) < HOUR_MARGIN) {
-                            BackingWrapper backingWrapper = new BackingWrapper(vehicle.getName(), vehicleYMM, baseOdometer,
-                                        intervalOdometer, odometer, distanceOver, baseHours, intervalHours, hours, hoursOver, groupName);
+                            BackingWrapper backingWrapper = new BackingWrapper(vehicle.getName(), vehicleYMM, maintByDistanceStart,
+                                        maintByDistanceInterval, vehicle.getOdometer(), distanceOver, baseHours, intervalHours, hours, hoursOver, groupName);
 
                             backingWrappers.add(backingWrapper);
                         }
                     }else if (hoursOver == null) {
-                        distanceInterval = stringToInt(distanceOver);
+                        distanceInterval = distanceOver;
                         if(Math.abs(distanceInterval) < DISTANCE_MARGIN) {
-                             BackingWrapper backingWrapper = new BackingWrapper(vehicle.getName(), vehicleYMM, baseOdometer,
-                                        intervalOdometer, odometer, distanceOver, baseHours, intervalHours, hours, hoursOver, groupName);
+                             BackingWrapper backingWrapper = new BackingWrapper(vehicle.getName(), vehicleYMM, maintByDistanceStart,
+                                        maintByDistanceInterval, vehicle.getOdometer(), distanceOver, baseHours, intervalHours, hours, hoursOver, groupName);
 
                              backingWrappers.add(backingWrapper);
                         }
                     }else {
-                        distanceInterval=stringToInt(distanceOver);
-                        hourInterval=stringToInt(hoursOver);
+                        distanceInterval=distanceOver;
+                        hourInterval=hoursOver;
                         if(Math.abs(distanceInterval) < DISTANCE_MARGIN || Math.abs(hourInterval) < HOUR_MARGIN) {
-                             BackingWrapper backingWrapper = new BackingWrapper(vehicle.getName(), vehicleYMM, baseOdometer,
-                                        intervalOdometer, odometer, distanceOver, baseHours, intervalHours, hours, hoursOver, groupName);
+                             BackingWrapper backingWrapper = new BackingWrapper(vehicle.getName(), vehicleYMM, maintByDistanceStart,
+                                        maintByDistanceInterval, vehicle.getOdometer(), distanceOver, baseHours, intervalHours, hours, hoursOver, groupName);
 
                              backingWrappers.add(backingWrapper);
                         }
@@ -317,11 +296,26 @@ public class MaintenanceIntervalReportCriteria extends ReportCriteria {
         private String intervalHours;
         private String hours;
         private String hoursOver;
+        
+        public BackingWrapper(String vehicleName, String vehicleYMM, Integer baseOdometer, Integer intervalOdometer, Integer odometer, Integer distanceOver, Integer baseHours,
+                        Integer intervalHours, Integer hours, Integer hoursOver, String groupPath) {
+            this.vehicleID = vehicleName+"";
+            this.vehicleYMM = vehicleYMM;
+            this.baseOdometer = baseOdometer+"";
+            this.intervalOdometer = intervalOdometer+"";
+            this.odometer = odometer+"";
+            this.distanceOver = distanceOver+"";
+            this.baseHours = baseHours+"";
+            this.intervalHours = intervalHours+"";
+            this.hours = hours+"";
+            this.hoursOver = hoursOver+"";
+            this.groupPath = groupPath;
+        }
 
-        public BackingWrapper(String vehicleID, String vehicleYMM, String baseOdometer, String intervalOdometer, String odometer, String distanceOver, String baseHours,
+        public BackingWrapper(String vehicleName, String vehicleYMM, String baseOdometer, String intervalOdometer, String odometer, String distanceOver, String baseHours,
                               String intervalHours, String hours, String hoursOver, String groupPath) {
 
-            this.vehicleID = vehicleID;
+            this.vehicleID = vehicleName;
             this.vehicleYMM = vehicleYMM;
             this.baseOdometer = baseOdometer;
             this.intervalOdometer = intervalOdometer;
@@ -429,4 +423,20 @@ public class MaintenanceIntervalReportCriteria extends ReportCriteria {
 
     }
 
+    public static Integer calcDistanceOver(Integer startOdometer, Integer intervalOdometer, Integer actualOdometer) {
+        Integer distanceOver;
+        if(actualOdometer == null || intervalOdometer == null || intervalOdometer == 0) {
+            return null;
+        }
+        if(startOdometer == null) {
+            startOdometer = 0;
+        }
+        Integer firstIntervalEnd = (startOdometer + intervalOdometer);
+        if(firstIntervalEnd < actualOdometer) {
+            distanceOver =  actualOdometer % firstIntervalEnd;
+        } else {
+            distanceOver = actualOdometer - firstIntervalEnd ;
+        }
+        return distanceOver;
+    }
 }
