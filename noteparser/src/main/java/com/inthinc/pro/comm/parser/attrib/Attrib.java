@@ -303,11 +303,11 @@ public enum Attrib {
     SUMMARY_STOP_TIME(32867,AttribParserType.INTEGER, "summarystop"),
     
     //type 238 notes for Maintenance
-    BATTERY_VOLTAGE_MAINT(81, AttribParserType.INTEGER),
-    ENGINE_TEMP(171, AttribParserType.INTEGER),
-    TRANSMISSION_TEMP(172, AttribParserType.INTEGER),
-    DPF_FLOW_RATE(173, AttribParserType.INTEGER),
-    OIL_PRESSURE(174, AttribParserType.INTEGER),
+    BATTERY_VOLTAGE_MAINT(81, AttribParserType.BYTE),
+    ENGINE_TEMP(171, AttribParserType.SHORT),
+    TRANSMISSION_TEMP(172, AttribParserType.SHORT),
+    DPF_FLOW_RATE(173, AttribParserType.SHORT),
+    OIL_PRESSURE(174, AttribParserType.SHORT),
     
     //more maintenance on end of trip notes (type in (20, 1, 66, 202, 209)) ... these are both bitmasks
     MALFUNCTION_INDICATOR_LAMP_BITMASK(243, AttribParserType.INTEGER),
