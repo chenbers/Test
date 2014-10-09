@@ -488,7 +488,7 @@ if(!window.DOMParser){
     }
 }
 
-if((typeof(document.importNode) == "undefined") && Sarissa._SARISSA_IS_IE){
+if((typeof(document.importNode) == "undefined") && Sarissa._SARISSA_IS_IE || Sarissa._SARISSA_IS_IE9){
     try{
     	var importTable = {
     	    	TBODY:  ['<table>',            '</table>'		      ],
