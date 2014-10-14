@@ -61,7 +61,7 @@ public class NotebcParser implements NoteParser{
     			}
     		}
 		} catch (Throwable e){
-            logger.error("Parser error: " + e);
+            logger.info("Parser error: " + e);
 		}
 		return attribMap;
 	}
