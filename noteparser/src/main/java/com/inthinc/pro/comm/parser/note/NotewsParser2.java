@@ -46,7 +46,7 @@ public class NotewsParser2 implements NoteParser{
     		else
     			logger.info("Note parser for type " + noteTypeCode + " is not defined.");
 		} catch (Throwable e){
-            logger.error("Parser error: " + e);
+            logger.info("Parser error: " + e);
 		}
 		
 		return attribMap;

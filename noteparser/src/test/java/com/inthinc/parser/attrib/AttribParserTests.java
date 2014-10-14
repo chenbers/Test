@@ -88,7 +88,8 @@ public class AttribParserTests {
         
         String location = "Location";
         String comments = "This a test comment. Less than 60";
-               
+        Integer lowIdle = 7;
+        
         //var length test
         byte[] note = NotebcUtil.createHeader(NoteType.HOS_CHANGE_STATE_NO_GPS_LOCK.getCode());
         ByteArrayOutputStream dataStream = new ByteArrayOutputStream();
@@ -113,10 +114,27 @@ public class AttribParserTests {
         
         note = dataStream.toByteArray();
         note = NotebcUtil.addAttrib(note, Attrib.DVIR_COMMENTS, comments);
+        note = NotebcUtil.addAttrib(note, Attrib.LOWIDLE, lowIdle);
         attribMap = NotebcUtil.parseNote(note);
         assertEquals((String)attribMap.get(Attrib.DVIR_COMMENTS.getFieldName()), comments);
+        assertEquals((Integer)attribMap.get(Attrib.LOWIDLE.getFieldName()), lowIdle);
+        assertEquals((String)attribMap.get(Attrib.LOCATION.getFieldName()), location);
+
+        //Fixed length test 2
+        note = NotebcUtil.createHeader(NoteType.HOS_CHANGE_STATE_NO_GPS_LOCK.getCode());
+        dataStream = new ByteArrayOutputStream();
+        dataStream.write(note);
+        dataStream.write(NotebcUtil.convertShortToBytes((short)Attrib.LOCATION.getCode()));
+        dataStream.write(((String) location).getBytes());
+        for (int i=0; i < (30-location.length()); i++)
+        	dataStream.write((byte)0);
+        
+        note = dataStream.toByteArray();
+        note = NotebcUtil.addAttrib(note, Attrib.LOWIDLE, lowIdle);
+        note = NotebcUtil.addAttrib(note, Attrib.DVIR_COMMENTS, comments);
+        attribMap = NotebcUtil.parseNote(note);
+        assertEquals((String)attribMap.get(Attrib.DVIR_COMMENTS.getFieldName()), comments);
+        assertEquals((Integer)attribMap.get(Attrib.LOWIDLE.getFieldName()), lowIdle);
         assertEquals((String)attribMap.get(Attrib.LOCATION.getFieldName()), location);
     }
-
-    
 }

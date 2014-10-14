@@ -66,7 +66,7 @@ public class TiwiParser implements NoteParser{
     			attribMap.put((attrib == null) ? String.valueOf(attrID) : attrib.getFieldName(), attrVal);
     		}
 		} catch (Throwable e){
-            logger.error("Parser error: " + e);
+            logger.info("Parser error: " + e);
 		}	
 		return attribMap;
 	}

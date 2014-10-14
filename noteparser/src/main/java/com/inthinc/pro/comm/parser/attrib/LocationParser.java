@@ -17,8 +17,9 @@ public class LocationParser implements AttribParser {
 		attribMap.put(code, new String(data, offset, length));
 
 		//We are checking to see if this is a fixed 30.
-		if ((data.length >= (offset + length) + 1)  //if we have more data 
-				&& data[offset + length + 1] == 0  //and the next byte=0
+		if ((data.length >= (offset + length) + 2)  //if we have more data 
+				&& data[offset + length + 1] == 0  //and the next 2 bytes=0
+				&& data[offset + length + 2] == 0  
 				&& data.length >= (offset + 30))   //and there is enough room for this to be a fixed 30
 			length = 29;
 
