@@ -68,9 +68,7 @@ public class EventGetter{
             return pageOfEvents;
         }
         public Integer getEventCount(Integer entityID, List<NoteType> noteTypes, Date start, Date end){
-            if (events == null) {
-               events = eventDAO.getEventsForDriver(entityID, start, end, noteTypes, new Integer(1));
-            }
+            events = eventDAO.getEventsForDriver(entityID, start, end, noteTypes, new Integer(1));
             return events.size();
             
         }
