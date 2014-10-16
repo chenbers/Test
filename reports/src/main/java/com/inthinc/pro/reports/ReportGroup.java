@@ -237,14 +237,14 @@ public enum ReportGroup {
 
     public Boolean getUseTimeFrame() {
         for (CriteriaType criteria : criterias)
-            if (criteria.equals(CriteriaType.TIMEFRAME) || criteria.equals(CriteriaType.TIMEFRAME_ALT) || criteria.equals(CriteriaType.TIMEFRAME_ALT_DAYS))
+            if (CriteriaType.TIMEFRAME.equals(criteria) || CriteriaType.TIMEFRAME_ALT.equals(criteria) || CriteriaType.TIMEFRAME_ALT_DAYS.equals(criteria))
                 return true;
         return false;
     }
 
     public Boolean getUseDuration() {
         for (CriteriaType criteria : criterias)
-            if (criteria.equals(CriteriaType.DURATION))
+            if (CriteriaType.DURATION.equals(criteria))
                 return true;
         return false;
     }
