@@ -32,13 +32,13 @@ import static junit.framework.Assert.assertNotNull;
 public class VehicleServiceExtTest extends BaseTest {
 
     @Autowired
-    VehicleDAO vehicleDAO;
+    public VehicleDAO vehicleDAO;
 
     @Autowired
-    GroupDAO groupDAO;
+    public GroupDAO groupDAO;
 
     @Autowired
-    VehicleServiceExt vehicleServiceExt;
+    public VehicleServiceExt vehicleServiceExt;
 
     // test data
     private Map<Integer, Vehicle> testVehicles;
@@ -47,7 +47,6 @@ public class VehicleServiceExtTest extends BaseTest {
     private Vehicle vehicle3;
     private Group group;
 
-    @Transactional(isolation = Isolation.READ_UNCOMMITTED)
     @Before
     public void createTestData() {
         testVehicles = new HashMap<Integer, Vehicle>();
@@ -57,7 +56,9 @@ public class VehicleServiceExtTest extends BaseTest {
 
         group = new Group();
         group.setName("test group");
-        group.setGroupID(groupDAO.create(null, group));
+        group.setAccountID(1);
+        group.setPath("text/group");
+        group.setGroupID(groupDAO.create(1, group));
 
         vehicle1.setStatus(Status.ACTIVE);
         vehicle1.setName("name1");
@@ -65,14 +66,14 @@ public class VehicleServiceExtTest extends BaseTest {
         vehicle1.setColor("red");
         vehicle1.setIfta(true);
         vehicle1.setLicense("Test Rest");
-        vehicle1.setVIN("12345678901234567");
+        vehicle1.setVIN("0000000001");
         vehicle1.setModel("tes1");
         vehicle1.setMake("tes1");
         vehicle1.setModified(new Date());
         vehicle1.setWeight(1000);
         vehicle1.setYear(1991);
         vehicle1.setGroupID(group.getGroupID());
-        vehicle1.setVehicleID(vehicleDAO.create(null, vehicle1));
+        vehicle1.setVehicleID(vehicleDAO.create(1, vehicle1));
 
         vehicle2.setStatus(Status.ACTIVE);
         vehicle2.setName("name2");
@@ -80,14 +81,14 @@ public class VehicleServiceExtTest extends BaseTest {
         vehicle2.setColor("yellow");
         vehicle2.setIfta(true);
         vehicle2.setLicense("Test Rest2");
-        vehicle2.setVIN("12345678901234567");
+        vehicle2.setVIN("0000000002");
         vehicle2.setModel("tes2");
         vehicle2.setMake("tes2");
         vehicle2.setModified(new Date());
         vehicle2.setWeight(1001);
         vehicle2.setYear(1992);
         vehicle2.setGroupID(group.getGroupID());
-        vehicle2.setVehicleID(vehicleDAO.create(null, vehicle2));
+        vehicle2.setVehicleID(vehicleDAO.create(1, vehicle2));
 
         vehicle3.setStatus(Status.ACTIVE);
         vehicle3.setName("name3");
@@ -95,14 +96,14 @@ public class VehicleServiceExtTest extends BaseTest {
         vehicle3.setColor("blue");
         vehicle3.setIfta(true);
         vehicle3.setLicense("Test Rest3");
-        vehicle3.setVIN("12345678901234567");
+        vehicle3.setVIN("0000000003");
         vehicle3.setModel("tes3");
         vehicle3.setMake("tes3");
         vehicle3.setModified(new Date());
         vehicle3.setWeight(1003);
         vehicle3.setYear(1993);
         vehicle3.setGroupID(group.getGroupID());
-        vehicle3.setVehicleID(vehicleDAO.create(null, vehicle3));
+        vehicle3.setVehicleID(vehicleDAO.create(1, vehicle3));
 
         // add vehicles to list
         testVehicles.put(1, vehicle1);
@@ -110,7 +111,6 @@ public class VehicleServiceExtTest extends BaseTest {
         testVehicles.put(3, vehicle3);
     }
 
-    @Transactional(isolation = Isolation.READ_UNCOMMITTED)
     @After
     public void deleteTestData() {
         for (Map.Entry<Integer, Vehicle> vehicleEntry : testVehicles.entrySet()) {
@@ -122,7 +122,6 @@ public class VehicleServiceExtTest extends BaseTest {
     }
 
     @Test
-    @Transactional
     public void getVehicleByNameTest() {
         for (int i = 1; i <= 3; i++) {
             Response response = vehicleServiceExt.get("name" + i);
@@ -131,5 +130,29 @@ public class VehicleServiceExtTest extends BaseTest {
             assertNotNull(vehicle);
             assertEquals(vehicle, testVehicles.get(i));
         }
+    }
+
+    public VehicleDAO getVehicleDAO() {
+        return vehicleDAO;
+    }
+
+    public void setVehicleDAO(VehicleDAO vehicleDAO) {
+        this.vehicleDAO = vehicleDAO;
+    }
+
+    public GroupDAO getGroupDAO() {
+        return groupDAO;
+    }
+
+    public void setGroupDAO(GroupDAO groupDAO) {
+        this.groupDAO = groupDAO;
+    }
+
+    public VehicleServiceExt getVehicleServiceExt() {
+        return vehicleServiceExt;
+    }
+
+    public void setVehicleServiceExt(VehicleServiceExt vehicleServiceExt) {
+        this.vehicleServiceExt = vehicleServiceExt;
     }
 }
