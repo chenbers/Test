@@ -178,6 +178,12 @@ public class SiloServiceMockImpl extends AbstractServiceMockImpl implements Silo
     }
 
     @Override
+    public Map<String, Object> getVehicleByName(String name) throws ProDAOException {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
     public Map<String, Object> deleteVehicle(Integer vehicleID) throws ProDAOException {
         return createReturnValue("count", 0);
     }
