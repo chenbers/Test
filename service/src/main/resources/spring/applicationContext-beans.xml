@@ -129,6 +129,10 @@
 		<property name="dao" ref="vehicleDAOAdapter" />
 		<property name="addressLookup" ref="googleAddressLookupBean" />
 	</bean>
+    <bean id="vehicleServiceExt" class="com.inthinc.pro.service.impl.VehicleServiceExtImpl">
+        <property name="dao" ref="vehicleDAOAdapter" />
+        <property name="addressLookup" ref="googleAddressLookupBean" />
+    </bean>
 	<bean id="voiceService" class="com.inthinc.pro.service.voicexml.VoiceServiceImpl">
 		<property name="voxeoAudioURL" value="${voxeoAudioURL}" />
 		<property name="alertMessageDAO" ref="alertMessageDAO" />
