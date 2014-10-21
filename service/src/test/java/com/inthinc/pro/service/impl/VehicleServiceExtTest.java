@@ -1,10 +1,135 @@
 package com.inthinc.pro.service.impl;
 
+import com.inthinc.pro.dao.GroupDAO;
+import com.inthinc.pro.dao.VehicleDAO;
+import com.inthinc.pro.model.Group;
+import com.inthinc.pro.model.Status;
 import com.inthinc.pro.model.Vehicle;
+import com.inthinc.pro.model.VehicleType;
+import com.inthinc.pro.service.VehicleServiceExt;
 import com.inthinc.pro.service.it.BaseTest;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
+
+import javax.ws.rs.core.Response;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertNotNull;
 
 
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations = {"classpath:spring/applicationContext-dao.xml", "classpath:spring/applicationContext-beans.xml", "classpath:spring/applicationContext-security.xml"})
 public class VehicleServiceExtTest extends BaseTest {
 
+    @Autowired
+    VehicleDAO vehicleDAO;
+
+    @Autowired
+    GroupDAO groupDAO;
+
+    @Autowired
+    VehicleServiceExt vehicleServiceExt;
+
+    // test data
+    private Map<Integer, Vehicle> testVehicles;
+    private Vehicle vehicle1;
+    private Vehicle vehicle2;
+    private Vehicle vehicle3;
+    private Group group;
+
+    @Transactional(isolation = Isolation.READ_UNCOMMITTED)
+    @Before
+    public void createTestData() {
+        testVehicles = new HashMap<Integer, Vehicle>();
+        vehicle1 = new Vehicle();
+        vehicle2 = new Vehicle();
+        vehicle3 = new Vehicle();
+
+        group = new Group();
+        group.setName("test group");
+        group.setGroupID(groupDAO.create(null, group));
+
+        vehicle1.setStatus(Status.ACTIVE);
+        vehicle1.setName("name1");
+        vehicle1.setVtype(VehicleType.HEAVY);
+        vehicle1.setColor("red");
+        vehicle1.setIfta(true);
+        vehicle1.setLicense("Test Rest");
+        vehicle1.setVIN("12345678901234567");
+        vehicle1.setModel("tes1");
+        vehicle1.setMake("tes1");
+        vehicle1.setModified(new Date());
+        vehicle1.setWeight(1000);
+        vehicle1.setYear(1991);
+        vehicle1.setGroupID(group.getGroupID());
+        vehicle1.setVehicleID(vehicleDAO.create(null, vehicle1));
+
+        vehicle2.setStatus(Status.ACTIVE);
+        vehicle2.setName("name2");
+        vehicle2.setVtype(VehicleType.LIGHT);
+        vehicle2.setColor("yellow");
+        vehicle2.setIfta(true);
+        vehicle2.setLicense("Test Rest2");
+        vehicle2.setVIN("12345678901234567");
+        vehicle2.setModel("tes2");
+        vehicle2.setMake("tes2");
+        vehicle2.setModified(new Date());
+        vehicle2.setWeight(1001);
+        vehicle2.setYear(1992);
+        vehicle2.setGroupID(group.getGroupID());
+        vehicle2.setVehicleID(vehicleDAO.create(null, vehicle2));
+
+        vehicle3.setStatus(Status.ACTIVE);
+        vehicle3.setName("name3");
+        vehicle3.setVtype(VehicleType.MEDIUM);
+        vehicle3.setColor("blue");
+        vehicle3.setIfta(true);
+        vehicle3.setLicense("Test Rest3");
+        vehicle3.setVIN("12345678901234567");
+        vehicle3.setModel("tes3");
+        vehicle3.setMake("tes3");
+        vehicle3.setModified(new Date());
+        vehicle3.setWeight(1003);
+        vehicle3.setYear(1993);
+        vehicle3.setGroupID(group.getGroupID());
+        vehicle3.setVehicleID(vehicleDAO.create(null, vehicle3));
+
+        // add vehicles to list
+        testVehicles.put(1, vehicle1);
+        testVehicles.put(2, vehicle2);
+        testVehicles.put(3, vehicle3);
+    }
+
+    @Transactional(isolation = Isolation.READ_UNCOMMITTED)
+    @After
+    public void deleteTestData() {
+        for (Map.Entry<Integer, Vehicle> vehicleEntry : testVehicles.entrySet()) {
+            if (vehicleEntry.getValue() != null && vehicleEntry.getValue().getVehicleID() != null)
+                vehicleDAO.deleteByID(vehicleEntry.getValue().getVehicleID());
+        }
+        if (group != null && group.getGroupID() != null)
+            groupDAO.deleteByID(group.getGroupID());
+    }
+
+    @Test
+    @Transactional
+    public void getVehicleByNameTest() {
+        for (int i = 1; i <= 3; i++) {
+            Response response = vehicleServiceExt.get("name" + i);
+            assertNotNull(response.getEntity());
+            Vehicle vehicle = (Vehicle) response.getEntity();
+            assertNotNull(vehicle);
+            assertEquals(vehicle, testVehicles.get(i));
+        }
+    }
 }
