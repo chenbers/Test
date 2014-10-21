@@ -38,6 +38,7 @@ public class VehicleDAOAdapterTest {
 	private final Integer DRIVER_ID = new Integer(4);
 	private final Vehicle vehicle = new Vehicle();
 	private final String VIN = "VIN";
+    private final String NAME = "NAME";
 
 	@Mocked(methods = {"getGroupID"})	
 	private VehicleDAOAdapter adapterSUT; 
@@ -113,6 +114,15 @@ public class VehicleDAOAdapterTest {
 		}};
 		assertEquals(adapterSUT.findByVIN(VIN), vehicle);
 	}
+
+
+    @Test
+    public void testFindByName(){
+        new Expectations(){{
+            vehicleDAOMock.findByName(NAME); returns(vehicle);
+        }};
+        assertEquals(adapterSUT.findByName(NAME), vehicle);
+    }
 
 	@Test
 	public void testGetEvents(){
