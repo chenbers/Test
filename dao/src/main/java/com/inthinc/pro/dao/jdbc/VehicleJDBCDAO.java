@@ -185,6 +185,11 @@ public class VehicleJDBCDAO extends SimpleJdbcDaoSupport implements VehicleDAO {
     }
 
     @Override
+    public Vehicle findByName(String name) {
+        throw new NotImplementedException();
+    }
+
+    @Override
     public Vehicle findByDriverInGroup(Integer driverID, Integer groupID) {
         throw new NotImplementedException();
     }

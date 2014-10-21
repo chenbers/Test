@@ -36,12 +36,21 @@ public class VehicleDaoStub implements VehicleDAO {
     }
 
     /* (non-Javadoc)
-     * @see com.inthinc.pro.dao.VehicleDAO#findByDriverID(java.lang.Integer)
+     * @see com.inthinc.pro.dao.VehicleDAO#findByName(java.lang.String)
      */
+    @Override
+    public Vehicle findByName(String name) {
+        return new Vehicle();
+    }
+
+    /* (non-Javadoc)
+ * @see com.inthinc.pro.dao.VehicleDAO#findByDriverID(java.lang.Integer)
+ */
     @Override
     public Vehicle findByDriverID(Integer driverID) {
         return new Vehicle();
     }
+
 
     /* (non-Javadoc)
      * @see com.inthinc.pro.dao.VehicleDAO#findByDriverInGroup(java.lang.Integer, java.lang.Integer)
