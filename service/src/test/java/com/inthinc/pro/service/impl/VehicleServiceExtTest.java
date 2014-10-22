@@ -21,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.ws.rs.core.Response;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static junit.framework.Assert.assertEquals;
@@ -141,6 +142,22 @@ public class VehicleServiceExtTest extends BaseTest {
             assertNotNull(vehicle);
             assertEquals(vehicle, testVehicles.get(i));
         }
+    }
+
+    @Test
+    public void getAllVehiclesTest() {
+        Response response = vehicleServiceExt.getAll();
+        assertNotNull(response.getEntity());
+        List<Vehicle> vehicleList = (List<Vehicle>) response.getEntity();
+        int found = 0;
+
+        for (Vehicle vehicle: vehicleList){
+           for (Map.Entry<Integer, Vehicle> vehicleEntry: testVehicles.entrySet()){
+               if (vehicleEntry.getValue().getVehicleID().equals(vehicle.getVehicleID()))
+                   found ++;
+           }
+        }
+        assertEquals(3, found);
     }
 
     public VehicleDAO getVehicleDAO() {
