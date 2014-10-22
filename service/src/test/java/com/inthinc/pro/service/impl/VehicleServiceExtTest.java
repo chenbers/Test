@@ -61,12 +61,12 @@ public class VehicleServiceExtTest extends BaseTest {
         group.setGroupID(groupDAO.create(1, group));
 
         vehicle1.setStatus(Status.ACTIVE);
-        vehicle1.setName("name1");
+        vehicle1.setName("bname_1");
         vehicle1.setVtype(VehicleType.HEAVY);
         vehicle1.setColor("red");
         vehicle1.setIfta(true);
         vehicle1.setLicense("Test Rest");
-        vehicle1.setVIN("0000000001");
+        vehicle1.setVIN("0000000031");
         vehicle1.setModel("tes1");
         vehicle1.setMake("tes1");
         vehicle1.setModified(new Date());
@@ -76,12 +76,12 @@ public class VehicleServiceExtTest extends BaseTest {
         vehicle1.setVehicleID(vehicleDAO.create(1, vehicle1));
 
         vehicle2.setStatus(Status.ACTIVE);
-        vehicle2.setName("name2");
+        vehicle2.setName("bname_2");
         vehicle2.setVtype(VehicleType.LIGHT);
         vehicle2.setColor("yellow");
         vehicle2.setIfta(true);
         vehicle2.setLicense("Test Rest2");
-        vehicle2.setVIN("0000000002");
+        vehicle2.setVIN("0000000032");
         vehicle2.setModel("tes2");
         vehicle2.setMake("tes2");
         vehicle2.setModified(new Date());
@@ -91,12 +91,12 @@ public class VehicleServiceExtTest extends BaseTest {
         vehicle2.setVehicleID(vehicleDAO.create(1, vehicle2));
 
         vehicle3.setStatus(Status.ACTIVE);
-        vehicle3.setName("name3");
+        vehicle3.setName("bname_3");
         vehicle3.setVtype(VehicleType.MEDIUM);
         vehicle3.setColor("blue");
         vehicle3.setIfta(true);
         vehicle3.setLicense("Test Rest3");
-        vehicle3.setVIN("0000000003");
+        vehicle3.setVIN("0000000033");
         vehicle3.setModel("tes3");
         vehicle3.setMake("tes3");
         vehicle3.setModified(new Date());
@@ -124,7 +124,7 @@ public class VehicleServiceExtTest extends BaseTest {
     @Test
     public void getVehicleByNameTest() {
         for (int i = 1; i <= 3; i++) {
-            Response response = vehicleServiceExt.get("name" + i);
+            Response response = vehicleServiceExt.get("bname_" + i);
             assertNotNull(response.getEntity());
             Vehicle vehicle = (Vehicle) response.getEntity();
             assertNotNull(vehicle);
