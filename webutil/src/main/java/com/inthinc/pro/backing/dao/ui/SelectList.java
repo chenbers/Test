@@ -6,5 +6,5 @@ import javax.faces.model.SelectItem;
 
 public interface SelectList {
 	public List<SelectItem> getSelectList();
-
+	public Object valueOf(Object value);
 }
