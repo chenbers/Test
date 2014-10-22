@@ -92,6 +92,8 @@ public class Score {
     private Number speedEventsOver80Mph;
     private Number backingTime;
     private Number backingEvents;
+    private Number firstMoveForwardTime;
+    private Number firstMoveForwardEvents;
 
 
     public Score()
@@ -885,6 +887,16 @@ public class Score {
     }
 
 
+    public Number getFirstMoveForwardTime() {
+        return firstMoveForwardTime;
+    }
+
+
+    public void setFirstMoveForwardTime(Number firstMoveForwardTime) {
+        this.firstMoveForwardTime = firstMoveForwardTime;
+    }
+
+
     public Number getBackingEvents() {
         return backingEvents;
     }
@@ -892,6 +904,16 @@ public class Score {
 
     public void setBackingEvents(Number backingEvents) {
         this.backingEvents = backingEvents;
+    }
+
+
+    public Number getFirstMoveForwardEvents() {
+        return firstMoveForwardEvents;
+    }
+
+
+    public void setFirstMoveForwardEvents(Number firstMoveForwardEvents) {
+        this.firstMoveForwardEvents = firstMoveForwardEvents;
     }
 
     @Override
