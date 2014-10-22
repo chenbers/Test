@@ -8,6 +8,7 @@ import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.GroupHierarchy;
 import com.inthinc.pro.model.LastLocation;
 import com.inthinc.pro.model.Status;
+import com.inthinc.pro.model.Trip;
 import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.model.VehicleType;
 import com.inthinc.pro.service.VehicleServiceExt;
@@ -68,11 +69,15 @@ public class VehicleServiceExtTest extends BaseTest {
     private Vehicle vehicle3;
     private Group group;
     private LastLocation mockLastLocation;
+    private Trip mockLastTrip;
 
     @Before
     public void createTestData() {
         mockLastLocation = new LastLocation();
         mockLastLocation.setVehicleStatus("aok");
+
+        mockLastTrip = new Trip();
+        mockLastTrip.setEndAddressStr("aok");
 
         vehicleDAOAdapter.setVehicleDAO(vehicleDAO);
         vehicleDAOAdapter.setEventDAO(eventDAO);
@@ -215,6 +220,34 @@ public class VehicleServiceExtTest extends BaseTest {
                 LastLocation lastLocation = (LastLocation) response.getEntity();
                 assertNotNull(lastLocation);
                 assertEquals(lastLocation.getVehicleStatus(), "aok");
+            }
+        }finally {
+            vehicleServiceExtImpl.setDao(vehicleDAOAdapter);
+        }
+    }
+
+    @Test
+    public void getTripTest(){
+        VehicleServiceExtImpl vehicleServiceExtImpl = (VehicleServiceExtImpl) vehicleServiceExt;
+        try {
+            vehicleServiceExtImpl.setDao(mockVehicleDAOAdapter);
+
+            new NonStrictExpectations() {{
+
+                mockVehicleDAO.findByName(vehicle1.getName()); result = vehicle1;
+                mockVehicleDAO.getLastTrip(vehicle1.getDriverID()); result = mockLastTrip;
+                mockVehicleDAO.findByName(vehicle2.getName()); result = vehicle1;
+                mockVehicleDAO.getLastTrip(vehicle2.getDriverID()); result = mockLastTrip;
+                mockVehicleDAO.findByName(vehicle3.getName()); result = vehicle1;
+                mockVehicleDAO.getLastTrip(vehicle3.getDriverID()); result = mockLastTrip;
+            }};
+
+            for (int i = 1; i <= 3; i++) {
+                Response response = vehicleServiceExt.getLastTrip("dname_" + i);
+                assertNotNull(response.getEntity());
+                Trip lastTrip = (Trip) response.getEntity();
+                assertNotNull(lastTrip);
+                assertEquals(lastTrip.getEndAddressStr(), "aok");
             }
         }finally {
             vehicleServiceExtImpl.setDao(vehicleDAOAdapter);
