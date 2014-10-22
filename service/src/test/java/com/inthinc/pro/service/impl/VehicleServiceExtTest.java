@@ -27,6 +27,8 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.ws.rs.core.Response;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -34,6 +36,7 @@ import java.util.Map;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNotNull;
+import static org.easymock.EasyMock.anyObject;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -42,26 +45,18 @@ public class VehicleServiceExtTest extends BaseTest {
 
     @Autowired
     public VehicleDAO vehicleDAO;
-
-    @Autowired
-    private EventDAO eventDAO;
-
-    @Autowired
-    private VehicleReportDAO vehicleReportDAO;
-
     @Mocked
     public VehicleDAO mockVehicleDAO;
-
-    private VehicleDAOAdapter vehicleDAOAdapter;
-
-    private VehicleDAOAdapter mockVehicleDAOAdapter;
-
     @Autowired
     public GroupDAO groupDAO;
-
     @Autowired
     public VehicleServiceExt vehicleServiceExt;
-
+    @Autowired
+    private EventDAO eventDAO;
+    @Autowired
+    private VehicleReportDAO vehicleReportDAO;
+    private VehicleDAOAdapter vehicleDAOAdapter;
+    private VehicleDAOAdapter mockVehicleDAOAdapter;
     // test data
     private Map<Integer, Vehicle> testVehicles;
     private Vehicle vehicle1;
@@ -70,9 +65,24 @@ public class VehicleServiceExtTest extends BaseTest {
     private Group group;
     private LastLocation mockLastLocation;
     private Trip mockLastTrip;
+    private Trip mockTrip1;
+    private Trip mockTrip2;
+    private Trip mockTrip3;
+    private List<Trip> mockTripList;
 
     @Before
     public void createTestData() {
+        mockTrip1 = new Trip();
+        mockTrip1.setEndAddressStr("aok");
+
+        mockTrip2 = new Trip();
+        mockTrip2.setEndAddressStr("aok");
+
+        mockTrip3 = new Trip();
+        mockTrip3.setEndAddressStr("aok");
+
+        mockTripList = Arrays.asList(mockTrip1, mockTrip2, mockTrip3);
+
         mockLastLocation = new LastLocation();
         mockLastLocation.setVehicleStatus("aok");
 
@@ -236,9 +246,9 @@ public class VehicleServiceExtTest extends BaseTest {
 
                 mockVehicleDAO.findByName(vehicle1.getName()); result = vehicle1;
                 mockVehicleDAO.getLastTrip(vehicle1.getDriverID()); result = mockLastTrip;
-                mockVehicleDAO.findByName(vehicle2.getName()); result = vehicle1;
+                mockVehicleDAO.findByName(vehicle2.getName()); result = vehicle2;
                 mockVehicleDAO.getLastTrip(vehicle2.getDriverID()); result = mockLastTrip;
-                mockVehicleDAO.findByName(vehicle3.getName()); result = vehicle1;
+                mockVehicleDAO.findByName(vehicle3.getName()); result = vehicle3;
                 mockVehicleDAO.getLastTrip(vehicle3.getDriverID()); result = mockLastTrip;
             }};
 
@@ -248,6 +258,37 @@ public class VehicleServiceExtTest extends BaseTest {
                 Trip lastTrip = (Trip) response.getEntity();
                 assertNotNull(lastTrip);
                 assertEquals(lastTrip.getEndAddressStr(), "aok");
+            }
+        }finally {
+            vehicleServiceExtImpl.setDao(vehicleDAOAdapter);
+        }
+    }
+
+    @Test
+    public void getTripsTest(){
+        VehicleServiceExtImpl vehicleServiceExtImpl = (VehicleServiceExtImpl) vehicleServiceExt;
+        try {
+            vehicleServiceExtImpl.setDao(mockVehicleDAOAdapter);
+
+            new NonStrictExpectations() {{
+
+                mockVehicleDAO.findByName(vehicle1.getName()); result = vehicle1;
+                mockVehicleDAO.getTrips(vehicle1.getVehicleID(), (Date)anyObject(), (Date)anyObject()); result = mockTripList;
+                mockVehicleDAO.findByName(vehicle2.getName()); result = vehicle2;
+                mockVehicleDAO.getTrips(vehicle2.getVehicleID(), (Date)anyObject(), (Date)anyObject()); result = mockTripList;
+                mockVehicleDAO.findByName(vehicle3.getName()); result = vehicle3;
+                mockVehicleDAO.getTrips(vehicle3.getVehicleID(),(Date)anyObject(), (Date)anyObject()); result = mockTripList;
+            }};
+
+            for (int i = 1; i <= 3; i++) {
+                Response response = vehicleServiceExt.getTrips("dname_" + i);
+                assertNotNull(response.getEntity());
+                List<Trip> tripList = (List<Trip>) response.getEntity();
+                assertNotNull(tripList);
+
+                for (Trip trip: tripList){
+                    assertEquals(trip.getEndAddressStr(), "aok");
+                }
             }
         }finally {
             vehicleServiceExtImpl.setDao(vehicleDAOAdapter);
