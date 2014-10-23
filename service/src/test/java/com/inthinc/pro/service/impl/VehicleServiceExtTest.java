@@ -10,6 +10,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.Response;
 import java.util.*;
 
@@ -74,6 +75,7 @@ public class VehicleServiceExtTest {
         group = new Group();
         group.setGroupID(1);
 
+        vehicle1.setDriverID(1);
         vehicle1.setVehicleID(1);
         vehicle1.setStatus(Status.ACTIVE);
         vehicle1.setName("name_1" + NAME_MODIFIER);
@@ -89,6 +91,7 @@ public class VehicleServiceExtTest {
         vehicle1.setYear(1991);
         vehicle1.setGroupID(group.getGroupID());
 
+        vehicle2.setDriverID(2);
         vehicle2.setVehicleID(2);
         vehicle2.setStatus(Status.ACTIVE);
         vehicle2.setName("name_2" + NAME_MODIFIER);
@@ -104,6 +107,7 @@ public class VehicleServiceExtTest {
         vehicle2.setYear(1992);
         vehicle2.setGroupID(group.getGroupID());
 
+        vehicle3.setDriverID(3);
         vehicle3.setVehicleID(3);
         vehicle3.setStatus(Status.ACTIVE);
         vehicle3.setName("name_3" + NAME_MODIFIER);
@@ -158,34 +162,35 @@ public class VehicleServiceExtTest {
         }
     }
 
-//    @Test
-//    public void getTripTest(){
-//        VehicleServiceExtImpl vehicleServiceExtImpl = (VehicleServiceExtImpl) vehicleServiceExt;
-//        try {
-//            vehicleServiceExtImpl.setDao(mockVehicleDAOAdapter);
-//
-//            new NonStrictExpectations() {{
-//
-//                mockVehicleDAO.findByName(vehicle1.getName()); result = vehicle1;
-//                mockVehicleDAO.getLastTrip(vehicle1.getDriverID()); result = mockLastTrip;
-//                mockVehicleDAO.findByName(vehicle2.getName()); result = vehicle2;
-//                mockVehicleDAO.getLastTrip(vehicle2.getDriverID()); result = mockLastTrip;
-//                mockVehicleDAO.findByName(vehicle3.getName()); result = vehicle3;
-//                mockVehicleDAO.getLastTrip(vehicle3.getDriverID()); result = mockLastTrip;
-//            }};
-//
-//            for (int i = 1; i <= 3; i++) {
-//                Response response = vehicleServiceExt.getLastTrip("dname_" + i);
-//                assertNotNull(response.getEntity());
-//                Trip lastTrip = (Trip) response.getEntity();
-//                assertNotNull(lastTrip);
-//                assertEquals(lastTrip.getEndAddressStr(), "aok");
-//            }
-//        }finally {
-//            vehicleServiceExtImpl.setDao(vehicleDAOAdapter);
-//        }
-//    }
-//
+    @Test
+    public void getTripTest() {
+
+        new Expectations() {{
+
+            mockVehicleDAO.findByName(vehicle1.getName());
+            result = vehicle1;
+            mockVehicleDAO.getLastTrip(vehicle1.getDriverID());
+            result = mockLastTrip;
+            mockVehicleDAO.findByName(vehicle2.getName());
+            result = vehicle2;
+            mockVehicleDAO.getLastTrip(vehicle2.getDriverID());
+            result = mockLastTrip;
+            mockVehicleDAO.findByName(vehicle3.getName());
+            result = vehicle3;
+            mockVehicleDAO.getLastTrip(vehicle3.getDriverID());
+            result = mockLastTrip;
+        }};
+
+        for (int i = 1; i <= 3; i++) {
+            Response response = vehicleServiceExt.getLastTrip("name_" + i + "" + NAME_MODIFIER);
+            assertNotNull(response.getEntity());
+            GenericEntity genericEntity = (GenericEntity)response.getEntity();
+            Trip lastTrip = (Trip) genericEntity.getEntity();
+            assertNotNull(lastTrip);
+            assertEquals(lastTrip.getEndAddressStr(), "aok");
+        }
+    }
+
 //    @Test
 //    public void getTripsTest(){
 //        VehicleServiceExtImpl vehicleServiceExtImpl = (VehicleServiceExtImpl) vehicleServiceExt;
