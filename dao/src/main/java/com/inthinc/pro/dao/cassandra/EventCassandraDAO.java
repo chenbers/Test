@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -20,6 +21,7 @@ import me.prettyprint.hector.api.query.SliceQuery;
 
 import org.apache.log4j.Logger;
 
+import com.inthinc.pro.comm.parser.attrib.Attrib;
 import com.inthinc.pro.comm.parser.note.NoteParser;
 import com.inthinc.pro.comm.parser.note.NoteParserFactory;
 import com.inthinc.pro.dao.DriverDAO;
@@ -38,14 +40,40 @@ import com.inthinc.pro.model.event.EventCategory;
 import com.inthinc.pro.model.event.NoteType;
 import com.inthinc.pro.model.pagination.PageParams;
 import com.inthinc.pro.model.pagination.TableFilterField;
-/////Used for Main test only///////////////
-///////////////////////////////////////
 
 
 @SuppressWarnings("serial")
 public class EventCassandraDAO extends AggregationCassandraDAO implements EventDAO
 {
 	private final static int MAX_EVENTS = 1000;
+    private static Map<String, String> excludeAttribs = new HashMap<String, String>();
+    static {
+        excludeAttribs.put(Attrib.NOTETYPE.getFieldName(), "");
+        excludeAttribs.put(Attrib.NOTETIME.getFieldName(), "");
+        excludeAttribs.put(Attrib.NOTEFLAGS.getFieldName(), "");
+        excludeAttribs.put(Attrib.NOTESPEED.getFieldName(), "");
+        excludeAttribs.put(Attrib.NOTESPEEDLIMIT.getFieldName(), "");
+        excludeAttribs.put(Attrib.NOTEODOMETER.getFieldName(), "");
+        excludeAttribs.put(Attrib.BOUNDARYID.getFieldName(), "");
+        excludeAttribs.put(Attrib.MAXLATITUDE.getFieldName(), "");
+        excludeAttribs.put(Attrib.MAXLONGITUDE.getFieldName(), "");
+        excludeAttribs.put(Attrib.NOTEMAPREV.getFieldName(), "");
+        excludeAttribs.put(Attrib.TOPSPEED.getFieldName(), "");
+        excludeAttribs.put(Attrib.AVGSPEED.getFieldName(), "");
+        excludeAttribs.put(Attrib.DISTANCE.getFieldName(), "");
+        excludeAttribs.put(Attrib.NOTELATLONG.getFieldName(), "");
+        excludeAttribs.put("head", "");
+        excludeAttribs.put("heading", "");
+    }
+ 
+    public static void main(String[] args) {
+        CassandraDB cassandraDB = new CassandraDB(true, "Inthinc Production", "note_qa", "cache_qa","schlumberger-node-b-1.tiwipro.com:9160", 1, false, false);
+        EventCassandraDAO eventDAO = new EventCassandraDAO();
+        List<Event> events = eventDAO.getEventsForVehicle(58672, new Date(1413830104000L), new Date(), EventCategory.WARNING.getNoteTypesInCategory(), 1);
+        for (Event event : events){
+        	logger.info(event + " " + event.getAttribs());
+        }
+    }
 	
 	SiloService siloService = null;
 	private Mapper mapper = new EventHessianMapper();
@@ -55,115 +83,8 @@ public class EventCassandraDAO extends AggregationCassandraDAO implements EventD
 
     @SuppressWarnings("unused")
     private static final Logger logger = Logger.getLogger(EventCassandraDAO.class);
-
     
-    public static void main(String[] args)
-    {
-/*
-		if(args.length == 0)
-		{
-			System.out.println("Properties File was not passed In");
-			System.exit(0);
-		}
-	
-		
-		String filePath = (String) args[0];
-		String startTime = (String) args[1];
-		String endTime = (String) args[2];
-*/		
-        SiloService siloService = new SiloServiceCreator("tp-web10.tiwipro.com", 8099).getService();
-//        SiloService siloService = new SiloServiceCreator("dev-pro.inthinc.com", 8199).getService();
-//        SiloService siloService = new SiloServiceCreator("localhost", 8199).getService();
-        VehicleHessianDAO vehicleDAO = new VehicleHessianDAO();
-        vehicleDAO.setSiloService(siloService);
-
-//    	CassandraDB cassandraDB = new CassandraDB(true, "Iridium Archive", "note", "localhost:9160", 10, false);
-        CassandraDB cassandraDB = new CassandraDB(true, "Inthinc Production", "note_prod", "note_prod", "chevron-node4.tiwipro.com:9160", 10, false, false);
-    	EventCassandraDAO dao = new EventCassandraDAO();
-    	dao.setCassandraDB(cassandraDB);
-    	dao.setVehicleDAO(vehicleDAO);
-  /*  	
-    	List<Event> events = dao.getViolationEventsForDriver(66462, new Date(1334078768000L), new Date(1334081277000L), 1);
-    	dao.logEvents(events);
-
-    	events = dao.getEmergencyEventsForDriver(66462, new Date(1334078768000L), new Date(1334081277000L), 1);
-    	dao.logEvents(events);
-    	
-    	events = dao.getWarningEventsForDriver(66462, new Date(1334078768000L), new Date(1334081277000L), 1);
-    	dao.logEvents(events);
-    	
-    	events = dao.getMostRecentEvents(0, 100);
-    	dao.logEvents(events);
-    	
-    	events = dao.getMostRecentWarnings(0, 100);
-    	dao.logEvents(events);
-
-    	events = dao.getMostRecentEmergencies(0, 100);
-    	dao.logEvents(events);
-*/
-//    	List<Event> events = dao.getEventsForGroupFromVehicles(5260, EventCategory.VIOLATION.getNoteTypesInCategory(), new Date(1334078768000L), new Date(1334081277000L));
-    	
-//    	List<Event> events = dao.fetchAllEventsForAsset(false, 20079, 0, 1365256141);
-//    	dao.logEvents2(events);
-    	
-    	dao.shutdown();
-    }
-
-    /*    
-    private List<Event> fetchAllEventsForAsset(boolean isDriver, Integer ID, Integer startTS, Integer endTS)
-    {
-        List<Long> keyList = new ArrayList<Long>();
-        Composite startRange = new Composite();
-        startRange.add(0, 0);
-        startRange.add(1, startTS);
-        
-        Composite endRange = new Composite();
-        endRange.add(0, Integer.MAX_VALUE);
-        endRange.add(1, endTS);
-
-        keyList.addAll(fetchRowKeysFromIndex(isDriver, ID.intValue(), startRange, endRange, MAX_EVENTS));
-        
-        return fetchNotes(keyList, true);
-    }
-
-    public List<Event> fetchAllEventsForAsset(boolean isDriver, Integer ID, Integer startTS, Integer endTS)
-    {
-        List<Event> eventList = new ArrayList<Event>();
-        Composite startRange = new Composite();
-        startRange.add(0, 0);
-        startRange.add(1, 0);
-        
-        Composite endRange = new Composite();
-        endRange.add(0, Integer.MAX_VALUE);
-        endRange.add(1, endTS);
-
-            eventList.addAll(fetchNotesFromIndex(isDriver, ID, startRange, endRange, MAX_EVENTS, true));
-        return eventList;
-    }
-    private void logEvents2(List<Event> events)
-    {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
-        for (Event event : events)
-        {
-//            logger.info(event.getTime().getTime()/1000 + " " + event.getOdometer());
-
-            System.out.println("UPDATE note20 set odometer=" + event.getOdometer() + " WHERE deviceID=43316 AND time='" + dateFormat.format(event.getTime()) + "';");
-        }
-        System.out.println("**************************************************");
-    }
-*/
-
-    private void logEvents(List<Event> events)
-    {
-    	for (Event event : events)
-    	{
-    		logger.info("Event: " + event);
-    		System.out.println("Event: " + event);
-    	}
-    	System.out.println("**************************************************");
-    }
-
+ 
     public EventCassandraDAO()
     {
     }
@@ -231,11 +152,7 @@ public class EventCassandraDAO extends AggregationCassandraDAO implements EventD
         Integer[] eventTypesArray = getMapper().convertToArray(types, Integer.class);
         
         List<Event> returnList = null;
-        if (DateUtil.differenceInDays(startDate, new Date()) > 60)
-            returnList = fetchEventsForAssetOver60(true, driverID, startDate, endDate, eventTypesArray, includeForgiven);
-        else
-            returnList =  fetchEventsForAsset(true, driverID, startDate, endDate, eventTypesArray, includeForgiven);
-        
+        returnList =  fetchEventsForAsset(true, driverID, startDate, endDate, eventTypesArray, includeForgiven);
         
         Collections.sort(returnList);
         Collections.reverse(returnList);
@@ -249,10 +166,7 @@ public class EventCassandraDAO extends AggregationCassandraDAO implements EventD
         logger.debug("EventCassandraDAO getEventsForvehicle() vehicleID = " + vehicleID);
         Integer[] eventTypesArray = getMapper().convertToArray(types, Integer.class);
         List<Event> returnList = null;
-        if (DateUtil.differenceInDays(startDate, new Date()) > 60)
-            returnList =  fetchEventsForAssetOver60(false, vehicleID, startDate, endDate, eventTypesArray, includeForgiven);
-        else
-            returnList = fetchEventsForAsset(false, vehicleID, startDate, endDate, eventTypesArray, includeForgiven);
+        returnList = fetchEventsForAsset(false, vehicleID, startDate, endDate, eventTypesArray, includeForgiven);
         Collections.sort(returnList);
         Collections.reverse(returnList);
        
@@ -500,27 +414,6 @@ public class EventCassandraDAO extends AggregationCassandraDAO implements EventD
         return eventList;
     }
     
-    private List<Event> fetchEventsForAssetOver60(boolean isDriver, Integer ID, Date startDate, Date endDate, Integer[] eventTypes, Integer includeForgiven)
-    {
-        List<Long> keyList = new ArrayList<Long>();
-    	for(Integer eventType : eventTypes)
-    	{
-    		
-   		
-    		Composite startRange = new Composite();
-    		startRange.add(0, eventType);
-    		startRange.add(1, (int)DateUtil.convertDateToSeconds(startDate));
-    		
-    		Composite endRange = new Composite();
-    		endRange.add(0, eventType);
-    		endRange.add(1, (int)DateUtil.convertDateToSeconds(endDate)+1);
-
-    		keyList.addAll(fetchRowKeysFromIndex(isDriver, ID.intValue(), startRange, endRange, MAX_EVENTS));
-    	}
-    	
-    	
-    	return fetchNotes(keyList, (includeForgiven == 1));
-    }
 
     private List<Event> fetchNotesFromIndex(boolean isDriver, Integer rowKey, Composite startRange, Composite endRange, Integer count, boolean includeForgiven)
     {
@@ -567,7 +460,9 @@ public class EventCassandraDAO extends AggregationCassandraDAO implements EventD
                 logger.debug("fieldMap: " + fieldMap);    
                 
                 Event event = getMapper().convertToModelObject(fieldMap, Event.class);
+                String attribs = createNoteAttribsField(fieldMap);
                 event.setNoteID(noteId);
+                event.setAttribs(attribs);
                 
                 if (event.isValidEvent())
                     eventList.add(event);
@@ -579,29 +474,6 @@ public class EventCassandraDAO extends AggregationCassandraDAO implements EventD
         return eventList;
      }
 
-    private List<Long> fetchRowKeysFromIndex(boolean isDriver, Integer rowKey, Composite startRange, Composite endRange, Integer count)
-    {
-        String INDEX_CF = isDriver ? driverNoteTypeTimeIndex_CF : vehicleNoteTypeTimeIndex_CF;
-        SliceQuery<Composite, Composite, Long> sliceQuery = HFactory.createSliceQuery(getKeyspace(), compositeSerializer, compositeSerializer, longSerializer);
-        sliceQuery.setRange(startRange, endRange, false, count);
-        sliceQuery.setColumnFamily(INDEX_CF);
-        
-		Composite rowKeyComp = new Composite();
-		rowKeyComp.add(0, rowKey);
-        sliceQuery.setKey(rowKeyComp);
-        //rangeSlicesQuery.setReturnKeysOnly();
-        
-        QueryResult<ColumnSlice<Composite, Long>> result = sliceQuery.execute();
-        ColumnSlice<Composite, Long> columnSlice = result.get();            
-        
-        List<Long> keyList = new ArrayList<Long>();
-    	List<HColumn<Composite, Long>> columnList = columnSlice.getColumns();
-        for (HColumn<Composite, Long> column : columnList)
-        {
-        	keyList.add(column.getValue());
-        }
-    	return keyList;
-     }
 
     private List<Event> fetchNotes(List<Long> keys, boolean includeForgiven)
     {
@@ -662,5 +534,35 @@ public class EventCassandraDAO extends AggregationCassandraDAO implements EventD
     protected Integer getChangedCount(Map<String, Object> map) {
         return (Integer) map.get("count");
     }
+
+    private static String createNoteAttribsField(Map<String, Object> attribMap) {
+        StringBuffer attribs = new StringBuffer(100);
+        
+        for (Map.Entry<String, Object> attrib : attribMap.entrySet()) {
+            String key = attrib.getKey();
+            Object value = attrib.getValue();
+            
+            if (excludeAttribs.get(key) == null) {
+                if (!isCode(key)) {
+                	Attrib noteAttrib = Attrib.getForName(key);
+                    key = (noteAttrib==null) ? "" : String.valueOf(noteAttrib.getCode());
+                }
+                if (!key.isEmpty()) {
+	                attribs.append(";");
+	                attribs.append(key);
+	                attribs.append("=");
+	                attribs.append(value.toString().replace('=','&'));
+                }    
+            }
+            
+        }
+        return attribs.toString();
+    }
+
+    private static boolean isCode(String str)
+    {
+        return Character.isDigit(str.charAt(0));
+    }
+
 
 }
