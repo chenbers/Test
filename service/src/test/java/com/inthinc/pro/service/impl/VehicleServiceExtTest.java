@@ -1,6 +1,7 @@
 package com.inthinc.pro.service.impl;
 
 import com.inthinc.pro.dao.VehicleDAO;
+import com.inthinc.pro.dao.report.VehicleReportDAO;
 import com.inthinc.pro.model.*;
 import com.inthinc.pro.service.VehicleServiceExt;
 import com.inthinc.pro.service.adapters.VehicleDAOAdapter;
@@ -16,13 +17,15 @@ import java.util.*;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNotNull;
-import static org.easymock.EasyMock.anyObject;
 
 public class VehicleServiceExtTest {
     static final String NAME_MODIFIER = "3";
 
     @Mocked
     public VehicleDAO mockVehicleDAO;
+
+    @Mocked
+    public VehicleReportDAO mockVehicleReportDAO;
 
     private VehicleServiceExt vehicleServiceExt;
 
@@ -35,6 +38,7 @@ public class VehicleServiceExtTest {
     private Vehicle vehicle3;
     private Group group;
     private LastLocation mockLastLocation;
+    private com.inthinc.pro.model.aggregation.Score mockScore;
     private Trip mockLastTrip;
     private Trip mockTrip1;
     private Trip mockTrip2;
@@ -44,6 +48,9 @@ public class VehicleServiceExtTest {
     @Before
     public void createTestData() {
         vehicleServiceExt = new VehicleServiceExtImpl();
+
+        mockScore = new com.inthinc.pro.model.aggregation.Score();
+        mockScore.setTrips(999);
 
         mockTrip1 = new Trip();
         mockTrip1.setEndAddressStr("aok");
@@ -65,8 +72,10 @@ public class VehicleServiceExtTest {
 
         mockVehicleDAOAdapter = new VehicleDAOAdapter();
         mockVehicleDAOAdapter.setVehicleDAO(mockVehicleDAO);
+        mockVehicleDAOAdapter.setVehicleReportDAO(mockVehicleReportDAO);
         VehicleServiceExtImpl vehicleServiceExtImpl = (VehicleServiceExtImpl) vehicleServiceExt;
         vehicleServiceExtImpl.setDao(mockVehicleDAOAdapter);
+
 
         testVehicles = new HashMap<Integer, Vehicle>();
         vehicle1 = new Vehicle();
@@ -199,15 +208,15 @@ public class VehicleServiceExtTest {
 
             mockVehicleDAO.findByName(vehicle1.getName());
             result = vehicle1;
-            mockVehicleDAO.getTrips(vehicle1.getVehicleID(),  (Date)any, (Date)any);
+            mockVehicleDAO.getTrips(vehicle1.getVehicleID(), (Date) any, (Date) any);
             result = mockTripList;
             mockVehicleDAO.findByName(vehicle2.getName());
             result = vehicle2;
-            mockVehicleDAO.getTrips(vehicle2.getVehicleID(), (Date)any, (Date)any);
+            mockVehicleDAO.getTrips(vehicle2.getVehicleID(), (Date) any, (Date) any);
             result = mockTripList;
             mockVehicleDAO.findByName(vehicle3.getName());
             result = vehicle3;
-            mockVehicleDAO.getTrips(vehicle3.getVehicleID(),  (Date)any, (Date)any);
+            mockVehicleDAO.getTrips(vehicle3.getVehicleID(), (Date) any, (Date) any);
             result = mockTripList;
         }};
 
@@ -222,7 +231,34 @@ public class VehicleServiceExtTest {
                 assertEquals(trip.getEndAddressStr(), "aok");
             }
         }
+    }
 
+    @Test
+    public void getScoreTest() {
+
+        new Expectations() {{
+
+            mockVehicleDAO.findByName(vehicle1.getName());
+            result = vehicle1;
+            mockVehicleReportDAO.getScore(vehicle1.getVehicleID(), (Duration) any);
+            result = mockScore;
+            mockVehicleDAO.findByName(vehicle2.getName());
+            result = vehicle2;
+            mockVehicleReportDAO.getScore(vehicle2.getVehicleID(), (Duration) any);
+            result = mockScore;
+            mockVehicleDAO.findByName(vehicle3.getName());
+            result = vehicle3;
+            mockVehicleReportDAO.getScore(vehicle3.getVehicleID(), (Duration) any);
+            result = mockScore;
+        }};
+
+        for (int i = 1; i <= 3; i++) {
+            Response response = vehicleServiceExt.getScore("name_" + i + "" + NAME_MODIFIER, 30);
+            assertNotNull(response.getEntity());
+            com.inthinc.pro.model.aggregation.Score score = (com.inthinc.pro.model.aggregation.Score) response.getEntity();
+            assertNotNull(score);
+            assertEquals(score.getTrips(), 999);
+        }
     }
 
     public VehicleServiceExt getVehicleServiceExt() {
