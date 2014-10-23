@@ -3,6 +3,7 @@ package com.inthinc.pro.service.impl;
 import com.inthinc.pro.dao.VehicleDAO;
 import com.inthinc.pro.dao.report.VehicleReportDAO;
 import com.inthinc.pro.model.*;
+import com.inthinc.pro.model.aggregation.Trend;
 import com.inthinc.pro.service.VehicleServiceExt;
 import com.inthinc.pro.service.adapters.VehicleDAOAdapter;
 import mockit.Expectations;
@@ -39,6 +40,8 @@ public class VehicleServiceExtTest {
     private Group group;
     private LastLocation mockLastLocation;
     private com.inthinc.pro.model.aggregation.Score mockScore;
+    private Trend mockTrend;
+    private List<Trend> mockTrendList;
     private Trip mockLastTrip;
     private Trip mockTrip1;
     private Trip mockTrip2;
@@ -51,6 +54,11 @@ public class VehicleServiceExtTest {
 
         mockScore = new com.inthinc.pro.model.aggregation.Score();
         mockScore.setTrips(999);
+
+        mockTrend = new Trend();
+        mockTrend.setTrips(999);
+
+        mockTrendList = Arrays.asList(mockTrend);
 
         mockTrip1 = new Trip();
         mockTrip1.setEndAddressStr("aok");
@@ -65,7 +73,6 @@ public class VehicleServiceExtTest {
 
         mockLastLocation = new LastLocation();
         mockLastLocation.setVehicleStatus("aok");
-
 
         mockLastTrip = new Trip();
         mockLastTrip.setEndAddressStr("aok");
@@ -258,6 +265,35 @@ public class VehicleServiceExtTest {
             com.inthinc.pro.model.aggregation.Score score = (com.inthinc.pro.model.aggregation.Score) response.getEntity();
             assertNotNull(score);
             assertEquals(score.getTrips(), 999);
+        }
+    }
+
+    @Test
+    public void getTrendTest() {
+
+        new Expectations() {{
+
+            mockVehicleDAO.findByName(vehicle1.getName());
+            result = vehicle1;
+            mockVehicleReportDAO.getTrend(vehicle1.getVehicleID(), (Duration) any);
+            result = mockTrendList;
+            mockVehicleDAO.findByName(vehicle2.getName());
+            result = vehicle2;
+            mockVehicleReportDAO.getTrend(vehicle2.getVehicleID(), (Duration) any);
+            result = mockTrendList;
+            mockVehicleDAO.findByName(vehicle3.getName());
+            result = vehicle3;
+            mockVehicleReportDAO.getTrend(vehicle3.getVehicleID(), (Duration) any);
+            result = mockTrendList;
+        }};
+
+        for (int i = 1; i <= 3; i++) {
+            Response response = vehicleServiceExt.getTrend("name_" + i + "" + NAME_MODIFIER, 30);
+            assertNotNull(response.getEntity());
+            GenericEntity genericEntity = (GenericEntity) response.getEntity();
+            List<Trend> trendList = (List<Trend>) genericEntity.getEntity();
+            assertNotNull(trendList);
+            assertEquals(trendList.get(0).getTrips(), 999);
         }
     }
 
