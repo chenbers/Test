@@ -1,65 +1,29 @@
 package com.inthinc.pro.service.impl;
 
-import com.inthinc.pro.dao.EventDAO;
-import com.inthinc.pro.dao.GroupDAO;
-import com.inthinc.pro.dao.UserDAO;
 import com.inthinc.pro.dao.VehicleDAO;
-import com.inthinc.pro.dao.report.VehicleReportDAO;
 import com.inthinc.pro.model.*;
-import com.inthinc.pro.security.userdetails.ProUser;
 import com.inthinc.pro.service.VehicleServiceExt;
 import com.inthinc.pro.service.adapters.VehicleDAOAdapter;
-import com.inthinc.pro.service.it.BaseTest;
+import mockit.Expectations;
 import mockit.Mocked;
-import mockit.NonStrictExpectations;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.GrantedAuthority;
-import org.springframework.security.GrantedAuthorityImpl;
-import org.springframework.security.context.SecurityContextHolder;
-import org.springframework.security.providers.UsernamePasswordAuthenticationToken;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.transaction.annotation.Isolation;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.ws.rs.core.Response;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNotNull;
-import static org.easymock.EasyMock.anyObject;
 
+public class VehicleServiceExtTest {
+    static final String NAME_MODIFIER = "3";
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:spring/applicationContext-dao.xml", "classpath:spring/applicationContext-beans.xml", "classpath:spring/applicationContext-security.xml"})
-public class VehicleServiceExtTest extends BaseTest {
-    static final String NAME_MODIFIER = "2";
-    static final String TEST_USERNAME = "inthincTechSupportQA";
-    static final String TEST_PASSWORD = "welcome456";
-
-    @Autowired
-    public UserDAO userDAO;
-    @Autowired
-    public VehicleDAO vehicleDAO;
     @Mocked
     public VehicleDAO mockVehicleDAO;
-    @Autowired
-    public GroupDAO groupDAO;
-    @Autowired
-    public VehicleServiceExt vehicleServiceExt;
-    @Autowired
-    private EventDAO eventDAO;
-    @Autowired
-    private VehicleReportDAO vehicleReportDAO;
+
+    private VehicleServiceExt vehicleServiceExt;
+
     private VehicleDAOAdapter vehicleDAOAdapter;
     private VehicleDAOAdapter mockVehicleDAOAdapter;
     // test data
@@ -74,15 +38,10 @@ public class VehicleServiceExtTest extends BaseTest {
     private Trip mockTrip2;
     private Trip mockTrip3;
     private List<Trip> mockTripList;
-    private User testUser;
 
     @Before
     public void createTestData() {
-        GrantedAuthority[] grantedAuthorities = new GrantedAuthorityImpl[1];
-        grantedAuthorities[0] = new GrantedAuthorityImpl("ROLE_ADMIN");
-        testUser = userDAO.findByUserName(TEST_USERNAME);
-        ProUser proUser = new ProUser(testUser, grantedAuthorities);
-        SecurityContextHolder.getContext().setAuthentication(new UsernamePasswordAuthenticationToken(proUser, TEST_PASSWORD));
+        vehicleServiceExt = new VehicleServiceExtImpl();
 
         mockTrip1 = new Trip();
         mockTrip1.setEndAddressStr("aok");
@@ -98,18 +57,14 @@ public class VehicleServiceExtTest extends BaseTest {
         mockLastLocation = new LastLocation();
         mockLastLocation.setVehicleStatus("aok");
 
+
         mockLastTrip = new Trip();
         mockLastTrip.setEndAddressStr("aok");
 
-        vehicleDAOAdapter = new VehicleDAOAdapter();
-        vehicleDAOAdapter.setVehicleDAO(vehicleDAO);
-        vehicleDAOAdapter.setEventDAO(eventDAO);
-        vehicleDAOAdapter.setVehicleReportDAO(vehicleReportDAO);
-
         mockVehicleDAOAdapter = new VehicleDAOAdapter();
         mockVehicleDAOAdapter.setVehicleDAO(mockVehicleDAO);
-        mockVehicleDAOAdapter.setEventDAO(eventDAO);
-        mockVehicleDAOAdapter.setVehicleReportDAO(vehicleReportDAO);
+        VehicleServiceExtImpl vehicleServiceExtImpl = (VehicleServiceExtImpl) vehicleServiceExt;
+        vehicleServiceExtImpl.setDao(mockVehicleDAOAdapter);
 
         testVehicles = new HashMap<Integer, Vehicle>();
         vehicle1 = new Vehicle();
@@ -117,13 +72,11 @@ public class VehicleServiceExtTest extends BaseTest {
         vehicle3 = new Vehicle();
 
         group = new Group();
-        group.setName("test group");
-        group.setAccountID(1);
-        group.setPath("text/group");
-        group.setGroupID(groupDAO.create(1, group));
+        group.setGroupID(1);
 
+        vehicle1.setVehicleID(1);
         vehicle1.setStatus(Status.ACTIVE);
-        vehicle1.setName(NAME_MODIFIER + "name_1");
+        vehicle1.setName("name_1" + NAME_MODIFIER);
         vehicle1.setVtype(VehicleType.HEAVY);
         vehicle1.setColor("red");
         vehicle1.setIfta(true);
@@ -135,10 +88,10 @@ public class VehicleServiceExtTest extends BaseTest {
         vehicle1.setWeight(1000);
         vehicle1.setYear(1991);
         vehicle1.setGroupID(group.getGroupID());
-        vehicle1.setVehicleID(vehicleDAO.create(1, vehicle1));
 
+        vehicle2.setVehicleID(2);
         vehicle2.setStatus(Status.ACTIVE);
-        vehicle2.setName(NAME_MODIFIER + "name_2");
+        vehicle2.setName("name_2" + NAME_MODIFIER);
         vehicle2.setVtype(VehicleType.LIGHT);
         vehicle2.setColor("yellow");
         vehicle2.setIfta(true);
@@ -150,10 +103,10 @@ public class VehicleServiceExtTest extends BaseTest {
         vehicle2.setWeight(1001);
         vehicle2.setYear(1992);
         vehicle2.setGroupID(group.getGroupID());
-        vehicle2.setVehicleID(vehicleDAO.create(1, vehicle2));
 
+        vehicle3.setVehicleID(3);
         vehicle3.setStatus(Status.ACTIVE);
-        vehicle3.setName(NAME_MODIFIER + "name_3");
+        vehicle3.setName("name_3" + NAME_MODIFIER);
         vehicle3.setVtype(VehicleType.MEDIUM);
         vehicle3.setColor("blue");
         vehicle3.setIfta(true);
@@ -165,7 +118,6 @@ public class VehicleServiceExtTest extends BaseTest {
         vehicle3.setWeight(1003);
         vehicle3.setYear(1993);
         vehicle3.setGroupID(group.getGroupID());
-        vehicle3.setVehicleID(vehicleDAO.create(1, vehicle3));
 
         // add vehicles to list
         testVehicles.put(1, vehicle1);
@@ -175,81 +127,37 @@ public class VehicleServiceExtTest extends BaseTest {
 
     @After
     public void deleteTestData() {
-        for (Map.Entry<Integer, Vehicle> vehicleEntry : testVehicles.entrySet()) {
-            if (vehicleEntry.getValue() != null && vehicleEntry.getValue().getVehicleID() != null)
-                vehicleDAO.deleteByID(vehicleEntry.getValue().getVehicleID());
-        }
-        if (group != null && group.getGroupID() != null)
-            groupDAO.deleteByID(group.getGroupID());
+
     }
 
     @Test
-    public void getVehicleByNameTest() {
+    public void getLocationTest() {
+
+        new Expectations() {{
+            mockVehicleDAO.findByName(vehicle1.getName());
+            result = vehicle1;
+            mockVehicleDAO.getLastLocation(vehicle1.getVehicleID());
+            result = mockLastLocation;
+            mockVehicleDAO.findByName(vehicle2.getName());
+            result = vehicle2;
+            mockVehicleDAO.getLastLocation(vehicle2.getVehicleID());
+            result = mockLastLocation;
+            mockVehicleDAO.findByName(vehicle3.getName());
+            result = vehicle3;
+            mockVehicleDAO.getLastLocation(vehicle3.getVehicleID());
+            result = mockLastLocation;
+        }};
+
+
         for (int i = 1; i <= 3; i++) {
-            Response response = vehicleServiceExt.get(NAME_MODIFIER + "name_" + i);
+            Response response = vehicleServiceExt.getLastLocation("name_" + i + "" + NAME_MODIFIER);
             assertNotNull(response.getEntity());
-            Vehicle vehicle = (Vehicle) response.getEntity();
-            assertNotNull(vehicle);
-            assertEquals(vehicle.getName(), testVehicles.get(i).getName());
+            LastLocation lastLocation = (LastLocation) response.getEntity();
+            assertNotNull(lastLocation);
+            assertEquals(lastLocation.getVehicleStatus(), "aok");
         }
     }
 
-    @Test
-    public void getVehicleByVinTest() {
-        for (int i = 1; i <= 3; i++) {
-            Response response = vehicleServiceExt.findByVIN(NAME_MODIFIER + "9000000090" + i);
-            assertNotNull(response.getEntity());
-            Vehicle vehicle = (Vehicle) response.getEntity();
-            assertNotNull(vehicle);
-            assertEquals(vehicle.getName(), testVehicles.get(i).getName());
-        }
-    }
-//
-//    @Test
-//    public void getAllVehiclesTest() {
-//        Response response = vehicleServiceExt.getAll();
-//        assertNotNull(response.getEntity());
-//        List<Vehicle> vehicleList = (List<Vehicle>) response.getEntity();
-//        int found = 0;
-//
-//        for (Vehicle vehicle: vehicleList){
-//           for (Map.Entry<Integer, Vehicle> vehicleEntry: testVehicles.entrySet()){
-//               if (vehicleEntry.getValue().getVehicleID().equals(vehicle.getVehicleID()))
-//                   found ++;
-//           }
-//        }
-//        assertEquals(3, found);
-//    }
-//
-//
-//    @Test
-//    public void getLocationTest() {
-//        VehicleServiceExtImpl vehicleServiceExtImpl = (VehicleServiceExtImpl) vehicleServiceExt;
-//        try {
-//            vehicleServiceExtImpl.setDao(mockVehicleDAOAdapter);
-//
-//            new NonStrictExpectations() {{
-//
-//                mockVehicleDAO.findByName(vehicle1.getName()); result = vehicle1;
-//                mockVehicleDAO.getLastLocation(vehicle1.getVehicleID()); result = mockLastLocation;
-//                mockVehicleDAO.findByName(vehicle2.getName()); result = vehicle1;
-//                mockVehicleDAO.getLastLocation(vehicle2.getVehicleID()); result = mockLastLocation;
-//                mockVehicleDAO.findByName(vehicle3.getName()); result = vehicle1;
-//                mockVehicleDAO.getLastLocation(vehicle3.getVehicleID()); result = mockLastLocation;
-//            }};
-//
-//            for (int i = 1; i <= 3; i++) {
-//                Response response = vehicleServiceExt.getLastLocation("dname_" + i);
-//                assertNotNull(response.getEntity());
-//                LastLocation lastLocation = (LastLocation) response.getEntity();
-//                assertNotNull(lastLocation);
-//                assertEquals(lastLocation.getVehicleStatus(), "aok");
-//            }
-//        }finally {
-//            vehicleServiceExtImpl.setDao(vehicleDAOAdapter);
-//        }
-//    }
-//
 //    @Test
 //    public void getTripTest(){
 //        VehicleServiceExtImpl vehicleServiceExtImpl = (VehicleServiceExtImpl) vehicleServiceExt;
@@ -309,44 +217,12 @@ public class VehicleServiceExtTest extends BaseTest {
 //        }
 //    }
 
-    public VehicleDAO getVehicleDAO() {
-        return vehicleDAO;
-    }
-
-    public void setVehicleDAO(VehicleDAO vehicleDAO) {
-        this.vehicleDAO = vehicleDAO;
-    }
-
-    public GroupDAO getGroupDAO() {
-        return groupDAO;
-    }
-
-    public void setGroupDAO(GroupDAO groupDAO) {
-        this.groupDAO = groupDAO;
-    }
-
     public VehicleServiceExt getVehicleServiceExt() {
         return vehicleServiceExt;
     }
 
     public void setVehicleServiceExt(VehicleServiceExt vehicleServiceExt) {
         this.vehicleServiceExt = vehicleServiceExt;
-    }
-
-    public EventDAO getEventDAO() {
-        return eventDAO;
-    }
-
-    public void setEventDAO(EventDAO eventDAO) {
-        this.eventDAO = eventDAO;
-    }
-
-    public VehicleReportDAO getVehicleReportDAO() {
-        return vehicleReportDAO;
-    }
-
-    public void setVehicleReportDAO(VehicleReportDAO vehicleReportDAO) {
-        this.vehicleReportDAO = vehicleReportDAO;
     }
 
     public VehicleDAO getMockVehicleDAO() {
