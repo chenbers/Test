@@ -149,6 +149,18 @@ public class VehicleServiceExtIntegrationTest extends BaseTest {
         }
     }
 
+
+    @Test
+    public void getVehicleWithTripTest() {
+        for (int i = 1; i <= 3; i++) {
+            Response response = vehicleServiceExt.getVehicleAndLastTripDate("name_" + i + "" + NAME_MODIFIER);
+            assertNotNull(response.getEntity());
+            VehicleTripView vehicleTripView = (VehicleTripView) response.getEntity();
+            assertNotNull(vehicleTripView);
+            assertEquals(vehicleTripView.getName(), testVehicles.get(i).getName());
+        }
+    }
+
     @Test
     public void getVehicleByVinTest() {
         for (int i = 1; i <= 3; i++) {
