@@ -75,7 +75,11 @@ public class VehicleDAOAdapter extends BaseDAOAdapter<Vehicle> {
     public Vehicle assignDriver(Integer id, Integer driverID) {
         vehicleDAO.setVehicleDriver(id, driverID);
         return vehicleDAO.findByID(id);
-    }    
+    }
+
+    public Vehicle findByName(String name) {
+        return vehicleDAO.findByName(name);
+    }
 
     public Vehicle findByVIN(String vin) {
         return vehicleDAO.findByVIN(vin);

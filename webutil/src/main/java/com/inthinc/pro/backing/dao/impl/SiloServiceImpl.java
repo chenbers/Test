@@ -465,7 +465,14 @@ public class SiloServiceImpl implements SiloService {
     @DAODescription(daoID="vehicleDAO", daoMethod="findByDriverID")
     public Map<String, Object> getVehicleByDriverID(@DaoParam(name = "driverID", validator=ValidatorType.DRIVER) Integer driverID) throws ProDAOException {
         return null;
-    }     
+    }
+
+    @Override
+    @MethodDescription(description = "Fetches a vehicle by its current name.", crudType=CrudType.READ, modelClass=com.inthinc.pro.model.Vehicle.class)
+    public Map<String, Object> getVehicleByName( @DaoParam(name = "name") String name) throws ProDAOException {
+        // TODO Auto-generated method stub
+        return null;
+    }
 
     @Override
     @MethodDescription(description = "Fetches notes associated with this vehicle, within the specified timeframe (start, stop). (optional)typeList would contain a list of note types to be fetched.", 
