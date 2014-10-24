@@ -1101,10 +1101,22 @@ public class AutomationDeviceEvents {
 		return classes.new QSICurrentEvent(state, location);
 	}
 	
+    public static BackingCurrentEvent backingEventCurent(DeviceState state, GeoPoint location){
+        return classes.new BackingCurrentEvent (state, location);
+    }
+
+    public static BackingCurrentEvent backing (DeviceState state, GeoPoint location){
+        return classes.new BackingCurrentEvent (state, location);
+    }
+
 	public static void qSICurrent(DeviceBase device){
 		device.addEvent(qSICurrent(device.getState(), device.getCurrentLocation()));
 	}
 	
+    public static void backingEvent (DeviceBase device){
+        device.addEvent(backingEventCurent(device.getState(), device.getCurrentLocation()));
+    }
+
 	public static DVIRPreTripFailEvent dVIRPreTripFail(DeviceState state, GeoPoint location){
 		return classes.new DVIRPreTripFailEvent(state, location);
 	}
@@ -1294,6 +1306,14 @@ public class AutomationDeviceEvents {
 		
 		private QSICurrentEvent(DeviceState state, GeoPoint location){
 			super(DeviceNoteTypes.QSI_UP_TO_DATE, state, location);
+		}
+
+	}
+
+    public class BackingCurrentEvent extends AutomationDeviceEvents {
+
+        private BackingCurrentEvent (DeviceState state, GeoPoint location){
+            super(DeviceNoteTypes.BACKING, state, location);
 		}
 		
 	}
