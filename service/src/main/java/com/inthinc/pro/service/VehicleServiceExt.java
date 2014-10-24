@@ -19,6 +19,11 @@ public interface VehicleServiceExt {
     @Path("/vehicleext/{name}")
     public Response get(@PathParam("name") String name);
 
+
+    @GET
+    @Path("/vehicleext/vehicle_and_trip/{name}")
+    public Response getVehicleAndLastTripDate(@PathParam("name") String name);
+
     @GET
     @Path("/vehicleext/vin/{vin}")
     public Response findByVIN(@PathParam("vin") String vin);

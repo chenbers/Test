@@ -297,6 +297,34 @@ public class VehicleServiceExtTest {
         }
     }
 
+    @Test
+    public void getVehicleWithTripTest(){
+
+        new Expectations() {{
+            mockVehicleDAO.findByName(vehicle1.getName());
+            result = vehicle1;
+            mockVehicleDAO.getLastTrip(vehicle1.getDriverID());
+            result = mockLastTrip;
+            mockVehicleDAO.findByName(vehicle2.getName());
+            result = vehicle2;
+            mockVehicleDAO.getLastTrip(vehicle2.getDriverID());
+            result = mockLastTrip;
+            mockVehicleDAO.findByName(vehicle3.getName());
+            result = vehicle3;
+            mockVehicleDAO.getLastTrip(vehicle3.getDriverID());
+            result = mockLastTrip;
+        }};
+
+
+        for (int i = 1; i <= 3; i++) {
+            Response response = vehicleServiceExt.getVehicleAndLastTripDate("name_" + i + "" + NAME_MODIFIER);
+            assertNotNull(response.getEntity());
+            VehicleTripView vehicleTripView = (VehicleTripView) response.getEntity();
+            assertNotNull(vehicleTripView);
+            assertEquals(vehicleTripView.getName(), "name_" + i + "" + NAME_MODIFIER);
+        }
+    }
+
     public VehicleServiceExt getVehicleServiceExt() {
         return vehicleServiceExt;
     }
