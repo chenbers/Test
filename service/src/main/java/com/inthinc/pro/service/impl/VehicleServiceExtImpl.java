@@ -1,12 +1,7 @@
 package com.inthinc.pro.service.impl;
 
 import com.inthinc.pro.map.AddressLookup;
-import com.inthinc.pro.model.CustomDuration;
-import com.inthinc.pro.model.Duration;
-import com.inthinc.pro.model.LastLocation;
-import com.inthinc.pro.model.NoAddressFoundException;
-import com.inthinc.pro.model.Trip;
-import com.inthinc.pro.model.Vehicle;
+import com.inthinc.pro.model.*;
 import com.inthinc.pro.model.aggregation.Score;
 import com.inthinc.pro.model.aggregation.Trend;
 import com.inthinc.pro.service.VehicleServiceExt;
@@ -45,6 +40,27 @@ public class VehicleServiceExtImpl extends AbstractService<Vehicle, VehicleDAOAd
         if (vehicle != null)
             return Response.ok(vehicle).build();
         return Response.status(Status.NOT_FOUND).build();
+    }
+
+    @Override
+    public Response getVehicleAndLastTripDate(String name) {
+        Vehicle vehicle = getDao().findByName(name);
+
+        if (vehicle == null)
+            return Response.status(Status.NOT_FOUND).build();
+
+        // find last trip
+        Trip trip = getDao().getLastTrip(vehicle.getVehicleID());
+
+        // create the view object
+        VehicleTripView vehicleTripView = new VehicleTripView(vehicle);
+
+        // add last trip date if not null
+        if (trip != null) {
+            vehicleTripView.setLastTrip(trip.getEndTime());
+        }
+
+        return Response.ok(vehicleTripView).build();
     }
 
     @Override
