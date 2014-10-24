@@ -41,6 +41,24 @@ public class BackingMultipleEvent extends Event implements MultipleEventTypes
 
     public EventType getEventType() {
 
+        if (!this.getAttrMap().isEmpty()) {
+            for (Map.Entry<Object,Object> entry: this.getAttrMap().entrySet()){
+                String attr = (String)entry.getKey();
+                attrMap.put(attr, entry.getValue());
+            }
+            attrMap = this.getAttrMap();
+            if (attrMap.containsKey(EventAttr.ATTR_BACKING_TYPE.toString())) {
+                Integer backingType = Integer.valueOf(attrMap.get(EventAttr.ATTR_BACKING_TYPE.toString()).toString());
+                if (backingType == 1) {
+                    return EventType.BACKING;
+                } else if (backingType == 2) {
+                    return EventType.FIRST_MOVE_FORWARD;
+                } else {
+                    return EventType.UNKNOWN;
+                }
+            }
+        }
+
         if (this.getAttribs() != null) {
             String[] attribsList = this.getAttribs().split(";");
             for (String s : attribsList) {
