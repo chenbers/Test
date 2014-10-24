@@ -2,7 +2,9 @@ package com.inthinc.pro.model;
 
 import org.codehaus.jackson.annotate.JsonIgnore;
 
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 import java.util.Date;
 
 /**
@@ -12,6 +14,7 @@ import java.util.Date;
 public class VehicleTripView {
 
     @JsonIgnore
+    @XmlTransient
     private Vehicle vehicle;
 
     private Date lastTrip;
@@ -31,14 +34,7 @@ public class VehicleTripView {
         this.lastTrip = lastTrip;
     }
 
-    public Vehicle getVehicle() {
-        return vehicle;
-    }
-
-    public void setVehicle(Vehicle vehicle) {
-        this.vehicle = vehicle;
-    }
-
+    @XmlElement
     public Integer getVehicleID() {
         if (vehicle == null)
             return null;
@@ -51,6 +47,7 @@ public class VehicleTripView {
             this.vehicle.setVehicleID(vehicleID);
     }
 
+    @XmlElement
     public Integer getGroupID() {
         if (vehicle == null)
             return null;
@@ -63,6 +60,7 @@ public class VehicleTripView {
             vehicle.setGroupID(groupID);
     }
 
+    @XmlElement
     public Status getStatus() {
         if (vehicle == null)
             return null;
@@ -75,6 +73,7 @@ public class VehicleTripView {
             vehicle.setStatus(status);
     }
 
+    @XmlElement
     public String getName() {
         if (vehicle == null)
             return null;
@@ -87,6 +86,7 @@ public class VehicleTripView {
             vehicle.setName(name);
     }
 
+    @XmlElement
     public String getMake() {
         if (vehicle == null)
             return null;
@@ -99,6 +99,7 @@ public class VehicleTripView {
             vehicle.setMake(make);
     }
 
+    @XmlElement
     public String getModel() {
         if (vehicle == null)
             return null;
@@ -111,6 +112,7 @@ public class VehicleTripView {
             vehicle.setModel(model);
     }
 
+    @XmlElement
     public Integer getYear() {
         if (vehicle == null)
             return null;
@@ -123,6 +125,7 @@ public class VehicleTripView {
             vehicle.setYear(year);
     }
 
+    @XmlElement
     public String getColor() {
         if (vehicle == null)
             return null;
@@ -135,6 +138,7 @@ public class VehicleTripView {
             vehicle.setColor(color);
     }
 
+    @XmlElement
     public VehicleType getVtype() {
         if (vehicle == null)
             return null;
@@ -147,6 +151,7 @@ public class VehicleTripView {
             vehicle.setVtype(vtype);
     }
 
+    @XmlElement
     public String getVIN() {
         if (vehicle == null)
             return null;
@@ -159,6 +164,7 @@ public class VehicleTripView {
             vehicle.setVIN(VIN);
     }
 
+    @XmlElement
     public Integer getWeight() {
         if (vehicle == null)
             return null;
@@ -171,6 +177,7 @@ public class VehicleTripView {
             vehicle.setWeight(weight);
     }
 
+    @XmlElement
     public String getLicense() {
         if (vehicle == null)
             return null;
@@ -183,6 +190,7 @@ public class VehicleTripView {
             vehicle.setLicense(license);
     }
 
+    @XmlElement
     public State getState() {
         if (vehicle == null)
             return null;
@@ -195,6 +203,7 @@ public class VehicleTripView {
             vehicle.setState(state);
     }
 
+    @XmlElement
     public Integer getDriverID() {
         if (vehicle == null)
             return null;
@@ -207,6 +216,7 @@ public class VehicleTripView {
             vehicle.setDriverID(driverID);
     }
 
+    @XmlElement
     public String getDriverName() {
         if (vehicle == null)
             return null;
@@ -219,6 +229,7 @@ public class VehicleTripView {
             vehicle.setDriverName(driverName);
     }
 
+    @XmlElement
     public String getGroupName() {
         if (vehicle == null)
             return null;
@@ -231,6 +242,7 @@ public class VehicleTripView {
             vehicle.setGroupName(groupName);
     }
 
+    @XmlElement
     public Integer getDeviceID() {
         if (vehicle == null)
             return null;
@@ -243,6 +255,7 @@ public class VehicleTripView {
             vehicle.setDeviceID(deviceID);
     }
 
+    @XmlElement
     public Integer getOdometer() {
         if (vehicle == null)
             return null;
@@ -255,6 +268,7 @@ public class VehicleTripView {
             vehicle.setOdometer(odometer);
     }
 
+    @XmlElement
     public Boolean getIfta() {
         if (vehicle == null)
             return null;
@@ -267,6 +281,7 @@ public class VehicleTripView {
             vehicle.setIfta(ifta);
     }
 
+    @XmlElement
     public Device getDevice() {
         if (vehicle == null)
             return null;
