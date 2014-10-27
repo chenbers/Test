@@ -33,12 +33,6 @@ public class PersonServiceTest {
     @Mocked
     public PersonDAO mockPersonDAO;
 
-    @Mocked
-    DriverReportDAO mockDriverReportDAO;
-
-    @Mocked
-    EventStatisticsDAO mockEventStatisticsDAO;
-
     private PersonService personService;
 
     private PersonDAOAdapter personDAOAdapter;
@@ -121,38 +115,17 @@ public class PersonServiceTest {
     @Test
     public void getLocationTest() {
 
-        new NonStrictExpectations() {{
+        new Expectations() {{
             mockPersonDAO.findByID(person1.getPersonID());
             result = person1;
-            mockDriverReportDAO.getScore(driver1.getDriverID(), Duration.SIX);
-            result = mockScoresMap;
-            result = milesDriven;
-            mockEventStatisticsDAO.getMaxSpeedForPastDays(driver1.getDriverID(), 6, anyInt, (Date) any);
-            result = maxSpeed;
-            mockEventStatisticsDAO.getSpeedingTimeInSecondsForPastDays(driver1.getDriverID(), 6, anyInt, (Date) any);
-            result = maxSpeed;
             mockPersonDAO.findByID(person2.getPersonID());
             result = person2;
-            mockDriverReportDAO.getScore(driver2.getDriverID(), Duration.SIX);
-            result = mockScoresMap;
-            result = milesDriven;
-            mockEventStatisticsDAO.getMaxSpeedForPastDays(driver2.getDriverID(), 6, anyInt, (Date) any);
-            result = maxSpeed;
-            mockEventStatisticsDAO.getSpeedingTimeInSecondsForPastDays(driver2.getDriverID(), 6, anyInt, (Date) any);
-            result = maxSpeed;
             mockPersonDAO.findByID(person3.getPersonID());
             result = person3;
-            mockDriverReportDAO.getScore(driver3.getDriverID(), Duration.SIX);
-            result = mockScoresMap;
-            result = milesDriven;
-            mockEventStatisticsDAO.getMaxSpeedForPastDays(driver3.getDriverID(), 6, anyInt, (Date)any);
-            result = maxSpeed;
-            mockEventStatisticsDAO.getSpeedingTimeInSecondsForPastDays(driver3.getDriverID(), 6, anyInt, (Date)any);
-            result = maxSpeed;
         }};
 
         for (int i = 1; i <= 3; i++) {
-            Response response = personService.getPersonAndScores(i, 6);
+            Response response = personService.getPersonAndScores(i);
             assertNotNull(response.getEntity());
             PersonScoresView personScoresView = (PersonScoresView) response.getEntity();
             assertNotNull(personScoresView);
@@ -230,21 +203,5 @@ public class PersonServiceTest {
 
     public void setMockPersonDAO(PersonDAO mockPersonDAO) {
         this.mockPersonDAO = mockPersonDAO;
-    }
-
-    public DriverReportDAO getMockDriverReportDAO() {
-        return mockDriverReportDAO;
-    }
-
-    public void setMockDriverReportDAO(DriverReportDAO mockDriverReportDAO) {
-        this.mockDriverReportDAO = mockDriverReportDAO;
-    }
-
-    public EventStatisticsDAO getMockEventStatisticsDAO() {
-        return mockEventStatisticsDAO;
-    }
-
-    public void setMockEventStatisticsDAO(EventStatisticsDAO mockEventStatisticsDAO) {
-        this.mockEventStatisticsDAO = mockEventStatisticsDAO;
     }
 }
