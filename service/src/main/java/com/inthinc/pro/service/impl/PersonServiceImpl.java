@@ -122,8 +122,8 @@ public class PersonServiceImpl extends AbstractService<Person, PersonDAOAdapter>
         Integer personID = getDao().create(id, person);
         if (personID != null) {
             UriBuilder uriBuilder = uriInfo.getAbsolutePathBuilder();
-            URI uri = uriBuilder.path(personID.toString()).build();            
-            person = getDao().findByID(personID);         
+            URI uri = uriBuilder.path(personID.toString()).build();
+            person = getDao().findByID(personID);
             return Response.created(uri).entity(person).build();
         }
         return Response.serverError().build();
