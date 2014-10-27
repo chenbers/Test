@@ -27,6 +27,10 @@ public interface PersonService extends GenericService<Person> {
     @Path("/person/{personID}")
     public Response get(@PathParam("personID") Integer personID);
 
+    @GET
+    @Path("/person_and_scores/{personID}")
+    public Response getPersonAndScores(@PathParam("personID") Integer personID);
+
     @POST
     @Path("/person")
     public Response create(Person person, @Context UriInfo uriInfo);

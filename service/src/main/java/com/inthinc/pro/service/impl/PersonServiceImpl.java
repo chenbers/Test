@@ -11,6 +11,7 @@ import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.core.Response.Status;
 
 import com.inthinc.pro.model.Person;
+import com.inthinc.pro.model.PersonScoresView;
 import com.inthinc.pro.service.PersonService;
 import com.inthinc.pro.service.adapters.PersonDAOAdapter;
 import com.inthinc.pro.service.model.BatchResponse;
@@ -22,6 +23,18 @@ public class PersonServiceImpl extends AbstractService<Person, PersonDAOAdapter>
         List<Person> list = getDao().getAll();
         return Response.ok(new GenericEntity<List<Person>>(list) {
         }).build();
+    }
+
+    @Override
+    public Response getPersonAndScores(Integer personID) {
+        Person person = getDao().findByID(personID);
+        if (person != null) {
+            PersonScoresView personScoresView = new PersonScoresView(person);
+            // TODO - Add custom fileds in view
+
+            return Response.ok(personScoresView).build();
+        }
+        return Response.status(Status.NOT_FOUND).build();
     }
 
     @Override
@@ -49,8 +62,8 @@ public class PersonServiceImpl extends AbstractService<Person, PersonDAOAdapter>
         Integer personID = getDao().create(id, person);
         if (personID != null) {
             UriBuilder uriBuilder = uriInfo.getAbsolutePathBuilder();
-            URI uri = uriBuilder.path(personID.toString()).build();            
-            person = getDao().findByID(personID);         
+            URI uri = uriBuilder.path(personID.toString()).build();
+            person = getDao().findByID(personID);
             return Response.created(uri).entity(person).build();
         }
         return Response.serverError().build();
