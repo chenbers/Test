@@ -27,7 +27,7 @@ import static junit.framework.Assert.assertNotNull;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:spring/applicationContext-dao.xml", "classpath:spring/applicationContext-beans.xml", "classpath:spring/applicationContext-security.xml"})
 public class PersonServiceIntegrationTest extends BaseTest {
-    static final String NAME_MODIFIER = "7";
+    static final String NAME_MODIFIER = "3";
     static final String TEST_USERNAME = "inthincTechSupportQA";
     static final String TEST_PASSWORD = "welcome456";
 
@@ -39,8 +39,6 @@ public class PersonServiceIntegrationTest extends BaseTest {
     public GroupDAO groupDAO;
     @Autowired
     public PersonService personService;
-    @Autowired
-    public DriverDAO driverDAO;
 
     private PersonDAOAdapter personDAOAdapter;
 
@@ -49,11 +47,6 @@ public class PersonServiceIntegrationTest extends BaseTest {
     private Person person1;
     private Person person2;
     private Person person3;
-    private Map<Integer, Driver> testDrivers;
-    private Driver driver1;
-    private Driver driver2;
-    private Driver driver3;
-
     private Group group;
 
     private User testUser;
@@ -100,51 +93,14 @@ public class PersonServiceIntegrationTest extends BaseTest {
         person3.setTimeZone(TimeZone.getDefault());
         person3.setPersonID(personDAO.create(1, person3));
 
-        testDrivers = new HashMap<Integer, Driver>();
-        driver1 = new Driver();
-        driver1.setModified(new Date());
-        driver1.setStatus(Status.ACTIVE);
-        driver1.setGroupID(group.getGroupID());
-        driver1.setPerson(person1);
-
-        driver2 = new Driver();
-        driver2.setModified(new Date());
-        driver2.setStatus(Status.ACTIVE);
-        driver2.setGroupID(group.getGroupID());
-        driver2.setPerson(person2);
-
-        driver3 = new Driver();
-        driver3.setModified(new Date());
-        driver3.setStatus(Status.ACTIVE);
-        driver3.setGroupID(group.getGroupID());
-        driver3.setPerson(person3);
-
-        driver1.setDriverID(driverDAO.create(person1.getPersonID(), driver1));
-        driver2.setDriverID(driverDAO.create(person2.getPersonID(), driver2));
-        driver3.setDriverID(driverDAO.create(person3.getPersonID(), driver3));
-
-        person1.setDriver(driver1);
-        person2.setDriver(driver2);
-        person3.setDriver(driver3);
-
         // add people to list
         testPeople.put(1, person1);
         testPeople.put(2, person2);
         testPeople.put(3, person3);
-
-        // add drivers to the list
-        testDrivers.put(1, driver1);
-        testDrivers.put(2, driver2);
-        testDrivers.put(3, driver3);
     }
 
     @After
     public void deleteTestData() {
-        for (Map.Entry<Integer, Driver> driverEntry : testDrivers.entrySet()) {
-            if (driverEntry.getValue() != null && driverEntry.getValue().getDriverID() != null)
-                driverDAO.deleteByID(driverEntry.getValue().getDriverID());
-        }
-
         for (Map.Entry<Integer, Person> personEntry : testPeople.entrySet()) {
             if (personEntry.getValue() != null && personEntry.getValue().getPersonID() != null)
                 personDAO.deleteByID(personEntry.getValue().getPersonID());
@@ -154,7 +110,7 @@ public class PersonServiceIntegrationTest extends BaseTest {
     @Test
     public void getPersonAndScoresTest() {
         for (int i = 1; i <= 3; i++) {
-            Response response = personService.getPersonAndScores(testPeople.get(i).getPersonID(), 7);
+            Response response = personService.getPersonAndScores(testPeople.get(i).getPersonID());
             assertNotNull(response.getEntity());
             PersonScoresView personScoresView = (PersonScoresView) response.getEntity();
             assertNotNull(personScoresView);
