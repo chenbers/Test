@@ -13,12 +13,9 @@ import javax.ws.rs.core.Response.Status;
 
 import com.inthinc.pro.dao.EventStatisticsDAO;
 import com.inthinc.pro.dao.RawScoreDAO;
-import com.inthinc.pro.dao.ScoreDAO;
 import com.inthinc.pro.dao.jdbc.AdminVehicleJDBCDAO;
-import com.inthinc.pro.dao.report.DriverReportDAO;
-import com.inthinc.pro.dao.util.MeasurementConversionUtil;
-import com.inthinc.pro.model.*;
-import com.inthinc.pro.model.aggregation.Score;
+import com.inthinc.pro.model.Person;
+import com.inthinc.pro.model.PersonScoresView;
 import com.inthinc.pro.service.PersonService;
 import com.inthinc.pro.service.adapters.PersonDAOAdapter;
 import com.inthinc.pro.service.model.BatchResponse;
@@ -26,7 +23,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 public class PersonServiceImpl extends AbstractService<Person, PersonDAOAdapter> implements PersonService {
     private final Integer SCORE_NUM_DAYS = 6;
-    private final Integer X_TEN = 10;
+    private final Integer X_TEN=10;
 
     @Autowired
     RawScoreDAO rawScoreDAO;
@@ -67,8 +64,40 @@ public class PersonServiceImpl extends AbstractService<Person, PersonDAOAdapter>
             PersonScoresView personScoresView = new PersonScoresView(person);
 
             if (person.getDriverID()!=null) {
+                //milesDriven
+                personScoresView.setMilesDriven(adminVehicleJDBCDAO.getMilesDriven(person.getDriverID()));
+
                 Map<String, Object> scoresMap = rawScoreDAO.getDScoreByDT(person.getDriverID(),SCORE_NUM_DAYS);
-                System.out.println("blabla");
+
+                //speeding
+                personScoresView.setSpeeding(scoresMap.get("speeding")!=null?(Integer) scoresMap.get("speeding") * X_TEN:null);
+                //aggresiveAccel
+                personScoresView.setAggressiveAccel(scoresMap.get("aggressiveAccel")!=null ? (Integer) scoresMap.get("aggressiveAccel") * X_TEN:null);
+                //aggressiveAccelEvents
+                personScoresView.setAggressiveAccelEvents((Integer) scoresMap.get("aggressiveAccelEvents"));
+                //aggressiveBrake
+                personScoresView.setAggressiveBrake(scoresMap.get("aggressiveBrake")!=null ? (Integer) scoresMap.get("aggressiveBrake") * X_TEN:null);
+                //aggressiveBrakeEvents
+                personScoresView.setAggressiveBrakeEvents((Integer) scoresMap.get("aggressiveBrakeEvents"));
+                //aggressiveBumpEvents
+                personScoresView.setAggressiveBumpEvents((Integer) scoresMap.get("aggressiveBumpEvents"));
+                //overall
+                personScoresView.setOverall(scoresMap.get("overall")!=null ? (Integer) scoresMap.get("overall") * X_TEN:null);
+
+
+
+                Integer aggressiveTotalEvents = 0;
+                Integer aggressiveLeftEvents = (Integer) scoresMap.get("aggressiveLeftEvents");
+                Integer aggressiveRightEvents = (Integer) scoresMap.get("aggressiveRightEvents");
+
+                if (aggressiveLeftEvents != null)
+                    aggressiveTotalEvents += aggressiveLeftEvents;
+                if (aggressiveTotalEvents != null)
+                    aggressiveRightEvents += aggressiveRightEvents;
+
+                personScoresView.setAggressiveTurnsEvents(aggressiveTotalEvents);
+
+
                 // TODO - read custom fields from scoresMap and add to personScoresView
             }
 
