@@ -68,6 +68,7 @@ public class PersonServiceImpl extends AbstractService<Person, PersonDAOAdapter>
 
             if (person.getDriverID()!=null) {
                 Map<String, Object> scoresMap = rawScoreDAO.getDScoreByDT(person.getDriverID(),SCORE_NUM_DAYS);
+                System.out.println("blabla");
                 // TODO - read custom fields from scoresMap and add to personScoresView
             }
 
