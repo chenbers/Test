@@ -604,9 +604,9 @@ public class EventCassandraDAO extends AggregationCassandraDAO implements EventD
                 if (!key.isEmpty()) {
                 	Integer iKey = Integer.parseInt(key);
                 	Object oVal = null;
-                	if (iKey < 24576 || (iKey > 32000 && iKey > 33000))
+                	if (iKey < 24576 || (iKey > 32000 && iKey < 33000))
                 		oVal = Integer.parseInt(value.toString());
-                	if (iKey >= 24576 && iKey <= 49166)
+                	if ((iKey >= 24576 && iKey < 32000) || (iKey > 33000 && iKey <= 49166))
                 		oVal = value.toString().replace('=','&');
                 	
                 	if (oVal!=null && iKey!=null)
