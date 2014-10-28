@@ -85,7 +85,7 @@ public class PersonServiceImpl extends AbstractService<Person, PersonDAOAdapter>
                 personScoresView.setOverall(scoresMap.get("overall")!=null ? (Integer) scoresMap.get("overall") * X_TEN:null);
 
 
-
+                //aggressiveTurnEvents
                 Integer aggressiveTotalEvents = 0;
                 Integer aggressiveLeftEvents = (Integer) scoresMap.get("aggressiveLeftEvents");
                 Integer aggressiveRightEvents = (Integer) scoresMap.get("aggressiveRightEvents");
@@ -93,7 +93,7 @@ public class PersonServiceImpl extends AbstractService<Person, PersonDAOAdapter>
                 if (aggressiveLeftEvents != null)
                     aggressiveTotalEvents += aggressiveLeftEvents;
                 if (aggressiveTotalEvents != null)
-                    aggressiveRightEvents += aggressiveRightEvents;
+                    aggressiveTotalEvents += aggressiveRightEvents;
 
                 personScoresView.setAggressiveTurnsEvents(aggressiveTotalEvents);
 
