@@ -27,12 +27,10 @@ import com.inthinc.pro.comm.parser.note.NoteParserFactory;
 import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.dao.EventDAO;
 import com.inthinc.pro.dao.VehicleDAO;
-import com.inthinc.pro.dao.hessian.VehicleHessianDAO;
 import com.inthinc.pro.dao.hessian.exceptions.EmptyResultSetException;
 import com.inthinc.pro.dao.hessian.mapper.EventHessianMapper;
 import com.inthinc.pro.dao.hessian.mapper.Mapper;
 import com.inthinc.pro.dao.hessian.proserver.SiloService;
-import com.inthinc.pro.dao.hessian.proserver.SiloServiceCreator;
 import com.inthinc.pro.dao.util.DateUtil;
 import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.model.event.Event;
@@ -69,7 +67,9 @@ public class EventCassandraDAO extends AggregationCassandraDAO implements EventD
     public static void main(String[] args) {
         CassandraDB cassandraDB = new CassandraDB(true, "Inthinc Production", "note_qa", "cache_qa","schlumberger-node-b-1.tiwipro.com:9160", 1, false, false);
         EventCassandraDAO eventDAO = new EventCassandraDAO();
-        List<Event> events = eventDAO.getEventsForVehicle(58672, new Date(1413830104000L), new Date(), EventCategory.WARNING.getNoteTypesInCategory(), 1);
+        List noteTypes = EventCategory.WARNING.getNoteTypesInCategory();
+        noteTypes.add(NoteType.LOCATION);
+        List<Event> events = eventDAO.getEventsForVehicle(58672, new Date(1413830104000L), new Date(), noteTypes, 1);
         for (Event event : events){
         	logger.info(event + " " + event.getAttribs());
         }
@@ -79,7 +79,6 @@ public class EventCassandraDAO extends AggregationCassandraDAO implements EventD
 	private Mapper mapper = new EventHessianMapper();
     private VehicleDAO vehicleDAO;
     private DriverDAO driverDAO;
-
 
     @SuppressWarnings("unused")
     private static final Logger logger = Logger.getLogger(EventCassandraDAO.class);
@@ -105,7 +104,6 @@ public class EventCassandraDAO extends AggregationCassandraDAO implements EventD
     public VehicleDAO getVehicleDAO() {
         return vehicleDAO;
     }
-    
     
     public DriverDAO getDriverDAO() {
 		return driverDAO;
@@ -154,6 +152,9 @@ public class EventCassandraDAO extends AggregationCassandraDAO implements EventD
         List<Event> returnList = null;
         returnList =  fetchEventsForAsset(true, driverID, startDate, endDate, eventTypesArray, includeForgiven);
         
+        if (types.contains(NoteType.LOCATION))
+        	returnList.addAll(fetchLocations(driverID, (int) DateUtil.convertDateToSeconds(startDate), (int) DateUtil.convertDateToSeconds(endDate), true));
+        
         Collections.sort(returnList);
         Collections.reverse(returnList);
        
@@ -167,6 +168,9 @@ public class EventCassandraDAO extends AggregationCassandraDAO implements EventD
         Integer[] eventTypesArray = getMapper().convertToArray(types, Integer.class);
         List<Event> returnList = null;
         returnList = fetchEventsForAsset(false, vehicleID, startDate, endDate, eventTypesArray, includeForgiven);
+        if (types.contains(NoteType.LOCATION))
+        	returnList.addAll(fetchLocations(vehicleID, (int) DateUtil.convertDateToSeconds(startDate), (int) DateUtil.convertDateToSeconds(endDate), false));
+
         Collections.sort(returnList);
         Collections.reverse(returnList);
        
@@ -458,11 +462,10 @@ public class EventCassandraDAO extends AggregationCassandraDAO implements EventD
                 fieldMap.put("vehicleID", (!isDriver) ? rowKey  : assetId);
 
                 logger.debug("fieldMap: " + fieldMap);    
+                addNoteAttribsMap(fieldMap);
                 
                 Event event = getMapper().convertToModelObject(fieldMap, Event.class);
-                String attribs = createNoteAttribsField(fieldMap);
                 event.setNoteID(noteId);
-                event.setAttribs(attribs);
                 
                 if (event.isValidEvent())
                     eventList.add(event);
@@ -474,6 +477,53 @@ public class EventCassandraDAO extends AggregationCassandraDAO implements EventD
         return eventList;
      }
 
+    private List<Event> fetchLocations(Integer id, Integer startTime, Integer endTime, boolean isDriver) {
+        logger.debug("fetchLocations ID: " + id + " startTime: " + startTime + " endTime: " + endTime);
+        List<Event> locationList = new ArrayList<Event>();
+
+        SliceQuery<Integer, Composite, byte[]> sliceQuery = HFactory.createSliceQuery(getKeyspace(), integerSerializer, compositeSerializer, bytesArraySerializer);
+
+        Composite startRange = new Composite();
+        startRange.add(0, startTime);
+        startRange.add(1, Integer.MIN_VALUE);
+
+        Composite endRange = new Composite();
+        endRange.add(0, endTime); // Current Timestamp
+        endRange.add(1, Integer.MAX_VALUE);
+
+        sliceQuery.setRange(startRange, endRange, true, 10000);
+        sliceQuery.setColumnFamily((isDriver) ? driverBreadCrumb60_CF : vehicleBreadCrumb60_CF);
+        sliceQuery.setKey(id);
+
+        QueryResult<ColumnSlice<Composite, byte[]>> result = sliceQuery.execute();
+        ColumnSlice<Composite, byte[]> columnSlice = result.get();
+
+        Composite columnKey = null;
+        byte[] raw = null;
+        List<HColumn<Composite, byte[]>> columnList = columnSlice.getColumns();
+        for (HColumn<Composite, byte[]> column : columnList) {
+            columnKey = column.getName();
+            Integer assetID = bigIntegerSerializer.fromByteBuffer((ByteBuffer) columnKey.get(1)).intValue();
+            String method = stringSerializer.fromByteBuffer((ByteBuffer) columnKey.get(2));
+            raw = column.getValue();
+
+            NoteParser parser = NoteParserFactory.getParserForMethod(method);
+            Map<String, Object> fieldMap = parser.parseNote(raw);
+            addNoteAttribsMap(fieldMap);
+            Event event = mapper.convertToModelObject(fieldMap, Event.class);
+            if (isDriver) {
+            	event.setDriverID(id);
+            	event.setVehicleID(assetID);
+            }	
+            else {
+            	event.setVehicleID(id);
+            	event.setDriverID(assetID);
+            }	
+            locationList.add(event);
+        }
+
+        return locationList;
+    }
 
     private List<Event> fetchNotes(List<Long> keys, boolean includeForgiven)
     {
@@ -535,8 +585,8 @@ public class EventCassandraDAO extends AggregationCassandraDAO implements EventD
         return (Integer) map.get("count");
     }
 
-    private static String createNoteAttribsField(Map<String, Object> attribMap) {
-        StringBuffer attribs = new StringBuffer(100);
+    private static void addNoteAttribsMap(Map<String, Object> attribMap) {
+    	Map<Integer, Object> attribs = new HashMap<Integer, Object>();
         
         for (Map.Entry<String, Object> attrib : attribMap.entrySet()) {
             String key = attrib.getKey();
@@ -548,15 +598,20 @@ public class EventCassandraDAO extends AggregationCassandraDAO implements EventD
                     key = (noteAttrib==null) ? "" : String.valueOf(noteAttrib.getCode());
                 }
                 if (!key.isEmpty()) {
-	                attribs.append(";");
-	                attribs.append(key);
-	                attribs.append("=");
-	                attribs.append(value.toString().replace('=','&'));
+                	Integer iKey = Integer.parseInt(key);
+                	Object oVal = null;
+                	if (iKey < 24576 || (iKey > 32000 && iKey < 33000))
+                		oVal = Integer.parseInt(value.toString());
+                	if ((iKey >= 24576 && iKey < 32000) || (iKey > 33000 && iKey <= 49166))
+                		oVal = value.toString().replace('=','&');
+                	
+                	if (oVal!=null && iKey!=null)
+                		attribs.put(iKey, oVal);
                 }    
             }
-            
         }
-        return attribs.toString();
+        if (attribs.size() > 0)
+        	attribMap.put("attrMap", attribs);
     }
 
     private static boolean isCode(String str)
