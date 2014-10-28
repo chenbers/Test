@@ -33,6 +33,9 @@ public class PersonServiceTest {
     @Mocked
     public PersonDAO mockPersonDAO;
 
+    @Mocked
+    public RawScoreDAO mockRawScoreDAO;
+
     private PersonService personService;
 
     private PersonDAOAdapter personDAOAdapter;
@@ -63,8 +66,7 @@ public class PersonServiceTest {
         personService = new PersonServiceImpl();
         PersonServiceImpl personServiceImpl = (PersonServiceImpl) personService;
         personServiceImpl.setDao(mockPersonDAOAdapter);
-        personServiceImpl.setDriverReportDAO(mockDriverReportDAO);
-        personServiceImpl.setEventStatisticsDAO(mockEventStatisticsDAO);
+        personServiceImpl.setRawScoreDAO(mockRawScoreDAO);
 
         testPeople = new HashMap<Integer, Person>();
         driver1 = new Driver();
@@ -118,10 +120,16 @@ public class PersonServiceTest {
         new Expectations() {{
             mockPersonDAO.findByID(person1.getPersonID());
             result = person1;
+            mockRawScoreDAO.getDScoreByDT(driver1.getDriverID(),7);
+            result = mockScoresMap;
             mockPersonDAO.findByID(person2.getPersonID());
             result = person2;
+            mockRawScoreDAO.getDScoreByDT(driver2.getDriverID(),7);
+            result = mockScoresMap;
             mockPersonDAO.findByID(person3.getPersonID());
             result = person3;
+            mockRawScoreDAO.getDScoreByDT(driver3.getDriverID(),7);
+            result = mockScoresMap;
         }};
 
         for (int i = 1; i <= 3; i++) {

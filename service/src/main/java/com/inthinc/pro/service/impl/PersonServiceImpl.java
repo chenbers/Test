@@ -3,6 +3,7 @@ package com.inthinc.pro.service.impl;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.Response;
@@ -21,15 +22,21 @@ import com.inthinc.pro.model.aggregation.Score;
 import com.inthinc.pro.service.PersonService;
 import com.inthinc.pro.service.adapters.PersonDAOAdapter;
 import com.inthinc.pro.service.model.BatchResponse;
+import org.springframework.beans.factory.annotation.Autowired;
 
 public class PersonServiceImpl extends AbstractService<Person, PersonDAOAdapter> implements PersonService {
+    private final Integer SCORE_NUM_DAYS = 6;
     private final Integer X_TEN = 10;
 
     @Autowired
-    DriverReportDAO driverReportDAO;
+    RawScoreDAO rawScoreDAO;
+
+    @Autowired 
+    AdminVehicleJDBCDAO adminVehicleJDBCDAO;
 
     @Autowired
     EventStatisticsDAO eventStatisticsDAO;
+
 
     @Override
     public Response getAll() {
@@ -59,37 +66,9 @@ public class PersonServiceImpl extends AbstractService<Person, PersonDAOAdapter>
             // standard person data
             PersonScoresView personScoresView = new PersonScoresView(person);
 
-            // scoring data
-            if (score != null) {
-                personScoresView.setSpeeding(score.getSpeeding() != null ? score.getSpeeding().doubleValue() : 0d);
-                personScoresView.setAggressiveAccel(score.getAggressiveAccel() != null ? score.getAggressiveAccel().doubleValue() : 0d);
-                personScoresView.setAggressiveAccelEvents(score.getAggressiveAccelEvents() != null ? score.getAggressiveAccelEvents().doubleValue() : 0d);
-                personScoresView.setAggressiveBrake(score.getAggressiveBrake() != null ? score.getAggressiveBrake().doubleValue() : 0d);
-                personScoresView.setAggressiveBrakeEvents(score.getAggressiveBrakeEvents() != null ? score.getAggressiveBrakeEvents().doubleValue() : 0d);
-                personScoresView.setAggressiveBumpEvents(score.getAggressiveBumpEvents() != null ? score.getAggressiveBumpEvents().doubleValue() : 0d);
-                personScoresView.setOverall(score.getOverall() != null ? score.getOverall().doubleValue() : 0d);
-                personScoresView.setMilesDriven(score.getMilesDriven() != null ? score.getMilesDriven().doubleValue() : 0d);
-
-                // calculate custom field - turn
-                Number numAgressiveLeftEvents = score.getAggressiveLeftEvents();
-                Number numAgressiveRightEvents = score.getAggressiveRightEvents();
-                Double aggressiveLeftEvents = numAgressiveLeftEvents != null ? numAgressiveLeftEvents.doubleValue() : 0d;
-                Double aggressiveRightEvents = numAgressiveRightEvents != null ? numAgressiveRightEvents.doubleValue() : 0d;
-                personScoresView.setAggressiveTurnsEvents(aggressiveLeftEvents + aggressiveRightEvents);
-
-                // custom data from custom dao - event statistics
-                if (duration != null) {
-                    scoreNumDays = duration.getNumberOfDays();
-                } else if (customDuration != null) {
-                    scoreNumDays = customDuration.getNumberOfDays();
-                }
-                if (scoreNumDays != 0) {
-                    Integer maxSpeed = eventStatisticsDAO.getMaxSpeedForPastDays(person.getDriverID(), scoreNumDays, null, null);
-                    Double speedTime = eventStatisticsDAO.getSpeedingTimeInSecondsForPastDays(person.getDriverID(), scoreNumDays, null, null).doubleValue();
-                    personScoresView.setSpeedTime(speedTime);
-                    personScoresView.setMaxSpeed(convertToKmIfNeeded(person.getMeasurementType(), maxSpeed));
-                }
-
+            if (person.getDriverID()!=null) {
+                Map<String, Object> scoresMap = rawScoreDAO.getDScoreByDT(person.getDriverID(),SCORE_NUM_DAYS);
+                // TODO - read custom fields from scoresMap and add to personScoresView
             }
 
             return Response.ok(personScoresView).build();
