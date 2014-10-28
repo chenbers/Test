@@ -168,11 +168,11 @@ public class PersonScoresView {
 
 
     @XmlElement
-    public Locale getLocale() {
+    public String getLocale() {
         if (person == null)
             return null;
 
-        return person.getLocale();
+        return person.getLocale().getDisplayName();
     }
 
     public void setLocale(Locale locale) {

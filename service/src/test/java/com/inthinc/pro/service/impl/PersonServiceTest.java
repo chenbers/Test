@@ -115,15 +115,15 @@ public class PersonServiceTest {
         new Expectations() {{
             mockPersonDAO.findByID(person1.getPersonID());
             result = person1;
-            mockRawScoreDAO.getDScoreByDT(driver1.getDriverID(),7);
+            mockRawScoreDAO.getDScoreByDT(driver1.getDriverID(),6);
             result = mockScoresMap;
             mockPersonDAO.findByID(person2.getPersonID());
             result = person2;
-            mockRawScoreDAO.getDScoreByDT(driver2.getDriverID(),7);
+            mockRawScoreDAO.getDScoreByDT(driver2.getDriverID(),6);
             result = mockScoresMap;
             mockPersonDAO.findByID(person3.getPersonID());
             result = person3;
-            mockRawScoreDAO.getDScoreByDT(driver3.getDriverID(),7);
+            mockRawScoreDAO.getDScoreByDT(driver3.getDriverID(),6);
             result = mockScoresMap;
         }};
 

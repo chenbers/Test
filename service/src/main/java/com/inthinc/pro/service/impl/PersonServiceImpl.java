@@ -20,7 +20,7 @@ import com.inthinc.pro.service.model.BatchResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public class PersonServiceImpl extends AbstractService<Person, PersonDAOAdapter> implements PersonService {
-    private final Integer SCORE_NUM_DAYS = 7;
+    private final Integer SCORE_NUM_DAYS = 6;
 
     @Autowired
     RawScoreDAO rawScoreDAO;
@@ -40,6 +40,7 @@ public class PersonServiceImpl extends AbstractService<Person, PersonDAOAdapter>
 
             if (person.getDriverID()!=null) {
                 Map<String, Object> scoresMap = rawScoreDAO.getDScoreByDT(person.getDriverID(),SCORE_NUM_DAYS);
+                System.out.println("blabla");
                 // TODO - read custom fields from scoresMap and add to personScoresView
             }
 
