@@ -3,6 +3,7 @@ package com.inthinc.pro.service.impl;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.Response;
@@ -10,13 +11,19 @@ import javax.ws.rs.core.UriBuilder;
 import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.core.Response.Status;
 
+import com.inthinc.pro.dao.RawScoreDAO;
 import com.inthinc.pro.model.Person;
 import com.inthinc.pro.model.PersonScoresView;
 import com.inthinc.pro.service.PersonService;
 import com.inthinc.pro.service.adapters.PersonDAOAdapter;
 import com.inthinc.pro.service.model.BatchResponse;
+import org.springframework.beans.factory.annotation.Autowired;
 
 public class PersonServiceImpl extends AbstractService<Person, PersonDAOAdapter> implements PersonService {
+    private final Integer SCORE_NUM_DAYS = 7;
+
+    @Autowired
+    RawScoreDAO rawScoreDAO;
 
     @Override
     public Response getAll() {
@@ -30,7 +37,11 @@ public class PersonServiceImpl extends AbstractService<Person, PersonDAOAdapter>
         Person person = getDao().findByID(personID);
         if (person != null) {
             PersonScoresView personScoresView = new PersonScoresView(person);
-            // TODO - Add custom fileds in view
+
+            if (person.getDriverID()!=null) {
+                Map<String, Object> scoresMap = rawScoreDAO.getDScoreByDT(person.getDriverID(),SCORE_NUM_DAYS);
+                // TODO - read custom fields from scoresMap and add to personScoresView
+            }
 
             return Response.ok(personScoresView).build();
         }
@@ -69,4 +80,11 @@ public class PersonServiceImpl extends AbstractService<Person, PersonDAOAdapter>
         return Response.serverError().build();
     }
 
+    public RawScoreDAO getRawScoreDAO() {
+        return rawScoreDAO;
+    }
+
+    public void setRawScoreDAO(RawScoreDAO rawScoreDAO) {
+        this.rawScoreDAO = rawScoreDAO;
+    }
 }

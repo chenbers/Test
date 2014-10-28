@@ -1,6 +1,8 @@
 package com.inthinc.pro.service.impl;
 
 import com.inthinc.pro.dao.PersonDAO;
+import com.inthinc.pro.dao.RawScoreDAO;
+import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.Person;
 import com.inthinc.pro.model.PersonScoresView;
@@ -26,14 +28,22 @@ public class PersonServiceTest {
     @Mocked
     public PersonDAO mockPersonDAO;
 
+    @Mocked
+    public RawScoreDAO mockRawScoreDAO;
+
     private PersonService personService;
 
     private PersonDAOAdapter personDAOAdapter;
 
     private PersonDAOAdapter mockPersonDAOAdapter;
 
+    private Map<String,Object> mockScoresMap;
+
     // test data
     private Map<Integer, Person> testPeople;
+    private Driver driver1;
+    private Driver driver2;
+    private Driver driver3;
     private Person person1;
     private Person person2;
     private Person person3;
@@ -42,14 +52,21 @@ public class PersonServiceTest {
 
     @Before
     public void createTestData() {
+        mockScoresMap = new HashMap<String, Object>();
+        mockScoresMap.put("test",123);
+
         mockPersonDAOAdapter = new PersonDAOAdapter();
         mockPersonDAOAdapter.setPersonDAO(mockPersonDAO);
 
         personService = new PersonServiceImpl();
         PersonServiceImpl personServiceImpl = (PersonServiceImpl) personService;
         personServiceImpl.setDao(mockPersonDAOAdapter);
+        personServiceImpl.setRawScoreDAO(mockRawScoreDAO);
 
         testPeople = new HashMap<Integer, Person>();
+        driver1 = new Driver();
+        driver2 = new Driver();
+        driver3 = new Driver();
         person1 = new Person();
         person2 = new Person();
         person3 = new Person();
@@ -57,23 +74,29 @@ public class PersonServiceTest {
         group = new Group();
         group.setGroupID(1);
 
+        driver1.setDriverID(1);
         person1.setPersonID(1);
         person1.setFirst("test_pers_test_1_" + NAME_MODIFIER);
         person1.setAcctID(ACCT_ID);
         person1.setLast("LAST");
         person1.setEmpid("test_emp_test_1_" + NAME_MODIFIER);
+        person1.setDriver(driver1);
 
+        driver2.setDriverID(2);
         person2.setPersonID(2);
         person2.setFirst("test_pers_test_2_" + NAME_MODIFIER);
         person2.setAcctID(ACCT_ID);
         person2.setLast("LAST");
         person2.setEmpid("test_emp_test_2_" + NAME_MODIFIER);
+        person2.setDriver(driver2);
 
+        driver3.setDriverID(3);
         person3.setPersonID(3);
         person3.setFirst("test_pers_test_3_" + NAME_MODIFIER);
         person3.setAcctID(ACCT_ID);
         person3.setLast("LAST");
         person3.setEmpid("test_emp_test_3_" + NAME_MODIFIER);
+        person3.setDriver(driver3);
 
         // add people to list
         testPeople.put(1, person1);
@@ -92,10 +115,16 @@ public class PersonServiceTest {
         new Expectations() {{
             mockPersonDAO.findByID(person1.getPersonID());
             result = person1;
+            mockRawScoreDAO.getDScoreByDT(driver1.getDriverID(),7);
+            result = mockScoresMap;
             mockPersonDAO.findByID(person2.getPersonID());
             result = person2;
+            mockRawScoreDAO.getDScoreByDT(driver2.getDriverID(),7);
+            result = mockScoresMap;
             mockPersonDAO.findByID(person3.getPersonID());
             result = person3;
+            mockRawScoreDAO.getDScoreByDT(driver3.getDriverID(),7);
+            result = mockScoresMap;
         }};
 
         for (int i = 1; i <= 3; i++) {
