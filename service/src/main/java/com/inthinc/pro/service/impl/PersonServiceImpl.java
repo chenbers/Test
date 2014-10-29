@@ -11,6 +11,7 @@ import javax.ws.rs.core.UriBuilder;
 import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.core.Response.Status;
 
+import com.inthinc.pro.dao.EventStatisticsDAO;
 import com.inthinc.pro.dao.RawScoreDAO;
 import com.inthinc.pro.dao.jdbc.AdminVehicleJDBCDAO;
 import com.inthinc.pro.model.Person;
@@ -30,6 +31,9 @@ public class PersonServiceImpl extends AbstractService<Person, PersonDAOAdapter>
     @Autowired
     AdminVehicleJDBCDAO adminVehicleJDBCDAO;
 
+    @Autowired
+    EventStatisticsDAO eventStatisticsDAO;
+
     @Override
     public Response getAll() {
         List<Person> list = getDao().getAll();
@@ -44,9 +48,6 @@ public class PersonServiceImpl extends AbstractService<Person, PersonDAOAdapter>
             PersonScoresView personScoresView = new PersonScoresView(person);
 
             if (person.getDriverID()!=null) {
-                //milesDriven
-                personScoresView.setMilesDriven(adminVehicleJDBCDAO.getMilesDriven(person.getDriverID()));
-
                 Map<String, Object> scoresMap = rawScoreDAO.getDScoreByDT(person.getDriverID(),SCORE_NUM_DAYS);
 
                 //speeding
@@ -64,7 +65,6 @@ public class PersonServiceImpl extends AbstractService<Person, PersonDAOAdapter>
                 //overall
                 personScoresView.setOverall(scoresMap.get("overall")!=null ? (Integer) scoresMap.get("overall") * X_TEN:null);
 
-
                 //aggressiveTurnEvents
                 Integer aggressiveTotalEvents = 0;
                 Integer aggressiveLeftEvents = (Integer) scoresMap.get("aggressiveLeftEvents");
@@ -72,13 +72,19 @@ public class PersonServiceImpl extends AbstractService<Person, PersonDAOAdapter>
 
                 if (aggressiveLeftEvents != null)
                     aggressiveTotalEvents += aggressiveLeftEvents;
-                if (aggressiveTotalEvents != null)
+                if (aggressiveRightEvents != null)
                     aggressiveTotalEvents += aggressiveRightEvents;
 
                 personScoresView.setAggressiveTurnsEvents(aggressiveTotalEvents);
 
+                //milesDriven
+                personScoresView.setMilesDriven(adminVehicleJDBCDAO.getMilesDriven(person.getDriverID()));
 
-                // TODO - read custom fields from scoresMap and add to personScoresView
+                // speed time and max speed from special statistics dao
+                Integer maxSpeed = eventStatisticsDAO.getMaxSpeedForPastDays(person.getDriverID(), SCORE_NUM_DAYS, null, null);
+                Integer speedTime = eventStatisticsDAO.getSpeedingTimeInSecondsForPastDays(person.getDriverID(), SCORE_NUM_DAYS, null, null);
+                personScoresView.setSpeedTime(speedTime);
+                personScoresView.setMaxSpeed(maxSpeed);
             }
 
             return Response.ok(personScoresView).build();
@@ -124,5 +130,21 @@ public class PersonServiceImpl extends AbstractService<Person, PersonDAOAdapter>
 
     public void setRawScoreDAO(RawScoreDAO rawScoreDAO) {
         this.rawScoreDAO = rawScoreDAO;
+    }
+
+    public EventStatisticsDAO getEventStatisticsDAO() {
+        return eventStatisticsDAO;
+    }
+
+    public void setEventStatisticsDAO(EventStatisticsDAO eventStatisticsDAO) {
+        this.eventStatisticsDAO = eventStatisticsDAO;
+    }
+
+    public AdminVehicleJDBCDAO getAdminVehicleJDBCDAO() {
+        return adminVehicleJDBCDAO;
+    }
+
+    public void setAdminVehicleJDBCDAO(AdminVehicleJDBCDAO adminVehicleJDBCDAO) {
+        this.adminVehicleJDBCDAO = adminVehicleJDBCDAO;
     }
 }

@@ -1,7 +1,9 @@
 package com.inthinc.pro.service.impl;
 
+import com.inthinc.pro.dao.EventStatisticsDAO;
 import com.inthinc.pro.dao.PersonDAO;
 import com.inthinc.pro.dao.RawScoreDAO;
+import com.inthinc.pro.dao.jdbc.AdminVehicleJDBCDAO;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.Person;
@@ -15,6 +17,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import javax.ws.rs.core.Response;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -24,12 +27,21 @@ import static junit.framework.Assert.assertNotNull;
 public class PersonServiceTest {
     static final String NAME_MODIFIER = "3";
     static final Integer ACCT_ID = 1;
+    static final Integer maxSpeed = 100;
+    static final Integer totalSpeeding = 90;
+    static final Integer milesDriven = 20;
 
     @Mocked
     public PersonDAO mockPersonDAO;
 
     @Mocked
     public RawScoreDAO mockRawScoreDAO;
+
+    @Mocked
+    EventStatisticsDAO mockEventStatisticsDAO;
+
+    @Mocked
+    AdminVehicleJDBCDAO mockAdminVehicleJDBCDAO;
 
     private PersonService personService;
 
@@ -62,6 +74,8 @@ public class PersonServiceTest {
         PersonServiceImpl personServiceImpl = (PersonServiceImpl) personService;
         personServiceImpl.setDao(mockPersonDAOAdapter);
         personServiceImpl.setRawScoreDAO(mockRawScoreDAO);
+        personServiceImpl.setEventStatisticsDAO(mockEventStatisticsDAO);
+        personServiceImpl.setAdminVehicleJDBCDAO(mockAdminVehicleJDBCDAO);
 
         testPeople = new HashMap<Integer, Person>();
         driver1 = new Driver();
@@ -115,16 +129,34 @@ public class PersonServiceTest {
         new Expectations() {{
             mockPersonDAO.findByID(person1.getPersonID());
             result = person1;
-            mockRawScoreDAO.getDScoreByDT(driver1.getDriverID(),6);
+            mockRawScoreDAO.getDScoreByDT(driver1.getDriverID(), 6);
             result = mockScoresMap;
+            mockAdminVehicleJDBCDAO.getMilesDriven(driver1.getDriverID());
+            result = milesDriven;
+            mockEventStatisticsDAO.getMaxSpeedForPastDays(driver1.getDriverID(), 6, anyInt, (Date) any);
+            result = maxSpeed;
+            mockEventStatisticsDAO.getSpeedingTimeInSecondsForPastDays(driver1.getDriverID(), 6, anyInt, (Date) any);
+            result = maxSpeed;
             mockPersonDAO.findByID(person2.getPersonID());
             result = person2;
             mockRawScoreDAO.getDScoreByDT(driver2.getDriverID(),6);
             result = mockScoresMap;
+            mockAdminVehicleJDBCDAO.getMilesDriven(driver2.getDriverID());
+            result = milesDriven;
+            mockEventStatisticsDAO.getMaxSpeedForPastDays(driver2.getDriverID(), 6, anyInt, (Date) any);
+            result = maxSpeed;
+            mockEventStatisticsDAO.getSpeedingTimeInSecondsForPastDays(driver2.getDriverID(), 6, anyInt, (Date) any);
+            result = maxSpeed;
             mockPersonDAO.findByID(person3.getPersonID());
             result = person3;
             mockRawScoreDAO.getDScoreByDT(driver3.getDriverID(),6);
             result = mockScoresMap;
+            mockAdminVehicleJDBCDAO.getMilesDriven(driver3.getDriverID());
+            result = milesDriven;
+            mockEventStatisticsDAO.getMaxSpeedForPastDays(driver3.getDriverID(), 6, anyInt, (Date)any);
+            result = maxSpeed;
+            mockEventStatisticsDAO.getSpeedingTimeInSecondsForPastDays(driver3.getDriverID(), 6, anyInt, (Date)any);
+            result = maxSpeed;
         }};
 
         for (int i = 1; i <= 3; i++) {

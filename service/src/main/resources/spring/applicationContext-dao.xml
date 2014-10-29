@@ -64,6 +64,7 @@
         <property name="reportService" ref="reportServiceBean"/>
     </bean>
     <bean id="adminVehicleJDBCDAO" class="com.inthinc.pro.dao.jdbc.AdminVehicleJDBCDAO" parent="genericJDBCDAO"></bean>
+    <bean id="eventStatisticsDAO" class="com.inthinc.pro.dao.jdbc.EventStatisticsJDBCDAO" parent="genericJDBCDAO"></bean>
 
 	<bean id="accountDAO" class="com.inthinc.pro.dao.hessian.AccountHessianDAO" parent="genericDAO"></bean>
 	<bean id="userDAO" class="com.inthinc.pro.dao.hessian.UserHessianDAO" parent="genericDAO"></bean>
