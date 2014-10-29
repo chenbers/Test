@@ -14,6 +14,8 @@ import javax.ws.rs.core.Response.Status;
 import com.inthinc.pro.dao.EventStatisticsDAO;
 import com.inthinc.pro.dao.RawScoreDAO;
 import com.inthinc.pro.dao.jdbc.AdminVehicleJDBCDAO;
+import com.inthinc.pro.dao.util.MeasurementConversionUtil;
+import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.model.Person;
 import com.inthinc.pro.model.PersonScoresView;
 import com.inthinc.pro.service.PersonService;
@@ -84,7 +86,7 @@ public class PersonServiceImpl extends AbstractService<Person, PersonDAOAdapter>
                 Integer maxSpeed = eventStatisticsDAO.getMaxSpeedForPastDays(person.getDriverID(), SCORE_NUM_DAYS, null, null);
                 Integer speedTime = eventStatisticsDAO.getSpeedingTimeInSecondsForPastDays(person.getDriverID(), SCORE_NUM_DAYS, null, null);
                 personScoresView.setSpeedTime(speedTime);
-                personScoresView.setMaxSpeed(maxSpeed);
+                personScoresView.setMaxSpeed(convertToKmIfNeeded(person.getMeasurementType(), maxSpeed));
             }
 
             return Response.ok(personScoresView).build();
@@ -122,6 +124,26 @@ public class PersonServiceImpl extends AbstractService<Person, PersonDAOAdapter>
             return Response.created(uri).entity(person).build();
         }
         return Response.serverError().build();
+    }
+
+    /**
+     * Converts a value from miles (db) to km if needed based on the given measurement type.
+     *
+     * @param measurementType measurement type
+     * @param value value
+     * @return converted value (if needed)
+     */
+    private Integer convertToKmIfNeeded(MeasurementType measurementType, Integer value){
+        if (measurementType == null)
+            return value;
+
+        if (value == null)
+            return null;
+
+        if (measurementType.equals(MeasurementType.ENGLISH))
+            return value;
+
+        return MeasurementConversionUtil.fromMilesToKilometers(value).intValue();
     }
 
     public RawScoreDAO getRawScoreDAO() {
