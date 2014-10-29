@@ -121,14 +121,15 @@ public class FirstMoveForwardReportCriteria extends ReportCriteria {
                 if ((dvsw.getDriver().getStatus().equals(Status.ACTIVE) && totalMiles != 0) || (includeInactiveDrivers && includeZeroMilesDrivers) || includeThisInactiveDriver
                         || includeThisZeroMilesDriver) {
                     String driverName = dvsw.getDriver().getPerson().getLast() + ", " + dvsw.getDriver().getPerson().getFirst();
+                    String license = dvsw.getDriver().getLicense();
 
                     Score score = dvsw.getScore();
                     // float seatbelt = ((dvsw.getScore().getSeatbelt() != null) ? dvsw.getScore().getSeatbelt().intValue() : 0) / 10.0F;
                     int driveMiles = dvsw.getScore().getOdometer6().intValue();
                     String groupName = groupHierarchy.getFullGroupName(dvsw.getDriver().getGroupID());
 
-                    FirstMoveForwardReportCriteria.FirstMoveForwardWrapper firstMoveForwardWrapper = new FirstMoveForwardReportCriteria.FirstMoveForwardWrapper(driverName, score.getTrips().intValue(), score.getBackingEvents().intValue(),
-                            driveMiles, score.getBackingTime().intValue(), groupName);
+                    FirstMoveForwardReportCriteria.FirstMoveForwardWrapper firstMoveForwardWrapper = new FirstMoveForwardReportCriteria.FirstMoveForwardWrapper(driverName, score.getTrips().intValue(), score.getFirstMoveForwardEvents().intValue(),
+                            driveMiles, score.getFirstMoveForwardTime().intValue(), groupName,license);
                     firstMoveForwardWrappers.add(firstMoveForwardWrapper);
                 }
             }
@@ -176,16 +177,19 @@ public class FirstMoveForwardReportCriteria extends ReportCriteria {
         private String driverName;
         private Integer trips;
         private Integer drivingMiles;
-        private Integer backupEvents;
-        private Integer backupTime;
+        private Integer firstMoveForwardEvents;
+        private Integer firstMoveForwardTime;
+        private String license;
 
-        public FirstMoveForwardWrapper(String driverName, Integer trips, Integer backupEvents, Integer drivingMiles, Integer backupTime, String groupPath) {
+        public FirstMoveForwardWrapper(String driverName, Integer trips, Integer firstMoveForwardEvents, Integer drivingMiles, Integer firstMoveForwardTime, String groupPath, String license) {
             this.driverName = driverName;
             this.trips = trips;
-            this.backupEvents = backupEvents;
+            this.firstMoveForwardEvents = firstMoveForwardEvents;
             this.drivingMiles = drivingMiles;
-            this.backupTime = backupTime;
+            this.firstMoveForwardTime = firstMoveForwardTime;
             this.groupPath = groupPath;
+            this.license=license;
+
         }
 
         public String getGroupPath() {
@@ -225,20 +229,28 @@ public class FirstMoveForwardReportCriteria extends ReportCriteria {
             this.driverName = driverName;
         }
 
-        public Integer getBackupEvents() {
-            return backupEvents;
+        public Integer getFirstMoveForwardEvents() {
+            return firstMoveForwardEvents;
         }
 
-        public void setBackupEvents(Integer backupEvents) {
-            this.backupEvents = backupEvents;
+        public void setFirstMoveForwardEvents(Integer firstMoveForwardEvents) {
+            this.firstMoveForwardEvents = firstMoveForwardEvents;
         }
 
-        public Integer getBackupTime() {
-            return backupTime;
+        public Integer getFirstMoveForwardTime() {
+            return firstMoveForwardTime;
         }
 
-        public void setBackupTime(Integer backupTime) {
-            this.backupTime = backupTime;
+        public void setFirstMoveForwardTime(Integer firstMoveForwardTime) {
+            this.firstMoveForwardTime = firstMoveForwardTime;
+        }
+
+        public String getLicense() {
+            return license;
+        }
+
+        public void setLicense(String license) {
+            this.license = license;
         }
 
 
