@@ -518,7 +518,8 @@ public class EventCassandraDAO extends AggregationCassandraDAO implements EventD
             else {
             	event.setVehicleID(id);
             	event.setDriverID(assetID);
-            }	
+            }
+            event.setNoteID(0L);
             locationList.add(event);
         }
 
