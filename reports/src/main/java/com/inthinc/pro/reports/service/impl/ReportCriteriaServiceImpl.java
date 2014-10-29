@@ -93,6 +93,7 @@ import com.inthinc.pro.reports.model.CategorySeriesData;
 import com.inthinc.pro.reports.model.PieScoreData;
 import com.inthinc.pro.reports.model.PieScoreRange;
 import com.inthinc.pro.reports.performance.BackingReportCriteria;
+import com.inthinc.pro.reports.performance.FirstMoveForwardReportCriteria;
 import com.inthinc.pro.reports.performance.DriverCoachingReportCriteria;
 import com.inthinc.pro.reports.performance.DriverCoachingScoreReportCriteria;
 import com.inthinc.pro.reports.performance.DriverExcludedViolationsCriteria;
@@ -1601,6 +1602,19 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
     @Override
     public ReportCriteria getBackingReportCriteria(Interval interval, GroupHierarchy accountGroupHierarchy, Integer groupID, TimeFrame timeFrame, Locale locale, DateTimeZone timeZone, MeasurementType measurementType, boolean includeInactiveDrivers, boolean includeZeroMilesDrivers) {
         BackingReportCriteria.Builder builder = new BackingReportCriteria.Builder(interval, accountGroupHierarchy, groupReportDAO, groupID, timeFrame, measurementType, includeInactiveDrivers, includeZeroMilesDrivers);
+        builder.setLocale(locale);
+        builder.setDateTimeZone(timeZone);
+        return builder.build();
+    }
+
+    @Override
+    public ReportCriteria getFirstMoveForwardCriteria(Interval interval, GroupHierarchy accountGroupHierarchy, Integer groupID, TimeFrame timeFrame, Locale locale, DateTimeZone timeZone, MeasurementType measurementType) {
+        return getFirstMoveForwardCriteria(interval, accountGroupHierarchy, groupID, timeFrame, locale, timeZone, measurementType, ReportCriteria.DEFAULT_EXCLUDE_INACTIVE_DRIVERS, ReportCriteria.DEFAULT_EXCLUDE_ZERO_MILES_DRIVERS);
+
+    }
+    @Override
+    public ReportCriteria getFirstMoveForwardCriteria(Interval interval, GroupHierarchy accountGroupHierarchy, Integer groupID, TimeFrame timeFrame, Locale locale, DateTimeZone timeZone, MeasurementType measurementType, boolean includeInactiveDrivers, boolean includeZeroMilesDrivers) {
+        FirstMoveForwardReportCriteria.Builder builder = new FirstMoveForwardReportCriteria.Builder(interval, accountGroupHierarchy, groupReportDAO, groupID, timeFrame, measurementType, includeInactiveDrivers, includeZeroMilesDrivers);
         builder.setLocale(locale);
         builder.setDateTimeZone(timeZone);
         return builder.build();
