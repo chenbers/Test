@@ -66,9 +66,10 @@ public class DaoUtilEventMapper extends DaoUtilMapper {
             String entryKey = attrEntry.getKey().toString();
             int i1 = entryKey.indexOf("(");
             int i2 = entryKey.indexOf(")");
-            attrMap.put(Integer.valueOf(entryKey.substring(i1 + 1, i2)), Integer.valueOf(attrEntry.getValue().toString()));
-
-        }
+            try {
+            	attrMap.put(Integer.valueOf(entryKey.substring(i1 + 1, i2)), Integer.valueOf(attrEntry.getValue().toString()));
+            } catch (Exception e) {}
+        }    
         ((Map<String, Object>) value).put("attrMap", attrMap);
     }
 
