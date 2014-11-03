@@ -447,7 +447,10 @@ public class DaoUtilBean extends BaseBean
 	@SuppressWarnings("unchecked")
 	private void processResults(Method method, Object returnObject) throws InstantiationException, IllegalAccessException
     {
-        records = new ArrayList<List<Result>>();
+       	if (returnObject == null) 
+       		return;
+       	
+       	records = new ArrayList<List<Result>>();
         
         DaoMethod daoMethod = getMethodMap().get(selectedMethod);
                 
