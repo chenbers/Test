@@ -57,6 +57,29 @@ public class DaoUtilEventMapper extends DaoUtilMapper {
             return super.convertToModelObject(map, type);
         }
     }
+
+    @ConvertFieldToColumn(fieldName = "eventAttrList")
+    public void attrsToColumn(Event event, Object value) {
+        // System.out.println("eventAttrList convert");
+        // skip this column
+    }
+
+    @ConvertFieldToColumn(fieldName = "attrMap")
+    public void attrMapToColumn(Event event, Object value) {
+        if (event == null || value == null || event.getAttrMap() == null || !(value instanceof Map))
+            return;
+
+        Map<Integer, Object> attrMap = new HashMap<Integer, Object>();
+        for (Map.Entry<Object, Object> attrEntry : event.getAttrMap().entrySet()) {
+            String entryKey = attrEntry.getKey().toString();
+            int i1 = entryKey.indexOf("(");
+            int i2 = entryKey.indexOf(")");
+            try {
+            	attrMap.put(Integer.valueOf(entryKey.substring(i1 + 1, i2)), Integer.valueOf(attrEntry.getValue().toString()));
+            } catch (Exception e) {}
+        }    
+        ((Map<String, Object>) value).put("attrMap", attrMap);
+    }
     
     private Class getEventType(Integer proEventType)
     {
