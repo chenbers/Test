@@ -1,6 +1,7 @@
 package com.inthinc.pro.backing.dao.mapper;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
@@ -19,6 +20,36 @@ public class DaoUtilConfiguratorMapper extends DaoUtilMapper {
     private static final long serialVersionUID = 1L;
     private static final Logger logger = Logger.getLogger(ConfiguratorMapper.class);
     private static final Pattern choiceEliminator = Pattern.compile("\\[|\\]|\\(|\\)|\\{|\\}");
+
+    public Map<String, Object> convertToMap(Object modelObject, boolean includeNonUpdateables) {
+        Map<String, Object> map = new HashMap<String, Object>();
+        if (modelObject != null) {
+	        if (modelObject instanceof VehicleSetting) {
+		        VehicleSetting vs = (VehicleSetting) modelObject;
+		        map.put("vehicleID", vs.getVehicleID());
+		        map.put("deviceID", vs.getDeviceID());
+		        map.put("productVer", vs.getProductType().getVersion());
+		        map.put("actual", vs.getActual());
+		        map.put("desired", vs.getDesired());
+	        }    
+	        if (modelObject instanceof DeviceSettingDefinition) {
+	        	DeviceSettingDefinition ds = (DeviceSettingDefinition) modelObject;
+		        map.put("category", ds.getCategory());
+		        map.put("settingID", ds.getSettingID());
+		        map.put("name", ds.getName());
+		        map.put("description", ds.getDescription());
+		        map.put("choices", (ds.getChoices()!=null) ? ds.getChoices().toString().replace("[", "").replace("]", "") : "");
+		        map.put("ignore", ds.getIgnore());
+		        map.put("min", ds.getMin());
+		        map.put("max", ds.getMax());
+		        map.put("unit", ds.getUnit());
+		        map.put("varType", ds.getVarType());
+		        map.put("ignore", ds.getIgnore());
+		        map.put("visibility", ds.getVisibility());
+	        }
+        }    
+        return map;
+    }
 
     @ConvertColumnToField(columnName="regex")
     public void regexToModel(DeviceSettingDefinition deviceSettingDefinition, Object value){
