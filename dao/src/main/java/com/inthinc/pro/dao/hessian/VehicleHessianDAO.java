@@ -135,6 +135,15 @@ public class VehicleHessianDAO extends GenericHessianDAO<Vehicle, Integer> imple
     }
 
     @Override
+    public String getTestText() {
+        try {
+            return getMapper().convertToModelObject(getSiloService().getTestText(), String.class);
+        } catch (EmptyResultSetException e) {
+            return null;
+        }
+    }
+
+    @Override
     public Vehicle findByDriverInGroup(Integer driverID, Integer groupID) {
         List<Vehicle> vehicleList = getVehiclesInGroupHierarchy(groupID);
         for (Vehicle vehicle : vehicleList) {

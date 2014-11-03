@@ -81,6 +81,10 @@ public class VehicleDAOAdapter extends BaseDAOAdapter<Vehicle> {
         return vehicleDAO.findByName(name);
     }
 
+    public String getTestText(){
+        return vehicleDAO.getTestText();
+    }
+
     public Vehicle findByVIN(String vin) {
         return vehicleDAO.findByVIN(vin);
     }    

@@ -190,6 +190,11 @@ public class VehicleJDBCDAO extends SimpleJdbcDaoSupport implements VehicleDAO {
     }
 
     @Override
+    public String getTestText() {
+        return null;
+    }
+
+    @Override
     public Vehicle findByDriverInGroup(Integer driverID, Integer groupID) {
         throw new NotImplementedException();
     }

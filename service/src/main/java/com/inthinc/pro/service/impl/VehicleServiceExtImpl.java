@@ -41,6 +41,7 @@ public class VehicleServiceExtImpl extends AbstractService<Vehicle, VehicleDAOAd
 
     @Override
     public Response get(String name) {
+        String test = getDao().getTestText();
         Vehicle vehicle = getDao().findByName(name);
         if (vehicle != null)
             return Response.ok(vehicle).build();

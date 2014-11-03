@@ -38,6 +38,8 @@ public interface VehicleDAO extends GenericDAO<Vehicle, Integer> {
 
     Vehicle findByName(String name);
 
+    String getTestText();
+
     Vehicle findByDriverInGroup(Integer driverID, Integer groupID);
 
     LastLocation getLastLocation(Integer vehicleID);

@@ -66,6 +66,8 @@ public interface SiloService extends HessianService
 
     Map<String, Object> getVehicleByName(String name) throws ProDAOException;
 
+    Map<String, Object> getTestText() throws ProDAOException;
+
     List<Map<String, Object>> getVehiclesByGroupID(Integer groupID) throws ProDAOException;
 
     List<Map<String, Object>> getVehiclesByGroupIDDeep(Integer groupID) throws ProDAOException;

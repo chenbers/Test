@@ -33,7 +33,7 @@ import static junit.framework.Assert.assertNotNull;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:spring/applicationContext-dao.xml", "classpath:spring/applicationContext-beans.xml", "classpath:spring/applicationContext-security.xml"})
 public class VehicleServiceExtIntegrationTest extends BaseTest {
-    static final String NAME_MODIFIER = "3";
+    static final String NAME_MODIFIER = "4";
     static final String TEST_USERNAME = "inthincTechSupportQA";
     static final String TEST_PASSWORD = "welcome456";
 
@@ -85,7 +85,7 @@ public class VehicleServiceExtIntegrationTest extends BaseTest {
         vehicle1.setColor("red");
         vehicle1.setIfta(true);
         vehicle1.setLicense("Test Rest");
-        vehicle1.setVIN(NAME_MODIFIER + "90000000901");
+        vehicle1.setVIN(NAME_MODIFIER + "91000000901");
         vehicle1.setModel("tes1");
         vehicle1.setMake("tes1");
         vehicle1.setModified(new Date());
@@ -100,7 +100,7 @@ public class VehicleServiceExtIntegrationTest extends BaseTest {
         vehicle2.setColor("yellow");
         vehicle2.setIfta(true);
         vehicle2.setLicense("Test Rest2");
-        vehicle2.setVIN(NAME_MODIFIER + "90000000902");
+        vehicle2.setVIN(NAME_MODIFIER + "91000000902");
         vehicle2.setModel("tes2");
         vehicle2.setMake("tes2");
         vehicle2.setModified(new Date());
@@ -115,7 +115,7 @@ public class VehicleServiceExtIntegrationTest extends BaseTest {
         vehicle3.setColor("blue");
         vehicle3.setIfta(true);
         vehicle3.setLicense("Test Rest3");
-        vehicle3.setVIN(NAME_MODIFIER + "90000000903");
+        vehicle3.setVIN(NAME_MODIFIER + "91000000903");
         vehicle3.setModel("tes3");
         vehicle3.setMake("tes3");
         vehicle3.setModified(new Date());

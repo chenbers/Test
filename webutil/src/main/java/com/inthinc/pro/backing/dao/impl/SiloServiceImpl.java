@@ -428,6 +428,13 @@ public class SiloServiceImpl implements SiloService {
     }
 
     @Override
+    @MethodDescription(description = "Gets test.", crudType=CrudType.READ, modelClass=java.lang.String)
+    public String getTestText() throws ProDAOException {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
     @MethodDescription(description = "Fetches notes associated with this vehicle, within the specified timeframe (start, stop). (optional)typeList would contain a list of note types to be fetched.", 
     		crudType=CrudType.READ, modelClass=com.inthinc.pro.model.event.Event.class,
 			mapperClass=com.inthinc.pro.backing.dao.mapper.DaoUtilEventMapper.class)
