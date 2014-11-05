@@ -19,6 +19,24 @@ public interface VehicleServiceExt {
     @Path("/vehicleext/{name}")
     public Response get(@PathParam("name") String name);
 
+
+
+    /**
+     * Gets a vehicle and additional last trip date by the vehicle's user defined id (name).
+     *
+     * @param name user defined name of the vehicle
+     * @return a {@link com.inthinc.pro.model.VehicleTripView}
+     */
+    @GET
+    @Path("/vehicleext/vehicleext/{name}/tripDate")
+    public Response getVehicleAndLastTripDate(@PathParam("name") String name);
+
+    /**
+     * Gets a vehicle by it's VIN.
+     *
+     * @param vin vehicle's vin
+     * @return a {@link com.inthinc.pro.model.Vehicle}
+     */
     @GET
     @Path("/vehicleext/vin/{vin}")
     public Response findByVIN(@PathParam("vin") String vin);
