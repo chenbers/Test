@@ -17,7 +17,7 @@ public class VehicleTripView {
     @XmlTransient
     private Vehicle vehicle;
 
-    private Date lastTrip;
+    private Date lastTripDate;
 
     public VehicleTripView(Vehicle vehicle) {
         this.vehicle = vehicle;
@@ -27,11 +27,11 @@ public class VehicleTripView {
     }
 
     public Date getLastTrip() {
-        return lastTrip;
+        return lastTripDate;
     }
 
     public void setLastTrip(Date lastTrip) {
-        this.lastTrip = lastTrip;
+        this.lastTripDate = lastTrip;
     }
 
     @XmlElement
