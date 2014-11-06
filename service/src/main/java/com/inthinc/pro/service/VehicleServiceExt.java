@@ -28,7 +28,7 @@ public interface VehicleServiceExt {
      * @return a {@link com.inthinc.pro.model.VehicleTripView}
      */
     @GET
-    @Path("/vehicleext/vehicleext/{name}/tripDate")
+    @Path("/vehicleext/{name}/tripDate")
     public Response getVehicleAndLastTripDate(@PathParam("name") String name);
 
     /**
