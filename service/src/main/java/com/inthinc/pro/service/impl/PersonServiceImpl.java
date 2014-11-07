@@ -3,6 +3,7 @@ package com.inthinc.pro.service.impl;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.Response;
@@ -10,18 +11,87 @@ import javax.ws.rs.core.UriBuilder;
 import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.core.Response.Status;
 
+import com.inthinc.pro.dao.EventStatisticsDAO;
+import com.inthinc.pro.dao.RawScoreDAO;
+import com.inthinc.pro.dao.jdbc.AdminVehicleJDBCDAO;
+import com.inthinc.pro.dao.util.MeasurementConversionUtil;
+import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.model.Person;
+import com.inthinc.pro.model.PersonScoresView;
 import com.inthinc.pro.service.PersonService;
 import com.inthinc.pro.service.adapters.PersonDAOAdapter;
 import com.inthinc.pro.service.model.BatchResponse;
+import org.springframework.beans.factory.annotation.Autowired;
 
 public class PersonServiceImpl extends AbstractService<Person, PersonDAOAdapter> implements PersonService {
+    private final Integer SCORE_NUM_DAYS = 6;
+    private final Integer X_TEN=10;
+
+    @Autowired
+    RawScoreDAO rawScoreDAO;
+
+    @Autowired
+    AdminVehicleJDBCDAO adminVehicleJDBCDAO;
+
+    @Autowired
+    EventStatisticsDAO eventStatisticsDAO;
 
     @Override
     public Response getAll() {
         List<Person> list = getDao().getAll();
         return Response.ok(new GenericEntity<List<Person>>(list) {
         }).build();
+    }
+
+    @Override
+    public Response getPersonAndScores(Integer personID) {
+        Person person = getDao().findByID(personID);
+        if (person != null) {
+            PersonScoresView personScoresView = new PersonScoresView(person);
+
+            if (person.getDriverID()!=null) {
+                Map<String, Object> scoresMap = rawScoreDAO.getDScoreByDT(person.getDriverID(),SCORE_NUM_DAYS);
+
+                //speeding
+                personScoresView.setSpeeding(scoresMap.get("speeding")!=null?(Integer) scoresMap.get("speeding") * X_TEN:null);
+                //aggresiveAccel
+                personScoresView.setAggressiveAccel(scoresMap.get("aggressiveAccel")!=null ? (Integer) scoresMap.get("aggressiveAccel") * X_TEN:null);
+                //aggressiveAccelEvents
+                personScoresView.setAggressiveAccelEvents((Integer) scoresMap.get("aggressiveAccelEvents"));
+                //aggressiveBrake
+                personScoresView.setAggressiveBrake(scoresMap.get("aggressiveBrake")!=null ? (Integer) scoresMap.get("aggressiveBrake") * X_TEN:null);
+                //aggressiveBrakeEvents
+                personScoresView.setAggressiveBrakeEvents((Integer) scoresMap.get("aggressiveBrakeEvents"));
+                //aggressiveBumpEvents
+                personScoresView.setAggressiveBumpEvents((Integer) scoresMap.get("aggressiveBumpEvents"));
+                //overall
+                personScoresView.setOverall(scoresMap.get("overall")!=null ? (Integer) scoresMap.get("overall") * X_TEN:null);
+
+                //aggressiveTurnEvents
+                Integer aggressiveTotalEvents = 0;
+                Integer aggressiveLeftEvents = (Integer) scoresMap.get("aggressiveLeftEvents");
+                Integer aggressiveRightEvents = (Integer) scoresMap.get("aggressiveRightEvents");
+
+                if (aggressiveLeftEvents != null)
+                    aggressiveTotalEvents += aggressiveLeftEvents;
+                if (aggressiveRightEvents != null)
+                    aggressiveTotalEvents += aggressiveRightEvents;
+
+                personScoresView.setAggressiveTurnsEvents(aggressiveTotalEvents);
+
+                //milesDriven
+                personScoresView.setMilesDriven(adminVehicleJDBCDAO.getMilesDriven(person.getDriverID()));
+
+                // speed time and max speed from special statistics dao
+                Integer maxSpeed = eventStatisticsDAO.getMaxSpeedForPastDays(person.getDriverID(), SCORE_NUM_DAYS, null, null);
+                Integer speedTime = eventStatisticsDAO.getSpeedingTimeInSecondsForPastDays(person.getDriverID(), SCORE_NUM_DAYS, null, null);
+                personScoresView.setSpeedTime(speedTime);
+                personScoresView.setMaxSpeed(convertToKmIfNeeded(person.getMeasurementType(), maxSpeed));
+            }
+
+            return Response.ok(personScoresView).build();
+        }
+        return Response.status(Status.NOT_FOUND).build();
     }
 
     @Override
@@ -49,11 +119,54 @@ public class PersonServiceImpl extends AbstractService<Person, PersonDAOAdapter>
         Integer personID = getDao().create(id, person);
         if (personID != null) {
             UriBuilder uriBuilder = uriInfo.getAbsolutePathBuilder();
-            URI uri = uriBuilder.path(personID.toString()).build();            
-            person = getDao().findByID(personID);         
+            URI uri = uriBuilder.path(personID.toString()).build();
+            person = getDao().findByID(personID);
             return Response.created(uri).entity(person).build();
         }
         return Response.serverError().build();
     }
 
+    /**
+     * Converts a value from miles (db) to km if needed based on the given measurement type.
+     *
+     * @param measurementType measurement type
+     * @param value value
+     * @return converted value (if needed)
+     */
+    private Integer convertToKmIfNeeded(MeasurementType measurementType, Integer value){
+        if (measurementType == null)
+            return value;
+
+        if (value == null)
+            return null;
+
+        if (measurementType.equals(MeasurementType.ENGLISH))
+            return value;
+
+        return MeasurementConversionUtil.fromMilesToKilometers(value).intValue();
+    }
+
+    public RawScoreDAO getRawScoreDAO() {
+        return rawScoreDAO;
+    }
+
+    public void setRawScoreDAO(RawScoreDAO rawScoreDAO) {
+        this.rawScoreDAO = rawScoreDAO;
+    }
+
+    public EventStatisticsDAO getEventStatisticsDAO() {
+        return eventStatisticsDAO;
+    }
+
+    public void setEventStatisticsDAO(EventStatisticsDAO eventStatisticsDAO) {
+        this.eventStatisticsDAO = eventStatisticsDAO;
+    }
+
+    public AdminVehicleJDBCDAO getAdminVehicleJDBCDAO() {
+        return adminVehicleJDBCDAO;
+    }
+
+    public void setAdminVehicleJDBCDAO(AdminVehicleJDBCDAO adminVehicleJDBCDAO) {
+        this.adminVehicleJDBCDAO = adminVehicleJDBCDAO;
+    }
 }
