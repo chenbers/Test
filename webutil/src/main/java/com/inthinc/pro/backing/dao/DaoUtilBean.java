@@ -497,7 +497,7 @@ public class DaoUtilBean extends BaseBean
 		}
 		for (String header : columnHeaders)
 		{
-			Result result = new Result();
+ 			Result result = new Result();
 			if (formattedRecordMap != null)
 				result.setDisplay(formattedRecordMap.get(header) == null ? "" : formattedRecordMap.get(header).toString());
 			else result.setDisplay(recordMap.get(header) == null ? "" : recordMap.get(header).toString());
@@ -516,7 +516,9 @@ public class DaoUtilBean extends BaseBean
         {
             for (String key : map.keySet())
             {
-                if (!columnHeaders.contains(key))
+                if (key.equalsIgnoreCase("logger"))
+                    continue;
+               if (!columnHeaders.contains(key))
                     columnHeaders.add(key);
             }
         }
