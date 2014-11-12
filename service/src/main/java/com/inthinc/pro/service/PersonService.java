@@ -2,13 +2,7 @@ package com.inthinc.pro.service;
 
 import java.util.List;
 
-import javax.ws.rs.DELETE;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
@@ -41,11 +35,12 @@ public interface PersonService extends GenericService<Person> {
     /**
      * Gets person and scoring information for a given person ID.
      * @param personID person ID
+     * @param numberOfDays number of days
      * @return a {@link com.inthinc.pro.model.PersonScoresView}
      */
     @GET
-    @Path("/person_and_scores/{personID}")
-    public Response getPersonAndScores(@PathParam("personID") Integer personID);
+    @Path("/person/{personID}/score/{numberOfDays}")
+    public Response getPersonAndScores(@PathParam("personID") Integer personID, @PathParam("numberOfDays") @DefaultValue("7") Integer numberOfDays);
 
     /**
      * Creates a person.
