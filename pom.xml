@@ -98,6 +98,7 @@
         <codehausjacksonVersion>1.9.9</codehausjacksonVersion>
         <jacksonVersion>2.0.2</jacksonVersion>
         <codehausjacksonVersion>1.9.9</codehausjacksonVersion>
+        <noteparser.version>5.0.1-SNAPSHOT</noteparser.version>
     </properties>
     <build>
         <finalName>pro</finalName>
