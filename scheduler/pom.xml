@@ -169,7 +169,6 @@
 			<groupId>com.inthinc.pro.noteparser</groupId>
 			<artifactId>noteparser</artifactId>
 			<scope>compile</scope>
-                        <version>${noteparser.version}</version>                        
 		</dependency>
 		<dependency>
 			<groupId>com.inthinc.pro.reports</groupId>
