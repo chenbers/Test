@@ -20,26 +20,26 @@ public class PersonScoresView {
     @XmlTransient
     private Person person;
 
-    private Integer milesDriven;
+    private Double milesDriven;
 
-    private Integer speeding;
+    private Double speeding;
 
-    private Integer speedTime;
+    private Double speedTime;
 
-    private Integer aggressiveAccel;
+    private Double aggressiveAccel;
 
-    private Integer aggressiveBrake;
+    private Double aggressiveBrake;
 
-    private Integer overall;
+    private Double overall;
 
-    private Integer aggressiveAccelEvents;
+    private Double aggressiveAccelEvents;
 
-    private Integer aggressiveBrakeEvents;
+    private Double aggressiveBrakeEvents;
 
     private Integer maxSpeed;
 
-    private Integer aggressiveTurnsEvents;
-    private Integer aggressiveBumpEvents;
+    private Double aggressiveTurnsEvents;
+    private Double aggressiveBumpEvents;
 
     public PersonScoresView(Person person) {
         this.person = person;
@@ -396,7 +396,7 @@ public class PersonScoresView {
         return person.getWarn();
     }
 
-    public void setWarnr(Integer warn) {
+    public void setWarn(Integer warn) {
         if (person != null)
             this.person.setWarn(warn);
     }
@@ -431,67 +431,67 @@ public class PersonScoresView {
             this.person.setAddressID(addressID);
     }
 
-    public Integer getMilesDriven() {
+    public Double getMilesDriven() {
         return milesDriven;
     }
 
-    public void setMilesDriven(Integer milesDriven) {
+    public void setMilesDriven(Double milesDriven) {
         this.milesDriven = milesDriven;
     }
 
-    public Integer getSpeeding() {
+    public Double getSpeeding() {
         return speeding;
     }
 
-    public void setSpeeding(Integer speeding) {
+    public void setSpeeding(Double speeding) {
         this.speeding = speeding;
     }
 
-    public Integer getSpeedTime() {
+    public Double getSpeedTime() {
         return speedTime;
     }
 
-    public void setSpeedTime(Integer speedTime) {
+    public void setSpeedTime(Double speedTime) {
         this.speedTime = speedTime;
     }
 
-    public Integer getAggressiveAccel() {
+    public Double getAggressiveAccel() {
         return aggressiveAccel;
     }
 
-    public void setAggressiveAccel(Integer aggressiveAccel) {
+    public void setAggressiveAccel(Double aggressiveAccel) {
         this.aggressiveAccel = aggressiveAccel;
     }
 
-    public Integer getAggressiveBrake() {
+    public Double getAggressiveBrake() {
         return aggressiveBrake;
     }
 
-    public void setAggressiveBrake(Integer aggressiveBrake) {
+    public void setAggressiveBrake(Double aggressiveBrake) {
         this.aggressiveBrake = aggressiveBrake;
     }
 
-    public Integer getOverall() {
+    public Double getOverall() {
         return overall;
     }
 
-    public void setOverall(Integer overall) {
+    public void setOverall(Double overall) {
         this.overall = overall;
     }
 
-    public Integer getAggressiveAccelEvents() {
+    public Double getAggressiveAccelEvents() {
         return aggressiveAccelEvents;
     }
 
-    public void setAggressiveAccelEvents(Integer aggressiveAccelEvents) {
+    public void setAggressiveAccelEvents(Double aggressiveAccelEvents) {
         this.aggressiveAccelEvents = aggressiveAccelEvents;
     }
 
-    public Integer getAggressiveBrakeEvents() {
+    public Double getAggressiveBrakeEvents() {
         return aggressiveBrakeEvents;
     }
 
-    public void setAggressiveBrakeEvents(Integer aggressiveBrakeEvents) {
+    public void setAggressiveBrakeEvents(Double aggressiveBrakeEvents) {
         this.aggressiveBrakeEvents = aggressiveBrakeEvents;
     }
 
@@ -503,19 +503,19 @@ public class PersonScoresView {
         this.maxSpeed = maxSpeed;
     }
 
-    public Integer getAggressiveTurnsEvents() {
+    public Double getAggressiveTurnsEvents() {
         return aggressiveTurnsEvents;
     }
 
-    public void setAggressiveTurnsEvents(Integer aggressiveTurnsEvents) {
+    public void setAggressiveTurnsEvents(Double aggressiveTurnsEvents) {
         this.aggressiveTurnsEvents = aggressiveTurnsEvents;
     }
 
-    public Integer getAggressiveBumpEvents() {
+    public Double getAggressiveBumpEvents() {
         return aggressiveBumpEvents;
     }
 
-    public void setAggressiveBumpEvents(Integer aggressiveBumpEvents) {
+    public void setAggressiveBumpEvents(Double aggressiveBumpEvents) {
         this.aggressiveBumpEvents = aggressiveBumpEvents;
     }
 }

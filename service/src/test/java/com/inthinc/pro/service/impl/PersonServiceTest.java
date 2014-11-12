@@ -4,10 +4,8 @@ import com.inthinc.pro.dao.EventStatisticsDAO;
 import com.inthinc.pro.dao.PersonDAO;
 import com.inthinc.pro.dao.RawScoreDAO;
 import com.inthinc.pro.dao.jdbc.AdminVehicleJDBCDAO;
-import com.inthinc.pro.model.Driver;
-import com.inthinc.pro.model.Group;
-import com.inthinc.pro.model.Person;
-import com.inthinc.pro.model.PersonScoresView;
+import com.inthinc.pro.dao.report.DriverReportDAO;
+import com.inthinc.pro.model.*;
 import com.inthinc.pro.service.PersonService;
 import com.inthinc.pro.service.adapters.PersonDAOAdapter;
 import mockit.Expectations;
@@ -36,13 +34,10 @@ public class PersonServiceTest {
     public PersonDAO mockPersonDAO;
 
     @Mocked
-    public RawScoreDAO mockRawScoreDAO;
+    DriverReportDAO mockDriverReportDAO;
 
     @Mocked
     EventStatisticsDAO mockEventStatisticsDAO;
-
-    @Mocked
-    AdminVehicleJDBCDAO mockAdminVehicleJDBCDAO;
 
     private PersonService personService;
 
@@ -74,9 +69,8 @@ public class PersonServiceTest {
         personService = new PersonServiceImpl();
         PersonServiceImpl personServiceImpl = (PersonServiceImpl) personService;
         personServiceImpl.setDao(mockPersonDAOAdapter);
-        personServiceImpl.setRawScoreDAO(mockRawScoreDAO);
+        personServiceImpl.setDriverReportDAO(mockDriverReportDAO);
         personServiceImpl.setEventStatisticsDAO(mockEventStatisticsDAO);
-        personServiceImpl.setAdminVehicleJDBCDAO(mockAdminVehicleJDBCDAO);
 
         testPeople = new HashMap<Integer, Person>();
         driver1 = new Driver();
@@ -127,12 +121,11 @@ public class PersonServiceTest {
     @Test
     public void getLocationTest() {
 
-        new Expectations() {{
+        new NonStrictExpectations() {{
             mockPersonDAO.findByID(person1.getPersonID());
             result = person1;
-            mockRawScoreDAO.getDScoreByDT(driver1.getDriverID(), 6);
+            mockDriverReportDAO.getScore(driver1.getDriverID(), Duration.SIX);
             result = mockScoresMap;
-            mockAdminVehicleJDBCDAO.getMilesDriven(driver1.getDriverID());
             result = milesDriven;
             mockEventStatisticsDAO.getMaxSpeedForPastDays(driver1.getDriverID(), 6, anyInt, (Date) any);
             result = maxSpeed;
@@ -140,9 +133,8 @@ public class PersonServiceTest {
             result = maxSpeed;
             mockPersonDAO.findByID(person2.getPersonID());
             result = person2;
-            mockRawScoreDAO.getDScoreByDT(driver2.getDriverID(),6);
+            mockDriverReportDAO.getScore(driver2.getDriverID(), Duration.SIX);
             result = mockScoresMap;
-            mockAdminVehicleJDBCDAO.getMilesDriven(driver2.getDriverID());
             result = milesDriven;
             mockEventStatisticsDAO.getMaxSpeedForPastDays(driver2.getDriverID(), 6, anyInt, (Date) any);
             result = maxSpeed;
@@ -150,9 +142,8 @@ public class PersonServiceTest {
             result = maxSpeed;
             mockPersonDAO.findByID(person3.getPersonID());
             result = person3;
-            mockRawScoreDAO.getDScoreByDT(driver3.getDriverID(),6);
+            mockDriverReportDAO.getScore(driver3.getDriverID(), Duration.SIX);
             result = mockScoresMap;
-            mockAdminVehicleJDBCDAO.getMilesDriven(driver3.getDriverID());
             result = milesDriven;
             mockEventStatisticsDAO.getMaxSpeedForPastDays(driver3.getDriverID(), 6, anyInt, (Date)any);
             result = maxSpeed;
@@ -161,7 +152,7 @@ public class PersonServiceTest {
         }};
 
         for (int i = 1; i <= 3; i++) {
-            Response response = personService.getPersonAndScores(i);
+            Response response = personService.getPersonAndScores(i, 6);
             assertNotNull(response.getEntity());
             PersonScoresView personScoresView = (PersonScoresView) response.getEntity();
             assertNotNull(personScoresView);
@@ -239,5 +230,21 @@ public class PersonServiceTest {
 
     public void setMockPersonDAO(PersonDAO mockPersonDAO) {
         this.mockPersonDAO = mockPersonDAO;
+    }
+
+    public DriverReportDAO getMockDriverReportDAO() {
+        return mockDriverReportDAO;
+    }
+
+    public void setMockDriverReportDAO(DriverReportDAO mockDriverReportDAO) {
+        this.mockDriverReportDAO = mockDriverReportDAO;
+    }
+
+    public EventStatisticsDAO getMockEventStatisticsDAO() {
+        return mockEventStatisticsDAO;
+    }
+
+    public void setMockEventStatisticsDAO(EventStatisticsDAO mockEventStatisticsDAO) {
+        this.mockEventStatisticsDAO = mockEventStatisticsDAO;
     }
 }
