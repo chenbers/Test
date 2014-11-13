@@ -2,6 +2,7 @@ package com.inthinc.pro.map;
 
 import java.math.BigDecimal;
 import java.security.InvalidKeyException;
+import java.text.DecimalFormat;
 
 import com.google.code.geocoder.Geocoder;
 import com.google.code.geocoder.GeocoderRequestBuilder;
@@ -101,7 +102,8 @@ public class GoogleAddressLookup extends AddressLookup {
 
             if (!gotPlacemarkInfo && noLocality){
                 // display no city provided - lat x long y
-                placemark.setLocality("[no city provided - lat "+latLng.getLat()+" long "+latLng.getLng()+"]");
+                DecimalFormat df = new DecimalFormat("#.#####");
+                placemark.setLocality("[no city provided - lat "+df.format(latLng.getLat())+" long "+df.format(latLng.getLng())+"]");
                 gotPlacemarkInfo = true;
             }
 
