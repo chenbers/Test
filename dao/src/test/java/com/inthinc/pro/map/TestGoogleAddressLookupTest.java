@@ -207,9 +207,9 @@ public class TestGoogleAddressLookupTest {
     
     
     @Test
-    public final void getClosestTown_usingFIPS() {
+    public final void getClosestTown_withNoLocality() {
        HashMap<LatLng, String> testData = new HashMap<LatLng, String>();
-       testData.put(new LatLng(35.8455,-100.558), "10.89 miles SW of Canadian, TX");
+       testData.put(new LatLng(35.8455,-100.558), "270.50 miles NW of [no city provided - lat 35.8455 long -100.558], TX");
 
         String address = null;
         boolean debugMode = false;
