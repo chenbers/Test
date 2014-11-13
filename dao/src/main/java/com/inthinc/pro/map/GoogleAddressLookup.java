@@ -30,7 +30,7 @@ public class GoogleAddressLookup extends AddressLookup {
 	
 	private FipsDAO fipsDAO;
 	
-	
+
 	public FipsDAO getFipsDAO() {
         return fipsDAO;
     }
@@ -68,6 +68,7 @@ public class GoogleAddressLookup extends AddressLookup {
             GeocodeResponse geocoderResponse = geocode(latLng);
             Placemark placemark = new Placemark();
             boolean gotPlacemarkInfo = false;
+            boolean noLocality = true;
             for (GeocoderResult result : geocoderResponse.getResults()) {
                 placemark.setAddress(result.getFormattedAddress());
                 for (GeocoderAddressComponent component : result.getAddressComponents()) {
@@ -75,6 +76,7 @@ public class GoogleAddressLookup extends AddressLookup {
                         try {
                             GeocoderResultType componentType = GeocoderResultType.fromValue(type);
                             if (componentType == GeocoderResultType.LOCALITY) {
+                                noLocality = false;
                                 placemark.setLocality(component.getLongName());
                             }
                             else if (componentType == GeocoderResultType.ADMINISTRATIVE_AREA_LEVEL_1) {
@@ -95,6 +97,12 @@ public class GoogleAddressLookup extends AddressLookup {
                     break;
                 }
                 
+            }
+
+            if (!gotPlacemarkInfo && noLocality){
+                // display no city provided - lat x long y
+                placemark.setLocality("[no city provided - lat "+latLng.getLat()+" long "+latLng.getLng()+"]");
+                gotPlacemarkInfo = true;
             }
 
             if (!gotPlacemarkInfo) {
