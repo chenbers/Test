@@ -209,7 +209,7 @@ public class TestGoogleAddressLookupTest {
     @Test
     public final void getWithNoLocality() {
        HashMap<LatLng, String> testData = new HashMap<LatLng, String>();
-       testData.put(new LatLng(35.8455,-100.558), "no city provided - lat 35.8455 long -100.558");
+       testData.put(new LatLng(35.8455,-100.558), "no city provided - lat, long: 35.8455, -100.558");
 
         String address = null;
         boolean debugMode = false;
