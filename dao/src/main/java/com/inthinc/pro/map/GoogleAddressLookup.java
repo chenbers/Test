@@ -69,7 +69,7 @@ public class GoogleAddressLookup extends AddressLookup {
             GeocodeResponse geocoderResponse = geocode(latLng);
             Placemark placemark = new Placemark();
             boolean gotPlacemarkInfo = false;
-            boolean noLocality = true;
+            boolean localityProvided = false;
             for (GeocoderResult result : geocoderResponse.getResults()) {
                 placemark.setAddress(result.getFormattedAddress());
                 for (GeocoderAddressComponent component : result.getAddressComponents()) {
@@ -77,7 +77,7 @@ public class GoogleAddressLookup extends AddressLookup {
                         try {
                             GeocoderResultType componentType = GeocoderResultType.fromValue(type);
                             if (componentType == GeocoderResultType.LOCALITY) {
-                                noLocality = false;
+                                localityProvided = true;
                                 placemark.setLocality(component.getLongName());
                             }
                             else if (componentType == GeocoderResultType.ADMINISTRATIVE_AREA_LEVEL_1) {
@@ -100,10 +100,10 @@ public class GoogleAddressLookup extends AddressLookup {
                 
             }
 
-            if (!gotPlacemarkInfo && noLocality){
+            if (!gotPlacemarkInfo && !localityProvided){
                 // display no city provided - lat x long y
                 DecimalFormat df = new DecimalFormat("#.#####");
-                placemark.setLocality("[no city provided - lat "+df.format(latLng.getLat())+" long "+df.format(latLng.getLng())+"]");
+                placemark.setLocalityPlaceholder("no city provided - lat "+df.format(latLng.getLat())+" long "+df.format(latLng.getLng()));
                 gotPlacemarkInfo = true;
             }
 
@@ -191,6 +191,7 @@ public class GoogleAddressLookup extends AddressLookup {
         private float distanceFromTarget;
         private String headingToTarget;
         private String state;
+        private String localityPlaceholder;
         public Placemark(){
         }
         public String toString() {
@@ -241,12 +242,20 @@ public class GoogleAddressLookup extends AddressLookup {
         }
         public String getDescription() {
             if (getLocality() == null) {
-                return getState();
+                return localityPlaceholder;
             }
-            if(getDistanceFromTarget() > 5) {
-                return String.format("%.2f", getDistanceFromTarget()) +" "+getDistanceType()+" "+getHeadingToTarget()+" of " + getLocality() +", "+ getState();
+            if (getDistanceFromTarget() > 5) {
+                return String.format("%.2f", getDistanceFromTarget()) + " " + getDistanceType() + " " + getHeadingToTarget() + " of " + getLocality() + ", " + getState();
             }
-            return getLocality() +", "+ getState();
+            return getLocality() + ", " + getState();
+        }
+
+        public String getLocalityPlaceholder() {
+            return localityPlaceholder;
+        }
+
+        public void setLocalityPlaceholder(String localityPlaceholder) {
+            this.localityPlaceholder = localityPlaceholder;
         }
     }
     
