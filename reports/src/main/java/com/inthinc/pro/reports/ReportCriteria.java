@@ -43,6 +43,9 @@ public class ReportCriteria
     private TimeZone timeZone;
     private Boolean includeInactiveDrivers = DEFAULT_EXCLUDE_INACTIVE_DRIVERS;
     private Boolean includeZeroMilesDrivers = DEFAULT_EXCLUDE_ZERO_MILES_DRIVERS;
+    private Boolean dontIncludeUnassignedDevice = DEFAULT_EXCLUDE_ZERO_MILES_DRIVERS;
+    private Boolean hosDriversOnly = DEFAULT_HOS_DRIVERS_ONLY;
+
 
     private static final String INTHINC_NAME = "Inthinc";
     private static final String REPORT_DATE_STRING = "REPORT_DATE_AS_STRING";
@@ -368,5 +371,13 @@ public class ReportCriteria
      */
     protected static Integer stringToInt(String string) {
         return string != null ? Math.round(Float.parseFloat(string)) : null;
+    }
+
+    public Boolean getHosDriversOnly() {
+        return hosDriversOnly;
+    }
+
+    public void setHosDriversOnly(Boolean hosDriversOnly) {
+        this.hosDriversOnly = hosDriversOnly;
     }
 }

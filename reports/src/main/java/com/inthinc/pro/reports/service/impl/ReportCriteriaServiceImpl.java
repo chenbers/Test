@@ -691,6 +691,7 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
         hosDailyDriverLogReportCriteria.setUserDAO(userDAO);
         hosDailyDriverLogReportCriteria.setVehicleDAO(vehicleDAO);
         hosDailyDriverLogReportCriteria.setIncludeInactiveDrivers(includeInactiveDrivers);
+        hosDailyDriverLogReportCriteria.setHosDriversOnly(hosDriversOnly);
 
         hosDailyDriverLogReportCriteria.init(accountGroupHierarchy, driverID, interval);
         return hosDailyDriverLogReportCriteria.getCriteriaList();
@@ -711,6 +712,8 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
         hosDailyDriverLogReportCriteria.setUserDAO(userDAO);
         hosDailyDriverLogReportCriteria.setVehicleDAO(vehicleDAO);
         hosDailyDriverLogReportCriteria.setIncludeInactiveDrivers(includeInactiveDrivers);
+        hosDailyDriverLogReportCriteria.setHosDriversOnly(hosDriversOnly);
+
 
         hosDailyDriverLogReportCriteria.init(accountGroupHierarchy, groupIDList, interval);
         return hosDailyDriverLogReportCriteria.getCriteriaList();
