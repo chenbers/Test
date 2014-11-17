@@ -36,7 +36,11 @@ public class ReportParams implements Cloneable {
     private boolean includeInactiveDrivers;
     private boolean includeZeroMilesDrivers;
     private boolean zeroMilesDriversControlDisabled;
-    
+    private boolean inactiveDriversControlDisabled;
+    private boolean dontIncludeUnassignedDevice;
+    private boolean hosDriversOnly;
+    private boolean hosDriversOnlyControlDisabled;
+
     List<Driver> driverList;
     GroupHierarchy groupHierarchy;
 
@@ -330,5 +334,56 @@ public class ReportParams implements Cloneable {
 
     public void setIncludeZeroMilesDrivers(boolean includeZeroMilesDrivers) {
         this.includeZeroMilesDrivers = includeZeroMilesDrivers;
+    }
+
+    public boolean isIncludeInactiveDrivers() {
+//        If the user is presented with both "Report On" and "Include Inactive Drivers"
+//        controls, "Include Inactive Drivers" should only be selectable if the user
+//        is running a group report. If they're running a report on a specific driver,
+//        correct behavior should probably be that the "Include Inactive Drivers" be
+//        set to true. Here, we're checking to see if the control is disabled, and if so,
+//        setting includeZeroMilesDrivers to true.
+        if (isZeroMilesDriversControlDisabled()) {
+            this.includeInactiveDrivers = true;
+        }
+        return includeInactiveDrivers;
+    }
+
+    public void setIncludeInactiveDrivers(boolean includeInactiveDrivers) {
+        this.includeInactiveDrivers = includeInactiveDrivers;
+    }
+    public boolean isDontIncludeUnassignedDevice() {
+        return dontIncludeUnassignedDevice;
+    }
+
+    public void setDontIncludeUnassignedDevice(boolean dontIncludeUnassignedDevice) {
+        this.dontIncludeUnassignedDevice = dontIncludeUnassignedDevice;
+    }
+
+    public boolean isHosDriversOnly() {
+        if (isHosDriversOnlyControlDisabled()) {
+            this.hosDriversOnly = true;
+        }
+        return hosDriversOnly;
+    }
+
+    public void setHosDriversOnly(boolean hosDriversOnly) {
+        this.hosDriversOnly = hosDriversOnly;
+    }
+
+    public boolean isHosDriversOnlyControlDisabled() {
+
+//      If the combo box is set to the default null value, enable the control
+        if (this.paramType == null) return false;
+
+//      If it's set to "Driver", disable it
+        if (this.paramType.equals(ReportParamType.DRIVER)) return true;
+
+//      Otherwise, we'll assume it's set to Group and enable it
+        return false;
+    }
+
+    public void setHosDriversOnlyControlDisabled(boolean hosDriversOnlyControlDisabled) {
+        this.hosDriversOnlyControlDisabled = hosDriversOnlyControlDisabled;
     }
 }

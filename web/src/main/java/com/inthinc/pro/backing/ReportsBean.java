@@ -88,7 +88,8 @@ public abstract class ReportsBean extends BaseBean {
                     									params.getLocale(), 
                     									getUser().getPerson().getMeasurementType() == MeasurementType.METRIC,
                     									getDateTimeZone(),
-                    									params.isIncludeInactiveDrivers()));
+                    									params.isIncludeInactiveDrivers(),
+                                                        params.isHosDriversOnly()));
                 else
                     reportCriteriaList.addAll(getReportCriteriaService()
                     							.getHosDailyDriverLogReportCriteria(
@@ -98,7 +99,8 @@ public abstract class ReportsBean extends BaseBean {
                     									params.getLocale(), 
                     									getUser().getPerson().getMeasurementType() == MeasurementType.METRIC,
                                                         getDateTimeZone(),
-                    									params.isIncludeInactiveDrivers()));
+                    									params.isIncludeInactiveDrivers(),
+                                                        params.isHosDriversOnly()));
                 break;
             case HOS_VIOLATIONS_SUMMARY_REPORT:
                 reportCriteriaList.add(getReportCriteriaService().getHosViolationsSummaryReportCriteria(getAccountGroupHierarchy(), params.getGroupIDList(), params.getDateRange().getInterval(), 
