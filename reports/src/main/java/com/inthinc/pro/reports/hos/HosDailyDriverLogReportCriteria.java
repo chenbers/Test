@@ -222,10 +222,10 @@ public class HosDailyDriverLogReportCriteria extends ReportCriteria {
     }
 
     protected List<Driver> getReportDriverList(List<Group> reportGroupList){
-        return getReportDriverList(reportGroupList, getIncludeInactiveDrivers());
+        return getReportDriverList(reportGroupList, getIncludeInactiveDrivers(), getHosDriversOnly());
     }
     
-    protected List<Driver> getReportDriverList(List<Group> reportGroupList, boolean includeInactiveDrivers) {
+    protected List<Driver> getReportDriverList(List<Group> reportGroupList, boolean includeInactiveDrivers, boolean hosDriversOnly) {
         List<Driver> driverList = new ArrayList<Driver>();
         for (Group group : reportGroupList){
 //            driverList.addAll(driverDAO.getDrivers(group.getGroupID()));
@@ -234,7 +234,8 @@ public class HosDailyDriverLogReportCriteria extends ReportCriteria {
                 if (groupDriverList != null && !groupDriverList.isEmpty()){
                     //driverList.addAll(groupDriverList);
                     for(Driver driver: groupDriverList){
-                        if(Status.ACTIVE.equals(driver.getStatus()) || (includeInactiveDrivers)){
+                        if((Status.ACTIVE.equals(driver.getStatus()) || (includeInactiveDrivers)) &&
+                                (!hosDriversOnly || !driverHasNonDotRuleset(driver))){
                             driverList.add(driver);
                         }
                     }
@@ -801,6 +802,14 @@ public class HosDailyDriverLogReportCriteria extends ReportCriteria {
         HosDriverDailyLogGraph hosDriverDailyLogGraph = new HosDriverDailyLogGraph();
         
         return hosDriverDailyLogGraph.drawHosLogGraph(img, graphList, dayTotals, isDSTEnd);
+    }
+
+    private boolean driverHasNonDotRuleset(Driver driver) {
+        if (driver == null)
+            return true;
+
+        RuleSetType ruleSetType = driver.getDot();
+        return ruleSetType == null || ruleSetType == RuleSetType.NON_DOT;
     }
     
     public AccountDAO getAccountDAO() {

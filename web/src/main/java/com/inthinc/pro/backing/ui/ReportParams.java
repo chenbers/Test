@@ -372,7 +372,7 @@ public class ReportParams implements Cloneable {
 
     public boolean isHosDriversOnly() {
         if (isHosDriversOnlyControlDisabled()) {
-            this.hosDriversOnly = true;
+            this.hosDriversOnly = false;
         }
         return hosDriversOnly;
     }
