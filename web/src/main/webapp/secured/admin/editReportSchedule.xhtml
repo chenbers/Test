@@ -413,6 +413,16 @@
                                         </td>
                                     </tr>
                                 </h:outputText>
+								<h:outputText id="HosDriversOnlyInput" rendered="#{criteria eq 'HOS_DRIVERS_ONLY'}">
+									<tr>
+										<td valign="top">
+											<h:outputText value="#{messages.reports_hosDriversOnly}"/>
+										</td>
+										<td>
+											<h:selectBooleanCheckbox id="hosDriversOnly" value="#{reportScheduleBean.item.hosDriversOnly}" />
+										</td>
+									</tr>
+								</h:outputText>
                             </ui:repeat>
 							<ui:fragment rendered="#{reportScheduleBean.admin}">
 								<tr>

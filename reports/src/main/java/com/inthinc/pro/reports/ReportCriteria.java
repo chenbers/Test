@@ -65,6 +65,7 @@ public class ReportCriteria
     public static final String USER_TIME_ZONE = "USER_TIME_ZONE";
 
     public static final boolean DEFAULT_EXCLUDE_INACTIVE_DRIVERS = false;
+    public static final boolean DEFAULT_HOS_DRIVERS_ONLY = false;
     public static final boolean DEFAULT_EXCLUDE_ZERO_MILES_DRIVERS = false;
     public static final boolean DEFAULT_INCLUDE_INACTIVE_DRIVERS = true;
     public static final boolean DEFAULT_INCLUDE_ZERO_MILES_DRIVERS = true;

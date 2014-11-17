@@ -38,7 +38,9 @@ public class ReportParams implements Cloneable {
     private boolean zeroMilesDriversControlDisabled;
     private boolean inactiveDriversControlDisabled;
     private boolean dontIncludeUnassignedDevice;
-    
+    private boolean hosDriversOnly;
+    private boolean hosDriversOnlyControlDisabled;
+
     List<Driver> driverList;
     GroupHierarchy groupHierarchy;
 
@@ -366,5 +368,32 @@ public class ReportParams implements Cloneable {
 
     public void setDontIncludeUnassignedDevice(boolean dontIncludeUnassignedDevice) {
         this.dontIncludeUnassignedDevice = dontIncludeUnassignedDevice;
+    }
+
+    public boolean isHosDriversOnly() {
+        if (isHosDriversOnlyControlDisabled()) {
+            this.hosDriversOnly = true;
+        }
+        return hosDriversOnly;
+    }
+
+    public void setHosDriversOnly(boolean hosDriversOnly) {
+        this.hosDriversOnly = hosDriversOnly;
+    }
+
+    public boolean isHosDriversOnlyControlDisabled() {
+
+//      If the combo box is set to the default null value, enable the control
+        if (this.paramType == null) return false;
+
+//      If it's set to "Driver", disable it
+        if (this.paramType.equals(ReportParamType.DRIVER)) return true;
+
+//      Otherwise, we'll assume it's set to Group and enable it
+        return false;
+    }
+
+    public void setHosDriversOnlyControlDisabled(boolean hosDriversOnlyControlDisabled) {
+        this.hosDriversOnlyControlDisabled = hosDriversOnlyControlDisabled;
     }
 }

@@ -200,6 +200,7 @@ public class MassReportExporterTest {
             reportSchedule.setDriverID(6321);
             reportSchedule.setIncludeInactiveDrivers(false);
             reportSchedule.setIncludeZeroMilesDrivers(false);
+            reportSchedule.setHosDriversOnly(false);
             reportSchedule.setLastDate(today.minusDays(2).toDate());
             reportSchedule.setManagerDeliveryType(ReportManagerDeliveryType.ALL);
             reportSchedule.setIftaOnly(false);
