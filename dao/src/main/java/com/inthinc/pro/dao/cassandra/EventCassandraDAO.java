@@ -428,6 +428,7 @@ public class EventCassandraDAO extends AggregationCassandraDAO implements EventD
         String method = "";
         boolean forgiven = false;
         Integer assetId = 0;
+        Integer time = 0;
         Long noteId = 0L;
 		byte[] commType = new byte[1];
         List<Event> eventList = new ArrayList<Event>();
@@ -437,6 +438,7 @@ public class EventCassandraDAO extends AggregationCassandraDAO implements EventD
             long createdTS = column.getClock()/1000;
             forgiven = booleanSerializer.fromByteBuffer((ByteBuffer) colName.get(5));
             if ((includeForgiven || (!includeForgiven && forgiven == false))) {
+            	time = bigIntegerSerializer.fromByteBuffer((ByteBuffer) colName.get(1)).intValue();
                 method = stringSerializer.fromByteBuffer((ByteBuffer) colName.get(2));
                 assetId = bigIntegerSerializer.fromByteBuffer((ByteBuffer) colName.get(3)).intValue();
                 noteId = longSerializer.fromByteBuffer((ByteBuffer) colName.get(4));
@@ -460,6 +462,8 @@ public class EventCassandraDAO extends AggregationCassandraDAO implements EventD
                 
                 Event event = getMapper().convertToModelObject(fieldMap, Event.class);
                 event.setNoteID(noteId);
+                if (event.getTime() == null)
+                	event.setTime(new Date(time*1000L));
                 
                 if (event.getTime() == null)
                 	event.setTime(new Date(time*1000L));
@@ -591,28 +595,34 @@ public class EventCassandraDAO extends AggregationCassandraDAO implements EventD
     private static void addNoteAttribsMap(Map<String, Object> attribMap) {
     	Map<Integer, Object> attribs = new HashMap<Integer, Object>();
         
-        for (Map.Entry<String, Object> attrib : attribMap.entrySet()) {
-            String key = attrib.getKey();
-            Object value = attrib.getValue();
-            
-            if (excludeAttribs.get(key) == null) {
-                if (!isCode(key)) {
-                	Attrib noteAttrib = Attrib.getForName(key);
-                    key = (noteAttrib==null) ? "" : String.valueOf(noteAttrib.getCode());
-                }
-                if (!key.isEmpty()) {
-                	Integer iKey = Integer.parseInt(key);
-                	Object oVal = null;
-                	if (iKey < 24576 || (iKey > 32000 && iKey < 33000))
-                		oVal = Integer.parseInt(value.toString());
-                	if ((iKey >= 24576 && iKey < 32000) || (iKey > 33000 && iKey <= 49166))
-                		oVal = value.toString().replace('=','&');
-                	
-                	if (oVal!=null && iKey!=null)
-                		attribs.put(iKey, oVal);
-                }    
-            }
-        }
+    	try {
+	        for (Map.Entry<String, Object> attrib : attribMap.entrySet()) {
+	            String key = attrib.getKey();
+	            Object value = attrib.getValue();
+	            
+	            if (excludeAttribs.get(key) == null) {
+	                if (!isCode(key)) {
+	                	Attrib noteAttrib = Attrib.getForName(key);
+	                    key = (noteAttrib==null) ? "" : String.valueOf(noteAttrib.getCode());
+	                }
+	                if (!key.isEmpty()) {
+	                	Integer iKey = Integer.parseInt(key);
+	                	Object oVal = null;
+	                	if (iKey == 221)
+	                		oVal = Long.parseLong(value.toString());
+	                	else if (iKey < 24576 || (iKey > 32000 && iKey < 33000))
+	                		oVal = Integer.parseInt(value.toString());
+	                	else if ((iKey >= 24576 && iKey < 32000) || (iKey > 33000 && iKey <= 49166))
+	                		oVal = value.toString().replace('=','&');
+	                	
+	                	if (oVal!=null && iKey!=null)
+	                		attribs.put(iKey, oVal);
+	                }    
+	            }
+	        }
+    	} catch(Exception e) {
+    		logger.error("addNoteAttribsMap exception: " + e);
+    	}    
         if (attribs.size() > 0)
         	attribMap.put("attrMap", attribs);
     }
