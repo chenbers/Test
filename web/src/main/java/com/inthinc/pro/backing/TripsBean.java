@@ -76,7 +76,7 @@ public class TripsBean extends BaseBean {
     private IdentifiableEntityBean identifiableEntityBean;
     private GroupTreeNodeImpl groupTreeNodeImpl;
     private Map<Integer, Driver> tripsDrivers = new HashMap<Integer, Driver>();
-    private String dateStatus = MessageUtil.getMessageString("trip_valid_date_range",getLocale());
+    private String dateStatus = "";
     private LatLng lastLocation;
     private String timeFrameString = "";
     
@@ -667,7 +667,7 @@ public class TripsBean extends BaseBean {
             
         // Winner!
         } else {
-            setDateStatus(MessageUtil.getMessageString("trip_valid_date_range",getLocale()));            
+            setDateStatus("");            
             return true;
         }        
     }
