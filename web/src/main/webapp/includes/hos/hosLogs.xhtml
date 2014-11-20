@@ -94,6 +94,12 @@
 		    </div>
          </a4j:outputPanel>
           
+         <a4j:outputPanel  id="#{context}-hosSendLogsNotice">
+            <div align="left" style="width: 100%"> 
+                <h:outputText id="sendLogsNotice"  style="float:left;color:#c44d34" value="#{messages.hosLog_update_notice}" />
+            </div>
+         </a4j:outputPanel>
+          
           
     	  <ui:include src="/includes/table/statsHeader.xhtml">	
    			<ui:param name="title" value="#{messages.hosLogs_recordCountHeader}" />
