@@ -207,9 +207,9 @@ public class TestGoogleAddressLookupTest {
     
     
     @Test
-    public final void getClosestTown_usingFIPS() {
+    public final void getWithNoLocality() {
        HashMap<LatLng, String> testData = new HashMap<LatLng, String>();
-       testData.put(new LatLng(35.8455,-100.558), "10.89 miles SW of Canadian, TX");
+       testData.put(new LatLng(35.8455,-100.558), "no city provided - lat, long: 35.8455, -100.558");
 
         String address = null;
         boolean debugMode = false;
@@ -221,11 +221,11 @@ public class TestGoogleAddressLookupTest {
                   System.out.println();
                 }
                 
-                assertEquals("FIPS address match", testData.get(latLng), address);
+                assertEquals("address match", testData.get(latLng), address);
             }
         } catch (NoAddressFoundException e) {
             e.printStackTrace();
-            fail("exception thrown for getClosestTownString");
+            fail("exception thrown for getWithNoLocality");
         }
     }
 
