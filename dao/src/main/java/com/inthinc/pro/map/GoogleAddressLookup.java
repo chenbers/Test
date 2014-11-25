@@ -57,7 +57,7 @@ public class GoogleAddressLookup extends AddressLookup {
     }
 
 	public String getClosestTownString(LatLng latLng, MeasurementType measurementType) throws NoAddressFoundException {
-	    return getClosestTownString(latLng, measurementType, false);
+	    return getClosestTownString(latLng, measurementType, true);
 	}
 	
     public String getClosestTownString(LatLng latLng, MeasurementType measurementType, boolean debugMode) throws NoAddressFoundException {
@@ -65,7 +65,8 @@ public class GoogleAddressLookup extends AddressLookup {
             this.debugMode = debugMode;
             setMeasurementType(measurementType);
             this.latLng = latLng;
-            
+            System.out.println("getClosestTownString: --> lat/long: "+this.getLatLng().getLat()+", "+this.getLatLng().getLng()+"; mType: "+measurementType.toString()+"; debug: "+debugMode);
+
             GeocodeResponse geocoderResponse = geocode(latLng);
             Placemark placemark = new Placemark();
             boolean gotPlacemarkInfo = false;
@@ -90,11 +91,13 @@ public class GoogleAddressLookup extends AddressLookup {
                     }
                     gotPlacemarkInfo =  (placemark.getLocality() != null && placemark.getState() != null);
                     if (gotPlacemarkInfo) {
+                        System.out.println("getClosestTownString: gotPlacemarkInfo==true #1 break");
                         break;
                     }
                 }
                 
                 if (gotPlacemarkInfo) {
+                    System.out.println("getClosestTownString: gotPlacemarkInfo==true #2 break");
                     break;
                 }
                 
@@ -105,6 +108,7 @@ public class GoogleAddressLookup extends AddressLookup {
                 DecimalFormat df = new DecimalFormat("#.#####");
                 placemark.setLocalityPlaceholder("no city provided - lat, long: "+df.format(latLng.getLat())+", "+df.format(latLng.getLng()));
                 gotPlacemarkInfo = true;
+                System.out.println("getClosestTownString: 'no city provided block', loc: "+placemark.getLocalityPlaceholder()+" gotPlacemarkInfo: "+gotPlacemarkInfo+", localityProvided: "+localityProvided);
             }
 
             if (!gotPlacemarkInfo) {
@@ -114,19 +118,23 @@ public class GoogleAddressLookup extends AddressLookup {
                 
                 if (closestTown != null) {
                     String[] cityState = closestTown.split(",");
+                    System.out.println("getClosestTownString: closestTown != null #1; cityState.length: "+cityState.length);
                     if (cityState.length == 2) {
                         placemark.setLocality(cityState[0].trim());
                         placemark.setState(cityState[1].trim());
                         gotPlacemarkInfo = true;
+                        System.out.println("getClosestTownString: closestTown != null; #2; Locality: "+placemark.getLocality()+" , State: "+placemark.getState());
                     }
                 }
             }
             if (gotPlacemarkInfo) {
+                System.out.println("getClosestTownString: gotPlacemarkInfo #4");
                 // The location (lat, lng) in the original request is for the county not the city, so looking up the city to gauge the distance and heading)
                 Geocoder geocoder = getGeocoder();
                 GeocoderRequest geocoderRequest = new GeocoderRequestBuilder().setAddress(placemark.getCityState()).getGeocoderRequest();
                 geocoderResponse = geocoder.geocode(geocoderRequest);
                 if (geocoderResponse == null || geocoderResponse.getStatus() != GeocoderStatus.OK || geocoderResponse.getResults() == null || geocoderResponse.getResults().isEmpty()) {
+                    System.out.println("getClosestTownString: <-- gotPlacemarkInfo #5, Desc: "+placemark.getDescription());
                     return placemark.getDescription();
                 }
                 GeocoderResult result = geocoderResponse.getResults().get(0);
@@ -141,8 +149,10 @@ public class GoogleAddressLookup extends AddressLookup {
                 double plng = (placemark == null || placemark.getLatLng() == null) ? 0.0d : placemark.getLatLng().getLng();
                 System.out.println("http://maps.google.com/maps?f=d&source=s_d&saddr="+this.getLatLng().getLat()+","+this.getLatLng().getLng()+"&daddr="+plat+","+plng+"&geocode=&hl=en&mra=ls&vps=4&ie=UTF8");
             }
+            System.out.println("getClosestTownString: <-- FINAL Return, Desc: "+placemark.getDescription());
             return placemark.getDescription();
         }
+        System.out.println("getClosestTownString: <-- THROW NoAddressFoundException!!!");
         throw new NoAddressFoundException(null, null, NoAddressFoundException.reasons.CLIENTSIDE);
     }
 

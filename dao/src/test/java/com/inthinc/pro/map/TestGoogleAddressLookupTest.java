@@ -62,6 +62,20 @@ public class TestGoogleAddressLookupTest {
         fail("Expected NoAddressFoundException; returned: "+address);
     }
     @Test
+    public final void getClosestTown_validLatLngNoCity_returnStateOnlyFound() {
+        String address = null;
+        try {
+            // given latlng is in AB, no city found..
+            address = gal.getClosestTownString(new LatLng(55.3314, -110.76), MeasurementType.ENGLISH);
+            System.out.println("returnStateOnlyFound address: "+address);
+
+        } catch (NoAddressFoundException e1) {
+            return;
+        }
+        assertTrue("The given address should contain no city provided", address.contains("no city provided"));
+    }
+    
+    @Test
     public final void getClosestTown_validLatLng_returnTownAndDistance() {
         HashMap<LatLng, String> testData = new HashMap<LatLng, String>();
 
