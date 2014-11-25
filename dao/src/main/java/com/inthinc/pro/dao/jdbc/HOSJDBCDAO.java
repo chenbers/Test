@@ -179,7 +179,7 @@ public class HOSJDBCDAO extends NamedParameterJdbcDaoSupport implements HOSDAO {
             /*Grab records that fall into time interval of driver records*/
             "AND ol.vehicleId = dl.vehicleID " +  
             "AND ((ol.loginTime > dl.loginTime AND ol.loginTime < dl.logoutTime) OR (COALESCE(ol.logoutTime, UTC_TIMESTAMP()) > dl.loginTime AND COALESCE(ol.logoutTime, UTC_TIMESTAMP()) < dl.logoutTime) OR (ol.loginTime < dl.loginTime AND COALESCE(ol.logoutTime, UTC_TIMESTAMP()) > dl.logoutTime)) " +
-            "AND d.personID = p.personID AND d.driverId = ol.driverId " +
+            "AND d.personID = p.personID AND d.driverId = ol.driverId and ol.occupantFlag > 0 " +
             "ORDER BY ol.loginTime";
 
 
