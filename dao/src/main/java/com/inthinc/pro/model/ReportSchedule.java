@@ -61,6 +61,7 @@ public class ReportSchedule implements Cloneable {
     private Boolean includeInactiveDrivers;
     private Boolean includeZeroMilesDrivers;
     private Boolean dontIncludeUnassignedDevice;
+    private Boolean hosDriversOnly;
     private ReportManagerDeliveryType managerDeliveryType;
 
     public ReportSchedule() {
@@ -429,5 +430,13 @@ public class ReportSchedule implements Cloneable {
 
     public void setFormat(String format) {
         this.format = format;
+    }
+
+    public Boolean getHosDriversOnly() {
+        return hosDriversOnly;
+    }
+
+    public void setHosDriversOnly(Boolean hosDriversOnly) {
+        this.hosDriversOnly = hosDriversOnly;
     }
 }

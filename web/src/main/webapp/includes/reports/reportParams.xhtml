@@ -161,6 +161,22 @@
                     </table>
                   </li>
                 </h:outputText>
+                    <h:outputText rendered="#{criteria eq 'HOS_DRIVERS_ONLY'}">
+                        <li class="l" style="padding-top: 1px">
+                            <table border="0" cellspacing="0" cellpadding="4" style="height:100%">
+                                <tr>
+                                    <td>
+                                        <h:outputText value="#{messages.reports_hosDriversOnly}"/>
+                                    </td>
+                                    <td>
+                                        <a4j:outputPanel id="hosDriversOnlyControl">
+                                            <h:selectBooleanCheckbox id="hosDriversOnly" disabled="#{params.hosDriversOnlyControlDisabled}" value="#{params.hosDriversOnly}" />
+                                        </a4j:outputPanel>
+                                    </td>
+                                </tr>
+                            </table>
+                        </li>
+                    </h:outputText>
                 <h:outputText rendered="#{criteria eq 'ZERO_MILES_DRIVERS'}">
                   <li class="l" style="padding-top: 1px">
                     <table border="0" cellspacing="0" cellpadding="4" style="height:100%">

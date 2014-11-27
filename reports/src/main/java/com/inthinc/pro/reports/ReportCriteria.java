@@ -44,6 +44,7 @@ public class ReportCriteria
     private Boolean includeInactiveDrivers = DEFAULT_EXCLUDE_INACTIVE_DRIVERS;
     private Boolean includeZeroMilesDrivers = DEFAULT_EXCLUDE_ZERO_MILES_DRIVERS;
     private Boolean dontIncludeUnassignedDevice = DEFAULT_EXCLUDE_ZERO_MILES_DRIVERS;
+    private Boolean hosDriversOnly = DEFAULT_HOS_DRIVERS_ONLY;
 
 
     private static final String INTHINC_NAME = "Inthinc";
@@ -65,6 +66,7 @@ public class ReportCriteria
     public static final String USER_TIME_ZONE = "USER_TIME_ZONE";
 
     public static final boolean DEFAULT_EXCLUDE_INACTIVE_DRIVERS = false;
+    public static final boolean DEFAULT_HOS_DRIVERS_ONLY = false;
     public static final boolean DEFAULT_EXCLUDE_ZERO_MILES_DRIVERS = false;
     public static final boolean DEFAULT_INCLUDE_INACTIVE_DRIVERS = true;
     public static final boolean DEFAULT_INCLUDE_ZERO_MILES_DRIVERS = true;
@@ -378,5 +380,13 @@ public class ReportCriteria
      */
     protected static Integer stringToInt(String string) {
         return string != null ? Math.round(Float.parseFloat(string)) : null;
+    }
+
+    public Boolean getHosDriversOnly() {
+        return hosDriversOnly;
+    }
+
+    public void setHosDriversOnly(Boolean hosDriversOnly) {
+        this.hosDriversOnly = hosDriversOnly;
     }
 }

@@ -18,6 +18,7 @@ public enum CriteriaType
     
     INACTIVE_DRIVERS(null),
     ZERO_MILES_DRIVERS(null),
+    HOS_DRIVERS_ONLY(null),
     DONT_INCLUDE_UNASSIGNED_DEVICE(null);
 
     private Class clazz;
