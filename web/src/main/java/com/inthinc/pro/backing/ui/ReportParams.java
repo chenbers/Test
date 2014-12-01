@@ -311,14 +311,6 @@ public class ReportParams implements Cloneable {
         this.timeFrameSelect = timeFrameSelect;
     }
 
-    public boolean isIncludeInactiveDrivers() {
-        return includeInactiveDrivers;
-    }
-
-    public void setIncludeInactiveDrivers(boolean includeInactiveDrivers) {
-        this.includeInactiveDrivers = includeInactiveDrivers;
-    }
-
     public boolean isIncludeZeroMilesDrivers() {
 //        If the user is presented with both "Report On" and "Include Zero Miles Drivers"
 //        controls, "Include Zero Miles Drivers" should only be selectable if the user
