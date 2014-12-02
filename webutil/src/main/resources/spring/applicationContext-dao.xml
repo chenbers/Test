@@ -123,10 +123,10 @@ old list - just alphabetized and filled in missing below
     </bean>
 
 	<!--  TODO not sure why the cassandra dao calls into hession  -->
-    <bean id="eventDAO" class="com.inthinc.pro.dao.cassandra.EventCassandraDAO">
+    <bean id="eventDAO" class="com.inthinc.pro.dao.hessian.EventHessianDAO">
         <property name="siloService" ref="siloServiceBean" />
 	</bean>
-    <bean id="locationDAO" class="com.inthinc.pro.dao.cassandra.LocationCassandraDAO"></bean>
+    <bean id="locationDAO" class="com.inthinc.pro.dao.hessian.LocationHessianDAO"></bean>
 	
     
     
