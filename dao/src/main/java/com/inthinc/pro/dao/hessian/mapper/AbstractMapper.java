@@ -373,9 +373,6 @@ public abstract class AbstractMapper implements Mapper {
                     if (Boolean.class.isAssignableFrom(fieldType) || Number.class.isAssignableFrom(fieldType) || String.class.isAssignableFrom(fieldType)
                             || Character.class.isAssignableFrom(fieldType) || Date.class.isAssignableFrom(fieldType) || TimeZone.class.isAssignableFrom(fieldType) || fieldType.isEnum())
                         value = convertSimpleList((List<?>) value, field, handled, includeNonUpdateables);
-                    else {
-                        value = convertList((List<?>) value, handled, includeNonUpdateables);
-                    }
                 }
             } else {
                 value = convertList((List<?>) value, handled, includeNonUpdateables);

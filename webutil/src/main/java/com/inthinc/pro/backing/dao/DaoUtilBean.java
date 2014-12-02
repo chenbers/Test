@@ -23,11 +23,17 @@ import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 import javax.servlet.http.HttpServletResponse;
 
+import com.inthinc.pro.dao.DriverDAO;
+import com.inthinc.pro.dao.GroupDAO;
+import com.inthinc.pro.dao.UserDAO;
+import com.inthinc.pro.dao.VehicleDAO;
+import com.inthinc.pro.exception.UpdateGroupException;
+import com.inthinc.pro.model.Group;
+import com.inthinc.pro.model.GroupStatus;
 import org.apache.log4j.Logger;
 import org.richfaces.model.Ordering;
 
 import com.inthinc.pro.backing.BaseBean;
-import com.inthinc.pro.backing.dao.annotation.DAODescription;
 import com.inthinc.pro.backing.dao.annotation.DaoParam;
 import com.inthinc.pro.backing.dao.annotation.MethodDescription;
 import com.inthinc.pro.backing.dao.impl.ReportServiceImpl;
@@ -38,16 +44,9 @@ import com.inthinc.pro.backing.dao.model.DaoMethod;
 import com.inthinc.pro.backing.dao.model.Param;
 import com.inthinc.pro.backing.dao.model.Result;
 import com.inthinc.pro.backing.dao.validator.ValidatorType;
-import com.inthinc.pro.dao.DriverDAO;
-import com.inthinc.pro.dao.GroupDAO;
-import com.inthinc.pro.dao.UserDAO;
-import com.inthinc.pro.dao.VehicleDAO;
 import com.inthinc.pro.dao.annotations.Column;
 import com.inthinc.pro.dao.hessian.proserver.ReportServiceCreator;
 import com.inthinc.pro.dao.hessian.proserver.SiloServiceCreator;
-import com.inthinc.pro.exception.UpdateGroupException;
-import com.inthinc.pro.model.Group;
-import com.inthinc.pro.model.GroupStatus;
 
 public class DaoUtilBean extends BaseBean
 {
@@ -84,7 +83,6 @@ public class DaoUtilBean extends BaseBean
     private GroupDAO groupDAO;
     private UserDAO userDAO;
 
-    private DAOHandler daoHandler;
 
     public static final String NO_RESULTS = "No results were returned";
 	public List<String> getExcludedMethods() {
@@ -134,15 +132,6 @@ public class DaoUtilBean extends BaseBean
                     }
                     daoMethod.setDescription(methods[i].getAnnotation(MethodDescription.class).description());
                     daoMethod.setPopulateMethod(methodDescription.populateMethod());
-                    
-                    if (methods[i].isAnnotationPresent(DAODescription.class)) {
-                        DAODescription daoDescription = methods[i].getAnnotation(DAODescription.class);
-                        daoMethod.setDaoID(daoDescription.daoID());
-                        daoMethod.setDaoMethod(daoDescription.daoMethod());
-                        daoMethod.setDaoParamMapper(daoDescription.daoParamMapper());
-                        daoMethod.setDaoReturnValueName(daoDescription.returnValueName());
-                        daoMethod.setUseMapper(daoDescription.useMapper());
-                    }
                 }
                 
                 methodMap.put(methods[i].getName(), daoMethod);
@@ -348,15 +337,11 @@ public class DaoUtilBean extends BaseBean
 
                 throw new UpdateGroupException("Cannot delete a group that contains a subordinate group, driver, or vehicle.");
             }
-            Method method = daomethod.getMethod();
-            Annotation annotation[][] = method.getParameterAnnotations();
-            List<Class<?>> paramTypes = new ArrayList<Class<?>>();
+            Object dataAccess = getDataAccess(daomethod.getInterfaceIdx());
+            InvocationHandler handler = Proxy.getInvocationHandler(dataAccess);
 
-            for (int i = 0; i < method.getParameterTypes().length; i++) {
-                DaoParam webParm = getDaoParamAnnotaion(annotation, i);
-                paramTypes.add(webParm.type());
-            }
-            processResults(daomethod.getMethod(), daoHandler.invoke(daomethod, paramTypes, args));
+            Method method = daomethod.getMethod();
+            processResults(method, handler.invoke(dataAccess, method, args));
         }
         catch (Exception e)
         {
@@ -370,7 +355,6 @@ public class DaoUtilBean extends BaseBean
         }
     }
     
-
     public Object[] getArgsFromParamList() throws Exception {
     	
         Method method = methodMap.get(selectedMethod).getMethod();
@@ -712,12 +696,16 @@ public class DaoUtilBean extends BaseBean
                 Method method = populateMethod.getMethod();
                 processPopulateResults(method, handler.invoke(dataAccess, method, new Object[] {getPopulateID()}));
             } catch (MalformedURLException e) {
+                // TODO Auto-generated catch block
                 e.printStackTrace();
             } catch (InstantiationException e) {
+                // TODO Auto-generated catch block
                 e.printStackTrace();
             } catch (IllegalAccessException e) {
+                // TODO Auto-generated catch block
                 e.printStackTrace();
             } catch (Throwable e) {
+                // TODO Auto-generated catch block
                 e.printStackTrace();
             }
         }
@@ -725,7 +713,7 @@ public class DaoUtilBean extends BaseBean
     }
     private void processPopulateResults(Method method, Object returnObject) throws InstantiationException, IllegalAccessException
     {
-        @SuppressWarnings("unchecked")
+        DaoMethod daoMethod = getMethodMap().get(selectedMethod);
         Map<String, Object> recordMap = (Map<String, Object>)returnObject;
         
         for (Param param : paramList) {
@@ -819,13 +807,5 @@ public class DaoUtilBean extends BaseBean
 
     public void setUserDAO(UserDAO userDAO) {
         this.userDAO = userDAO;
-    }
-
-    public DAOHandler getDaoHandler() {
-        return daoHandler;
-    }
-
-    public void setDaoHandler(DAOHandler daoHandler) {
-        this.daoHandler = daoHandler;
     }
 }

@@ -22,8 +22,4 @@ public class DurationCountList implements SelectList{
 		
 		return selectList;
 	}
-    @Override
-    public Object valueOf(Object value) {
-        return value;
-    }
 }

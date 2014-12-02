@@ -12,12 +12,7 @@ public class DaoMethod
     Class<?> modelClass;
     Class<? extends com.inthinc.pro.backing.dao.mapper.BaseUtilMapper> mapperClass;
     String populateMethod;
-    String daoID;
-    String daoMethod;
-    Class<? extends com.inthinc.pro.backing.dao.argmapper.AbstractArgumentMapper> daoParamMapper;
-    String daoReturnValueName;
-    Boolean useMapper;
-
+    
     public DaoMethod(Method method, int interfaceIdx)
     {
         super();
@@ -72,34 +67,5 @@ public class DaoMethod
         this.populateMethod = populateMethod;
     }
     
-    public Class<? extends com.inthinc.pro.backing.dao.argmapper.AbstractArgumentMapper> getDaoParamMapper() {
-        return daoParamMapper;
-    }
-    public void setDaoParamMapper(Class<? extends com.inthinc.pro.backing.dao.argmapper.AbstractArgumentMapper> daoParamMapper) {
-        this.daoParamMapper = daoParamMapper;
-    }
-    public String getDaoReturnValueName() {
-        return daoReturnValueName;
-    }
-    public void setDaoReturnValueName(String daoReturnValueName) {
-        this.daoReturnValueName = daoReturnValueName;
-    }
-    public String getDaoID() {
-        return daoID;
-    }
-    public void setDaoID(String daoID) {
-        this.daoID = daoID;
-    }
-    public String getDaoMethod() {
-        return daoMethod;
-    }
-    public void setDaoMethod(String daoMethod) {
-        this.daoMethod = daoMethod;
-    }
-    public Boolean getUseMapper() {
-        return useMapper;
-    }
-    public void setUseMapper(Boolean useMapper) {
-        this.useMapper = useMapper;
-    }
+    
 }

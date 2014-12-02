@@ -12,12 +12,8 @@ import java.util.TimeZone;
 
 import com.inthinc.hos.model.EnumIntegerMapping;
 import com.inthinc.pro.dao.annotations.Column;
-import com.inthinc.pro.dao.annotations.ConvertColumnToField;
-import com.inthinc.pro.dao.annotations.ConvertFieldToColumn;
 import com.inthinc.pro.model.BaseEnum;
-import com.inthinc.pro.model.Device;
 import com.inthinc.pro.model.ReferenceEntity;
-import com.inthinc.pro.model.configurator.ProductType;
 
 @SuppressWarnings("serial")
 public class DaoUtilMapper extends BaseUtilMapper {
@@ -223,5 +219,6 @@ public class DaoUtilMapper extends BaseUtilMapper {
         // if we have made it this far, the value must be a String or a primitive type. Just put it in the map.
         return value;
     }
+
 
 }

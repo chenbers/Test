@@ -9,7 +9,6 @@ import java.util.regex.PatternSyntaxException;
 import org.apache.log4j.Logger;
 
 import com.inthinc.pro.dao.annotations.ConvertColumnToField;
-import com.inthinc.pro.dao.annotations.ConvertFieldToColumn;
 import com.inthinc.pro.dao.hessian.mapper.ConfiguratorMapper;
 import com.inthinc.pro.model.SensitivitySliderValues;
 import com.inthinc.pro.model.configurator.DeviceSettingDefinition;
@@ -134,40 +133,5 @@ public class DaoUtilConfiguratorMapper extends DaoUtilMapper {
             
             sensitivitySliderValues.setProductType(ProductType.getProductTypeFromVersion((Integer)value));
         }
-    }
-    
-    @SuppressWarnings("unchecked")
-    @ConvertFieldToColumn(fieldName = "regex")
-    public void regexToMap(DeviceSettingDefinition deviceSettingDefinition, Object value)
-    {
-        if (deviceSettingDefinition == null || value == null || deviceSettingDefinition.getRegex() == null) return;
-        
-        if (Map.class.isInstance(value))
-        {
-            ((Map<String, Object>)value).put("regex", deviceSettingDefinition.getRegex().pattern());
-        }
-
-    }
-
-    @SuppressWarnings("unchecked")
-    @ConvertFieldToColumn(fieldName = "choices")
-    public void choicesMap(DeviceSettingDefinition deviceSettingDefinition, Object value)
-    {
-        if (deviceSettingDefinition == null || value == null || deviceSettingDefinition.getChoices() == null || deviceSettingDefinition.getChoices().isEmpty()) return;
-        
-        StringBuffer choicesRegEx = new StringBuffer();
-        boolean first = true;
-        for (String choice : deviceSettingDefinition.getChoices()) {
-            if (!first) {
-                choicesRegEx.append('|');
-            }
-            choicesRegEx.append(choice);
-            first = false;
-        }
-        if (Map.class.isInstance(value))
-        {
-            ((Map<String, Object>)value).put("regex", choicesRegEx.toString());
-        }
-
     }
 }

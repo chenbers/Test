@@ -12,8 +12,6 @@ import com.inthinc.pro.model.configurator.SpeedingConstants;
 public class DaoUtilRedFlagAlertMapper extends DaoUtilMapper {
 	
 	private static final long serialVersionUID = 1L;
-    private static final String MAX_SPEED_MARKER = "~";
-	
 	@ConvertColumnToField(columnName = "speedSettings")
     public void speedSettingsToModel(RedFlagAlert redFlagAlert, Object value)
     {
@@ -48,11 +46,10 @@ public class DaoUtilRedFlagAlertMapper extends DaoUtilMapper {
         }
 
     }
-    @SuppressWarnings("unchecked")
     @ConvertFieldToColumn(fieldName = "speedSettings")
     public void speedSettingsToColumn(RedFlagAlert redFlagAlert, Object value)
     {
-        if (Map.class.isInstance(value) && redFlagAlert.getSpeedSettings() != null && !redFlagAlert.getUseMaxSpeed())
+        if (Map.class.isInstance(value) && (redFlagAlert.getSpeedSettings() != null))
         {
             StringBuffer buf = new StringBuffer();
             for (Integer setting : redFlagAlert.getSpeedSettings())
@@ -64,19 +61,6 @@ public class DaoUtilRedFlagAlertMapper extends DaoUtilMapper {
             ((Map<String, Object>)value).put("speedSettings", buf.toString());
         }
     }
-    
-    @ConvertFieldToColumn(fieldName = "maxSpeed")
-    public void maxSpeedToColumn(RedFlagAlert redFlagAlert, Object value)
-    {
-        if (Map.class.isInstance(value) && redFlagAlert.getMaxSpeed() != null && redFlagAlert.getUseMaxSpeed())
-        {
-            StringBuffer buf = new StringBuffer(MAX_SPEED_MARKER);
-            buf.append(redFlagAlert.getMaxSpeed());
-            ((Map<String, Object>)value).put("speedSettings", buf.toString());
-        }
-    }
-
-    
     @SuppressWarnings("unchecked")
     @ConvertFieldToColumn(fieldName = "types")
     public void alertTypeMaskToColumn(RedFlagAlert redFlagAlert, Object value)

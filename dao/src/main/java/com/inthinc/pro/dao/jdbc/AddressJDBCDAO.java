@@ -157,9 +157,7 @@ public class AddressJDBCDAO extends SimpleJdbcDaoSupport implements AddressDAO {
             }
         };
         jdbcTemplate.update(psc);
-//        return address.getAddrID();
-        // returns number of updated rows
-        return 1;
+        return address.getAddrID();
     }
 
     @Override

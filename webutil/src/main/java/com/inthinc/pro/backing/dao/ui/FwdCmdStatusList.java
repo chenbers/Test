@@ -22,9 +22,5 @@ public class FwdCmdStatusList implements SelectList{
 		
 		return selectList;
 	}
-    @Override
-    public Object valueOf(Object value) {
-        return ForwardCommandStatus.valueOf(Integer.valueOf(value+""));
-    }
 
 }

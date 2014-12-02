@@ -15,7 +15,7 @@ public class DaoUtilDeviceMapper extends DaoUtilMapper {
         if (device == null || value == null) return;
         
         if (value instanceof Integer){
-            device.setProductVer((Integer)value);
+            
             device.setProductVersion(ProductType.getProductTypeFromVersion((Integer)value));
         }
     }
@@ -28,7 +28,7 @@ public class DaoUtilDeviceMapper extends DaoUtilMapper {
         
         if (Map.class.isInstance(value))
         {
-            ((Map<String, Object>)value).put("productVer", device.getProductVer());
+            ((Map<String, Object>)value).put("productVer", device.getProductVersion().getVersion());
         }
 
     }
