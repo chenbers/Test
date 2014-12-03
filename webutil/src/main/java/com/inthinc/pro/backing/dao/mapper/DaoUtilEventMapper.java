@@ -58,13 +58,13 @@ public class DaoUtilEventMapper extends DaoUtilMapper {
         }
     }
 
-    @ConvertFieldToColumn(fieldName = "eventAttrList")
+   // @ConvertFieldToColumn(fieldName = "eventAttrList")
     public void attrsToColumn(Event event, Object value) {
         // System.out.println("eventAttrList convert");
         // skip this column
     }
 
-    @ConvertFieldToColumn(fieldName = "attrMap")
+   // @ConvertFieldToColumn(fieldName = "attrMap")
     public void attrMapToColumn(Event event, Object value) {
         if (event == null || value == null || event.getAttrMap() == null || !(value instanceof Map))
             return;
