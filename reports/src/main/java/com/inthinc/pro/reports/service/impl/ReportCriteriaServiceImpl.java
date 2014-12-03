@@ -1699,17 +1699,6 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
                 continue;
             }
             switch (reportGroup.getReports()[i]) {
-                case FIRST_MOVE_FORWARD_REPORT:
-                    reportCriteriaList.add(getFirstMoveForwardCriteria(timeFrame.getInterval(),
-                            groupHierarchy,
-                            reportSchedule.getGroupID(),
-                            timeFrame,
-                            person.getLocale(),
-                            DateTimeZone.forID(person.getTimeZone().getID()),
-                            person.getMeasurementType(),
-                            reportSchedule.getIncludeInactiveDrivers(),
-                            reportSchedule.getIncludeZeroMilesDrivers()));
-                    break;
                 case SEATBELT_CLICKS_REPORT:
                     reportCriteriaList.add(getSeatbeltClicksReportCriteria(groupHierarchy,
                                                                            reportSchedule.getGroupID(),
