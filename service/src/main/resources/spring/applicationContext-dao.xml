@@ -60,9 +60,6 @@
 	<bean id="abstractReportDAO" class="com.inthinc.pro.dao.hessian.report.AbstractReportHessianDAO" abstract="true">
 		<property name="reportService" ref="reportServiceBean" />
 	</bean>
-    <bean id="rawScoreDAO" class="com.inthinc.pro.dao.hessian.RawScoreHessianDAO">
-        <property name="reportService" ref="reportServiceBean"/>
-    </bean>
     <bean id="adminVehicleJDBCDAO" class="com.inthinc.pro.dao.jdbc.AdminVehicleJDBCDAO" parent="genericJDBCDAO"></bean>
     <bean id="eventStatisticsDAO" class="com.inthinc.pro.dao.jdbc.EventStatisticsJDBCDAO" parent="genericJDBCDAO"></bean>
 
