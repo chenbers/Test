@@ -12,7 +12,6 @@ import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.core.Response.Status;
 
 import com.inthinc.pro.dao.EventStatisticsDAO;
-import com.inthinc.pro.dao.RawScoreDAO;
 import com.inthinc.pro.dao.ScoreDAO;
 import com.inthinc.pro.dao.jdbc.AdminVehicleJDBCDAO;
 import com.inthinc.pro.dao.report.DriverReportDAO;
