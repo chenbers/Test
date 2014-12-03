@@ -4,7 +4,7 @@
     <groupId>com.inthinc.pro</groupId>
     <artifactId>root</artifactId>
     <packaging>pom</packaging>
-    <version>2.0.63-SNAPSHOT</version>
+    <version>2.0.63</version>
     <name>TIWI Pro Application</name>
     <url>http://www.iwiglobal.com</url>
     <organization>
@@ -296,27 +296,27 @@ mi2KFq<Nc4zYl8ZVexWN8GNR2KNYvC5rn293xhqnaa8hMH QROnTXrOnpnpNqQpRomwtNpNmPMPpMnrp
             <dependency>
                 <groupId>com.inthinc.pro.automation</groupId>
                 <artifactId>automation</artifactId>
-                <version>2.0.63-SNAPSHOT</version>
+                <version>2.0.63</version>
             </dependency>
             <dependency>
                 <groupId>com.inthinc.pro.emulation</groupId>
                 <artifactId>emulation</artifactId>
-                <version>2.0.63-SNAPSHOT</version>
+                <version>2.0.63</version>
             </dependency>
             <dependency>
                 <groupId>com.inthinc.pro.reports</groupId>
                 <artifactId>reports</artifactId>
-                <version>2.0.63-SNAPSHOT</version>
+                <version>2.0.63</version>
             </dependency>
             <dependency>
                 <groupId>com.inthinc.pro.aggregation</groupId>
                 <artifactId>aggregation</artifactId>
-                <version>2.0.63-SNAPSHOT</version>
+                <version>2.0.63</version>
             </dependency>
             <dependency>
                 <groupId>com.inthinc.pro.dao</groupId>
                 <artifactId>dao</artifactId>
-                <version>2.0.63-SNAPSHOT</version>
+                <version>2.0.63</version>
             </dependency>
             <dependency>
                 <groupId>org.richfaces.framework</groupId>
@@ -610,7 +610,7 @@ mi2KFq<Nc4zYl8ZVexWN8GNR2KNYvC5rn293xhqnaa8hMH QROnTXrOnpnpNqQpRomwtNpNmPMPpMnrp
 	    <dependency>
 		<groupId>com.inthinc.pro.noteparser</groupId>
 		<artifactId>noteparser</artifactId>
-                <version>${noteparser.version}</version>
+                <version>5.0.1-SNAPSHOT</version>
 	    </dependency>
             <!-- Jackson -->
             <dependency>
