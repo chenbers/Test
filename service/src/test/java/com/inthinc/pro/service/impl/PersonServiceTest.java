@@ -2,7 +2,6 @@ package com.inthinc.pro.service.impl;
 
 import com.inthinc.pro.dao.EventStatisticsDAO;
 import com.inthinc.pro.dao.PersonDAO;
-import com.inthinc.pro.dao.RawScoreDAO;
 import com.inthinc.pro.dao.jdbc.AdminVehicleJDBCDAO;
 import com.inthinc.pro.dao.report.DriverReportDAO;
 import com.inthinc.pro.model.*;
