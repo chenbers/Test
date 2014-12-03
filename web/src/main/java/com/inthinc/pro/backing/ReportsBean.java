@@ -304,12 +304,6 @@ public abstract class ReportsBean extends BaseBean {
                         getUser().getPerson().getMeasurementType(), params.isIncludeInactiveDrivers(), 
                         params.isIncludeZeroMilesDrivers()));
                 break;
-            case FIRST_MOVE_FORWARD_REPORT:
-                reportCriteriaList.add(getReportCriteriaService().getFirstMoveForwardCriteria(params.getDateRange().getInterval(),getAccountGroupHierarchy(),
-                        params.getGroupID(),params.getTimeFrameSelect().getTimeFrame(), getLocale(), getDateTimeZone(),
-                        getUser().getPerson().getMeasurementType(), params.isIncludeInactiveDrivers(),
-                        params.isIncludeZeroMilesDrivers()));
-                break;
             case VEHICLE_MAINTENANCE_EVENTS_REPORT:
                 reportCriteriaList.add(getReportCriteriaService().getMaintenanceEventsReportCriteria(getAccountGroupHierarchy(),
                         params.getGroupIDList(),params.getDateRange().getInterval(), getLocale(), getDateTimeZone(),

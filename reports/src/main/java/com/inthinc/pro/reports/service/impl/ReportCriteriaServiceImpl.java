@@ -1611,19 +1611,6 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
         return builder.build();
     }
 
-    @Override
-    public ReportCriteria getFirstMoveForwardCriteria(Interval interval, GroupHierarchy accountGroupHierarchy, Integer groupID, TimeFrame timeFrame, Locale locale, DateTimeZone timeZone, MeasurementType measurementType) {
-        return getFirstMoveForwardCriteria(interval, accountGroupHierarchy, groupID, timeFrame, locale, timeZone, measurementType, ReportCriteria.DEFAULT_EXCLUDE_INACTIVE_DRIVERS, ReportCriteria.DEFAULT_EXCLUDE_ZERO_MILES_DRIVERS);
-
-    }
-    @Override
-    public ReportCriteria getFirstMoveForwardCriteria(Interval interval, GroupHierarchy accountGroupHierarchy, Integer groupID, TimeFrame timeFrame, Locale locale, DateTimeZone timeZone, MeasurementType measurementType, boolean includeInactiveDrivers, boolean includeZeroMilesDrivers) {
-        FirstMoveForwardReportCriteria.Builder builder = new FirstMoveForwardReportCriteria.Builder(interval, accountGroupHierarchy, groupReportDAO, groupID, timeFrame, measurementType, includeInactiveDrivers, includeZeroMilesDrivers);
-        builder.setLocale(locale);
-        builder.setDateTimeZone(timeZone);
-        return builder.build();
-    }
-
 
     @Override
     public ReportCriteria getMaintenanceEventsReportCriteria(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, Interval interval, Locale locale, DateTimeZone timeZone, MeasurementType measurementType) {
