@@ -93,7 +93,6 @@ import com.inthinc.pro.reports.model.CategorySeriesData;
 import com.inthinc.pro.reports.model.PieScoreData;
 import com.inthinc.pro.reports.model.PieScoreRange;
 import com.inthinc.pro.reports.performance.BackingReportCriteria;
-import com.inthinc.pro.reports.performance.FirstMoveForwardReportCriteria;
 import com.inthinc.pro.reports.performance.DriverCoachingReportCriteria;
 import com.inthinc.pro.reports.performance.DriverCoachingScoreReportCriteria;
 import com.inthinc.pro.reports.performance.DriverExcludedViolationsCriteria;

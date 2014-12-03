@@ -156,8 +156,6 @@ public class Score {
 	    speedEventsOver80Mph = 0;
 	    backingTime = 0;
 	    backingEvents = 0;
-        firstMoveForwardTime = 0;
-        firstMoveForwardEvents = 0;
     }
     
     
