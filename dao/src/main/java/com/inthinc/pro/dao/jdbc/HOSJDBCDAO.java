@@ -53,7 +53,7 @@ public class HOSJDBCDAO extends NamedParameterJdbcDaoSupport implements HOSDAO {
             "h.truckGallons, h.trailerGallons, coalesce(h.tripReportFlag, 0) AS tripReportFlag, coalesce(h.tripInspectionFlag, 0) tripInspectionFlag, " + 
             "coalesce(v.name, '') AS vehicleName, cl.logTime AS originalLogTime, coalesce(v.license, '') as vehicleLicense, p.empid, h.editUserID, " +
             "IF((SELECT count(*) FROM hosvehiclelogin WHERE vehicleID = h.vehicleID AND driverID != h.driverID AND h.logTime BETWEEN loginTime AND coalesce(logoutTime, now())) > 0, 0, 1) 'singleDriver', " +
-            "cl.status as originalStatus, h.mobileUnitId, h.inspectionType, h.reason, h.approvedBy " +
+            "cl.status as originalStatus, h.mobileUnitId, h.inspectionType, h.reason, h.approvedBy, h.editor, h.timeStamp " +
             "FROM hoslog h LEFT JOIN vehicle v ON (h.vehicleID = v.vehicleID) LEFT JOIN hoslog_changelog cl ON  (h.hosLogID = cl.hosLogID), person p, driver d, timezone tz " +
             "WHERE h.tzID = tz.tzID AND d.driverID = h.driverID AND p.personID = d.personID ";
 
@@ -64,7 +64,7 @@ public class HOSJDBCDAO extends NamedParameterJdbcDaoSupport implements HOSDAO {
             "h.truckGallons, h.trailerGallons, coalesce(h.tripReportFlag, 0) AS tripReportFlag, coalesce(h.tripInspectionFlag, 0) tripInspectionFlag, " + 
             "coalesce(v.name, '') AS vehicleName, '' AS originalLogTime, coalesce(v.license, '') as vehicleLicense, p.empid, h.editUserID, " +
             "1 as 'singleDriver', " +
-            "-1 as originalStatus, h.mobileUnitId, h.inspectionType, h.reason, h.approvedBy " +
+            "-1 as originalStatus, h.mobileUnitId, h.inspectionType, h.reason, h.approvedBy, h.editor, h.timeStamp " +
             "FROM hoslog h LEFT JOIN vehicle v ON (h.vehicleID = v.vehicleID), person p, driver d, timezone tz " +
             "WHERE h.tzID = tz.tzID AND d.driverID = h.driverID AND p.personID = d.personID ";
 
@@ -865,6 +865,8 @@ public class HOSJDBCDAO extends NamedParameterJdbcDaoSupport implements HOSDAO {
             hosRecord.setInspectionType(InspectionType.valueOf(resultSet.getInt("inspectionType")));
             hosRecord.setReason(resultSet.getString("reason"));
             hosRecord.setApprovedBy(resultSet.getString("approvedBy"));
+            hosRecord.setEditor(resultSet.getObject("editor") == null ? null : resultSet.getInt("editor"));
+            hosRecord.setTimeStamp(resultSet.getTimestamp("timeStamp"));
             return hosRecord;
         }
 
