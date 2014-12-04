@@ -61,6 +61,10 @@ public class HOSRecord extends BaseEntity implements Comparable<HOSRecord>{
     private String mobileUnitID;
     private InspectionType inspectionType;
     private Integer tzID;
+    private String reason;
+    private String approvedBy;
+    private Date timeStamp;
+    private Integer editor;
     
     public HOSRecord()
     {
@@ -406,6 +410,22 @@ public class HOSRecord extends BaseEntity implements Comparable<HOSRecord>{
     public void setTzID(Integer tzID) {
         this.tzID = tzID;
     }
+
+    public String getReason() { return reason; }
+
+    public void setReason(String reason) { this.reason = reason; }
+
+    public String getApprovedBy() { return approvedBy; }
+
+    public void setApprovedBy(String approvedBy) { this.approvedBy = approvedBy; }
+
+    public Date getTimeStamp() { return timeStamp; }
+
+    public void setTimeStamp(Date timeStamp) { this.timeStamp = timeStamp; }
+
+    public Integer getEditor() { return editor; }
+
+    public void setEditor(Integer editor) { this.editor = editor; }
 
     public void dump () {
         System.out.println("new HOSRecord(" +
