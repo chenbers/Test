@@ -26,6 +26,7 @@ import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.dao.EventDAO;
 import com.inthinc.pro.dao.LocationDAO;
 import com.inthinc.pro.dao.VehicleDAO;
+import com.inthinc.pro.dao.hessian.DeviceHessianDAO;
 import com.inthinc.pro.dao.hessian.DriverHessianDAO;
 import com.inthinc.pro.dao.hessian.VehicleHessianDAO;
 import com.inthinc.pro.dao.hessian.mapper.Mapper;
@@ -62,6 +63,41 @@ public class LocationCassandraDAO extends GenericCassandraDAO implements Locatio
     @SuppressWarnings("unused")
     private static final Logger logger = Logger.getLogger(LocationCassandraDAO.class);
 
+    public static void main(String[] args) {
+//      SiloService siloService = new SiloServiceCreator("localhost", 8092).getService();
+      SiloService siloService = new SiloServiceCreator("weatherford-dbnode0.tiwii.com", 8099).getService();
+      VehicleHessianDAO vehicleDAO = new VehicleHessianDAO();
+      vehicleDAO.setSiloService(siloService);
+      DriverHessianDAO driverDAO = new DriverHessianDAO();
+      driverDAO.setSiloService(siloService);
+      DeviceHessianDAO deviceDAO = new DeviceHessianDAO();
+      deviceDAO.setSiloService(siloService);
+//      CassandraDB cassandraDB = new CassandraDB(true, "Inthinc Production", "note_prod", "cache_prod","schlumberger-node-b-1.tiwipro.com:9160", 1, false, false);
+ 
+     CassandraDB cassandraDB = new CassandraDB(true, "Inthinc Production", "note_prod", "cache_prod","schlumberger-node-b-1.tiwipro.com:9160", 1, false, false);
+               
+      LocationCassandraDAO dao = new LocationCassandraDAO();
+      dao.setCassandraDB(cassandraDB);
+      dao.setVehicleDAO(vehicleDAO);
+      dao.setDriverDAO(driverDAO);
+      dao.setDeviceDAO(deviceDAO);
+      
+      //      dao.eventDAO = new EventCassandraDAO();
+      //Interval interval = new Interval(1399226693000L, new Date().getTime());
+      //List<DriverStops> stops = dao.getStops(36315, "Nick Ison", interval);
+     
+//      Vehicle vehicle = vehicleDAO.findByID(59061);
+   
+      List<Trip> trips = dao.getTripsForVehicle(184551428, new Date(1416347634000L), new Date(1508660678000L)); 
+//      LastLocation ll = dao.getLastLocationForDriver(272);
+//      System.out.println("LL: " + ll);
+//      dao.logTrips(trips);
+      for(Trip dTrip : trips)
+      {
+          System.out.println("Trip: " + dTrip);
+      }
+      dao.shutdown();
+  }
 
     public LocationCassandraDAO() {
         mapper = new SimpleMapper();
@@ -405,7 +441,7 @@ public class LocationCassandraDAO extends GenericCassandraDAO implements Locatio
         List<Long> rowKeysList = fetchTripsForAssetFromIndex(assetId, startTime, endTime, isDriver);
         List<Trip> tripList = fetchTrips(rowKeysList, assetId, isDriver, includeRoute);
         Trip currentTrip = fetchCurrentTripForAsset(assetId, isDriver);
-        if (currentTrip != null && DateUtil.convertDateToSeconds(currentTrip.getStartTime()) <= endTime)
+       if (currentTrip != null && DateUtil.convertDateToSeconds(currentTrip.getStartTime()) <= endTime)
             tripList.add(0, currentTrip);
 
         return tripList;
@@ -528,6 +564,12 @@ public class LocationCassandraDAO extends GenericCassandraDAO implements Locatio
             trip = getTripStart(vehicle.getVehicleID());
             if (trip != null) {
                 LastLocation lastLocation = getLastLocationForVehicle(vehicle.getVehicleID());
+                if (lastLocation == null) {
+                	LatLng latLng = new LatLng(trip.getStartLat(), trip.getStartLng());
+                	lastLocation = new LastLocation();
+                	lastLocation.setLoc(latLng);
+                	lastLocation.setOdometer(trip.getMileage());
+                }
                 if (isDriver)
                     trip.setDriverID(id);
                 else
@@ -540,7 +582,7 @@ public class LocationCassandraDAO extends GenericCassandraDAO implements Locatio
                 if (device.isWaySmart()){
                     int startOdometer = trip.getMileage();
                     int endOdometer = lastLocation.getOdometer();
-                    trip.setMileage(endOdometer-startOdometer);
+                    trip.setMileage((endOdometer-startOdometer) > 0 ? (endOdometer-startOdometer) : 0);
                 }
                 else  {
                     int mileage = sumMiles(vehicle.getVehicleID(), trip.getStartTime(), new Date());
