@@ -633,6 +633,7 @@
     <property name="timeFrameBean" ref="timeFrameBean" />
     <property name="vehicleDAO" ref="vehicleDAO"></property>
     <property name="deviceDAO" ref="deviceDAO"></property>
+    <property name="locationDAO" ref="locationDAO"></property>
   </bean>
 
   <bean id="maintenanceEventPaginationTableDataProvider" class="com.inthinc.pro.table.model.provider.MaintenanceEventPaginationTableDataProvider" scope="request">
@@ -640,6 +641,7 @@
       <property name="timeFrameBean" ref="timeFrameBean" />
       <property name="vehicleDAO" ref="vehicleDAO"></property>
       <property name="deviceDAO" ref="deviceDAO"></property>
+      <property name="locationDAO" ref="locationDAO"></property>
   </bean>
 
   <bean id="pagingRedFlagsBean" class="com.inthinc.pro.backing.paging.PagingRedFlagsBean" scope="request" init-method="init" parent="basePagingNotificationsBean">

@@ -6,19 +6,13 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.inthinc.pro.dao.*;
+import com.inthinc.pro.model.*;
 import org.ajax4jsf.model.KeepAlive;
 import org.apache.log4j.Logger;
 
-import com.inthinc.pro.dao.DeviceDAO;
-import com.inthinc.pro.dao.DriverDAO;
-import com.inthinc.pro.dao.GroupDAO;
-import com.inthinc.pro.dao.VehicleDAO;
 import com.inthinc.pro.map.MapIcon;
 import com.inthinc.pro.map.MapIconFactory;
-import com.inthinc.pro.model.DriverLocation;
-import com.inthinc.pro.model.Group;
-import com.inthinc.pro.model.GroupHierarchy;
-import com.inthinc.pro.model.LatLng;
 import com.inthinc.pro.util.CircularIterator;
 import com.inthinc.pro.util.MiscUtil;
 

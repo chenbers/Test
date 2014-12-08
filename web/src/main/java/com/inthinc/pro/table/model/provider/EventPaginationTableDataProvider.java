@@ -2,16 +2,12 @@ package com.inthinc.pro.table.model.provider;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
-import com.inthinc.pro.dao.DeviceDAO;
-import com.inthinc.pro.dao.DriverDAO;
-import com.inthinc.pro.dao.VehicleDAO;
-import com.inthinc.pro.model.Device;
-import com.inthinc.pro.model.Driver;
-import com.inthinc.pro.model.Vehicle;
+import com.inthinc.pro.dao.*;
+import com.inthinc.pro.model.*;
 import org.apache.log4j.Logger;
 
-import com.inthinc.pro.dao.EventDAO;
 import com.inthinc.pro.model.event.Event;
 import com.inthinc.pro.model.event.EventCategory;
 import com.inthinc.pro.model.pagination.PageParams;
@@ -30,6 +26,7 @@ public class EventPaginationTableDataProvider  extends BaseNotificationPaginatio
 	private EventCategory			eventCategory;
     private VehicleDAO              vehicleDAO;
     private DeviceDAO               deviceDAO;
+	private LocationDAO 			locationDAO;
 
 	public EventPaginationTableDataProvider() {
 
@@ -48,9 +45,28 @@ public class EventPaginationTableDataProvider  extends BaseNotificationPaginatio
 
 		PageParams pageParams = new PageParams(firstRow, endRow, getSort(), getFilters());
         List<Event> eventList = eventDAO.getEventPage(groupID, startDate, endDate, EventDAO.INCLUDE_FORGIVEN, eventCategory.getNoteTypesInCategory(), pageParams);
+		eventList = replaceZeroLocationsWithLastLocations(eventList);
 
         populateDeviceNames(eventList);
         return eventList;
+	}
+
+	private List<Event> replaceZeroLocationsWithLastLocations(List<Event> eventList) {
+		List<Event> newEventList = new ArrayList<Event>();
+		for (Event event : eventList) {
+			if (event != null && event.getLatitude() == 0 && event.getLongitude() == 0) {
+				LastLocation lastLocation = locationDAO.getLastLocationForDriver(event.getDriverID());
+				if (lastLocation == null)
+					lastLocation = locationDAO.getLastLocationForVehicle(event.getVehicleID());
+				if (lastLocation != null && lastLocation.getLoc() != null) {
+					LatLng loc = lastLocation.getLoc();
+					event.setLatitude(loc.getLatitude());
+					event.setLongitude(loc.getLongitude());
+				}
+			}
+			newEventList.add(event);
+		}
+		return newEventList;
 	}
 
 	@Override
@@ -128,4 +144,11 @@ public class EventPaginationTableDataProvider  extends BaseNotificationPaginatio
 		this.eventCategory = eventCategory;
 	}
 
+	public LocationDAO getLocationDAO() {
+		return locationDAO;
+	}
+
+	public void setLocationDAO(LocationDAO locationDAO) {
+		this.locationDAO = locationDAO;
+	}
 }
