@@ -25,6 +25,8 @@ public enum HOSDriverLogsEditEnum implements SeleniumEnums {
     LOCATION("Location:", "edit-form:editHosLog_location"),
     CITY_STATE("City, State/Province", "//div[@class='add_section_title']/../table/tbody/tr[9]/td[2]/span"),
     DOT("DOT:", "edit-form:editHosLog_dot"),
+    REASON("Reason:", "edit-form:editHosLog_reason"),
+    APPROVED_BY("ApprovedBy:", "edit-form:editHosLog_approvedBy"),
     
     
     ;

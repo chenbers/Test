@@ -98,7 +98,7 @@ public class HOSJDBCDAOTest extends BaseJDBCTest{
         Date hosRecordDate = new Date();
         HOSRecord hosRecord = createMinimalHosRecord(hosDAO, testDriver, hosRecordDate, null, 34.0f,45.0f); 
         HOSRecord foundHosRecord = hosDAO.findByID(hosRecord.getHosLogID());
-        
+
         HOSRecord expectedHosRecord = constructExpectedHosRecord(hosRecord, testDriver, null);
 
         // TODO: fix these, they should not be ignored
@@ -107,6 +107,54 @@ public class HOSJDBCDAOTest extends BaseJDBCTest{
         
     }
 
+    @Test
+    public void crudTestReasonAndApprovedByInsert() {
+
+        GroupData testGroupData = itData.teamGroupData.get(ITData.GOOD);
+        Driver testDriver = fetchDriver(testGroupData.driver.getDriverID());
+        Date hosRecordDate = new Date();
+        HOSRecord hosRecord = createEditedApprovedByRecord(hosDAO, testDriver, hosRecordDate, null, HOSStatus.OFF_DUTY, 34.0f, 45.0f);
+        HOSRecord foundHosRecord = hosDAO.findByID(hosRecord.getHosLogID());
+
+        HOSRecord expectedHosRecord = constructExpectedEditedCreateByHosRecord(hosRecord, testDriver, null);
+
+        String ignoreFields[] = { "originalLogTime", "vehicleIsDOT" };
+        Util.compareObjects(expectedHosRecord, foundHosRecord, ignoreFields);
+
+    }
+
+    @Test
+    public void crudTestReasonAndApprovedByUpdate() {
+        GroupData testGroupData = itData.teamGroupData.get(ITData.GOOD);
+        Driver testDriver = fetchDriver(testGroupData.driver.getDriverID());
+        Date hosRecordDate = new Date();
+        HOSRecord hosRecord = createEditedApprovedByRecord(hosDAO, testDriver, hosRecordDate, null,HOSStatus.OFF_DUTY, 34.0f,45.0f);
+        HOSRecord foundHosRecord = hosDAO.findByID(hosRecord.getHosLogID());
+        HOSRecord expectedHosRecord = constructExpectedEditedCreateByHosRecord(hosRecord, testDriver, null);
+
+        String ignoreFields[] = { "originalLogTime", "vehicleIsDOT" };
+        Util.compareObjects(expectedHosRecord, foundHosRecord, ignoreFields);
+
+        // edit
+        Date newTimestamp = new Date();
+        GroupData testGroupDataEdit = itData.teamGroupData.get(ITData.INTERMEDIATE);
+        Driver testDriverEdit = fetchDriver(testGroupDataEdit.driver.getDriverID());
+
+        expectedHosRecord.setEditor(testDriverEdit.getPerson().getUserID());
+        expectedHosRecord.setTimeStamp(newTimestamp);
+        expectedHosRecord.setReason("testREason1");
+        expectedHosRecord.setApprovedBy("testAppBy1");
+
+        hosRecord.setEditor(testDriverEdit.getPerson().getUserID());
+        hosRecord.setTimeStamp(newTimestamp);
+        hosRecord.setReason("testREason1");
+        hosRecord.setApprovedBy("testAppBy1");
+        Long id = hosDAO.create(0l, hosRecord);
+        expectedHosRecord.setHosLogID(id);
+        HOSRecord foundHosRecord2 = hosDAO.findByID(id);
+
+        Util.compareObjects(expectedHosRecord, foundHosRecord2, ignoreFields);
+    }
 
     @Test
     public void crudCreateFromNoteFindWithVehicleTest() {
@@ -443,6 +491,30 @@ public class HOSJDBCDAOTest extends BaseJDBCTest{
         assertTrue("returned day day is within interval", queryInterval.contains(rec.getLogTime().getTime()) || queryInterval.contains(rec.getEndTime().getTime()));
         
     }
+
+    private HOSRecord createEditedApprovedByRecord(HOSDAO hosDAO, Driver driver, Date hosRecordDate, Integer vehicleID, HOSStatus status,Float truckGallons, Float trailerGallons) {
+        HOSRecord hosRecord = new HOSRecord();
+        hosRecord.setDriverDotType(driver.getDot());
+        hosRecord.setDriverID(driver.getDriverID());
+        hosRecord.setLocation(INITIAL_LOCATION);
+        hosRecord.setLogTime(hosRecordDate);
+        hosRecord.setStatus(status);
+        hosRecord.setTimeZone(driver.getPerson().getTimeZone());
+        hosRecord.setEditUserID(itData.fleetUser.getUserID());
+        hosRecord.setVehicleID(vehicleID);
+        hosRecord.setTruckGallons(truckGallons);
+        hosRecord.setTrailerGallons(trailerGallons);
+        hosRecord.setInspectionType(InspectionType.NONE);
+        hosRecord.setReason("testReason");
+        hosRecord.setApprovedBy("testApprovedBy");
+        hosRecord.setTimeStamp(new Date());
+        hosRecord.setEditor(driver.getPerson().getUserID());
+
+        Long hosLogID = hosDAO.create(0l, hosRecord);
+        System.out.println("hosLogID: " + hosLogID + " " + hosRecordDate);
+        hosRecord.setHosLogID(hosLogID);
+        return hosRecord;
+    }
     
     private HOSRecord createMinimalHosRecord(HOSDAO hosDAO, Driver driver, Date hosRecordDate, Integer vehicleID, Float truckGallons, Float trailerGallons) {
         return createMinimalHosRecord(hosDAO, driver, hosRecordDate, vehicleID, HOSStatus.OFF_DUTY, truckGallons,trailerGallons);
@@ -505,6 +577,15 @@ public class HOSJDBCDAOTest extends BaseJDBCTest{
         expectedHosRecord.setMobileUnitID(hosRecord.getMobileUnitID());
         expectedHosRecord.setInspectionType(InspectionType.NONE);
         return expectedHosRecord;
+    }
+
+    private HOSRecord constructExpectedEditedCreateByHosRecord(HOSRecord hosRecord, Driver driver, Vehicle vehicle){
+        HOSRecord hosRecordEAP = constructExpectedHosRecord(hosRecord, driver, vehicle);
+        hosRecordEAP.setReason("testReason");
+        hosRecordEAP.setApprovedBy("testApprovedBy");
+        hosRecordEAP.setTimeStamp(new Date());
+        hosRecordEAP.setEditor(driver.getPerson().getUserID());
+        return hosRecordEAP;
     }
 
     private Driver fetchDriver(Integer driverID) {

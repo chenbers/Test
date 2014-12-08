@@ -542,6 +542,9 @@ public class HosBean extends BaseBean {
     {
         boolean driverChange = false;
         List<HosLogView> selected = getSelectedItems();
+        Date timeStamp = new Date();
+        item.setTimeStamp(timeStamp);
+        item.setEditor(getUser().getUserID());
         if ((selected.size() == 0) && isAdd())
             selected.add(item);
 
@@ -558,7 +561,8 @@ public class HosBean extends BaseBean {
 
             if (updateField.get("driverID"))
                 driverChange = true;
-
+            ignoreFields.remove("timeStamp");
+            ignoreFields.remove("editor");
             //we need to validate the item before we copy the properties. 
             if(!validateSaveItem(item))
             {
@@ -585,6 +589,7 @@ public class HosBean extends BaseBean {
         if (!validate(selected)) {
             return null;
         }
+
 
         final boolean add = isAdd();
         try

@@ -53,7 +53,7 @@ public class HOSJDBCDAO extends NamedParameterJdbcDaoSupport implements HOSDAO {
             "h.truckGallons, h.trailerGallons, coalesce(h.tripReportFlag, 0) AS tripReportFlag, coalesce(h.tripInspectionFlag, 0) tripInspectionFlag, " + 
             "coalesce(v.name, '') AS vehicleName, cl.logTime AS originalLogTime, coalesce(v.license, '') as vehicleLicense, p.empid, h.editUserID, " +
             "IF((SELECT count(*) FROM hosvehiclelogin WHERE vehicleID = h.vehicleID AND driverID != h.driverID AND h.logTime BETWEEN loginTime AND coalesce(logoutTime, now())) > 0, 0, 1) 'singleDriver', " +
-            "cl.status as originalStatus, h.mobileUnitId, h.inspectionType " +
+            "cl.status as originalStatus, h.mobileUnitId, h.inspectionType, h.reason, h.approvedBy, h.editor, h.timeStamp " +
             "FROM hoslog h LEFT JOIN vehicle v ON (h.vehicleID = v.vehicleID) LEFT JOIN hoslog_changelog cl ON  (h.hosLogID = cl.hosLogID), person p, driver d, timezone tz " +
             "WHERE h.tzID = tz.tzID AND d.driverID = h.driverID AND p.personID = d.personID ";
 
@@ -64,7 +64,7 @@ public class HOSJDBCDAO extends NamedParameterJdbcDaoSupport implements HOSDAO {
             "h.truckGallons, h.trailerGallons, coalesce(h.tripReportFlag, 0) AS tripReportFlag, coalesce(h.tripInspectionFlag, 0) tripInspectionFlag, " + 
             "coalesce(v.name, '') AS vehicleName, '' AS originalLogTime, coalesce(v.license, '') as vehicleLicense, p.empid, h.editUserID, " +
             "1 as 'singleDriver', " +
-            "-1 as originalStatus, h.mobileUnitId, h.inspectionType " +
+            "-1 as originalStatus, h.mobileUnitId, h.inspectionType, h.reason, h.approvedBy, h.editor, h.timeStamp " +
             "FROM hoslog h LEFT JOIN vehicle v ON (h.vehicleID = v.vehicleID), person p, driver d, timezone tz " +
             "WHERE h.tzID = tz.tzID AND d.driverID = h.driverID AND p.personID = d.personID ";
 
@@ -90,7 +90,8 @@ public class HOSJDBCDAO extends NamedParameterJdbcDaoSupport implements HOSDAO {
             "SET driverID=:driverID, vehicleID=:vehicleID, logTime=:logTime,tzID =:tzID, status=:status, driverDOTType=:driverDOTType, "+
             "employeeId=coalesce(:employeeId, ''), vehicleIsDOTFlag=:vehicleIsDOTFlag, trailerID=coalesce(:trailerID, ''),serviceID=coalesce(:serviceID, ''), "+
             "location=coalesce(:location, ''), vehicleLicense = coalesce(:vehicleLicense, ''), editedFlag=:editedFlag, editCount=:editCount,editUserID=:editUserID, " +
-            "truckGallons=:truckGallons, trailerGallons=:trailerGallons, editUserName=:editUserName, timeLastUpdated=UTC_TIMESTAMP(), mobileUnitId=:mobileUnitId "+
+            "truckGallons=:truckGallons, trailerGallons=:trailerGallons, editUserName=:editUserName, timeLastUpdated=UTC_TIMESTAMP(), mobileUnitId=:mobileUnitId, "+
+            "reason=:reason, approvedBy=:approvedBy, timeStamp=:timeStamp, editor=:editor "+
             "WHERE hosLogID = :id";
 
     @Override
@@ -817,6 +818,10 @@ public class HOSJDBCDAO extends NamedParameterJdbcDaoSupport implements HOSDAO {
         params.put("timeLastUpdated", getDateString(currentTime));
         params.put("mobileUnitId", hosRecord.getMobileUnitID());
         params.put("inspectionType", hosRecord.getInspectionType() == null ? InspectionType.NONE.getCode() : hosRecord.getInspectionType().getCode());
+        params.put("reason",hosRecord.getReason());
+        params.put("approvedBy", hosRecord.getApprovedBy());
+        params.put("editor", hosRecord.getEditor());
+        params.put("timeStamp", hosRecord.getTimeStamp());
         return params;
     }
 
@@ -858,6 +863,10 @@ public class HOSJDBCDAO extends NamedParameterJdbcDaoSupport implements HOSDAO {
             hosRecord.setOriginalStatus(resultSet.getObject("originalStatus") == null ? null : HOSStatus.valueOf(resultSet.getInt("originalStatus")));
             hosRecord.setMobileUnitID(resultSet.getString("mobileUnitID"));
             hosRecord.setInspectionType(InspectionType.valueOf(resultSet.getInt("inspectionType")));
+            hosRecord.setReason(resultSet.getString("reason"));
+            hosRecord.setApprovedBy(resultSet.getString("approvedBy"));
+            hosRecord.setEditor(resultSet.getObject("editor") == null ? null : resultSet.getInt("editor"));
+            hosRecord.setTimeStamp(resultSet.getTimestamp("timeStamp"));
             return hosRecord;
         }
 
@@ -992,12 +1001,12 @@ public class HOSJDBCDAO extends NamedParameterJdbcDaoSupport implements HOSDAO {
 
     private final static String INSERT_SQL = "INSERT INTO hoslog ("+
             "driverID,vehicleID,noteID,logTime,tzID,status,driverDOTType,employeeId,editUserID,editUserName,editCount,editedFlag,"+
-            "vehicleIsDOTFlag,vehicleLicense,vehicleOdometer,origin,latitude,longitude,location,userEnteredLocationFlag,state,truckGallons,trailerGallons,serviceID,trailerID,tripReportFlag,tripInspectionFlag,timeAdded,timeLastUpdated,mobileUnitId,inspectionType"+
+            "vehicleIsDOTFlag,vehicleLicense,vehicleOdometer,origin,latitude,longitude,location,userEnteredLocationFlag,state,truckGallons,trailerGallons,serviceID,trailerID,tripReportFlag,tripInspectionFlag,timeAdded,timeLastUpdated,mobileUnitId,inspectionType,reason,approvedBy,editor,timeStamp"+
             ") VALUES ("+
             ":driverID,:vehicleID,:noteID,:logTime,:tzID,:status,:driverDOTType,:employeeId," +
             ":editUserID,:editUserName,:editCount,:editedFlag," +
             ":vehicleIsDOTFlag,:vehicleLicense,:vehicleOdometer,:origin,:latitude,:longitude,:location,:userEnteredLocationFlag,:state,:truckGallons,:trailerGallons,:serviceID,:trailerID,:tripReportFlag,:tripInspectionFlag," +
-            ":timeAdded,:timeLastUpdated,:mobileUnitId,:inspectionType"+
+            ":timeAdded,:timeLastUpdated,:mobileUnitId,:inspectionType,:reason,:approvedBy,:editor,:timeStamp"+
             ")";
 
     private Long create(HOSRecord hosRecord) {
