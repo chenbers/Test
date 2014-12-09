@@ -465,6 +465,10 @@ public class Event extends BaseEntity implements Comparable<Event>, Serializable
         this.deviceName = deviceName;
     }
 
+    public Boolean getCorrectLocation(){
+        return (latitude != null && !latitude.equals(0.0)) || (longitude != null && !longitude.equals(0.0));
+    }
+
     @XmlElement
     public String getStartTime() {
         String startTime="";
