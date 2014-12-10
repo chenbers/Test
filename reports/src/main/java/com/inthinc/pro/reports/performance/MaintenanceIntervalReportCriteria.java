@@ -187,70 +187,53 @@ public class MaintenanceIntervalReportCriteria extends ReportCriteria {
             }
 
             for (Vehicle vehicle: allVehicles){
-
                 VehicleSetting vehicleSetting = configuratorJDBCDAO.getVehicleSettings(vehicle.getVehicleID());
                 Integer groupId = vehicle.getGroupID();
                 Group group = groupDAO.findByID(groupId);
                 String groupName = group.getName();
-                //String vehicleID = vehicle.getVehicleID().toString();
                 String vehicleYMM = vehicle.getYear() + " " + vehicle.getMake() + " " + vehicle.getModel();
+                Long milesDriven = driveTimeDAO.getDriveOdometerSum(vehicle) / 100;
+
+                // distance over
                 Integer maintByDistanceStart = stringToInt(vehicleSetting.getActual().get(MaintenanceSettings.MAINT_BY_DIST_START.getCode()));
                 Integer maintByDistanceInterval = stringToInt(vehicleSetting.getActual().get(MaintenanceSettings.MAINT_BY_DIST_INTERVAL.getCode()));
-                Long milesDriven = driveTimeDAO.getDriveOdometerSum(vehicle) / 100;
-                Integer milesDrivenInteger = milesDriven.intValue();
-                
-                Integer distanceOver = calcDistanceOver(maintByDistanceStart, maintByDistanceInterval, vehicle.getOdometer());
-                
+                Integer odometer = vehicle.getOdometer();
+                Integer distanceOver = calcDistanceOver(maintByDistanceStart, maintByDistanceInterval, odometer);
 
-                // Manually setting this to zero for now, as we're not currently
-                // allowing engine hours to start from an arbitrary value
-                Integer baseHours = 0;
-                Integer intervalHours = stringToInt(vehicleSetting.getActual().get(MaintenanceSettings.MAINT_BY_ENGINE_HOURS_INTERVAL.getCode()));
+                // hours over
+                Integer baseHours = 0; // Manually setting this to zero for now, as we're not currently allowing engine hours to start from an arbitrary value
                 Long driveTime = driveTimeDAO.getDriveTimeSum(vehicle) / 3600;
                 Integer hours = driveTime.intValue();
-                Integer hoursOver;
-
-                int hour = 0;
-                if(baseHours != null && intervalHours != null &&  hours != null) {
-                    hour = (hours - baseHours) % intervalHours;
-                }
-
-                if(baseHours == null || intervalHours == null){
-                    hoursOver = null;
-                }else if(hour > (intervalHours / 2)){
-                    int hourInt = hour - intervalHours;
-                    hoursOver = hourInt;
-                }else {
-                    hoursOver = hour;
-                }
+                Integer intervalHours = stringToInt(vehicleSetting.getActual().get(MaintenanceSettings.MAINT_BY_ENGINE_HOURS_INTERVAL.getCode()));
+                Integer hoursOver = calcHoursOver(baseHours, hours, intervalHours);
 
                 int distanceInterval;
                 int hourInterval;
-                if(distanceOver != null || hoursOver != null){
+                if (distanceOver != null || hoursOver != null) {
                     if (distanceOver == null) {
                         hourInterval = hoursOver;
-                        if(Math.abs(hourInterval) < HOUR_MARGIN) {
+                        if (hourInterval < 0 && Math.abs(hourInterval) < HOUR_MARGIN) {
                             BackingWrapper backingWrapper = new BackingWrapper(vehicle.getName(), vehicleYMM, maintByDistanceStart,
-                                        maintByDistanceInterval, vehicle.getOdometer(), distanceOver, baseHours, intervalHours, hours, hoursOver, groupName);
+                                    maintByDistanceInterval, vehicle.getOdometer(), distanceOver, baseHours, intervalHours, hours, hoursOver, groupName);
 
                             backingWrappers.add(backingWrapper);
                         }
-                    }else if (hoursOver == null) {
+                    } else if (hoursOver == null) {
                         distanceInterval = distanceOver;
-                        if(Math.abs(distanceInterval) < DISTANCE_MARGIN) {
-                             BackingWrapper backingWrapper = new BackingWrapper(vehicle.getName(), vehicleYMM, maintByDistanceStart,
-                                        maintByDistanceInterval, vehicle.getOdometer(), distanceOver, baseHours, intervalHours, hours, hoursOver, groupName);
+                        if (distanceInterval < 0 && Math.abs(distanceInterval) < DISTANCE_MARGIN) {
+                            BackingWrapper backingWrapper = new BackingWrapper(vehicle.getName(), vehicleYMM, maintByDistanceStart,
+                                    maintByDistanceInterval, vehicle.getOdometer(), distanceOver, baseHours, intervalHours, hours, hoursOver, groupName);
 
-                             backingWrappers.add(backingWrapper);
+                            backingWrappers.add(backingWrapper);
                         }
-                    }else {
-                        distanceInterval=distanceOver;
-                        hourInterval=hoursOver;
-                        if(Math.abs(distanceInterval) < DISTANCE_MARGIN || Math.abs(hourInterval) < HOUR_MARGIN) {
-                             BackingWrapper backingWrapper = new BackingWrapper(vehicle.getName(), vehicleYMM, maintByDistanceStart,
-                                        maintByDistanceInterval, vehicle.getOdometer(), distanceOver, baseHours, intervalHours, hours, hoursOver, groupName);
+                    } else {
+                        distanceInterval = distanceOver;
+                        hourInterval = hoursOver;
+                        if ((distanceInterval < 0 && Math.abs(distanceInterval) < DISTANCE_MARGIN) || (hourInterval < 0 && Math.abs(hourInterval) < HOUR_MARGIN)) {
+                            BackingWrapper backingWrapper = new BackingWrapper(vehicle.getName(), vehicleYMM, maintByDistanceStart,
+                                    maintByDistanceInterval, vehicle.getOdometer(), distanceOver, baseHours, intervalHours, hours, hoursOver, groupName);
 
-                             backingWrappers.add(backingWrapper);
+                            backingWrappers.add(backingWrapper);
                         }
                     }
                 }
@@ -425,18 +408,37 @@ public class MaintenanceIntervalReportCriteria extends ReportCriteria {
 
     public static Integer calcDistanceOver(Integer startOdometer, Integer intervalOdometer, Integer actualOdometer) {
         Integer distanceOver;
-        if(actualOdometer == null || intervalOdometer == null || intervalOdometer == 0) {
+        if (actualOdometer == null || intervalOdometer == null || intervalOdometer == 0) {
             return null;
         }
-        if(startOdometer == null) {
+        if (startOdometer == null) {
             startOdometer = 0;
         }
         Integer firstIntervalEnd = (startOdometer + intervalOdometer);
-        if(firstIntervalEnd < actualOdometer) {
-            distanceOver =  actualOdometer % firstIntervalEnd;
+        if (firstIntervalEnd < actualOdometer) {
+            distanceOver = actualOdometer % firstIntervalEnd;
         } else {
-            distanceOver = actualOdometer - firstIntervalEnd ;
+            distanceOver = actualOdometer - firstIntervalEnd;
         }
         return distanceOver;
+    }
+
+    public static Integer calcHoursOver(Integer baseHours, Integer hours, Integer intervalHours) {
+        Integer hoursOver;
+
+        int hour = 0;
+        if (baseHours != null && intervalHours != null && hours != null) {
+            hour = (hours - baseHours) % intervalHours;
+        }
+
+        if (baseHours == null || intervalHours == null) {
+            hoursOver = null;
+        } else if (hour > (intervalHours / 2)) {
+            int hourInt = hour - intervalHours;
+            hoursOver = hourInt;
+        } else {
+            hoursOver = hour;
+        }
+        return hoursOver;
     }
 }
