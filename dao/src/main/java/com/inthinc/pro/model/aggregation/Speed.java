@@ -6,6 +6,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class Speed {
     private Integer speedTime;
     private Integer maxSpeed;
+    private Integer driverID;
 
     public Speed() {
     }
@@ -29,5 +30,13 @@ public class Speed {
 
     public void setMaxSpeed(Integer maxSpeed) {
         this.maxSpeed = maxSpeed;
+    }
+
+    public Integer getDriverID() {
+        return driverID;
+    }
+
+    public void setDriverID(Integer driverID) {
+        this.driverID = driverID;
     }
 }
