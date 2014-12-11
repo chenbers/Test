@@ -22,6 +22,10 @@ public interface PersonService extends GenericService<Person> {
     @Path("/persons")
     public Response getAll();
 
+    @GET
+    @Path("/person/all/{numberOfDays}")
+    public Response getAllWithScore(@PathParam("numberOfDays") @DefaultValue("7") Integer numberOfDays);
+
     /**
      * Gets a person by a given id.
      *

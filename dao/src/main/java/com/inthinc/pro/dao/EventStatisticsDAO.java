@@ -1,5 +1,7 @@
 package com.inthinc.pro.dao;
 
+import com.inthinc.pro.model.MeasurementType;
+import com.inthinc.pro.model.aggregation.Speed;
 import com.inthinc.pro.model.event.Event;
 import com.inthinc.pro.model.event.NoteType;
 import com.inthinc.pro.model.pagination.PageParams;
@@ -38,4 +40,17 @@ public interface EventStatisticsDAO extends GenericDAO<Event, Integer> {
      * @return calculated value
      */
     public Integer getSpeedingTimeInSecondsForPastDays(Integer driverID, Integer numDays, Integer includeForgiven, Date endDate);
+
+    /**
+     * Gets the maximum speeding value for the past <b>numDays</b> days.
+     * Gets the total speeding time in seconds for the past <b>numDays</b> days.
+     *
+     * @param measurementType measurement type
+     * @param driverID driver id
+     * @param numDays number of days to include in calculation
+     * @param includeForgiven if it includes forgiven or not (leave null for default '1')
+     * @param endDate end date to search to (leave null for default 'now')
+     * @return calculated value
+     */
+    public Speed getSpeedInfoForPastDays(Integer driverID, MeasurementType measurementType, Integer numDays, Integer includeForgiven, Date endDate);
 }
