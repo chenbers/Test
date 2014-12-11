@@ -142,6 +142,7 @@ public class PersonServiceImpl extends AbstractService<Person, PersonDAOAdapter>
 
     private List<PersonScoresView> populateScoresAndSpeed(List<Person> persons, Integer numberOfDays, Integer dvqCode){
         Integer groupID = getDao().getGroupID();
+        Map<Integer, Speed> speedMap = eventStatisticsDAO.getSpeedInfoForPersons(persons, numberOfDays);
         List<DVQMap> dvqList = scoreDAO.getDriveQMapList(groupID, dvqCode);
         Map<Integer, Score> scoreMap = getPersonScoreMap(dvqList);
         List<PersonScoresView> personScoresViews = new ArrayList<PersonScoresView>();
@@ -150,7 +151,7 @@ public class PersonServiceImpl extends AbstractService<Person, PersonDAOAdapter>
             PersonScoresView personScoresView = new PersonScoresView();
             personScoresView.setPerson(person);
             personScoresView.setScore(scoreMap.get(person.getDriverID()));
-            personScoresView.setSpeed(eventStatisticsDAO.getSpeedInfoForPastDays(person.getDriverID(), person.getMeasurementType(), numberOfDays, null, null));
+            personScoresView.setSpeed(speedMap.get(person.getDriverID()));
             personScoresViews.add(personScoresView);
         }
         return personScoresViews;

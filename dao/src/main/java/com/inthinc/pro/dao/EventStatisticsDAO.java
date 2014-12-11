@@ -1,6 +1,7 @@
 package com.inthinc.pro.dao;
 
 import com.inthinc.pro.model.MeasurementType;
+import com.inthinc.pro.model.Person;
 import com.inthinc.pro.model.aggregation.Speed;
 import com.inthinc.pro.model.event.Event;
 import com.inthinc.pro.model.event.NoteType;
@@ -9,6 +10,7 @@ import com.inthinc.pro.model.pagination.TableFilterField;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * DAO for statistical information relating to events.
@@ -53,4 +55,12 @@ public interface EventStatisticsDAO extends GenericDAO<Event, Integer> {
      * @return calculated value
      */
     public Speed getSpeedInfoForPastDays(Integer driverID, MeasurementType measurementType, Integer numDays, Integer includeForgiven, Date endDate);
+
+    /**
+     * Gets speed info for all persons and number of days.
+     *
+     * @param persons persons
+     * @param numberOfDays number of days
+     */
+    public Map<Integer, Speed> getSpeedInfoForPersons(List<Person> persons, Integer numberOfDays);
 }

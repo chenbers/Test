@@ -1,7 +1,7 @@
 package com.inthinc.pro.model;
 
-import com.inthinc.pro.model.aggregation.*;
 import com.inthinc.pro.model.aggregation.Score;
+import com.inthinc.pro.model.aggregation.Speed;
 import org.codehaus.jackson.annotate.JsonIgnore;
 
 import javax.xml.bind.annotation.XmlElement;
@@ -255,46 +255,49 @@ public class PersonScoresView {
 
     @XmlElement
     public Double getMilesDriven() {
-        return score.getMilesDriven() != null ? score.getMilesDriven().doubleValue() : 0d;
+        return score != null && score.getMilesDriven() != null ? score.getMilesDriven().doubleValue() : 0d;
     }
 
     @XmlElement
     public Double getSpeeding() {
-        return score.getSpeeding() != null ? score.getSpeeding().doubleValue() : 0d;
+        return score != null && score.getSpeeding() != null ? score.getSpeeding().doubleValue() : 0d;
     }
 
     @XmlElement
     public Double getAggressiveAccel() {
-        return score.getAggressiveAccel() != null ? score.getAggressiveAccel().doubleValue() : 0d;
+        return score != null && score.getAggressiveAccel() != null ? score.getAggressiveAccel().doubleValue() : 0d;
     }
 
     @XmlElement
     public Double getAggressiveBrake() {
-        return score.getAggressiveBrake() != null ? score.getAggressiveBrake().doubleValue() : 0d;
+        return score != null && score.getAggressiveBrake() != null ? score.getAggressiveBrake().doubleValue() : 0d;
     }
 
     @XmlElement
     public Double getOverall() {
-        return score.getOverall() != null ? score.getOverall().doubleValue() : 0d;
+        return score != null && score.getOverall() != null ? score.getOverall().doubleValue() : 0d;
     }
 
     @XmlElement
     public Double getAggressiveAccelEvents() {
-        return score.getAggressiveAccelEvents() != null ? score.getAggressiveAccelEvents().doubleValue() : 0d;
+        return score != null && score.getAggressiveAccelEvents() != null ? score.getAggressiveAccelEvents().doubleValue() : 0d;
     }
 
     @XmlElement
     public Double getAggressiveBrakeEvents() {
-        return score.getAggressiveBrakeEvents() != null ? score.getAggressiveBrakeEvents().doubleValue() : 0d;
+        return score != null && score.getAggressiveBrakeEvents() != null ? score.getAggressiveBrakeEvents().doubleValue() : 0d;
     }
 
     @XmlElement
     public Double getAggressiveBumpEvents() {
-        return score.getAggressiveBumpEvents() != null ? score.getAggressiveBumpEvents().doubleValue() : 0d;
+        return score != null && score.getAggressiveBumpEvents() != null ? score.getAggressiveBumpEvents().doubleValue() : 0d;
     }
 
     @XmlElement
     public Double getAggressiveTurnsEvents() {
+        if (score == null)
+            return 0d;
+
         Number numAgressiveLeftEvents = score.getAggressiveLeftEvents();
         Number numAgressiveRightEvents = score.getAggressiveRightEvents();
         Double aggressiveLeftEvents = numAgressiveLeftEvents != null ? numAgressiveLeftEvents.doubleValue() : 0d;
@@ -304,12 +307,12 @@ public class PersonScoresView {
 
     @XmlElement
     public Integer getSpeedTime() {
-        return speed.getSpeedTime() != null ? speed.getSpeedTime() : 0;
+        return speed != null && speed.getSpeedTime() != null ? speed.getSpeedTime() : 0;
     }
 
     @XmlElement
     public Integer getMaxSpeed() {
-        return speed.getMaxSpeed() != null ? speed.getMaxSpeed() : 0;
+        return speed != null && speed.getMaxSpeed() != null ? speed.getMaxSpeed() : 0;
     }
 
     public void setPerson(Person person) {
