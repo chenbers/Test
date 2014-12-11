@@ -1,8 +1,40 @@
 package com.inthinc.pro.reports.hos;
 
-import com.inthinc.hos.adjusted.HOSAdjustedList;
+import java.awt.Image;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.text.MessageFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.ResourceBundle;
+import java.util.TimeZone;
+
+import javax.imageio.ImageIO;
+
 import com.inthinc.hos.ddl.*;
-import com.inthinc.hos.model.*;
+import org.apache.log4j.Logger;
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
+import org.joda.time.Interval;
+import org.joda.time.LocalDate;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
+
+import com.inthinc.hos.adjusted.HOSAdjustedList;
+import com.inthinc.hos.model.DayTotals;
+import com.inthinc.hos.model.HOSOrigin;
+import com.inthinc.hos.model.HOSRec;
+import com.inthinc.hos.model.HOSRecAdjusted;
+import com.inthinc.hos.model.HOSStatus;
+import com.inthinc.hos.model.RuleSetType;
 import com.inthinc.hos.rules.HOSRules;
 import com.inthinc.hos.rules.RuleSetFactory;
 import com.inthinc.pro.dao.*;
@@ -348,6 +380,7 @@ public class HosDailyDriverLogReportCriteria extends ReportCriteria {
             dayData.setRecap(ddlUtil.initRecap(ruleSetType, day, hosRecapList, dayData.getCorrectedDayTotals(), dateTimeZone, new DateTime(currentTime), expandedInterval.getEnd()));
             dayData.setRecapType(ddlUtil.getRecapType(dayData.getRecap()));
             dayData.setRemarksList(getRemarksListForDay(day, hosRecordList, hosRecapList, ruleSetType, dayData.getRecap()));
+            dayData.setEditList(getEditListForDay(day, hosRecordList));
 
             List<HosDailyDriverLog> dataList = new ArrayList<HosDailyDriverLog>();
             dataList.add(dayData);
@@ -654,6 +687,38 @@ public class HosDailyDriverLogReportCriteria extends ReportCriteria {
                 remarkLog.setEditor(getEditUserFullName(hosRecord.getEditUserID()));
         }
         return remarkLog;
+    }
+
+
+    private List<EditLog> getEditListForDay(DateTime day, List<HOSRecord> hosRecordList) {
+        List<EditLog> editLogList = new ArrayList<EditLog>();
+
+        for (HOSRecord hosRecord : hosRecordList) {
+            if (hosRecord.getStatus() == null || hosRecord.getStatus().isInternal()) {
+                continue;
+            }
+
+            if (!hosRecord.getEdited())
+                continue;
+
+            DateTime hosRecordTime = new DateTime(hosRecord.getLogTime());
+            DateTime sameTimezoneHosRecordTime = new DateTime(hosRecordTime, day.getZone());
+
+            if (sameTimezoneHosRecordTime.toDateMidnight().equals(day.toDateMidnight()))
+                editLogList.add(populateEditLog(hosRecord));
+        }
+
+        return editLogList;
+    }
+
+
+    EditLog populateEditLog(HOSRecord hosRecord) {
+        EditLog editLog = new EditLog();
+        editLog.setReason(hosRecord.getReason());
+        editLog.setApprovedBy(hosRecord.getApprovedBy());
+        editLog.setEditor(hosRecord.getEditor());
+        editLog.setTimeStamp(hosRecord.getTimeStamp());
+        return editLog;
     }
     
 
