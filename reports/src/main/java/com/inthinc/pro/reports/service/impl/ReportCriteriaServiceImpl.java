@@ -681,7 +681,8 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
         return getHosDailyDriverLogReportCriteria(accountGroupHierarchy, driverID, interval, locale, defaultUseMetric, dateTimeZone, ReportCriteria.DEFAULT_EXCLUDE_INACTIVE_DRIVERS, ReportCriteria.DEFAULT_HOS_DRIVERS_ONLY);
     }
     @Override
-    public List<ReportCriteria> getHosDailyDriverLogReportCriteria(GroupHierarchy accountGroupHierarchy, Integer driverID, Interval interval, Locale locale, Boolean defaultUseMetric, DateTimeZone dateTimeZone, boolean includeInactiveDrivers, boolean hosDriversOnly) {
+    public List<ReportCriteria> getHosDailyDriverLogReportCriteria(GroupHierarchy accountGroupHierarchy, Integer driverID, Interval interval, Locale locale, Boolean defaultUseMetric, DateTimeZone dateTimeZone, boolean includeInactiveDrivers, Boolean hosDriversOnly) {
+        System.out.println("HOSOnly: "+hosDriversOnly);
         HosDailyDriverLogReportCriteria hosDailyDriverLogReportCriteria = new HosDailyDriverLogReportCriteria(locale, defaultUseMetric, dateTimeZone);
         hosDailyDriverLogReportCriteria.setDriverDAO(driverDAO);
         hosDailyDriverLogReportCriteria.setGroupDAO(groupDAO);
@@ -691,7 +692,7 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
         hosDailyDriverLogReportCriteria.setUserDAO(userDAO);
         hosDailyDriverLogReportCriteria.setVehicleDAO(vehicleDAO);
         hosDailyDriverLogReportCriteria.setIncludeInactiveDrivers(includeInactiveDrivers);
-        hosDailyDriverLogReportCriteria.setHosDriversOnly(hosDriversOnly);
+        hosDailyDriverLogReportCriteria.setHosDriversOnly(hosDriversOnly==null?false:hosDriversOnly);
 
         hosDailyDriverLogReportCriteria.init(accountGroupHierarchy, driverID, interval);
         return hosDailyDriverLogReportCriteria.getCriteriaList();
@@ -702,9 +703,8 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
         return getHosDailyDriverLogReportCriteria(accountGroupHierarchy, groupIDList, interval, locale, defaultUseMetric, dateTimeZone, ReportCriteria.DEFAULT_EXCLUDE_INACTIVE_DRIVERS, ReportCriteria.DEFAULT_HOS_DRIVERS_ONLY);
     }
     @Override
-    public List<ReportCriteria> getHosDailyDriverLogReportCriteria(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, Interval interval, Locale locale, Boolean defaultUseMetric, DateTimeZone dateTimeZone, boolean includeInactiveDrivers, boolean hosDriversOnly) {
-        System.out.println("jwTest sysout");
-        logger.info("jwTest: getHosDailyDriverLogReportCriteria(GroupHierarchy "+accountGroupHierarchy+", List<Integer> "+groupIDList+", Interval "+interval+", Locale "+locale+", Boolean "+defaultUseMetric+", DateTimeZone "+dateTimeZone+", boolean "+includeInactiveDrivers+", boolean "+hosDriversOnly+")");
+    public List<ReportCriteria> getHosDailyDriverLogReportCriteria(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, Interval interval, Locale locale, Boolean defaultUseMetric, DateTimeZone dateTimeZone, boolean includeInactiveDrivers, Boolean hosDriversOnly) {
+        System.out.println("HOSOnly: "+hosDriversOnly);
         HosDailyDriverLogReportCriteria hosDailyDriverLogReportCriteria = new HosDailyDriverLogReportCriteria(locale, defaultUseMetric, dateTimeZone);
         hosDailyDriverLogReportCriteria.setDriverDAO(driverDAO);
         hosDailyDriverLogReportCriteria.setGroupDAO(groupDAO);
@@ -714,18 +714,11 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
         hosDailyDriverLogReportCriteria.setUserDAO(userDAO);
         hosDailyDriverLogReportCriteria.setVehicleDAO(vehicleDAO);
         hosDailyDriverLogReportCriteria.setIncludeInactiveDrivers(includeInactiveDrivers);
-        hosDailyDriverLogReportCriteria.setHosDriversOnly(hosDriversOnly);
+        hosDailyDriverLogReportCriteria.setHosDriversOnly(hosDriversOnly==null?false:hosDriversOnly);
 
 
         hosDailyDriverLogReportCriteria.init(accountGroupHierarchy, groupIDList, interval);
-        List<ReportCriteria> result =  hosDailyDriverLogReportCriteria.getCriteriaList();
-        logger.info("jwTest: result: "+result);
-        logger.info("jwTest: result.size: "+result.size());
-        for(ReportCriteria rc : result) {
-            logger.info("jwTest: rc: "+rc);
-            logger.info("jwTest: isnull?: "+(rc == null));
-        }
-        return result;
+        return hosDailyDriverLogReportCriteria.getCriteriaList();
     }
 
     @Override
@@ -1683,7 +1676,6 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
     }
 
     public List<ReportCriteria> getReportCriteria(ReportSchedule reportSchedule, GroupHierarchy groupHierarchy, Person person) {
-        logger.info("jwTest:getReportCriteria(ReportSchedule "+reportSchedule+", GroupHierarchy "+groupHierarchy+", Person "+person+")");
         if (person.getLocale() == null)
             person.setLocale(Locale.ENGLISH);
 
@@ -1706,10 +1698,7 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
                 logger.error("no group id specified so skipping report id: " + reportSchedule.getReportScheduleID());
                 continue;
             }
-            logger.info("jwTest: 1703");
-            logger.info("jwTest:reportCriteriaList1 "+reportCriteriaList);
-            logger.info("jwTest:reportCriteriaList1.isNull "+(reportCriteriaList == null));
-            logger.info("jwTest:reportCriteriaList1.size "+reportCriteriaList.size());
+
             switch (reportGroup.getReports()[i]) {
                 case FIRST_MOVE_FORWARD_REPORT:
                     reportCriteriaList.add(getFirstMoveForwardCriteria(timeFrame.getInterval(),
@@ -1773,12 +1762,6 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
                             person.getLocale()));
                     break;
                 case HOS_DAILY_DRIVER_LOG_REPORT:
-                    logger.info("jwTest: ");
-                    logger.info("jwTest:rs "+reportSchedule);
-                    logger.info("jwTest:rs.inactive "+reportSchedule.getIncludeInactiveDrivers());
-                    logger.info("jwTest:rs.hosONly "+reportSchedule.getHosDriversOnly());
-                    logger.info("jwTest:timeframe "+timeFrame);
-                    logger.info("jwTest:reportCriteriaList "+reportCriteriaList);
                     if (reportSchedule.getParamType() == ReportParamType.DRIVER)
                     {
                         reportCriteriaList.addAll(getHosDailyDriverLogReportCriteria(
