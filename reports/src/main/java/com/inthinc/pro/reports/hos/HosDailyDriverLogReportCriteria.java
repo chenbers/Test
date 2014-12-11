@@ -691,6 +691,38 @@ public class HosDailyDriverLogReportCriteria extends ReportCriteria {
     }
 
 
+    private List<EditLog> getEditListForDay(DateTime day, List<HOSRecord> hosRecordList) {
+        List<EditLog> editLogList = new ArrayList<EditLog>();
+
+        for (HOSRecord hosRecord : hosRecordList) {
+            if (hosRecord.getStatus() == null || hosRecord.getStatus().isInternal()) {
+                continue;
+            }
+
+            if (!hosRecord.getEdited())
+                continue;
+
+            DateTime hosRecordTime = new DateTime(hosRecord.getLogTime());
+            DateTime sameTimezoneHosRecordTime = new DateTime(hosRecordTime, day.getZone());
+
+            if (sameTimezoneHosRecordTime.toDateMidnight().equals(day.toDateMidnight()))
+                editLogList.add(populateEditLog(hosRecord));
+        }
+
+        return editLogList;
+    }
+
+
+    EditLog populateEditLog(HOSRecord hosRecord) {
+        EditLog editLog = new EditLog();
+        editLog.setReason(hosRecord.getReason());
+        editLog.setApprovedBy(hosRecord.getApprovedBy());
+        editLog.setEditor(hosRecord.getEditor());
+        editLog.setTimeStamp(hosRecord.getTimeStamp());
+        return editLog;
+    }
+
+
     public List<EditLog> getEditListForDay(DateTime day, List<HOSRecord> hosRecordList) {
         List<EditLog> editLogList = new ArrayList<EditLog>();
 
