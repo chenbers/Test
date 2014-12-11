@@ -703,6 +703,7 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
     }
     @Override
     public List<ReportCriteria> getHosDailyDriverLogReportCriteria(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, Interval interval, Locale locale, Boolean defaultUseMetric, DateTimeZone dateTimeZone, boolean includeInactiveDrivers, boolean hosDriversOnly) {
+        System.out.println("jwTest sysout");
         logger.error("jwTest: getHosDailyDriverLogReportCriteria(GroupHierarchy "+accountGroupHierarchy+", List<Integer> "+groupIDList+", Interval "+interval+", Locale "+locale+", Boolean "+defaultUseMetric+", DateTimeZone "+dateTimeZone+", boolean "+includeInactiveDrivers+", boolean "+hosDriversOnly+")");
         HosDailyDriverLogReportCriteria hosDailyDriverLogReportCriteria = new HosDailyDriverLogReportCriteria(locale, defaultUseMetric, dateTimeZone);
         hosDailyDriverLogReportCriteria.setDriverDAO(driverDAO);
@@ -1685,6 +1686,7 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
                 logger.error("no group id specified so skipping report id: " + reportSchedule.getReportScheduleID());
                 continue;
             }
+            logger.error("jwTest: 1701");
             switch (reportGroup.getReports()[i]) {
                 case SEATBELT_CLICKS_REPORT:
                     reportCriteriaList.add(getSeatbeltClicksReportCriteria(groupHierarchy,
@@ -1737,6 +1739,11 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
                             person.getLocale()));
                     break;
                 case HOS_DAILY_DRIVER_LOG_REPORT:
+                    logger.error("jwTest: ");
+                    logger.error("jwTest:rs "+reportSchedule);
+                    logger.error("jwTest:rs.inactive "+reportSchedule.getIncludeInactiveDrivers());
+                    logger.error("jwTest:rs.hosONly "+reportSchedule.getHosDriversOnly());
+                    logger.error("jwTest:timeframe "+timeFrame);
                     if (reportSchedule.getParamType() == ReportParamType.DRIVER)
                     {
                         reportCriteriaList.addAll(getHosDailyDriverLogReportCriteria(
@@ -1753,11 +1760,6 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
                     }
                     else
                     {
-                        logger.error("jwTest: ");
-                        logger.error("jwTest:rs "+reportSchedule);
-                        logger.error("jwTest:rs.inactive "+reportSchedule.getIncludeInactiveDrivers());
-                        logger.error("jwTest:rs.hosONly "+reportSchedule.getHosDriversOnly());
-                        logger.error("jwTest:timeframe "+timeFrame);
                         reportCriteriaList.addAll(getHosDailyDriverLogReportCriteria(
                                         groupHierarchy,
                                         reportSchedule.getGroupIDList(),
