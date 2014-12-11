@@ -396,8 +396,7 @@ public class EmailReportAmazonPullJob extends QuartzJobBean {
                     noReplyEmailAddress = acct.getProps().getNoReplyEmail();
                 }
 
-                logger.error("jwTest");
-                logger.info("report.exportReportToEmail(" + address + ", " + formatType + ", " + message + ", " + subject + ", " + noReplyEmailAddress + ");");
+                logger.debug("report.exportReportToEmail(" + address + ", " + formatType + ", " + message + ", " + subject + ", " + noReplyEmailAddress + ");");
                 report.exportReportToEmail(address, formatType, message, subject, noReplyEmailAddress);
             }
         }
