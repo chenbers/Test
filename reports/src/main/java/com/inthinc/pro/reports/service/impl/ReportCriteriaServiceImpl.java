@@ -681,7 +681,7 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
         return getHosDailyDriverLogReportCriteria(accountGroupHierarchy, driverID, interval, locale, defaultUseMetric, dateTimeZone, ReportCriteria.DEFAULT_EXCLUDE_INACTIVE_DRIVERS, ReportCriteria.DEFAULT_HOS_DRIVERS_ONLY);
     }
     @Override
-    public List<ReportCriteria> getHosDailyDriverLogReportCriteria(GroupHierarchy accountGroupHierarchy, Integer driverID, Interval interval, Locale locale, Boolean defaultUseMetric, DateTimeZone dateTimeZone, boolean includeInactiveDrivers, boolean hosDriversOnly) {
+    public List<ReportCriteria> getHosDailyDriverLogReportCriteria(GroupHierarchy accountGroupHierarchy, Integer driverID, Interval interval, Locale locale, Boolean defaultUseMetric, DateTimeZone dateTimeZone, boolean includeInactiveDrivers, Boolean hosDriversOnly) {
         HosDailyDriverLogReportCriteria hosDailyDriverLogReportCriteria = new HosDailyDriverLogReportCriteria(locale, defaultUseMetric, dateTimeZone);
         hosDailyDriverLogReportCriteria.setDriverDAO(driverDAO);
         hosDailyDriverLogReportCriteria.setGroupDAO(groupDAO);
@@ -691,7 +691,7 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
         hosDailyDriverLogReportCriteria.setUserDAO(userDAO);
         hosDailyDriverLogReportCriteria.setVehicleDAO(vehicleDAO);
         hosDailyDriverLogReportCriteria.setIncludeInactiveDrivers(includeInactiveDrivers);
-        hosDailyDriverLogReportCriteria.setHosDriversOnly(hosDriversOnly);
+        hosDailyDriverLogReportCriteria.setHosDriversOnly(hosDriversOnly==null?false:hosDriversOnly);
 
         hosDailyDriverLogReportCriteria.init(accountGroupHierarchy, driverID, interval);
         return hosDailyDriverLogReportCriteria.getCriteriaList();
@@ -702,7 +702,7 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
         return getHosDailyDriverLogReportCriteria(accountGroupHierarchy, groupIDList, interval, locale, defaultUseMetric, dateTimeZone, ReportCriteria.DEFAULT_EXCLUDE_INACTIVE_DRIVERS, ReportCriteria.DEFAULT_HOS_DRIVERS_ONLY);
     }
     @Override
-    public List<ReportCriteria> getHosDailyDriverLogReportCriteria(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, Interval interval, Locale locale, Boolean defaultUseMetric, DateTimeZone dateTimeZone, boolean includeInactiveDrivers, boolean hosDriversOnly) {
+    public List<ReportCriteria> getHosDailyDriverLogReportCriteria(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, Interval interval, Locale locale, Boolean defaultUseMetric, DateTimeZone dateTimeZone, boolean includeInactiveDrivers, Boolean hosDriversOnly) {
         HosDailyDriverLogReportCriteria hosDailyDriverLogReportCriteria = new HosDailyDriverLogReportCriteria(locale, defaultUseMetric, dateTimeZone);
         hosDailyDriverLogReportCriteria.setDriverDAO(driverDAO);
         hosDailyDriverLogReportCriteria.setGroupDAO(groupDAO);
@@ -712,12 +712,11 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
         hosDailyDriverLogReportCriteria.setUserDAO(userDAO);
         hosDailyDriverLogReportCriteria.setVehicleDAO(vehicleDAO);
         hosDailyDriverLogReportCriteria.setIncludeInactiveDrivers(includeInactiveDrivers);
-        hosDailyDriverLogReportCriteria.setHosDriversOnly(hosDriversOnly);
+        hosDailyDriverLogReportCriteria.setHosDriversOnly(hosDriversOnly==null?false:hosDriversOnly);
 
 
         hosDailyDriverLogReportCriteria.init(accountGroupHierarchy, groupIDList, interval);
         return hosDailyDriverLogReportCriteria.getCriteriaList();
-
     }
 
     @Override
@@ -1697,6 +1696,7 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
                 logger.error("no group id specified so skipping report id: " + reportSchedule.getReportScheduleID());
                 continue;
             }
+
             switch (reportGroup.getReports()[i]) {
                 case FIRST_MOVE_FORWARD_REPORT:
                     reportCriteriaList.add(getFirstMoveForwardCriteria(timeFrame.getInterval(),
@@ -1776,17 +1776,12 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
                     }
                     else
                     {
-                        reportCriteriaList.addAll(getHosDailyDriverLogReportCriteria(
-                                        groupHierarchy,
-                                        reportSchedule.getGroupIDList(),
-                                        timeFrame.getInterval(),
-                                        person.getLocale(),
-                                        person.getMeasurementType() == MeasurementType.METRIC,
-                                        DateTimeZone.forTimeZone(person.getTimeZone()),
-                                        reportSchedule.getIncludeInactiveDrivers(),
-                                        reportSchedule.getHosDriversOnly()
-                                        )
-                                       );
+                        logger.info("reportCriteriaList: "+reportCriteriaList);
+                        logger.info("reportCriteria.size: "+reportCriteriaList.size());
+                        List<ReportCriteria> reportCritListToAdd = getHosDailyDriverLogReportCriteria(groupHierarchy,reportSchedule.getGroupIDList(),timeFrame.getInterval(),person.getLocale(),person.getMeasurementType() == MeasurementType.METRIC,DateTimeZone.forTimeZone(person.getTimeZone()),reportSchedule.getIncludeInactiveDrivers(),reportSchedule.getHosDriversOnly());
+                        logger.info("reportCritListToAdd: "+reportCritListToAdd);
+                        logger.info("reportCritListToAdd.size: "+reportCritListToAdd.size());
+                        reportCriteriaList.addAll(reportCritListToAdd);
                     }
                     break;
                 case HOS_VIOLATIONS_SUMMARY_REPORT:
