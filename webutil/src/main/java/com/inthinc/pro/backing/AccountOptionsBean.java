@@ -32,7 +32,6 @@ public class AccountOptionsBean extends BaseBean {
         for (Account account : accountList) {
             accountSelectList.add(new SelectItem(account.getAccountID(), account.getAccountID() + " - " + account.getAcctName()));
         }
-        
         sort(accountSelectList);
     }
     
@@ -112,7 +111,8 @@ public class AccountOptionsBean extends BaseBean {
                                 " , Login Expire is " +(account.getProps().getLoginExpire()) + 
                                 " , Password Expire is "+(account.getProps().getPasswordExpire()) +
                                 " , Password Strength is "+(account.getProps().getPasswordStrength()) +
-                                " and Password Change Required is "+(account.getProps().getPasswordChange())+
+                                " , Password Change Required is "+(account.getProps().getPasswordChange())+
+                                " and Speed-By-Street access is " + (account.hasSbsAccessEnabled() ? "Enabled" : "Disabled") +
                                 " for Account: " + account.getAcctName());
         }
     }

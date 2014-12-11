@@ -276,4 +276,17 @@ public class Account extends BaseEntity implements Comparable<Account>, HasAccou
 
     }
 
+    public Boolean hasSbsAccessEnabled() { // Speed-By-Street access
+        AccountAttributes options = getProps();
+        if (options == null)
+            return false;
+
+        String sbsEnabled = options.getSbsAccessEnabled();
+        if (sbsEnabled == null)
+            return false;
+
+        return Boolean.valueOf(sbsEnabled);
+
+    }
+
 }

@@ -157,6 +157,15 @@
 							</h:selectOneMenu>
                         </td>                              	                           	
 					</tr>
+                    <tr>
+                        <td style="vertical-align: middle;"><h:outputText value="Speed-By-Street Access: " /></td>
+                        <td>
+                            <h:selectOneMenu id="editAccount-sbs" value="#{accountOptionsBean.account.props.sbsAccessEnabled}">
+                                <f:selectItem itemLabel="Disabled" itemValue="false"/>
+                                <f:selectItem itemLabel="Enabled" itemValue="true"/>
+                            </h:selectOneMenu>
+                        </td>
+                    </tr>
 					<tr>
 						<td colspan="2">
 			                <a4j:commandButton id="save" value="Save" action="#{accountOptionsBean.saveAction}" rendered="#{accountOptionsBean.account != null}" reRender="optionsForm"/>
