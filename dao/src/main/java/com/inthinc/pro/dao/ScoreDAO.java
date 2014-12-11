@@ -3,21 +3,7 @@ package com.inthinc.pro.dao;
 import java.util.List;
 import java.util.Map;
 
-import com.inthinc.pro.model.CrashSummary;
-import com.inthinc.pro.model.DriverReportItem;
-import com.inthinc.pro.model.DriverScore;
-import com.inthinc.pro.model.Duration;
-import com.inthinc.pro.model.EntityType;
-import com.inthinc.pro.model.Group;
-import com.inthinc.pro.model.GroupHierarchy;
-import com.inthinc.pro.model.IdlePercentItem;
-import com.inthinc.pro.model.ScoreItem;
-import com.inthinc.pro.model.ScoreType;
-import com.inthinc.pro.model.ScoreTypeBreakdown;
-import com.inthinc.pro.model.ScoreableEntity;
-import com.inthinc.pro.model.SpeedPercentItem;
-import com.inthinc.pro.model.TrendItem;
-import com.inthinc.pro.model.VehicleReportItem;
+import com.inthinc.pro.model.*;
 
 /**
  * @author cjennings
@@ -210,4 +196,5 @@ public interface ScoreDAO extends GenericDAO<ScoreableEntity, Integer>
      */
     List<ScoreItem> getAverageScores(Integer id, EntityType entityType, Duration duration);
 
+    List<DVQMap> getDriveQMapList(Integer groupID, Integer duration);
 }

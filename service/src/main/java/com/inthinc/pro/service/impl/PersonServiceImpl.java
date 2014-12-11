@@ -2,6 +2,7 @@ package com.inthinc.pro.service.impl;
 
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -12,6 +13,7 @@ import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.core.Response.Status;
 
 import com.inthinc.pro.dao.*;
+import com.inthinc.pro.dao.hessian.proserver.ReportService;
 import com.inthinc.pro.dao.jdbc.AdminVehicleJDBCDAO;
 import com.inthinc.pro.dao.report.DriverReportDAO;
 import com.inthinc.pro.dao.util.MeasurementConversionUtil;
@@ -32,8 +34,7 @@ public class PersonServiceImpl extends AbstractService<Person, PersonDAOAdapter>
     @Autowired
     EventStatisticsDAO eventStatisticsDAO;
 
-    @Autowired
-    GroupDAO groupDAO;
+    @Autowired ScoreDAO scoreDAO;
 
     @Override
     public Response getAll() {
@@ -139,28 +140,59 @@ public class PersonServiceImpl extends AbstractService<Person, PersonDAOAdapter>
         return retList;
     }
 
-    private List<PersonScoresView> populateScoresAndSpeed(List<Person> persons, Duration duration){
+    private List<PersonScoresView> populateScoresAndSpeed(List<Person> persons, Integer numberOfDays, Integer dvqCode){
+        Integer groupID = getDao().getGroupID();
+        List<DVQMap> dvqList = scoreDAO.getDriveQMapList(groupID, dvqCode);
+        Map<Integer, Score> scoreMap = getPersonScoreMap(dvqList);
         List<PersonScoresView> personScoresViews = new ArrayList<PersonScoresView>();
+
         for (Person person: persons){
             PersonScoresView personScoresView = new PersonScoresView();
             personScoresView.setPerson(person);
-            personScoresView.setScore(driverReportDAO.getScore(person.getDriverID(), duration));
-            personScoresView.setSpeed(eventStatisticsDAO.getSpeedInfoForPastDays(person.getDriverID(), person.getMeasurementType(), duration.getNumberOfDays(), null, null));
+            personScoresView.setScore(scoreMap.get(person.getDriverID()));
+            personScoresView.setSpeed(eventStatisticsDAO.getSpeedInfoForPastDays(person.getDriverID(), person.getMeasurementType(), numberOfDays, null, null));
             personScoresViews.add(personScoresView);
         }
         return personScoresViews;
     }
 
-    private List<PersonScoresView> populateScoresAndSpeed(List<Person> persons, CustomDuration customDuration){
-        List<PersonScoresView> personScoresViews = new ArrayList<PersonScoresView>();
-        for (Person person: persons){
-            PersonScoresView personScoresView = new PersonScoresView();
-            personScoresView.setPerson(person);
-            personScoresView.setScore(driverReportDAO.getScore(person.getDriverID(), customDuration));
-            personScoresView.setSpeed(eventStatisticsDAO.getSpeedInfoForPastDays(person.getDriverID(), person.getMeasurementType(), customDuration.getNumberOfDays(), null, null));
-            personScoresViews.add(personScoresView);
+    private List<PersonScoresView> populateScoresAndSpeed(List<Person> persons, Duration duration) {
+        return populateScoresAndSpeed(persons, duration.getNumberOfDays(), duration.getDvqCode());
+    }
+
+    private List<PersonScoresView> populateScoresAndSpeed(List<Person> persons, CustomDuration customDuration) {
+        return populateScoresAndSpeed(persons, customDuration.getNumberOfDays(), customDuration.getDvqCode());
+    }
+
+    private Map<Integer, Score> getPersonScoreMap(List<DVQMap> dvqMapList){
+        Map<Integer, Score> scoreMap = new HashMap<Integer, Score>(dvqMapList.size());
+
+        for (DVQMap dvqMap: dvqMapList){
+            Driver driver = dvqMap.getDriver();
+            if (driver!=null && driver.getDriverID() != null){
+                Integer driverID = driver.getDriverID();
+                DriveQMap driveQMap = dvqMap.getDriveQ();
+                if (driveQMap != null) {
+                    Score score = new Score();
+                    score.setAggressiveAccel(driveQMap.getAggressiveAccel());
+                    score.setAggressiveAccelEvents(driveQMap.getAggressiveAccelEvents());
+                    score.setAggressiveBrake(driveQMap.getAggressiveBrake());
+                    score.setAggressiveBrakeEvents(driveQMap.getAggressiveBrakeEvents());
+                    score.setAggressiveBump(driveQMap.getAggressiveBump());
+                    score.setAggressiveBumpEvents(driveQMap.getAggressiveBumpEvents());
+                    score.setAggressiveEvents(driveQMap.getAggressiveEvents());
+                    score.setAggressiveLeftEvents(driveQMap.getAggressiveLeftEvents());
+                    score.setAggressiveRightEvents(driveQMap.getAggressiveRightEvents());
+                    score.setAggressiveTurn(driveQMap.getAggressiveTurn());
+                    score.setStartingOdometer(driveQMap.getStartingOdometer());
+                    score.setEndingOdometer(driveQMap.getEndingOdometer());
+
+                    scoreMap.put(driverID, score);
+                }
+            }
         }
-        return personScoresViews;
+
+        return scoreMap;
     }
 
     public EventStatisticsDAO getEventStatisticsDAO() {
