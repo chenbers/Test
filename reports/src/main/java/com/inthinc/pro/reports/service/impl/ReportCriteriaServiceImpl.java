@@ -1683,7 +1683,7 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
     }
 
     public List<ReportCriteria> getReportCriteria(ReportSchedule reportSchedule, GroupHierarchy groupHierarchy, Person person) {
-        logger.error("jwTest:getReportCriteria(ReportSchedule "+reportSchedule+", GroupHierarchy "+groupHierarchy+", Person "+person+")");
+        logger.info("jwTest:getReportCriteria(ReportSchedule "+reportSchedule+", GroupHierarchy "+groupHierarchy+", Person "+person+")");
         if (person.getLocale() == null)
             person.setLocale(Locale.ENGLISH);
 
@@ -1706,10 +1706,10 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
                 logger.error("no group id specified so skipping report id: " + reportSchedule.getReportScheduleID());
                 continue;
             }
-            logger.error("jwTest: 1703");
-            logger.error("jwTest:reportCriteriaList1 "+reportCriteriaList);
-            logger.error("jwTest:reportCriteriaList1.isNull "+(reportCriteriaList == null));
-            logger.error("jwTest:reportCriteriaList1.size "+reportCriteriaList.size());
+            logger.info("jwTest: 1703");
+            logger.info("jwTest:reportCriteriaList1 "+reportCriteriaList);
+            logger.info("jwTest:reportCriteriaList1.isNull "+(reportCriteriaList == null));
+            logger.info("jwTest:reportCriteriaList1.size "+reportCriteriaList.size());
             switch (reportGroup.getReports()[i]) {
                 case FIRST_MOVE_FORWARD_REPORT:
                     reportCriteriaList.add(getFirstMoveForwardCriteria(timeFrame.getInterval(),
@@ -1773,12 +1773,12 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
                             person.getLocale()));
                     break;
                 case HOS_DAILY_DRIVER_LOG_REPORT:
-                    logger.error("jwTest: ");
-                    logger.error("jwTest:rs "+reportSchedule);
-                    logger.error("jwTest:rs.inactive "+reportSchedule.getIncludeInactiveDrivers());
-                    logger.error("jwTest:rs.hosONly "+reportSchedule.getHosDriversOnly());
-                    logger.error("jwTest:timeframe "+timeFrame);
-                    logger.error("jwTest:reportCriteriaList "+reportCriteriaList);
+                    logger.info("jwTest: ");
+                    logger.info("jwTest:rs "+reportSchedule);
+                    logger.info("jwTest:rs.inactive "+reportSchedule.getIncludeInactiveDrivers());
+                    logger.info("jwTest:rs.hosONly "+reportSchedule.getHosDriversOnly());
+                    logger.info("jwTest:timeframe "+timeFrame);
+                    logger.info("jwTest:reportCriteriaList "+reportCriteriaList);
                     if (reportSchedule.getParamType() == ReportParamType.DRIVER)
                     {
                         reportCriteriaList.addAll(getHosDailyDriverLogReportCriteria(
@@ -1795,17 +1795,12 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
                     }
                     else
                     {
-                        reportCriteriaList.addAll(getHosDailyDriverLogReportCriteria(
-                                        groupHierarchy,
-                                        reportSchedule.getGroupIDList(),
-                                        timeFrame.getInterval(),
-                                        person.getLocale(),
-                                        person.getMeasurementType() == MeasurementType.METRIC,
-                                        DateTimeZone.forTimeZone(person.getTimeZone()),
-                                        reportSchedule.getIncludeInactiveDrivers(),
-                                        reportSchedule.getHosDriversOnly()
-                                        )
-                                       );
+                        logger.info("reportCriteriaList: "+reportCriteriaList);
+                        logger.info("reportCriteria.size: "+reportCriteriaList.size());
+                        List<ReportCriteria> reportCritListToAdd = getHosDailyDriverLogReportCriteria(groupHierarchy,reportSchedule.getGroupIDList(),timeFrame.getInterval(),person.getLocale(),person.getMeasurementType() == MeasurementType.METRIC,DateTimeZone.forTimeZone(person.getTimeZone()),reportSchedule.getIncludeInactiveDrivers(),reportSchedule.getHosDriversOnly());
+                        logger.info("reportCritListToAdd: "+reportCritListToAdd);
+                        logger.info("reportCritListToAdd.size: "+reportCritListToAdd.size());
+                        reportCriteriaList.addAll(reportCritListToAdd);
                     }
                     break;
                 case HOS_VIOLATIONS_SUMMARY_REPORT:
