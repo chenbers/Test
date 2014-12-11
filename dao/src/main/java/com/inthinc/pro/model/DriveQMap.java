@@ -60,10 +60,15 @@ public class DriveQMap extends BaseEntity
     private Number speedOdometer3;
     private Number speedOdometer4;
     private Number speedOdometer5;
+    private Number aggressiveAccelEvents;
+    private Number aggressiveBrakeEvents;
+    private Number aggressiveBumpEvents;
+    private Number aggressiveEvents;
+    private Number aggressiveRightEvents;
+    private Number aggressiveLeftEvents;
     
 /*
  * These fields are also available in the driveQ map, but excluding for now in the interest of performance since we don't use these fields.
-		aggressiveBrakeEvents
 		seatbeltEvents
 		speedEvents
 		speedEvents1
@@ -74,12 +79,7 @@ public class DriveQMap extends BaseEntity
 		idleLoEvents
 		idleHiEvents
 		rpmEvents
-		aggressiveEvents
-		aggressiveAccelEvents
-		aggressiveBumpEvents
-		aggressiveRightEvents
-		aggressiveLeftEvents
-		
+
 		speedCoaching
 		speedCoaching1
 		speedCoaching2
@@ -453,4 +453,52 @@ public class DriveQMap extends BaseEntity
 	public void setnVehicles(Integer nVehicles) {
 		this.nVehicles = nVehicles;
 	}
+
+    public Number getAggressiveAccelEvents() {
+        return aggressiveAccelEvents;
+    }
+
+    public void setAggressiveAccelEvents(Number aggressiveAccelEvents) {
+        this.aggressiveAccelEvents = aggressiveAccelEvents;
+    }
+
+    public Number getAggressiveBrakeEvents() {
+        return aggressiveBrakeEvents;
+    }
+
+    public void setAggressiveBrakeEvents(Number aggressiveBrakeEvents) {
+        this.aggressiveBrakeEvents = aggressiveBrakeEvents;
+    }
+
+    public Number getAggressiveBumpEvents() {
+        return aggressiveBumpEvents;
+    }
+
+    public void setAggressiveBumpEvents(Number aggressiveBumpEvents) {
+        this.aggressiveBumpEvents = aggressiveBumpEvents;
+    }
+
+    public Number getAggressiveEvents() {
+        return aggressiveEvents;
+    }
+
+    public void setAggressiveEvents(Number aggressiveEvents) {
+        this.aggressiveEvents = aggressiveEvents;
+    }
+
+    public Number getAggressiveRightEvents() {
+        return aggressiveRightEvents;
+    }
+
+    public void setAggressiveRightEvents(Number aggressiveRightEvents) {
+        this.aggressiveRightEvents = aggressiveRightEvents;
+    }
+
+    public Number getAggressiveLeftEvents() {
+        return aggressiveLeftEvents;
+    }
+
+    public void setAggressiveLeftEvents(Number aggressiveLeftEvents) {
+        this.aggressiveLeftEvents = aggressiveLeftEvents;
+    }
 }
