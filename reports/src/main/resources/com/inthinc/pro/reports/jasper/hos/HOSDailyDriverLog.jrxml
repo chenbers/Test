@@ -21,7 +21,7 @@
 		<parameter name="USE_METRIC" class="java.lang.Boolean" isForPrompting="false"/>
 		<field name="reason" class="java.lang.String"/>
 		<field name="approvedBy" class="java.lang.String"/>
-		<field name="editor" class="java.lang.Number"/>
+		<field name="editor" class="java.lang.String"/>
 		<field name="timeStamp" class="java.util.Date"/>
 	</subDataset>
 	<subDataset name="vehiclesDataset" uuid="471f0d66-5026-4d3c-8f91-a12b444d2295">
