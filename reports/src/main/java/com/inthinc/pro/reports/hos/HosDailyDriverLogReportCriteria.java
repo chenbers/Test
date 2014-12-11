@@ -717,8 +717,23 @@ public class HosDailyDriverLogReportCriteria extends ReportCriteria {
         EditLog editLog = new EditLog();
         editLog.setReason(hosRecord.getReason());
         editLog.setApprovedBy(hosRecord.getApprovedBy());
-        editLog.setEditor(hosRecord.getEditor());
         editLog.setTimeStamp(hosRecord.getTimeStamp());
+
+        Integer editorID = hosRecord.getEditor();
+        if (editorID != null){
+            User user = userDAO.findByID(editorID);
+            if (user != null){
+                String editor = "";
+
+                Person person = user.getPerson();
+                if (person != null){
+                    editor += person.getFirst()+" "+person.getLast();
+                }else{
+                    editor = user.getUsername();
+                }
+                editLog.setEditor(editor);
+            }
+        }
         return editLog;
     }
 
