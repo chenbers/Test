@@ -694,7 +694,6 @@ public class HosDailyDriverLogReportCriteria extends ReportCriteria {
     }
 
 
-
     public List<EditLog> getEditListForDay(DateTime day, List<HOSRecord> hosRecordList) {
         List<EditLog> editLogList = new ArrayList<EditLog>();
 
