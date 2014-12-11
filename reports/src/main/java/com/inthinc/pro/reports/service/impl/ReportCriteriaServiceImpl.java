@@ -704,7 +704,7 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
     @Override
     public List<ReportCriteria> getHosDailyDriverLogReportCriteria(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, Interval interval, Locale locale, Boolean defaultUseMetric, DateTimeZone dateTimeZone, boolean includeInactiveDrivers, boolean hosDriversOnly) {
         System.out.println("jwTest sysout");
-        logger.error("jwTest: getHosDailyDriverLogReportCriteria(GroupHierarchy "+accountGroupHierarchy+", List<Integer> "+groupIDList+", Interval "+interval+", Locale "+locale+", Boolean "+defaultUseMetric+", DateTimeZone "+dateTimeZone+", boolean "+includeInactiveDrivers+", boolean "+hosDriversOnly+")");
+        logger.info("jwTest: getHosDailyDriverLogReportCriteria(GroupHierarchy "+accountGroupHierarchy+", List<Integer> "+groupIDList+", Interval "+interval+", Locale "+locale+", Boolean "+defaultUseMetric+", DateTimeZone "+dateTimeZone+", boolean "+includeInactiveDrivers+", boolean "+hosDriversOnly+")");
         HosDailyDriverLogReportCriteria hosDailyDriverLogReportCriteria = new HosDailyDriverLogReportCriteria(locale, defaultUseMetric, dateTimeZone);
         hosDailyDriverLogReportCriteria.setDriverDAO(driverDAO);
         hosDailyDriverLogReportCriteria.setGroupDAO(groupDAO);
@@ -718,8 +718,14 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
 
 
         hosDailyDriverLogReportCriteria.init(accountGroupHierarchy, groupIDList, interval);
-        return hosDailyDriverLogReportCriteria.getCriteriaList();
-
+        List<ReportCriteria> result =  hosDailyDriverLogReportCriteria.getCriteriaList();
+        logger.info("jwTest: result: "+result);
+        logger.info("jwTest: result.size: "+result.size());
+        for(ReportCriteria rc : result) {
+            logger.info("jwTest: rc: "+rc);
+            logger.info("jwTest: isnull?: "+(rc == null));
+        }
+        return result;
     }
 
     @Override
@@ -1700,7 +1706,7 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
                 logger.error("no group id specified so skipping report id: " + reportSchedule.getReportScheduleID());
                 continue;
             }
-            logger.error("jwTest: 1701");
+            logger.error("jwTest: 1703");
             logger.error("jwTest:reportCriteriaList1 "+reportCriteriaList);
             logger.error("jwTest:reportCriteriaList1.isNull "+(reportCriteriaList == null));
             logger.error("jwTest:reportCriteriaList1.size "+reportCriteriaList.size());
