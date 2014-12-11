@@ -1664,6 +1664,7 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
     }
 
     public List<ReportCriteria> getReportCriteria(ReportSchedule reportSchedule, GroupHierarchy groupHierarchy, Person person) {
+        logger.error("jwTest:getReportCriteria(ReportSchedule "+reportSchedule+", GroupHierarchy "+groupHierarchy+", Person "+person+")");
         if (person.getLocale() == null)
             person.setLocale(Locale.ENGLISH);
 
@@ -1687,6 +1688,9 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
                 continue;
             }
             logger.error("jwTest: 1701");
+            logger.error("jwTest:reportCriteriaList1 "+reportCriteriaList);
+            logger.error("jwTest:reportCriteriaList1.isNull "+(reportCriteriaList == null));
+            logger.error("jwTest:reportCriteriaList1.size "+reportCriteriaList.size());
             switch (reportGroup.getReports()[i]) {
                 case SEATBELT_CLICKS_REPORT:
                     reportCriteriaList.add(getSeatbeltClicksReportCriteria(groupHierarchy,
@@ -1744,6 +1748,7 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
                     logger.error("jwTest:rs.inactive "+reportSchedule.getIncludeInactiveDrivers());
                     logger.error("jwTest:rs.hosONly "+reportSchedule.getHosDriversOnly());
                     logger.error("jwTest:timeframe "+timeFrame);
+                    logger.error("jwTest:reportCriteriaList "+reportCriteriaList);
                     if (reportSchedule.getParamType() == ReportParamType.DRIVER)
                     {
                         reportCriteriaList.addAll(getHosDailyDriverLogReportCriteria(
