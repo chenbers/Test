@@ -1,27 +1,20 @@
 package com.inthinc.pro.dao.jdbc;
 
-import com.inthinc.pro.dao.DriverDAO;
-import com.inthinc.pro.dao.EventAggregationDAO;
 import com.inthinc.pro.dao.EventStatisticsDAO;
-import com.inthinc.pro.model.Driver;
-import com.inthinc.pro.model.Status;
-import com.inthinc.pro.model.Trip;
-import com.inthinc.pro.model.aggregation.DriverForgivenEventTotal;
+import com.inthinc.pro.dao.util.MeasurementConversionUtil;
+import com.inthinc.pro.model.MeasurementType;
+import com.inthinc.pro.model.aggregation.Speed;
 import com.inthinc.pro.model.event.Event;
-import com.inthinc.pro.model.event.EventType;
-import com.inthinc.pro.model.event.LastReportedEvent;
 import com.inthinc.pro.model.event.NoteType;
 import org.joda.time.DateTime;
-import org.joda.time.Interval;
-import org.springframework.jdbc.core.simple.ParameterizedRowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.security.InvalidParameterException;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.List;
 
 /**
  * DAO for statistical information relating to events.
@@ -85,16 +78,46 @@ public class EventStatisticsJDBCDAO extends SimpleJdbcDaoSupport implements Even
         return getJdbcTemplate().queryForInt(query);
     }
 
+    @Override
+    public Speed getSpeedInfoForPastDays(Integer driverID, MeasurementType measurementType, Integer numDays, Integer includeForgiven, Date endDate) {
+        Speed speed = new Speed();
+        if (numDays != 0) {
+            speed.setMaxSpeed(getMaxSpeedForPastDays(driverID, numDays, includeForgiven, endDate));
+            speed.setSpeedTime(convertToKmIfNeeded(measurementType, getSpeedingTimeInSecondsForPastDays(driverID, numDays, includeForgiven, endDate)));
+        }
+        return speed;
+    }
+
+    /**
+     * Converts a value from miles (db) to km if needed based on the given measurement type.
+     *
+     * @param measurementType measurement type
+     * @param value           value
+     * @return converted value (if needed)
+     */
+    private Integer convertToKmIfNeeded(MeasurementType measurementType, Integer value) {
+        if (measurementType == null)
+            return value;
+
+        if (value == null)
+            return null;
+
+        if (measurementType.equals(MeasurementType.ENGLISH))
+            return value;
+
+        return MeasurementConversionUtil.fromMilesToKilometers(value).intValue();
+    }
+
     /**
      * Helps build the query string.
      *
-     * @param selectData what to select
-     * @param driverID driver id
-     * @param startDate start date to search from
-     * @param endDate end date to search to
-     * @param noteTypes note types to include in search
+     * @param selectData      what to select
+     * @param driverID        driver id
+     * @param startDate       start date to search from
+     * @param endDate         end date to search to
+     * @param noteTypes       note types to include in search
      * @param includeForgiven if it includes forgiven or not
-     * @param df date formatter to use on date parameters
+     * @param df              date formatter to use on date parameters
      * @return built query
      */
     private String getQueryString(String selectData, Integer driverID, Date startDate, Date endDate, List<NoteType> noteTypes, Integer includeForgiven, final SimpleDateFormat df) {

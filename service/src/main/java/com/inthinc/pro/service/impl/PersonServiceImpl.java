@@ -11,14 +11,13 @@ import javax.ws.rs.core.UriBuilder;
 import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.core.Response.Status;
 
-import com.inthinc.pro.dao.EventStatisticsDAO;
-import com.inthinc.pro.dao.RawScoreDAO;
-import com.inthinc.pro.dao.ScoreDAO;
+import com.inthinc.pro.dao.*;
 import com.inthinc.pro.dao.jdbc.AdminVehicleJDBCDAO;
 import com.inthinc.pro.dao.report.DriverReportDAO;
 import com.inthinc.pro.dao.util.MeasurementConversionUtil;
 import com.inthinc.pro.model.*;
 import com.inthinc.pro.model.aggregation.Score;
+import com.inthinc.pro.model.aggregation.Speed;
 import com.inthinc.pro.service.PersonService;
 import com.inthinc.pro.service.adapters.PersonDAOAdapter;
 import com.inthinc.pro.service.model.BatchResponse;
@@ -33,11 +32,36 @@ public class PersonServiceImpl extends AbstractService<Person, PersonDAOAdapter>
     @Autowired
     EventStatisticsDAO eventStatisticsDAO;
 
+    @Autowired
+    GroupDAO groupDAO;
+
     @Override
     public Response getAll() {
         List<Person> list = getDao().getAll();
         return Response.ok(new GenericEntity<List<Person>>(list) {
         }).build();
+    }
+
+    @Override
+    public Response getAllWithScore(Integer numberOfDays) {
+        List<Person> persons = filterOutPersonsWithNoDriverId(getDao().getAll());
+        Duration duration = Duration.getDurationByDays(numberOfDays);
+        CustomDuration customDuration = CustomDuration.getDurationByDays(numberOfDays);
+
+        List<PersonScoresView> personViews = null;
+        PersonScoresViewList personScoresViewList = new PersonScoresViewList();
+        if (duration != null) {
+            personViews = populateScoresAndSpeed(persons, duration);
+        } else if (customDuration != null) {
+            personViews = populateScoresAndSpeed(persons, customDuration);
+        }
+
+        if (personViews == null)
+            personViews = new ArrayList<PersonScoresView>();
+
+        personScoresViewList.setPersonScores(personViews);
+
+        return Response.ok(personScoresViewList).build();
     }
 
     @Override
@@ -58,41 +82,16 @@ public class PersonServiceImpl extends AbstractService<Person, PersonDAOAdapter>
                 score = driverReportDAO.getScore(driverID, customDuration);
             }
 
-            // standard person data
-            PersonScoresView personScoresView = new PersonScoresView(person);
-
-            // scoring data
-            if (score != null) {
-                personScoresView.setSpeeding(score.getSpeeding() != null ? score.getSpeeding().doubleValue() : 0d);
-                personScoresView.setAggressiveAccel(score.getAggressiveAccel() != null ? score.getAggressiveAccel().doubleValue() : 0d);
-                personScoresView.setAggressiveAccelEvents(score.getAggressiveAccelEvents() != null ? score.getAggressiveAccelEvents().doubleValue() : 0d);
-                personScoresView.setAggressiveBrake(score.getAggressiveBrake() != null ? score.getAggressiveBrake().doubleValue() : 0d);
-                personScoresView.setAggressiveBrakeEvents(score.getAggressiveBrakeEvents() != null ? score.getAggressiveBrakeEvents().doubleValue() : 0d);
-                personScoresView.setAggressiveBumpEvents(score.getAggressiveBumpEvents() != null ? score.getAggressiveBumpEvents().doubleValue() : 0d);
-                personScoresView.setOverall(score.getOverall() != null ? score.getOverall().doubleValue() : 0d);
-                personScoresView.setMilesDriven(score.getMilesDriven() != null ? score.getMilesDriven().doubleValue() : 0d);
-
-                // calculate custom field - turn
-                Number numAgressiveLeftEvents = score.getAggressiveLeftEvents();
-                Number numAgressiveRightEvents = score.getAggressiveRightEvents();
-                Double aggressiveLeftEvents = numAgressiveLeftEvents != null ? numAgressiveLeftEvents.doubleValue() : 0d;
-                Double aggressiveRightEvents = numAgressiveRightEvents != null ? numAgressiveRightEvents.doubleValue() : 0d;
-                personScoresView.setAggressiveTurnsEvents(aggressiveLeftEvents + aggressiveRightEvents);
-
-                // custom data from custom dao - event statistics
-                if (duration != null) {
-                    scoreNumDays = duration.getNumberOfDays();
-                } else if (customDuration != null) {
-                    scoreNumDays = customDuration.getNumberOfDays();
-                }
-                if (scoreNumDays != 0) {
-                    Integer maxSpeed = eventStatisticsDAO.getMaxSpeedForPastDays(person.getDriverID(), scoreNumDays, null, null);
-                    Double speedTime = eventStatisticsDAO.getSpeedingTimeInSecondsForPastDays(person.getDriverID(), scoreNumDays, null, null).doubleValue();
-                    personScoresView.setSpeedTime(speedTime);
-                    personScoresView.setMaxSpeed(convertToKmIfNeeded(person.getMeasurementType(), maxSpeed));
-                }
-
+            if (duration != null) {
+                scoreNumDays = duration.getNumberOfDays();
+            } else if (customDuration != null) {
+                scoreNumDays = customDuration.getNumberOfDays();
             }
+
+            Speed speed = eventStatisticsDAO.getSpeedInfoForPastDays(person.getDriverID(), person.getMeasurementType(), scoreNumDays, null, null);
+
+            // standard person data
+            PersonScoresView personScoresView = new PersonScoresView(person, score, speed);
 
             return Response.ok(personScoresView).build();
         }
@@ -131,24 +130,37 @@ public class PersonServiceImpl extends AbstractService<Person, PersonDAOAdapter>
         return Response.serverError().build();
     }
 
-    /**
-     * Converts a value from miles (db) to km if needed based on the given measurement type.
-     *
-     * @param measurementType measurement type
-     * @param value           value
-     * @return converted value (if needed)
-     */
-    private Integer convertToKmIfNeeded(MeasurementType measurementType, Integer value) {
-        if (measurementType == null)
-            return value;
+    private List<Person> filterOutPersonsWithNoDriverId(List<Person> persons){
+        List<Person> retList = new ArrayList<Person>(persons.size());
+        for (Person person: persons){
+            if (person != null && person.getDriver() != null && person.getDriver().getDriverID() != null)
+                retList.add(person);
+        }
+        return retList;
+    }
 
-        if (value == null)
-            return null;
+    private List<PersonScoresView> populateScoresAndSpeed(List<Person> persons, Duration duration){
+        List<PersonScoresView> personScoresViews = new ArrayList<PersonScoresView>();
+        for (Person person: persons){
+            PersonScoresView personScoresView = new PersonScoresView();
+            personScoresView.setPerson(person);
+            personScoresView.setScore(driverReportDAO.getScore(person.getDriverID(), duration));
+            personScoresView.setSpeed(eventStatisticsDAO.getSpeedInfoForPastDays(person.getDriverID(), person.getMeasurementType(), duration.getNumberOfDays(), null, null));
+            personScoresViews.add(personScoresView);
+        }
+        return personScoresViews;
+    }
 
-        if (measurementType.equals(MeasurementType.ENGLISH))
-            return value;
-
-        return MeasurementConversionUtil.fromMilesToKilometers(value).intValue();
+    private List<PersonScoresView> populateScoresAndSpeed(List<Person> persons, CustomDuration customDuration){
+        List<PersonScoresView> personScoresViews = new ArrayList<PersonScoresView>();
+        for (Person person: persons){
+            PersonScoresView personScoresView = new PersonScoresView();
+            personScoresView.setPerson(person);
+            personScoresView.setScore(driverReportDAO.getScore(person.getDriverID(), customDuration));
+            personScoresView.setSpeed(eventStatisticsDAO.getSpeedInfoForPastDays(person.getDriverID(), person.getMeasurementType(), customDuration.getNumberOfDays(), null, null));
+            personScoresViews.add(personScoresView);
+        }
+        return personScoresViews;
     }
 
     public EventStatisticsDAO getEventStatisticsDAO() {

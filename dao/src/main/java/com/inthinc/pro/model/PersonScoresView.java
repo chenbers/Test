@@ -1,13 +1,13 @@
 package com.inthinc.pro.model;
 
-import org.apache.tools.ant.types.resources.First;
+import com.inthinc.pro.model.aggregation.*;
+import com.inthinc.pro.model.aggregation.Score;
 import org.codehaus.jackson.annotate.JsonIgnore;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 import java.util.Date;
-import java.util.Locale;
 import java.util.TimeZone;
 
 /**
@@ -20,29 +20,18 @@ public class PersonScoresView {
     @XmlTransient
     private Person person;
 
-    private Double milesDriven;
+    @JsonIgnore
+    @XmlTransient
+    private com.inthinc.pro.model.aggregation.Score score;
 
-    private Double speeding;
+    @JsonIgnore
+    @XmlTransient
+    private Speed speed;
 
-    private Double speedTime;
-
-    private Double aggressiveAccel;
-
-    private Double aggressiveBrake;
-
-    private Double overall;
-
-    private Double aggressiveAccelEvents;
-
-    private Double aggressiveBrakeEvents;
-
-    private Integer maxSpeed;
-
-    private Double aggressiveTurnsEvents;
-    private Double aggressiveBumpEvents;
-
-    public PersonScoresView(Person person) {
+    public PersonScoresView(Person person, com.inthinc.pro.model.aggregation.Score score, Speed speed) {
         this.person = person;
+        this.score = score;
+        this.speed = speed;
     }
 
     public PersonScoresView() {
@@ -56,22 +45,12 @@ public class PersonScoresView {
         return person.getModified();
     }
 
-    public void setVehicleID(Date modified) {
-        if (person != null)
-            this.person.setModified(modified);
-    }
-
     @XmlElement
     public Integer getAcctID() {
         if (person == null)
             return null;
 
         return person.getAccountID();
-    }
-
-    public void setAcctID(Integer acctID) {
-        if (person != null)
-            this.person.setAcctID(acctID);
     }
 
     @XmlElement
@@ -82,23 +61,12 @@ public class PersonScoresView {
         return person.getDriver();
     }
 
-    public void setDriver(Driver driver) {
-        if (person != null)
-            this.person.setDriver(driver);
-    }
-
-
     @XmlElement
     public String getEmpid() {
         if (person == null)
             return null;
 
         return person.getEmpid();
-    }
-
-    public void setEmpid(String empid) {
-        if (person != null)
-            this.person.setEmpid(empid);
     }
 
     @XmlElement
@@ -109,22 +77,12 @@ public class PersonScoresView {
         return person.getFirst();
     }
 
-    public void setFirst(String first) {
-        if (person != null)
-            this.person.setFirst(first);
-    }
-
     @XmlElement
     public FuelEfficiencyType getFuelEfficiencyType() {
         if (person == null)
             return null;
 
         return person.getFuelEfficiencyType();
-    }
-
-    public void setFuelEfficiencyType(FuelEfficiencyType fuelEfficiencyType) {
-        if (person != null)
-            this.person.setFuelEfficiencyType(fuelEfficiencyType);
     }
 
     @XmlElement
@@ -135,22 +93,12 @@ public class PersonScoresView {
         return person.getHeight();
     }
 
-    public void setHeight(Integer height) {
-        if (person != null)
-            this.person.setHeight(height);
-    }
+    @XmlElement
+    public Integer getInfo() {
+        if (person == null)
+            return null;
 
-   @XmlElement
-   public Integer getInfo()    {
-       if (person == null)
-           return null;
-
-       return person.getInfo();
-   }
-
-    public void setInfo(Integer info)   {
-        if (person != null)
-            this.person.setInfo(info);
+        return person.getInfo();
     }
 
     @XmlElement
@@ -161,12 +109,6 @@ public class PersonScoresView {
         return person.getLast();
     }
 
-    public void setLast(String last)    {
-        if (person != null)
-            this.person.setLast(last);
-    }
-
-
     @XmlElement
     public String getLocale() {
         if (person == null)
@@ -174,12 +116,6 @@ public class PersonScoresView {
 
         return person.getLocale().getDisplayName();
     }
-
-    public void setLocale(Locale locale) {
-        if (person != null)
-            this.person.setLocale(locale);
-    }
-
 
     @XmlElement
     public MeasurementType getMeasurementType() {
@@ -189,12 +125,6 @@ public class PersonScoresView {
         return person.getMeasurementType();
     }
 
-    public void setMeasurementType(MeasurementType measurementType) {
-        if (person != null)
-            this.person.setMeasurementType(measurementType);
-    }
-
-
     @XmlElement
     public String getMiddle() {
         if (person == null)
@@ -202,12 +132,6 @@ public class PersonScoresView {
 
         return person.getMiddle();
     }
-
-    public void setMiddle(String middle) {
-        if (person != null)
-            this.person.setMiddle(middle);
-    }
-
 
     @XmlElement
     public Integer getPersonID() {
@@ -217,12 +141,6 @@ public class PersonScoresView {
         return person.getPersonID();
     }
 
-    public void setPersonID(Integer personID) {
-        if (person != null)
-            this.person.setPersonID(personID);
-    }
-
-
     @XmlElement
     public String getPriEmail() {
         if (person == null)
@@ -230,12 +148,6 @@ public class PersonScoresView {
 
         return person.getPriEmail();
     }
-
-    public void setPriEmail(String priEmail) {
-        if (person != null)
-            this.person.setPriEmail(priEmail);
-    }
-
 
     @XmlElement
     public String getPriPhone() {
@@ -245,15 +157,6 @@ public class PersonScoresView {
         return person.getPriPhone();
     }
 
-    public void setPriPhone(String priPhone) {
-        if (person != null)
-            this.person.setPriPhone(priPhone);
-    }
-
-
-
-
-
     @XmlElement
     public String getReportsTo() {
         if (person == null)
@@ -261,13 +164,6 @@ public class PersonScoresView {
 
         return person.getReportsTo();
     }
-
-    public void setReportsTo(String reportsTo) {
-        if (person != null)
-            this.person.setReportsTo(reportsTo);
-    }
-
-
 
     @XmlElement
     public String getSecEmail() {
@@ -277,12 +173,6 @@ public class PersonScoresView {
         return person.getSecEmail();
     }
 
-    public void setSecEmail(String secEmail) {
-        if (person != null)
-            this.person.setSecEmail(secEmail);
-    }
-
-
     @XmlElement
     public String getSecPhone() {
         if (person == null)
@@ -290,14 +180,6 @@ public class PersonScoresView {
 
         return person.getSecPhone();
     }
-
-    public void setSecPhone(String secPhone) {
-        if (person != null)
-            this.person.setSecPhone(secPhone);
-    }
-
-
-
 
     @XmlElement
     public String getSecText() {
@@ -307,13 +189,6 @@ public class PersonScoresView {
         return person.getSecText();
     }
 
-    public void setSecText(String secText) {
-        if (person != null)
-            this.person.setSecText(secText);
-    }
-
-
-
     @XmlElement
     public Status getStatus() {
         if (person == null)
@@ -321,14 +196,6 @@ public class PersonScoresView {
 
         return person.getStatus();
     }
-
-    public void setStatus(Status status) {
-        if (person != null)
-            this.person.setStatus(status);
-    }
-
-
-
 
     @XmlElement
     public String getSuffix() {
@@ -338,13 +205,6 @@ public class PersonScoresView {
         return person.getSuffix();
     }
 
-    public void setSuffix(String suffix) {
-        if (person != null)
-            this.person.setSuffix(suffix);
-    }
-
-
-
     @XmlElement
     public TimeZone getTimeZone() {
         if (person == null)
@@ -352,13 +212,6 @@ public class PersonScoresView {
 
         return person.getTimeZone();
     }
-
-    public void setTimeZone(TimeZone timeZone) {
-        if (person != null)
-            this.person.setTimeZone(timeZone);
-    }
-
-
 
     @XmlElement
     public String getTitle() {
@@ -368,12 +221,6 @@ public class PersonScoresView {
         return person.getTitle();
     }
 
-    public void setTitle(String title) {
-        if (person != null)
-            this.person.setTitle(title);
-    }
-
-
     @XmlElement
     public User getUser() {
         if (person == null)
@@ -381,12 +228,6 @@ public class PersonScoresView {
 
         return person.getUser();
     }
-
-    public void setUser(User user) {
-        if (person != null)
-            this.person.setUser(user);
-    }
-
 
     @XmlElement
     public Integer getWarn() {
@@ -396,13 +237,6 @@ public class PersonScoresView {
         return person.getWarn();
     }
 
-    public void setWarn(Integer warn) {
-        if (person != null)
-            this.person.setWarn(warn);
-    }
-
-
-
     @XmlElement
     public Integer getWeight() {
         if (person == null)
@@ -410,13 +244,6 @@ public class PersonScoresView {
 
         return person.getWeight();
     }
-
-    public void setWeight(Integer weight) {
-        if (person != null)
-            this.person.setWeight(weight);
-    }
-
-
 
     @XmlElement
     public Integer getAddressID() {
@@ -426,97 +253,75 @@ public class PersonScoresView {
         return person.getAddressID();
     }
 
-    public void setAddressID(Integer addressID) {
-        if (person != null)
-            this.person.setAddressID(addressID);
-    }
-
+    @XmlElement
     public Double getMilesDriven() {
-        return milesDriven;
+        return score.getMilesDriven() != null ? score.getMilesDriven().doubleValue() : 0d;
     }
 
-    public void setMilesDriven(Double milesDriven) {
-        this.milesDriven = milesDriven;
-    }
-
+    @XmlElement
     public Double getSpeeding() {
-        return speeding;
+        return score.getSpeeding() != null ? score.getSpeeding().doubleValue() : 0d;
     }
 
-    public void setSpeeding(Double speeding) {
-        this.speeding = speeding;
-    }
-
-    public Double getSpeedTime() {
-        return speedTime;
-    }
-
-    public void setSpeedTime(Double speedTime) {
-        this.speedTime = speedTime;
-    }
-
+    @XmlElement
     public Double getAggressiveAccel() {
-        return aggressiveAccel;
+        return score.getAggressiveAccel() != null ? score.getAggressiveAccel().doubleValue() : 0d;
     }
 
-    public void setAggressiveAccel(Double aggressiveAccel) {
-        this.aggressiveAccel = aggressiveAccel;
-    }
-
+    @XmlElement
     public Double getAggressiveBrake() {
-        return aggressiveBrake;
+        return score.getAggressiveBrake() != null ? score.getAggressiveBrake().doubleValue() : 0d;
     }
 
-    public void setAggressiveBrake(Double aggressiveBrake) {
-        this.aggressiveBrake = aggressiveBrake;
-    }
-
+    @XmlElement
     public Double getOverall() {
-        return overall;
+        return score.getOverall() != null ? score.getOverall().doubleValue() : 0d;
     }
 
-    public void setOverall(Double overall) {
-        this.overall = overall;
-    }
-
+    @XmlElement
     public Double getAggressiveAccelEvents() {
-        return aggressiveAccelEvents;
+        return score.getAggressiveAccelEvents() != null ? score.getAggressiveAccelEvents().doubleValue() : 0d;
     }
 
-    public void setAggressiveAccelEvents(Double aggressiveAccelEvents) {
-        this.aggressiveAccelEvents = aggressiveAccelEvents;
-    }
-
+    @XmlElement
     public Double getAggressiveBrakeEvents() {
-        return aggressiveBrakeEvents;
+        return score.getAggressiveBrakeEvents() != null ? score.getAggressiveBrakeEvents().doubleValue() : 0d;
     }
 
-    public void setAggressiveBrakeEvents(Double aggressiveBrakeEvents) {
-        this.aggressiveBrakeEvents = aggressiveBrakeEvents;
-    }
-
-    public Integer getMaxSpeed() {
-        return maxSpeed;
-    }
-
-    public void setMaxSpeed(Integer maxSpeed) {
-        this.maxSpeed = maxSpeed;
-    }
-
-    public Double getAggressiveTurnsEvents() {
-        return aggressiveTurnsEvents;
-    }
-
-    public void setAggressiveTurnsEvents(Double aggressiveTurnsEvents) {
-        this.aggressiveTurnsEvents = aggressiveTurnsEvents;
-    }
-
+    @XmlElement
     public Double getAggressiveBumpEvents() {
-        return aggressiveBumpEvents;
+        return score.getAggressiveBumpEvents() != null ? score.getAggressiveBumpEvents().doubleValue() : 0d;
     }
 
-    public void setAggressiveBumpEvents(Double aggressiveBumpEvents) {
-        this.aggressiveBumpEvents = aggressiveBumpEvents;
+    @XmlElement
+    public Double getAggressiveTurnsEvents() {
+        Number numAgressiveLeftEvents = score.getAggressiveLeftEvents();
+        Number numAgressiveRightEvents = score.getAggressiveRightEvents();
+        Double aggressiveLeftEvents = numAgressiveLeftEvents != null ? numAgressiveLeftEvents.doubleValue() : 0d;
+        Double aggressiveRightEvents = numAgressiveRightEvents != null ? numAgressiveRightEvents.doubleValue() : 0d;
+        return aggressiveLeftEvents + aggressiveRightEvents;
+    }
+
+    @XmlElement
+    public Integer getSpeedTime() {
+        return speed.getSpeedTime() != null ? speed.getSpeedTime() : 0;
+    }
+
+    @XmlElement
+    public Integer getMaxSpeed() {
+        return speed.getMaxSpeed() != null ? speed.getMaxSpeed() : 0;
+    }
+
+    public void setPerson(Person person) {
+        this.person = person;
+    }
+
+    public void setScore(Score score) {
+        this.score = score;
+    }
+
+    public void setSpeed(Speed speed) {
+        this.speed = speed;
     }
 }
 
