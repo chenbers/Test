@@ -200,26 +200,6 @@ public class EventStatisticsJDBCDAO extends SimpleJdbcDaoSupport implements Even
         return builder.toString();
     }
 
-    private String getQueryAllString(List<Integer> driverIDList, Date startDate, Date endDate, List<NoteType> noteTypes, Integer includeForgiven, final SimpleDateFormat df){
-        StringBuilder builder = new StringBuilder("SELECT COALESCE(MAX(c.topSpeed), 0) maxSpeed, SUM(COALESCE(duration, 0)) speedingTime, driverID")
-                .append(" FROM  cachedNote c group by driverID")
-                .append(" having c.driverID in (").append(":driverIDList").append(") ")
-                .append("  AND (c.time BETWEEN '").append(df.format(startDate)).append("' AND '").append(df.format(endDate)).append("') ")
-                .append(" AND c.type IN (");
-        for (int i = 0; i < noteTypes.size(); i++) {
-            builder.append(noteTypes.get(i).getCode());
-            if (i < noteTypes.size() - 1) {
-                builder.append(",");
-            }
-        }
-        builder.append(") ");
-        if (includeForgiven == 0) {
-            builder.append("AND forgiven<>1 ");
-        }
-        builder.append(" ORDER BY time DESC");
-        return builder.toString();
-    }
-
     @Override
     public Event findByID(Integer integer) {
         throw new NotImplementedException();
