@@ -131,7 +131,7 @@ public class PersonServiceImpl extends AbstractService<Person, PersonDAOAdapter>
         return Response.serverError().build();
     }
 
-    private List<Person> filterOutPersonsWithNoDriverId(List<Person> persons){
+    List<Person> filterOutPersonsWithNoDriverId(List<Person> persons){
         List<Person> retList = new ArrayList<Person>(persons.size());
         for (Person person: persons){
             if (person != null && person.getDriver() != null && person.getDriver().getDriverID() != null)
@@ -210,5 +210,13 @@ public class PersonServiceImpl extends AbstractService<Person, PersonDAOAdapter>
 
     public void setDriverReportDAO(DriverReportDAO driverReportDAO) {
         this.driverReportDAO = driverReportDAO;
+    }
+
+    public ScoreDAO getScoreDAO() {
+        return scoreDAO;
+    }
+
+    public void setScoreDAO(ScoreDAO scoreDAO) {
+        this.scoreDAO = scoreDAO;
     }
 }
