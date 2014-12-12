@@ -393,7 +393,7 @@ public class DaoUtilBean extends BaseBean
 		                        mname = column.name();
 		                }
 		                Param p = findParam(mname, i);
-		                if (p != null) {
+		                if (p != null && p.getParamValue() != null) {
 		                	if (!p.getParamValue().toString().isEmpty())
 		                		map.put(mname, p.getConvertedParamValue());
 		                }

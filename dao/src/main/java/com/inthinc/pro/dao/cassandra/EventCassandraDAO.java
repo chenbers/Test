@@ -48,28 +48,18 @@ public class EventCassandraDAO extends AggregationCassandraDAO implements EventD
     static {
         excludeAttribs.put(Attrib.NOTETYPE.getFieldName(), "");
         excludeAttribs.put(Attrib.NOTETIME.getFieldName(), "");
-        excludeAttribs.put(Attrib.NOTEFLAGS.getFieldName(), "");
         excludeAttribs.put(Attrib.NOTESPEED.getFieldName(), "");
         excludeAttribs.put(Attrib.NOTESPEEDLIMIT.getFieldName(), "");
         excludeAttribs.put(Attrib.NOTEODOMETER.getFieldName(), "");
-        excludeAttribs.put(Attrib.BOUNDARYID.getFieldName(), "");
-        excludeAttribs.put(Attrib.MAXLATITUDE.getFieldName(), "");
-        excludeAttribs.put(Attrib.MAXLONGITUDE.getFieldName(), "");
-        excludeAttribs.put(Attrib.NOTEMAPREV.getFieldName(), "");
-        excludeAttribs.put(Attrib.TOPSPEED.getFieldName(), "");
-        excludeAttribs.put(Attrib.AVGSPEED.getFieldName(), "");
-        excludeAttribs.put(Attrib.DISTANCE.getFieldName(), "");
-        excludeAttribs.put(Attrib.NOTELATLONG.getFieldName(), "");
-        excludeAttribs.put("head", "");
-        excludeAttribs.put("heading", "");
     }
  
     public static void main(String[] args) {
-        CassandraDB cassandraDB = new CassandraDB(true, "Inthinc Production", "note_qa", "cache_qa","schlumberger-node-b-1.tiwipro.com:9160", 1, false, false);
+        CassandraDB cassandraDB = new CassandraDB(true, "Inthinc Production", "note_prod", "cache_qa","schlumberger-node-b-1.tiwipro.com:9160", 1, false, false);
         EventCassandraDAO eventDAO = new EventCassandraDAO();
         List noteTypes = EventCategory.WARNING.getNoteTypesInCategory();
-        noteTypes.add(NoteType.LOCATION);
-        List<Event> events = eventDAO.getEventsForVehicle(58672, new Date(1413830104000L), new Date(), noteTypes, 1);
+        noteTypes.add(NoteType.WSZONES_DEPARTURE_EX);
+//        noteTypes.add(NoteType.LOCATION);
+        List<Event> events = eventDAO.getEventsForVehicle(17493, new Date(1418148082000L), new Date(), noteTypes, 1);
         for (Event event : events){
         	logger.info(event + " " + event.getAttribs());
         }
@@ -439,15 +429,18 @@ public class EventCassandraDAO extends AggregationCassandraDAO implements EventD
         boolean forgiven = false;
         Integer assetId = 0;
         Long noteId = 0L;
+		byte[] commType = new byte[1];
         List<Event> eventList = new ArrayList<Event>();
         for (HColumn<Composite, byte[]> column : columnList)
         {
             colName = column.getName();
+            long createdTS = column.getClock()/1000;
             forgiven = booleanSerializer.fromByteBuffer((ByteBuffer) colName.get(5));
             if ((includeForgiven || (!includeForgiven && forgiven == false))) {
                 method = stringSerializer.fromByteBuffer((ByteBuffer) colName.get(2));
                 assetId = bigIntegerSerializer.fromByteBuffer((ByteBuffer) colName.get(3)).intValue();
                 noteId = longSerializer.fromByteBuffer((ByteBuffer) colName.get(4));
+    			commType = bytesArraySerializer.fromByteBuffer((ByteBuffer) colName.get(5));
                 raw = column.getValue();
 
 				// 5/18/2013 We had a bug where new notes based on End of Trip attribs had method set to null
@@ -460,12 +453,18 @@ public class EventCassandraDAO extends AggregationCassandraDAO implements EventD
                 Map<String, Object> fieldMap = parser.parseNote(raw);
                 fieldMap.put("driverID", (isDriver) ? rowKey  : assetId);
                 fieldMap.put("vehicleID", (!isDriver) ? rowKey  : assetId);
+                fieldMap.put("8282", new Integer((int)commType[0]));
 
                 logger.debug("fieldMap: " + fieldMap);    
                 addNoteAttribsMap(fieldMap);
                 
                 Event event = getMapper().convertToModelObject(fieldMap, Event.class);
                 event.setNoteID(noteId);
+                
+                if (event.getTime() == null)
+                	event.setTime(new Date(time*1000L));
+                
+                event.setCreated(new Date(createdTS));
                 
                 if (event.isValidEvent())
                     eventList.add(event);
@@ -498,11 +497,13 @@ public class EventCassandraDAO extends AggregationCassandraDAO implements EventD
         QueryResult<ColumnSlice<Composite, byte[]>> result = sliceQuery.execute();
         ColumnSlice<Composite, byte[]> columnSlice = result.get();
 
+        long createdTS = 0;
         Composite columnKey = null;
         byte[] raw = null;
         List<HColumn<Composite, byte[]>> columnList = columnSlice.getColumns();
         for (HColumn<Composite, byte[]> column : columnList) {
             columnKey = column.getName();
+            createdTS = column.getClock()/1000;
             Integer assetID = bigIntegerSerializer.fromByteBuffer((ByteBuffer) columnKey.get(1)).intValue();
             String method = stringSerializer.fromByteBuffer((ByteBuffer) columnKey.get(2));
             raw = column.getValue();
@@ -519,6 +520,7 @@ public class EventCassandraDAO extends AggregationCassandraDAO implements EventD
             	event.setVehicleID(id);
             	event.setDriverID(assetID);
             }
+            event.setCreated(new Date(createdTS));
             event.setNoteID(0L);
             locationList.add(event);
         }
