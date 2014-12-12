@@ -691,7 +691,7 @@ public class HosDailyDriverLogReportCriteria extends ReportCriteria {
     }
 
 
-    private List<EditLog> getEditListForDay(DateTime day, List<HOSRecord> hosRecordList) {
+    public List<EditLog> getEditListForDay(DateTime day, List<HOSRecord> hosRecordList) {
         List<EditLog> editLogList = new ArrayList<EditLog>();
 
         for (HOSRecord hosRecord : hosRecordList) {
@@ -713,7 +713,7 @@ public class HosDailyDriverLogReportCriteria extends ReportCriteria {
     }
 
 
-    EditLog populateEditLog(HOSRecord hosRecord) {
+    public EditLog populateEditLog(HOSRecord hosRecord) {
         EditLog editLog = new EditLog();
         editLog.setReason(hosRecord.getReason());
         editLog.setApprovedBy(hosRecord.getApprovedBy());
