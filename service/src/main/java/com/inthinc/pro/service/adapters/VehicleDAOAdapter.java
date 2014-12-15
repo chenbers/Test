@@ -77,6 +77,10 @@ public class VehicleDAOAdapter extends BaseDAOAdapter<Vehicle> {
         return vehicleDAO.findByID(id);
     }
 
+    public List<Trip> getAllLastTrips(){
+        return vehicleDAO.getLastVehicleTripsByGroupIDDeep(getGroupID());
+    }
+
     public Vehicle findByName(String name) {
         return vehicleDAO.findByName(name);
     }

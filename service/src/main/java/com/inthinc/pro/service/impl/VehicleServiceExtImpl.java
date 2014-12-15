@@ -43,6 +43,13 @@ public class VehicleServiceExtImpl extends AbstractService<Vehicle, VehicleDAOAd
     }
 
     @Override
+    public Response getAllWithLastTrip() {
+        List<Vehicle> vehicles = getDao().getAll();
+        List<Trip> trips = getDao().getAllLastTrips();
+        return null;
+    }
+
+    @Override
     public Response getVehicleAndLastTripDate(String name) {
         Vehicle vehicle = getDao().findByName(name);
 

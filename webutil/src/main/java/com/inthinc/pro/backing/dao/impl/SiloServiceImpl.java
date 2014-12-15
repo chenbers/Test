@@ -263,7 +263,15 @@ public class SiloServiceImpl implements SiloService {
     @Override
     @MethodDescription(description = "Fetches the last trip associated with this ID and type (driver or vehicle).", crudType=CrudType.READ, modelClass=com.inthinc.pro.model.Trip.class)
     public Map<String, Object> getLastTrip(@DaoParam(name = "id", inputDesc = "driverID or vehicleID", validator=ValidatorType.DRIVER_OR_VEHICLE) Integer id,
-            @DaoParam(name = "type", type = com.inthinc.pro.backing.dao.ui.DVTypeList.class) Integer reqType) throws ProDAOException {
+                                           @DaoParam(name = "type", type = com.inthinc.pro.backing.dao.ui.DVTypeList.class) Integer reqType) throws ProDAOException {
+        return null;
+    }
+
+
+    @Override
+    @MethodDescription(description = "Fetches the vehicle trips for group hierarchy.", crudType=CrudType.READ, modelClass=com.inthinc.pro.model.configurator.VehicleSetting.class)
+    @DAODescription(daoID="vehicleDAO", daoMethod="getLastVehicleTripsByGroupIDDeep")
+    public List<Map<String, Object>> getLastVehicleTripsByGroupIDDeep(@DaoParam(name = "groupID") Integer groupID) {
         return null;
     }
 
