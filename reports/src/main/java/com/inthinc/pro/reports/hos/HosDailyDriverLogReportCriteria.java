@@ -1,24 +1,21 @@
 package com.inthinc.pro.reports.hos;
 
-import java.awt.Image;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.text.MessageFormat;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.ResourceBundle;
-import java.util.TimeZone;
-
-import javax.imageio.ImageIO;
-
+import com.inthinc.hos.adjusted.HOSAdjustedList;
+import com.inthinc.hos.ddl.*;
+import com.inthinc.hos.model.*;
+import com.inthinc.hos.rules.HOSRules;
+import com.inthinc.hos.rules.RuleSetFactory;
+import com.inthinc.pro.dao.*;
+import com.inthinc.pro.dao.util.HOSUtil;
+import com.inthinc.pro.dao.util.MeasurementConversionUtil;
+import com.inthinc.pro.model.*;
+import com.inthinc.pro.model.hos.HOSRecord;
+import com.inthinc.pro.model.hos.HOSVehicleDayData;
+import com.inthinc.pro.reports.ReportCriteria;
+import com.inthinc.pro.reports.ReportType;
+import com.inthinc.pro.reports.jasper.ReportUtils;
+import com.inthinc.pro.reports.util.DateTimeUtil;
+import com.inthinc.pro.reports.util.MessageUtil;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
@@ -27,48 +24,15 @@ import org.joda.time.LocalDate;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
-import com.inthinc.hos.adjusted.HOSAdjustedList;
-import com.inthinc.hos.ddl.DDLUtil;
-import com.inthinc.hos.ddl.HOSOccupantLog;
-import com.inthinc.hos.ddl.HosDailyDriverLog;
-import com.inthinc.hos.ddl.HosDriverDailyLogGraph;
-import com.inthinc.hos.ddl.Recap;
-import com.inthinc.hos.ddl.RemarkLog;
-import com.inthinc.hos.ddl.VehicleInfo;
-import com.inthinc.hos.model.DayTotals;
-import com.inthinc.hos.model.HOSOrigin;
-import com.inthinc.hos.model.HOSRec;
-import com.inthinc.hos.model.HOSRecAdjusted;
-import com.inthinc.hos.model.HOSStatus;
-import com.inthinc.hos.model.RuleSetType;
-import com.inthinc.hos.rules.HOSRules;
-import com.inthinc.hos.rules.RuleSetFactory;
-import com.inthinc.pro.dao.AccountDAO;
-import com.inthinc.pro.dao.AddressDAO;
-import com.inthinc.pro.dao.DriverDAO;
-import com.inthinc.pro.dao.GroupDAO;
-import com.inthinc.pro.dao.HOSDAO;
-import com.inthinc.pro.dao.UserDAO;
-import com.inthinc.pro.dao.VehicleDAO;
-import com.inthinc.pro.dao.util.HOSUtil;
-import com.inthinc.pro.dao.util.MeasurementConversionUtil;
-import com.inthinc.pro.model.Account;
-import com.inthinc.pro.model.Address;
-import com.inthinc.pro.model.DOTOfficeType;
-import com.inthinc.pro.model.Driver;
-import com.inthinc.pro.model.Group;
-import com.inthinc.pro.model.GroupHierarchy;
-import com.inthinc.pro.model.InspectionType;
-import com.inthinc.pro.model.Status;
-import com.inthinc.pro.model.User;
-import com.inthinc.pro.model.Vehicle;
-import com.inthinc.pro.model.hos.HOSRecord;
-import com.inthinc.pro.model.hos.HOSVehicleDayData;
-import com.inthinc.pro.reports.ReportCriteria;
-import com.inthinc.pro.reports.ReportType;
-import com.inthinc.pro.reports.jasper.ReportUtils;
-import com.inthinc.pro.reports.util.DateTimeUtil;
-import com.inthinc.pro.reports.util.MessageUtil;
+import javax.imageio.ImageIO;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.text.MessageFormat;
+import java.text.SimpleDateFormat;
+import java.util.*;
+import java.util.List;
+import java.util.Map.Entry;
 
 public class HosDailyDriverLogReportCriteria extends ReportCriteria {
 
@@ -141,6 +105,8 @@ public class HosDailyDriverLogReportCriteria extends ReportCriteria {
         List<Group> reportGroupList = getReportGroupList(groupIDList, accountGroupHierarchy);
         List<Driver> reportDriverList = getReportDriverList(reportGroupList);
 
+        Collections.sort(reportDriverList);
+
         Account account = null;
         List<ReportCriteria> groupCriteriaList = new ArrayList<ReportCriteria>();
 
@@ -157,7 +123,7 @@ public class HosDailyDriverLogReportCriteria extends ReportCriteria {
             initDriverCriteria(accountGroupHierarchy, driverID, interval, expandedInterval, driver, account, terminalAddress);
             groupCriteriaList.addAll(criteriaList);
         }
-        
+
         criteriaList = groupCriteriaList;
     }
 
