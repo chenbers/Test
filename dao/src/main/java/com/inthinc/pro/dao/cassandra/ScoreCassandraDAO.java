@@ -13,6 +13,7 @@ import java.util.Map;
 import java.util.TimeZone;
 import java.util.TreeMap;
 
+import com.inthinc.pro.model.*;
 import org.apache.log4j.Logger;
 
 import com.inthinc.pro.dao.DriverDAO;
@@ -25,23 +26,6 @@ import com.inthinc.pro.dao.hessian.VehicleHessianDAO;
 import com.inthinc.pro.dao.hessian.exceptions.EmptyResultSetException;
 import com.inthinc.pro.dao.hessian.proserver.SiloService;
 import com.inthinc.pro.dao.hessian.proserver.SiloServiceCreator;
-import com.inthinc.pro.model.CrashSummary;
-import com.inthinc.pro.model.Driver;
-import com.inthinc.pro.model.DriverReportItem;
-import com.inthinc.pro.model.DriverScore;
-import com.inthinc.pro.model.Duration;
-import com.inthinc.pro.model.EntityType;
-import com.inthinc.pro.model.Group;
-import com.inthinc.pro.model.GroupHierarchy;
-import com.inthinc.pro.model.IdlePercentItem;
-import com.inthinc.pro.model.ScoreItem;
-import com.inthinc.pro.model.ScoreType;
-import com.inthinc.pro.model.ScoreTypeBreakdown;
-import com.inthinc.pro.model.ScoreableEntity;
-import com.inthinc.pro.model.SpeedPercentItem;
-import com.inthinc.pro.model.TrendItem;
-import com.inthinc.pro.model.Vehicle;
-import com.inthinc.pro.model.VehicleReportItem;
 import com.inthinc.pro.model.event.Event;
 import com.inthinc.pro.scoring.ScoringFormulas;
 
@@ -53,6 +37,7 @@ import me.prettyprint.hector.api.beans.HCounterColumn;
 import me.prettyprint.hector.api.factory.HFactory;
 import me.prettyprint.hector.api.query.MultigetSliceCounterQuery;
 import me.prettyprint.hector.api.query.QueryResult;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 public class ScoreCassandraDAO extends AggregationCassandraDAO implements ScoreDAO {
     private static final Logger logger = Logger.getLogger(ScoreCassandraDAO.class);
@@ -649,4 +634,8 @@ public class ScoreCassandraDAO extends AggregationCassandraDAO implements ScoreD
 
     }
 
+    @Override
+    public List<DVQMap> getDriveQMapList(Integer id, Integer duration) {
+        throw new NotImplementedException();
+    }
 }

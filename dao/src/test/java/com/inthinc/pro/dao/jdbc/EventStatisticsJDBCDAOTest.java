@@ -1,6 +1,9 @@
 package com.inthinc.pro.dao.jdbc;
 
 import com.inthinc.pro.model.Driver;
+import com.inthinc.pro.model.MeasurementType;
+import com.inthinc.pro.model.Person;
+import com.inthinc.pro.model.aggregation.Speed;
 import com.inthinc.pro.model.event.NoteType;
 import it.config.ITDataSource;
 import it.config.IntegrationConfig;
@@ -63,7 +66,6 @@ public class EventStatisticsJDBCDAOTest {
         assertEquals(99, maxSpeed);
     }
 
-
     @Test
     public void getSpeedingTimeInSecondsForPastDays(){
         DateTime nowAndAFewMinutesAfter = new DateTime();
@@ -71,6 +73,31 @@ public class EventStatisticsJDBCDAOTest {
 
         int speedingTime = eventStatisticsJDBCDAO.getSpeedingTimeInSecondsForPastDays(TEST_DRIVER_ID, 6, 1, nowAndAFewMinutesAfter.toDate());
         assertEquals(100, speedingTime);
+    }
+
+    @Test
+    public void getSpeedForPastDays(){
+        DateTime nowAndAFewMinutesAfter = new DateTime();
+        nowAndAFewMinutesAfter = nowAndAFewMinutesAfter.plusMinutes(20);
+        Speed speed = eventStatisticsJDBCDAO.getSpeedInfoForPastDays(TEST_DRIVER_ID, MeasurementType.ENGLISH, 6, 1, nowAndAFewMinutesAfter.toDate());
+        assertEquals(99, speed.getMaxSpeed().intValue());
+        assertEquals(100, speed.getSpeedTime().intValue());
+    }
+
+    @Test
+    public void getSpeedForAll(){
+        Person person = new Person();
+        Driver driver = new Driver();
+        driver.setDriverID(TEST_DRIVER_ID);
+        person.setPersonID(TEST_PERSON_ID);
+        person.setDriver(driver);
+        Map<Integer, Speed> speeds = eventStatisticsJDBCDAO.getSpeedInfoForPersons(Arrays.asList(person), 6);
+        for (Map.Entry<Integer, Speed> speedEntry: speeds.entrySet()){
+            assertEquals(TEST_DRIVER_ID, speedEntry.getKey().intValue());
+            Speed speed = speedEntry.getValue();
+            assertEquals(99, speed.getMaxSpeed().intValue());
+            assertEquals(100, speed.getSpeedTime().intValue());
+        }
     }
 
     private static void createTestData() {

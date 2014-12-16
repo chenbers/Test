@@ -53,6 +53,12 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
     }
 
     @Override
+    public List<DVQMap> getDriveQMapList(Integer groupID, Integer duration) {
+        logger.debug("getDriveQMapList: " + groupID);
+        return getMapper().convertToModelObject(reportService.getDVScoresByGT(groupID, duration), DVQMap.class);
+    }
+
+    @Override
     public List<DriverScore> getSortedDriverScoreList(Integer groupID, Duration duration, GroupHierarchy gh)
     {
     	logger.debug("getSortedDriverScoreList: " + groupID);
@@ -548,7 +554,7 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
             {
             	driveQMap = getMapper().convertToModelObject(reportService.getVScoreByVT(id, duration.getDvqCode()), DriveQMap.class);
             }
-            
+
             List<ScoreItem> scoreItemList = new ArrayList<ScoreItem>();
         	Map<ScoreType, Integer> scoreMap = driveQMap.getScoreMap();
         	
