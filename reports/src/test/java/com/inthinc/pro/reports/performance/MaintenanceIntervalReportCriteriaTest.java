@@ -177,70 +177,59 @@ public class MaintenanceIntervalReportCriteriaTest extends BasePerformanceUnitTe
     
     @Test
     public void testDatasetSizeIsCorrect(){
-        assertTrue(resultingDataset.size() == 2);
+        assertTrue(resultingDataset.size() == 1);
     }
     
     @Test
     public void testVehicleNamesAreCorrect(){
+<<<<<<< HEAD
         assertEquals(((MaintenanceIntervalReportCriteria.BackingWrapper)resultingDataset.get(0)).getVehicleID(),
                         VEHICLE_ID_1+"");
         assertEquals(((MaintenanceIntervalReportCriteria.BackingWrapper)resultingDataset.get(1)).getVehicleID(),
                         VEHICLE_ID_2+"");
+=======
+        assertEquals(((MaintenanceIntervalReportCriteria.BackingWrapper)resultingDataset.get(0)).getVehicleID(), VEHICLE_ID_2+"name");
+>>>>>>> DE10012 - Fix test, after logic change, first test data should be excluded.
     }
     
     @Test
     public void testOdometerValuesAreCorrect(){
         assertEquals(((MaintenanceIntervalReportCriteria.BackingWrapper)resultingDataset.get(0)).getOdometer(),
-                        SUM_ODOMETER_1+"");
-        assertEquals(((MaintenanceIntervalReportCriteria.BackingWrapper)resultingDataset.get(1)).getOdometer(),
                         SUM_ODOMETER_2+"");
     }
     
     @Test
     public void testHourValuesAreCorrect(){
         assertEquals(((MaintenanceIntervalReportCriteria.BackingWrapper)resultingDataset.get(0)).getHours(),
-                        (SUM_DRIVE_TIME_1/3600)+"");
-        assertEquals(((MaintenanceIntervalReportCriteria.BackingWrapper)resultingDataset.get(1)).getHours(),
                         (SUM_DRIVE_TIME_2/3600)+"");
     }
     
     @Test
     public void testBaseOdometerValuesAreCorrect(){
         assertEquals(((MaintenanceIntervalReportCriteria.BackingWrapper)resultingDataset.get(0)).getBaseOdometer(),
-                        vehicleSetting1.getActual().get(MaintenanceSettings.MAINT_BY_DIST_START.getCode()));
-        assertEquals(((MaintenanceIntervalReportCriteria.BackingWrapper)resultingDataset.get(1)).getBaseOdometer(),
                         vehicleSetting2.getActual().get(MaintenanceSettings.MAINT_BY_DIST_START.getCode()));
     }
     
     @Test
     public void testIntervalOdometerValuesAreCorrect(){
         assertEquals(((MaintenanceIntervalReportCriteria.BackingWrapper)resultingDataset.get(0)).getIntervalOdometer(),
-                        vehicleSetting1.getActual().get(MaintenanceSettings.MAINT_BY_DIST_INTERVAL.getCode()));
-        assertEquals(((MaintenanceIntervalReportCriteria.BackingWrapper)resultingDataset.get(1)).getIntervalOdometer(),
                         vehicleSetting2.getActual().get(MaintenanceSettings.MAINT_BY_DIST_INTERVAL.getCode()));
     }
     
     @Test
     public void testIntervalHourValuesAreCorrect(){
         assertEquals(((MaintenanceIntervalReportCriteria.BackingWrapper)resultingDataset.get(0)).getIntervalHours(),
-                        vehicleSetting1.getActual().get(MaintenanceSettings.MAINT_BY_ENGINE_HOURS_INTERVAL.getCode()));
-        assertEquals(((MaintenanceIntervalReportCriteria.BackingWrapper)resultingDataset.get(1)).getIntervalHours(),
                         vehicleSetting2.getActual().get(MaintenanceSettings.MAINT_BY_ENGINE_HOURS_INTERVAL.getCode()));
     }
     
     @Test
     public void testDistancesOverAreCorrect(){
-        assertEquals(((MaintenanceIntervalReportCriteria.BackingWrapper)resultingDataset.get(0)).getDistanceOver(),
-                        ODOMETER_CALC_1+"");
-        assertEquals(((MaintenanceIntervalReportCriteria.BackingWrapper)resultingDataset.get(1)).getDistanceOver(),
-                        ODOMETER_CALC_2+"");
+        assertEquals(((MaintenanceIntervalReportCriteria.BackingWrapper)resultingDataset.get(0)).getDistanceOver(),ODOMETER_CALC_2+"");
     }
     
     @Test
     public void testHoursOverAreCorrect(){
         assertEquals(((MaintenanceIntervalReportCriteria.BackingWrapper)resultingDataset.get(0)).getHoursOver(),
-                        DRIVE_TIME_CALC_1+"");
-        assertEquals(((MaintenanceIntervalReportCriteria.BackingWrapper)resultingDataset.get(1)).getHoursOver(),
                         DRIVE_TIME_CALC_2+"");
     }
     
