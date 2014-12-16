@@ -105,7 +105,31 @@ public class HosDailyDriverLogReportCriteria extends ReportCriteria {
         List<Group> reportGroupList = getReportGroupList(groupIDList, accountGroupHierarchy);
         List<Driver> reportDriverList = getReportDriverList(reportGroupList);
 
-        Collections.sort(reportDriverList);
+        Collections.sort(reportDriverList, new Comparator<Driver>() {
+            @Override
+            public int compare(Driver d1, Driver d2) {
+                Person p1 = null;
+                Person p2 = null;
+
+                if (d1 != null && d1.getPerson() != null)
+                    p1 = d1.getPerson();
+
+                if (d2 != null && d2.getPerson() != null)
+                    p2 = d2.getPerson();
+
+
+                if (p1 == null && p2 == null)
+                    return 0;
+
+                if (p1 == null && p2 != null)
+                    return Integer.MAX_VALUE;
+
+                if (p2 == null && p1 != null)
+                    return Integer.MIN_VALUE;
+
+                return p1.getFullName().compareTo(p2.getFullName());
+            }
+        });
 
         Account account = null;
         List<ReportCriteria> groupCriteriaList = new ArrayList<ReportCriteria>();
