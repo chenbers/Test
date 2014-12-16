@@ -220,5 +220,11 @@ public class AlertMessage
     public void setEscalationTryCount(Integer escalationTryCount) {
         this.escalationTryCount = escalationTryCount;
     }
+    public String getName() {
+        return name;
+    }
+    public void setName(String name) {
+        this.name = name;
+    }
 
 }

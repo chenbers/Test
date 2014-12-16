@@ -20,6 +20,7 @@ import org.apache.log4j.Logger;
 import com.inthinc.pro.ProDAOException;
 import com.inthinc.pro.comm.parser.attrib.Attrib;
 import com.inthinc.pro.dao.AlertMessageDAO;
+import com.inthinc.pro.dao.DeviceDAO;
 import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.dao.EventDAO;
 import com.inthinc.pro.dao.GroupDAO;
@@ -36,6 +37,7 @@ import com.inthinc.pro.model.AlertMessageBuilder;
 import com.inthinc.pro.model.AlertMessageDeliveryType;
 import com.inthinc.pro.model.AlertMessageType;
 import com.inthinc.pro.model.AlertSentStatus;
+import com.inthinc.pro.model.Device;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.GroupHierarchy;
@@ -60,6 +62,7 @@ public class AlertMessageJDBCDAO extends GenericJDBCDAO implements AlertMessageD
     private PersonDAO personDAO;
     private VehicleDAO vehicleDAO;
     private DriverDAO driverDAO;
+    private DeviceDAO deviceDAO;
     private ZoneDAO zoneDAO;
     private GroupDAO groupDAO;
     private AddressLookup addressLookup;
@@ -180,8 +183,10 @@ public class AlertMessageJDBCDAO extends GenericJDBCDAO implements AlertMessageD
                 alertMessage.setDeviceID(resultSet.getInt(4));
                 alertMessage.setAttribs(resultSet.getString(5));
                 alertMessage.setPersonID(resultSet.getInt(6));
-                alertMessage.setAlertID(resultSet.getInt(7));
-                alertMessage.setName(findAlertName(alertMessage.getAlertID()));
+                Integer alertID = resultSet.getInt(7);
+                alertMessage.setAlertID(alertID);
+                if (alertID != 0)
+                    alertMessage.setName(findAlertName(alertID));
                 alertMessage.setAlertMessageType(AlertMessageType.valueOf(resultSet.getInt(8)));
                 alertMessage.setAlertMessageDeliveryType(AlertMessageDeliveryType.valueOf(resultSet.getInt(9)));
                 alertMessage.setStatus(AlertEscalationStatus.valueOf(resultSet.getInt(10)));
@@ -552,6 +557,14 @@ public class AlertMessageJDBCDAO extends GenericJDBCDAO implements AlertMessageD
         this.zoneDAO = zoneDAO;
     }
 
+    public DeviceDAO getDeviceDAO() {
+        return deviceDAO;
+    }
+
+    public void setDeviceDAO(DeviceDAO deviceDAO) {
+        this.deviceDAO = deviceDAO;
+    }
+
     private static final String FETCH_RED_FLAG_MESSAGE_INFO_PREFIX = "SELECT noteID, msgID, status FROM message WHERE noteID IN (";
     private static final String FETCH_RED_FLAG_MESSAGE_INFO_SUFFIX = ") order by noteID";
 
@@ -833,7 +846,7 @@ public class AlertMessageJDBCDAO extends GenericJDBCDAO implements AlertMessageD
             addLocationInfo(event);                     //#12 - #14
             addOdometer(event);                         //#15
             addSpeed(event);                            //#16
-            parameterList.add(String.valueOf(personMeasurementType.ordinal()));    //#17 - needs to be 0|1 -- 0-english or 1-metric
+            parameterList.add(String.valueOf(personMeasurementType.ordinal()-1));    //#17 - needs to be 0|1 -- 0-english or 1-metric
             addEventParams(event, alertMessage);        //#18+  if any
 
             return parameterList;
@@ -858,7 +871,8 @@ public class AlertMessageJDBCDAO extends GenericJDBCDAO implements AlertMessageD
             addLocationInfo(event);                     //#12 - #14
             addOdometer(event);                         //#15
             addSpeed(event);                            //#16
-            parameterList.add(String.valueOf(personMeasurementType.ordinal()));    //#17 - needs to be 0|1 -- 0-english or 1-metric
+            int mType = personMeasurementType.ordinal();
+            parameterList.add(String.valueOf(mType));    //#17 - needs to be 0|1 -- 0-english or 1-metric
             addEventParams(event, alertMessage);        //#18+  if any
 
             return parameterList;
