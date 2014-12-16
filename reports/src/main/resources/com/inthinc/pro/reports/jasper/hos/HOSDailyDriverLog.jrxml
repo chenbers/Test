@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="HOSDDL" pageWidth="595" pageHeight="842" whenNoDataType="NoDataSection" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
-	<property name="ireport.zoom" value="1.0"/>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="HOSDDL" pageWidth="595" pageHeight="842" whenNoDataType="NoDataSection" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="50a85041-9029-41ba-8626-cf5e0dcf849e">
+	<property name="ireport.zoom" value="1.4641000000000015"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
-	<subDataset name="remarksDataset">
+	<property name="ireport.y" value="546"/>
+	<subDataset name="remarksDataset" uuid="c2e3cc0b-22a2-4622-8f6c-27ee4354fb06">
 		<parameter name="USE_METRIC" class="java.lang.Boolean" isForPrompting="false"/>
 		<field name="logTimeDate" class="java.util.Date"/>
 		<field name="logTimeZone" class="java.util.TimeZone"/>
@@ -17,7 +17,14 @@
 		<field name="editor" class="java.lang.String"/>
 		<field name="subDescription" class="java.lang.String"/>
 	</subDataset>
-	<subDataset name="vehiclesDataset">
+	<subDataset name="editDataset" uuid="c2e3cc0b-22a2-4622-8f6c-27ee4354fb06">
+		<parameter name="USE_METRIC" class="java.lang.Boolean" isForPrompting="false"/>
+		<field name="reason" class="java.lang.String"/>
+		<field name="approvedBy" class="java.lang.String"/>
+		<field name="editor" class="java.lang.String"/>
+		<field name="timeStamp" class="java.util.Date"/>
+	</subDataset>
+	<subDataset name="vehiclesDataset" uuid="471f0d66-5026-4d3c-8f91-a12b444d2295">
 		<parameter name="USE_METRIC" class="java.lang.Boolean" isForPrompting="false"/>
 		<field name="startOdometer" class="java.lang.Number"/>
 		<field name="name" class="java.lang.String"/>
@@ -45,6 +52,7 @@
 	<field name="trailers" class="java.lang.String"/>
 	<field name="correctedGraphList" class="java.util.List"/>
 	<field name="remarksList" class="java.util.List"/>
+	<field name="editList" class="java.util.List"/>
 	<field name="recap" class="java.util.List"/>
 	<field name="recapType" class="com.inthinc.hos.ddl.RecapType"/>
 	<field name="driverEmpID" class="java.lang.String"/>
@@ -54,267 +62,267 @@
 	<title>
 		<band height="416" splitType="Stretch">
 			<textField>
-				<reportElement x="425" y="0" width="130" height="12"/>
+				<reportElement x="425" y="0" width="130" height="12" uuid="5b4a6ccd-d321-4d30-bddb-3ac3fa6d0436"/>
 				<textElement textAlignment="Right">
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$P{REPORT_DATE_TIME}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$P{REPORT_DATE_TIME}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="0" y="16" width="555" height="19"/>
+				<reportElement x="0" y="16" width="555" height="19" uuid="8f60906e-cc4c-4d16-9071-a913ce030749"/>
 				<textElement textAlignment="Center">
 					<font size="14" isUnderline="true"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.ddl.title}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$R{report.ddl.title}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="0" y="35" width="555" height="11"/>
+				<reportElement x="0" y="35" width="555" height="11" uuid="6052de1b-5f82-4a9a-9c64-7c9eb8a8ba58"/>
 				<textElement textAlignment="Center">
 					<font size="8" isUnderline="false"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.ddl.legend}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$R{report.ddl.legend}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="0" y="46" width="64" height="20"/>
+				<reportElement x="0" y="46" width="64" height="20" uuid="6bc97efc-9ca2-4d1d-8a9a-453d5738ae99"/>
 				<textElement>
 					<font size="12" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.ddl.header.day}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$R{report.ddl.header.day}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="false">
-				<reportElement x="64" y="46" width="100" height="20"/>
+				<reportElement x="64" y="46" width="100" height="20" uuid="fe5a6814-01ec-4545-a43c-590134a49b96"/>
 				<textElement>
 					<font size="12" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{day}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{day}]]></textFieldExpression>
 			</textField>
 			<componentElement>
-				<reportElement x="0" y="66" width="350" height="14"/>
+				<reportElement x="0" y="66" width="350" height="14" uuid="0cbd090f-a884-48e6-9be2-d5339f28fcb1"/>
 				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" printOrder="Vertical">
-					<datasetRun subDataset="vehiclesDataset">
+					<datasetRun subDataset="vehiclesDataset" uuid="236d647d-f7b4-48b7-b4bf-a0f75af95e2e">
 						<parametersMapExpression><![CDATA[$P{REPORT_PARAMETERS_MAP}]]></parametersMapExpression>
 						<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{vehicles})]]></dataSourceExpression>
 					</datasetRun>
 					<jr:listContents height="14" width="350">
 						<textField isStretchWithOverflow="true">
-							<reportElement x="1" y="1" width="100" height="12"/>
+							<reportElement x="1" y="1" width="100" height="12" uuid="42bc7b7f-4b49-402d-b656-25b752246fe6"/>
 							<textElement textAlignment="Center">
 								<font size="8"/>
 							</textElement>
-							<textFieldExpression class="java.lang.String"><![CDATA[com.inthinc.pro.reports.hos.converter.Converter.convertRemarkDistance($F{startOdometer},$P{USE_METRIC},$P{REPORT_LOCALE})]]></textFieldExpression>
+							<textFieldExpression><![CDATA[com.inthinc.pro.reports.hos.converter.Converter.convertRemarkDistance($F{startOdometer},$P{USE_METRIC},$P{REPORT_LOCALE})]]></textFieldExpression>
 						</textField>
 						<textField isStretchWithOverflow="true" isBlankWhenNull="false">
-							<reportElement x="110" y="1" width="240" height="12"/>
+							<reportElement x="110" y="1" width="240" height="12" uuid="d52d4f7b-bee1-4428-b764-2d583f2897df"/>
 							<textElement textAlignment="Center">
 								<font size="8"/>
 							</textElement>
-							<textFieldExpression class="java.lang.String"><![CDATA[msg("{0} ({1})", $F{name}, com.inthinc.pro.reports.hos.converter.Converter.convertRemarkDistance($F{vehicleMiles},$P{USE_METRIC},$P{REPORT_LOCALE}))]]></textFieldExpression>
+							<textFieldExpression><![CDATA[msg("{0} ({1})", $F{name}, com.inthinc.pro.reports.hos.converter.Converter.convertRemarkDistance($F{vehicleMiles},$P{USE_METRIC},$P{REPORT_LOCALE}))]]></textFieldExpression>
 						</textField>
 					</jr:listContents>
 				</jr:list>
 			</componentElement>
 			<frame>
-				<reportElement x="0" y="68" width="350" height="13">
+				<reportElement x="0" y="68" width="350" height="13" uuid="a42917bc-2bcf-46b5-a921-484704a6c31e">
 					<printWhenExpression><![CDATA[Boolean.valueOf($F{vehicles} == null || $F{vehicles}.isEmpty())]]></printWhenExpression>
 				</reportElement>
 				<staticText>
-					<reportElement x="2" y="0" width="100" height="12"/>
+					<reportElement x="2" y="0" width="100" height="12" uuid="66ffb698-bc72-4aeb-ae3c-b751a26d93fa"/>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font size="8"/>
 					</textElement>
 					<text><![CDATA[0]]></text>
 				</staticText>
 				<textField>
-					<reportElement x="110" y="0" width="240" height="12"/>
+					<reportElement x="110" y="0" width="240" height="12" uuid="abf678c7-ad4d-499b-bc50-49e1aa3fba81"/>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font size="8"/>
 					</textElement>
-					<textFieldExpression class="java.lang.String"><![CDATA[$R{report.ddl.none}]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$R{report.ddl.none}]]></textFieldExpression>
 				</textField>
 			</frame>
 			<line>
-				<reportElement positionType="Float" x="0" y="81" width="100" height="1"/>
+				<reportElement positionType="Float" x="0" y="81" width="100" height="1" uuid="434c3512-a42a-4a1a-9bdd-9ce93e75160d"/>
 			</line>
 			<textField pattern="">
-				<reportElement positionType="Float" x="0" y="82" width="100" height="12"/>
+				<reportElement positionType="Float" x="0" y="82" width="100" height="12" uuid="2f4d690c-da19-436b-93c9-784f520631a0"/>
 				<textElement textAlignment="Center">
 					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.ddl.header.startOdometer}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$R{report.ddl.header.startOdometer}]]></textFieldExpression>
 			</textField>
 			<line>
-				<reportElement positionType="Float" x="110" y="81" width="240" height="1"/>
+				<reportElement positionType="Float" x="110" y="81" width="240" height="1" uuid="40bd59b1-2184-49ce-9808-e7f7e7cf727d"/>
 			</line>
 			<textField pattern="">
-				<reportElement positionType="Float" x="110" y="82" width="240" height="12"/>
+				<reportElement positionType="Float" x="110" y="82" width="240" height="12" uuid="1cf3af14-0ca3-45b2-aecb-9d0f491c6cb2"/>
 				<textElement textAlignment="Center">
 					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[com.inthinc.pro.reports.converter.MeasurementTextConverter.getMessage("report.hos.vehiclesDistance",$P{REPORT_LOCALE},$P{USE_METRIC})]]></textFieldExpression>
+				<textFieldExpression><![CDATA[com.inthinc.pro.reports.converter.MeasurementTextConverter.getMessage("report.hos.vehiclesDistance",$P{REPORT_LOCALE},$P{USE_METRIC})]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="357" y="68" width="133" height="12"/>
+				<reportElement x="357" y="68" width="133" height="12" uuid="efe91e0b-b37a-43d4-b9ec-47e4722717fb"/>
 				<textElement textAlignment="Center">
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{ruleSetType}.getDisplayName()]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{ruleSetType}.getDisplayName()]]></textFieldExpression>
 			</textField>
 			<line>
-				<reportElement x="357" y="81" width="133" height="1"/>
+				<reportElement x="357" y="81" width="133" height="1" uuid="1472effa-9b62-4ee2-8a08-23dc383b8719"/>
 			</line>
 			<textField pattern="">
-				<reportElement x="357" y="82" width="133" height="12"/>
+				<reportElement x="357" y="82" width="133" height="12" uuid="6341253d-09b3-4c8b-882f-aa4b3aa65201"/>
 				<textElement textAlignment="Center">
 					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.ddl.header.rule}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$R{report.ddl.header.rule}]]></textFieldExpression>
 			</textField>
 			<subreport>
-				<reportElement mode="Transparent" x="500" y="46" width="55" height="223" isRemoveLineWhenBlank="true">
+				<reportElement mode="Transparent" x="500" y="46" width="55" height="223" isRemoveLineWhenBlank="true" uuid="b3e42038-f388-4afd-8c2a-50bc9e5897c8">
 					<printWhenExpression><![CDATA[Boolean.valueOf($F{recapType} != com.inthinc.hos.ddl.RecapType.NONE)]]></printWhenExpression>
 				</reportElement>
 				<parametersMapExpression><![CDATA[$P{REPORT_PARAMETERS_MAP}]]></parametersMapExpression>
 				<dataSourceExpression><![CDATA[new  net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{recap})]]></dataSourceExpression>
-				<subreportExpression class="java.net.URL"><![CDATA[new URL($P{SUBREPORT_URL}, "HOSDailyDriverLog_recap"+$F{recapType}.toString()+".jasper")]]></subreportExpression>
+				<subreportExpression><![CDATA[new URL($P{SUBREPORT_URL}, "HOSDailyDriverLog_recap"+$F{recapType}.toString()+".jasper")]]></subreportExpression>
 			</subreport>
 			<textField isStretchWithOverflow="true">
-				<reportElement positionType="Float" x="0" y="95" width="185" height="20"/>
+				<reportElement positionType="Float" x="0" y="95" width="185" height="20" uuid="e183262b-530c-4583-b1e8-db95cf5df8a9"/>
 				<textElement textAlignment="Center">
 					<font size="14" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{driverName}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{driverName}]]></textFieldExpression>
 			</textField>
 			<line>
-				<reportElement positionType="Float" x="0" y="115" width="185" height="1"/>
+				<reportElement positionType="Float" x="0" y="115" width="185" height="1" uuid="1735b4d1-6719-40c5-a050-cfdf6444bcef"/>
 			</line>
 			<textField pattern="">
-				<reportElement positionType="Float" x="0" y="117" width="185" height="12"/>
+				<reportElement positionType="Float" x="0" y="117" width="185" height="12" uuid="b913a45d-1c46-4899-894e-58461266ec72"/>
 				<textElement textAlignment="Center">
 					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.ddl.header.driver}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$R{report.ddl.header.driver}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement positionType="Float" x="340" y="95" width="150" height="20"/>
+				<reportElement positionType="Float" x="340" y="95" width="150" height="20" uuid="c2f25482-e9b7-49f2-99b6-3b3d19f4142e"/>
 				<textElement textAlignment="Center">
 					<font size="14" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[com.inthinc.pro.reports.converter.MeasurementConverter.convertDistance100th($F{milesDriven},$P{USE_METRIC},$P{REPORT_LOCALE})]]></textFieldExpression>
+				<textFieldExpression><![CDATA[com.inthinc.pro.reports.converter.MeasurementConverter.convertDistance100th($F{milesDriven},$P{USE_METRIC},$P{REPORT_LOCALE})]]></textFieldExpression>
 			</textField>
 			<line>
-				<reportElement positionType="Float" x="340" y="115" width="150" height="1"/>
+				<reportElement positionType="Float" x="340" y="115" width="150" height="1" uuid="dbfde371-73a7-48e6-b1ae-53698dbd277a"/>
 			</line>
 			<textField pattern="">
-				<reportElement positionType="Float" x="340" y="117" width="150" height="12"/>
+				<reportElement positionType="Float" x="340" y="117" width="150" height="12" uuid="e128c60c-3a9f-49ef-845c-d5a2e7220c95"/>
 				<textElement textAlignment="Center">
 					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[com.inthinc.pro.reports.converter.MeasurementTextConverter.getMessage("report.hos.driverDistance",$P{REPORT_LOCALE},$P{USE_METRIC})]]></textFieldExpression>
+				<textFieldExpression><![CDATA[com.inthinc.pro.reports.converter.MeasurementTextConverter.getMessage("report.hos.driverDistance",$P{REPORT_LOCALE},$P{USE_METRIC})]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
-				<reportElement positionType="Float" x="0" y="131" width="350" height="18"/>
+				<reportElement positionType="Float" x="0" y="131" width="350" height="18" uuid="1083d8ab-8a78-44b0-9330-739f212f8879"/>
 				<textElement textAlignment="Center">
 					<font size="14" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{carrierName}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{carrierName}]]></textFieldExpression>
 			</textField>
 			<line>
-				<reportElement positionType="Float" x="0" y="150" width="350" height="1"/>
+				<reportElement positionType="Float" x="0" y="150" width="350" height="1" uuid="2747761e-cc86-4f87-88a8-36f0f1d44c06"/>
 			</line>
 			<textField pattern="">
-				<reportElement positionType="Float" x="0" y="153" width="350" height="12"/>
+				<reportElement positionType="Float" x="0" y="153" width="350" height="12" uuid="012211f5-a45f-44b2-a859-71e2b60ce3a3"/>
 				<textElement textAlignment="Center">
 					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.ddl.header.carrier}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$R{report.ddl.header.carrier}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement positionType="Float" x="357" y="138" width="140" height="12"/>
+				<reportElement positionType="Float" x="357" y="138" width="140" height="12" uuid="2e2929b5-898e-4cc8-a404-f338a066e0db"/>
 				<textElement textAlignment="Center">
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[($F{codrivers}.length() == 0) ? $R{report.ddl.none} : $F{codrivers}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[($F{codrivers}.length() == 0) ? $R{report.ddl.none} : $F{codrivers}]]></textFieldExpression>
 			</textField>
 			<line>
-				<reportElement positionType="Float" x="357" y="150" width="140" height="1"/>
+				<reportElement positionType="Float" x="357" y="150" width="140" height="1" uuid="497ced61-6ddf-40fb-8484-21b65bfaac32"/>
 			</line>
 			<textField pattern="">
-				<reportElement positionType="Float" x="357" y="153" width="140" height="12"/>
+				<reportElement positionType="Float" x="357" y="153" width="140" height="12" uuid="7291ce4f-75c9-4ad0-a477-b5877f644933"/>
 				<textElement textAlignment="Center">
 					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.ddl.header.codriver}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$R{report.ddl.header.codriver}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement positionType="Float" x="0" y="165" width="274" height="12"/>
+				<reportElement positionType="Float" x="0" y="165" width="274" height="12" uuid="88e8b1f7-a900-4463-acf6-629f97a5ee61"/>
 				<textElement textAlignment="Center">
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{mainAddress}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{mainAddress}]]></textFieldExpression>
 			</textField>
 			<line>
-				<reportElement positionType="Float" x="0" y="178" width="495" height="1"/>
+				<reportElement positionType="Float" x="0" y="178" width="495" height="1" uuid="1c3f4077-c1fc-4b8f-b047-7ac06da061ef"/>
 			</line>
 			<textField pattern="">
-				<reportElement positionType="Float" x="0" y="179" width="274" height="12"/>
+				<reportElement positionType="Float" x="0" y="179" width="274" height="12" uuid="e2990826-d24e-4c74-ac29-c4c1a5177faa"/>
 				<textElement textAlignment="Center">
 					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.ddl.header.mainAddress}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$R{report.ddl.header.mainAddress}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement positionType="Float" x="278" y="165" width="220" height="12"/>
+				<reportElement positionType="Float" x="278" y="165" width="220" height="12" uuid="dd2abd14-b136-4585-8bab-0f446f1bfca0"/>
 				<textElement textAlignment="Center">
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{terminalAddress}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{terminalAddress}]]></textFieldExpression>
 			</textField>
 			<textField pattern="">
-				<reportElement positionType="Float" x="278" y="179" width="220" height="12"/>
+				<reportElement positionType="Float" x="278" y="179" width="220" height="12" uuid="32a0f577-9825-4523-a320-d64e201047f2"/>
 				<textElement textAlignment="Center">
 					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.ddl.header.terminalAddress}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$R{report.ddl.header.terminalAddress}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement positionType="Float" x="0" y="192" width="495" height="20">
+				<reportElement positionType="Float" x="0" y="192" width="495" height="20" uuid="213e72d9-5178-49cd-903b-c8c50dad5574">
 					<printWhenExpression><![CDATA[(Boolean.valueOf($F{edited}.equals(Boolean.FALSE)))]]></printWhenExpression>
 				</reportElement>
 				<textElement>
 					<font size="12" isBold="true"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.ddl.graphTitle}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$R{report.ddl.graphTitle}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement positionType="Float" x="0" y="192" width="495" height="20">
+				<reportElement positionType="Float" x="0" y="192" width="495" height="20" uuid="8743a7ba-4974-4cde-b771-b70e120eaea5">
 					<printWhenExpression><![CDATA[($F{edited})]]></printWhenExpression>
 				</reportElement>
 				<textElement>
 					<font size="12" isBold="true"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.ddl.graphTitleEdited}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$R{report.ddl.graphTitleEdited}]]></textFieldExpression>
 			</textField>
 			<image scaleImage="RealSize" isUsingCache="false">
-				<reportElement positionType="Float" x="0" y="212" width="495" height="50"/>
-				<imageExpression class="java.awt.Image"><![CDATA[$F{correctedGraph}]]></imageExpression>
+				<reportElement positionType="Float" x="0" y="212" width="495" height="50" uuid="1f819616-9cfc-4830-bfcc-fa8ff61a47a2"/>
+				<imageExpression><![CDATA[$F{correctedGraph}]]></imageExpression>
 			</image>
 			<textField isBlankWhenNull="true">
-				<reportElement positionType="Float" x="0" y="262" width="495" height="20" isRemoveLineWhenBlank="true">
+				<reportElement positionType="Float" x="0" y="262" width="495" height="20" isRemoveLineWhenBlank="true" uuid="8e64804e-efb9-40b7-a976-04775309147e">
 					<printWhenExpression><![CDATA[($F{edited})]]></printWhenExpression>
 				</reportElement>
 				<textElement>
 					<font size="12" isBold="true"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.ddl.graphTitleOriginal}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$R{report.ddl.graphTitleOriginal}]]></textFieldExpression>
 			</textField>
 			<image scaleImage="RealSize" isUsingCache="false">
-				<reportElement positionType="Float" x="0" y="283" width="495" height="50" isRemoveLineWhenBlank="true">
+				<reportElement positionType="Float" x="0" y="283" width="495" height="50" isRemoveLineWhenBlank="true" uuid="475176b8-3055-4604-b5e8-043ee209f16e">
 					<printWhenExpression><![CDATA[($F{edited})]]></printWhenExpression>
 				</reportElement>
-				<imageExpression class="java.awt.Image"><![CDATA[$F{originalGraph}]]></imageExpression>
+				<imageExpression><![CDATA[$F{originalGraph}]]></imageExpression>
 			</image>
 			<frame>
-				<reportElement positionType="Float" x="7" y="336" width="114" height="30"/>
+				<reportElement positionType="Float" x="7" y="336" width="114" height="30" uuid="62873efb-7d1a-468e-a956-03095ca46071"/>
 				<box>
 					<pen lineWidth="0.25"/>
 					<topPen lineWidth="0.25"/>
@@ -323,232 +331,292 @@
 					<rightPen lineWidth="0.25"/>
 				</box>
 				<textField>
-					<reportElement positionType="Float" mode="Opaque" x="7" y="2" width="60" height="12"/>
+					<reportElement positionType="Float" mode="Opaque" x="7" y="2" width="60" height="12" uuid="bb061713-058d-4369-9367-e134c72c17ec"/>
 					<textElement>
 						<font size="8" isBold="true"/>
 					</textElement>
-					<textFieldExpression class="java.lang.String"><![CDATA[$R{report.ddl.graph.legend.corrected}]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$R{report.ddl.graph.legend.corrected}]]></textFieldExpression>
 				</textField>
 				<textField>
-					<reportElement positionType="Float" mode="Opaque" x="7" y="17" width="60" height="12"/>
+					<reportElement positionType="Float" mode="Opaque" x="7" y="17" width="60" height="12" uuid="6161f1cb-50d3-480d-a9df-fb925d69f113"/>
 					<textElement>
 						<font size="8" isBold="true"/>
 					</textElement>
-					<textFieldExpression class="java.lang.String"><![CDATA[$R{report.ddl.graph.legend.original}]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$R{report.ddl.graph.legend.original}]]></textFieldExpression>
 				</textField>
 				<line>
-					<reportElement positionType="Float" mode="Opaque" x="72" y="7" width="30" height="1"/>
+					<reportElement positionType="Float" mode="Opaque" x="72" y="7" width="30" height="1" uuid="4409df9a-5bde-4064-9902-c3f83e2ad65d"/>
 					<graphicElement>
 						<pen lineWidth="2.0"/>
 					</graphicElement>
 				</line>
 				<line>
-					<reportElement positionType="Float" mode="Opaque" x="72" y="22" width="30" height="1"/>
+					<reportElement positionType="Float" mode="Opaque" x="72" y="22" width="30" height="1" uuid="dd51a6d0-e540-4d46-8ae1-23f781f755b0"/>
 					<graphicElement>
 						<pen lineWidth="1.0"/>
 					</graphicElement>
 				</line>
 			</frame>
 			<textField isStretchWithOverflow="true">
-				<reportElement positionType="Float" x="7" y="372" width="160" height="15"/>
+				<reportElement positionType="Float" x="7" y="372" width="160" height="15" uuid="ff982fcf-4bb7-49db-a7ea-6d57bbb13204"/>
 				<textElement>
 					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.ddl.shipping}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$R{report.ddl.shipping}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
-				<reportElement positionType="Float" x="167" y="372" width="215" height="15"/>
+				<reportElement positionType="Float" x="167" y="372" width="215" height="15" uuid="a9c787c2-9e9e-417d-970f-b894caa73614"/>
 				<textElement>
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[($F{shipping} == null ||$F{shipping}.isEmpty()) ? $R{report.ddl.none} : $F{shipping}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[($F{shipping} == null ||$F{shipping}.isEmpty()) ? $R{report.ddl.none} : $F{shipping}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
-				<reportElement positionType="Float" x="386" y="372" width="64" height="15"/>
+				<reportElement positionType="Float" x="386" y="372" width="64" height="15" uuid="f1c3b2aa-d958-4451-8b7c-a1a7d9041ce2"/>
 				<textElement>
 					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.ddl.trailers}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$R{report.ddl.trailers}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
-				<reportElement positionType="Float" x="450" y="372" width="44" height="15"/>
+				<reportElement positionType="Float" x="450" y="372" width="44" height="15" uuid="5ed5d38b-de8a-4949-bde5-de33c1dd1b0e"/>
 				<textElement>
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[($F{trailers} == null ||$F{trailers}.isEmpty()) ? $R{report.ddl.none} : $F{trailers}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[($F{trailers} == null ||$F{trailers}.isEmpty()) ? $R{report.ddl.none} : $F{trailers}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="false">
-				<reportElement positionType="Float" x="7" y="390" width="422" height="25" isRemoveLineWhenBlank="true">
+				<reportElement positionType="Float" x="7" y="390" width="422" height="25" isRemoveLineWhenBlank="true" uuid="16d58a1a-716a-45f3-b789-43169dbdf6e1">
 					<printWhenExpression><![CDATA[Boolean.valueOf($F{ruleSetType} == com.inthinc.hos.model.RuleSetType.CANADA_2007_OIL || $F{ruleSetType} == com.inthinc.hos.model.RuleSetType.CANADA_2007_60_DEGREES_OIL)]]></printWhenExpression>
 				</reportElement>
 				<textElement verticalAlignment="Bottom">
 					<font size="12"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[str("report.ddl.exemption."+$F{ruleSetType}.toString())]]></textFieldExpression>
+				<textFieldExpression><![CDATA[str("report.ddl.exemption."+$F{ruleSetType}.toString())]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
-				<reportElement positionType="Float" x="190" y="95" width="140" height="20"/>
+				<reportElement positionType="Float" x="190" y="95" width="140" height="20" uuid="c0310880-8727-48cf-84de-f4e261057e38"/>
 				<textElement textAlignment="Center">
 					<font size="14" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{driverEmpID}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{driverEmpID}]]></textFieldExpression>
 			</textField>
 			<line>
-				<reportElement positionType="Float" x="190" y="115" width="140" height="1"/>
+				<reportElement positionType="Float" x="190" y="115" width="140" height="1" uuid="d2c6704f-fe11-4f78-86ab-10ef6b3e3216"/>
 			</line>
 			<textField pattern="">
-				<reportElement positionType="Float" x="190" y="117" width="140" height="12"/>
+				<reportElement positionType="Float" x="190" y="117" width="140" height="12" uuid="935f04e4-e8f7-4571-8acf-0b4f7fbe206f"/>
 				<textElement textAlignment="Center">
 					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.ddl.header.driverEmpID}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$R{report.ddl.header.driverEmpID}]]></textFieldExpression>
 			</textField>
 		</band>
 	</title>
 	<pageHeader>
 		<band height="16" splitType="Stretch">
 			<textField isStretchWithOverflow="true">
-				<reportElement positionType="Float" x="0" y="0" width="382" height="16"/>
+				<reportElement positionType="Float" x="0" y="0" width="382" height="16" uuid="925275be-eb72-4b55-8487-7375123f5d18"/>
 				<textElement verticalAlignment="Bottom">
 					<font size="12" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.ddl.remarks}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$R{report.ddl.remarks}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="425" y="0" width="130" height="12">
+				<reportElement x="425" y="0" width="130" height="12" uuid="f16190c3-b872-4e7e-a68e-f5d4b1235f4d">
 					<printWhenExpression><![CDATA[Boolean.valueOf($V{PAGE_NUMBER}.intValue() > 1)]]></printWhenExpression>
 				</reportElement>
 				<textElement textAlignment="Right">
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$P{REPORT_DATE_TIME}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$P{REPORT_DATE_TIME}]]></textFieldExpression>
 			</textField>
 		</band>
 	</pageHeader>
 	<detail>
-		<band height="23">
+		<band height="73">
 			<componentElement>
-				<reportElement positionType="Float" x="0" y="0" width="555" height="23" isRemoveLineWhenBlank="true"/>
+				<reportElement positionType="Float" x="1" y="0" width="565" height="34" isRemoveLineWhenBlank="true" uuid="68f57785-f43e-4344-95ba-1adcdb9d7561"/>
 				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" printOrder="Horizontal">
-					<datasetRun subDataset="remarksDataset">
+					<datasetRun subDataset="remarksDataset" uuid="2f44a5db-8d63-4322-97ce-0b9d7de65d5f">
 						<parametersMapExpression><![CDATA[$P{REPORT_PARAMETERS_MAP}]]></parametersMapExpression>
 						<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{remarksList})]]></dataSourceExpression>
 					</datasetRun>
-					<jr:listContents height="23" width="555">
+					<jr:listContents height="34" width="565">
 						<textField isStretchWithOverflow="true">
-							<reportElement x="0" y="0" width="95" height="12">
+							<reportElement x="0" y="0" width="95" height="12" uuid="ca53bb23-e673-4042-b2c2-b409b2709b8b">
 								<printWhenExpression><![CDATA[Boolean.valueOf(!$F{edited}.booleanValue())]]></printWhenExpression>
 							</reportElement>
-							<textElement/>
-							<textFieldExpression class="java.lang.String"><![CDATA[com.inthinc.pro.reports.hos.converter.Converter.convertRemarksDate($F{logTimeDate}, $F{logTimeZone}, $P{REPORT_LOCALE})]]></textFieldExpression>
+							<textFieldExpression><![CDATA[com.inthinc.pro.reports.hos.converter.Converter.convertRemarksDate($F{logTimeDate}, $F{logTimeZone}, $P{REPORT_LOCALE})]]></textFieldExpression>
 						</textField>
 						<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-							<reportElement isPrintRepeatedValues="false" x="95" y="0" width="95" height="12">
+							<reportElement isPrintRepeatedValues="false" x="95" y="0" width="95" height="12" uuid="4d6a7d25-0680-40ec-b58d-398d4a13dc46">
 								<printWhenExpression><![CDATA[Boolean.valueOf(!$F{edited}.booleanValue())]]></printWhenExpression>
 							</reportElement>
-							<textElement/>
-							<textFieldExpression class="java.lang.String"><![CDATA[$F{location}]]></textFieldExpression>
+							<textFieldExpression><![CDATA[$F{location}]]></textFieldExpression>
 						</textField>
 						<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-							<reportElement positionType="Float" isPrintRepeatedValues="false" x="95" y="12" width="95" height="11" isRemoveLineWhenBlank="true">
+							<reportElement positionType="Float" isPrintRepeatedValues="false" x="95" y="12" width="95" height="11" isRemoveLineWhenBlank="true" uuid="87bb8006-8d5e-470a-a044-bd85a021d332">
 								<printWhenExpression><![CDATA[Boolean.valueOf($F{locationEdited}.booleanValue())]]></printWhenExpression>
 							</reportElement>
 							<textElement>
 								<font size="8"/>
 							</textElement>
-							<textFieldExpression class="java.lang.String"><![CDATA[($F{originalLocation} == null || $F{originalLocation}.isEmpty()) ? "" :  msg($R{report.ddl.originalLocation}, $F{originalLocation})]]></textFieldExpression>
+							<textFieldExpression><![CDATA[($F{originalLocation} == null || $F{originalLocation}.isEmpty()) ? "" :  msg($R{report.ddl.originalLocation}, $F{originalLocation})]]></textFieldExpression>
 						</textField>
 						<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true">
-							<reportElement x="190" y="0" width="235" height="12">
+							<reportElement x="190" y="0" width="235" height="12" uuid="f7d63ae3-c60b-4c14-97d3-ab30f0059876">
 								<printWhenExpression><![CDATA[Boolean.valueOf(!$F{edited}.booleanValue())]]></printWhenExpression>
 							</reportElement>
-							<textElement/>
-							<textFieldExpression class="java.lang.String"><![CDATA[$F{statusDescription}]]></textFieldExpression>
+							<textFieldExpression><![CDATA[$F{statusDescription}]]></textFieldExpression>
 						</textField>
 						<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-							<reportElement x="425" y="0" width="40" height="12">
+							<reportElement x="425" y="0" width="40" height="12" uuid="c04abeba-04b4-48de-9645-92cd6058ddf6">
 								<printWhenExpression><![CDATA[Boolean.valueOf(!$F{edited}.booleanValue() && $F{startOdometer} != null && $F{startOdometer}.longValue() != 0l)]]></printWhenExpression>
 							</reportElement>
 							<textElement textAlignment="Right"/>
-							<textFieldExpression class="java.lang.String"><![CDATA[com.inthinc.pro.reports.hos.converter.Converter.convertRemarkDistance($F{startOdometer}, $P{USE_METRIC}, $P{REPORT_LOCALE})]]></textFieldExpression>
+							<textFieldExpression><![CDATA[com.inthinc.pro.reports.hos.converter.Converter.convertRemarkDistance($F{startOdometer}, $P{USE_METRIC}, $P{REPORT_LOCALE})]]></textFieldExpression>
 						</textField>
 						<textField isBlankWhenNull="false">
-							<reportElement positionType="Float" x="515" y="12" width="40" height="11" isRemoveLineWhenBlank="true">
+							<reportElement positionType="Float" x="515" y="12" width="40" height="11" isRemoveLineWhenBlank="true" uuid="e2720b91-1c30-4b90-813a-f3108a5e9b99">
 								<printWhenExpression><![CDATA[Boolean.valueOf(!$F{edited}.booleanValue() && $F{deleted}.booleanValue())]]></printWhenExpression>
 							</reportElement>
 							<textElement>
 								<font size="8"/>
 							</textElement>
-							<textFieldExpression class="java.lang.String"><![CDATA[$R{report.ddl.deleted}]]></textFieldExpression>
+							<textFieldExpression><![CDATA[$R{report.ddl.deleted}]]></textFieldExpression>
 						</textField>
 						<textField isStretchWithOverflow="true">
-							<reportElement mode="Opaque" x="0" y="0" width="95" height="12" backcolor="#999999">
+							<reportElement mode="Opaque" x="0" y="0" width="95" height="12" backcolor="#999999" uuid="fc5ab307-ad39-4a96-8c81-4c8fd3e5df71">
 								<printWhenExpression><![CDATA[Boolean.valueOf($F{edited}.booleanValue())]]></printWhenExpression>
 							</reportElement>
-							<textElement/>
-							<textFieldExpression class="java.lang.String"><![CDATA[com.inthinc.pro.reports.hos.converter.Converter.convertRemarksDate($F{logTimeDate}, $F{logTimeZone}, $P{REPORT_LOCALE})]]></textFieldExpression>
+							<textFieldExpression><![CDATA[com.inthinc.pro.reports.hos.converter.Converter.convertRemarksDate($F{logTimeDate}, $F{logTimeZone}, $P{REPORT_LOCALE})]]></textFieldExpression>
 						</textField>
 						<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-							<reportElement isPrintRepeatedValues="false" mode="Opaque" x="95" y="0" width="95" height="12" backcolor="#999999">
+							<reportElement isPrintRepeatedValues="false" mode="Opaque" x="95" y="0" width="95" height="12" backcolor="#999999" uuid="4963ae70-274e-4beb-84e3-1496c3376af1">
 								<printWhenExpression><![CDATA[Boolean.valueOf($F{edited}.booleanValue())]]></printWhenExpression>
 							</reportElement>
-							<textElement/>
-							<textFieldExpression class="java.lang.String"><![CDATA[$F{location}]]></textFieldExpression>
+							<textFieldExpression><![CDATA[$F{location}]]></textFieldExpression>
 						</textField>
 						<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-							<reportElement positionType="Float" isPrintRepeatedValues="false" mode="Opaque" x="95" y="12" width="95" height="11" isRemoveLineWhenBlank="true" backcolor="#999999">
+							<reportElement positionType="Float" isPrintRepeatedValues="false" mode="Opaque" x="95" y="12" width="95" height="11" isRemoveLineWhenBlank="true" backcolor="#999999" uuid="b8d3749d-9433-4a11-9214-d9baa22db9c6">
 								<printWhenExpression><![CDATA[Boolean.valueOf($F{locationEdited}.booleanValue())]]></printWhenExpression>
 							</reportElement>
 							<textElement>
 								<font size="8"/>
 							</textElement>
-							<textFieldExpression class="java.lang.String"><![CDATA[($F{originalLocation} == null || $F{originalLocation}.isEmpty()) ? "" :  msg($R{report.ddl.originalLocation}, $F{originalLocation})]]></textFieldExpression>
+							<textFieldExpression><![CDATA[($F{originalLocation} == null || $F{originalLocation}.isEmpty()) ? "" :  msg($R{report.ddl.originalLocation}, $F{originalLocation})]]></textFieldExpression>
 						</textField>
 						<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-							<reportElement mode="Opaque" x="190" y="0" width="235" height="12" backcolor="#999999">
+							<reportElement mode="Opaque" x="190" y="0" width="235" height="12" backcolor="#999999" uuid="60cf5d81-2b8c-4660-a011-c4f40634d056">
 								<printWhenExpression><![CDATA[Boolean.valueOf($F{edited}.booleanValue())]]></printWhenExpression>
 							</reportElement>
-							<textElement/>
-							<textFieldExpression class="java.lang.String"><![CDATA[$F{statusDescription}]]></textFieldExpression>
+							<textFieldExpression><![CDATA[$F{statusDescription}]]></textFieldExpression>
 						</textField>
 						<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-							<reportElement mode="Opaque" x="425" y="0" width="40" height="12" backcolor="#999999">
+							<reportElement mode="Opaque" x="425" y="0" width="40" height="12" backcolor="#999999" uuid="8ae2b7cf-7f1b-47e5-bf09-2fd6b76a7763">
 								<printWhenExpression><![CDATA[Boolean.valueOf($F{edited}.booleanValue() && $F{startOdometer} != null && $F{startOdometer}.longValue() != 0l)]]></printWhenExpression>
 							</reportElement>
 							<textElement textAlignment="Right"/>
-							<textFieldExpression class="java.lang.String"><![CDATA[com.inthinc.pro.reports.hos.converter.Converter.convertRemarkDistance($F{startOdometer}, $P{USE_METRIC}, $P{REPORT_LOCALE})]]></textFieldExpression>
+							<textFieldExpression><![CDATA[com.inthinc.pro.reports.hos.converter.Converter.convertRemarkDistance($F{startOdometer}, $P{USE_METRIC}, $P{REPORT_LOCALE})]]></textFieldExpression>
 						</textField>
 						<textField>
-							<reportElement positionType="Float" mode="Opaque" x="515" y="12" width="40" height="11" isRemoveLineWhenBlank="true" backcolor="#999999">
+							<reportElement positionType="Float" mode="Opaque" x="515" y="12" width="40" height="11" isRemoveLineWhenBlank="true" backcolor="#999999" uuid="f58e5386-eefe-4bab-a863-76eef38c8d08">
 								<printWhenExpression><![CDATA[Boolean.valueOf($F{edited}.booleanValue() && $F{deleted}.booleanValue())]]></printWhenExpression>
 							</reportElement>
 							<textElement>
 								<font size="8"/>
 							</textElement>
-							<textFieldExpression class="java.lang.String"><![CDATA[$R{report.ddl.deleted}]]></textFieldExpression>
+							<textFieldExpression><![CDATA[$R{report.ddl.deleted}]]></textFieldExpression>
 						</textField>
 						<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-							<reportElement mode="Transparent" x="465" y="0" width="90" height="12" backcolor="#FFFFFF">
+							<reportElement mode="Transparent" x="465" y="0" width="90" height="12" backcolor="#FFFFFF" uuid="1c666afd-045c-47f8-99fa-6e54ce508630">
 								<printWhenExpression><![CDATA[Boolean.valueOf($F{editor} != null && !$F{editor}.isEmpty())]]></printWhenExpression>
 							</reportElement>
-							<textElement/>
-							<textFieldExpression class="java.lang.String"><![CDATA[$F{editor}]]></textFieldExpression>
+							<textFieldExpression><![CDATA[$F{editor}]]></textFieldExpression>
 						</textField>
 						<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-							<reportElement positionType="Float" isPrintRepeatedValues="false" x="190" y="12" width="320" height="11" isRemoveLineWhenBlank="true"/>
+							<reportElement positionType="Float" isPrintRepeatedValues="false" x="190" y="12" width="320" height="11" isRemoveLineWhenBlank="true" uuid="0a3c3c6e-b730-4f02-a882-75d891cc6ae5"/>
 							<textElement>
 								<font size="8" isItalic="true" pdfFontName="Helvetica-Oblique"/>
 							</textElement>
-							<textFieldExpression class="java.lang.String"><![CDATA[$F{subDescription}]]></textFieldExpression>
+							<textFieldExpression><![CDATA[$F{subDescription}]]></textFieldExpression>
 						</textField>
 						<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-							<reportElement positionType="Float" isPrintRepeatedValues="false" mode="Opaque" x="190" y="12" width="320" height="11" isRemoveLineWhenBlank="true" backcolor="#999999">
+							<reportElement positionType="Float" isPrintRepeatedValues="false" mode="Opaque" x="190" y="12" width="320" height="11" isRemoveLineWhenBlank="true" backcolor="#999999" uuid="75558a60-8206-4c72-bd41-4d43b8f2dc13">
 								<printWhenExpression><![CDATA[Boolean.valueOf($F{edited}.booleanValue())]]></printWhenExpression>
 							</reportElement>
 							<textElement>
 								<font size="8" isItalic="true" pdfFontName="Helvetica-Oblique"/>
 							</textElement>
-							<textFieldExpression class="java.lang.String"><![CDATA[$F{subDescription}]]></textFieldExpression>
+							<textFieldExpression><![CDATA[$F{subDescription}]]></textFieldExpression>
+						</textField>
+					</jr:listContents>
+				</jr:list>
+			</componentElement>
+			<componentElement>
+				<reportElement positionType="Float" x="4" y="49" width="541" height="14" isRemoveLineWhenBlank="true" uuid="68f57785-f43e-4344-95ba-1adcdb9d7561"/>
+				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" printOrder="Horizontal">
+					<datasetRun subDataset="editDataset" uuid="2f44a5db-8d63-4322-97ce-0b9d7de65d5f">
+						<parametersMapExpression><![CDATA[$P{REPORT_PARAMETERS_MAP}]]></parametersMapExpression>
+						<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{editList})]]></dataSourceExpression>
+					</datasetRun>
+					<jr:listContents height="14" width="541">
+						<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+							<reportElement mode="Opaque" x="67" y="1" width="64" height="12" backcolor="#FFFFFF" uuid="60cf5d81-2b8c-4660-a011-c4f40634d056"/>
+							<textElement textAlignment="Left">
+								<font size="10"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{reason}]]></textFieldExpression>
+						</textField>
+						<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+							<reportElement mode="Opaque" x="331" y="1" width="64" height="12" backcolor="#FFFFFF" uuid="8ae2b7cf-7f1b-47e5-bf09-2fd6b76a7763"/>
+							<textElement textAlignment="Left">
+								<font size="10"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{approvedBy}]]></textFieldExpression>
+						</textField>
+						<textField isBlankWhenNull="true">
+							<reportElement mode="Opaque" x="199" y="1" width="64" height="13" isRemoveLineWhenBlank="true" backcolor="#FFFFFF" uuid="f58e5386-eefe-4bab-a863-76eef38c8d08"/>
+							<textElement textAlignment="Left">
+								<font size="10"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{timeStamp}]]></textFieldExpression>
+						</textField>
+						<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+							<reportElement mode="Transparent" x="465" y="1" width="64" height="13" backcolor="#FFFFFF" uuid="1c666afd-045c-47f8-99fa-6e54ce508630"/>
+							<textElement textAlignment="Left">
+								<font size="10"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{editor}]]></textFieldExpression>
+						</textField>
+						<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+							<reportElement mode="Opaque" x="1" y="1" width="64" height="12" backcolor="#FFFFFF" uuid="cf3e18a8-e6aa-41b9-b05a-18dc338ec742"/>
+							<textElement textAlignment="Left">
+								<font size="10"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$R{reason}]]></textFieldExpression>
+						</textField>
+						<textField isBlankWhenNull="true">
+							<reportElement mode="Opaque" x="133" y="1" width="64" height="13" isRemoveLineWhenBlank="true" backcolor="#FFFFFF" uuid="fbfa34f1-07d5-4dbf-887c-22faa9d3da11"/>
+							<textElement textAlignment="Left">
+								<font size="10"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$R{timeStamp}]]></textFieldExpression>
+						</textField>
+						<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+							<reportElement mode="Opaque" x="265" y="1" width="64" height="12" backcolor="#FFFFFF" uuid="9e1231d5-b73d-4936-ba67-6b843e26c0c7"/>
+							<textElement textAlignment="Left">
+								<font size="10"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$R{approvedBy}]]></textFieldExpression>
+						</textField>
+						<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+							<reportElement mode="Transparent" x="397" y="1" width="64" height="12" backcolor="#FFFFFF" uuid="8fa4580e-efe9-4b6a-be31-db7e31501ad7"/>
+							<textElement textAlignment="Left">
+								<font size="10"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$R{editor}]]></textFieldExpression>
 						</textField>
 					</jr:listContents>
 				</jr:list>
@@ -558,51 +626,51 @@
 	<lastPageFooter>
 		<band height="59" splitType="Prevent">
 			<textField isStretchWithOverflow="true">
-				<reportElement positionType="Float" x="2" y="0" width="97" height="15"/>
+				<reportElement positionType="Float" x="2" y="0" width="97" height="15" uuid="3f824604-8730-4a33-9a65-b336989f7f49"/>
 				<textElement>
 					<font size="10" isBold="false"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.ddl.driverSignature}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$R{report.ddl.driverSignature}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
-				<reportElement positionType="Float" x="100" y="0" width="110" height="15" isRemoveLineWhenBlank="true"/>
+				<reportElement positionType="Float" x="100" y="0" width="110" height="15" isRemoveLineWhenBlank="true" uuid="200d6a64-4540-49d8-91f8-924f167dc447"/>
 				<textElement>
 					<font size="10" isBold="false"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{driverName}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{driverName}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement positionType="Float" x="342" y="1" width="200" height="15">
+				<reportElement positionType="Float" x="342" y="1" width="200" height="15" uuid="a30c6f41-b9af-4f5d-8e45-7f927db17df6">
 					<printWhenExpression><![CDATA[($F{edited})]]></printWhenExpression>
 				</reportElement>
 				<textElement>
 					<font size="10" isBold="false"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.ddl.adminSignature}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$R{report.ddl.adminSignature}]]></textFieldExpression>
 			</textField>
 			<line>
-				<reportElement positionType="Float" x="4" y="35" width="200" height="1"/>
+				<reportElement positionType="Float" x="4" y="35" width="200" height="1" uuid="78bbe448-2a5b-4a1a-b93d-3aefd5a6131f"/>
 			</line>
 			<line>
-				<reportElement positionType="Float" x="342" y="34" width="200" height="1">
+				<reportElement positionType="Float" x="342" y="34" width="200" height="1" uuid="ef1daa7d-02e7-4437-addc-3f2e10bfd765">
 					<printWhenExpression><![CDATA[($F{edited})]]></printWhenExpression>
 				</reportElement>
 			</line>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="false">
-				<reportElement positionType="Float" x="0" y="37" width="204" height="22" isRemoveLineWhenBlank="true">
+				<reportElement positionType="Float" x="0" y="37" width="204" height="22" isRemoveLineWhenBlank="true" uuid="ff5b5efb-a530-44cd-8417-4542258afb1e">
 					<printWhenExpression><![CDATA[($F{edited})]]></printWhenExpression>
 				</reportElement>
 				<textElement>
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.ddl.disclaimer}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$R{report.ddl.disclaimer}]]></textFieldExpression>
 			</textField>
 		</band>
 	</lastPageFooter>
 	<noData>
 		<band height="200">
 			<textField isBlankWhenNull="false">
-				<reportElement key="textField-3" x="90" y="0" width="465" height="40"/>
+				<reportElement key="textField-3" x="90" y="0" width="465" height="40" uuid="2c8847e9-1bd1-4956-a279-7e39745f06d3"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -612,16 +680,16 @@
 				<textElement textAlignment="Right">
 					<font size="20" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.ddl.title}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$R{report.ddl.title}]]></textFieldExpression>
 			</textField>
 			<rectangle>
-				<reportElement key="rectangle-1" x="0" y="40" width="555" height="23" backcolor="#000000"/>
+				<reportElement key="rectangle-1" x="0" y="40" width="555" height="23" backcolor="#000000" uuid="8489fa71-97c8-43e5-9fc1-89cbb19389c8"/>
 				<graphicElement>
 					<pen lineWidth="0.0" lineStyle="Solid"/>
 				</graphicElement>
 			</rectangle>
 			<textField isBlankWhenNull="false">
-				<reportElement key="textField-1" mode="Opaque" x="0" y="42" width="555" height="19" forecolor="#FFFFFF" backcolor="#000000"/>
+				<reportElement key="textField-1" mode="Opaque" x="0" y="42" width="555" height="19" forecolor="#FFFFFF" backcolor="#000000" uuid="09dc555f-ba15-4b09-a3ea-60baebb900c8"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -631,14 +699,14 @@
 				<textElement textAlignment="Right">
 					<font size="12"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$P{REPORT_DATE_TIME}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$P{REPORT_DATE_TIME}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="0" y="90" width="555" height="20"/>
+				<reportElement x="0" y="90" width="555" height="20" uuid="359a72b8-8062-4602-9822-bd942e8e0b9a"/>
 				<textElement textAlignment="Center">
 					<font size="12" isBold="true"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$R{noData}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$R{noData}]]></textFieldExpression>
 			</textField>
 		</band>
 	</noData>
