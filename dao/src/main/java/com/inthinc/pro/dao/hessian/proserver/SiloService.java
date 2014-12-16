@@ -255,7 +255,16 @@ public interface SiloService extends HessianService
      *      trip map
      */
     Map<String, Object> getLastTrip(Integer id, Integer reqType) throws ProDAOException;
-    
+
+    /**
+     * Gets the last trips of all the vehicles from the given group id.
+     *
+     * @param groupID group id
+     * @return last trips
+     */
+    List<Map<String, Object>> getLastVehicleTripsByGroupIDDeep(Integer groupID);
+
+
     /**
      * @param id 
      *       driverID

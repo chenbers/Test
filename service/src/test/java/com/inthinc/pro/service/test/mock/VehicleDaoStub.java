@@ -93,7 +93,12 @@ public class VehicleDaoStub implements VehicleDAO {
     public List<Trip> getTrips(Integer vehicleID, Date startDate, Date endDate) {
         return new ArrayList<Trip>();
     }
-    
+
+    @Override
+    public List<Trip> getLastVehicleTripsByGroupIDDeep(Integer groupID) {
+        return new ArrayList<Trip>();
+    }
+
     @Override
     public List<LatLng> getLocationsForTrip(Integer driverID, Date startTime, Date endTime) {
         return Collections.emptyList();
