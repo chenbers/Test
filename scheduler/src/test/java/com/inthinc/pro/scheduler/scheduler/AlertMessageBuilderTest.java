@@ -2,15 +2,22 @@ package com.inthinc.pro.scheduler.scheduler;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static java.lang.System.out;
 
 import java.util.ArrayList;
+import java.util.EnumSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Set;
 
 import org.junit.Test;
 
+import com.inthinc.pro.model.AlertEscalationStatus;
 import com.inthinc.pro.model.AlertMessageBuilder;
+import com.inthinc.pro.model.AlertMessageDeliveryType;
 import com.inthinc.pro.model.AlertMessageType;
+import com.inthinc.pro.model.RedFlagEzCrmDataType;
+import com.inthinc.pro.model.RedFlagLevel;
 import com.inthinc.pro.model.form.FormQuestion;
 import com.inthinc.pro.model.form.FormSubmission;
 import com.inthinc.pro.scheduler.i18n.LocalizedMessage;
@@ -116,4 +123,46 @@ public class AlertMessageBuilderTest {
         }
         return dataList;
     }
+    
+    @Test
+    public void TestBuildEzCrmMessageS() {
+//        List<String> parameterList = new ArrayList<String>();
+//        parameterList.add("12343546456");
+//        parameterList.add("driver");
+//        parameterList.add("vehicle");
+//        parameterList.add("Address");
+//
+//        AlertMessageBuilder alertMessageBuilder = new AlertMessageBuilder(alertID, messageID, Locale.getDefault(), address, AlertMessageType.ALERT_TYPE_DVIR_DRIVEN_WITHOUT_INSPECTION, acknowledge, parameterList);
+//        assertNotNull(alertMessageBuilder);
+//        String text = LocalizedMessage.getStringWithValues(alertMessageBuilder.getAlertMessageType().toString(),alertMessageBuilder.getLocale(),
+//                (String[])alertMessageBuilder.getParamterList().toArray(new String[alertMessageBuilder.getParamterList().size()]));
+//       assertEquals("12343546456 driver is driving vehicle vehicle near Address without an inspection.",text);
+// 
+//        AlertMessage alertMsg = new AlertMessage(1, AlertMessageDeliveryType.EMAIL, AlertMessageType.ALERT_TYPE_SPEEDING, RedFlagLevel.CRITICAL, "My Speeding Adress", "My Speeding message", 1,
+//                        4242, 2, 0, false, AlertEscalationStatus.NEW, String attribs, Integer driverID, Integer vehicleID, Integer deviceID);
+
+        String sub = LocalizedMessage.getString("EzCrm.Subject", Locale.getDefault());
+        System.out.println(sub);
+        
+        String ftr = LocalizedMessage.getString("EzCrm.Footer", Locale.getDefault());
+        System.out.println(ftr);
+        
+        Set<AlertMessageType> types = AlertMessageType.getEzCrmAlertTypes();
+        for (AlertMessageType amt : types) {
+            System.out.println("EzCrm."+amt.toString());
+            String[] tmp = LocalizedMessage.getString("EzCrm."+amt.toString(), Locale.getDefault()).split(";");
+            System.out.print("Event: '"+tmp[0]+"' Details: "+tmp[1]);
+        }
+        
+    }
+    
+//    private String buildEzCrmMessage(AlertMessage alertMsg) {
+//        
+//        // RedFlagEmailEzCrmSubject
+//        // RedFlagEmailEzCrmExtra
+//        String[] dataEx= new String [] {"GROUP", "SEVERITY", "DATE", "DRIVER", "VEHICLE", "EVENT", "LOCATION", "ODOMETER", "SPEED"};
+//        // RedFlagEmailEzCrmFooter
+//        // RedFlagEmailEzCrmEvent.ALERT_TYPE_SPEEDING
+//        
+//    }
 }
