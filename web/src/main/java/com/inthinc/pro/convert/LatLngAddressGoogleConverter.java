@@ -46,7 +46,7 @@ public class LatLngAddressGoogleConverter extends BaseConverter
 //            	}
             }
         }
-        return MessageUtil.getMessageString("noAddressFound");
+        return MessageUtil.getMessageString("unknownLocation");
     }
 
     public GoogleAddressLookup getAddressLookup()
