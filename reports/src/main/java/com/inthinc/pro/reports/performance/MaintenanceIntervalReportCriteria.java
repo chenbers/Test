@@ -212,7 +212,7 @@ public class MaintenanceIntervalReportCriteria extends ReportCriteria {
                         hourInterval = hoursOver;
                         if (hourInterval < 0 && Math.abs(hourInterval) < HOUR_MARGIN) {
                             BackingWrapper backingWrapper = new BackingWrapper(vehicle.getName(), vehicleYMM, maintByDistanceStart,
-                                    maintByDistanceInterval, vehicle.getOdometer(), distanceOver, baseHours, intervalHours, hours, hoursOver, groupName);
+                                    maintByDistanceInterval, odometer, 0, baseHours, intervalHours, hours, hoursOver, groupName);
 
                             backingWrappers.add(backingWrapper);
                         }
@@ -220,7 +220,7 @@ public class MaintenanceIntervalReportCriteria extends ReportCriteria {
                         distanceInterval = distanceOver;
                         if (distanceInterval < 0 && Math.abs(distanceInterval) < DISTANCE_MARGIN) {
                             BackingWrapper backingWrapper = new BackingWrapper(vehicle.getName(), vehicleYMM, maintByDistanceStart,
-                                    maintByDistanceInterval, vehicle.getOdometer(), distanceOver, baseHours, intervalHours, hours, hoursOver, groupName);
+                                    maintByDistanceInterval, odometer, distanceOver, baseHours, intervalHours, hours, 0, groupName);
 
                             backingWrappers.add(backingWrapper);
                         }
@@ -229,7 +229,7 @@ public class MaintenanceIntervalReportCriteria extends ReportCriteria {
                         hourInterval = hoursOver;
                         if ((distanceInterval < 0 && Math.abs(distanceInterval) < DISTANCE_MARGIN) || (hourInterval < 0 && Math.abs(hourInterval) < HOUR_MARGIN)) {
                             BackingWrapper backingWrapper = new BackingWrapper(vehicle.getName(), vehicleYMM, maintByDistanceStart,
-                                    maintByDistanceInterval, vehicle.getOdometer(), distanceOver, baseHours, intervalHours, hours, hoursOver, groupName);
+                                    maintByDistanceInterval, odometer, distanceOver, baseHours, intervalHours, hours, hoursOver, groupName);
 
                             backingWrappers.add(backingWrapper);
                         }
