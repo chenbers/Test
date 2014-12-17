@@ -1,8 +1,18 @@
 package com.inthinc.pro.reports.hos;
 
 import com.inthinc.hos.ddl.HosDailyDriverLog;
-import com.inthinc.pro.dao.*;
-import com.inthinc.pro.model.*;
+import com.inthinc.pro.dao.AccountDAO;
+import com.inthinc.pro.dao.DriverDAO;
+import com.inthinc.pro.dao.GroupDAO;
+import com.inthinc.pro.dao.HOSDAO;
+import com.inthinc.pro.dao.UserDAO;
+import com.inthinc.pro.model.Account;
+import com.inthinc.pro.model.Address;
+import com.inthinc.pro.model.Driver;
+import com.inthinc.pro.model.Group;
+import com.inthinc.pro.model.GroupHierarchy;
+import com.inthinc.pro.model.Person;
+import com.inthinc.pro.model.Status;
 import com.inthinc.pro.model.hos.HOSRecord;
 import com.inthinc.pro.reports.ReportCriteria;
 import mockit.Mocked;
@@ -13,7 +23,13 @@ import org.joda.time.Interval;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -66,6 +82,12 @@ public class HosDriverDailyLogReportCriteriaSortTest {
         person1.setLast("abc");
         person2.setLast("bce");
         person3.setLast("cde");
+
+        // set first names to prove that it sorts lexicographically and not just by last
+        person3.setFirst("abc");
+        person2.setFirst("bce");
+        person1.setFirst("cde");
+
         person1.setAcctID(1);
         person2.setAcctID(1);
         person3.setAcctID(1);
@@ -92,11 +114,6 @@ public class HosDriverDailyLogReportCriteriaSortTest {
 
     @Test
     public void testGetEditedList() {
-
-//        new NonStrictExpectations() {{
-//            mockUserDAO.findByID(1);
-//            result = editor1;
-//        }};
 
         final List<Driver> unsortedDrivers = new LinkedList<Driver>();
         unsortedDrivers.add(driver2);
@@ -129,9 +146,9 @@ public class HosDriverDailyLogReportCriteriaSortTest {
         assertTrue(reportCriterias.size() == 3);
 
         Map<Integer, String> sortedDriverNames = new HashMap<Integer, String>();
-        sortedDriverNames.put(1, "abc");
-        sortedDriverNames.put(2, "bce");
-        sortedDriverNames.put(3, "cde");
+        sortedDriverNames.put(1, "abc cde");
+        sortedDriverNames.put(2, "bce bce");
+        sortedDriverNames.put(3, "cde abc");
 
         int i = 1;
         for (ReportCriteria reportCriteria: reportCriterias){
