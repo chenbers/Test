@@ -406,6 +406,15 @@ public class MaintenanceIntervalReportCriteria extends ReportCriteria {
         return distanceOver;
     }
 
+    /**
+     * Calculate calcHours = hours (drive time) driven minus the base hours (existing) divided by maintenance interval hours.
+     * Currently base hours start from 0 so the formula is simplified to hours = drive time % maintenance interval hours.
+     *
+     * @param baseHours base (existing) hours
+     * @param hours hours (drive time)
+     * @param intervalHours maintenance interval hours
+     * @return calculated hours
+     */
     public static Integer calcHoursOver(Integer baseHours, Integer hours, Integer intervalHours) {
         Integer hoursOver;
 
