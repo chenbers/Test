@@ -241,11 +241,11 @@ public class AdminVehicleJDBCDAO extends SimpleJdbcDaoSupport{
             Long absOdometer = rs.getObject("v.absOdometer") == null ? null : (rs.getLong("v.absOdometer"));
             Long odometer = rs.getObject("v.odometer") == null ? null : rs.getLong("v.odometer");
             if (absOdometer != null) {
-                vehicle.setOdometer(Long.valueOf(absOdometer/100l).intValue()); 
+                vehicle.setOdometer(Long.valueOf(absOdometer/100l).intValue());
             }
             else if (odometer != null) {
-                Integer milesDriven = getMilesDriven(vehicle.getVehicleID()); 
-                vehicle.setOdometer(Long.valueOf((odometer + milesDriven)/100).intValue());
+                //Integer milesDriven = getMilesDriven(vehicle.getVehicleID());
+                vehicle.setOdometer(Long.valueOf((odometer)/100).intValue());
             }
             vehicle.setState(States.getStateById(rs.getInt("v.stateID")));
             vehicle.setStatus(Status.valueOf(rs.getInt("v.status")));
