@@ -56,6 +56,8 @@ public class AlertMessage
     private Integer escalationOrdinal;
     private Integer escalationTryCount;
     
+    private String name; // Name of the Red Flag Alert
+    
     public AlertMessage(Integer messageID, AlertMessageDeliveryType alertMessageDeliveryType, AlertMessageType alertMessageType, String address, String message)
     {
         super();
