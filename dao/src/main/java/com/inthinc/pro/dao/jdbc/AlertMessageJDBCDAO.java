@@ -339,7 +339,7 @@ public class AlertMessageJDBCDAO extends GenericJDBCDAO implements AlertMessageD
 	            }
 	            
 	            AlertMessageBuilder  alertMessageBuilder;
-	            if (messageDeliveryType.compareTo(AlertMessageDeliveryType.EMAIL) == 0 &&
+	            if (AlertMessageDeliveryType.EMAIL == messageDeliveryType &&
 	                AlertMessageType.getEzCrmAlertTypes().contains(alertMessage.getAlertMessageType())) {
 	                
 	                List<String> ezParameterList = new EzCrmParameterList().getParameterList(event, person, alertMessage, locale);
