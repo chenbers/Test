@@ -14,7 +14,7 @@ import com.inthinc.pro.model.BaseEnum;
 @XmlRootElement
 public enum EventCategory implements BaseEnum
 {
-    VIOLATION(1, "VIOLATION", EnumSet.of(EventSubCategory.DRIVING_STYLE, EventSubCategory.SPEED, EventSubCategory.COMPLIANCE, EventSubCategory.FATIGUE, EventSubCategory.REVERSE, EventSubCategory.FIRST_MOVE_FORWARD)),
+    VIOLATION(1, "VIOLATION", EnumSet.of(EventSubCategory.DRIVING_STYLE, EventSubCategory.SPEED, EventSubCategory.COMPLIANCE, EventSubCategory.FATIGUE, EventSubCategory.REVERSE, EventSubCategory.FIRST_MOVE_FORWARD, EventSubCategory.PREVENTATIVE_MAINTENANCE, EventSubCategory.CONDITIONAL,EventSubCategory.IGNITION_OFF)),
     WARNING(2, "WARNING", EnumSet.of(EventSubCategory.VEHICLE, EventSubCategory.WIRELINE, EventSubCategory.INSTALLATION, EventSubCategory.TRAILER)),
 //    DRIVER(3, "DRIVER"),
     NONE(4, "NONE"),
