@@ -200,7 +200,7 @@ public class VehicleJDBCDAO extends SimpleJdbcDaoSupport implements VehicleDAO {
     }
 
     @Override
-    public List<Trip> getLastVehicleTripsByGroupIDDeep(Integer groupID) {
+    public List<Trip> getLastVehicleTripsByGrpIDDeep(Integer groupID) {
         throw new NotImplementedException();
     }
 
