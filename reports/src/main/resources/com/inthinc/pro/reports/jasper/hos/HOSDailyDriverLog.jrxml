@@ -183,7 +183,7 @@
 				</reportElement>
 				<parametersMapExpression><![CDATA[$P{REPORT_PARAMETERS_MAP}]]></parametersMapExpression>
 				<dataSourceExpression><![CDATA[new  net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{recap})]]></dataSourceExpression>
-				<subreportExpression><![CDATA[new URL($P{SUBREPORT_URL}, "HOSDailyDriverLog_recap"+$F{recapType}.toString()+".jasper")]]></subreportExpression>
+				<subreportExpression class="java.net.URL"><![CDATA[new URL($P{SUBREPORT_URL}, "HOSDailyDriverLog_recap"+$F{recapType}.toString()+".jasper")]]></subreportExpression>
 			</subreport>
 			<textField isStretchWithOverflow="true">
 				<reportElement positionType="Float" x="0" y="95" width="185" height="20"/>
@@ -581,7 +581,7 @@
 							<textElement textAlignment="Left">
 								<font size="10"/>
 							</textElement>
-							<textFieldExpression><![CDATA[$F{timeStamp}]]></textFieldExpression>
+							<textFieldExpression class="java.util.Date"><![CDATA[$F{timeStamp}]]></textFieldExpression>
 						</textField>
 						<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 							<reportElement mode="Transparent" x="465" y="1" width="64" height="13" backcolor="#FFFFFF"/>
@@ -602,7 +602,7 @@
 							<textElement textAlignment="Left">
 								<font size="10"/>
 							</textElement>
-							<textFieldExpression><![CDATA[$R{timeStamp}]]></textFieldExpression>
+							<textFieldExpression class="java.util.Date"><![CDATA[$R{timeStamp}]]></textFieldExpression>
 						</textField>
 						<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 							<reportElement mode="Opaque" x="265" y="1" width="64" height="12" backcolor="#FFFFFF"/>
