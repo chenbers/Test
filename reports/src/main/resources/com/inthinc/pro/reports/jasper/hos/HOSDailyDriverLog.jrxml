@@ -581,8 +581,7 @@
 							<textElement textAlignment="Left">
 								<font size="10"/>
 							</textElement>
-                            <textFieldExpression><![CDATA[com.inthinc.pro.reports.hos.converter.Converter.convertRemarksDate($F{timeStamp}, $F{logTimeZone}, $P{REPORT_LOCALE})]]></textFieldExpression>
-							
+							<textFieldExpression><![CDATA[$F{timeStamp.toString()}]]></textFieldExpression>
 						</textField>
 						<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 							<reportElement mode="Transparent" x="465" y="1" width="64" height="13" backcolor="#FFFFFF"/>
@@ -603,7 +602,7 @@
 							<textElement textAlignment="Left">
 								<font size="10"/>
 							</textElement>
-							<textFieldExpression><![CDATA[com.inthinc.pro.reports.hos.converter.Converter.convertRemarksDate($F{timeStamp}, $F{logTimeZone}, $P{REPORT_LOCALE})]]></textFieldExpression>
+							<textFieldExpression><![CDATA[$R{timeStamp.toString()}]]></textFieldExpression>
 						</textField>
 						<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 							<reportElement mode="Opaque" x="265" y="1" width="64" height="12" backcolor="#FFFFFF"/>
