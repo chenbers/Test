@@ -4,7 +4,7 @@
 	<property name="ireport.x" value="139"/>
 	<property name="ireport.y" value="0"/>
 	<style name="PageFooter" fontName="SansSerif" fontSize="12" isBold="true"/>
-	<parameter name="REPORT_LOGO_IMG" class="java.awt.Image"/>
+	<parameter name="REPORT_LOGO_IMG" class="java.io.InputStream"/>
 	<parameter name="REPORT_START_DATE" class="java.lang.String"/>
 	<parameter name="REPORT_END_DATE" class="java.lang.String"/>
 	<parameter name="USE_METRIC" class="java.lang.Boolean" isForPrompting="false"/>
