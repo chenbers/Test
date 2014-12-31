@@ -95,7 +95,7 @@ public class VehicleDaoStub implements VehicleDAO {
     }
 
     @Override
-    public List<Trip> getLastVehicleTripsByGroupIDDeep(Integer groupID) {
+    public List<Trip> getLastVehicleTripsByGrpIDDeep(Integer groupID) {
         return new ArrayList<Trip>();
     }
 
