@@ -297,8 +297,13 @@ public class SiloServiceImpl implements SiloService {
 
     @Override
     @MethodDescription(description = "Fetches the vehicle trips for group hierarchy.", crudType=CrudType.READ, modelClass=com.inthinc.pro.model.configurator.VehicleSetting.class)
+<<<<<<< Updated upstream
     @DAODescription(daoID="vehicleDAO", daoMethod="getLastVehicleTripsByGroupIDDeep")
     public List<Map<String, Object>> getLastVehicleTripsByGroupIDDeep(@DaoParam(name = "groupID") Integer groupID) {
+=======
+    //@DAODescription(daoID="vehicleDAO", daoMethod="getLastVehicleTripsByGrpIDDeep")
+    public List<Map<String, Object>> getLastVehicleTripsByGrpIDDeep(@DaoParam(name = "groupID") Integer groupID) {
+>>>>>>> Stashed changes
         return null;
     }
 

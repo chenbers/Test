@@ -262,7 +262,7 @@ public interface SiloService extends HessianService
      * @param groupID group id
      * @return last trips
      */
-    List<Map<String, Object>> getLastVehicleTripsByGroupIDDeep(Integer groupID);
+    List<Map<String, Object>> getLastVehicleTripsByGrpIDDeep(Integer groupID);
 
 
     /**

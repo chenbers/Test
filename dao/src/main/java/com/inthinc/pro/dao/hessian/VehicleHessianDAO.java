@@ -99,8 +99,8 @@ public class VehicleHessianDAO extends GenericHessianDAO<Vehicle, Integer> imple
     }
 
     @Override
-    public List<Trip> getLastVehicleTripsByGroupIDDeep(Integer groupID) {
-        return  getMapper().convertToModelObject(getSiloService().getLastVehicleTripsByGroupIDDeep(groupID), Trip.class);
+    public List<Trip> getLastVehicleTripsByGrpIDDeep(Integer groupID) {
+        return  getMapper().convertToModelObject(getSiloService().getLastVehicleTripsByGrpIDDeep(groupID), Trip.class);
     }
 
     @Override

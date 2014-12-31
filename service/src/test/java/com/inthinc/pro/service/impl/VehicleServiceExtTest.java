@@ -328,7 +328,7 @@ public class VehicleServiceExtTest {
         new Expectations() {{
             mockVehicleDAO.getVehiclesInGroupHierarchy(anyInt);
             result = Arrays.asList(vehicle1, vehicle2, vehicle3);
-            mockVehicleDAO.getLastVehicleTripsByGroupIDDeep(anyInt);
+            mockVehicleDAO.getLastVehicleTripsByGrpIDDeep(anyInt);
             result = Arrays.asList(mockTrip1, mockTrip2, mockTrip3);
         }};
 
