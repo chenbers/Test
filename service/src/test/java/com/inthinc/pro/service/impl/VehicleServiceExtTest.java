@@ -296,6 +296,35 @@ public class VehicleServiceExtTest {
             assertEquals(trendList.get(0).getTrips(), 999);
         }
     }
+
+
+    @Test
+    public void getVehiclesWithTripTest(){
+
+        new Expectations() {{
+            mockVehicleDAO.getVehiclesInGroupHierarchy(anyInt);
+            result = Arrays.asList(vehicle1, vehicle2, vehicle3);
+            mockVehicleDAO.getLastVehicleTripsByGrpIDDeep(anyInt);
+            result = Arrays.asList(mockTrip1, mockTrip2, mockTrip3);
+        }};
+
+        Response response = vehicleServiceExt.getAllWithLastTrip();
+        assertNotNull(response);
+        assertNotNull(response.getEntity());
+        VehicleTripViewList vehicleTripViewList = (VehicleTripViewList) response.getEntity();
+        assertNotNull(vehicleTripViewList);
+        List<VehicleTripView> vehicleTripViews = vehicleTripViewList.getVehicleTripViews();
+        assertNotNull(vehicleTripViews);
+        assertEquals(2,vehicleTripViews.size());
+
+        int i = 1;
+        for (VehicleTripView vehicleTripView: vehicleTripViews){
+            assertEquals(vehicleTripView.getName(), "name_" + i + "" + NAME_MODIFIER);
+            assertEquals(vehicleTripView.getLastTrip(), tripDates.get(i));
+            i++;
+        }
+    }
+
     @Test
     public void getVehicleWithTripTest(){
 
