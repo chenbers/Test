@@ -33,10 +33,6 @@ public interface VehicleServiceExt {
     @Path("/vehicleext/{name}")
     public Response get(@PathParam("name") String name);
 
-    @GET
-    @Path("/vehicleext/all/lasttrip")
-    public Response getAllWithLastTrip();
-
     /**
      * Gets a vehicle and additional last trip date by the vehicle's user defined id (name).
      *

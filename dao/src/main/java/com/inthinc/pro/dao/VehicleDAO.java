@@ -42,8 +42,6 @@ public interface VehicleDAO extends GenericDAO<Vehicle, Integer> {
 
     LastLocation getLastLocation(Integer vehicleID);
 
-    List<Trip> getLastVehicleTripsByGrpIDDeep(Integer groupID);
-
     List<Trip> getTrips(Integer vehicleID, Date startDate, Date endDate);
 
     Trip getLastTrip(Integer driverID);

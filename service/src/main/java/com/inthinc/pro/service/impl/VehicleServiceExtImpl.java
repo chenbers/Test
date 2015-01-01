@@ -22,7 +22,9 @@ import javax.ws.rs.core.UriInfo;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 public class VehicleServiceExtImpl extends AbstractService<Vehicle, VehicleDAOAdapter> implements VehicleServiceExt {
     private static final String SIMPLE_DATE_FORMAT = "yyyyMMdd";
@@ -38,39 +40,6 @@ public class VehicleServiceExtImpl extends AbstractService<Vehicle, VehicleDAOAd
         if (vehicle != null)
             return Response.ok(vehicle).build();
         return Response.status(Status.NOT_FOUND).build();
-    }
-
-    @Override
-    public Response getAllWithLastTrip() {
-        // get vehicles and trips
-        List<Vehicle> vehicles = getDao().getAll();
-        List<Trip> trips = getDao().getAllLastTrips();
-
-        // save the vehicles in a map to be retrieved by id
-        Map<Integer, Vehicle> vehicleMap = new HashMap<Integer, Vehicle>(vehicles.size());
-        for (Vehicle vehicle: vehicles){
-            vehicleMap.put(vehicle.getVehicleID(), vehicle);
-        }
-
-        // create the vehicle trip view list
-        VehicleTripViewList vehicleTripViewList = new VehicleTripViewList();
-        List<VehicleTripView> vehicleTripViews = new ArrayList<VehicleTripView>();
-        for (Trip trip : trips) {
-            Integer vehicleID = trip.getVehicleID();
-            Date endTime = trip.getEndTime();
-            if (endTime != null && vehicleID != null && vehicleMap.containsKey(vehicleID)) {
-                Vehicle vehicle = vehicleMap.get(vehicleID);
-                VehicleTripView vehicleTripView = new VehicleTripView(vehicle);
-                vehicleTripView.setLastTrip(endTime);
-                vehicleTripViews.add(vehicleTripView);
-            }
-        }
-
-        // store the list in the return bean
-        vehicleTripViewList.setVehicleTripViews(vehicleTripViews);
-
-        // return response
-        return Response.ok(vehicleTripViewList).build();
     }
 
     @Override
