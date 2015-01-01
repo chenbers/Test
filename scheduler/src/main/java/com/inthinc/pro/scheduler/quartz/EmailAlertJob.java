@@ -8,7 +8,6 @@ import org.quartz.JobExecutionException;
 
 import com.inthinc.pro.model.AlertMessageBuilder;
 import com.inthinc.pro.model.AlertMessageDeliveryType;
-import com.inthinc.pro.scheduler.data.EzCrmMessageData;
 import com.inthinc.pro.scheduler.i18n.LocalizedMessage;
 
 public class EmailAlertJob extends BaseAlertJob
@@ -22,16 +21,8 @@ public class EmailAlertJob extends BaseAlertJob
         
         for (AlertMessageBuilder message : messageList)
         {
-            logger.info("MessageID: " + message.getMessageID() + " Emailed to: " + message.getAddress() + " EzCrm: " + message.isEzCrm());
+            logger.info("MessageID: " + message.getMessageID() + " Emailed to: " + message.getAddress());
             String text = LocalizedMessage.getStringWithValues(message.getAlertMessageType().toString(),message.getLocale(),(String[])message.getParamterList().toArray(new String[message.getParamterList().size()]));
-            
-            if (message.isEzCrm()) {
-                // Add EzCrm Data
-                EzCrmMessageData ezCrm = new EzCrmMessageData(message);
-                text += ezCrm.getMessage();
-                text += LocalizedMessage.getString("EzCrm.Footer", message.getLocale());
-            }
-            
             if(getMailDispatcher().send(message.getAddress(), getSubject(message), text))
                 getAlertMessageDAO().acknowledgeMessage(message.getMessageID());
         }

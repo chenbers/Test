@@ -63,8 +63,6 @@ public class BaseAlertJob extends QuartzJobBean
 
     protected String getSubject(AlertMessageBuilder message)
     {
-        if (message.isEzCrm())
-            return LocalizedMessage.getStringWithValues("EzCrm.Subject", message.getLocale(), message.getAlertName());
         return LocalizedMessage.getString("SUBJECT_" + message.getAlertMessageType().name(),message.getLocale());
     }
 

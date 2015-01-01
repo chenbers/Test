@@ -500,20 +500,4 @@ public class Event extends BaseEntity implements Comparable<Event>, Serializable
         }
         return stopTime;
     }
-    
-    public String getAttrByType(EventAttr type) {
-        String attr = "";
-        try {
-            Map<Object, Object> attrMap = getAttrMap();
-            if (attrMap != null && attrMap.isEmpty()) {
-                if (attrMap.containsKey(type)) {
-                    attr = attrMap.get(type).toString();
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return attr;
-        
-    }
 }
