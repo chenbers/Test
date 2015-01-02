@@ -4,7 +4,7 @@
 	<property name="ireport.x" value="139"/>
 	<property name="ireport.y" value="0"/>
 	<style name="PageFooter" fontName="SansSerif" fontSize="12" isBold="true"/>
-	<parameter name="REPORT_LOGO_IMG" class="java.awt.image.BufferedImage"/>
+	<parameter name="REPORT_LOGO_IMG" class="java.awt.Image"/>
 	<parameter name="REPORT_START_DATE" class="java.lang.String"/>
 	<parameter name="REPORT_END_DATE" class="java.lang.String"/>
 	<parameter name="USE_METRIC" class="java.lang.Boolean" isForPrompting="false"/>
@@ -74,7 +74,7 @@
 					<bottomPen lineWidth="0.0" lineColor="#000000"/>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
-				<imageExpression class="java.awt.image.BufferedImage"><![CDATA[$P{REPORT_LOGO_IMG}]]></imageExpression>
+				<imageExpression class="java.awt.Image"><![CDATA[$P{REPORT_LOGO_IMG}]]></imageExpression>
 			</image>
 		</band>
 	</title>
@@ -275,7 +275,7 @@
 					<bottomPen lineWidth="0.0" lineColor="#000000"/>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
-				<imageExpression class="java.awt.image.BufferedImage"><![CDATA[$P{REPORT_LOGO_IMG}]]></imageExpression>
+				<imageExpression class="java.awt.Image"><![CDATA[$P{REPORT_LOGO_IMG}]]></imageExpression>
 			</image>
 			<rectangle>
 				<reportElement key="rectangle-1" mode="Opaque" x="0" y="54" width="752" height="20" backcolor="#000000"/>
