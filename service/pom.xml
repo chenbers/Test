@@ -2,7 +2,7 @@
 	<parent>
 		<artifactId>root</artifactId>
 		<groupId>com.inthinc.pro</groupId>
-		<version>2.0.63</version>
+		<version>2.0.64</version>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.inthinc.pro.service</groupId>
@@ -418,4 +418,8 @@
 			</plugin>
 		</plugins>
 	</reporting>
+
+  <scm>
+    <tag>2.0.64</tag>
+  </scm>
 </project>
