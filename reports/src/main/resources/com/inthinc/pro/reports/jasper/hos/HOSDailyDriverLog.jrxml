@@ -319,7 +319,7 @@
 				<reportElement positionType="Float" x="0" y="283" width="495" height="50" isRemoveLineWhenBlank="true">
 					<printWhenExpression><![CDATA[($F{edited})]]></printWhenExpression>
 				</reportElement>
-				<imageExpression><![CDATA[$F{originalGraph}]]></imageExpression>
+				<imageExpression class="java.awt.Image"><![CDATA[$F{originalGraph}]]></imageExpression>
 			</image>
 			<frame>
 				<reportElement positionType="Float" x="7" y="336" width="114" height="30"/>
