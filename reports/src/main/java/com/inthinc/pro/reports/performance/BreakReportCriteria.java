@@ -44,7 +44,7 @@ import com.inthinc.pro.reports.util.DateTimeUtil;
 import com.inthinc.pro.reports.util.MessageUtil;
 
 public class BreakReportCriteria extends GroupListReportCriteria implements Tabular {
-
+    private static final Integer NUM_COLS = 6;
     protected DateTimeFormatter dateTimeFormatter;
     protected AccountDAO accountDAO;
     protected GroupDAO groupDAO;
@@ -224,27 +224,21 @@ public class BreakReportCriteria extends GroupListReportCriteria implements Tabu
 
         for (HOSRecord rec : hosRecList) {
             HOSStatus status = null;
-            if (rec.getStatus() == HOSStatus.DRIVING ||
-                    rec.getStatus() == HOSStatus.SLEEPER ||
-                    rec.getStatus() == HOSStatus.OFF_DUTY_AT_WELL)
-                status = rec.getStatus();
-            else if (rec.getStatus() == HOSStatus.ON_DUTY ||
-                    rec.getStatus() == HOSStatus.ON_DUTY_OCCUPANT ||
-                    rec.getStatus() == HOSStatus.TRAVELTIME_OCCUPANT) {
-                status = HOSStatus.ON_DUTY;
-            } else if (rec.getStatus() == HOSStatus.OFF_DUTY ||
-                    rec.getStatus() == HOSStatus.OFF_DUTY_OCCUPANT ||
-                    rec.getStatus() == HOSStatus.HOS_PERSONALTIME) {
-                status = HOSStatus.OFF_DUTY;
-            } else if (rec.getStatus() == HOSStatus.HOS_ALTERNATE_SLEEPING) {
-                if (rec.getDriverDotType() == RuleSetType.CANADA_2007_OIL) {
-                    status = HOSStatus.SLEEPER;
-                } else {
+
+            switch (rec.getStatus()) {
+                case OFF_DUTY:
+                case OFF_DUTY_AT_WELL:
+                case OFF_DUTY_OCCUPANT:
+                case HOS_PERSONALTIME:
+                case SLEEPER:
+                case HOS_ALTERNATE_SLEEPING:
                     status = HOSStatus.OFF_DUTY;
-                }
-            } else {
-                continue;
+                    break;
+
+                default:
+                    status = HOSStatus.ON_DUTY;
             }
+
             compensatedRecList.add(new BreakHOSRec(status, rec.getLogTime(), 0l));
         }
 
@@ -253,7 +247,6 @@ public class BreakReportCriteria extends GroupListReportCriteria implements Tabu
             endDate = currentDate;
 
         for (BreakHOSRec rec : compensatedRecList) {
-
             rec.setTotalSeconds(deltaSeconds(endDate, rec.getLogTimeDate()));
             endDate = rec.getLogTimeDate();
         }
@@ -330,7 +323,7 @@ public class BreakReportCriteria extends GroupListReportCriteria implements Tabu
 
     @Override
     public List<String> getColumnHeaders() {
-        return getColumnHeaders(ReportType.BREAK_REPORT, 8);
+        return getColumnHeaders(ReportType.BREAK_REPORT, NUM_COLS);
     }
 
     public List<String> getColumnHeaders(ReportType reportType, int numberOfCols) {
@@ -405,8 +398,6 @@ public class BreakReportCriteria extends GroupListReportCriteria implements Tabu
     public List<ColumnHeader> getColumnSummaryHeaders() {
         ResourceBundle resourceBundle = ReportType.BREAK_REPORT.getResourceBundle(getLocale());
         List<ColumnHeader> columnHeaders = new ArrayList<ColumnHeader>();
-        columnHeaders.add(new ColumnHeader("", 2));
-        columnHeaders.add(new ColumnHeader(MessageUtil.getBundleString(resourceBundle, "column.tabularHours"), 6));
 
         return columnHeaders;
     }

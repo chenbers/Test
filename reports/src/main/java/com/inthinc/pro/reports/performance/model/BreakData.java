@@ -14,11 +14,13 @@ public class BreakData implements Comparable<BreakData>
     private Integer driverId;
     private String driverName;
     private String employeeID;
-
+    private Integer offDutyHours;
+    private Integer onDutyHours;
+    private Integer twoHoursBreak;
+    private Integer breakTime;
     private Date day;
     private DateTime dateTime;
     private String dayStr;
-
     private HOSStatus status;
     private int totalAdjustedMinutes;
 
@@ -26,18 +28,15 @@ public class BreakData implements Comparable<BreakData>
 
 
     public BreakData(String groupName, String groupAddress, Integer driverId, String driverName, String employeeID,
-                     Date day, HOSStatus status, int totalAdjustedMinutes)
-    {
+                     Date day, HOSStatus status, int totalAdjustedMinutes) {
         this(null, groupName, groupAddress, driverId, driverName, employeeID, day, status, totalAdjustedMinutes, new DateTime(day.getTime()), DateTimeZone.UTC);
     }
     public BreakData(String groupName, String groupAddress, Integer driverId, String driverName, String employeeID,
-                     Date day, HOSStatus status, int totalAdjustedMinutes, DateTimeZone driverTimeZone)
-    {
+                     Date day, HOSStatus status, int totalAdjustedMinutes, DateTimeZone driverTimeZone) {
         this(null, groupName, groupAddress, driverId, driverName, employeeID, day, status, totalAdjustedMinutes, new DateTime(day.getTime()), driverTimeZone);
     }
     public BreakData(Integer groupID, String groupName, String groupAddress, Integer driverId, String driverName, String employeeID,
-                     Date day, HOSStatus status, int totalAdjustedMinutes, DateTime dateTime, DateTimeZone driverTimeZone)
-    {
+                     Date day, HOSStatus status, int totalAdjustedMinutes, DateTime dateTime, DateTimeZone driverTimeZone) {
         super();
         this.groupID = groupID;
         this.groupName = groupName;
@@ -50,9 +49,8 @@ public class BreakData implements Comparable<BreakData>
         this.totalAdjustedMinutes = totalAdjustedMinutes;
         this.dateTime = dateTime;
         this.driverTimeZone = driverTimeZone;
-        
     }
-    
+
     public void addTotalAdjustedMinutes(int minutesToAdd) {
         totalAdjustedMinutes += minutesToAdd;
     }
@@ -67,7 +65,7 @@ public class BreakData implements Comparable<BreakData>
                 "\"" + employeeID + "\"," +
                 "new Date(" + day.getTime() + "l)," +
                 "HOSStatus." + status.getName() + "," +
-                totalAdjustedMinutes + ")," 
+                totalAdjustedMinutes + "),"
         );
     }
     public Date getDay() {
@@ -158,14 +156,13 @@ public class BreakData implements Comparable<BreakData>
         
         return cmp;
     }
+
     public DateTime getDateTime() {
         return dateTime;
     }
-
     public void setDateTime(DateTime dateTime) {
         this.dateTime = dateTime;
     }
-
     public String getDayStr() {
         return dayStr;
     }
@@ -178,11 +175,42 @@ public class BreakData implements Comparable<BreakData>
     public Integer getGroupID() {
         return groupID;
     }
-
     public DateTimeZone getDriverTimeZone() {
         return driverTimeZone;
     }
     public void setDriverTimeZone(DateTimeZone driverTimeZone) {
         this.driverTimeZone = driverTimeZone;
+    }
+
+    public Integer getOffDutyHours() {
+        return offDutyHours;
+    }
+
+    public void setOffDutyHours(Integer offDutyHours) {
+        this.offDutyHours = offDutyHours;
+    }
+
+    public Integer getOnDutyHours() {
+        return onDutyHours;
+    }
+
+    public void setOnDutyHours(Integer onDutyHours) {
+        this.onDutyHours = onDutyHours;
+    }
+
+    public Integer getTwoHoursBreak() {
+        return twoHoursBreak;
+    }
+
+    public void setTwoHoursBreak(Integer twoHoursBreak) {
+        this.twoHoursBreak = twoHoursBreak;
+    }
+
+    public Integer getBreakTime() {
+        return breakTime;
+    }
+
+    public void setBreakTime(Integer breakTime) {
+        this.breakTime = breakTime;
     }
 }

@@ -15,7 +15,6 @@ public class BreakHOSRec implements Comparable<BreakHOSRec> {
 			this.totalSeconds = totalSeconds;
 		}
 
-		
 		public HOSStatus getStatus() {
 			return status;
 		}
@@ -31,7 +30,6 @@ public class BreakHOSRec implements Comparable<BreakHOSRec> {
 		public void setLogTimeDate(Date logTimeDate) {
 			this.logTimeDate = logTimeDate;
 		}
-
 
 		public Long getTotalSeconds() {
 			return totalSeconds;
@@ -60,6 +58,5 @@ public class BreakHOSRec implements Comparable<BreakHOSRec> {
 	                "new Date(" + new Date(logTimeDate.getTime()) + "l)," +
 	                "HOSStatus." + status.getName() + "," +
 	                totalSeconds + "),");
-
 		}
 }
