@@ -142,8 +142,8 @@ public class BreakReportCriteria extends GroupListReportCriteria implements Tabu
 
             item.setBreaksTaken(breaksTaken);
             item.setBreakTime(secondsToMinutes(totalBreakTimeSeconds));
-            item.setOnDutyHours(minutesToHours((long)secondsToMinutes(totalOnDutySeconds)));
-            item.setOffDutyHours(minutesToHours((long) secondsToMinutes(totalOnDutySeconds)));
+            item.setOnDutyHours(secondsToMinutes(totalOnDutySeconds));
+            item.setOffDutyHours(secondsToMinutes(totalOffDutySeconds));
         }
 
         return item;
@@ -294,7 +294,7 @@ public class BreakReportCriteria extends GroupListReportCriteria implements Tabu
             return null;
 
         List<List<Result>> resultList = new ArrayList<List<Result>>();
-        for (BreakData data: dataList){
+        for (BreakData data : dataList) {
             List<Result> indResList = new ArrayList<Result>();
 
             indResList.add(new Result(data.getEmployeeID(), data.getEmployeeID()));

@@ -282,7 +282,7 @@ new DecimalFormat("00").format($F{breakTime}.intValue()%60))]]></textFieldExpres
 				<textElement textAlignment="Right">
 					<font size="12"/>
 				</textElement>
-				<textFieldExpression><![CDATA[new String(new DecimalFormat("00").format($F{offDutyHours}.intValue()/60) + ":" +
+				<textFieldExpression><![CDATA[new String(new DecimalFormat("00").format($F{offDutyHours}.intValue()) + ":" +
 new DecimalFormat("00").format($F{offDutyHours}.intValue()%60))]]></textFieldExpression>
 			</textField>
 			<textField evaluationTime="Group" evaluationGroup="groupName" pattern="" isBlankWhenNull="false">
@@ -296,7 +296,7 @@ new DecimalFormat("00").format($F{offDutyHours}.intValue()%60))]]></textFieldExp
 				<textElement textAlignment="Right">
 					<font size="12"/>
 				</textElement>
-				<textFieldExpression><![CDATA[new String(new DecimalFormat("00").format($F{onDutyHours}.intValue()/60) + ":" +
+				<textFieldExpression><![CDATA[new String(new DecimalFormat("00").format($F{onDutyHours}.intValue()) + ":" +
 new DecimalFormat("00").format($F{onDutyHours}.intValue()%60))]]></textFieldExpression>
 			</textField>
 			<textField evaluationTime="Group" evaluationGroup="groupName" pattern="" isBlankWhenNull="false">
