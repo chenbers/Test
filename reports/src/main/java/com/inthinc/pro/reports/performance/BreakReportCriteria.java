@@ -4,12 +4,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.ResourceBundle;
-import java.util.TimeZone;
 import java.util.TreeMap;
 import java.util.Map.Entry;
 
@@ -23,7 +21,6 @@ import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
 import com.inthinc.hos.model.HOSStatus;
-import com.inthinc.hos.model.RuleSetType;
 import com.inthinc.pro.dao.AccountDAO;
 import com.inthinc.pro.dao.AddressDAO;
 import com.inthinc.pro.dao.GroupDAO;
@@ -36,7 +33,6 @@ import com.inthinc.pro.model.hos.HOSRecord;
 import com.inthinc.pro.reports.GroupListReportCriteria;
 import com.inthinc.pro.reports.ReportType;
 import com.inthinc.pro.reports.hos.converter.Converter;
-import com.inthinc.pro.reports.performance.model.BreakData;
 import com.inthinc.pro.reports.tabular.ColumnHeader;
 import com.inthinc.pro.reports.tabular.Result;
 import com.inthinc.pro.reports.tabular.Tabular;
@@ -68,9 +64,9 @@ public class BreakReportCriteria extends GroupListReportCriteria implements Tabu
         List<Group> reportGroupList = this.getReportGroupList(groupIDList, accountGroupHierarchy);
         List<Driver> driverList = this.getReportDriverList(reportGroupList);
 
-        Map<Driver, List<HOSRecord>> driverHOSRecordMap = new HashMap<Driver, List<HOSRecord>> ();
+        Map<Driver, List<HOSRecord>> driverHOSRecordMap = new HashMap<Driver, List<HOSRecord>>();
         for (Driver driver : driverList) {
-            if(includeDriver(getDriverDAO(), driver.getDriverID(), interval)){
+            if (includeDriver(getDriverDAO(), driver.getDriverID(), interval)) {
                 if (driver.getDot() == null)
                     continue;
                 DateTimeZone dateTimeZone = DateTimeZone.forTimeZone(driver.getPerson().getTimeZone());
@@ -81,7 +77,7 @@ public class BreakReportCriteria extends GroupListReportCriteria implements Tabu
         initDataSet(interval, account, accountGroupHierarchy, driverHOSRecordMap);
     }
 
-    void initDataSet(Interval interval, Account account, GroupHierarchy accountGroupHierarchy, Map<Driver, List<HOSRecord>> driverHOSRecordMap){
+    void initDataSet(Interval interval, Account account, GroupHierarchy accountGroupHierarchy, Map<Driver, List<HOSRecord>> driverHOSRecordMap) {
         addParameter("REPORT_START_DATE", dateTimeFormatter.print(interval.getStart()));
         addParameter("REPORT_END_DATE", dateTimeFormatter.print(interval.getEnd()));
         addParameter("CUSTOMER", account);
@@ -92,17 +88,19 @@ public class BreakReportCriteria extends GroupListReportCriteria implements Tabu
         List<BreakData> dataList = new ArrayList<BreakData>();
 
         for (Entry<Driver, List<HOSRecord>> entry : driverHOSRecordMap.entrySet()) {
-            dataList.addAll(getDriverBreakData(interval, accountGroupHierarchy, currentTime, entry.getKey(), entry.getValue()));
+            dataList.add(getDriverBreakData(interval, accountGroupHierarchy, currentTime, entry.getKey(), entry.getValue()));
         }
 
         Collections.sort(dataList);
         setMainDataset(dataList);
     }
 
-    protected List<BreakData> getDriverBreakData(Interval interval, GroupHierarchy groupHierarchy, Date currentTime, Driver driver, List<HOSRecord> hosRecordList) {
+    protected BreakData getDriverBreakData(Interval interval, GroupHierarchy groupHierarchy, Date currentTime, Driver driver, List<HOSRecord> hosRecordList) {
+        final long MAX_SEC_BREAK = 2 * 60 * 60; // max 2 hour break
         DateTimeZone driverTimeZone = DateTimeZone.forTimeZone(driver.getPerson().getTimeZone());
         Interval driverInterval = DateTimeUtil.getStartEndIntervalInTimeZone(interval, driverTimeZone);
         List<BreakData> dataList = new ArrayList<BreakData>();
+        Map<Integer, BreakData> dataMap = new HashMap<Integer, BreakData>();
         List<BreakHOSRec> compensatedRecList = getCompensatedRecordList(hosRecordList, driverInterval.getStart().toDate(), driverInterval.getEnd().toDate(), currentTime);
         Collections.reverse(compensatedRecList);
 
@@ -114,69 +112,41 @@ public class BreakReportCriteria extends GroupListReportCriteria implements Tabu
         String employeeID = driver.getPerson().getEmpid();
         List<DateTime> dayList = DateTimeUtil.getDayList(interval, driverTimeZone);
 
+        BreakData item = new BreakData(driver.getGroupID(), groupName, groupAddress, driver.getDriverID(), driverName, employeeID, driverTimeZone);
+
+        long totalBreakTimeSeconds = 0l;
+        long totalOnDutySeconds = 0l;
+        long totalOffDutySeconds = 0l;
+        int breaksTaken = 0;
+        long lastTotalBreakTimeSeconds = 0l;
+
         for (DateTime day : dayList) {
             List<BreakHOSRec> dayLogList = getListForDay(compensatedRecList, day.toDate(), day.plusDays(1).toDate());
-            Map<HOSStatus, Long> dayMap = new HashMap<HOSStatus, Long>();
-            Long dayCompTotal = 0l;
+
             for (BreakHOSRec log : dayLogList) {
                 if (log.getTotalSeconds() > 0) {
-                    Long seconds = 0l;
-                    if (dayMap.get(log.getStatus()) != null) {
-                        seconds = dayMap.get(log.getStatus());
-                    }
-                    seconds += log.getTotalSeconds();
-                    dayMap.put(log.getStatus(), seconds);
-                    if (log.getStatus() != HOSStatus.OFF_DUTY)
-                        dayCompTotal += log.getTotalSeconds();
-                }
-            }
-            int totalCompMinutes = 0;
-            for (HOSStatus status : dayMap.keySet()) {
-                if (status != HOSStatus.OFF_DUTY) {
-                    totalCompMinutes += secondsToMinutes(dayMap.get(status));
-                }
-            }
-            int diffMinutes = secondsToMinutes(dayCompTotal) - totalCompMinutes;
-
-            LinkedHashMap<HOSStatus, Long> sortedDayMap = sortMapByValue(dayMap, (diffMinutes < 0));
-
-            int totalMinForDay = 0;
-            for (HOSStatus status : sortedDayMap.keySet()) {
-                int addMinute = 0;
-                if (status != HOSStatus.OFF_DUTY) {
-                    if (diffMinutes > 0) {
-                        addMinute = 1;
-                        diffMinutes -= 1;
-                    } else if (diffMinutes < 0) {
-                        addMinute = -1;
-                        diffMinutes += 1;
+                    Long seconds = log.getTotalSeconds();
+                    if (log.getStatus().equals(HOSStatus.ON_DUTY)) {
+                        totalOnDutySeconds += seconds;
+                        if (lastTotalBreakTimeSeconds <= MAX_SEC_BREAK) {
+                            breaksTaken += 1;
+                            totalBreakTimeSeconds += lastTotalBreakTimeSeconds;
+                            lastTotalBreakTimeSeconds = 0l;
+                        }
+                    } else {
+                        totalOffDutySeconds += seconds;
+                        lastTotalBreakTimeSeconds += seconds;
                     }
                 }
-                BreakData item = new BreakData(driver.getGroupID(), groupName, groupAddress, driver.getDriverID(), driverName, employeeID, day.toDate(),
-                        status, secondsToMinutes(sortedDayMap.get(status)) + addMinute, day, driverTimeZone);
-                item.setDayStr(dateTimeFormatter.withZone(driverTimeZone).print(day));
-                dataList.add(item);
-
-                totalMinForDay = totalMinForDay + item.getTotalAdjustedMinutes();
             }
 
-            long endMillis = new DateTime().getMillis();
-            if (endMillis > day.plusDays(1).getMillis())
-                endMillis = day.plusDays(1).getMillis();
-            int minutesInDay = (int) ((endMillis - day.getMillis()) / 60000l);
-            if (totalMinForDay != minutesInDay) {
-
-                int diff = minutesInDay - totalMinForDay;
-                for (BreakData item : dataList)
-                    if (item.getDateTime().equals(day) && item.getStatus() == HOSStatus.OFF_DUTY) {
-                        item.addTotalAdjustedMinutes(diff);
-                        break;
-                    }
-            }
-
+            item.setBreaksTaken(breaksTaken);
+            item.setBreakTime(secondsToMinutes(totalBreakTimeSeconds));
+            item.setOnDutyHours(minutesToHours((long)secondsToMinutes(totalOnDutySeconds)));
+            item.setOffDutyHours(minutesToHours((long) secondsToMinutes(totalOnDutySeconds)));
         }
 
-        return dataList;
+        return item;
     }
 
     public List<BreakHOSRec> getListForDay(List<BreakHOSRec> hosList, Date logDay, Date endOfDayCurrentDate) {
@@ -212,8 +182,6 @@ public class BreakReportCriteria extends GroupListReportCriteria implements Tabu
                 else if (logTime.after(endOfDayCurrentDate)) {
                     break;
                 }
-
-
             }
         }
         return listForDay;
@@ -273,29 +241,11 @@ public class BreakReportCriteria extends GroupListReportCriteria implements Tabu
         return (int) minutes;
     }
 
-    private LinkedHashMap<HOSStatus, Long> sortMapByValue(Map<HOSStatus, Long> dayMap, boolean isAscending) {
-        Map<HOSStatus, Long> tempMap = new HashMap<HOSStatus, Long>(dayMap);
-        LinkedHashMap<HOSStatus, Long> sortedDayMap = new LinkedHashMap<HOSStatus, Long>();
-
-        for (int i = 0; i < dayMap.size(); i++) {
-            Map.Entry<HOSStatus, Long> sortEntry = null;
-            Long sortValue = null;
-            for (Map.Entry<HOSStatus, Long> entry : tempMap.entrySet()) {
-                Long entrySecs = entry.getValue() % 60;
-                if (sortValue == null ||
-                        (isAscending && entrySecs < sortValue) ||
-                        (!isAscending && entrySecs > sortValue)) {
-                    sortValue = entrySecs;
-                    sortEntry = entry;
-                }
-            }
-            tempMap.remove(sortEntry.getKey());
-            sortedDayMap.put(sortEntry.getKey(), sortEntry.getValue());
-        }
-        return sortedDayMap;
+    public static int minutesToHours(Long minutes) {
+        if (minutes == null)
+            minutes = 0l;
+        return (int) Math.ceil(minutes / 60);
     }
-
-
 
     public AccountDAO getAccountDAO() {
         return accountDAO;
@@ -343,55 +293,21 @@ public class BreakReportCriteria extends GroupListReportCriteria implements Tabu
         if (dataList == null || dataList.size() == 0)
             return null;
 
-        Map<String, Map<DateTime, Integer[]>> dataMap = new TreeMap<String, Map<DateTime, Integer[]>>();
+        List<List<Result>> resultList = new ArrayList<List<Result>>();
+        for (BreakData data: dataList){
+            List<Result> indResList = new ArrayList<Result>();
 
-        for (BreakData data : dataList) {
-            Map<DateTime, Integer[]> driverData = dataMap.get(data.getDriverName());
-            if (driverData == null) {
-                driverData = new TreeMap<DateTime, Integer[]>();
-                dataMap.put(data.getDriverName(), driverData);
-            }
-            Integer[] timeData = driverData.get(data.getDateTime());
-            if (timeData == null) {
-                timeData = new Integer[5];
-                for (int i = 0; i < 5; i++)
-                    timeData[i] = 0;
+            indResList.add(new Result(data.getEmployeeID(), data.getEmployeeID()));
+            indResList.add(new Result(data.getDriverName(), data.getDriverName()));
+            indResList.add(new Result(Converter.convertMinutes(data.getOnDutyHours()), Converter.convertMinutes(data.getOnDutyHours())));
+            indResList.add(new Result(Converter.convertMinutes(data.getOffDutyHours()), Converter.convertMinutes(data.getOffDutyHours())));
+            indResList.add(new Result(data.getBreaksTaken().toString(), data.getBreaksTaken()));
+            indResList.add(new Result(Converter.convertMinutes(data.getBreakTime()), Converter.convertMinutes(data.getBreakTime())));
 
-                driverData.put(data.getDateTime(), timeData);
-            }
-
-            if (data.getStatus() == HOSStatus.OFF_DUTY || data.getStatus() == HOSStatus.OFF_DUTY_OCCUPANT) {
-                timeData[0] = timeData[0] + data.getTotalAdjustedMinutes();
-            } else if (data.getStatus() == HOSStatus.OFF_DUTY_AT_WELL) {
-                timeData[1] = timeData[1] + data.getTotalAdjustedMinutes();
-            } else if (data.getStatus() == HOSStatus.SLEEPER) {
-                timeData[2] = timeData[2] + data.getTotalAdjustedMinutes();
-            } else if (data.getStatus() == HOSStatus.DRIVING) {
-                timeData[3] = timeData[3] + data.getTotalAdjustedMinutes();
-            } else if (data.getStatus() == HOSStatus.ON_DUTY || data.getStatus() == HOSStatus.ON_DUTY_OCCUPANT) {
-                timeData[4] = timeData[4] + data.getTotalAdjustedMinutes();
-            }
-
+            resultList.add(indResList);
         }
 
-        List<List<Result>> records = new ArrayList<List<Result>>();
-        for (Entry<String, Map<DateTime, Integer[]>> driverEntry : dataMap.entrySet()) {
-            for (Entry<DateTime, Integer[]> dayEntry : driverEntry.getValue().entrySet()) {
-                List<Result> row = new ArrayList<Result>();
-                row.add(new Result(driverEntry.getKey(), driverEntry.getKey()));
-                row.add(new Result(dateTimeFormatter.print(new DateTime(dayEntry.getKey())), dayEntry.getKey()));
-                long sum = 0;
-                for (int i = 0; i < 5; i++) {
-                    row.add(new Result(Converter.convertMinutes(new Long(dayEntry.getValue()[i])), dayEntry.getValue()[i]));
-                    if (i != 0)
-                        sum += dayEntry.getValue()[i];
-                }
-                row.add(new Result(Converter.convertMinutes(sum), sum));
-                records.add(row);
-            }
-        }
-
-        return records;
+        return resultList;
     }
 
     @Override

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="payrollDetailRaw" pageWidth="1200" pageHeight="595" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="1200" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" resourceBundle="i18n/payrollDetail" isIgnorePagination="true" uuid="01ce6c5b-03a5-4dbe-b6f9-8abcd1c9dd07">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="payrollDetailRaw" pageWidth="1400" pageHeight="595" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="1400" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" resourceBundle="i18n/payrollDetail" isIgnorePagination="true" uuid="01ce6c5b-03a5-4dbe-b6f9-8abcd1c9dd07">
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
-	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.zoom" value="1.000000000000001"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<property name="net.sf.jasperreports.export.xls.exclude.origin.keep.first.band.1" value="columnHeader"/>
@@ -16,157 +16,13 @@
 	<field name="driverId" class="java.lang.Integer"/>
 	<field name="driverName" class="java.lang.String"/>
 	<field name="employeeID" class="java.lang.String"/>
-	<field name="day" class="java.util.Date"/>
-	<field name="status" class="com.inthinc.hos.model.HOSStatus"/>
-	<field name="totalAdjustedMinutes" class="java.lang.Integer"/>
-	<field name="dayStr" class="java.lang.String"/>
-	<variable name="drivingHours" class="java.lang.Integer">
-		<variableExpression><![CDATA[new Integer(($F{status} == com.inthinc.hos.model.HOSStatus.DRIVING) ? $F{totalAdjustedMinutes}.intValue() : 0)]]></variableExpression>
-	</variable>
+	<field name="offDutyHours" class="java.lang.Integer"/>
+	<field name="onDutyHours" class="java.lang.Integer"/>
+	<field name="breakTime" class="java.lang.Integer"/>
+	<field name="breaksTaken" class="java.lang.Integer"/>
 	<variable name="groupAddress" class="java.lang.String" resetType="None">
 		<variableExpression><![CDATA[$F{groupAddress}]]></variableExpression>
 	</variable>
-	<variable name="offDutyHours" class="java.lang.Integer">
-		<variableExpression><![CDATA[new Integer(($F{status} ==  com.inthinc.hos.model.HOSStatus.OFF_DUTY || $F{status} == com.inthinc.hos.model.HOSStatus.OFF_DUTY_OCCUPANT) ? $F{totalAdjustedMinutes}.intValue() : 0)]]></variableExpression>
-	</variable>
-	<variable name="offDutyAtWellHours" class="java.lang.Integer">
-		<variableExpression><![CDATA[new Integer(($F{status} == com.inthinc.hos.model.HOSStatus.OFF_DUTY_AT_WELL) ? $F{totalAdjustedMinutes}.intValue() : 0)]]></variableExpression>
-	</variable>
-	<variable name="sleeperHours" class="java.lang.Integer">
-		<variableExpression><![CDATA[new Integer(($F{status} == com.inthinc.hos.model.HOSStatus.SLEEPER) ? $F{totalAdjustedMinutes}.intValue() : 0)]]></variableExpression>
-	</variable>
-	<variable name="notDrivingHours" class="java.lang.Integer">
-		<variableExpression><![CDATA[new Integer(($F{status} == com.inthinc.hos.model.HOSStatus.ON_DUTY || $F{status} == com.inthinc.hos.model.HOSStatus.ON_DUTY_OCCUPANT) ? $F{totalAdjustedMinutes}.intValue() : 0)]]></variableExpression>
-	</variable>
-	<variable name="SUM_sleeperHours_1" class="java.lang.Integer" resetType="Group" resetGroup="driverId" calculation="Sum">
-		<variableExpression><![CDATA[$V{sleeperHours}]]></variableExpression>
-	</variable>
-	<variable name="SUM_offDutyHours" class="java.lang.Integer" resetType="Group" resetGroup="driverId" calculation="Sum">
-		<variableExpression><![CDATA[$V{offDutyHours}]]></variableExpression>
-	</variable>
-	<variable name="SUM_offDutyAtWellHours" class="java.lang.Integer" resetType="Group" resetGroup="driverId" calculation="Sum">
-		<variableExpression><![CDATA[$V{offDutyAtWellHours}]]></variableExpression>
-	</variable>
-	<variable name="SUM_notDrivingHours" class="java.lang.Integer" resetType="Group" resetGroup="driverId" calculation="Sum">
-		<variableExpression><![CDATA[$V{notDrivingHours}]]></variableExpression>
-	</variable>
-	<variable name="SUM_drivingHours" class="java.lang.Integer" resetType="Group" resetGroup="driverId" calculation="Sum">
-		<variableExpression><![CDATA[$V{drivingHours}]]></variableExpression>
-	</variable>
-	<variable name="totalHours" class="java.lang.Integer" resetType="Group" resetGroup="driverId">
-		<variableExpression><![CDATA[new Integer($V{SUM_sleeperHours_1}.intValue()+
-$V{SUM_offDutyAtWellHours}.intValue()+
-$V{SUM_notDrivingHours}.intValue()+
-$V{SUM_drivingHours}.intValue())]]></variableExpression>
-	</variable>
-	<group name="groupName">
-		<groupExpression><![CDATA[$F{groupName}]]></groupExpression>
-	</group>
-	<group name="driverId">
-		<groupExpression><![CDATA[$F{driverId}]]></groupExpression>
-		<groupFooter>
-			<band height="26">
-				<textField pattern="" isBlankWhenNull="true">
-					<reportElement key="textField-30" mode="Opaque" x="334" y="2" width="150" height="23" forecolor="#000000" backcolor="#FFFFFF" uuid="4833d82a-298e-4ad6-ae2c-06c9e310babb"/>
-					<box>
-						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-						<bottomPen lineWidth="0.0" lineColor="#000000"/>
-						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					</box>
-					<textElement verticalAlignment="Middle">
-						<font size="12" isBold="false" pdfFontName="Helvetica-Bold"/>
-					</textElement>
-					<textFieldExpression><![CDATA[$F{employeeID}]]></textFieldExpression>
-				</textField>
-				<textField pattern="" isBlankWhenNull="false">
-					<reportElement key="textField-31" mode="Opaque" x="486" y="2" width="250" height="23" forecolor="#000000" backcolor="#FFFFFF" uuid="9c899e57-eead-4ef0-8255-f3c664d93e1a"/>
-					<box>
-						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-						<bottomPen lineWidth="0.0" lineColor="#000000"/>
-						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					</box>
-					<textElement verticalAlignment="Middle">
-						<font size="12" isBold="false"/>
-					</textElement>
-					<textFieldExpression><![CDATA[$F{driverName}]]></textFieldExpression>
-				</textField>
-				<textField evaluationTime="Group" evaluationGroup="driverId" pattern="" isBlankWhenNull="false">
-					<reportElement key="textField-37" mode="Opaque" x="942" y="2" width="100" height="23" backcolor="#FFFFFF" uuid="dc7636b2-1e66-4eed-8eaf-2e9f57a3fd14"/>
-					<box>
-						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-						<bottomPen lineWidth="0.0" lineColor="#000000"/>
-						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					</box>
-					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font size="12" isBold="false"/>
-					</textElement>
-					<textFieldExpression><![CDATA[new String(new DecimalFormat("00").format($V{SUM_sleeperHours_1}.intValue()/60) + ":" +
-new DecimalFormat("00").format($V{SUM_sleeperHours_1}.intValue()%60))]]></textFieldExpression>
-				</textField>
-				<textField evaluationTime="Group" evaluationGroup="driverId" pattern="" isBlankWhenNull="false">
-					<reportElement key="textField-38" mode="Opaque" x="738" y="2" width="100" height="23" backcolor="#FFFFFF" uuid="c6a276f1-1f2b-4130-bdb8-a54c4326881d"/>
-					<box>
-						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-						<bottomPen lineWidth="0.0" lineColor="#000000"/>
-						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					</box>
-					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font size="12" isBold="false"/>
-					</textElement>
-					<textFieldExpression><![CDATA[new String(new DecimalFormat("00").format($V{SUM_offDutyHours}.intValue()/60) + ":" +
-new DecimalFormat("00").format($V{SUM_offDutyHours}.intValue()%60))]]></textFieldExpression>
-				</textField>
-				<textField evaluationTime="Group" evaluationGroup="driverId" pattern="" isBlankWhenNull="false">
-					<reportElement key="textField-39" mode="Opaque" x="840" y="2" width="100" height="23" backcolor="#FFFFFF" uuid="fe5d5b04-63a4-42f6-969e-8d9097ac373f"/>
-					<box>
-						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-						<bottomPen lineWidth="0.0" lineColor="#000000"/>
-						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					</box>
-					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font size="12" isBold="false"/>
-					</textElement>
-					<textFieldExpression><![CDATA[new String(new DecimalFormat("00").format($V{SUM_offDutyAtWellHours}.intValue()/60) + ":" +
-new DecimalFormat("00").format($V{SUM_offDutyAtWellHours}.intValue()%60))]]></textFieldExpression>
-				</textField>
-				<textField evaluationTime="Group" evaluationGroup="driverId" pattern="" isBlankWhenNull="false">
-					<reportElement key="textField-40" mode="Opaque" x="1044" y="2" width="100" height="23" backcolor="#FFFFFF" uuid="6352a596-a3e5-40f9-8668-d833dccb18ea"/>
-					<box>
-						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-						<bottomPen lineWidth="0.0" lineColor="#000000"/>
-						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					</box>
-					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font size="12" isBold="false"/>
-					</textElement>
-					<textFieldExpression><![CDATA[new String(new DecimalFormat("00").format($V{SUM_drivingHours}.intValue()/60) + ":" +
-new DecimalFormat("00").format($V{SUM_drivingHours}.intValue()%60))]]></textFieldExpression>
-				</textField>
-				<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="false">
-					<reportElement key="textField-23" positionType="Float" mode="Opaque" x="0" y="2" width="332" height="23" forecolor="#000000" backcolor="#FFFFFF" uuid="f2dd9687-9f07-401a-a17a-f6b3b7703f2c"/>
-					<box>
-						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-						<bottomPen lineWidth="0.0" lineColor="#000000"/>
-						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					</box>
-					<textElement textAlignment="Left" verticalAlignment="Middle">
-						<font size="12" isBold="false" pdfFontName="Helvetica"/>
-					</textElement>
-					<textFieldExpression><![CDATA[$F{groupName}]]></textFieldExpression>
-				</textField>
-			</band>
-		</groupFooter>
-	</group>
-	<group name="day">
-		<groupExpression><![CDATA[$F{day}]]></groupExpression>
-	</group>
 	<columnHeader>
 		<band height="31">
 			<textField isStretchWithOverflow="true" isBlankWhenNull="false">
@@ -184,28 +40,28 @@ new DecimalFormat("00").format($V{SUM_drivingHours}.intValue()%60))]]></textFiel
 				<textFieldExpression><![CDATA[$R{column.2}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="false">
-				<reportElement key="textField-51" mode="Opaque" x="738" y="2" width="100" height="29" backcolor="#FFFFFF" uuid="9dcb85ec-d0b1-4f8d-ab2b-392fc32d5d35"/>
+				<reportElement key="textField-51" mode="Opaque" x="738" y="2" width="150" height="29" backcolor="#FFFFFF" uuid="9dcb85ec-d0b1-4f8d-ab2b-392fc32d5d35"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="12" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$R{column.3}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="false">
-				<reportElement key="textField-51" mode="Opaque" x="840" y="2" width="100" height="29" backcolor="#FFFFFF" uuid="0945d407-f4dc-4f6c-a542-0b446e075d58"/>
+				<reportElement key="textField-51" mode="Opaque" x="888" y="2" width="150" height="29" backcolor="#FFFFFF" uuid="0945d407-f4dc-4f6c-a542-0b446e075d58"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="12" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$R{column.4}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="false">
-				<reportElement key="textField-51" mode="Opaque" x="942" y="2" width="100" height="29" backcolor="#FFFFFF" uuid="8e7d98b3-546a-4e5c-a591-190c0cff40cd"/>
+				<reportElement key="textField-51" mode="Opaque" x="1038" y="2" width="150" height="29" backcolor="#FFFFFF" uuid="8e7d98b3-546a-4e5c-a591-190c0cff40cd"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="12" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$R{column.5}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="false">
-				<reportElement key="textField-51" mode="Opaque" x="1044" y="2" width="100" height="29" backcolor="#FFFFFF" uuid="b73716dd-1b24-4fb7-b4d7-5953247d229a"/>
+				<reportElement key="textField-51" mode="Opaque" x="1188" y="2" width="150" height="29" backcolor="#FFFFFF" uuid="b73716dd-1b24-4fb7-b4d7-5953247d229a"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="12" isBold="true"/>
 				</textElement>
@@ -226,4 +82,102 @@ new DecimalFormat("00").format($V{SUM_drivingHours}.intValue()%60))]]></textFiel
 			</textField>
 		</band>
 	</columnHeader>
+	<detail>
+		<band height="24">
+			<textField pattern="" isBlankWhenNull="true">
+				<reportElement key="textField-30" mode="Opaque" x="334" y="0" width="150" height="23" forecolor="#000000" backcolor="#FFFFFF" uuid="4833d82a-298e-4ad6-ae2c-06c9e310babb"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="12" isBold="false" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{employeeID}]]></textFieldExpression>
+			</textField>
+			<textField pattern="" isBlankWhenNull="false">
+				<reportElement key="textField-31" mode="Opaque" x="486" y="0" width="250" height="23" forecolor="#000000" backcolor="#FFFFFF" uuid="9c899e57-eead-4ef0-8255-f3c664d93e1a"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="12" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{driverName}]]></textFieldExpression>
+			</textField>
+			<textField pattern="" isBlankWhenNull="false">
+				<reportElement key="textField-37" mode="Opaque" x="1038" y="0" width="150" height="23" backcolor="#FFFFFF" uuid="dc7636b2-1e66-4eed-8eaf-2e9f57a3fd14"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{breaksTaken}]]></textFieldExpression>
+			</textField>
+			<textField pattern="" isBlankWhenNull="false">
+				<reportElement key="textField-38" mode="Opaque" x="738" y="0" width="150" height="23" backcolor="#FFFFFF" uuid="c6a276f1-1f2b-4130-bdb8-a54c4326881d"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new String(new DecimalFormat("00").format($F{onDutyHours}.intValue()/60) + ":" +
+new DecimalFormat("00").format($F{onDutyHours}.intValue()%60))]]></textFieldExpression>
+			</textField>
+			<textField pattern="" isBlankWhenNull="false">
+				<reportElement key="textField-39" mode="Opaque" x="888" y="0" width="150" height="23" backcolor="#FFFFFF" uuid="fe5d5b04-63a4-42f6-969e-8d9097ac373f"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new String(new DecimalFormat("00").format($F{offDutyHours}.intValue()/60) + ":" +
+new DecimalFormat("00").format($F{offDutyHours}.intValue()%60))]]></textFieldExpression>
+			</textField>
+			<textField pattern="" isBlankWhenNull="false">
+				<reportElement key="textField-40" mode="Opaque" x="1188" y="0" width="150" height="23" backcolor="#FFFFFF" uuid="6352a596-a3e5-40f9-8668-d833dccb18ea"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new String(new DecimalFormat("00").format($F{breakTime}.intValue()/60) + ":" +
+new DecimalFormat("00").format($F{breakTime}.intValue()%60))]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="false">
+				<reportElement key="textField-23" positionType="Float" mode="Opaque" x="0" y="0" width="332" height="23" forecolor="#000000" backcolor="#FFFFFF" uuid="f2dd9687-9f07-401a-a17a-f6b3b7703f2c"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="12" isBold="false" pdfFontName="Helvetica"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{groupName}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
 </jasperReport>

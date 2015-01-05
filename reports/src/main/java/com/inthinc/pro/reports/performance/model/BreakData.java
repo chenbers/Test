@@ -1,10 +1,7 @@
 package com.inthinc.pro.reports.performance.model;
 
-import com.inthinc.hos.model.HOSStatus;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
-
-import java.util.Date;
 
 public class BreakData implements Comparable<BreakData>
 {
@@ -16,27 +13,15 @@ public class BreakData implements Comparable<BreakData>
     private String employeeID;
     private Integer offDutyHours;
     private Integer onDutyHours;
-    private Integer twoHoursBreak;
+    private Integer breaksTaken;
     private Integer breakTime;
-    private Date day;
-    private DateTime dateTime;
-    private String dayStr;
-    private HOSStatus status;
-    private int totalAdjustedMinutes;
-
     private DateTimeZone driverTimeZone;
 
+    public BreakData() {
+    }
 
-    public BreakData(String groupName, String groupAddress, Integer driverId, String driverName, String employeeID,
-                     Date day, HOSStatus status, int totalAdjustedMinutes) {
-        this(null, groupName, groupAddress, driverId, driverName, employeeID, day, status, totalAdjustedMinutes, new DateTime(day.getTime()), DateTimeZone.UTC);
-    }
-    public BreakData(String groupName, String groupAddress, Integer driverId, String driverName, String employeeID,
-                     Date day, HOSStatus status, int totalAdjustedMinutes, DateTimeZone driverTimeZone) {
-        this(null, groupName, groupAddress, driverId, driverName, employeeID, day, status, totalAdjustedMinutes, new DateTime(day.getTime()), driverTimeZone);
-    }
     public BreakData(Integer groupID, String groupName, String groupAddress, Integer driverId, String driverName, String employeeID,
-                     Date day, HOSStatus status, int totalAdjustedMinutes, DateTime dateTime, DateTimeZone driverTimeZone) {
+                     DateTimeZone driverTimeZone) {
         super();
         this.groupID = groupID;
         this.groupName = groupName;
@@ -44,15 +29,7 @@ public class BreakData implements Comparable<BreakData>
         this.driverId = driverId;
         this.driverName = driverName;
         this.employeeID = employeeID;
-        this.day = day;
-        this.status = status;
-        this.totalAdjustedMinutes = totalAdjustedMinutes;
-        this.dateTime = dateTime;
         this.driverTimeZone = driverTimeZone;
-    }
-
-    public void addTotalAdjustedMinutes(int minutesToAdd) {
-        totalAdjustedMinutes += minutesToAdd;
     }
 
     public void dump()
@@ -62,34 +39,8 @@ public class BreakData implements Comparable<BreakData>
                 "\"" + groupAddress + "\"," +
                 driverId + "," + 
                 "\"" + driverName + "\"," +
-                "\"" + employeeID + "\"," +
-                "new Date(" + day.getTime() + "l)," +
-                "HOSStatus." + status.getName() + "," +
-                totalAdjustedMinutes + "),"
+                "\"" + employeeID + "\"),"
         );
-    }
-    public Date getDay() {
-        return day;
-    }
-
-    public void setDay(Date day) {
-        this.day = day;
-    }
-
-    public HOSStatus getStatus() {
-        return status;
-    }
-
-    public void setStatus(HOSStatus status) {
-        this.status = status;
-    }
-
-    public int getTotalAdjustedMinutes() {
-        return totalAdjustedMinutes;
-    }
-
-    public void setTotalAdjustedMinutes(int totalAdjustedMinutes) {
-        this.totalAdjustedMinutes = totalAdjustedMinutes;
     }
 
     public String getGroupName()
@@ -157,18 +108,6 @@ public class BreakData implements Comparable<BreakData>
         return cmp;
     }
 
-    public DateTime getDateTime() {
-        return dateTime;
-    }
-    public void setDateTime(DateTime dateTime) {
-        this.dateTime = dateTime;
-    }
-    public String getDayStr() {
-        return dayStr;
-    }
-    public void setDayStr(String dayStr) {
-        this.dayStr = dayStr;
-    }
     public void setGroupID(Integer groupID) {
         this.groupID = groupID;
     }
@@ -198,12 +137,12 @@ public class BreakData implements Comparable<BreakData>
         this.onDutyHours = onDutyHours;
     }
 
-    public Integer getTwoHoursBreak() {
-        return twoHoursBreak;
+    public Integer getBreaksTaken() {
+        return breaksTaken;
     }
 
-    public void setTwoHoursBreak(Integer twoHoursBreak) {
-        this.twoHoursBreak = twoHoursBreak;
+    public void setBreaksTaken(Integer breaksTaken) {
+        this.breaksTaken = breaksTaken;
     }
 
     public Integer getBreakTime() {
