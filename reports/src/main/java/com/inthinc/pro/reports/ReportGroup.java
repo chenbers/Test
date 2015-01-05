@@ -117,9 +117,10 @@ public enum ReportGroup {
             GroupType.TEAM }, ReportCategory.DriverPerformance, EnumSet.of(ReportAccountType.PERFORMANCE), ReportType.BACKING_REPORT),
     FIRST_MOVE_FORWARD_REPORT("First Move Forward Violation Report", 109, EntityType.ENTITY_GROUP, new CriteriaType[] { CriteriaType.TIMEFRAME_STRICT, CriteriaType.INACTIVE_DRIVERS, CriteriaType.ZERO_MILES_DRIVERS }, new GroupType[] { GroupType.DIVISION, GroupType.FLEET,
                     GroupType.TEAM }, ReportCategory.DriverPerformance, EnumSet.of(ReportAccountType.PERFORMANCE), ReportType.FIRST_MOVE_FORWARD_REPORT),
+    BREAK_REPORT("Break Report (0-2 hrs.)", 110, EntityType.ENTITY_GROUP_LIST, new CriteriaType[] { CriteriaType.TIMEFRAME, CriteriaType.INACTIVE_DRIVERS }, new GroupType[] { GroupType.DIVISION, GroupType.FLEET, GroupType.TEAM },
+            ReportCategory.Performance, EnumSet.of(ReportAccountType.WAYSMART, ReportAccountType.HOS), ReportType.BREAK_REPORT),
 
-
-     /* Forms */
+    /* Forms */
     DVIR_PRE_TRIP("DVIR Pre-Trip", 43, EntityType.ENTITY_GROUP, new CriteriaType[] { CriteriaType.TIMEFRAME }, new GroupType[] { GroupType.DIVISION, GroupType.FLEET, GroupType.TEAM },
             ReportCategory.DVIR, EnumSet.of(ReportAccountType.DVIR), ReportType.DVIR_PRETRIP),
     DVIR_POST_TRIP("DVIR Post-Trip", 44, EntityType.ENTITY_GROUP, new CriteriaType[] { CriteriaType.TIMEFRAME }, new GroupType[] { GroupType.DIVISION, GroupType.FLEET, GroupType.TEAM },

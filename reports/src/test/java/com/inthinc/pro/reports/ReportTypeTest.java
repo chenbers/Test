@@ -13,6 +13,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
+import com.inthinc.pro.reports.performance.model.BreakData;
 import org.junit.Test;
 import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
@@ -88,6 +89,7 @@ public class ReportTypeTest {
             new ReportTypeData(ReportType.PAYROLL_DETAIL, PayrollData.class),
             new ReportTypeData(ReportType.PAYROLL_SIGNOFF, PayrollData.class),
             new ReportTypeData(ReportType.PAYROLL_SUMMARY, PayrollData.class),
+            new ReportTypeData(ReportType.BREAK_REPORT, BreakData.class),
             new ReportTypeData(ReportType.RED_FLAG_REPORT, RedFlagReportItem.class),
             new ReportTypeData(ReportType.SPEED_PERCENTAGE, CategorySeriesData.class),  
             new ReportTypeData(ReportType.STATE_MILEAGE_BY_MONTH, StateMileageByMonth.class),

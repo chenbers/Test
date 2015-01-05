@@ -85,6 +85,7 @@ public enum ReportType
     DRIVER_PERFORMANCE_RYG_INDIVIDUAL("Driver  Performance RYG(Individual)","driverPerformanceReport.jrxml","driverPerformanceRaw.jrxml", "performance","com.inthinc.pro.reports.jasper.performance.i18n.driverPerformanceReport", null, false), 
     BACKING_REPORT("Back-Up Events Report","backingReport.jrxml","backingReportRaw.jrxml","performance","com.inthinc.pro.reports.jasper.performance.i18n.backingReport"),
     FIRST_MOVE_FORWARD_REPORT("First Move Forward Violation Report","firstMoveForwardReport.jrxml","firstMoveForwardReportRaw.jrxml","performance","com.inthinc.pro.reports.jasper.performance.i18n.firstMoveForwardReport"),
+    BREAK_REPORT("Break Report (0-2 hrs.)","breakReport.jrxml", "breakReportRaw.jrxml", "performance", "com.inthinc.pro.reports.jasper.performance.i18n.breakReport", null, true),
 
     // ASSET
     WARRANTY_LIST("Warranty List","warrantyListReport.jrxml","warrantyListReportRaw.jrxml", "performance","com.inthinc.pro.reports.jasper.asset.i18n.warrantyList", null, false),

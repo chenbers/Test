@@ -899,6 +899,19 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
     }
 
     @Override
+    public ReportCriteria getBreakReportCriteria(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, Interval interval, Locale locale, boolean includeInactiveDrivers) {
+        BreakReportCriteria criteria = new BreakReportCriteria(locale);
+        criteria.setAccountDAO(accountDAO);
+        criteria.setDriverDAO(driverDAO);
+        criteria.setGroupDAO(groupDAO);
+        criteria.setHosDAO(hosDAO);
+        criteria.setAddressDAO(addressDAO);
+        criteria.setIncludeInactiveDrivers(includeInactiveDrivers);
+        criteria.init(accountGroupHierarchy, groupIDList, interval);
+        return criteria;
+    }
+
+    @Override
     public ReportCriteria getPayrollCompensatedHoursReportCriteria(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, Interval interval, Locale locale) {
         return getPayrollCompensatedHoursReportCriteria(accountGroupHierarchy, groupIDList, interval, locale, ReportCriteria.DEFAULT_EXCLUDE_INACTIVE_DRIVERS);
     }
@@ -1698,6 +1711,16 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
             }
 
             switch (reportGroup.getReports()[i]) {
+                case BREAK_REPORT:
+                    reportCriteriaList.add(getBreakReportCriteria(
+                                    groupHierarchy,
+                                    reportSchedule.getGroupIDList(),
+                                    timeFrame.getInterval(),
+                                    person.getLocale(),
+                                    reportSchedule.getIncludeInactiveDrivers()
+                            )
+                    );
+                    break;
                 case FIRST_MOVE_FORWARD_REPORT:
                     reportCriteriaList.add(getFirstMoveForwardCriteria(timeFrame.getInterval(),
                             groupHierarchy,

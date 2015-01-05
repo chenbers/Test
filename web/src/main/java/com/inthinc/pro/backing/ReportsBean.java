@@ -171,6 +171,10 @@ public abstract class ReportsBean extends BaseBean {
                 reportCriteriaList.add(getReportCriteriaService().getPayrollSummaryReportCriteria(getAccountGroupHierarchy(), params.getGroupIDList(), params.getDateRange().getInterval(),  
                         params.getLocale(), params.isIncludeInactiveDrivers()));
                 break;
+            case BREAK_REPORT:
+                reportCriteriaList.add(getReportCriteriaService().getBreakReportCriteria(getAccountGroupHierarchy(), params.getGroupIDList(), params.getDateRange().getInterval(),
+                        params.getLocale(), params.isIncludeInactiveDrivers()));
+                break;
             case PAYROLL_COMPENSATED_HOURS:
                 reportCriteriaList.add(getReportCriteriaService().getPayrollCompensatedHoursReportCriteria(getAccountGroupHierarchy(), params.getGroupIDList(), params.getDateRange().getInterval(),  
                         params.getLocale(), params.isIncludeInactiveDrivers()));
