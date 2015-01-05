@@ -122,7 +122,7 @@ function merge_tomcat6_blank_with_tmp {
 
 function setup_tomcat2_variables {
     echo "Enter function setup_tomcat2_variables"
-    DEB_Version="${SRC_VERSION}-${BUILD_NUMBER}~${DISTRIB_ID}~${DISTRIB_CODENAME}"
+    DEB_Version="${BUILD_NUMBER}-${SRC_VERSION}~${DISTRIB_ID}~${DISTRIB_CODENAME}"
     U_GID="1090"
     MY_GROUP_USER="tiwipro"
     MY_USER="tomcat2"
