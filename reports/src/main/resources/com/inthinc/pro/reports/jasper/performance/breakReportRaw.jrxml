@@ -134,7 +134,7 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="12" isBold="false"/>
 				</textElement>
-				<textFieldExpression><![CDATA[new String(new DecimalFormat("00").format($F{onDutyHours}.intValue()) + ":" +
+				<textFieldExpression><![CDATA[new String(new DecimalFormat("00").format($F{onDutyHours}.intValue()/60) + ":" +
 new DecimalFormat("00").format($F{onDutyHours}.intValue()%60))]]></textFieldExpression>
 			</textField>
 			<textField pattern="" isBlankWhenNull="false">
@@ -148,7 +148,7 @@ new DecimalFormat("00").format($F{onDutyHours}.intValue()%60))]]></textFieldExpr
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="12" isBold="false"/>
 				</textElement>
-				<textFieldExpression><![CDATA[new String(new DecimalFormat("00").format($F{offDutyHours}.intValue()) + ":" +
+				<textFieldExpression><![CDATA[new String(new DecimalFormat("00").format($F{offDutyHours}.intValue()/60) + ":" +
 new DecimalFormat("00").format($F{offDutyHours}.intValue()%60))]]></textFieldExpression>
 			</textField>
 			<textField pattern="" isBlankWhenNull="false">
