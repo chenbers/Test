@@ -228,7 +228,7 @@ public class ZonesBeanTest extends BaseBeanTest
     }
 
     private ZonesBean getMockZoneBeanWithNoZones() throws NoSuchMethodException {
-        ZonesBean zonesBean = createMock(ZonesBean.class);
+        ZonesBean zonesBean = createMock(ZonesBean.class, new Method[]{ZonesBean.class.getMethod("getPerson", null)});
 //        expect(zonesBean.getPerson()).andReturn(getMockPerson(measurementType));
 //        replay(zonesBean);
         return zonesBean;
