@@ -636,14 +636,14 @@ public class ZonesBean extends BaseBean
         Integer value = 0;
         if(item != null) {
             value = item.getOptionsMap().get(ZoneAvailableOption.SPEED_LIMIT).getValue();
-        }
         
-        MeasurementType measurementType = getPerson().getMeasurementType();
+            MeasurementType measurementType = getPerson().getMeasurementType();
 
-        //transform if necessary
-        if (measurementType.equals(MeasurementType.METRIC))
-            value = MeasurementConversionUtil.fromMPHtoKPH(value).intValue();
-
+            //transform if necessary
+            if (measurementType.equals(MeasurementType.METRIC)) {
+                value = MeasurementConversionUtil.fromMPHtoKPH(value).intValue();
+            }
+        }
         return value;
     }
 
