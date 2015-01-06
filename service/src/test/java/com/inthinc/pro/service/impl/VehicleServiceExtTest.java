@@ -101,6 +101,11 @@ public class VehicleServiceExtTest {
             public Integer getGroupID() {
                 return 1;
             }
+
+            @Override
+            public Integer getAccountID() {
+                return 1;
+            }
         };
         mockVehicleDAOAdapter.setVehicleDAO(mockVehicleDAO);
         mockVehicleDAOAdapter.setVehicleReportDAO(mockVehicleReportDAO);
@@ -179,15 +184,15 @@ public class VehicleServiceExtTest {
     public void getLocationTest() {
 
         new Expectations() {{
-            mockVehicleDAO.findByName(vehicle1.getName());
+            mockVehicleDAO.findByName(1, vehicle1.getName());
             result = vehicle1;
             mockVehicleDAO.getLastLocation(vehicle1.getVehicleID());
             result = mockLastLocation;
-            mockVehicleDAO.findByName(vehicle2.getName());
+            mockVehicleDAO.findByName(1, vehicle2.getName());
             result = vehicle2;
             mockVehicleDAO.getLastLocation(vehicle2.getVehicleID());
             result = mockLastLocation;
-            mockVehicleDAO.findByName(vehicle3.getName());
+            mockVehicleDAO.findByName(1, vehicle3.getName());
             result = vehicle3;
             mockVehicleDAO.getLastLocation(vehicle3.getVehicleID());
             result = mockLastLocation;
@@ -208,15 +213,15 @@ public class VehicleServiceExtTest {
 
         new Expectations() {{
 
-            mockVehicleDAO.findByName(vehicle1.getName());
+            mockVehicleDAO.findByName(1, vehicle1.getName());
             result = vehicle1;
             mockVehicleDAO.getLastTrip(vehicle1.getDriverID());
             result = mockLastTrip;
-            mockVehicleDAO.findByName(vehicle2.getName());
+            mockVehicleDAO.findByName(1, vehicle2.getName());
             result = vehicle2;
             mockVehicleDAO.getLastTrip(vehicle2.getDriverID());
             result = mockLastTrip;
-            mockVehicleDAO.findByName(vehicle3.getName());
+            mockVehicleDAO.findByName(1, vehicle3.getName());
             result = vehicle3;
             mockVehicleDAO.getLastTrip(vehicle3.getDriverID());
             result = mockLastTrip;
@@ -237,15 +242,15 @@ public class VehicleServiceExtTest {
 
         new Expectations() {{
 
-            mockVehicleDAO.findByName(vehicle1.getName());
+            mockVehicleDAO.findByName(1, vehicle1.getName());
             result = vehicle1;
             mockVehicleDAO.getTrips(vehicle1.getVehicleID(), (Date) any, (Date) any);
             result = mockTripList;
-            mockVehicleDAO.findByName(vehicle2.getName());
+            mockVehicleDAO.findByName(1, vehicle2.getName());
             result = vehicle2;
             mockVehicleDAO.getTrips(vehicle2.getVehicleID(), (Date) any, (Date) any);
             result = mockTripList;
-            mockVehicleDAO.findByName(vehicle3.getName());
+            mockVehicleDAO.findByName(1, vehicle3.getName());
             result = vehicle3;
             mockVehicleDAO.getTrips(vehicle3.getVehicleID(), (Date) any, (Date) any);
             result = mockTripList;
@@ -269,15 +274,15 @@ public class VehicleServiceExtTest {
 
         new Expectations() {{
 
-            mockVehicleDAO.findByName(vehicle1.getName());
+            mockVehicleDAO.findByName(1, vehicle1.getName());
             result = vehicle1;
             mockVehicleReportDAO.getScore(vehicle1.getVehicleID(), (Duration) any);
             result = mockScore;
-            mockVehicleDAO.findByName(vehicle2.getName());
+            mockVehicleDAO.findByName(1, vehicle2.getName());
             result = vehicle2;
             mockVehicleReportDAO.getScore(vehicle2.getVehicleID(), (Duration) any);
             result = mockScore;
-            mockVehicleDAO.findByName(vehicle3.getName());
+            mockVehicleDAO.findByName(1, vehicle3.getName());
             result = vehicle3;
             mockVehicleReportDAO.getScore(vehicle3.getVehicleID(), (Duration) any);
             result = mockScore;
@@ -297,15 +302,15 @@ public class VehicleServiceExtTest {
 
         new Expectations() {{
 
-            mockVehicleDAO.findByName(vehicle1.getName());
+            mockVehicleDAO.findByName(1, vehicle1.getName());
             result = vehicle1;
             mockVehicleReportDAO.getTrend(vehicle1.getVehicleID(), (Duration) any);
             result = mockTrendList;
-            mockVehicleDAO.findByName(vehicle2.getName());
+            mockVehicleDAO.findByName(1, vehicle2.getName());
             result = vehicle2;
             mockVehicleReportDAO.getTrend(vehicle2.getVehicleID(), (Duration) any);
             result = mockTrendList;
-            mockVehicleDAO.findByName(vehicle3.getName());
+            mockVehicleDAO.findByName(1, vehicle3.getName());
             result = vehicle3;
             mockVehicleReportDAO.getTrend(vehicle3.getVehicleID(), (Duration) any);
             result = mockTrendList;
@@ -353,15 +358,15 @@ public class VehicleServiceExtTest {
     public void getVehicleWithTripTest(){
 
         new Expectations() {{
-            mockVehicleDAO.findByName(vehicle1.getName());
+            mockVehicleDAO.findByName(1, vehicle1.getName());
             result = vehicle1;
             mockVehicleDAO.getLastTrip(vehicle1.getDriverID());
             result = mockLastTrip;
-            mockVehicleDAO.findByName(vehicle2.getName());
+            mockVehicleDAO.findByName(1, vehicle2.getName());
             result = vehicle2;
             mockVehicleDAO.getLastTrip(vehicle2.getDriverID());
             result = mockLastTrip;
-            mockVehicleDAO.findByName(vehicle3.getName());
+            mockVehicleDAO.findByName(1, vehicle3.getName());
             result = vehicle3;
             mockVehicleDAO.getLastTrip(vehicle3.getDriverID());
             result = mockLastTrip;
