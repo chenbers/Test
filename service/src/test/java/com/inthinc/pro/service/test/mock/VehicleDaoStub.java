@@ -39,7 +39,7 @@ public class VehicleDaoStub implements VehicleDAO {
      * @see com.inthinc.pro.dao.VehicleDAO#findByName(java.lang.String)
      */
     @Override
-    public Vehicle findByName(String name) {
+    public Vehicle findByName(Integer acctID, String name) {
         return new Vehicle();
     }
 

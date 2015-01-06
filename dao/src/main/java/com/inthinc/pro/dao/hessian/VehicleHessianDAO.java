@@ -131,9 +131,9 @@ public class VehicleHessianDAO extends GenericHessianDAO<Vehicle, Integer> imple
     }
 
     @Override
-    public Vehicle findByName(String name) {
+    public Vehicle findByName(Integer acctID, String name) {
         try {
-            return getMapper().convertToModelObject(getSiloService().getVehicleByName(name), Vehicle.class);
+            return getMapper().convertToModelObject(getSiloService().getVehicleByName(acctID,name), Vehicle.class);
         } catch (EmptyResultSetException e) {
             return null;
         }
