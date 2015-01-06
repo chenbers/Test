@@ -68,7 +68,8 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
     <bean id="configuratorDAO" class="com.inthinc.pro.dao.hessian.ConfiguratorHessianDAO" />
     <bean id="redFlagAlertsDAO" class="com.inthinc.pro.dao.hessian.RedFlagAlertHessianDAO"></bean>
     <bean id="phoneControlDAO" class="com.inthinc.pro.dao.hessian.PhoneControlHessianDAO"></bean>
-    <bean id="trailerReportDAO" class="com.inthinc.pro.dao.mock.MockTrailerReportDAO" />
+    <bean id="trailerReportDAO"    class="com.inthinc.pro.dao.mock.MockTrailerReportDAO" />
+    <bean id="configuratorJDBCDAO" class="com.inthinc.pro.dao.mock.MockConfiguratorDAO"/>
 
     <!-- Address Lookup -->
     <bean id="geonamesAddressLookupBean" class="com.inthinc.pro.map.GeonamesAddressLookup">
