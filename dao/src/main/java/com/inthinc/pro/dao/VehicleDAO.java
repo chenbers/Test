@@ -36,7 +36,7 @@ public interface VehicleDAO extends GenericDAO<Vehicle, Integer> {
 
     Vehicle findByDriverID(Integer driverID);
 
-    Vehicle findByName(String name);
+    Vehicle findByName( Integer acctID, String name);
 
     Vehicle findByDriverInGroup(Integer driverID, Integer groupID);
 
