@@ -209,6 +209,12 @@ public class ZonesBeanTest extends BaseBeanTest
         mockZoneBean = getMockZoneBean(MeasurementType.METRIC, 100);
         assertEquals(mockZoneBean.getMeasurementTypeSpeedLimit(), 161);
     }
+    
+    @Test
+    public void testgetMeasurementTypeSpeedLimit_noZones_noException() throws NoSuchMethodException {
+        ZonesBean mockZonesBean = getMockZoneBeanWithNoZones();
+        assertEquals(mockZonesBean.getMeasurementTypeSpeedLimit(), 0);
+    }
 
     @Test
     public void testGetSpeedMeasurementName() throws NoSuchMethodException {
@@ -221,6 +227,13 @@ public class ZonesBeanTest extends BaseBeanTest
         assertEquals(mockZoneBean.getSpeedMeasurementName(), "kph");
     }
 
+    private ZonesBean getMockZoneBeanWithNoZones() throws NoSuchMethodException {
+        ZonesBean zonesBean = createMock(ZonesBean.class, new Method[]{ZonesBean.class.getMethod("getPerson", null)});
+//        expect(zonesBean.getPerson()).andReturn(getMockPerson(measurementType));
+//        replay(zonesBean);
+        return zonesBean;
+    }
+    
     private ZonesBean getMockZoneBean(MeasurementType measurementType, Integer value) throws NoSuchMethodException {
         ZonesBean zonesBean = createMock(ZonesBean.class, new Method[]{ZonesBean.class.getMethod("getPerson", null)});
         Zone zone = getMockZone(value);
