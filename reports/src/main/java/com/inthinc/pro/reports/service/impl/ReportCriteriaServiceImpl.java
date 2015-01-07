@@ -973,10 +973,26 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
         return getThirtyMinuteBreaksReportCriteria(accountGroupHierarchy, groupIDList, interval, locale, ReportCriteria.DEFAULT_EXCLUDE_INACTIVE_DRIVERS);
         
     }
+
+    @Override
+    public ReportCriteria getTwoHourBreaksReportCriteria(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, Interval interval, Locale local) {
+        return getTwoHourBreaksReportCriteria(accountGroupHierarchy, groupIDList, interval, locale, ReportCriteria.DEFAULT_EXCLUDE_INACTIVE_DRIVERS);
+    }
     
     @Override
     public ReportCriteria getThirtyMinuteBreaksReportCriteria(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, Interval interval, Locale locale, boolean includeInactiveDrivers) {
         ThirtyMinuteBreaksReportCriteria criteria = new ThirtyMinuteBreaksReportCriteria(locale);
+        criteria.setAccountDAO(accountDAO);
+        criteria.setDriverDAO(driverDAO);
+        criteria.setHosDAO(hosDAO);
+        criteria.setIncludeInactiveDrivers(includeInactiveDrivers);
+        criteria.init(accountGroupHierarchy, groupIDList, interval);
+        return criteria;
+    }
+
+    @Override
+    public ReportCriteria getTwoHourBreaksReportCriteria(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, Interval interval, Locale locale, boolean includeInactiveDrivers) {
+        TwoHourBreaksReportCriteria criteria = new TwoHourBreaksReportCriteria(locale);
         criteria.setAccountDAO(accountDAO);
         criteria.setDriverDAO(driverDAO);
         criteria.setHosDAO(hosDAO);
@@ -1922,6 +1938,16 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
                                     reportSchedule.getIncludeInactiveDrivers()
                                     )
                                     );
+                    break;
+                case TWO_HOUR_BREAKS:
+                    reportCriteriaList.add(getTwoHourBreaksReportCriteria(
+                                    groupHierarchy,
+                                    reportSchedule.getGroupIDList(),
+                                    timeFrame.getInterval(),
+                                    person.getLocale(),
+                                    reportSchedule.getIncludeInactiveDrivers()
+                            )
+                    );
                     break;
 
                 case MILEAGE_BY_VEHICLE:

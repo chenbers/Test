@@ -164,11 +164,11 @@ public abstract class ReportsBean extends BaseBean {
                 break;
             
             case TEN_HOUR_DAY_VIOLATIONS:
-                reportCriteriaList.add(getReportCriteriaService().getTenHoursDayViolationsCriteria(getAccountGroupHierarchy(), params.getGroupID(), params.getDateRange().getInterval(),  
+                reportCriteriaList.add(getReportCriteriaService().getTenHoursDayViolationsCriteria(getAccountGroupHierarchy(), params.getGroupID(), params.getDateRange().getInterval(),
                         params.getLocale(), params.isIncludeInactiveDrivers(), params.isIncludeZeroMilesDrivers()));
                 break;
             case PAYROLL_SUMMARY:
-                reportCriteriaList.add(getReportCriteriaService().getPayrollSummaryReportCriteria(getAccountGroupHierarchy(), params.getGroupIDList(), params.getDateRange().getInterval(),  
+                reportCriteriaList.add(getReportCriteriaService().getPayrollSummaryReportCriteria(getAccountGroupHierarchy(), params.getGroupIDList(), params.getDateRange().getInterval(),
                         params.getLocale(), params.isIncludeInactiveDrivers()));
                 break;
             case PAYROLL_COMPENSATED_HOURS:
@@ -194,6 +194,10 @@ public abstract class ReportsBean extends BaseBean {
                 break;
             case THIRTY_MINUTE_BREAKS:
                 reportCriteriaList.add(getReportCriteriaService().getThirtyMinuteBreaksReportCriteria(getAccountGroupHierarchy(), params.getGroupIDList(), params.getDateRange().getInterval(),  
+                        params.getLocale(), params.isIncludeInactiveDrivers()));
+                break;
+            case TWO_HOUR_BREAKS:
+                reportCriteriaList.add(getReportCriteriaService().getTwoHourBreaksReportCriteria(getAccountGroupHierarchy(), params.getGroupIDList(), params.getDateRange().getInterval(),
                         params.getLocale(), params.isIncludeInactiveDrivers()));
                 break;
                 
