@@ -82,7 +82,7 @@ public class TwoHourBreaksReportCriteria extends GroupListReportCriteria {
             List<HOSRec> hosRec = entry.getValue();
             HOSRules ruleSet = RuleSetFactory.getRulesForRuleSetType(driver.getDot());
             DateTimeZone timeZone = DateTimeZone.forTimeZone(driver.getPerson().getTimeZone());
-            List<DayData> dayData = ruleSet.getDayData(hosRec, interval, timeZone, 0, 120);
+            List<DayData> dayData = ruleSet.getDayData(hosRec, interval, timeZone, 1, 120);
             BreakDataSummary breakData = compileBreakData(interval, accountGroupHierarchy, driver, dayData);
             dataList.add(breakData);
         }
