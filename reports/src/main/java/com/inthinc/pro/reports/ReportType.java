@@ -75,6 +75,8 @@ public enum ReportType
     TEN_HOUR_DAY_VIOLATIONS("Ten Hour Day Violations","tenHourDayViolations.jrxml","tenHourDayViolationsRaw.jrxml", "performance","com.inthinc.pro.reports.jasper.performance.i18n.tenHourDayViolations", null, false),
     DRIVER_HOURS("Driver Hours","driverHoursReport.jrxml","driverHoursReportRaw.jrxml", "performance","com.inthinc.pro.reports.jasper.performance.i18n.driverHours", null, false), 
     THIRTY_MINUTE_BREAKS("30 Minute Breaks", "thirtyMinuteBreaks.jrxml", "thirtyMinuteBreaksRaw.jrxml", "performance", "com.inthinc.pro.reports.jasper.performance.i18n.thirtyMinuteBreaks", null, false),
+    TWO_HOUR_BREAKS("2 Hour Breaks", "twoHourBreaks.jrxml", "twoHourBreaksRaw.jrxml", "performance", "com.inthinc.pro.reports.jasper.performance.i18n.twoHourBreaks", null, false),
+
     VEHICLE_USAGE("Vehicle usage","vehicleUsageReport.jrxml","vehicleUsageReportRaw.jrxml", "performance","com.inthinc.pro.reports.jasper.performance.i18n.vehicleUsageReport", null, false),
 
     DRIVER_PERFORMANCE_KEY_METRICS("Driver Performance Key Metrics", "driverPerformanceKeyMetrics.jrxml","driverPerformanceKeyMetricsRaw.jrxml", "performance","com.inthinc.pro.reports.jasper.performance.i18n.driverPerformanceKeyMetrics", null, false),
