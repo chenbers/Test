@@ -33,9 +33,11 @@ public class LocalizedMessage
             String translatedParameters[] = new String[parameters.length];
             int idx = 0;
             for (String parameter : parameters) {
-                if (myResources.containsKey(parameter))
-                    parameter = myResources.getString(parameter);
-                translatedParameters[idx++] = parameter;
+                if (parameter != null) {
+                    if (myResources.containsKey(parameter))
+                        parameter = myResources.getString(parameter);
+                    translatedParameters[idx++] = parameter;
+                }
             }
             message = MessageFormat.format(message, translatedParameters);
         }
