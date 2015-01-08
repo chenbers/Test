@@ -28,6 +28,8 @@ public class EmailAlertJob extends BaseAlertJob
             if (message.isEzCrm()) {
                 // Add EzCrm Data
                 EzCrmMessageData ezCrm = new EzCrmMessageData(message);
+            	logger.debug("ExCrm Name: " + ezCrm.getAlertName()[0]);
+            	text = LocalizedMessage.getStringWithValues(message.getAlertMessageType().toString(),message.getLocale(),ezCrm.getAlertName());
                 text += ezCrm.getMessage();
                 text += LocalizedMessage.getString("EzCrm.Footer", message.getLocale());
             }
