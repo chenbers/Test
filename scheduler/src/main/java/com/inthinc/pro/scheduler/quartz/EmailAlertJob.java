@@ -23,6 +23,16 @@ public class EmailAlertJob extends BaseAlertJob
         {
             logger.info("MessageID: " + message.getMessageID() + " Emailed to: " + message.getAddress());
             String text = LocalizedMessage.getStringWithValues(message.getAlertMessageType().toString(),message.getLocale(),(String[])message.getParamterList().toArray(new String[message.getParamterList().size()]));
+            
+            if (message.isEzCrm()) {
+                // Add EzCrm Data
+                EzCrmMessageData ezCrm = new EzCrmMessageData(message);
+            	logger.debug("ExCrm Name: " + ezCrm.getAlertName()[0]);
+            	text = LocalizedMessage.getStringWithValues(message.getAlertMessageType().toString(),message.getLocale(),ezCrm.getAlertName());
+                text += ezCrm.getMessage();
+                text += LocalizedMessage.getString("EzCrm.Footer", message.getLocale());
+            }
+            
             if(getMailDispatcher().send(message.getAddress(), getSubject(message), text))
                 getAlertMessageDAO().acknowledgeMessage(message.getMessageID());
         }
