@@ -202,6 +202,37 @@ public class AlertMessageJDBCDAO extends GenericJDBCDAO implements AlertMessageD
 
         return null;
     }
+    
+    final String FETCH_ALERT_NAME = "SELECT name FROM alert WHERE alertID = ?";
+
+    private String findAlertName(Integer alertID) {
+
+        Connection conn = null;
+        java.sql.PreparedStatement statement = null;
+        ResultSet resultSet = null;
+
+        try {
+            conn = getConnection();
+            statement = conn.prepareStatement(FETCH_ALERT_NAME);
+            statement.setInt(1, alertID);
+            resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+	            logger.debug("findAlertName(" + Integer.toString(alertID) + ") = " + resultSet.getString(1));
+                return resultSet.getString(1);
+            }
+
+        } // end try
+        catch (SQLException e) { // handle database hosLogs in the usual manner
+            throw new ProDAOException(statement.toString(), e);
+        } // end catch
+        finally { // clean up and release the connection
+            close(resultSet);
+            close(statement);
+            close(conn);
+        } // end finally
+
+        return null;
+    }
 
     @Override
     public Integer update(AlertMessage entity) {
@@ -301,13 +332,35 @@ public class AlertMessageJDBCDAO extends GenericJDBCDAO implements AlertMessageD
 	            if (!AlertEscalationStatus.SENT.equals(alertMessage.getStatus())) {
 	                alertMessage.setAddress(getAlertMessageAddress(person, messageDeliveryType));
 	            }
-	            AlertMessageBuilder  alertMessageBuilder = new AlertMessageBuilder(alertMessage.getAlertID(), 
-	                    alertMessage.getMessageID(), 
-	                    locale, 
-	                    alertMessage.getAddress(),
-	                    alertMessage.getAlertMessageType(), 
-	                    alertMessage.getAcknowledge(),
-	                    parameterList);
+	            
+	            AlertMessageBuilder  alertMessageBuilder;
+	            if (AlertMessageDeliveryType.EMAIL == messageDeliveryType &&
+	                AlertMessageType.getEzCrmAlertTypes().contains(alertMessage.getAlertMessageType())) {
+	                
+	                List<String> ezParameterList = new EzCrmParameterList().getParameterList(event, person, alertMessage, locale);
+	                if (!alertReady(ezParameterList))
+	                    continue;
+
+	                alertMessageBuilder = new AlertMessageBuilder(alertMessage.getAlertID(),
+	                                alertMessage.getName(),
+	                                alertMessage.getMessageID(), 
+	                                locale, 
+	                                alertMessage.getAddress(),
+	                                alertMessage.getAlertMessageType(), 
+	                                alertMessage.getAcknowledge(),
+	                                parameterList,
+	                                ezParameterList);
+	                logger.debug("ExCrm: alertMessageBuilder.getAlertName() = "+ alertMessageBuilder.getAlertName() + ", alertMessage.gerName() = " + alertMessage.getName() + ", ezParameterList.size() = " + ezParameterList.size());
+	            } else {
+	            
+    	            alertMessageBuilder = new AlertMessageBuilder(alertMessage.getAlertID(),
+    	                    alertMessage.getMessageID(), 
+    	                    locale, 
+    	                    alertMessage.getAddress(),
+    	                    alertMessage.getAlertMessageType(), 
+    	                    alertMessage.getAcknowledge(),
+    	                    parameterList);
+	            }
 	
 	            if (alertMessageBuilder != null) {
 	                messageBuilders.add(alertMessageBuilder);
