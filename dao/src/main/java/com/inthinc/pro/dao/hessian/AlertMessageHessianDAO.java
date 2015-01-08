@@ -153,6 +153,7 @@ public class AlertMessageHessianDAO extends GenericHessianDAO<AlertMessage, Inte
         alertMessageBuilder.setAlertMessageType(alertMessage.getAlertMessageType());
         alertMessageBuilder.setAlertName(alertMessage.getName());
 
+        logger.debug("AlertMessageBuilder: Preparing parameterList for alert: " + alertMessageBuilder.getAlertName());
         List<String> parameterList = new ArrayList<String>();
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MMM d, yyyy h:mm a (z)", locale);
         
@@ -222,6 +223,7 @@ public class AlertMessageHessianDAO extends GenericHessianDAO<AlertMessage, Inte
 	    // ExCrm Param List
 	    if (AlertMessageDeliveryType.EMAIL == messageDeliveryType &&
 			AlertMessageType.getEzCrmAlertTypes().contains(alertMessage.getAlertMessageType())) {
+	        logger.debug("AlertMessageBuilder: ExCrm preparing ExCrmParameterList for alert: " + alertMessageBuilder.getAlertName());
 	        
 	        List<String> ezParameterList = new EzCrmParameterList().getParameterList(event, person, alertMessage, locale);
 	        alertMessageBuilder.setEzParameterList(ezParameterList);
