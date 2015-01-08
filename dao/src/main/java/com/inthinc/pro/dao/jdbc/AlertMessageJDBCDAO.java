@@ -183,10 +183,14 @@ public class AlertMessageJDBCDAO extends GenericJDBCDAO implements AlertMessageD
                 alertMessage.setDeviceID(resultSet.getInt(4));
                 alertMessage.setAttribs(resultSet.getString(5));
                 alertMessage.setPersonID(resultSet.getInt(6));
-                Integer alertID = resultSet.getInt(7);
+/*                Integer alertID = resultSet.getInt(7);
                 alertMessage.setAlertID(alertID);
                 if (alertID != 0)
                     alertMessage.setName(findAlertName(alertID));
+*/              
+                alertMessage.setAlertID(resultSet.getInt(7));
+                alertMessage.setName(findAlertName(alertMessage.getAlertID()));
+	            logger.debug("AlertMessage findByID(" + Integer.toString(id) + "), alertName = " + alertMessage.getName());
                 alertMessage.setAlertMessageType(AlertMessageType.valueOf(resultSet.getInt(8)));
                 alertMessage.setAlertMessageDeliveryType(AlertMessageDeliveryType.valueOf(resultSet.getInt(9)));
                 alertMessage.setStatus(AlertEscalationStatus.valueOf(resultSet.getInt(10)));
@@ -223,6 +227,7 @@ public class AlertMessageJDBCDAO extends GenericJDBCDAO implements AlertMessageD
             statement.setInt(1, alertID);
             resultSet = statement.executeQuery();
             if (resultSet.next()) {
+	            logger.debug("findAlertName(" + Integer.toString(alertID) + ") = " + resultSet.getString(1));
                 return resultSet.getString(1);
             }
 
@@ -355,6 +360,7 @@ public class AlertMessageJDBCDAO extends GenericJDBCDAO implements AlertMessageD
 	                                alertMessage.getAcknowledge(),
 	                                parameterList,
 	                                ezParameterList);
+	                logger.debug("ExCrm: alertMessageBuilder.getAlertName() = "+ alertMessageBuilder.getAlertName() + ", alertMessage.gerName() = " + alertMessage.getName() + ", ezParameterList.size() = " + ezParameterList.size());
 	            } else {
 	            
     	            alertMessageBuilder = new AlertMessageBuilder(alertMessage.getAlertID(),
