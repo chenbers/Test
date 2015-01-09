@@ -9,6 +9,9 @@
 	<groupId>com.inthinc.pro.dao</groupId>
 	<artifactId>dao</artifactId>
 	<packaging>jar</packaging>
+    <properties>
+        <noteparser.version>5.0.2-SNAPSHOT</noteparser.version>
+    </properties>
 
 	<name>Pro Portal - Data Layer</name>
 	<build>
@@ -18,6 +21,7 @@
 		<dependency>
 			<groupId>com.inthinc.pro.noteparser</groupId>
 			<artifactId>noteparser</artifactId>
+                        <version>${noteparser.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.inthinc.pro.aggregation</groupId>
