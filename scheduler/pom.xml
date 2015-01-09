@@ -177,7 +177,7 @@
 		<dependency>
 			<groupId>com.inthinc.pro.noteparser</groupId>
 			<artifactId>noteparser</artifactId>
-            <version>5.0.1-SNAPSHOT</version>
+            <version>5.0.2-SNAPSHOT</version>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
