@@ -390,8 +390,7 @@ public class AlertMessageHessianDAO extends GenericHessianDAO<AlertMessage, Inte
             addLocationInfo(event);                     //#12 - #14
             addOdometer(event);                         //#15
             addSpeed(event);                            //#16
-            int mType = personMeasurementType.ordinal() + 1;
-            parameterList.add(String.valueOf(mType));    //#17 - needs to be 0|1 -- 0-english or 1-metric
+            parameterList.add(String.valueOf(personMeasurementType.ordinal()));    //#17 - needs to be 0|1 -- 0-english or 1-metric
             addEventParams(event, alertMessage);        //#18+  if any
 
             return parameterList;
