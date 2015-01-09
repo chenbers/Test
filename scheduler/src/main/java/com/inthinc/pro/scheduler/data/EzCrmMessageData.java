@@ -178,11 +178,11 @@ public class EzCrmMessageData {
                         //#13 {LON} - longitude | NO GPS LOCK
                         //#14 {ADDRESS} - address | UNKNOWN
                         lineParams = getLineParams(12, 3);
-                        if (lineParams[0].isEmpty())
+                        if (lineParams[0].isEmpty() || lineParams[0].contains("0.000"))
                             lineParams[0] = sNoGpsLock;
-                        if (lineParams[1].isEmpty())
+                        if (lineParams[1].isEmpty() || lineParams[1].contains("0.000"))
                             lineParams[1] = sNoGpsLock;
-                        if (lineParams[2].isEmpty() || lineParams[2].equals("0.000000, 0.000000"))
+                        if (lineParams[2].isEmpty() || lineParams[2].contains("0.000"))
                             lineParams[2] = sUnknown;
                         text = LocalizedMessage.getStringWithValues(type.toString(), locale, lineParams);
                         break;
