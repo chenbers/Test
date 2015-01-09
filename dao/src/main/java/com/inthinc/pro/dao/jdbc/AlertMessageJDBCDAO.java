@@ -838,8 +838,7 @@ public class AlertMessageJDBCDAO extends GenericJDBCDAO implements AlertMessageD
             parameterList.add(getDriverOrgStructure(driver));   //#1
             addRedFlagLevel(alertMessage);              //#2
             addEventTime(event.getTime());              //#3
-            getEmpID(person);                           //#4
-            addDriverInfo(driver);                      //#5 & #6
+            addDriverInfo(driver);                      //#4 - #6
             addVehicleInfo(event.getVehicleID());       //#7 - #11
             addLocationInfo(event);                     //#12 - #14
             addOdometer(event);                         //#15
@@ -863,8 +862,7 @@ public class AlertMessageJDBCDAO extends GenericJDBCDAO implements AlertMessageD
             parameterList.add(getDriverOrgStructure(driver));   //#1
             addRedFlagLevel(alertMessage);              //#2
             addEventTime(event.getTime());              //#3
-            getEmpID(person);                           //#4
-            addDriverInfo(driver);                      //#5 & #6
+            addDriverInfo(driver);                      //#4 - #6
             addVehicleInfo(event.getVehicleID());       //#7 - #11
             addLocationInfo(event);                     //#12 - #14
             addOdometer(event);                         //#15
@@ -910,20 +908,14 @@ public class AlertMessageJDBCDAO extends GenericJDBCDAO implements AlertMessageD
             return driverDateFormat;
         }
 
-        private void getEmpID(Person person) {
-            String empID = new String("");
-            if (person != null) {
-                empID = person.getEmpid();
-            }
-            parameterList.add(empID);
-        }
-        
         private void addDriverInfo(Driver driver) {
             if ((driver != null) && (driver.getPerson() != null)) {
+                parameterList.add(driver.getPerson().getEmpid());
                 parameterList.add(driver.getDriverID().toString());
                 parameterList.add(getDriverFullName(driver));
                 
             } else {
+                parameterList.add("");
                 parameterList.add("");
                 parameterList.add("");
             }
