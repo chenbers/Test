@@ -426,7 +426,7 @@ public class AlertMessageJDBCDAO extends GenericJDBCDAO implements AlertMessageD
         try {
             // Grab all the messages for this job
             preparedStatement = (PreparedStatement) conn
-                    .prepareStatement("SELECT msgID,noteID,personID,alertID,alertTypeID,created,modified,deliveryMethodID,address,message,status,level,owner,zoneID, IF(status=2,0,1) as acknowledge, attribs, driverID, vehicleID, deviceID FROM message WHERE owner=?");
+                    .prepareStatement("SELECT a.name, m.msgID,m.noteID,m.personID,m.alertID,m.alertTypeID,m.created,m.modified,m.deliveryMethodID,m.address,m.message,m.status,m.level,m.owner,m.zoneID, IF(m.status=2,0,1) as acknowledge, m.attribs, m.driverID, m.vehicleID, m.deviceID FROM message m, alert a WHERE m.alertID = a.alertID and owner=?");
             preparedStatement.setLong(1, owner);
             messageResultSet = preparedStatement.executeQuery();
 
@@ -436,6 +436,8 @@ public class AlertMessageJDBCDAO extends GenericJDBCDAO implements AlertMessageD
                         AlertMessageType.valueOf(messageResultSet.getInt("alertTypeID")), RedFlagLevel.valueOf(messageResultSet.getInt("level")), messageResultSet.getString("address"),
                         messageResultSet.getString("message"), messageResultSet.getLong("noteID"), messageResultSet.getInt("personID"), messageResultSet.getInt("alertID"),
                         messageResultSet.getInt("zoneID"), messageResultSet.getBoolean("acknowledge"), AlertEscalationStatus.valueOf(messageResultSet.getInt("status")), messageResultSet.getString("attribs"), messageResultSet.getInt("driverID"), messageResultSet.getInt("vehicleID"), messageResultSet.getInt("deviceID"));
+
+                alertMessage.setName(messageResultSet.getString("name"));
                 messages.add(alertMessage);
             }
         } catch (SQLException e) { // handle database errors in the usual manner
