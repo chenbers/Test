@@ -181,6 +181,7 @@ public class AlertMessageJDBCDAO extends GenericJDBCDAO implements AlertMessageD
                 alertMessage.setAttribs(resultSet.getString(5));
                 alertMessage.setPersonID(resultSet.getInt(6));
                 alertMessage.setAlertID(resultSet.getInt(7));
+                alertMessage.setName(findAlertName(alertMessage.getAlertID()));
                 alertMessage.setAlertMessageType(AlertMessageType.valueOf(resultSet.getInt(8)));
                 alertMessage.setAlertMessageDeliveryType(AlertMessageDeliveryType.valueOf(resultSet.getInt(9)));
                 alertMessage.setStatus(AlertEscalationStatus.valueOf(resultSet.getInt(10)));
@@ -217,7 +218,6 @@ public class AlertMessageJDBCDAO extends GenericJDBCDAO implements AlertMessageD
             statement.setInt(1, alertID);
             resultSet = statement.executeQuery();
             if (resultSet.next()) {
-	            logger.debug("findAlertName(" + Integer.toString(alertID) + ") = " + resultSet.getString(1));
                 return resultSet.getString(1);
             }
 
@@ -350,7 +350,6 @@ public class AlertMessageJDBCDAO extends GenericJDBCDAO implements AlertMessageD
 	                                alertMessage.getAcknowledge(),
 	                                parameterList,
 	                                ezParameterList);
-	                logger.debug("ExCrm: alertMessageBuilder.getAlertName() = "+ alertMessageBuilder.getAlertName() + ", alertMessage.gerName() = " + alertMessage.getName() + ", ezParameterList.size() = " + ezParameterList.size());
 	            } else {
 	            
     	            alertMessageBuilder = new AlertMessageBuilder(alertMessage.getAlertID(),
