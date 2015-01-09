@@ -400,6 +400,17 @@ public class ReportSchedule implements Cloneable {
         this.includeInactiveDrivers = includeInactiveDrivers;
     }
 
+    public Boolean getDontIncludeUnassignedDevice() {
+        if (dontIncludeUnassignedDevice == null)
+            return false;
+
+        return dontIncludeUnassignedDevice;
+    }
+
+    public void setDontIncludeUnassignedDevice(Boolean dontIncludeUnassignedDevice) {
+        this.dontIncludeUnassignedDevice = dontIncludeUnassignedDevice;
+    }
+
     public Boolean getIncludeZeroMilesDrivers() {
         return includeZeroMilesDrivers;
     }
