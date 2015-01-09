@@ -174,18 +174,24 @@ public class EzCrmMessageData {
                         }
                         break;
                     case EZCRM_DATA_TYPE_LOCATION:
+                        //#12 {LAT} - latitude | NO GPS LOCK
+                        //#13 {LON} - longitude | NO GPS LOCK
+                        //#14 {ADDRESS} - address | UNKNOWN
                         lineParams = getLineParams(12, 3);
                         if (lineParams[0].isEmpty())
                             lineParams[0] = sNoGpsLock;
                         if (lineParams[1].isEmpty())
                             lineParams[1] = sNoGpsLock;
-                        if (lineParams[2].isEmpty())
+                        if (lineParams[2].isEmpty() || lineParams[2].equals("0.000000, 0.000000"))
                             lineParams[2] = sUnknown;
                         text = LocalizedMessage.getStringWithValues(type.toString(), locale, lineParams);
                         break;
                     case EZCRM_DATA_TYPE_ODOMETER:
                         {
-                            String[] m = LocalizedMessage.getString("EzCrm."+alertMessageType.toString(), locale).split(";");
+                            //#15 {ODOMETER} - fmt: NNNNN (KM | Mi)
+                            //#16 {SPEED} - fmt: NN (KPH | MPH)
+                            //#17 {MeasurementType}: 0 or 1
+                            String[] m = LocalizedMessage.getString("EzCrm.Odometer", locale).split(";");	// MI;KM
                             String[] mt = getLineParams(17, 1);
                             String[] tmp = getLineParams(15, 1);
                             lineParams = new String[] {tmp[0], m[Integer.parseInt(mt[0])]};
@@ -194,7 +200,7 @@ public class EzCrmMessageData {
                         break;
                     case EZCRM_DATA_TYPE_SPEED:
                         {
-                            String[] m = LocalizedMessage.getString("EzCrm."+alertMessageType.toString(), locale).split(";");
+                            String[] m = LocalizedMessage.getString("EzCrm.Speed", locale).split(";");	// MPH;KPH
                             String[] mt = getLineParams(17, 1);
                             String[] tmp = getLineParams(16, 1);
                             lineParams = new String[] {tmp[0], m[Integer.parseInt(mt[0])]};
