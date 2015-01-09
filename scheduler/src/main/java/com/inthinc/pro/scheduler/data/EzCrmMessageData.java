@@ -33,6 +33,10 @@ public class EzCrmMessageData {
         this.dataArray = new String[RedFlagEzCrmDataType.getMax()];
     }
     
+    public String[] getAlertName() {
+    	return getLineParams(0, 1);
+    }
+    
     public String getMessage() {
         // process each data type line
         processDataLines();
@@ -53,7 +57,28 @@ public class EzCrmMessageData {
         }
         return array;
     }
-    
+
+    //#RedFlag ezCRM Parmeter List
+    //#0 {Red Flag Alert Name} - for subject line
+    //#1 {GROUP} - fmt: division-division-...-team
+    //#2 {CATEGORY} - 0|1|2 for now...One of: Critical|Normal|Information 
+    //#3 {DATE} - fmt: yyyy-mm-dd hh:mm:ss
+    //#4 {EMP ID} - fmt: external driver id | omitted if no driver
+    //#5 {DRIVER ID} - fmt: internal driver id | UNKNOWN if no driver - empty here
+    //#6 {DRIVER NAME} - fmt: First Middle Last | UNKNOWN - empty here
+    //#7 {VEHICLE NAME}
+    //#8 {VEHICLE ID} - fmt: internal vehicle ID
+    //#9 {YEAR} - fmt: yyyy | ommited if blank
+    //#10 {MAKE} - ommited if blank
+    //#11 {MODEL} - ommited if blank
+    //#12 {LAT} - latitude | NO GPS LOCK
+    //#13 {LON} - longitude | NO GPS LOCK
+    //#14 {ADDRESS} - address | UNKNOWN
+    //#15 {ODOMETER} - fmt: NNNNN (KM | Mi)
+    //#16 {SPEED} - fmt: NN (KPH | MPH)
+    //#17 {MeasurementType}: 0 or 1
+    //#18 {Event Detail Param1}
+    //#19 {Event Detail Param2}
     private void processDataLines() {
         RedFlagEzCrmDataType curType = RedFlagEzCrmDataType.EZCRM_DATA_TYPE_GROUP;
         String sUnknown = LocalizedMessage.getString("EzCrm.UNKNOWN", locale);
@@ -149,18 +174,24 @@ public class EzCrmMessageData {
                         }
                         break;
                     case EZCRM_DATA_TYPE_LOCATION:
+                        //#12 {LAT} - latitude | NO GPS LOCK
+                        //#13 {LON} - longitude | NO GPS LOCK
+                        //#14 {ADDRESS} - address | UNKNOWN
                         lineParams = getLineParams(12, 3);
                         if (lineParams[0].isEmpty())
                             lineParams[0] = sNoGpsLock;
                         if (lineParams[1].isEmpty())
                             lineParams[1] = sNoGpsLock;
-                        if (lineParams[2].isEmpty())
+                        if (lineParams[2].isEmpty() || lineParams[2].equals("0.000000, 0.000000"))
                             lineParams[2] = sUnknown;
                         text = LocalizedMessage.getStringWithValues(type.toString(), locale, lineParams);
                         break;
                     case EZCRM_DATA_TYPE_ODOMETER:
                         {
-                            String[] m = LocalizedMessage.getString("EzCrm.Odometer", locale).split(";");
+                            //#15 {ODOMETER} - fmt: NNNNN (KM | Mi)
+                            //#16 {SPEED} - fmt: NN (KPH | MPH)
+                            //#17 {MeasurementType}: 0 or 1
+                            String[] m = LocalizedMessage.getString("EzCrm.Odometer", locale).split(";");	// MI;KM
                             String[] mt = getLineParams(17, 1);
                             String[] tmp = getLineParams(15, 1);
                             lineParams = new String[] {tmp[0], m[Integer.parseInt(mt[0])]};
@@ -169,7 +200,7 @@ public class EzCrmMessageData {
                         break;
                     case EZCRM_DATA_TYPE_SPEED:
                         {
-                            String[] m = LocalizedMessage.getString("EzCrm.Speed", locale).split(";");
+                            String[] m = LocalizedMessage.getString("EzCrm.Speed", locale).split(";");	// MPH;KPH
                             String[] mt = getLineParams(17, 1);
                             String[] tmp = getLineParams(16, 1);
                             lineParams = new String[] {tmp[0], m[Integer.parseInt(mt[0])]};
