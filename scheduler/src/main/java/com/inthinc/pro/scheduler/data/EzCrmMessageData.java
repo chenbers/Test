@@ -82,7 +82,7 @@ public class EzCrmMessageData {
     private void processDataLines() {
         RedFlagEzCrmDataType curType = RedFlagEzCrmDataType.EZCRM_DATA_TYPE_GROUP;
         String sUnknown = LocalizedMessage.getString("EzCrm.UNKNOWN", locale);
-        String sNoGpsLock = LocalizedMessage.getString("EzCrm.UNKNOWN", locale);
+        String sNoGpsLock = LocalizedMessage.getString("EzCrm.NoGpsLock", locale);
         try {
             for (RedFlagEzCrmDataType type : RedFlagEzCrmDataType.values()) {
             
