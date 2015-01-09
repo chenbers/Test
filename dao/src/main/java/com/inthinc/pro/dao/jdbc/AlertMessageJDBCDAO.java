@@ -781,4 +781,340 @@ public class AlertMessageJDBCDAO extends GenericJDBCDAO implements AlertMessageD
             return parameterList;
         }
     }
+
+    public class EzCrmParameterList {
+        //#RedFlag ezCRM Parmeter List
+        //#0 {Red Flag Alert Name} - for subject line
+        //#1 {GROUP} - fmt: division-division-...-team
+        //#2 {CATEGORY} - 0|1|2 for now...One of: Critical|Normal|Information 
+        //#3 {DATE} - fmt: yyyy-mm-dd hh:mm:ss
+        //#4 {EMP ID} - fmt: external driver id | omitted if no driver
+        //#5 {DRIVER ID} - fmt: internal driver id | UNKNOWN if no driver - empty here
+        //#6 {DRIVER NAME} - fmt: First Middle Last | UNKNOWN - empty here
+        //#7 {VEHICLE NAME}
+        //#8 {VEHICLE ID} - fmt: internal vehicle ID
+        //#9 {YEAR} - fmt: yyyy | ommited if blank
+        //#10 {MAKE} - ommited if blank
+        //#11 {MODEL} - ommited if blank
+        //#12 {LAT} - latitude | NO GPS LOCK
+        //#13 {LON} - longitude | NO GPS LOCK
+        //#14 {ADDRESS} - address | UNKNOWN
+        //#15 {ODOMETER} - fmt: NNNNN (KM | Mi)
+        //#16 {SPEED} - fmt: NN (KPH | MPH)
+        //#17 {MeasurementType}: 0 or 1
+        //#18 {Event Detail Param1}
+        //#19 {Event Detail Param2}
+
+        private List<String> parameterList;
+        private Event event;
+        private MeasurementType personMeasurementType;
+        private Locale locale;
+        private Person person;
+        private Driver driver;
+        private AlertMessage alertMessage;
+        
+        public List<String> getParameterList(Event event, Person person, AlertMessage alertMessage, Locale locale) {
+            if (event == null)
+                return null;
+            parameterList = new ArrayList<String>();
+            personMeasurementType = person.getMeasurementType();
+            this.locale = locale;
+            this.setPerson(person);
+            driver = driverDAO.findByID(event.getDriverID());
+            
+            parameterList.add(alertMessage.getName());          //#0
+            parameterList.add(getDriverOrgStructure(driver));   //#1
+            addRedFlagLevel(alertMessage);              //#2
+            addEventTime(event.getTime());              //#3
+            getEmpID(person);                           //#4
+            addDriverInfo(driver);                      //#5 & #6
+            addVehicleInfo(event.getVehicleID());       //#7 - #11
+            addLocationInfo(event);                     //#12 - #14
+            addOdometer(event);                         //#15
+            addSpeed(event);                            //#16
+            parameterList.add(String.valueOf(personMeasurementType.ordinal()-1));    //#17 - needs to be 0|1 -- 0-english or 1-metric
+            addEventParams(event, alertMessage);        //#18+  if any
+
+            return parameterList;
+        }
+
+        public List<String> getParameterListTest() {
+            if (this.event == null)
+                return null;
+            parameterList = new ArrayList<String>();
+            //personMeasurementType = person.getMeasurementType();
+            //this.locale = locale;
+            //this.setPerson(person);
+            //driver = driverDAO.findByID(event.getDriverID());
+            
+            parameterList.add(this.alertMessage.getName());          //#0
+            parameterList.add(getDriverOrgStructure(driver));   //#1
+            addRedFlagLevel(alertMessage);              //#2
+            addEventTime(event.getTime());              //#3
+            getEmpID(person);                           //#4
+            addDriverInfo(driver);                      //#5 & #6
+            addVehicleInfo(event.getVehicleID());       //#7 - #11
+            addLocationInfo(event);                     //#12 - #14
+            addOdometer(event);                         //#15
+            addSpeed(event);                            //#16
+            int mType = personMeasurementType.ordinal() + 1;
+            parameterList.add(String.valueOf(mType));    //#17 - needs to be 0|1 -- 0-english or 1-metric
+            addEventParams(event, alertMessage);        //#18+  if any
+
+            return parameterList;
+        }
+
+        private void addRedFlagLevel(AlertMessage alertMessage) {
+            int category;
+            switch(alertMessage.getLevel()) {
+                case CRITICAL:
+                    category = 0;
+                    break;
+                case WARNING:
+                    category = 1;
+                    break;
+                case INFO:
+                default:
+                    category = 2;
+                    break;
+            }
+            parameterList.add(String.valueOf(category));
+        }
+        
+        private void addEventTime(Date eventTime) {
+            SimpleDateFormat driverDateFormat = getDriverDate(driver);
+            // Construct the message parameter list
+            parameterList.add(driverDateFormat.format(eventTime));
+        }
+
+        private SimpleDateFormat getDriverDate(Driver driver) {
+
+            SimpleDateFormat driverDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss (z)", locale);
+
+            if ((driver != null) && (driver.getPerson() != null)) {
+                driverDateFormat.setTimeZone(driver.getPerson().getTimeZone());
+            } else {
+                driverDateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
+            }
+            return driverDateFormat;
+        }
+
+        private void getEmpID(Person person) {
+            String empID = new String("");
+            if (person != null) {
+                empID = person.getEmpid();
+            }
+            parameterList.add(empID);
+        }
+        
+        private void addDriverInfo(Driver driver) {
+            if ((driver != null) && (driver.getPerson() != null)) {
+                parameterList.add(driver.getDriverID().toString());
+                parameterList.add(getDriverFullName(driver));
+                
+            } else {
+                parameterList.add("");
+                parameterList.add("");
+            }
+        }
+        
+        private String getDriverFullName(Driver driver) {
+
+            if (driver != null && driver.getPerson() != null)
+                return driver.getPerson().getFullName();
+            else {
+                return "";
+            }
+        }
+        
+        private String getDriverOrgStructure (Driver driver) {
+            if (driver != null && driver.getPerson() != null) {
+                Person driverPerson = driver.getPerson();
+                Integer acctID = driverPerson.getAcctID();
+                List<Group> groupList = groupDAO.getGroupsByAcctID(acctID);
+                GroupHierarchy groupHierarchy = new GroupHierarchy(groupList);
+                String groupName = groupHierarchy.getFullGroupName(driver.getGroupID(), " - ");
+                return groupName;
+            } else {
+                return "";
+            }
+        }
+
+        private void addVehicleInfo(Integer vehicleID) {
+            Vehicle vehicle = vehicleDAO.findByID(vehicleID);
+            //#7 {VEHICLE NAME}
+            parameterList.add(vehicle.getName());
+            //#8 {VEHICLE ID} - fmt: internal vehicle ID
+            parameterList.add(vehicleID.toString());
+            //#9 {YEAR} - fmt: yyyy | ommited if blank
+            String tmp = new String("");
+            Integer year = vehicle.getYear();
+            if (year > 0) {
+                tmp = String.format("%04d", year);
+            }
+            parameterList.add(tmp);
+            //#10 {MAKE} - ommited if blank
+            tmp = vehicle.getMake();
+            parameterList.add(tmp);
+            //#11 {MODEL} - ommited if blank
+            tmp = vehicle.getModel();
+            parameterList.add(tmp);
+        }
+        
+        private void addLocationInfo(Event event) {
+            String tmp = new String("");
+            //#12 {LAT} - latitude | NO GPS LOCK
+            if (!event.getLatitude().equals(0.0))
+                tmp = String.format("%.5f", event.getLatitude());
+            parameterList.add(tmp);
+            //#13 {LON} - longitude | NO GPS LOCK
+            tmp = "";
+            if (!event.getLongitude().equals(0.0))
+                tmp = String.format("%.5f", event.getLongitude());
+            parameterList.add(tmp);
+            //#14 {ADDRESS} - address | UNKNOWN
+            addAddress(event);
+        }
+
+        private void addOdometer(Event event) {
+            String tmp = new String();
+            //#15 {ODOMETER} - fmt: NNNNN (KM | Mi)
+            tmp = String.format("%d", event.getOdometer());
+            parameterList.add(tmp);
+        }
+
+        private void addSpeed(Event event) {
+            String tmp = new String();
+            //#16 {SPEED} - fmt: NN (KPH | MPH)
+            tmp = String.format("%d", event.getSpeed());
+            parameterList.add(tmp);
+        }
+
+        private void addEventParams(Event event, AlertMessage alertMessage) {
+            logger.debug("addEventParams alertMessageType: " + alertMessage.getAlertMessageType());
+            switch (alertMessage.getAlertMessageType()) {
+                case ALERT_TYPE_SPEEDING:   // Add {Top Speed} & {Speed Limit}
+                    {
+                        addSpeedingRelatedData((SpeedingEvent) event);
+                    }
+                    break;
+                case ALERT_TYPE_ENTER_ZONE: // add {Zone Name} & {ZoneID}
+                case ALERT_TYPE_EXIT_ZONE:  // add {Zone Name} & {ZoneID}
+                    addZoneRelatedData(alertMessage.getZoneID());
+                    break;
+                case ALERT_TYPE_FIRMWARE_CURRENT:   // add {Firmware version}
+                    {
+                        Device device = deviceDAO.findByID(event.getDeviceID());
+                        if (device == null) {
+                            logger.error("Device could not be found for deviceID: " + event.getDeviceID());
+                            parameterList.add("");
+                        } else {
+                            parameterList.add(device.getFirmwareVersion().toString());
+                        }
+                    }
+                    break;
+                case ALERT_TYPE_QSI_UPDATED:    // add {QSI Update Status}
+                case ALERT_TYPE_ZONES_CURRENT: // add {Zones Update Status}
+                    {
+                        // EventAttr.UP_TO_DATE_STATUS gives an update status
+                        //  up to date flags:
+                        //      #define FLAG_UP_TO_DATE_UPDATED             1
+                        //      #define FLAG_UP_TO_DATE_ALREADY_CURRENT     2
+                        //      #define FLAG_UP_TO_DATE_SERVER_OLDER        3
+                        //      #define FLAG_UP_TO_DATE_INVALID             4
+                        //      #define FLAG_UP_TO_DATE_MISSING             5
+                        //      #define FLAG_UP_TO_DATE_DEVICE_TIMEOUT      6
+                        String status = event.getAttrByType(EventAttr.UP_TO_DATE_STATUS);
+                        if (status.isEmpty()) {
+                            logger.error("Invalid update status");
+                            parameterList.add("");
+                        } else {
+                            parameterList.add(status);
+                        }
+                    }
+                    break;
+                case ALERT_TYPE_WITNESS_UPDATED:    // add {Witness version}
+                    {
+                        Device device = deviceDAO.findByID(event.getDeviceID());
+                        if (device == null) {
+                            logger.error("Device could not be found for deviceID: " + event.getDeviceID());
+                            parameterList.add("");
+                        } else {
+                            parameterList.add(device.getWitnessVersion().toString());
+                        }
+                    }
+                    break;
+                case ALERT_TYPE_IDLING: // add {Total idling Time}
+                    {
+                        Integer totalIdle = ((IdleEvent) event).getTotalIdling();
+                        parameterList.add(totalIdle.toString());
+                    }
+                    break;
+                default:
+}
+        }
+
+        private void addAddress(Event event) {
+            parameterList.add(addressLookup.getAddressOrLatLng(new LatLng(event.getLatitude(), event.getLongitude())));
+        }
+
+        private void addZoneRelatedData(Integer zoneID) {
+
+            Zone zone = zoneDAO.findByID(zoneID);
+            if (zone == null) {
+                logger.error("Zone could not be found for zoneID: " + zoneID);
+                parameterList.add("");
+            } else {
+                parameterList.add(zone.getName());
+            }
+            parameterList.add(zoneID.toString());
+        }
+
+        private void addSpeedingRelatedData(SpeedingEvent event) {
+            Number topSpeed = MeasurementConversionUtil.convertSpeed(event.getTopSpeed(), personMeasurementType);
+            parameterList.add(String.valueOf(topSpeed));
+
+            Number speedLimit = MeasurementConversionUtil.convertSpeed(event.getSpeedLimit(), personMeasurementType);
+            parameterList.add(String.valueOf(speedLimit));
+        }
+        
+        public List<String> getParameterList() {
+            return parameterList;
+        }
+
+        public Event getEvent() {
+            return event;
+        }
+
+        public void setEvent(Event event) {
+            this.event = event;
+        }
+
+        public Person getPerson() {
+            return person;
+        }
+
+        public void setPerson(Person person) {
+            this.person = person;
+        }
+        public void setMeasurementType(MeasurementType type) {
+            this.personMeasurementType = type;
+        }
+        public Locale getLocale() {
+            return locale;
+        }
+        public void setLocal(Locale locale) {
+            this.locale = locale;
+        }
+        public Driver getDriver() {
+            return driver;
+        }
+        public void setDriver(Driver driver) {
+            this.driver = driver;
+        }
+        public void setAlertMessage(AlertMessage alertMessage) {
+            this.alertMessage = alertMessage;
+        }
+    }
+
 }
