@@ -401,6 +401,9 @@ public class ReportSchedule implements Cloneable {
     }
 
     public Boolean getDontIncludeUnassignedDevice() {
+        if (dontIncludeUnassignedDevice == null)
+            return false;
+
         return dontIncludeUnassignedDevice;
     }
 
