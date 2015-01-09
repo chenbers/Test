@@ -10,7 +10,7 @@
 	<artifactId>dao</artifactId>
 	<packaging>jar</packaging>
     <properties>
-        <noteparser.version>5.0.1-SNAPSHOT</noteparser.version>
+        <noteparser.version>5.0.2-SNAPSHOT</noteparser.version>
     </properties>
 
 	<name>Pro Portal - Data Layer</name>
