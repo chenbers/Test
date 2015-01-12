@@ -90,6 +90,7 @@ public class TestCaseXML {
         ruleSetMap.put("waterwell_8day", RuleSetType.US_WATERWELL_8DAY);
         ruleSetMap.put("us_oil_no_wait_7day", RuleSetType.US_OIL_NO_WAIT_7DAY);
         ruleSetMap.put("us_oil_no_wait_8day", RuleSetType.US_OIL_NO_WAIT_8DAY);
+        ruleSetMap.put("us_passenger_carrying_8day", RuleSetType.US_PASSENGER_CARRYING_8DAY);
 
         ruleSetMap.put("0", RuleSetType.US);
         ruleSetMap.put("1", RuleSetType.US_OIL);
