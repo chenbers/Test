@@ -55,10 +55,24 @@ public class VoxeoCallServiceMessageSender implements CallServiceMessageSender {
         }
     }
     
-    private String cleanMessage(String messageText){
-    	//Voxeo can't deal with quotes and apostrophes in a message
-    	return messageText.replaceAll("[\"']","");
+    protected String cleanMessage(String messageText){
+    	//Voxeo can't deal with quotes and apostrophes in a message, or with &, <, >
+    	return replaceSpecialCharacters(messageText);
     }
+
+    /**
+     * Replaces special characters that voxeo can't deal with.
+     *
+     * @param message message
+     * @return replaced message
+     */
+    private String replaceSpecialCharacters(String message) {
+        return message.replaceAll("[\"']", "")
+                .replaceAll("&", "&amp;")
+                .replaceAll("<", "&lt;")
+                .replaceAll(">", "&gt;");
+    }
+
     public String getCallerID() {
         return callerID;
     }
