@@ -11,8 +11,8 @@ public class VoxeoCallServiceMessageSenderTest {
     @Test
     public void testCleanAmpersand(){
         VoxeoCallServiceMessageSender voxeoCallServiceMessageSender = new VoxeoCallServiceMessageSender();
-        String ampMessage = "This is an & message test";
+        String ampMessage = "This is an & message test that also has < and >";
         String curedMessage = voxeoCallServiceMessageSender.cleanMessage(ampMessage);
-        Assert.assertEquals(curedMessage, "This is an &amp; message test");
+        Assert.assertEquals(curedMessage, "This is an &amp; message test that also has &lt; and &gt;");
     }
 }
