@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import com.inthinc.pro.reports.hos.WthHosViolationsSummaryReportCriteria;
 import com.inthinc.pro.reports.performance.*;
 import org.apache.log4j.Logger;
 import org.joda.time.DateMidnight;
@@ -733,6 +734,23 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
         criteria.init(accountGroupHierarchy, groupIDList, interval);
         return criteria;
     }
+
+    @Override
+    public ReportCriteria getWthHosViolationsSummaryReportCriteria(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, Interval interval, Locale locale) {
+        return getWthHosViolationsSummaryReportCriteria(accountGroupHierarchy, groupIDList, interval, locale, ReportCriteria.DEFAULT_EXCLUDE_INACTIVE_DRIVERS);
+    }
+
+    @Override
+    public ReportCriteria getWthHosViolationsSummaryReportCriteria(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, Interval interval, Locale locale, boolean includeInactiveDrivers) {
+        WthHosViolationsSummaryReportCriteria criteria = new WthHosViolationsSummaryReportCriteria(locale);
+        criteria.setDriverDAO(driverDAO);
+        criteria.setGroupDAO(groupDAO);
+        criteria.setHosDAO(hosDAO);
+        criteria.setIncludeInactiveDrivers(includeInactiveDrivers);
+        criteria.init(accountGroupHierarchy, groupIDList, interval);
+        return criteria;
+    }
+
 
     @Override
     public ReportCriteria getHosViolationsDetailReportCriteria(GroupHierarchy accountGroupHierarchy, Integer driverID, Interval interval, Locale locale) {
@@ -1808,6 +1826,15 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
                                     person.getLocale(),
                                     reportSchedule.getIncludeInactiveDrivers()
                                     ));
+                    break;
+                case WEATHERFORD_HOS_VIOLATIONS_SUMMARY_REPORT:
+                    reportCriteriaList.add(getWthHosViolationsSummaryReportCriteria(
+                            groupHierarchy,
+                            reportSchedule.getGroupIDList(),
+                            timeFrame.getInterval(),
+                            person.getLocale(),
+                            reportSchedule.getIncludeInactiveDrivers()
+                    ));
                     break;
                 case HOS_VIOLATIONS_DETAIL_REPORT:
                     if (reportSchedule.getParamType() == ReportParamType.DRIVER)

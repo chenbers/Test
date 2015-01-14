@@ -2,8 +2,8 @@ package com.inthinc.pro.reports.hos.model;
 
 import com.inthinc.hos.model.RuleViolationTypes;
 
-public class HosViolationsSummary extends ViolationsSummary  {
-    
+public class WthHosViolationsSummary extends ViolationsSummary  {
+
     private Integer driving_1;
     private Integer driving_2;
     private Integer driving_3;
@@ -18,9 +18,9 @@ public class HosViolationsSummary extends ViolationsSummary  {
     private Integer offDuty_3;
     private Double totalMiles;
     private Double totalMilesNoDriver;
-    
-    
-    public HosViolationsSummary(String groupName) {
+
+
+    public WthHosViolationsSummary(String groupName) {
         super(groupName);
         this.driving_1 = 0;
         this.driving_2 = 0;
@@ -37,9 +37,9 @@ public class HosViolationsSummary extends ViolationsSummary  {
         this.totalMiles = 0d;
         this.totalMilesNoDriver = 0d;
     }
-    public HosViolationsSummary(String groupName, Integer driving_1, Integer driving_2, Integer driving_3, Integer onDuty_1, Integer onDuty_2, Integer onDuty_3,
-            Integer cumulative_1, Integer cumulative_2, Integer cumulative_3, Integer offDuty_1, Integer offDuty_2, Integer offDuty_3, Integer driverCnt, Double totalMiles,
-            Double totalMilesNoDriver) {
+    public WthHosViolationsSummary(String groupName, Integer driving_1, Integer driving_2, Integer driving_3, Integer onDuty_1, Integer onDuty_2, Integer onDuty_3,
+                                   Integer cumulative_1, Integer cumulative_2, Integer cumulative_3, Integer offDuty_1, Integer offDuty_2, Integer offDuty_3, Integer driverCnt, Double totalMiles,
+                                   Double totalMilesNoDriver) {
         super(groupName, driverCnt);
         this.driving_1 = driving_1;
         this.driving_2 = driving_2;
@@ -184,7 +184,7 @@ public class HosViolationsSummary extends ViolationsSummary  {
     }
     
     public void dump() {
-      System.out.println("new WthHosViolationsSummary(\", " + getGroupName() + "\"," +
+      System.out.println("new HosViolationsSummary(\", " + getGroupName() + "\"," + 
               getDriving_1() + "," + 
               getDriving_2() + "," + 
               getDriving_3() + "," + 

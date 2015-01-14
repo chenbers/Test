@@ -106,6 +106,10 @@ public abstract class ReportsBean extends BaseBean {
                 reportCriteriaList.add(getReportCriteriaService().getHosViolationsSummaryReportCriteria(getAccountGroupHierarchy(), params.getGroupIDList(), params.getDateRange().getInterval(), 
                         params.getLocale()));
                 break;
+            case WEATHERFORD_HOS_VIOLATIONS_SUMMARY_REPORT:
+                reportCriteriaList.add(getReportCriteriaService().getWthHosViolationsSummaryReportCriteria(getAccountGroupHierarchy(), params.getGroupIDList(), params.getDateRange().getInterval(),
+                        params.getLocale()));
+                break;
             case HOS_VIOLATIONS_DETAIL_REPORT:
                 if (params.getParamType() == ReportParamType.DRIVER )
                     reportCriteriaList.add(getReportCriteriaService().getHosViolationsDetailReportCriteria(getAccountGroupHierarchy(), 
