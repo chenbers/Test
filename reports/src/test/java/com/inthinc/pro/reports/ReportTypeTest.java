@@ -13,6 +13,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
+import com.inthinc.pro.reports.hos.model.WthHosViolationsSummary;
 import org.junit.Test;
 import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
@@ -77,6 +78,7 @@ public class ReportTypeTest {
             new ReportTypeData(ReportType.HOS_EDITS,HosEdit.class),
             new ReportTypeData(ReportType.HOS_VIOLATIONS_DETAIL_REPORT, ViolationsDetail.class, ViolationsDetailRaw.class),
             new ReportTypeData(ReportType.HOS_VIOLATIONS_SUMMARY_REPORT, HosViolationsSummary.class),
+            new ReportTypeData(ReportType.WEATHERFORD_HOS_VIOLATIONS_SUMMARY_REPORT, WthHosViolationsSummary.class),
             new ReportTypeData(ReportType.HOS_ZERO_MILES, HosZeroMiles.class),
             new ReportTypeData(ReportType.IDLE_PERCENTAGE, CategorySeriesData.class),
             new ReportTypeData(ReportType.IDLING_REPORT, IdlingReportItem.class),

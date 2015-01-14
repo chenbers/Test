@@ -51,6 +51,8 @@ public enum ReportGroup {
     DRIVING_TIME_VIOLATIONS_DETAIL_REPORT("Driving Time Violations Detail Report", 33, EntityType.ENTITY_GROUP_LIST_OR_DRIVER, new CriteriaType[] { CriteriaType.TIMEFRAME, CriteriaType.INACTIVE_DRIVERS}, new GroupType[] {
             GroupType.DIVISION, GroupType.FLEET, GroupType.TEAM }, ReportCategory.Performance, EnumSet.of(ReportAccountType.HOS, ReportAccountType.WAYSMART, ReportAccountType.DRIVE_TIME_VIOLATIONS),
             ReportType.DRIVING_TIME_VIOLATIONS_DETAIL_REPORT),
+    WEATHERFORD_HOS_VIOLATIONS_SUMMARY_REPORT("Weatherford US HOS Violations Summary Report", 34, EntityType.ENTITY_GROUP_LIST, new CriteriaType[] { CriteriaType.TIMEFRAME, CriteriaType.INACTIVE_DRIVERS }, new GroupType[] { GroupType.DIVISION,
+            GroupType.FLEET, GroupType.TEAM }, ReportCategory.HOS, EnumSet.of(ReportAccountType.HOS), ReportType.WEATHERFORD_HOS_VIOLATIONS_SUMMARY_REPORT),
 
     // IFTA
     MILEAGE_BY_VEHICLE("Mileage by vehicle", 20, EntityType.ENTITY_GROUP_LIST, new CriteriaType[] { CriteriaType.TIMEFRAME }, new GroupType[] { GroupType.DIVISION, GroupType.FLEET, GroupType.TEAM },
