@@ -3,30 +3,6 @@
  */
 package com.inthinc.pro.backing;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.EnumSet;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.TimeZone;
-import java.util.TreeMap;
-
-import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
-import javax.faces.event.ValueChangeEvent;
-import javax.faces.model.SelectItem;
-
-import org.apache.commons.lang.StringUtils;
-import org.jasypt.util.password.PasswordEncryptor;
-import org.jfree.util.Log;
-import org.springframework.beans.BeanUtils;
-
 import com.inthinc.hos.model.RuleSetType;
 import com.inthinc.pro.backing.ui.ListPicker;
 import com.inthinc.pro.dao.AccountDAO;
@@ -64,6 +40,28 @@ import com.inthinc.pro.util.BeanUtil;
 import com.inthinc.pro.util.MessageUtil;
 import com.inthinc.pro.util.MiscUtil;
 import com.inthinc.pro.util.SelectItemUtil;
+import org.apache.commons.lang.StringUtils;
+import org.jasypt.util.password.PasswordEncryptor;
+import org.jfree.util.Log;
+import org.springframework.beans.BeanUtils;
+
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
+import javax.faces.event.ValueChangeEvent;
+import javax.faces.model.SelectItem;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.EnumSet;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.TimeZone;
+import java.util.TreeMap;
 
 /**
  * @author David Gileadi
@@ -83,6 +81,7 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
     private static final int MAX_FOB_ID_LENGTH = 24;
     private static final int TRANSITION_PREVIOUS_EMP_ID_LENGTH = 20;
     private static final int TRANSITION_CURRENT_EMP_ID_LENGTH = 10;
+    private static final int DISABLED_WAYSMART_EMP_ID_LENGTH =30;
     private AdminPersonJDBCDAO adminPersonJDBCDAO;
     Boolean fobChanged = false;
     static {
@@ -1850,10 +1849,14 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
             return TRANSITION_PREVIOUS_EMP_ID_LENGTH;
 
         //Depending on state (editing or adding) and current value length
+        if (item.bean.getAccount().getProps().getWaySmart().equals("false") || item.bean.getAccount().getProps().getWaySmart().equals("0"))
+            return DISABLED_WAYSMART_EMP_ID_LENGTH;
+        else {
         if (isAdd() || (item.getEmpid()==null || item.getEmpid().length()<=10))
             return TRANSITION_CURRENT_EMP_ID_LENGTH;
         else
             return TRANSITION_PREVIOUS_EMP_ID_LENGTH;
+        }
     }
     
     public AdminPersonJDBCDAO getAdminPersonJDBCDAO() {
