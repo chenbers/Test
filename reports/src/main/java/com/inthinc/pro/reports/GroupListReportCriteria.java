@@ -23,8 +23,8 @@ public class GroupListReportCriteria extends ReportCriteria {
 
     }
 
-    public String getShortGroupName(GroupHierarchy groupHierarchy, Integer groupID) {
-        return groupHierarchy.getShortGroupName(groupID, GROUP_SEPARATOR);
+    public String getShortGroupName(GroupHierarchy groupHierarchy) {
+        return groupHierarchy.getTopGroup().getName();
     }
 
     protected List<Driver> getReportDriverList(List<Group> reportGroupList){

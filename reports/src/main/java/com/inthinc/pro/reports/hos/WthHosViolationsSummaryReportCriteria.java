@@ -90,7 +90,7 @@ public class WthHosViolationsSummaryReportCriteria extends ViolationsSummaryRepo
 
         Map<Integer, WthHosViolationsSummary> dataMap = new TreeMap<Integer, WthHosViolationsSummary>();
         for (Group group : reportGroupList) {
-            dataMap.put(group.getGroupID(), new WthHosViolationsSummary(getShortGroupName(groupHierarchy, group.getGroupID())));
+            dataMap.put(group.getGroupID(), new WthHosViolationsSummary(getShortGroupName(groupHierarchy)));
         }
         DateTime currentTime = new DateTime(DateTimeZone.UTC);
 
