@@ -1427,7 +1427,7 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
     public List<SelectItem> getDotTypes() {
         List<SelectItem> selectItemList = new ArrayList<SelectItem>();
         for (RuleSetType ruleSetType : EnumSet.allOf(RuleSetType.class)) {
-           if(ruleSetType != RuleSetType.SLB_INTERNAL && !ruleSetType.isDeprecated() )
+           if(ruleSetType != RuleSetType.SLB_INTERNAL && !ruleSetType.isDeprecated() && ruleSetType != RuleSetType.US_PASSENGER_CARRYING_8DAY)
                selectItemList.add(new SelectItem(ruleSetType,MessageUtil.getMessageString(ruleSetType.toString())));
         }
         
