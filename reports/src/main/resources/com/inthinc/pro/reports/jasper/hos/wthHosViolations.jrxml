@@ -41,6 +41,7 @@
 	<field name="driverCnt" class="java.lang.Integer"/>
 	<field name="totalMiles" class="java.lang.Double"/>
 	<field name="totalMilesNoDriver" class="java.lang.Double"/>
+	<field name="totalLogsGen" class="java.lang.Double"/>
 	<sortField name="groupName"/>
 	<variable name="SUM_driving_1_1" class="java.lang.Integer" calculation="Sum">
 		<variableExpression><![CDATA[$F{driving_1}]]></variableExpression>
@@ -674,12 +675,12 @@ new Double($F{totalMiles}.doubleValue() / $F{totalMilesNoDriver}.doubleValue() *
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Right"/>
-				<textFieldExpression><![CDATA[($F{driverCnt}.intValue() != 0) ? new Double((double)(
+				<textFieldExpression><![CDATA[($F{totalLogsGen}!=null && $F{totalLogsGen}.intValue() != 0) ? new Double((double)(
 $F{driving_1}.intValue()+$F{driving_2}.intValue()+$F{driving_3}.intValue()+
 $F{onDuty_1}.intValue()+$F{onDuty_2}.intValue()+$F{onDuty_3}.intValue()+
 $F{cumulative_1}.intValue()+$F{cumulative_2}.intValue()+$F{cumulative_3}.intValue()+
 $F{offDuty_1}.intValue()+$F{offDuty_2}.intValue()+$F{offDuty_3}.intValue()
-)/(double)$F{driverCnt}.intValue()) : new Double(0.0)]]></textFieldExpression>
+)/(double)$F{totalLogsGen}.intValue() * 100) : new Double(0.0)]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="false">
 				<reportElement key="textField-54" style="Details1" x="341" y="3" width="38" height="19" isPrintWhenDetailOverflows="true" uuid="12af2e12-58a5-47a1-9d53-de2a4b9ace53"/>

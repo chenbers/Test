@@ -131,6 +131,22 @@ public class HOSUtil {
         return recList;
     }
 
+    public static Double getHosRecordsGenerated(List<HOSRecord> hosRecList, Date endDate, boolean isDriverDOT)
+    {
+        Double num = 0d;
+
+        List<HOSRec> recList = new ArrayList<HOSRec>();
+        for (HOSRecord hosRecord : hosRecList)
+        {
+            if (hosRecord.getStatus() == null || (hosRecord.getDeleted() != null && hosRecord.getDeleted()) || hosRecord.getLogTime().after(endDate))
+                continue;
+
+            num ++;
+        }
+        return num;
+    }
+
+
     public static List<ByteArrayOutputStream> packageLogsToShip(List<HOSRecord> recordList, Driver driver) throws IOException 
     {
         
