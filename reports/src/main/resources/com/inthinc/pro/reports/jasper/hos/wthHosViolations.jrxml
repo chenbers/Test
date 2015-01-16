@@ -41,7 +41,6 @@
 	<field name="driverCnt" class="java.lang.Integer"/>
 	<field name="totalMiles" class="java.lang.Double"/>
 	<field name="totalMilesNoDriver" class="java.lang.Double"/>
-	<field name="totalLogsGen" class="java.lang.Double"/>
 	<sortField name="groupName"/>
 	<variable name="SUM_driving_1_1" class="java.lang.Integer" calculation="Sum">
 		<variableExpression><![CDATA[$F{driving_1}]]></variableExpression>
@@ -87,9 +86,6 @@
 	</variable>
 	<variable name="SUM_offDuty_3_1" class="java.lang.Integer" calculation="Sum">
 		<variableExpression><![CDATA[$F{offDuty_3}]]></variableExpression>
-	</variable>
-	<variable name="SUM_totalLogGen" class="java.lang.Double" calculation="Sum">
-		<variableExpression><![CDATA[$F{totalLogsGen}]]></variableExpression>
 	</variable>
 	<group name="locataion" keepTogether="true">
 		<groupExpression><![CDATA[$F{groupName}]]></groupExpression>
@@ -667,7 +663,8 @@
 				</box>
 				<textElement textAlignment="Right"/>
 				<textFieldExpression><![CDATA[($F{totalMiles} != null && $F{totalMiles}.intValue() != 0) ?
-new Double($F{totalMilesNoDriver}.doubleValue()/ $F{totalMiles}.doubleValue()) : new Double(0.0)]]></textFieldExpression>
+(com.inthinc.pro.reports.hos.converter.Converter.convertDoubleRemarkDistance(($F{totalMilesNoDriver}.doubleValue() * 100d) ,$P{USE_METRIC},$P{REPORT_LOCALE}) / com.inthinc.pro.reports.hos.converter.Converter.convertDoubleRemarkDistance($F{totalMiles}.doubleValue(),$P{USE_METRIC},$P{REPORT_LOCALE}))
+: new Double(0.0)]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" pattern="#,##0.00 %" isBlankWhenNull="false">
 				<reportElement key="textField-19" style="Details1" x="707" y="3" width="71" height="19" isPrintWhenDetailOverflows="true" uuid="75d041be-e066-4787-bf97-edf73d225329"/>
@@ -678,12 +675,12 @@ new Double($F{totalMilesNoDriver}.doubleValue()/ $F{totalMiles}.doubleValue()) :
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Right"/>
-				<textFieldExpression><![CDATA[($V{SUM_totalLogGen}!=null && $V{SUM_totalLogGen}.intValue() != 0) ? new Double((double)(
+				<textFieldExpression><![CDATA[($V{SUM_driverCnt_1}!=null && $V{SUM_driverCnt_1}.intValue() != 0) ? new Double((double)(
 $F{driving_1}.intValue()+$F{driving_2}.intValue()+$F{driving_3}.intValue()+
 $F{onDuty_1}.intValue()+$F{onDuty_2}.intValue()+$F{onDuty_3}.intValue()+
 $F{cumulative_1}.intValue()+$F{cumulative_2}.intValue()+$F{cumulative_3}.intValue()+
 $F{offDuty_1}.intValue()+$F{offDuty_2}.intValue()+$F{offDuty_3}.intValue()
-)/(double)$V{SUM_totalLogGen}.intValue() * 100) : new Double(0.0)]]></textFieldExpression>
+) * 100 / (double)$V{SUM_driverCnt_1}.intValue()) : new Double(0.0)]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="false">
 				<reportElement key="textField-54" style="Details1" x="341" y="3" width="38" height="19" isPrintWhenDetailOverflows="true" uuid="12af2e12-58a5-47a1-9d53-de2a4b9ace53"/>

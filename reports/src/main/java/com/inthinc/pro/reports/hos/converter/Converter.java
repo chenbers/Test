@@ -26,6 +26,18 @@ public class Converter {
         return fmt.print(dateTime).trim();
     }
 
+    public static Double convertDoubleRemarkDistance(Number distance, Boolean convertToMetric, Locale locale) {
+        Double val = 0.0;
+
+        try{
+            val = Double.valueOf(convertRemarkDistance(distance, convertToMetric, locale));
+        }catch (NumberFormatException nfe){
+            // val remains 0
+        }
+
+        return val;
+    }
+
     public static String convertRemarkDistance(Number distance, Boolean convertToMetric, Locale locale) {
         if (distance == null)
             distance = 0;

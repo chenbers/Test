@@ -118,7 +118,6 @@ public class WthHosViolationsSummaryReportCriteria extends ViolationsSummaryRepo
 
 
             List<HOSRec> recListForViolationsCalc = HOSUtil.getRecListFromLogList(hosRecordList, reportEndDate.toDate(), !(driverDOTType.equals(RuleSetType.NON_DOT)));
-            Double hosRecordsGenerated = HOSUtil.getHosRecordsGenerated(hosRecordList, reportEndDate.toDate(), !(driverDOTType.equals(RuleSetType.NON_DOT)));
 
             ViolationsSummary summary = findSummary(groupHierarchy, dataMap, driver.getGroupID());
             if (summary == null) {
@@ -127,7 +126,6 @@ public class WthHosViolationsSummaryReportCriteria extends ViolationsSummaryRepo
 
             if (summary instanceof WthHosViolationsSummary){
                 WthHosViolationsSummary wthHosViolationsSummary = (WthHosViolationsSummary) summary;
-                wthHosViolationsSummary.setTotalLogsGen(hosRecordsGenerated);
             }
 
             // violations

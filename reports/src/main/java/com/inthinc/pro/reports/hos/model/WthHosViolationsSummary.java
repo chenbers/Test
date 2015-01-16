@@ -18,7 +18,6 @@ public class WthHosViolationsSummary extends ViolationsSummary  {
     private Integer offDuty_3;
     private Double totalMiles;
     private Double totalMilesNoDriver;
-    private Double totalLogsGen;
 
 
     public WthHosViolationsSummary(String groupName) {
@@ -37,7 +36,6 @@ public class WthHosViolationsSummary extends ViolationsSummary  {
         this.offDuty_3 = 0;
         this.totalMiles = 0d;
         this.totalMilesNoDriver = 0d;
-        this.totalLogsGen = 0d;
     }
     public WthHosViolationsSummary(String groupName, Integer driving_1, Integer driving_2, Integer driving_3, Integer onDuty_1, Integer onDuty_2, Integer onDuty_3,
                                    Integer cumulative_1, Integer cumulative_2, Integer cumulative_3, Integer offDuty_1, Integer offDuty_2, Integer offDuty_3, Integer driverCnt, Double totalMiles,
@@ -57,7 +55,6 @@ public class WthHosViolationsSummary extends ViolationsSummary  {
         this.offDuty_3 = offDuty_3;
         this.totalMiles = totalMiles;
         this.totalMilesNoDriver = totalMilesNoDriver;
-        this.totalLogsGen = 0d;
     }
     public Integer getDriving_1() {
         return driving_1;
@@ -144,14 +141,6 @@ public class WthHosViolationsSummary extends ViolationsSummary  {
         this.totalMilesNoDriver = totalMilesNoDriver;
     }
 
-    public Double getTotalLogsGen() {
-        return totalLogsGen;
-    }
-
-    public void setTotalLogsGen(Double totalLogsGen) {
-        this.totalLogsGen = totalLogsGen;
-    }
-
     @Override
     public void updateMinutes(RuleViolationTypes violationType, int minutes) {
         if (minutes == 0)
@@ -210,8 +199,7 @@ public class WthHosViolationsSummary extends ViolationsSummary  {
               getOffDuty_3() + "," + 
               getDriverCnt() + "," + 
               getTotalMiles() + "d," +
-              getTotalMilesNoDriver() + "d," +
-              getTotalLogsGen() +  "d);");
+              getTotalMilesNoDriver() + "d);");
     }
 
 }
