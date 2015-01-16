@@ -1,10 +1,8 @@
 package com.inthinc.pro.backing;
 
-import com.inthinc.pro.dao.AccountDAO;
 import com.inthinc.pro.model.Account;
 import com.inthinc.pro.model.AccountAttributes;
 import com.inthinc.pro.model.Person;
-import mockit.Mocked;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -20,9 +18,6 @@ public class PersonBeanLengthTest {
     public Person person;
     public PersonBean.PersonView personView;
     public AccountAttributes accountAttributes;
-
-    @Mocked
-    AccountDAO accountDAO;
 
     @Before
     public void init(){
