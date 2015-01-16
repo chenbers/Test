@@ -1694,7 +1694,15 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
         public String getTimeZoneDisplay() {
             return bean.getTimeZoneDisplayName(getTimeZone());
         }
-   }
+
+        public PersonBean getBean() {
+            return bean;
+        }
+
+        public void setBean(PersonBean bean) {
+            this.bean = bean;
+        }
+    }
 		
 	public Roles getAccountRoles(){
 		
