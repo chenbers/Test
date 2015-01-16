@@ -4,6 +4,10 @@ import com.inthinc.hos.model.RuleViolationTypes;
 
 public class WthHosViolationsSummary extends ViolationsSummary  {
 
+    private Integer hourDriving11;
+    private Integer onDutyHours14;
+    private Integer onDutyHours70;
+    private Integer thirtyMinuteBreak;
     private Integer driving_1;
     private Integer driving_2;
     private Integer driving_3;
@@ -22,6 +26,10 @@ public class WthHosViolationsSummary extends ViolationsSummary  {
 
     public WthHosViolationsSummary(String groupName) {
         super(groupName);
+        this.hourDriving11 = 0;
+        this.onDutyHours14 = 0;
+        this.onDutyHours70 = 0;
+        this.thirtyMinuteBreak = 0;
         this.driving_1 = 0;
         this.driving_2 = 0;
         this.driving_3 = 0;
@@ -141,11 +149,68 @@ public class WthHosViolationsSummary extends ViolationsSummary  {
         this.totalMilesNoDriver = totalMilesNoDriver;
     }
 
+    public Integer getHourDriving11() {
+        return hourDriving11;
+    }
+
+    public void setHourDriving11(Integer hourDriving11) {
+        this.hourDriving11 = hourDriving11;
+    }
+
+    public Integer getOnDutyHours14() {
+        return onDutyHours14;
+    }
+
+    public void setOnDutyHours14(Integer onDutyHours14) {
+        this.onDutyHours14 = onDutyHours14;
+    }
+
+    public Integer getOnDutyHours70() {
+        return onDutyHours70;
+    }
+
+    public void setOnDutyHours70(Integer onDutyHours70) {
+        this.onDutyHours70 = onDutyHours70;
+    }
+
+    public Integer getThirtyMinuteBreak() {
+        return thirtyMinuteBreak;
+    }
+
+    public void setThirtyMinuteBreak(Integer thirtyMinuteBreak) {
+        this.thirtyMinuteBreak = thirtyMinuteBreak;
+    }
+
     @Override
     public void updateMinutes(RuleViolationTypes violationType, int minutes) {
         if (minutes == 0)
             return;
-//System.out.println(violationType + " " + minutes);            
+
+        if (violationType == RuleViolationTypes.DRIVING_HOUR){
+            if (minutes >= 60 * 11){
+                hourDriving11++;
+            }
+        }
+
+        if (violationType == RuleViolationTypes.ON_DUTY_HOUR){
+            if (minutes >= 60 * 14){
+                onDutyHours14++;
+            }
+        }
+
+        if (violationType == RuleViolationTypes.ON_DUTY_HOUR){
+            if (minutes >= 60 * 14 && minutes < 60 * 70){
+                onDutyHours14++;
+            } else if (minutes >= 60 * 70){
+                onDutyHours70++;
+            }
+        }
+
+        if (violationType == RuleViolationTypes.REST_BREAK){
+            if (minutes >= 30) {
+                thirtyMinuteBreak++;
+            }
+        }
         
         if (violationType == RuleViolationTypes.DRIVING_HOUR || violationType == RuleViolationTypes.DAILY_DRIVING || violationType == RuleViolationTypes.REST_BREAK || violationType == RuleViolationTypes.ALBERTA_REST_BREAK) {
             if (minutes < 15)
@@ -184,8 +249,11 @@ public class WthHosViolationsSummary extends ViolationsSummary  {
     }
     
     public void dump() {
-      System.out.println("new HosViolationsSummary(\", " + getGroupName() + "\"," + 
-              getDriving_1() + "," + 
+      System.out.println("new HosViolationsSummary(\", " + getGroupName() + "\"," +
+              getHourDriving11() + "," +
+              getOnDutyHours14() + "," +
+              getOnDutyHours70() + "," +
+              getThirtyMinuteBreak() + "," +
               getDriving_2() + "," + 
               getDriving_3() + "," + 
               getOnDuty_1() + "," + 
