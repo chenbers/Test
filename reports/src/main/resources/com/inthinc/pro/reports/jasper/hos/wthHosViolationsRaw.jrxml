@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="hosViolations" pageWidth="842" pageHeight="595" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="842" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" resourceBundle="i18n/hosViolations">
-	<property name="ireport.zoom" value="1.0"/>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="hosViolations" pageWidth="842" pageHeight="595" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="842" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" resourceBundle="i18n/hosViolations" uuid="c709c882-5555-462a-9dbc-493e00542ca2">
+	<property name="ireport.zoom" value="1.2100000000000009"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<import value="net.sf.jasperreports.engine.*"/>
@@ -23,173 +23,138 @@
 	<field name="driverCnt" class="java.lang.Integer"/>
 	<field name="totalMiles" class="java.lang.Double"/>
 	<field name="totalMilesNoDriver" class="java.lang.Double"/>
+	<field name="hourDriving11" class="java.lang.Integer"/>
+	<field name="onDutyHours14" class="java.lang.Integer"/>
+	<field name="onDutyHours70" class="java.lang.Integer"/>
+	<field name="thirtyMinuteBreak" class="java.lang.Integer"/>
+	<variable name="SUM_driverCnt_1" class="java.lang.Integer" calculation="Sum">
+		<variableExpression><![CDATA[$F{driverCnt}]]></variableExpression>
+	</variable>
 	<columnHeader>
 		<band height="19">
 			<textField isStretchWithOverflow="true" isBlankWhenNull="false">
-				<reportElement key="textField-40" stretchType="RelativeToBandHeight" mode="Opaque" x="0" y="0" width="105" height="19" forecolor="#000000" backcolor="#FFFFFF"/>
+				<reportElement key="textField-40" stretchType="RelativeToBandHeight" mode="Opaque" x="0" y="0" width="105" height="19" forecolor="#000000" backcolor="#FFFFFF" uuid="aa86d8e8-62e3-46bb-8820-00c460626429"/>
 				<textElement>
 					<font isBold="false" pdfFontName="Helvetica-Bold"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[str("column.1.raw")]]></textFieldExpression>
+				<textFieldExpression><![CDATA[str("column.1.raw")]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="false">
-				<reportElement key="textField" x="105" y="0" width="45" height="19" isPrintWhenDetailOverflows="true"/>
+				<reportElement key="textField" x="105" y="0" width="45" height="19" isPrintWhenDetailOverflows="true" uuid="a3c0b5e7-7386-42bd-bbbc-77f3b0e41b55"/>
 				<textElement textAlignment="Center"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[str("column.2.raw")]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$R{column.11hrs}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="false">
-				<reportElement key="textField" x="150" y="0" width="45" height="19" isPrintWhenDetailOverflows="true"/>
+				<reportElement key="textField" x="150" y="0" width="45" height="19" isPrintWhenDetailOverflows="true" uuid="b56cd448-f4e9-4bb9-8532-dbfca162f89e"/>
 				<textElement textAlignment="Center"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[str("column.3.raw")]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$R{column.14hrs}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="false">
-				<reportElement key="textField" x="195" y="0" width="45" height="19" isPrintWhenDetailOverflows="true"/>
+				<reportElement key="textField" x="195" y="0" width="45" height="19" isPrintWhenDetailOverflows="true" uuid="f5b94484-0c62-4ba5-b2d1-ae4111fdac29"/>
 				<textElement textAlignment="Center"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[str("column.4.raw")]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$R{column.70hrs}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="false">
-				<reportElement key="textField" x="240" y="0" width="45" height="19" isPrintWhenDetailOverflows="true"/>
+				<reportElement key="textField" x="240" y="0" width="45" height="19" isPrintWhenDetailOverflows="true" uuid="7ba8bab7-c238-4d28-b596-b778309ba539"/>
 				<textElement textAlignment="Center"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[str("column.5.raw")]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$R{column.30min}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="false">
-				<reportElement key="textField" x="285" y="0" width="45" height="19" isPrintWhenDetailOverflows="true"/>
+				<reportElement key="textField" x="285" y="0" width="45" height="19" isPrintWhenDetailOverflows="true" uuid="c8391eab-d3c6-4d02-8f8a-b31817bd13de"/>
 				<textElement textAlignment="Center"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[str("column.6.raw")]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$R{column.all}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="false">
-				<reportElement key="textField" x="330" y="0" width="45" height="19" isPrintWhenDetailOverflows="true"/>
+				<reportElement key="textField" x="330" y="0" width="45" height="19" isPrintWhenDetailOverflows="true" uuid="bb046a49-fa08-4bb0-8889-f8b9a908b7ba"/>
 				<textElement textAlignment="Center"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[str("column.7.raw")]]></textFieldExpression>
-			</textField>
-			<textField isStretchWithOverflow="true" isBlankWhenNull="false">
-				<reportElement key="textField" x="375" y="0" width="45" height="19" isPrintWhenDetailOverflows="true"/>
-				<textElement textAlignment="Center"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[str("column.8.raw")]]></textFieldExpression>
-			</textField>
-			<textField isStretchWithOverflow="true" isBlankWhenNull="false">
-				<reportElement key="textField" x="420" y="0" width="45" height="19" isPrintWhenDetailOverflows="true"/>
-				<textElement textAlignment="Center"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[str("column.9.raw")]]></textFieldExpression>
-			</textField>
-			<textField isStretchWithOverflow="true" isBlankWhenNull="false">
-				<reportElement key="textField" x="465" y="0" width="45" height="19" isPrintWhenDetailOverflows="true"/>
-				<textElement textAlignment="Center"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[str("column.10.raw")]]></textFieldExpression>
-			</textField>
-			<textField isStretchWithOverflow="true" isBlankWhenNull="false">
-				<reportElement key="textField-54" x="510" y="0" width="45" height="19" isPrintWhenDetailOverflows="true"/>
-				<textElement textAlignment="Center"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[str("column.11.raw")]]></textFieldExpression>
-			</textField>
-			<textField isStretchWithOverflow="true" isBlankWhenNull="false">
-				<reportElement key="textField-55" x="555" y="0" width="45" height="19" isPrintWhenDetailOverflows="true"/>
-				<textElement textAlignment="Center"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[str("column.12.raw")]]></textFieldExpression>
-			</textField>
-			<textField isStretchWithOverflow="true" isBlankWhenNull="false">
-				<reportElement key="textField-56" x="600" y="0" width="45" height="19" isPrintWhenDetailOverflows="true"/>
-				<textElement textAlignment="Center"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[str("column.13.raw")]]></textFieldExpression>
-			</textField>
-			<textField isStretchWithOverflow="true" isBlankWhenNull="false">
-				<reportElement key="textField" x="645" y="0" width="45" height="19" isPrintWhenDetailOverflows="true"/>
-				<textElement textAlignment="Center"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[str("column.14.raw")]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$R{column.2}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" pattern="###0" isBlankWhenNull="false">
-				<reportElement key="textField" x="690" y="0" width="45" height="19" isPrintWhenDetailOverflows="true"/>
+				<reportElement key="textField" x="375" y="0" width="45" height="19" isPrintWhenDetailOverflows="true" uuid="ab9959ad-8570-4740-9b1a-1531eacdb7d2"/>
 				<textElement textAlignment="Center"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[str("column.15.raw")]]></textFieldExpression>
+				<textFieldExpression><![CDATA[str("column.15.raw")]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" pattern="###0" isBlankWhenNull="false">
-				<reportElement key="textField" x="735" y="0" width="107" height="19" isPrintWhenDetailOverflows="true"/>
+				<reportElement key="textField" x="420" y="0" width="107" height="19" isPrintWhenDetailOverflows="true" uuid="29e08053-608e-4a64-bf10-f5623efa3764"/>
 				<textElement textAlignment="Center"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[str("column.16.raw")]]></textFieldExpression>
+				<textFieldExpression><![CDATA[str("column.16.raw")]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="###0" isBlankWhenNull="false">
+				<reportElement key="textField" x="527" y="0" width="45" height="19" isPrintWhenDetailOverflows="true" uuid="b7dce702-7e36-4fe3-926d-8f2f12116a16"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$R{column.6.english}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="###0" isBlankWhenNull="false">
+				<reportElement key="textField" x="572" y="0" width="107" height="19" isPrintWhenDetailOverflows="true" uuid="b9b2378e-a17c-4a3d-9906-f289f7afa58c"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$R{column.7}]]></textFieldExpression>
 			</textField>
 		</band>
 	</columnHeader>
 	<detail>
 		<band height="20" splitType="Stretch">
 			<textField isStretchWithOverflow="true" isBlankWhenNull="false">
-				<reportElement key="textField-40" stretchType="RelativeToBandHeight" mode="Opaque" x="0" y="0" width="105" height="19" forecolor="#000000" backcolor="#FFFFFF"/>
+				<reportElement key="textField-40" stretchType="RelativeToBandHeight" mode="Opaque" x="0" y="0" width="105" height="19" forecolor="#000000" backcolor="#FFFFFF" uuid="71d10fc7-48f4-4292-b622-f820e0e4a73d"/>
 				<textElement textAlignment="Center"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{groupName}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{groupName}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="false">
-				<reportElement key="textField" x="105" y="0" width="45" height="19" isPrintWhenDetailOverflows="true"/>
+				<reportElement key="textField" x="105" y="0" width="45" height="19" isPrintWhenDetailOverflows="true" uuid="bd8f3fd1-ff7b-4cf7-bde4-d35453c1acf1"/>
 				<textElement textAlignment="Center"/>
-				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{driving_1}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{hourDriving11}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="false">
-				<reportElement key="textField" x="150" y="0" width="45" height="19" isPrintWhenDetailOverflows="true"/>
+				<reportElement key="textField" x="150" y="0" width="45" height="19" isPrintWhenDetailOverflows="true" uuid="fd5c6014-5e87-4d1d-b1db-a977b8c93e2a"/>
 				<textElement textAlignment="Center"/>
-				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{driving_2}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{onDutyHours14}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="false">
-				<reportElement key="textField" x="195" y="0" width="45" height="19" isPrintWhenDetailOverflows="true"/>
+				<reportElement key="textField" x="195" y="0" width="45" height="19" isPrintWhenDetailOverflows="true" uuid="a6adf136-f8cd-45e3-bc82-f75804b3d3d5"/>
 				<textElement textAlignment="Center"/>
-				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{driving_3}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{onDutyHours70}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="false">
-				<reportElement key="textField" x="240" y="0" width="45" height="19" isPrintWhenDetailOverflows="true"/>
+				<reportElement key="textField" x="240" y="0" width="45" height="19" isPrintWhenDetailOverflows="true" uuid="a5a0446d-3fde-429b-a6d1-3cebb00d412e"/>
 				<textElement textAlignment="Center"/>
-				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{onDuty_1}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{thirtyMinuteBreak}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="false">
-				<reportElement key="textField" x="285" y="0" width="45" height="19" isPrintWhenDetailOverflows="true"/>
+				<reportElement key="textField" x="285" y="0" width="45" height="19" isPrintWhenDetailOverflows="true" uuid="63061530-6551-4fe9-9f6f-f1f4f52804df"/>
 				<textElement textAlignment="Center"/>
-				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{onDuty_2}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{hourDriving11}.intValue()+$F{onDutyHours14}.intValue()+
+$F{onDutyHours70}.intValue()+$F{thirtyMinuteBreak}.intValue()
+]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="false">
-				<reportElement key="textField" x="330" y="0" width="45" height="19" isPrintWhenDetailOverflows="true"/>
+				<reportElement key="textField" x="330" y="0" width="45" height="19" isPrintWhenDetailOverflows="true" uuid="b4cba127-0551-47a8-8700-a7c9db818476"/>
 				<textElement textAlignment="Center"/>
-				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{onDuty_3}]]></textFieldExpression>
-			</textField>
-			<textField isBlankWhenNull="false">
-				<reportElement key="textField" x="375" y="0" width="45" height="19" isPrintWhenDetailOverflows="true"/>
-				<textElement textAlignment="Center"/>
-				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{cumulative_1}]]></textFieldExpression>
-			</textField>
-			<textField isBlankWhenNull="false">
-				<reportElement key="textField" x="420" y="0" width="45" height="19" isPrintWhenDetailOverflows="true"/>
-				<textElement textAlignment="Center"/>
-				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{cumulative_2}]]></textFieldExpression>
-			</textField>
-			<textField isBlankWhenNull="false">
-				<reportElement key="textField" x="465" y="0" width="45" height="19" isPrintWhenDetailOverflows="true"/>
-				<textElement textAlignment="Center"/>
-				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{cumulative_3}]]></textFieldExpression>
-			</textField>
-			<textField isBlankWhenNull="false">
-				<reportElement key="textField-54" x="510" y="0" width="45" height="19" isPrintWhenDetailOverflows="true"/>
-				<textElement textAlignment="Center"/>
-				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{offDuty_1}]]></textFieldExpression>
-			</textField>
-			<textField isBlankWhenNull="false">
-				<reportElement key="textField-55" x="555" y="0" width="45" height="19" isPrintWhenDetailOverflows="true"/>
-				<textElement textAlignment="Center"/>
-				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{offDuty_2}]]></textFieldExpression>
-			</textField>
-			<textField isBlankWhenNull="false">
-				<reportElement key="textField-56" x="600" y="0" width="45" height="19" isPrintWhenDetailOverflows="true"/>
-				<textElement textAlignment="Center"/>
-				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{offDuty_3}]]></textFieldExpression>
-			</textField>
-			<textField isBlankWhenNull="false">
-				<reportElement key="textField" x="645" y="0" width="45" height="19" isPrintWhenDetailOverflows="true"/>
-				<textElement textAlignment="Center"/>
-				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{driverCnt}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{driverCnt}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0" isBlankWhenNull="false">
-				<reportElement key="textField" x="690" y="0" width="45" height="19" isPrintWhenDetailOverflows="true"/>
+				<reportElement key="textField" x="375" y="0" width="45" height="19" isPrintWhenDetailOverflows="true" uuid="406d2062-659e-4328-8f86-d2a75b364393"/>
 				<textElement textAlignment="Center"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[com.inthinc.pro.reports.hos.converter.Converter.convertRemarkDistance($F{totalMiles},$P{USE_METRIC},$P{REPORT_LOCALE})]]></textFieldExpression>
+				<textFieldExpression><![CDATA[com.inthinc.pro.reports.hos.converter.Converter.convertRemarkDistance($F{totalMiles},$P{USE_METRIC},$P{REPORT_LOCALE})]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0" isBlankWhenNull="false">
-				<reportElement key="textField" x="735" y="0" width="107" height="19" isPrintWhenDetailOverflows="true"/>
+				<reportElement key="textField" x="420" y="0" width="107" height="19" isPrintWhenDetailOverflows="true" uuid="31016765-c9ae-4fa4-b97d-701a099f304d"/>
 				<textElement textAlignment="Center"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[com.inthinc.pro.reports.hos.converter.Converter.convertRemarkDistance($F{totalMilesNoDriver},$P{USE_METRIC},$P{REPORT_LOCALE})]]></textFieldExpression>
+				<textFieldExpression><![CDATA[com.inthinc.pro.reports.hos.converter.Converter.convertRemarkDistance($F{totalMilesNoDriver},$P{USE_METRIC},$P{REPORT_LOCALE})]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00 %" isBlankWhenNull="false">
+				<reportElement key="textField" x="527" y="0" width="45" height="19" isPrintWhenDetailOverflows="true" uuid="94c62925-60e1-41c7-9767-ea0307a594a4"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[($F{totalMilesNoDriver} != null && $F{totalMilesNoDriver}.intValue() != 0) ?
+(Double.valueOf(com.inthinc.pro.reports.hos.converter.Converter.convertRemarkDistance($F{totalMilesNoDriver},$P{USE_METRIC},$P{REPORT_LOCALE})) / Double.valueOf(com.inthinc.pro.reports.hos.converter.Converter.convertRemarkDistance($F{totalMiles},$P{USE_METRIC},$P{REPORT_LOCALE})))
+: new Double(0.0)
+]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00 %" isBlankWhenNull="false">
+				<reportElement key="textField" x="572" y="0" width="107" height="19" isPrintWhenDetailOverflows="true" uuid="02b697a0-a6c2-4e6e-800d-ac0e6e9a5401"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[($V{SUM_driverCnt_1}!=null && $V{SUM_driverCnt_1}.intValue() != 0) ? new Double((double)(
+$F{hourDriving11}.intValue()+$F{onDutyHours14}.intValue()+
+$F{onDutyHours70}.intValue()+$F{thirtyMinuteBreak}.intValue()
+) / (double)$V{SUM_driverCnt_1}.intValue()) : new Double(0.0)]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
