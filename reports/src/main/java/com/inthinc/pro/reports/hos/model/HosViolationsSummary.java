@@ -184,7 +184,7 @@ public class HosViolationsSummary extends ViolationsSummary  {
     }
     
     public void dump() {
-      System.out.println("new WthHosViolationsSummary(\", " + getGroupName() + "\"," +
+      System.out.println("new HosViolationsSummary(\", " + getGroupName() + "\"," +
               getDriving_1() + "," + 
               getDriving_2() + "," + 
               getDriving_3() + "," + 

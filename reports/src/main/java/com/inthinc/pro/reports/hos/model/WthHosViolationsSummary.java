@@ -64,6 +64,17 @@ public class WthHosViolationsSummary extends ViolationsSummary  {
         this.totalMiles = totalMiles;
         this.totalMilesNoDriver = totalMilesNoDriver;
     }
+
+    public WthHosViolationsSummary(String groupName, Integer driverCnt, Integer hourDriving11, Integer onDutyHours14, Integer onDutyHours70, Integer thirtyMinuteBreak, Double totalMiles, Double totalMilesNoDriver) {
+        super(groupName, driverCnt);
+        this.hourDriving11 = hourDriving11;
+        this.onDutyHours14 = onDutyHours14;
+        this.onDutyHours70 = onDutyHours70;
+        this.thirtyMinuteBreak = thirtyMinuteBreak;
+        this.totalMiles = totalMiles;
+        this.totalMilesNoDriver = totalMilesNoDriver;
+    }
+
     public Integer getDriving_1() {
         return driving_1;
     }
@@ -249,7 +260,7 @@ public class WthHosViolationsSummary extends ViolationsSummary  {
     }
     
     public void dump() {
-      System.out.println("new HosViolationsSummary(\", " + getGroupName() + "\"," +
+      System.out.println("new WthHosViolationsSummary(\", " + getGroupName() + "\"," +
               getHourDriving11() + "," +
               getOnDutyHours14() + "," +
               getOnDutyHours70() + "," +
