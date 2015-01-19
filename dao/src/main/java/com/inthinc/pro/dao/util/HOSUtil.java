@@ -131,7 +131,6 @@ public class HOSUtil {
         return recList;
     }
 
-
     public static List<ByteArrayOutputStream> packageLogsToShip(List<HOSRecord> recordList, Driver driver) throws IOException 
     {
         

@@ -48,4 +48,12 @@ public class ConverterTest {
 
     }
 
+    @Test
+    public void convertDoubleRemarkDistanceTest(){
+        Double convertedDouble = Converter.convertDoubleRemarkDistance(123456, false, Locale.US);
+        assertEquals("Unexpected conversion", new Double(1235), convertedDouble);
+
+        Double convertedDouble2 = Converter.convertDoubleRemarkDistance(123456, true, Locale.US);
+        assertEquals("Unexpected conversion", new Double(1987), convertedDouble2);
+    }
 }
