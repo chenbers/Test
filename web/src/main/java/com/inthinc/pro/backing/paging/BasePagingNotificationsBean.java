@@ -45,6 +45,9 @@ public abstract class BasePagingNotificationsBean<T> extends BaseBean {
 	private Integer filterCategoryKey;
 	
 	private String filterForgiven;
+
+	private String            reason;
+	private Long            forgivenByUserID;
 	
     public String getFilterForgiven() {
         return filterForgiven;
@@ -245,6 +248,23 @@ public abstract class BasePagingNotificationsBean<T> extends BaseBean {
 
 	public void setEventDAO(EventDAO eventDAO) {
 		this.eventDAO = eventDAO;
+	}
+
+	public Long getForgivenByUserID() {
+		return forgivenByUserID;
+	}
+
+	public void setForgivenByUserID(Long forgivenByUserID) {
+		this.forgivenByUserID = forgivenByUserID;
+	}
+
+	public String getReason() {
+		return reason;
+	}
+
+	public void setReason(String reason) {
+		this.reason = reason;
+		this.forgivenByUserID = getUser().getUserID().longValue();
 	}
 
 }
