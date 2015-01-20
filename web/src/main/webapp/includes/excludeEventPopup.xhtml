@@ -28,17 +28,13 @@
                 	<f:converter converterId="DateTimeTZConverter"/>
 					<f:attribute name="timeZone" value="#{bean.clearItem.driverTimeZone}"/>
                 	<f:attribute name="pattern" value="#{messages.dateTimeFormat}"/>
-
                 </h:outputText>
-                <p>Reason:</p>
-                <textarea rows="4" maxlength="50"></textarea>
-                <p>Choose:
-                    Speed limit in error,
-                    Device malfunction,
-                    Device thresholds not set properly,
-                    Zones error,
-                    Driver excused
-                </p>
+
+                <br />
+                <br />
+                <h:outputLabel for = "excludeReason" value="#{messages.excludeReason}" style="width:20%"/>
+                <h:inputText value="#{bean.reason}" id="excludeReason" maxlength="50" size="35" required="true"/>
+
             </h:panelGroup>
 
 
