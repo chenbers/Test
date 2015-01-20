@@ -28,9 +28,21 @@
                 	<f:converter converterId="DateTimeTZConverter"/>
 					<f:attribute name="timeZone" value="#{bean.clearItem.driverTimeZone}"/>
                 	<f:attribute name="pattern" value="#{messages.dateTimeFormat}"/>
+
                 </h:outputText>
-                
+                <p>Reason:</p>
+                <textarea rows="4" maxlength="50"></textarea>
+                <p>Choose:
+                    Speed limit in error,
+                    Device malfunction,
+                    Device thresholds not set properly,
+                    Zones error,
+                    Driver excused
+                </p>
             </h:panelGroup>
+
+
+
 
             <div class="popupactions">
             <button id="#{context}_no" type="submit" class="left" onclick="Richfaces.hideModalPanel('clear#{context}Panel'); return false;"><span class="no"><h:outputText
