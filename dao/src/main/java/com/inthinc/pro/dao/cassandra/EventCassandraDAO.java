@@ -190,7 +190,7 @@ public class EventCassandraDAO extends AggregationCassandraDAO implements EventD
     }    
 
     @Override
-    public Integer forgive(Integer driverID, Long noteID)
+    public Integer forgive(Integer driverID, Long noteID, Long forgivenByUserID, String reason)
     {
     	Event event = findByID(noteID);    	
     	

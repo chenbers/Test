@@ -461,7 +461,7 @@ public class SiloServiceTest {
             int size = result.size();
             if (size > 0) {
                 Event e = result.get(0);
-                eventDAO.forgive(e.getDriverID(), e.getNoteID());
+                eventDAO.forgive(e.getDriverID(), e.getNoteID(), 0l, "");
                 List<Event> newResult = eventDAO.getEventsForDriver(TESTING_DRIVER_ID, startDate, endDate, EventCategory.VIOLATION.getNoteTypesInCategory(),
                         EventDAO.EXCLUDE_FORGIVEN);
                 assertEquals("list size should be 1 less after forgive", (size - 1), newResult.size());

@@ -45,7 +45,7 @@ public interface EventDAO extends GenericDAO<Event, Integer>
 
     List<Event> getEventsForVehicle(Integer vehicleID, Date startDate, Date endDate, List<NoteType> noteTypes, Integer includeForgiven);
 
-    Integer forgive(Integer driverID, Long noteID);
+    Integer forgive(Integer driverID, Long noteID, Long forgivenByUserID, String reason);
 
     Integer unforgive(Integer driverID, Long noteID);
 
