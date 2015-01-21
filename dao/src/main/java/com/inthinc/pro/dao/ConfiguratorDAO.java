@@ -14,6 +14,7 @@ public interface ConfiguratorDAO extends GenericDAO<DeviceSettingDefinition, Int
     
     public List<DeviceSettingDefinition> getDeviceSettingDefinitions();
     public VehicleSetting getVehicleSettings(Integer vehicleID);
+    public Map<Integer, VehicleSetting> getVehicleSettingsForAll(List<Integer> vehicleIDs);
     public List<VehicleSetting> getVehicleSettingsByGroupIDDeep(Integer groupID);
     public List<Integer> getVehicleIDsByGroupIDDeep(Integer groupID);
     public void setVehicleSettings(Integer vehicleID, Map<Integer, String> setMap, Integer userID, String reason);

@@ -31,6 +31,11 @@ public class ConfiguratorJDBCDAO extends SimpleJdbcDaoSupport implements Configu
             " LEFT OUTER JOIN device d on (vdd.deviceID = d.deviceID)" +
             " where veh.vehicleID = :vehicleID";
 
+    private static final String GET_DATA_ALL = "select veh.vehicleID, d.deviceID FROM vehicle veh" +
+            " LEFT OUTER JOIN vddlog vdd ON (veh.vehicleID = vdd.vehicleID and vdd.stop is null)" +
+            " LEFT OUTER JOIN device d on (vdd.deviceID = d.deviceID)" +
+            " where veh.vehicleID in (:vehicleIDs)";
+
     private static final String GET_DATA_DESIRED = "select a.settingID, a.value  FROM siloDB.desiredVSet a WHERE a.vehicleID =:vehicleID";
     private static final String GET_DATA_ACTUAL = "select a.settingID ,a.value  FROM siloDB.actualVSet a WHERE a.vehicleID =:vehicleID";
 
@@ -77,6 +82,19 @@ public class ConfiguratorJDBCDAO extends SimpleJdbcDaoSupport implements Configu
             params.put("vehicleID", vehicleID);
             return getSimpleJdbcTemplate().query(GET_DATA, vehicleSettingParameterizedRowMapper, params).get(0);
         }
+    }
+
+    @Override
+    public Map<Integer, VehicleSetting> getVehicleSettingsForAll(List<Integer> vehicleIDs) {
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("vehicleIDs", vehicleIDs);
+        List<VehicleSetting> rawVehicleSettings = getSimpleJdbcTemplate().query(GET_DATA_ALL, vehicleSettingParameterizedRowMapper, params);
+        Map<Integer, VehicleSetting> vehicleSettingMap = new HashMap<Integer, VehicleSetting>(vehicleIDs.size());
+        for (VehicleSetting vehicleSetting : rawVehicleSettings) {
+            vehicleSettingMap.put(vehicleSetting.getVehicleID(), vehicleSetting);
+        }
+
+        return vehicleSettingMap;
     }
 
     public List<SettingValue> getActualSettings(Integer vehicleID) {

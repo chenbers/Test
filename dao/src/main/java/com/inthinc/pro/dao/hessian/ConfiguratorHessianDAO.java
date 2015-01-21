@@ -3,6 +3,7 @@ package com.inthinc.pro.dao.hessian;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -77,6 +78,17 @@ public class ConfiguratorHessianDAO extends GenericHessianDAO<DeviceSettingDefin
         }
 
     }
+
+    @Override
+    public Map<Integer, VehicleSetting> getVehicleSettingsForAll(List<Integer> vehicleIDs) {
+        Map<Integer, VehicleSetting> vehicleSettingMap = new HashMap<Integer, VehicleSetting>(vehicleIDs.size());
+        for (Integer vehicleID : vehicleIDs){
+            vehicleSettingMap.put(vehicleID, getMapper().convertToModelObject(getSiloService().getVehicleSettings(vehicleID), VehicleSetting.class));
+        }
+
+        return vehicleSettingMap;
+    }
+
     @Override
     public List<Integer> getVehicleIDsByGroupIDDeep(Integer groupID) {
         try {
