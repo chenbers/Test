@@ -5,6 +5,7 @@ import java.util.*;
 import com.inthinc.pro.dao.*;
 import com.inthinc.pro.model.*;
 import com.inthinc.pro.model.configurator.MaintenanceSettings;
+import com.inthinc.pro.model.configurator.VehicleSetting;
 import com.inthinc.pro.model.event.*;
 
 import org.apache.log4j.Logger;
@@ -162,6 +163,7 @@ public class MaintenanceEventsReportCriteria extends ReportCriteria {
             }
 
             List<Vehicle> vehiclesWithEvents = new ArrayList<Vehicle>();
+            List<Integer> vehicleIDForVehiclesWithEvents = new ArrayList<Integer>();
             Map<Integer, List<Event>> foundEvents = new HashMap<Integer, List<Event>>();
 
             for (Vehicle vehicle: allVehicles){
@@ -171,6 +173,7 @@ public class MaintenanceEventsReportCriteria extends ReportCriteria {
                     // Filter vehicles without maintenance events
                     if(containsMaintenanceEvents(events)){
                         vehiclesWithEvents.add(vehicle);
+                        vehicleIDForVehiclesWithEvents.add(vehicle.getVehicleID());
                         List<Event> maintenanceEvents = new ArrayList<Event>();
                         for(int i = 0; i < events.size(); i++){
                             
@@ -184,10 +187,10 @@ public class MaintenanceEventsReportCriteria extends ReportCriteria {
                 }
             }
 
+            Map<Integer, VehicleSetting> vehiclesWithEventsSettings = getVehiclesWithEventsSettings(vehicleIDForVehiclesWithEvents);
+
             List<BackingWrapper> backingWrappers = new ArrayList<BackingWrapper>();
-
             for (Vehicle vehicle: vehiclesWithEvents){
-
                 List<Event> eventList = foundEvents.get(vehicle.getVehicleID());
                 if (eventList != null) {
                     for (Event event : eventList){
@@ -237,7 +240,7 @@ public class MaintenanceEventsReportCriteria extends ReportCriteria {
                         String actual = null;
                         if(maintenanceSettings != null) {
                             value = ((MaintenanceEvent) event).getValue();
-                            actual = configuratorJDBCDAO.getVehicleSettings(stringToInt(vehicleID)).getActual().get(maintenanceSettings.getCode());
+                            actual = vehiclesWithEventsSettings.get(stringToInt(vehicleID)).getActual().get(maintenanceSettings.getCode());
                         }else{
                             value = "-";
                             actual = "-";
@@ -293,6 +296,17 @@ public class MaintenanceEventsReportCriteria extends ReportCriteria {
 
         public void setIncludeZeroMilesDrivers(Boolean includeZeroMilesDrivers) {
             this.includeZeroMilesDrivers = includeZeroMilesDrivers;
+        }
+
+
+        /**
+         * Batch gets all the settings for vehicles with events given by a list of vehicle IDs.
+         *
+         * @param vehicleIDs list of vehicle IDs
+         * @return all settings
+         */
+        private Map<Integer, VehicleSetting> getVehiclesWithEventsSettings(List<Integer> vehicleIDs){
+            return configuratorJDBCDAO.getVehicleSettingsForAll(vehicleIDs);
         }
     }
 
