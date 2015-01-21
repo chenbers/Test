@@ -7,8 +7,11 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import com.inthinc.pro.model.event.VehicleEventData;
 import org.joda.time.DateMidnight;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
@@ -150,6 +153,63 @@ public class DriveTimeJDBCDAO extends GenericJDBCDAO implements DriveTimeDAO {
         } // end finally
 
         return prevEventDate;
+    }
+
+    @Override
+    public Map<Integer, Date> getPrevEventDates(VehicleEventData vehicleEventData) {
+        Map<Integer, Date> retMap = new HashMap<Integer, Date>();
+        List<Object> params = new ArrayList<Object>();
+        StringBuilder sqlBuilder = new StringBuilder();
+        for (Integer vehicleID: vehicleEventData.getDates().keySet()){
+            java.sql.Date sqlDate = new java.sql.Date(vehicleEventData.getDates().get(vehicleID).getTime());
+            Integer deviceID = vehicleEventData.getDeviceIDs().get(vehicleID);
+            Integer evCode = vehicleEventData.getEventCodes().get(vehicleID);
+            Integer noteCode = vehicleEventData.getNoteCodes().get(vehicleID);
+            Vehicle vehicle = vehicleEventData.getVehicles().get(vehicleID);
+
+            sqlBuilder.append("SELECT max(time) last_date, vehicleID FROM noteXX a WHERE a.vehicleID = ? and TYPE = ? AND attrs LIKE '%NCODE%' AND time < ? group by vehicleID"
+                    .replace("XX", (deviceID%32 < 10 ? "0"+deviceID % 32 : ""+deviceID%32)).replace("NCODE", evCode.toString())).append("\n");
+            sqlBuilder.append(" UNION ");
+
+            params.add(vehicleID);
+            params.add(noteCode);
+            params.add(sqlDate);
+        }
+
+        sqlBuilder.delete(sqlBuilder.lastIndexOf("UNION"),sqlBuilder.length());
+
+        Connection conn = null;
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+        try {
+            conn = getConnection();
+            statement = (PreparedStatement) conn.prepareStatement(sqlBuilder.toString());
+
+            int i = 1;
+            for (Object param: params){
+                if (param instanceof Integer){
+                    statement.setInt(i, (Integer)param);
+                }else if (param instanceof java.sql.Date){
+                    statement.setDate(i, (java.sql.Date)param);
+                }
+                i++;
+            }
+
+            resultSet = statement.executeQuery();
+
+            while (resultSet.next()) {
+                retMap.put(resultSet.getInt("vehicleID"), resultSet.getDate("last_date"));
+            }
+        } catch (SQLException e) {
+            throw new ProDAOException(statement.toString(), e);
+        }
+        finally {
+            close(resultSet);
+            close(statement);
+            close(conn);
+        }
+
+        return retMap;
     }
 
     public Long getDriveTimeAtDate(Vehicle vehicle, Integer nType, Integer eventCode, Date evDate) {
