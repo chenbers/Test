@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.inthinc.pro.model.Vehicle;
+import com.inthinc.pro.model.event.VehicleEventData;
 import org.joda.time.DateTime;
 import org.joda.time.Interval;
 import org.joda.time.LocalDate;
@@ -77,6 +78,11 @@ public class BaseDriveTimeUnitTest extends BasePerformanceUnitTest {
 
         @Override
         public Date getPrevEventDate(Vehicle vehicle, Integer nType, Integer eventCode, Date evDate, Integer deviceId) {
+            throw new NotImplementedException();
+        }
+
+        @Override
+        public Date getPrevEventDates(VehicleEventData vehicleEventData) {
             throw new NotImplementedException();
         }
 

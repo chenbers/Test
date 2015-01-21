@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 import com.inthinc.pro.model.Vehicle;
+import com.inthinc.pro.model.event.VehicleEventData;
 import org.apache.commons.lang.NotImplementedException;
 import org.joda.time.Interval;
 
@@ -43,6 +44,12 @@ public class MockDriveTimeDAO implements DriveTimeDAO {
     public Date getPrevEventDate(Vehicle vehicle, Integer nType, Integer eventCode, Date evDate, Integer deviceId) {
         throw new NotImplementedException();
     }
+
+    @Override
+    public Date getPrevEventDates(VehicleEventData vehicleEventData) {
+        throw new NotImplementedException();
+    }
+
     @Override
     public Long getDriveTimeAtDate(Vehicle vehicle, Integer nType, Integer eventCode, Date evDate) {
         throw new NotImplementedException();

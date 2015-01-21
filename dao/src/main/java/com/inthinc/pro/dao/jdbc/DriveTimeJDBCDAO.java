@@ -7,8 +7,11 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import com.inthinc.pro.model.event.VehicleEventData;
 import org.joda.time.DateMidnight;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
@@ -150,6 +153,12 @@ public class DriveTimeJDBCDAO extends GenericJDBCDAO implements DriveTimeDAO {
         } // end finally
 
         return prevEventDate;
+    }
+
+    @Override
+    public Date getPrevEventDates(VehicleEventData vehicleEventData) {
+        Map<Integer, java.sql.Date> sqlEventDates = new HashMap<Integer, java.sql.Date>(vehicleEventData.getDates().size());
+        for (Map.Entry<Integer, Date> )
     }
 
     public Long getDriveTimeAtDate(Vehicle vehicle, Integer nType, Integer eventCode, Date evDate) {

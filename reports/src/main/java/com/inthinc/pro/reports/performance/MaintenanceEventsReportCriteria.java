@@ -188,6 +188,73 @@ public class MaintenanceEventsReportCriteria extends ReportCriteria {
             }
 
             Map<Integer, VehicleSetting> vehiclesWithEventsSettings = getVehiclesWithEventsSettings(vehicleIDForVehiclesWithEvents);
+            VehicleEventData vehicleEventData = new VehicleEventData();
+
+            for (Vehicle vehicle: vehiclesWithEvents){
+                List<Event> eventList = foundEvents.get(vehicle.getVehicleID());
+                if (eventList != null) {
+                    for (Event event : eventList){
+                        int noteCod = event.getType().getCode();
+                        int evCode = 0;
+                        Integer groupId=vehicle.getGroupID();
+                        Group group = groupDAO.findByID(groupId);
+                        String groupName = group.getName();
+                        String vehicleID=event.getVehicleID().toString();
+                        String vehicleYMM=vehicle.getYear() + " " + vehicle.getMake() + " " + vehicle.getModel();
+                        String maintenanceEvent=event.getEventType().toString();
+                        Date date=event.getTime();
+
+                        MaintenanceSettings maintenanceSettings = null;
+                        if(event instanceof MaintenanceEvent && ((MaintenanceEvent)event).getOilPresure() != null){
+                            maintenanceSettings = MaintenanceSettings.SET_OIL_PRESSURE;
+                            evCode = EventAttr.ATTR_OIL_PRESSURE.getCode();
+                        }else if (event instanceof MaintenanceEvent && ((MaintenanceEvent)event).getBatteryVoltage() != null){
+                            maintenanceSettings = MaintenanceSettings.SET_BATT_VOLTAGE;
+                            evCode = EventAttr.ATTR_BATTERY_VOLTAGE.getCode();
+                        }else if (event instanceof MaintenanceEvent && ((MaintenanceEvent)event).getEngineTemp() != null){
+                            maintenanceSettings = MaintenanceSettings.SET_ENGINE_TEMP;
+                            evCode = EventAttr.ATTR_ENGINE_TEMP.getCode();
+                        }else if(event instanceof MaintenanceEvent && ((MaintenanceEvent)event).getTransmissionTemp() != null){
+                            maintenanceSettings = MaintenanceSettings.SET_TRANS_TEMP;
+                            evCode = EventAttr.ATTR_TRANSMISSION_TEMP.getCode();
+                        }else if(event instanceof MaintenanceEvent && ((MaintenanceEvent)event).getDpfFlowRate() != null){
+                            maintenanceSettings = MaintenanceSettings.DPF_FLOW_RATE;
+                            evCode = EventAttr.ATTR_DPF_FLOW_RATE.getCode();
+                        }
+                        else if(event instanceof IgnitionOffMaintenanceEvent && ((IgnitionOffMaintenanceEvent)event).getMalfunctionIndicatorLamp() != null){
+                            evCode = EventAttr.ATTR_MALFUNCTION_INDICATOR_LAMP.getCode();
+                        }
+                        else if(event instanceof IgnitionOffMaintenanceEvent && ((IgnitionOffMaintenanceEvent)event).getCheckEngine() != null){
+                            evCode = EventAttr.ATTR_CHECK_ENGINE.getCode();
+                        }
+                        else if(event instanceof MaintenanceEvent && ((MaintenanceEvent)event).getEngineHours() != null){
+                            evCode = EventAttr.ENGINE_HOURS_X100.getCode();
+                        }
+                        else if(event instanceof MaintenanceEvent && ((MaintenanceEvent)event).getOdometer() != null){
+                            maintenanceSettings=null;
+                            evCode = EventAttr.ODOMETER.getCode();
+                        }
+
+                        String value = null;
+                        String actual = null;
+                        if(maintenanceSettings != null) {
+                            value = ((MaintenanceEvent) event).getValue();
+                            actual = vehiclesWithEventsSettings.get(stringToInt(vehicleID)).getActual().get(maintenanceSettings.getCode());
+                        }else{
+                            value = "-";
+                            actual = "-";
+                        }
+
+                        vehicleEventData.putVehicle(vehicle.getVehicleID(), vehicle);
+                        vehicleEventData.putNoteCode(vehicle.getVehicleID(), noteCod);
+                        vehicleEventData.putEventCode(vehicle.getVehicleID(), evCode);
+                        vehicleEventData.putDate(vehicle.getVehicleID(), date);
+                        vehicleEventData.putDeviceID(vehicle.getVehicleID(), event.getDeviceID());
+                    }
+                }
+            }
+
+            Map<Integer, Date> prevEventDateMap = getPrevEventDateMap(vehicleEventData);
 
             List<BackingWrapper> backingWrappers = new ArrayList<BackingWrapper>();
             for (Vehicle vehicle: vehiclesWithEvents){
@@ -307,6 +374,16 @@ public class MaintenanceEventsReportCriteria extends ReportCriteria {
          */
         private Map<Integer, VehicleSetting> getVehiclesWithEventsSettings(List<Integer> vehicleIDs){
             return configuratorJDBCDAO.getVehicleSettingsForAll(vehicleIDs);
+        }
+
+        /**
+         * Batch gets all the previous events for vehicle event data.
+         *
+         * @param vehicleEventData vehicle event data
+         * @return all prev events
+         */
+        private Map<Integer, Date> getPrevEventDateMap(VehicleEventData vehicleEventData) {
+            return driveTimeDAO.getPrevEventDates(vehicleEventData);
         }
     }
 
