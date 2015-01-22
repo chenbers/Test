@@ -250,6 +250,11 @@ public class MaintenanceEventsReportCriteria extends ReportCriteria {
                         vehicleEventData.putEventCode(vehicle.getVehicleID(), evCode);
                         vehicleEventData.putDate(vehicle.getVehicleID(), date);
                         vehicleEventData.putDeviceID(vehicle.getVehicleID(), event.getDeviceID());
+                        vehicleEventData.putVehicleYmm(vehicle.getVehicleID(), vehicleYMM);
+                        vehicleEventData.putMaintenanceEvent(vehicle.getVehicleID(), maintenanceEvent);
+                        vehicleEventData.putValue(vehicle.getVehicleID(), value);
+                        vehicleEventData.putActual(vehicle.getVehicleID(), actual);
+                        vehicleEventData.putGroupName(vehicle.getVehicleID(), groupName);
                     }
                 }
             }
@@ -270,86 +275,41 @@ public class MaintenanceEventsReportCriteria extends ReportCriteria {
             vehicleEventData.setEngineHoursAtLastDates(engineHoursAtLastDates);
 
             List<BackingWrapper> backingWrappers = new ArrayList<BackingWrapper>();
-            for (Vehicle vehicle: vehiclesWithEvents){
-                List<Event> eventList = foundEvents.get(vehicle.getVehicleID());
-                if (eventList != null) {
-                    for (Event event : eventList){
+            for (Integer vehicleID: vehicleEventData.getVehicles().keySet()){
+                String actual = vehicleEventData.getActuals().get(vehicleID);
+                Date date = vehicleEventData.getDates().get(vehicleID);
+                Integer deviceID = vehicleEventData.getDeviceIDs().get(vehicleID);
+                String driveOdometer = vehicleEventData.getDriveOdometers().get(vehicleID);
+                String engineHourAtDate = vehicleEventData.getEngineHoursAtDates().get(vehicleID);
+                String engineHourAtLastDate = vehicleEventData.getEngineHoursAtLastDates().get(vehicleID);
+                Integer eventCode = vehicleEventData.getEventCodes().get(vehicleID);
+                String groupName = vehicleEventData.getGroupNames().get(vehicleID);
+                String maintenanceEvent = vehicleEventData.getMaintenanceEvents().get(vehicleID);
+                Integer noteCode = vehicleEventData.getNoteCodes().get(vehicleID);
+                String odometerLastEvent = vehicleEventData.getOdometersLastEvent().get(vehicleID);
+                Date prevEventDate = vehicleEventData.getPrevEventDates().get(vehicleID);
+                String value = vehicleEventData.getValues().get(vehicleID);
+                Vehicle vehicle = vehicleEventData.getVehicles().get(vehicleID);
+                String vehicleYms = vehicleEventData.getVehicleYmms().get(vehicleID);
 
-                        int noteCod = event.getType().getCode();
-                        int evCode = 0;
-                        Integer groupId=vehicle.getGroupID();
-                        Group group = groupDAO.findByID(groupId);
-                        String groupName = group.getName();
-                        String vehicleID=event.getVehicleID().toString();
-                        String vehicleYMM=vehicle.getYear() + " " + vehicle.getMake() + " " + vehicle.getModel();
-                        String maintenanceEvent=event.getEventType().toString();
-                        Date date=event.getTime();
+                if (prevEventDate == null)
+                    prevEventDate = date;
 
-                        MaintenanceSettings maintenanceSettings = null;
-                        if(event instanceof MaintenanceEvent && ((MaintenanceEvent)event).getOilPresure() != null){
-                            maintenanceSettings = MaintenanceSettings.SET_OIL_PRESSURE;
-                            evCode = EventAttr.ATTR_OIL_PRESSURE.getCode();
-                        }else if (event instanceof MaintenanceEvent && ((MaintenanceEvent)event).getBatteryVoltage() != null){
-                            maintenanceSettings = MaintenanceSettings.SET_BATT_VOLTAGE;
-                            evCode = EventAttr.ATTR_BATTERY_VOLTAGE.getCode();
-                        }else if (event instanceof MaintenanceEvent && ((MaintenanceEvent)event).getEngineTemp() != null){
-                            maintenanceSettings = MaintenanceSettings.SET_ENGINE_TEMP;
-                            evCode = EventAttr.ATTR_ENGINE_TEMP.getCode();
-                        }else if(event instanceof MaintenanceEvent && ((MaintenanceEvent)event).getTransmissionTemp() != null){
-                            maintenanceSettings = MaintenanceSettings.SET_TRANS_TEMP;
-                            evCode = EventAttr.ATTR_TRANSMISSION_TEMP.getCode();
-                        }else if(event instanceof MaintenanceEvent && ((MaintenanceEvent)event).getDpfFlowRate() != null){
-                            maintenanceSettings = MaintenanceSettings.DPF_FLOW_RATE;
-                            evCode = EventAttr.ATTR_DPF_FLOW_RATE.getCode();
-                        }
-                        else if(event instanceof IgnitionOffMaintenanceEvent && ((IgnitionOffMaintenanceEvent)event).getMalfunctionIndicatorLamp() != null){
-                            evCode = EventAttr.ATTR_MALFUNCTION_INDICATOR_LAMP.getCode();
-                        }
-                        else if(event instanceof IgnitionOffMaintenanceEvent && ((IgnitionOffMaintenanceEvent)event).getCheckEngine() != null){
-                            evCode = EventAttr.ATTR_CHECK_ENGINE.getCode();
-                        }
-                        else if(event instanceof MaintenanceEvent && ((MaintenanceEvent)event).getEngineHours() != null){
-                            evCode = EventAttr.ENGINE_HOURS_X100.getCode();
-                        }
-                        else if(event instanceof MaintenanceEvent && ((MaintenanceEvent)event).getOdometer() != null){
-                            maintenanceSettings=null;
-                            evCode = EventAttr.ODOMETER.getCode();
-                        }
-
-                        String value = null;
-                        String actual = null;
-                        if(maintenanceSettings != null) {
-                            value = ((MaintenanceEvent) event).getValue();
-                            actual = vehiclesWithEventsSettings.get(stringToInt(vehicleID)).getActual().get(maintenanceSettings.getCode());
-                        }else{
-                            value = "-";
-                            actual = "-";
-                        }
-                        //take previous threshold same type
-                        Date prevEventDate = driveTimeDAO.getPrevEventDate(vehicle, noteCod, evCode, date, event.getDeviceID());
-
-                        //calculate odometer values
-                        String odometer = (driveTimeDAO.getDriveOdometerAtDate(vehicle, date) / 100) + "";
-                        String odometerLastEvent = (driveTimeDAO.getDriveOdometerAtDate(vehicle, prevEventDate) / 100) + "";
-                        String distanceSince;
-                        try{
-                            distanceSince = stringToInt(odometer) - stringToInt(odometerLastEvent) + "";
-                        } catch(NumberFormatException e) {
-                            distanceSince = "N/A";
-                        }
-
-                        //calculate engine hours
-                        String engineHours = driveTimeDAO.getEngineHoursAtDate(vehicle,date) / 3600 + "";
-                        String engineHoursLastEvent = driveTimeDAO.getEngineHoursAtDate(vehicle, prevEventDate) / 3600 + "";
-                        String hoursSince=stringToInt(engineHours) - stringToInt(engineHoursLastEvent) + "";
-                        vehicleID=vehicle.getName();
-                        BackingWrapper backingWrapper = new BackingWrapper(vehicleID, vehicleYMM, maintenanceEvent, date, value, actual,
-                                odometer, distanceSince, engineHours, hoursSince, groupName);
-
-                        // Filter non-maintenance events
-                        if(evCode > 0) backingWrappers.add(backingWrapper);
-                    }
+                String distanceSince;
+                try{
+                    distanceSince = stringToInt(driveOdometer) - stringToInt(odometerLastEvent) + "";
+                } catch(NumberFormatException e) {
+                    distanceSince = "N/A";
                 }
+
+                String hoursSince = stringToInt(engineHourAtDate) - stringToInt(engineHourAtLastDate) + "";
+
+                BackingWrapper backingWrapper = new BackingWrapper(vehicleID.toString(), vehicleYms, maintenanceEvent, date, value, actual,
+                        driveOdometer, distanceSince, engineHourAtDate, hoursSince, groupName);
+
+                // Filter non-maintenance events
+                if(eventCode > 0)
+                    backingWrappers.add(backingWrapper);
             }
 
             MaintenanceEventsReportCriteria criteria = new MaintenanceEventsReportCriteria(this.locale);

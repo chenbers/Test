@@ -178,7 +178,7 @@ public class DriveTimeJDBCDAO extends GenericJDBCDAO implements DriveTimeDAO {
         Map<Integer, String> retMap = new HashMap<Integer, String>();
         List<Object> params = new ArrayList<Object>();
         StringBuilder sqlBuilder = new StringBuilder();
-        for (Integer vehicleID: vehicleEventData.getPrevEventDates().keySet()){
+        for (Integer vehicleID: vehicleEventData.getDates().keySet()){
             java.sql.Date sqlDate = vehicleEventData.getPrevEventDates().get(vehicleID)!=null?new java.sql.Date(vehicleEventData.getPrevEventDates().get(vehicleID).getTime()):new java.sql.Date(vehicleEventData.getDates().get(vehicleID).getTime());
             Integer deviceID = vehicleEventData.getDeviceIDs().get(vehicleID);
             Integer evCode = vehicleEventData.getEventCodes().get(vehicleID);
@@ -291,7 +291,7 @@ public class DriveTimeJDBCDAO extends GenericJDBCDAO implements DriveTimeDAO {
         Map<Integer, String> retMap = new HashMap<Integer, String>();
         List<Object> params = new ArrayList<Object>();
         StringBuilder sqlBuilder = new StringBuilder();
-        for (Integer vehicleID: vehicleEventData.getPrevEventDates().keySet()){
+        for (Integer vehicleID: vehicleEventData.getDates().keySet()){
             java.sql.Date sqlDate = vehicleEventData.getPrevEventDates().get(vehicleID)!=null?new java.sql.Date(vehicleEventData.getPrevEventDates().get(vehicleID).getTime()):new java.sql.Date(vehicleEventData.getDates().get(vehicleID).getTime());
             Integer deviceID = vehicleEventData.getDeviceIDs().get(vehicleID);
             Integer evCode = vehicleEventData.getEventCodes().get(vehicleID);
