@@ -12,6 +12,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.TimeZone;
 
+import com.inthinc.pro.reports.hos.model.WthHosViolationsSummary;
 import org.joda.time.DateMidnight;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
@@ -52,6 +53,16 @@ public class ViolationsReportCriteriaTest extends BaseUnitTest {
                     new HosViolationsSummary("HOS->Temporary Drivers", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10, 0.0d, 0.0d), },
             { new HosViolationsSummary("Norman Wells->Norman Wells - WS", 0, 0, 0, 4, 1, 0, 0, 0, 0, 3, 1, 0, 7, 26700.0d, 100.0d),
                     new HosViolationsSummary("Norman Wells->REW", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 15200.0d, 0.0d), } };
+    WthHosViolationsSummary wthHosViolationsExpectedData[][] = {
+            { new WthHosViolationsSummary("HOS", 32, 0, 0, 0, 0, 306500.0d, 0.0d),
+                    new WthHosViolationsSummary("HOS->Open Hole", 7, 0, 0, 0, 0, 531200.0d, 5300.0d),
+                    new WthHosViolationsSummary("HOS->Cased Hole", 54, 0, 0, 0, 0, 1296500.0d, 21000.0d), // Note: this is off by 1 mile on the zero miles from what gain reports, but it matches the hos zero miles report
+                    new WthHosViolationsSummary("HOS->Slickline", 6, 0, 0, 0, 0, 133900.0d, 0.0d),
+                    new WthHosViolationsSummary("HOS->Tech", 5, 0, 0, 0, 0, 0.0d, 0.0d),
+                    new WthHosViolationsSummary("HOS->Gun Loader", 8, 0, 0, 0, 0, 0.0d, 0.0d),
+                    new WthHosViolationsSummary("HOS->Temporary Drivers", 10, 0, 0, 0, 0, 0.0d, 0.0d), },
+            { new WthHosViolationsSummary("Norman Wells->Norman Wells - WS", 0, 0, 0, 0, 0, 26700.0d, 100.0d),
+                    new WthHosViolationsSummary("Norman Wells->REW", 0, 0, 0, 0, 0, 15200.0d, 0.0d), } };
     NonDOTViolationsSummary nonDOTViolationsExpectedData[][] = {
             { new NonDOTViolationsSummary("HOS", 51, 2), new NonDOTViolationsSummary("HOS->Open Hole", 7, 0), new NonDOTViolationsSummary("HOS->Cased Hole", 55, 0),
                     new NonDOTViolationsSummary("HOS->Slickline", 6, 0), new NonDOTViolationsSummary("HOS->Tech", 5, 0), new NonDOTViolationsSummary("HOS->Gun Loader", 8, 0),
@@ -342,6 +353,33 @@ public class ViolationsReportCriteriaTest extends BaseUnitTest {
                 assertEquals(testCaseName[testCaseCnt] + " NonDOTDriverCount " + eCnt, expected.getNonDOTDriverCount(), s.getNonDOTDriverCount());
                 assertEquals(testCaseName[testCaseCnt] + " OnDuty16HrCount " + eCnt, expected.getOnDuty16HrCount(), s.getOnDuty16HrCount());
             }
+        }
+    }
+
+    @Test
+    public void wthGainSummmaryTestCases() {
+        for (int testCaseCnt = 0; testCaseCnt < testCaseName.length; testCaseCnt++) {
+            HosRecordDataSet violationsTestData = new HosRecordDataSet(DATA_PATH, testCaseName[testCaseCnt], true);
+            WthHosViolationsSummaryReportCriteria criteria = new WthHosViolationsSummaryReportCriteria(Locale.US);
+            criteria.setReportDate(new Date(), TimeZone.getTimeZone("UTC"));
+            criteria.initDataSet(violationsTestData.interval, violationsTestData.getGroupHierarchy(),
+                    violationsTestData.getGroupHierarchy().getGroupList(), violationsTestData.driverHOSRecordMap,
+                    violationsTestData.groupMileageList, violationsTestData.groupNoDriverMileageList);
+            List<WthHosViolationsSummary> dataList = criteria.getMainDataset();
+            assertEquals(testCaseName[testCaseCnt] + " number of records", hosViolationsExpectedData[testCaseCnt].length, dataList.size());
+            int eCnt = 0;
+            for (WthHosViolationsSummary s : dataList) {
+                WthHosViolationsSummary expected = wthHosViolationsExpectedData[testCaseCnt][eCnt++];
+                assertEquals(testCaseName[testCaseCnt] + " 11 h " + eCnt, expected.getHourDriving11(), s.getHourDriving11());
+                assertEquals(testCaseName[testCaseCnt] + " 14 h " + eCnt, expected.getOnDutyHours14(), s.getOnDutyHours14());
+                assertEquals(testCaseName[testCaseCnt] + " 70 h " + eCnt, expected.getOnDutyHours70(), s.getOnDutyHours70());
+                assertEquals(testCaseName[testCaseCnt] + " 30 min " + eCnt, expected.getThirtyMinuteBreak(), s.getThirtyMinuteBreak());
+                assertEquals(testCaseName[testCaseCnt] + " DriverCnt " + eCnt, expected.getDriverCnt(), s.getDriverCnt());
+                assertEquals(testCaseName[testCaseCnt] + " TotalMiles " + eCnt, expected.getTotalMiles(), s.getTotalMiles());
+                assertEquals(testCaseName[testCaseCnt] + " TotalMilesNoDriver " + eCnt, expected.getTotalMilesNoDriver(), s.getTotalMilesNoDriver());
+            }
+            dump("wthHosViolationsSummaryTest", testCaseCnt + 1, criteria, FormatType.PDF);
+            dump("wthHosViolationsSummaryTest", testCaseCnt + 1, criteria, FormatType.EXCEL);
         }
     }
 
