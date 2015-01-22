@@ -260,6 +260,15 @@ public class MaintenanceEventsReportCriteria extends ReportCriteria {
             Map<Integer, String> driveOdometers = getDriveOdometerMap(vehicleEventData);
             vehicleEventData.setDriveOdometers(driveOdometers);
 
+            Map<Integer, String> odometersLastEventMap = getOdometersLastEventMap(vehicleEventData);
+            vehicleEventData.setOdometersLastEvent(odometersLastEventMap);
+
+            Map<Integer, String> engineHoursAtDates = getEngineHoursAtDatesMap(vehicleEventData);
+            vehicleEventData.setEngineHoursAtDates(engineHoursAtDates);
+
+            Map<Integer, String> engineHoursAtLastDates = getEngineHoursAtLastDatesMap(vehicleEventData);
+            vehicleEventData.setEngineHoursAtLastDates(engineHoursAtLastDates);
+
             List<BackingWrapper> backingWrappers = new ArrayList<BackingWrapper>();
             for (Vehicle vehicle: vehiclesWithEvents){
                 List<Event> eventList = foundEvents.get(vehicle.getVehicleID());
@@ -398,6 +407,36 @@ public class MaintenanceEventsReportCriteria extends ReportCriteria {
          */
         private Map<Integer, String> getDriveOdometerMap(VehicleEventData vehicleEventData) {
             return driveTimeDAO.getDriveOdometersAtDates(vehicleEventData);
+        }
+
+        /**
+         * Batch gets all the previous odometers last events for vehicle event data.
+         *
+         * @param vehicleEventData vehicle event data
+         * @return all prev odometers last events
+         */
+        private Map<Integer, String> getOdometersLastEventMap(VehicleEventData vehicleEventData) {
+            return driveTimeDAO.getDriveOdometersAtLastDates(vehicleEventData);
+        }
+
+        /**
+         * Batch gets all the engine hours at dates for vehicle event data.
+         *
+         * @param vehicleEventData vehicle event data
+         * @return engine hours at dates
+         */
+        private Map<Integer, String> getEngineHoursAtDatesMap(VehicleEventData vehicleEventData) {
+            return driveTimeDAO.getEngineHoursAtDates(vehicleEventData);
+        }
+
+        /**
+         * Batch gets all the engine hours at last dates for vehicle event data.
+         *
+         * @param vehicleEventData vehicle event data
+         * @return engine hours at last dates
+         */
+        private Map<Integer, String> getEngineHoursAtLastDatesMap(VehicleEventData vehicleEventData) {
+            return driveTimeDAO.getEngineHoursAtLastDates(vehicleEventData);
         }
 
     }

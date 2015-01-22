@@ -173,6 +173,175 @@ public class DriveTimeJDBCDAO extends GenericJDBCDAO implements DriveTimeDAO {
         return retMap;
     }
 
+    @Override
+    public  Map<Integer, String> getDriveOdometersAtLastDates(VehicleEventData vehicleEventData) {
+        Map<Integer, String> retMap = new HashMap<Integer, String>();
+        List<Object> params = new ArrayList<Object>();
+        StringBuilder sqlBuilder = new StringBuilder();
+        for (Integer vehicleID: vehicleEventData.getPrevEventDates().keySet()){
+            java.sql.Date sqlDate = vehicleEventData.getPrevEventDates().get(vehicleID)!=null?new java.sql.Date(vehicleEventData.getPrevEventDates().get(vehicleID).getTime()):new java.sql.Date(vehicleEventData.getDates().get(vehicleID).getTime());
+            Integer deviceID = vehicleEventData.getDeviceIDs().get(vehicleID);
+            Integer evCode = vehicleEventData.getEventCodes().get(vehicleID);
+            Integer noteCode = vehicleEventData.getNoteCodes().get(vehicleID);
+            Vehicle vehicle = vehicleEventData.getVehicles().get(vehicleID);
+
+
+            sqlBuilder.append("select sum(a.odometer6) odiff, vehicleID from agg a where a.vehicleID = ? and a.aggDate <= ? group by vehicleID").append("\n");
+            sqlBuilder.append(" UNION ");
+
+            params.add(vehicleID);
+            params.add(sqlDate);
+        }
+
+        sqlBuilder.delete(sqlBuilder.lastIndexOf("UNION"),sqlBuilder.length());
+
+        Connection conn = null;
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+        try {
+            conn = getConnection();
+            statement = (PreparedStatement) conn.prepareStatement(sqlBuilder.toString());
+
+            int i = 1;
+            for (Object param: params){
+                if (param instanceof Integer){
+                    statement.setInt(i, (Integer)param);
+                }else if (param instanceof java.sql.Date){
+                    statement.setDate(i, (java.sql.Date)param);
+                }
+                i++;
+            }
+
+            resultSet = statement.executeQuery();
+
+            while (resultSet.next()) {
+                retMap.put(resultSet.getInt("vehicleID"), resultSet.getLong("odiff") / 100 + "");
+            }
+        } catch (SQLException e) {
+            throw new ProDAOException(statement.toString(), e);
+        }
+        finally {
+            close(resultSet);
+            close(statement);
+            close(conn);
+        }
+
+        return retMap;
+    }
+
+
+    @Override
+    public  Map<Integer, String> getEngineHoursAtDates(VehicleEventData vehicleEventData) {
+        Map<Integer, String> retMap = new HashMap<Integer, String>();
+        List<Object> params = new ArrayList<Object>();
+        StringBuilder sqlBuilder = new StringBuilder();
+        for (Integer vehicleID: vehicleEventData.getDates().keySet()){
+            java.sql.Date sqlDate = new java.sql.Date(vehicleEventData.getDates().get(vehicleID).getTime());
+            Integer deviceID = vehicleEventData.getDeviceIDs().get(vehicleID);
+            Integer evCode = vehicleEventData.getEventCodes().get(vehicleID);
+            Integer noteCode = vehicleEventData.getNoteCodes().get(vehicleID);
+            Vehicle vehicle = vehicleEventData.getVehicles().get(vehicleID);
+
+
+            sqlBuilder.append("select sum(a.driveTime) tdiff, vehicleID from agg a where a.vehicleID = ? and a.aggDate <= ? group by vehicleID").append("\n");
+            sqlBuilder.append(" UNION ");
+
+            params.add(vehicleID);
+            params.add(sqlDate);
+        }
+
+        sqlBuilder.delete(sqlBuilder.lastIndexOf("UNION"),sqlBuilder.length());
+
+        Connection conn = null;
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+        try {
+            conn = getConnection();
+            statement = (PreparedStatement) conn.prepareStatement(sqlBuilder.toString());
+
+            int i = 1;
+            for (Object param: params){
+                if (param instanceof Integer){
+                    statement.setInt(i, (Integer)param);
+                }else if (param instanceof java.sql.Date){
+                    statement.setDate(i, (java.sql.Date)param);
+                }
+                i++;
+            }
+
+            resultSet = statement.executeQuery();
+
+            while (resultSet.next()) {
+                retMap.put(resultSet.getInt("vehicleID"), resultSet.getLong("tdiff") / 3600 + "");
+            }
+        } catch (SQLException e) {
+            throw new ProDAOException(statement.toString(), e);
+        }
+        finally {
+            close(resultSet);
+            close(statement);
+            close(conn);
+        }
+
+        return retMap;
+    }
+
+    @Override
+    public  Map<Integer, String> getEngineHoursAtLastDates(VehicleEventData vehicleEventData) {
+        Map<Integer, String> retMap = new HashMap<Integer, String>();
+        List<Object> params = new ArrayList<Object>();
+        StringBuilder sqlBuilder = new StringBuilder();
+        for (Integer vehicleID: vehicleEventData.getPrevEventDates().keySet()){
+            java.sql.Date sqlDate = vehicleEventData.getPrevEventDates().get(vehicleID)!=null?new java.sql.Date(vehicleEventData.getPrevEventDates().get(vehicleID).getTime()):new java.sql.Date(vehicleEventData.getDates().get(vehicleID).getTime());
+            Integer deviceID = vehicleEventData.getDeviceIDs().get(vehicleID);
+            Integer evCode = vehicleEventData.getEventCodes().get(vehicleID);
+            Integer noteCode = vehicleEventData.getNoteCodes().get(vehicleID);
+            Vehicle vehicle = vehicleEventData.getVehicles().get(vehicleID);
+
+
+            sqlBuilder.append("select sum(a.driveTime) tdiff, vehicleID from agg a where a.vehicleID = ? and a.aggDate <= ? group by vehicleID").append("\n");
+            sqlBuilder.append(" UNION ");
+
+            params.add(vehicleID);
+            params.add(sqlDate);
+        }
+
+        sqlBuilder.delete(sqlBuilder.lastIndexOf("UNION"),sqlBuilder.length());
+
+        Connection conn = null;
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+        try {
+            conn = getConnection();
+            statement = (PreparedStatement) conn.prepareStatement(sqlBuilder.toString());
+
+            int i = 1;
+            for (Object param: params){
+                if (param instanceof Integer){
+                    statement.setInt(i, (Integer)param);
+                }else if (param instanceof java.sql.Date){
+                    statement.setDate(i, (java.sql.Date)param);
+                }
+                i++;
+            }
+
+            resultSet = statement.executeQuery();
+
+            while (resultSet.next()) {
+                retMap.put(resultSet.getInt("vehicleID"), resultSet.getLong("tdiff") / 3600 + "");
+            }
+        } catch (SQLException e) {
+            throw new ProDAOException(statement.toString(), e);
+        }
+        finally {
+            close(resultSet);
+            close(statement);
+            close(conn);
+        }
+
+        return retMap;
+    }
+
     public Date getPrevEventDate(Vehicle vehicle, Integer nType, Integer eventCode, Date evDate, Integer deviceId) {
         java.sql.Date sqlEvDate = new java.sql.Date(evDate.getTime());
 

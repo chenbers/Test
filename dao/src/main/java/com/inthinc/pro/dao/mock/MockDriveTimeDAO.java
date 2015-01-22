@@ -57,6 +57,21 @@ public class MockDriveTimeDAO implements DriveTimeDAO {
     }
 
     @Override
+    public Map<Integer, String> getDriveOdometersAtLastDates(VehicleEventData vehicleEventData) {
+        throw new NotImplementedException();
+    }
+
+    @Override
+    public Map<Integer, String> getEngineHoursAtDates(VehicleEventData vehicleEventData) {
+        throw new NotImplementedException();
+    }
+
+    @Override
+    public Map<Integer, String> getEngineHoursAtLastDates(VehicleEventData vehicleEventData) {
+        throw new NotImplementedException();
+    }
+
+    @Override
     public Long getDriveTimeAtDate(Vehicle vehicle, Integer nType, Integer eventCode, Date evDate) {
         throw new NotImplementedException();
     }
