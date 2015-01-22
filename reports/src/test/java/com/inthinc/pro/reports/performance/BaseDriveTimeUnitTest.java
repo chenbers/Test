@@ -87,6 +87,11 @@ public class BaseDriveTimeUnitTest extends BasePerformanceUnitTest {
         }
 
         @Override
+        public Map<Integer, String> getDriveOdometersAtDates(VehicleEventData vehicleEventData) {
+            throw new NotImplementedException();
+        }
+
+        @Override
         public List<DriveTimeRecord> getDriveTimeRecordListForGroup(Integer groupID, Interval queryInterval) {
             List<DriveTimeRecord> list = new ArrayList<DriveTimeRecord>();
             LocalDate localDate = new LocalDate(interval.getStart());

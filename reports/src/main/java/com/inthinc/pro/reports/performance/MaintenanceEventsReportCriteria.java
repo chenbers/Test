@@ -254,7 +254,11 @@ public class MaintenanceEventsReportCriteria extends ReportCriteria {
                 }
             }
 
-            Map<Integer, Date> prevEventVehicleData = getPrevEventDateMap(vehicleEventData);
+            Map<Integer, Date> prevEventVehicleDate= getPrevEventDateMap(vehicleEventData);
+            vehicleEventData.setPrevEventDates(prevEventVehicleDate);
+
+            Map<Integer, String> driveOdometers = getDriveOdometerMap(vehicleEventData);
+            vehicleEventData.setDriveOdometers(driveOdometers);
 
             List<BackingWrapper> backingWrappers = new ArrayList<BackingWrapper>();
             for (Vehicle vehicle: vehiclesWithEvents){
@@ -377,14 +381,25 @@ public class MaintenanceEventsReportCriteria extends ReportCriteria {
         }
 
         /**
-         * Batch gets all the previous events for vehicle event data.
+         * Batch gets all the previous event dates for vehicle event data.
          *
          * @param vehicleEventData vehicle event data
-         * @return all prev events
+         * @return all prev event dates
          */
         private Map<Integer, Date> getPrevEventDateMap(VehicleEventData vehicleEventData) {
             return driveTimeDAO.getPrevEventDates(vehicleEventData);
         }
+
+        /**
+         * Batch gets all the previous odometers for vehicle event data.
+         *
+         * @param vehicleEventData vehicle event data
+         * @return all prev odometers
+         */
+        private Map<Integer, String> getDriveOdometerMap(VehicleEventData vehicleEventData) {
+            return driveTimeDAO.getDriveOdometersAtDates(vehicleEventData);
+        }
+
     }
 
     /*

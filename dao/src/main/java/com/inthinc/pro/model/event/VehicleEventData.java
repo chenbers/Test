@@ -14,7 +14,10 @@ public class VehicleEventData {
     private Map<Integer, Integer> noteCodes = new HashMap<Integer, Integer>();
     private Map<Integer, Integer> eventCodes = new HashMap<Integer, Integer>();
     private Map<Integer, Date> dates = new HashMap<Integer, Date>();
+    private Map<Integer, Date> prevEventDates = new HashMap<Integer, Date>();
     private Map<Integer, Integer> deviceIDs = new HashMap<Integer, Integer>();
+    private Map<Integer, String> driveOdometers = new HashMap<Integer, String>();
+
 
     public void putVehicle(Integer vehicleID, Vehicle vehicle) {
         vehicles.put(vehicleID, vehicle);
@@ -74,5 +77,21 @@ public class VehicleEventData {
 
     public void setDeviceIDs(Map<Integer, Integer> deviceIDs) {
         this.deviceIDs = deviceIDs;
+    }
+
+    public Map<Integer, Date> getPrevEventDates() {
+        return prevEventDates;
+    }
+
+    public void setPrevEventDates(Map<Integer, Date> prevEventDates) {
+        this.prevEventDates = prevEventDates;
+    }
+
+    public Map<Integer, String> getDriveOdometers() {
+        return driveOdometers;
+    }
+
+    public void setDriveOdometers(Map<Integer, String> driveOdometers) {
+        this.driveOdometers = driveOdometers;
     }
 }
