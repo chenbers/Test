@@ -20,7 +20,31 @@ public class VehicleEventData {
     private Map<Integer, String> odometersLastEvent = new HashMap<Integer, String>();
     private Map<Integer, String> engineHoursAtDates = new HashMap<Integer, String>();
     private Map<Integer, String> engineHoursAtLastDates = new HashMap<Integer, String>();
+    private Map<Integer, String> vehicleYmms = new HashMap<Integer, String>();
+    private Map<Integer, String> maintenanceEvents = new HashMap<Integer, String>();
+    private Map<Integer, String> values = new HashMap<Integer, String>();
+    private Map<Integer, String> actuals = new HashMap<Integer, String>();
+    private Map<Integer, String> groupNames = new HashMap<Integer, String>();
 
+    public void putGroupName(Integer vehicleID, String groupName){
+        groupNames.put(vehicleID, groupName);
+    }
+
+    public void putValue(Integer vehicleID, String value) {
+        values.put(vehicleID, value);
+    }
+
+    public void putActual(Integer vehicleID, String actual) {
+        actuals.put(vehicleID, actual);
+    }
+
+    public void putVehicleYmm(Integer vehicleID, String vehicleYmm) {
+        vehicleYmms.put(vehicleID, vehicleYmm);
+    }
+
+    public void putMaintenanceEvent(Integer vehicleID, String maintenanceEvent) {
+        maintenanceEvents.put(vehicleID, maintenanceEvent);
+    }
 
     public void putVehicle(Integer vehicleID, Vehicle vehicle) {
         vehicles.put(vehicleID, vehicle);
@@ -120,5 +144,45 @@ public class VehicleEventData {
 
     public void setEngineHoursAtLastDates(Map<Integer, String> engineHoursAtLastDates) {
         this.engineHoursAtLastDates = engineHoursAtLastDates;
+    }
+
+    public Map<Integer, String> getVehicleYmms() {
+        return vehicleYmms;
+    }
+
+    public void setVehicleYmms(Map<Integer, String> vehicleYmms) {
+        this.vehicleYmms = vehicleYmms;
+    }
+
+    public Map<Integer, String> getMaintenanceEvents() {
+        return maintenanceEvents;
+    }
+
+    public void setMaintenanceEvents(Map<Integer, String> maintenanceEvents) {
+        this.maintenanceEvents = maintenanceEvents;
+    }
+
+    public Map<Integer, String> getValues() {
+        return values;
+    }
+
+    public void setValues(Map<Integer, String> values) {
+        this.values = values;
+    }
+
+    public Map<Integer, String> getActuals() {
+        return actuals;
+    }
+
+    public void setActuals(Map<Integer, String> actuals) {
+        this.actuals = actuals;
+    }
+
+    public Map<Integer, String> getGroupNames() {
+        return groupNames;
+    }
+
+    public void setGroupNames(Map<Integer, String> groupNames) {
+        this.groupNames = groupNames;
     }
 }
