@@ -17,6 +17,9 @@ public class VehicleEventData {
     private Map<Integer, Date> prevEventDates = new HashMap<Integer, Date>();
     private Map<Integer, Integer> deviceIDs = new HashMap<Integer, Integer>();
     private Map<Integer, String> driveOdometers = new HashMap<Integer, String>();
+    private Map<Integer, String> odometersLastEvent = new HashMap<Integer, String>();
+    private Map<Integer, String> engineHoursAtDates = new HashMap<Integer, String>();
+    private Map<Integer, String> engineHoursAtLastDates = new HashMap<Integer, String>();
 
 
     public void putVehicle(Integer vehicleID, Vehicle vehicle) {
@@ -93,5 +96,29 @@ public class VehicleEventData {
 
     public void setDriveOdometers(Map<Integer, String> driveOdometers) {
         this.driveOdometers = driveOdometers;
+    }
+
+    public Map<Integer, String> getOdometersLastEvent() {
+        return odometersLastEvent;
+    }
+
+    public void setOdometersLastEvent(Map<Integer, String> odometersLastEvent) {
+        this.odometersLastEvent = odometersLastEvent;
+    }
+
+    public Map<Integer, String> getEngineHoursAtDates() {
+        return engineHoursAtDates;
+    }
+
+    public void setEngineHoursAtDates(Map<Integer, String> engineHoursAtDates) {
+        this.engineHoursAtDates = engineHoursAtDates;
+    }
+
+    public Map<Integer, String> getEngineHoursAtLastDates() {
+        return engineHoursAtLastDates;
+    }
+
+    public void setEngineHoursAtLastDates(Map<Integer, String> engineHoursAtLastDates) {
+        this.engineHoursAtLastDates = engineHoursAtLastDates;
     }
 }
