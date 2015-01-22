@@ -291,6 +291,7 @@ public class MaintenanceEventsReportCriteria extends ReportCriteria {
                 String value = vehicleEventData.getValues().get(vehicleID);
                 Vehicle vehicle = vehicleEventData.getVehicles().get(vehicleID);
                 String vehicleYms = vehicleEventData.getVehicleYmms().get(vehicleID);
+                String vehicleName = vehicle.getName();
 
                 if (prevEventDate == null)
                     prevEventDate = date;
@@ -304,7 +305,7 @@ public class MaintenanceEventsReportCriteria extends ReportCriteria {
 
                 String hoursSince = stringToInt(engineHourAtDate) - stringToInt(engineHourAtLastDate) + "";
 
-                BackingWrapper backingWrapper = new BackingWrapper(vehicleID.toString(), vehicleYms, maintenanceEvent, date, value, actual,
+                BackingWrapper backingWrapper = new BackingWrapper(vehicleName, vehicleYms, maintenanceEvent, date, value, actual,
                         driveOdometer, distanceSince, engineHourAtDate, hoursSince, groupName);
 
                 // Filter non-maintenance events
