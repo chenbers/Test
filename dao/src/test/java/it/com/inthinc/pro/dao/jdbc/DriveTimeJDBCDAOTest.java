@@ -1,6 +1,10 @@
 package it.com.inthinc.pro.dao.jdbc;
 
 import static org.junit.Assert.*;
+
+import com.inthinc.pro.model.Device;
+import com.inthinc.pro.model.event.EventAttr;
+import com.inthinc.pro.model.event.VehicleEventData;
 import it.com.inthinc.pro.dao.model.GroupData;
 import it.com.inthinc.pro.dao.model.ITData;
 import it.config.ITDataSource;
@@ -8,7 +12,10 @@ import it.config.IntegrationConfig;
 import it.config.ReportTestConst;
 
 import java.io.InputStream;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.TimeZone;
 
 import org.joda.time.DateMidnight;
@@ -63,7 +70,7 @@ public class DriveTimeJDBCDAOTest extends BaseJDBCTest {
         if (!itData.parseTestData(stream, siloService, false, false)) {
             throw new Exception("Error parsing Test data xml file");
         }
-        
+
 //        TimeZone timeZone = TimeZone.getTimeZone(ReportTestConst.TIMEZONE_STR);
 //        DateTimeZone dateTimeZone = DateTimeZone.forTimeZone(timeZone);
 //        Integer todayInSec = DateUtil.getDaysBackDate(DateUtil.getTodaysDate(), 0, ReportTestConst.TIMEZONE_STR);
@@ -184,5 +191,180 @@ public class DriveTimeJDBCDAOTest extends BaseJDBCTest {
         Long getOdometerSum = driveTimeDAO.getDriveOdometerSum(testVehicle);
         assertNotNull("record not null",getOdometerSum);
         assertEquals("record count", Long.valueOf("237600"), getOdometerSum);
+    }
+
+    @Test
+    public void testDriveOdometerAtDates(){
+        DriveTimeDAO driveTimeDAO = new DriveTimeJDBCDAO();
+        ((DriveTimeJDBCDAO)driveTimeDAO).setDataSource(new ITDataSource().getRealDataSource());
+        GroupData testGroupData1 = itData.teamGroupData.get(0);
+        GroupData testGroupData2 = itData.teamGroupData.get(1);
+        Vehicle testVehicle1 = testGroupData1.vehicle;
+        Vehicle testVehicle2 = testGroupData2.vehicle;
+        Device testDevice1 = testGroupData1.device;
+        Device testDevice2 = testGroupData2.device;
+
+        VehicleEventData vehicleEventData = new VehicleEventData();
+        vehicleEventData.putDate(testVehicle1.getVehicleID(), new Date());
+        vehicleEventData.putDate(testVehicle2.getVehicleID(), new Date());
+
+        vehicleEventData.putDeviceID(testVehicle1.getVehicleID(), testDevice1.getDeviceID());
+        vehicleEventData.putDeviceID(testVehicle2.getVehicleID(), testDevice2.getDeviceID());
+
+        vehicleEventData.putEventCode(testVehicle1.getVehicleID(), EventAttr.ATTR_BATTERY_VOLTAGE.getCode());
+        vehicleEventData.putEventCode(testVehicle2.getVehicleID(), EventAttr.ATTR_BATTERY_VOLTAGE.getCode());
+
+        vehicleEventData.putNoteCode(testVehicle1.getVehicleID(), 20);
+        vehicleEventData.putNoteCode(testVehicle2.getVehicleID(), 20);
+
+        vehicleEventData.putVehicle(testVehicle1.getVehicleID(), testVehicle1);
+        vehicleEventData.putVehicle(testVehicle2.getVehicleID(), testVehicle2);
+
+        Map<Integer, Date> data = driveTimeDAO.getPrevEventDates(vehicleEventData);
+        assertNotNull(data);
+    }
+
+    @Test
+    public void testGetPrevEventDates(){
+        DriveTimeDAO driveTimeDAO = new DriveTimeJDBCDAO();
+        ((DriveTimeJDBCDAO)driveTimeDAO).setDataSource(new ITDataSource().getRealDataSource());
+        GroupData testGroupData1 = itData.teamGroupData.get(0);
+        GroupData testGroupData2 = itData.teamGroupData.get(1);
+        Vehicle testVehicle1 = testGroupData1.vehicle;
+        Vehicle testVehicle2 = testGroupData2.vehicle;
+        Device testDevice1 = testGroupData1.device;
+        Device testDevice2 = testGroupData2.device;
+
+        VehicleEventData vehicleEventData = new VehicleEventData();
+        vehicleEventData.putDate(testVehicle1.getVehicleID(),new Date());
+        vehicleEventData.putDate(testVehicle2.getVehicleID(),new Date());
+
+        vehicleEventData.putDeviceID(testVehicle1.getVehicleID(),testDevice1.getDeviceID());
+        vehicleEventData.putDeviceID(testVehicle2.getVehicleID(), testDevice2.getDeviceID());
+
+        vehicleEventData.putEventCode(testVehicle1.getVehicleID(), EventAttr.ATTR_BATTERY_VOLTAGE.getCode());
+        vehicleEventData.putEventCode(testVehicle2.getVehicleID(), EventAttr.ATTR_BATTERY_VOLTAGE.getCode());
+
+        vehicleEventData.putNoteCode(testVehicle1.getVehicleID(), 20);
+        vehicleEventData.putNoteCode(testVehicle2.getVehicleID(), 20);
+
+        vehicleEventData.putVehicle(testVehicle1.getVehicleID(), testVehicle1);
+        vehicleEventData.putVehicle(testVehicle2.getVehicleID(), testVehicle2);
+
+        Map<Integer, Date> prevDates = new HashMap<Integer, Date>();
+        prevDates.put(testVehicle1.getVehicleID(), new Date());
+        prevDates.put(testVehicle2.getVehicleID(), new Date());
+        vehicleEventData.setPrevEventDates(prevDates);
+
+        Map<Integer, String> data = driveTimeDAO.getDriveOdometersAtDates(vehicleEventData);
+        assertNotNull(data);
+    }
+
+    @Test
+    public void testGetPrevEventLastDates(){
+        DriveTimeDAO driveTimeDAO = new DriveTimeJDBCDAO();
+        ((DriveTimeJDBCDAO)driveTimeDAO).setDataSource(new ITDataSource().getRealDataSource());
+        GroupData testGroupData1 = itData.teamGroupData.get(0);
+        GroupData testGroupData2 = itData.teamGroupData.get(1);
+        Vehicle testVehicle1 = testGroupData1.vehicle;
+        Vehicle testVehicle2 = testGroupData2.vehicle;
+        Device testDevice1 = testGroupData1.device;
+        Device testDevice2 = testGroupData2.device;
+
+        VehicleEventData vehicleEventData = new VehicleEventData();
+        vehicleEventData.putDate(testVehicle1.getVehicleID(),new Date());
+        vehicleEventData.putDate(testVehicle2.getVehicleID(),new Date());
+
+        vehicleEventData.putDeviceID(testVehicle1.getVehicleID(),testDevice1.getDeviceID());
+        vehicleEventData.putDeviceID(testVehicle2.getVehicleID(), testDevice2.getDeviceID());
+
+        vehicleEventData.putEventCode(testVehicle1.getVehicleID(), EventAttr.ATTR_BATTERY_VOLTAGE.getCode());
+        vehicleEventData.putEventCode(testVehicle2.getVehicleID(), EventAttr.ATTR_BATTERY_VOLTAGE.getCode());
+
+        vehicleEventData.putNoteCode(testVehicle1.getVehicleID(), 20);
+        vehicleEventData.putNoteCode(testVehicle2.getVehicleID(), 20);
+
+        vehicleEventData.putVehicle(testVehicle1.getVehicleID(), testVehicle1);
+        vehicleEventData.putVehicle(testVehicle2.getVehicleID(), testVehicle2);
+
+        Map<Integer, Date> prevDates = new HashMap<Integer, Date>();
+        prevDates.put(testVehicle1.getVehicleID(), new Date());
+        prevDates.put(testVehicle2.getVehicleID(), new Date());
+        vehicleEventData.setPrevEventDates(prevDates);
+
+        Map<Integer, String> data = driveTimeDAO.getDriveOdometersAtLastDates(vehicleEventData);
+        assertNotNull(data);
+    }
+
+    @Test
+    public void testGetEngineHoursAtDates(){
+        DriveTimeDAO driveTimeDAO = new DriveTimeJDBCDAO();
+        ((DriveTimeJDBCDAO)driveTimeDAO).setDataSource(new ITDataSource().getRealDataSource());
+        GroupData testGroupData1 = itData.teamGroupData.get(0);
+        GroupData testGroupData2 = itData.teamGroupData.get(1);
+        Vehicle testVehicle1 = testGroupData1.vehicle;
+        Vehicle testVehicle2 = testGroupData2.vehicle;
+        Device testDevice1 = testGroupData1.device;
+        Device testDevice2 = testGroupData2.device;
+
+        VehicleEventData vehicleEventData = new VehicleEventData();
+        vehicleEventData.putDate(testVehicle1.getVehicleID(),new Date());
+        vehicleEventData.putDate(testVehicle2.getVehicleID(),new Date());
+
+        vehicleEventData.putDeviceID(testVehicle1.getVehicleID(),testDevice1.getDeviceID());
+        vehicleEventData.putDeviceID(testVehicle2.getVehicleID(), testDevice2.getDeviceID());
+
+        vehicleEventData.putEventCode(testVehicle1.getVehicleID(), EventAttr.ATTR_BATTERY_VOLTAGE.getCode());
+        vehicleEventData.putEventCode(testVehicle2.getVehicleID(), EventAttr.ATTR_BATTERY_VOLTAGE.getCode());
+
+        vehicleEventData.putNoteCode(testVehicle1.getVehicleID(), 20);
+        vehicleEventData.putNoteCode(testVehicle2.getVehicleID(), 20);
+
+        vehicleEventData.putVehicle(testVehicle1.getVehicleID(), testVehicle1);
+        vehicleEventData.putVehicle(testVehicle2.getVehicleID(), testVehicle2);
+
+        Map<Integer, Date> prevDates = new HashMap<Integer, Date>();
+        prevDates.put(testVehicle1.getVehicleID(), new Date());
+        prevDates.put(testVehicle2.getVehicleID(), new Date());
+        vehicleEventData.setPrevEventDates(prevDates);
+
+        Map<Integer, String> data = driveTimeDAO.getEngineHoursAtDates(vehicleEventData);
+        assertNotNull(data);
+    }
+
+    @Test
+    public void testGetEngineHoursAtLastDates(){
+        DriveTimeDAO driveTimeDAO = new DriveTimeJDBCDAO();
+        ((DriveTimeJDBCDAO)driveTimeDAO).setDataSource(new ITDataSource().getRealDataSource());
+        GroupData testGroupData1 = itData.teamGroupData.get(0);
+        GroupData testGroupData2 = itData.teamGroupData.get(1);
+        Vehicle testVehicle1 = testGroupData1.vehicle;
+        Vehicle testVehicle2 = testGroupData2.vehicle;
+        Device testDevice1 = testGroupData1.device;
+        Device testDevice2 = testGroupData2.device;
+
+        VehicleEventData vehicleEventData = new VehicleEventData();
+        vehicleEventData.putDate(testVehicle1.getVehicleID(),new Date());
+        vehicleEventData.putDate(testVehicle2.getVehicleID(),new Date());
+
+        vehicleEventData.putDeviceID(testVehicle1.getVehicleID(),testDevice1.getDeviceID());
+        vehicleEventData.putDeviceID(testVehicle2.getVehicleID(), testDevice2.getDeviceID());
+
+        vehicleEventData.putEventCode(testVehicle1.getVehicleID(), EventAttr.ATTR_BATTERY_VOLTAGE.getCode());
+        vehicleEventData.putEventCode(testVehicle2.getVehicleID(), EventAttr.ATTR_BATTERY_VOLTAGE.getCode());
+
+        vehicleEventData.putNoteCode(testVehicle1.getVehicleID(), 20);
+        vehicleEventData.putNoteCode(testVehicle2.getVehicleID(), 20);
+
+        vehicleEventData.putVehicle(testVehicle1.getVehicleID(), testVehicle1);
+        vehicleEventData.putVehicle(testVehicle2.getVehicleID(), testVehicle2);
+
+        Map<Integer, Date> prevDates = new HashMap<Integer, Date>();
+        prevDates.put(testVehicle1.getVehicleID(), new Date());
+        prevDates.put(testVehicle2.getVehicleID(), new Date());
+        vehicleEventData.setPrevEventDates(prevDates);
+
+        Map<Integer, String> data = driveTimeDAO.getEngineHoursAtLastDates(vehicleEventData);
+        assertNotNull(data);
     }
 }
