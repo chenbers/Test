@@ -2,6 +2,7 @@ package com.inthinc.pro.model.event;
 
 import com.inthinc.pro.dao.annotations.event.EventAttrID;
 import com.inthinc.pro.dao.util.MeasurementConversionUtil;
+import com.inthinc.pro.model.BackingEventType;
 import com.inthinc.pro.model.MeasurementType;
 import org.apache.log4j.Logger;
 
@@ -40,25 +41,6 @@ public class BackingMultipleEvent extends Event implements MultipleEventTypes
     }
 
     public EventType getEventType() {
-
-        if (!this.getAttrMap().isEmpty()) {
-            for (Map.Entry<Object,Object> entry: this.getAttrMap().entrySet()){
-                String attr = (String)entry.getKey();
-                attrMap.put(attr, entry.getValue());
-            }
-            attrMap = this.getAttrMap();
-            if (attrMap.containsKey(EventAttr.ATTR_BACKING_TYPE.toString())) {
-                Integer backingType = Integer.valueOf(attrMap.get(EventAttr.ATTR_BACKING_TYPE.toString()).toString());
-                if (backingType == 1) {
-                    return EventType.BACKING;
-                } else if (backingType == 2) {
-                    return EventType.FIRST_MOVE_FORWARD;
-                } else {
-                    return EventType.BACKING;
-                }
-            }
-        }
-
         if (this.getAttribs() != null) {
             String[] attribsList = this.getAttribs().split(";");
             for (String s : attribsList) {
@@ -66,11 +48,13 @@ public class BackingMultipleEvent extends Event implements MultipleEventTypes
                     attrMap.put(s.split("=")[0], s.split("=")[1]);
                 }
             }
-            if (attrMap.containsKey(EventAttr.ATTR_BACKING_TYPE.getCode() + "")) {
-                Integer backingType = Integer.valueOf(attrMap.get(EventAttr.ATTR_BACKING_TYPE.getCode() + "").toString());
-                if (backingType == 1) {
+        }
+        if (!this.getAttrMap().isEmpty()) {
+            if (attrMap.containsKey(EventAttr.ATTR_BACKING_TYPE.getCode() +"")) {
+                Integer backingType = Integer.valueOf(attrMap.get(EventAttr.ATTR_BACKING_TYPE.getCode()+"").toString());
+                if (backingType == BackingEventType.BACKING.getCode()) {
                     return EventType.BACKING;
-                } else if (backingType == 2) {
+                } else if (backingType == BackingEventType.FIRST_MOVE_FORWARD.getCode()) {
                     return EventType.FIRST_MOVE_FORWARD;
                 } else {
                     return EventType.BACKING;
