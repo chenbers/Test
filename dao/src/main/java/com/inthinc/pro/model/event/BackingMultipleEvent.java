@@ -54,7 +54,7 @@ public class BackingMultipleEvent extends Event implements MultipleEventTypes
                 } else if (backingType == 2) {
                     return EventType.FIRST_MOVE_FORWARD;
                 } else {
-                    return EventType.UNKNOWN;
+                    return EventType.BACKING;
                 }
             }
         }
@@ -73,11 +73,11 @@ public class BackingMultipleEvent extends Event implements MultipleEventTypes
                 } else if (backingType == 2) {
                     return EventType.FIRST_MOVE_FORWARD;
                 } else {
-                    return EventType.UNKNOWN;
+                    return EventType.BACKING;
                 }
             }
         }
-        return EventType.UNKNOWN;
+        return EventType.BACKING;
     }
 
     public Integer getDuration() {
