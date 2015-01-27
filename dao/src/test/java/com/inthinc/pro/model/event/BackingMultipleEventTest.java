@@ -1,5 +1,8 @@
 package com.inthinc.pro.model.event;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.junit.Test;
 
 import static junit.framework.Assert.assertEquals;
@@ -18,7 +21,18 @@ public class BackingMultipleEventTest {
 
         BackingMultipleEvent backingMultipleEventUnknown = new BackingMultipleEvent();
         backingMultipleEventUnknown.setAttribs("80=3");
-        assertEquals(EventType.UNKNOWN,backingMultipleEventUnknown.getEventType());
-
+        assertEquals(EventType.BACKING,backingMultipleEventUnknown.getEventType());
+        
+        BackingMultipleEvent backingMultipleEventBackingWithAttrMap = new BackingMultipleEvent();
+        Map<Object, Object> attrMap = new HashMap<Object, Object>();
+        
+        String[] attribsList = "80=1".split(";");
+        for (String s : attribsList) {
+            if (!s.trim().equals("")) {
+                attrMap.put(s.split("=")[0], s.split("=")[1]);
+            }
+        }
+        backingMultipleEventBackingWithAttrMap.setAttrMap(attrMap);
+        assertEquals(EventType.BACKING,backingMultipleEventBackingWithAttrMap.getEventType());
     }
 }
