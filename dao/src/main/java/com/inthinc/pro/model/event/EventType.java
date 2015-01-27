@@ -70,7 +70,7 @@ public enum EventType implements BaseEnum {
     BACKING(51, BackingEventType.BACKING),
     TRAILER_PROGRAMMED(52),
     ATTR_RF_OFF_DISTANCE(53),
-    GENERAL_BACKING(54),
+    GENERAL_BACKING(54, BackingEventType.BACKING),
     FIRST_MOVE_FORWARD(55, BackingEventType.FIRST_MOVE_FORWARD),
     BATTERY_VOLTAGE(56, MaintenanceEventType.BATTERY_VOLTAGE),
     ENGINE_TEMP(57,MaintenanceEventType.ENGINE_TEMP),
@@ -89,7 +89,7 @@ public enum EventType implements BaseEnum {
     ODOMETER(70,MaintenanceEventType.ODOMETER),
     UNKNOWN_CHECK_ENGINE_LAMP(71, IgnitionOffEventType.UNKNOWN_CHECK_ENGINE_LAMP),
     UNKNOWN_MAINTENANCE(72, MaintenanceEventType.UNKNOWN_MAINTENANCE),
-    PREVENTATIVE_MESSAGE_ODOMETER(73);
+    PREVENTATIVE_MESSAGE_ODOMETER(73, MaintenanceEventType.ODOMETER);
 
 
 
