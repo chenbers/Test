@@ -4,7 +4,7 @@
 	<parent>
 		<artifactId>root</artifactId>
 		<groupId>com.inthinc.pro</groupId>
-		<version>2.0.66</version>
+		<version>2.0.67-SNAPSHOT</version>
 	</parent>
 	<groupId>com.inthinc.pro.scheduler</groupId>
 	<artifactId>scheduler</artifactId>
@@ -248,6 +248,6 @@
 	</build>
 
   <scm>
-    <tag>2.0.66</tag>
+    <tag>2.0.64</tag>
   </scm>
 </project>
