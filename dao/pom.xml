@@ -3,7 +3,7 @@
 	<parent>
 		<groupId>com.inthinc.pro</groupId>
 		<artifactId>root</artifactId>
-		<version>2.0.66-SNAPSHOT</version>
+		<version>2.0.66</version>
 	</parent>
 
 	<groupId>com.inthinc.pro.dao</groupId>
@@ -21,7 +21,7 @@
 		<dependency>
 			<groupId>com.inthinc.pro.noteparser</groupId>
 			<artifactId>noteparser</artifactId>
-                        <version>${noteparser.version}</version>
+                        <version>5.0.2-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>com.inthinc.pro.aggregation</groupId>
@@ -257,6 +257,6 @@
 	</reporting>
 
   <scm>
-    <tag>2.0.64</tag>
+    <tag>2.0.66</tag>
   </scm>
 </project>
