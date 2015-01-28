@@ -4,7 +4,7 @@
 	<parent>
 		<artifactId>root</artifactId>
 		<groupId>com.inthinc.pro</groupId>
-		<version>2.0.65-SNAPSHOT</version>
+		<version>2.0.67-SNAPSHOT</version>
 	</parent>
 	<groupId>com.inthinc.pro.scheduler</groupId>
 	<artifactId>scheduler</artifactId>
@@ -246,4 +246,11 @@
 			</plugin>
 		</plugins>
 	</build>
+<<<<<<< HEAD
+=======
+
+  <scm>
+    <tag>2.0.64</tag>
+  </scm>
+>>>>>>> 6b70ec8... [Maven]prepare for next development iteration
 </project>
