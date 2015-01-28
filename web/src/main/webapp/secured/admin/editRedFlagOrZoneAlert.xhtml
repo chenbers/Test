@@ -202,7 +202,7 @@
                     <td>
                         <h:selectOneMenu id="editRedFlag-severityLevel" value="#{redFlagOrZoneAlertsBean.item.severityLevel}" converter="SimpleBeanConverter" onchange="checkMultiple(this);" >
                             <f:selectItems value="#{redFlagOrZoneAlertsBean.item.severityValues}" />
-                            <a4j:support event="onblur" reRender="redFlagAlertsLimitValue, namePickerPnl, namePickerHint" ajaxSingle="true">
+                            <a4j:support event="onclick" reRender="redFlagAlertsLimitValue,namePickerPnl,namePickerHint" ajaxSingle="true">
                                 <f:setPropertyActionListener target="#{redFlagOrZoneAlertsBean.item.severityLevel}" value="#{redFlagOrZoneAlertsBean.item.severityLevel}"></f:setPropertyActionListener>
                                 <f:setPropertyActionListener target="#{redFlagOrZoneAlertsBean.peoplePicker.outdated}" value="#{true}"></f:setPropertyActionListener>
                             </a4j:support>
