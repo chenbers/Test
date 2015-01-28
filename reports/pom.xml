@@ -218,11 +218,4 @@
 			</plugin>
 		</plugins>
 	</reporting>
-<<<<<<< HEAD
-=======
-
-  <scm>
-    <tag>2.0.64</tag>
-  </scm>
->>>>>>> 6b70ec8... [Maven]prepare for next development iteration
 </project>

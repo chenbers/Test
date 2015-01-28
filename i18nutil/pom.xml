@@ -21,8 +21,4 @@
 		</dependency>
 
 	</dependencies>
-
-  <scm>
-    <tag>2.0.64</tag>
-  </scm>
 </project>
