@@ -180,6 +180,7 @@ public abstract class BasePagingNotificationsBean<T> extends BaseBean {
 			if (eventDAO
 					.forgive(clearItem.getDriverID(), clearItem.getNoteID(), getForgivenByUserID(), getReason()) >= 1) {
 				refreshPage();
+                resetReason();
 			}
 		}
 	}
@@ -257,6 +258,10 @@ public abstract class BasePagingNotificationsBean<T> extends BaseBean {
 	public void setForgivenByUserID(Long forgivenByUserID) {
 		this.forgivenByUserID = forgivenByUserID;
 	}
+
+    public void resetReason(){
+        this.reason = "";
+    }
 
 	public String getReason() {
 		return reason;
