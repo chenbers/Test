@@ -139,10 +139,10 @@ public enum ReportGroup {
     DVIR_REPAIR_DETAIL("DVIR Repairs Detailed", 48, EntityType.ENTITY_GROUP, new CriteriaType[] { CriteriaType.TIMEFRAME }, new GroupType[] { GroupType.DIVISION, GroupType.FLEET, GroupType.TEAM },
                     ReportCategory.DVIR, EnumSet.of(ReportAccountType.DVIR), ReportType.DVIR_REPAIR_DETAIL),
     /* MAINTENANCE */
-    MAINTENANCE_EVENTS_REPORT("Vehicle Maintenance Events Report", 49, EntityType.ENTITY_GROUP_LIST, new CriteriaType[] {  CriteriaType.TIMEFRAME}, new GroupType[] { GroupType.DIVISION,
-            GroupType.FLEET, GroupType.TEAM }, ReportCategory.Maintenance, EnumSet.of(ReportAccountType.PERFORMANCE), ReportType.VEHICLE_MAINTENANCE_EVENTS_REPORT),
-    MAINTENANCE_INTERVAL_REPORT("Vehicle Maintenance Interval Report", 50, EntityType.ENTITY_GROUP_LIST, new CriteriaType[] {}, new GroupType[] { GroupType.DIVISION,
-            GroupType.FLEET, GroupType.TEAM }, ReportCategory.Maintenance, EnumSet.of(ReportAccountType.PERFORMANCE), ReportType.VEHICLE_MAINTENANCE_INTERVAL_REPORT)
+    //MAINTENANCE_EVENTS_REPORT("Vehicle Maintenance Events Report", 49, EntityType.ENTITY_GROUP_LIST, new CriteriaType[] {  CriteriaType.TIMEFRAME}, new GroupType[] { GroupType.DIVISION,
+      //      GroupType.FLEET, GroupType.TEAM }, ReportCategory.Maintenance, EnumSet.of(ReportAccountType.PERFORMANCE), ReportType.VEHICLE_MAINTENANCE_EVENTS_REPORT),
+    //MAINTENANCE_INTERVAL_REPORT("Vehicle Maintenance Interval Report", 50, EntityType.ENTITY_GROUP_LIST, new CriteriaType[] {}, new GroupType[] { GroupType.DIVISION,
+      //      GroupType.FLEET, GroupType.TEAM }, ReportCategory.Maintenance, EnumSet.of(ReportAccountType.PERFORMANCE), ReportType.VEHICLE_MAINTENANCE_INTERVAL_REPORT)
     ;
 
     private ReportType[] reports;
