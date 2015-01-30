@@ -178,7 +178,7 @@ public abstract class BasePagingNotificationsBean<T> extends BaseBean {
 
 		if (clearItem != null && clearItem.getForgiven().intValue() == 0) {
 			if (eventDAO
-					.forgive(clearItem.getDriverID(), clearItem.getNoteID(), 0l, "") >= 1) {
+					.forgive(clearItem.getDriverID(), clearItem.getNoteID(), getForgivenByUserID(), getReason()) >= 1) {
 				refreshPage();
 			}
 		}
