@@ -1,6 +1,7 @@
 package com.inthinc.pro.service.impl;
 
 import com.inthinc.pro.dao.VehicleDAO;
+import com.inthinc.pro.dao.cassandra.LocationCassandraDAO;
 import com.inthinc.pro.dao.report.VehicleReportDAO;
 import com.inthinc.pro.model.*;
 import com.inthinc.pro.model.aggregation.Trend;
@@ -25,6 +26,9 @@ public class VehicleServiceExtTest {
 
     @Mocked
     public VehicleDAO mockVehicleDAO;
+
+    @Mocked
+    LocationCassandraDAO mockLocationCassandraDAO;
 
     @Mocked
     public VehicleReportDAO mockVehicleReportDAO;
@@ -109,6 +113,7 @@ public class VehicleServiceExtTest {
         };
         mockVehicleDAOAdapter.setVehicleDAO(mockVehicleDAO);
         mockVehicleDAOAdapter.setVehicleReportDAO(mockVehicleReportDAO);
+        mockVehicleDAOAdapter.setLocationCassandraDAO(mockLocationCassandraDAO);
         VehicleServiceExtImpl vehicleServiceExtImpl = (VehicleServiceExtImpl) vehicleServiceExt;
         vehicleServiceExtImpl.setDao(mockVehicleDAOAdapter);
 
@@ -333,7 +338,7 @@ public class VehicleServiceExtTest {
         new Expectations() {{
             mockVehicleDAO.getVehiclesInGroupHierarchy(anyInt);
             result = Arrays.asList(vehicle1, vehicle2, vehicle3);
-            mockVehicleDAO.getLastVehicleTripsByGrpIDDeep(anyInt);
+            mockLocationCassandraDAO.getLastTripForVehicle(anyInt);
             result = Arrays.asList(mockTrip1, mockTrip2, mockTrip3);
         }};
 

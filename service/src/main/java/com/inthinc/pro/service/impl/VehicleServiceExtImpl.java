@@ -44,7 +44,7 @@ public class VehicleServiceExtImpl extends AbstractService<Vehicle, VehicleDAOAd
     public Response getAllWithLastTrip() {
         // get vehicles and trips
         List<Vehicle> vehicles = getDao().getAll();
-        List<Trip> trips = getDao().getAllLastTrips();
+        List<Trip> trips = getDao().getAllLastTrips(vehicles);
 
         // save the vehicles in a map to be retrieved by id
         Map<Integer, Vehicle> vehicleMap = new HashMap<Integer, Vehicle>(vehicles.size());

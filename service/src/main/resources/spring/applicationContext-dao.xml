@@ -38,8 +38,18 @@
 	   <property name="removeAbandoned" value="${jdbc.dbcp.removeAbandoned}"/>
 	   <property name="logAbandoned" value="${jdbc.dbcp.logAbandoned}"/>
 	</bean>
-	
-	
+
+    <bean id="cassandraDB" class="com.inthinc.pro.dao.cassandra.CassandraDB">
+        <constructor-arg index="0" value="${cassandra.active}" />
+        <constructor-arg index="1" value="${cassandra.clusterName}" />
+        <constructor-arg index="2" value="${cassandra.keyspaceName}" />
+        <constructor-arg index="3" value="${cassandra.cacheKeyspaceName}" />
+        <constructor-arg index="4" value="${cassandra.nodeAddress}" />
+        <constructor-arg index="5" value="${cassandra.maxActive}" />
+        <constructor-arg index="6" value="${cassandra.autoDiscoverHost}" />
+        <constructor-arg index="7" value="${cassandra.quorumConsistency}" />
+    </bean>
+
 	<!--
 		<bean id="mcmServiceCreator" class="com.inthinc.pro.dao.hessian.proserver.MCMServiceCreator"> <constructor-arg value="${proxy.mcmDataAccessHost}" /> <constructor-arg
 		value="${proxy.mcmDataAccessPort}" /> </bean>
@@ -56,6 +66,9 @@
 	</bean>
     <bean id="genericJDBCDAO" class="com.inthinc.pro.dao.jdbc.GenericJDBCDAO" abstract="true">
         <property name="dataSource" ref="tiwiJDBCDataSource" />
+    </bean>
+    <bean id="genericCassandraDAO" class="com.inthinc.pro.dao.cassandra.GenericCassandraDAO" abstract="true">
+        <property name="cassandraDB" ref="cassandraDB" />
     </bean>
 	<bean id="abstractReportDAO" class="com.inthinc.pro.dao.hessian.report.AbstractReportHessianDAO" abstract="true">
 		<property name="reportService" ref="reportServiceBean" />
@@ -114,5 +127,9 @@
 	</bean>
 	<bean id="googleAddressLookupBean" class="com.inthinc.pro.map.GoogleAddressLookup">
 	</bean>
+
+    <bean id="locationCassandraDAO" class="com.inthinc.pro.dao.cassandra.LocationCassandraDAO">
+        <property name="eventDAO" ref="eventDAO"/>
+    </bean>
 
 </beans>
