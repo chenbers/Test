@@ -439,18 +439,18 @@ public class MaintenanceIntervalReportCriteria extends ReportCriteria {
         if(intervalHours == 0) {
             hoursOver = 0;
         } else {
-        if (baseHours != null && intervalHours != null && hours != null) {
-            hour = (hours - baseHours) % intervalHours;
-        }
-
-        if (baseHours == null || intervalHours == null) {
-            hoursOver = null;
-        } else if (hour > (intervalHours / 2)) {
-            int hourInt = hour - intervalHours;
-            hoursOver = hourInt;
-        } else {
-            hoursOver = hour;
-        }
+            if (baseHours != null && intervalHours != null && hours != null) {
+                hour = (hours - baseHours) % intervalHours;
+            }
+    
+            if (baseHours == null || intervalHours == null) {
+                hoursOver = null;
+            } else if (hour > (intervalHours / 2)) {
+                int hourInt = hour - intervalHours;
+                hoursOver = hourInt;
+            } else {
+                hoursOver = hour;
+            }
         }
         return hoursOver;
     }
