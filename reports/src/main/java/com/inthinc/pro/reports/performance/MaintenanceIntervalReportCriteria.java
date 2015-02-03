@@ -436,6 +436,9 @@ public class MaintenanceIntervalReportCriteria extends ReportCriteria {
         Integer hoursOver;
 
         int hour = 0;
+        if(intervalHours == 0) {
+            hoursOver = 0;
+        } else {
         if (baseHours != null && intervalHours != null && hours != null) {
             hour = (hours - baseHours) % intervalHours;
         }
@@ -447,6 +450,7 @@ public class MaintenanceIntervalReportCriteria extends ReportCriteria {
             hoursOver = hourInt;
         } else {
             hoursOver = hour;
+        }
         }
         return hoursOver;
     }
