@@ -1,16 +1,5 @@
 package com.inthinc.pro.backing.paging;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.faces.model.SelectItem;
-import javax.faces.model.SelectItemGroup;
-
 import com.inthinc.pro.backing.BaseBean;
 import com.inthinc.pro.dao.EventDAO;
 import com.inthinc.pro.model.Group;
@@ -24,6 +13,16 @@ import com.inthinc.pro.reports.ReportCriteria;
 import com.inthinc.pro.reports.ReportRenderer;
 import com.inthinc.pro.reports.service.ReportCriteriaService;
 import com.inthinc.pro.util.MessageUtil;
+
+import javax.faces.model.SelectItem;
+import javax.faces.model.SelectItemGroup;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public abstract class BasePagingNotificationsBean<T> extends BaseBean {
 	/**
@@ -77,9 +76,9 @@ public abstract class BasePagingNotificationsBean<T> extends BaseBean {
 
 	protected abstract List<EventCategory> getCategories();
 
-	private Map<Integer, EventCategoryFilter> eventCategoryMap;
+	protected Map<Integer, EventCategoryFilter> eventCategoryMap;
 
-    private List<SelectItemGroup> filterCategories;
+    protected List<SelectItemGroup> filterCategories;
     public List<SelectItemGroup> getFilterCategories() {
         if (filterCategories == null) {
             eventCategoryMap = new HashMap<Integer, EventCategoryFilter>();
@@ -100,7 +99,7 @@ public abstract class BasePagingNotificationsBean<T> extends BaseBean {
         return filterCategories;
     }
     
-    private SelectItem[] getItemsBySubCategory(EventSubCategory subCategory) {
+    protected SelectItem[] getItemsBySubCategory(EventSubCategory subCategory) {
         List<SelectItem> items = new ArrayList<SelectItem>();
         for (EventType eventType : subCategory.getEventTypeSet()) {
             if ((eventType.isHOSOnlyEvent() && !getAccountIsHOS()) ||

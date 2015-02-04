@@ -1,13 +1,18 @@
 package com.inthinc.pro.backing.paging;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import com.inthinc.pro.model.event.EventCategory;
+import com.inthinc.pro.model.event.EventSubCategory;
+import com.inthinc.pro.model.pagination.EventCategoryFilter;
+import com.inthinc.pro.reports.ReportCriteria;
+import com.inthinc.pro.util.MessageUtil;
 import org.ajax4jsf.model.KeepAlive;
 import org.apache.log4j.Logger;
 
-import com.inthinc.pro.model.event.EventCategory;
-import com.inthinc.pro.reports.ReportCriteria;
+import javax.faces.model.SelectItem;
+import javax.faces.model.SelectItemGroup;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 @KeepAlive
 public class PagingSafetyEventsBean extends PagingEventsBean {
@@ -49,4 +54,27 @@ public class PagingSafetyEventsBean extends PagingEventsBean {
     }
 
 
+    public List<SelectItemGroup> getFilterCategories() {
+        if (filterCategories == null) {
+            eventCategoryMap = new HashMap<Integer, EventCategoryFilter>();
+            filterCategories = new ArrayList<SelectItemGroup>();
+            filterCategories.add(getBlankGroup());
+            for (EventCategory category : getCategories()) {
+                if (category.getSubCategorySet() == null)
+                    continue;
+                if (category == EventCategory.MAINTENANCE)
+                    continue;
+                for (EventSubCategory subCategory : category.getSubCategorySet()) {
+                    if (subCategory == EventSubCategory.PREVENTATIVE_MAINTENANCE || subCategory == EventSubCategory.CONDITIONAL || subCategory == EventSubCategory.IGNITION_OFF)
+                        continue;
+                    String subCategoryStr = MessageUtil.getMessageString(subCategory.toString(), getLocale());
+                    SelectItem[] items = super.getItemsBySubCategory(subCategory);
+                    if (items != null && items.length > 0)
+                        filterCategories.add(new SelectItemGroup(subCategoryStr, subCategoryStr, false, items));
+                }
+            }
+
+        }
+        return filterCategories;
+    }
 }

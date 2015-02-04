@@ -600,9 +600,11 @@
   </bean>
 
   <bean id="pagingSafetyEventsBean" class="com.inthinc.pro.backing.paging.PagingSafetyEventsBean" scope="request" parent="pagingEventsBean">
+      <property name="tableDataProvider" ref="nonMaintenanceEventPaginationTableDataProvider"></property>
   </bean>
 
   <bean id="pagingDiagnosticsEventsBean" class="com.inthinc.pro.backing.paging.PagingDiagnosticsEventsBean" scope="request" parent="pagingEventsBean">
+      <property name="tableDataProvider" ref="nonMaintenanceEventPaginationTableDataProvider"></property>
   </bean>
 
   <bean id="pagingMaintenanceEventsBean" class="com.inthinc.pro.backing.paging.PagingMaintenanceEventsBean" scope="request" parent="pagingEventsBean">
@@ -636,6 +638,13 @@
   </bean>
 
   <bean id="maintenanceEventPaginationTableDataProvider" class="com.inthinc.pro.table.model.provider.MaintenanceEventPaginationTableDataProvider" scope="request">
+      <property name="eventDAO" ref="eventDAO"></property>
+      <property name="timeFrameBean" ref="timeFrameBean" />
+      <property name="vehicleDAO" ref="vehicleDAO"></property>
+      <property name="deviceDAO" ref="deviceDAO"></property>
+  </bean>
+
+  <bean id="nonMaintenanceEventPaginationTableDataProvider" class="com.inthinc.pro.table.model.provider.NonMaintenanceEventPaginationTableDataProvider" scope="request">
       <property name="eventDAO" ref="eventDAO"></property>
       <property name="timeFrameBean" ref="timeFrameBean" />
       <property name="vehicleDAO" ref="vehicleDAO"></property>

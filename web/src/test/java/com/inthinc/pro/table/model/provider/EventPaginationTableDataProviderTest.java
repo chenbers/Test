@@ -4,6 +4,10 @@ import com.inthinc.pro.dao.DeviceDAO;
 import com.inthinc.pro.model.Device;
 import com.inthinc.pro.model.configurator.ProductType;
 import com.inthinc.pro.model.event.Event;
+import com.inthinc.pro.model.event.EventCategory;
+import com.inthinc.pro.model.event.EventSubCategory;
+import com.inthinc.pro.model.event.EventType;
+import com.inthinc.pro.model.event.NoteType;
 import mockit.Mocked;
 import mockit.NonStrictExpectations;
 import org.junit.Assert;
@@ -11,6 +15,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -25,6 +30,7 @@ public class EventPaginationTableDataProviderTest {
     private ProductType mockProductType;
 
     private EventPaginationTableDataProvider provider = new EventPaginationTableDataProvider();
+    private NonMaintenanceEventPaginationTableDataProvider nonMaintProvider = new NonMaintenanceEventPaginationTableDataProvider();
 
     private Integer MOCK_DEVICE_ID = 1;
 
@@ -37,6 +43,7 @@ public class EventPaginationTableDataProviderTest {
     @Before
     public void beforeTest() {
         provider.setDeviceDAO(mockDeviceDAO);
+        nonMaintProvider.setDeviceDAO(mockDeviceDAO);
 
         mockDevice = new Device();
         mockDevice.setDeviceID(MOCK_DEVICE_ID);
@@ -57,6 +64,35 @@ public class EventPaginationTableDataProviderTest {
             mockGoodEventList.add(event);
         }
     }
+
+    @Test
+    public void testFilterOutMaintenance() {
+
+        // save 'bad types'
+        List<NoteType> badNoteTypes = new ArrayList<NoteType>();
+
+        for (EventSubCategory subCategories : Arrays.asList(EventSubCategory.PREVENTATIVE_MAINTENANCE, EventSubCategory.CONDITIONAL, EventSubCategory.IGNITION_OFF)) {
+            for (EventType eventType : subCategories.getEventTypeSet()) {
+                for (NoteType noteType : eventType.getNoteTypeList()) {
+                    if (!badNoteTypes.contains(noteType))
+                        badNoteTypes.add(noteType);
+                }
+            }
+        }
+
+        // get using method
+        List<NoteType> checkList = nonMaintProvider.getNonMaintenanceNoteTypesInCategory(EventCategory.DIAGNOSTICS);
+
+
+        // check for bad types
+        for (NoteType nt: checkList){
+            if (nt.equals(NoteType.IGNITION_OFF))
+                continue; // this one is found in vehicle also
+
+            Assert.assertFalse(nt.toString()+" found in bad types", badNoteTypes.contains(nt));
+        }
+    }
+
 
     @Test
     public void testPopulateDeviceNames() {
