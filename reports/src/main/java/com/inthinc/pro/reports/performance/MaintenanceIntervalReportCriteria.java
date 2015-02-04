@@ -185,12 +185,14 @@ public class MaintenanceIntervalReportCriteria extends ReportCriteria {
             for (Integer id: groupIDList){
                 allVehicles.addAll(vehicleDAO.getVehiclesInGroupHierarchy(id));
             }
-
+            Map<Integer, Group> knownGroupsMap = new HashMap<Integer, Group>();
             for (Vehicle vehicle: allVehicles){
                 VehicleSetting vehicleSetting = configuratorJDBCDAO.getVehicleSettings(vehicle.getVehicleID());
                 Integer groupId = vehicle.getGroupID();
-                Group group = groupDAO.findByID(groupId);
-                String groupName = group.getName();
+                if(knownGroupsMap.containsKey(groupId)) {
+                    knownGroupsMap.put(groupId, groupDAO.findByID(groupId));
+                }
+                String groupName = knownGroupsMap.get(groupID).getName();
                 String vehicleYMM = vehicle.getYear() + " " + vehicle.getMake() + " " + vehicle.getModel();
                 Long milesDriven = driveTimeDAO.getDriveOdometerSum(vehicle) / 100;
 
