@@ -38,6 +38,19 @@ public class UserLogUtil {
         // UserLogItemJDBCDAO dao = new UserLogItemJDBCDAO();
         // dao.create(null, userLogItem);
     }
+    public static void logAfterMethod(Method method, Object[] args, Object target, Long startMilli) {
+        log = LogFactory.getLog(target.getClass());
+
+        // cj - added this check because of the coupling of the spring security with user lookup wasn't
+        // working when dao jar is used with a new spring security version (e.g. 3.1) -- need to figure out
+        // a way to decouple this
+        if (log.isInfoEnabled() || logger.isInfoEnabled()) {
+            // log to file
+            String message = method.getName()+"("+argsToString(args)+") [" + findUserName()+"] ; "+(startMilli - System.currentTimeMillis());
+            log.info(message);// log using the class to which the method belongs
+            logger.info(message);// specific to user.log
+        }
+    }
 
     /**
      * Determine the userName for the current user.

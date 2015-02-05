@@ -185,9 +185,15 @@ public class MaintenanceIntervalReportCriteria extends ReportCriteria {
             for (Integer id: groupIDList){
                 allVehicles.addAll(vehicleDAO.getVehiclesInGroupHierarchy(id));
             }
+            List<Integer> allVehicleIDsIntegers = new ArrayList<Integer>();
+            for(Vehicle vehicle: allVehicles) {
+                allVehicleIDsIntegers.add(vehicle.getVehicleID());
+            }
             Map<Integer, Group> knownGroupsMap = new HashMap<Integer, Group>();
+            Map<Integer, VehicleSetting> vehicleSettingMap = configuratorJDBCDAO.getVehicleSettingsForAll(allVehicleIDsIntegers);
             for (Vehicle vehicle: allVehicles){
-                VehicleSetting vehicleSetting = configuratorJDBCDAO.getVehicleSettings(vehicle.getVehicleID());
+                //VehicleSetting vehicleSetting = configuratorJDBCDAO.getVehicleSettings(vehicle.getVehicleID());
+                VehicleSetting vehicleSetting = vehicleSettingMap.get(vehicle.getVehicleID());
                 Integer loopGroupID = vehicle.getGroupID();
                 if(!knownGroupsMap.containsKey(loopGroupID)) {
                     knownGroupsMap.put(loopGroupID, groupDAO.findByID(loopGroupID));
