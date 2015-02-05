@@ -17,6 +17,7 @@ import com.inthinc.pro.dao.ConfiguratorDAO;
 import com.inthinc.pro.dao.hessian.exceptions.EmptyResultSetException;
 import com.inthinc.pro.model.SensitivitySliderValues;
 import com.inthinc.pro.model.configurator.DeviceSettingDefinition;
+import com.inthinc.pro.model.configurator.ProductType;
 import com.inthinc.pro.model.configurator.SettingValue;
 import com.inthinc.pro.model.configurator.VehicleSetting;
 import com.inthinc.pro.model.configurator.VehicleSettingHistory;
@@ -31,14 +32,78 @@ public class ConfiguratorJDBCDAO extends SimpleJdbcDaoSupport implements Configu
             " LEFT OUTER JOIN device d on (vdd.deviceID = d.deviceID)" +
             " where veh.vehicleID = :vehicleID";
 
-    private static final String GET_DATA_ALL = "select veh.vehicleID, d.deviceID FROM vehicle veh" +
+    private static final String GET_DATA_ALL = "select veh.vehicleID, d.deviceID, d.productVer , dvs.settingID as desiredSetting, dvs.value as desiredValue, avs.settingID as actualSetting, avs.value as actualValue" +
+    		" FROM vehicle veh" +
             " LEFT OUTER JOIN vddlog vdd ON (veh.vehicleID = vdd.vehicleID and vdd.stop is null)" +
             " LEFT OUTER JOIN device d on (vdd.deviceID = d.deviceID)" +
-            " where veh.vehicleID in (:vehicleIDs)";
+            " LEFT OUTER JOIN desiredVSet dvs on (veh.vehicleID = dvs.vehicleID) " +
+            " LEFT OUTER JOIN actualVSet avs on (veh.vehicleID = avs.vehicleID and dvs.settingID = avs.settingID) " +
+            " where veh.vehicleID in (:vehicleIDs) " +
+            " order by vehicleID, deviceID, desiredSetting desc ";
 
     private static final String GET_DATA_DESIRED = "select a.settingID, a.value  FROM siloDB.desiredVSet a WHERE a.vehicleID =:vehicleID";
     private static final String GET_DATA_ACTUAL = "select a.settingID ,a.value  FROM siloDB.actualVSet a WHERE a.vehicleID =:vehicleID";
 
+    private class VehicleSingleSetting{
+        private Integer vehicleID;
+        private Integer deviceID;
+        private Integer settingID;
+        private Integer productVer;
+        private String settingActualValue;
+        private String settingDesiredValue;
+        public Integer getVehicleID() {
+            return vehicleID;
+        }
+        public void setVehicleID(Integer vehicleID) {
+            this.vehicleID = vehicleID;
+        }
+        public Integer getDeviceID() {
+            return deviceID;
+        }
+        public void setDeviceID(Integer deviceID) {
+            this.deviceID = deviceID;
+        }
+        public Integer getSettingID() {
+            return settingID;
+        }
+        public void setSettingID(Integer settingID) {
+            this.settingID = settingID;
+        }
+        public String getSettingActualValue() {
+            return settingActualValue;
+        }
+        public void setSettingActualValue(String settingActualValue) {
+            this.settingActualValue = settingActualValue;
+        }
+        public String getSettingDesiredValue() {
+            return settingDesiredValue;
+        }
+        public void setSettingDesiredValue(String settingDesiredValue) {
+            this.settingDesiredValue = settingDesiredValue;
+        }
+        public Integer getProductVer() {
+            return productVer;
+        }
+        public void setProductVer(Integer productVer) {
+            this.productVer = productVer;
+        }
+
+        
+    }
+    private ParameterizedRowMapper<VehicleSingleSetting> vehicleSingleSettingParameterizedRowMapper = new ParameterizedRowMapper<VehicleSingleSetting>() {
+        @Override
+        public VehicleSingleSetting mapRow(ResultSet rs, int rowNum) throws SQLException {
+            VehicleSingleSetting vehicleSingleSetting = new VehicleSingleSetting();
+            vehicleSingleSetting.setVehicleID(rs.getInt("veh.vehicleID"));
+            vehicleSingleSetting.setDeviceID(rs.getInt("d.deviceID"));
+            vehicleSingleSetting.setProductVer(rs.getInt("d.productVer"));
+            vehicleSingleSetting.setSettingActualValue(rs.getString("veh.vehicleID"));
+            vehicleSingleSetting.setSettingDesiredValue(rs.getString("veh.vehicleID"));
+
+            return vehicleSingleSetting;
+        }
+    };
+    
     private ParameterizedRowMapper<VehicleSetting> vehicleSettingParameterizedRowMapper = new ParameterizedRowMapper<VehicleSetting>() {
         @Override
         public VehicleSetting mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -84,15 +149,35 @@ public class ConfiguratorJDBCDAO extends SimpleJdbcDaoSupport implements Configu
         }
     }
 
+    /* (non-Javadoc)
+     * @see com.inthinc.pro.dao.ConfiguratorDAO#getVehicleSettingsForAll(java.util.List)
+     */
     @Override
     public Map<Integer, VehicleSetting> getVehicleSettingsForAll(List<Integer> vehicleIDs) {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("vehicleIDs", vehicleIDs);
-        List<VehicleSetting> rawVehicleSettings = getSimpleJdbcTemplate().query(GET_DATA_ALL, vehicleSettingParameterizedRowMapper, params);
+        //List<VehicleSetting> rawVehicleSettings = getSimpleJdbcTemplate().query(GET_DATA_ALL, vehicleSettingParameterizedRowMapper, params);
+        List<VehicleSingleSetting> rawVehicleSingleSettings = getSimpleJdbcTemplate().query(GET_DATA_ALL, vehicleSingleSettingParameterizedRowMapper, params);
+        
         Map<Integer, VehicleSetting> vehicleSettingMap = new HashMap<Integer, VehicleSetting>(vehicleIDs.size());
-        for (VehicleSetting vehicleSetting : rawVehicleSettings) {
-            vehicleSettingMap.put(vehicleSetting.getVehicleID(), vehicleSetting);
+        Integer currentVehicleID = null;
+        VehicleSetting currentVehicleSetting = null;
+        Map<Integer,String> actual = new HashMap<Integer, String>();
+        Map<Integer, String> desired = new HashMap<Integer, String>();
+        for (VehicleSingleSetting vehicleSingleSetting : rawVehicleSingleSettings) {
+            if(vehicleSingleSetting.getVehicleID() != currentVehicleID) {
+                if(currentVehicleID != null) {
+                    vehicleSettingMap.put(vehicleSingleSetting.getVehicleID(), currentVehicleSetting);
+                }
+                currentVehicleID = vehicleSingleSetting.getVehicleID();
+                currentVehicleSetting =  new VehicleSetting(currentVehicleID, vehicleSingleSetting.getDeviceID(), ProductType.getProductTypeFromVersion(vehicleSingleSetting.getProductVer())); 
+                actual = new HashMap<Integer, String>();
+                desired = new HashMap<Integer, String>();
+            }
+            actual.put(vehicleSingleSetting.getSettingID(), vehicleSingleSetting.getSettingActualValue());
+            desired.put(vehicleSingleSetting.getSettingID(), vehicleSingleSetting.getSettingDesiredValue());
         }
+        vehicleSettingMap.put(currentVehicleID, currentVehicleSetting); //add the last one now that the loop is complete
 
         return vehicleSettingMap;
     }
