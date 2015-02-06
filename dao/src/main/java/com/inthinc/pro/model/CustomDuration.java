@@ -10,7 +10,7 @@ import java.util.Map;
  */
 public enum CustomDuration implements BaseEnum
 {
-    SEVEN_DAYS(5, "7 days", 7, "dd", 0, 7, 6);
+    SEVEN_DAYS(5, "7 days", 7, "dd", 0, 7, 1);
 
     /*
      * dvqCode
