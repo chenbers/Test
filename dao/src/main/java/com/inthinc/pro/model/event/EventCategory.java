@@ -14,7 +14,7 @@ import com.inthinc.pro.model.BaseEnum;
 @XmlRootElement
 public enum EventCategory implements BaseEnum
 {
-    VIOLATION(1, "VIOLATION", EnumSet.of(EventSubCategory.DRIVING_STYLE, EventSubCategory.SPEED, EventSubCategory.COMPLIANCE, EventSubCategory.FATIGUE, EventSubCategory.REVERSE, EventSubCategory.FIRST_MOVE_FORWARD, EventSubCategory.PREVENTATIVE_MAINTENANCE, EventSubCategory.CONDITIONAL,EventSubCategory.IGNITION_OFF)),
+    VIOLATION(1, "VIOLATION", EnumSet.of(EventSubCategory.DRIVING_STYLE, EventSubCategory.SPEED, EventSubCategory.COMPLIANCE, EventSubCategory.FATIGUE, EventSubCategory.REVERSE, EventSubCategory.FIRST_MOVE_FORWARD)),
     WARNING(2, "WARNING", EnumSet.of(EventSubCategory.VEHICLE, EventSubCategory.WIRELINE, EventSubCategory.INSTALLATION, EventSubCategory.TRAILER)),
 //    DRIVER(3, "DRIVER"),
     NONE(4, "NONE"),
@@ -27,8 +27,7 @@ public enum EventCategory implements BaseEnum
     DVIR(11,"DVIR", EnumSet.of(EventSubCategory.DVIR)),
     MAINTENANCE(12,"MAINTENANCE", EnumSet.of(EventSubCategory.CONDITIONAL, EventSubCategory.PREVENTATIVE_MAINTENANCE,EventSubCategory.IGNITION_OFF)),
 
-    DIAGNOSTICS(13, "DIAGNOSTICS", EnumSet.of(EventSubCategory.VEHICLE, EventSubCategory.WIRELINE, EventSubCategory.INSTALLATION, EventSubCategory.DVIR, EventSubCategory.TRAILER,
-            EventSubCategory.PREVENTATIVE_MAINTENANCE, EventSubCategory.CONDITIONAL,EventSubCategory.IGNITION_OFF));
+    DIAGNOSTICS(13, "DIAGNOSTICS", EnumSet.of(EventSubCategory.VEHICLE, EventSubCategory.WIRELINE, EventSubCategory.INSTALLATION, EventSubCategory.DVIR, EventSubCategory.TRAILER));
     private String description;
     private int code;
     private Set<EventSubCategory> subCategorySet;
