@@ -22,7 +22,6 @@ public class PagingSafetyEventsBean extends PagingEventsBean {
 	static final List<EventCategory> CATEGORIES;
 	static {
 		CATEGORIES = new ArrayList<EventCategory>();
-//		CATEGORIES.add(EventCategory.NONE);
 		CATEGORIES.add(EventCategory.VIOLATION);
 	}
 

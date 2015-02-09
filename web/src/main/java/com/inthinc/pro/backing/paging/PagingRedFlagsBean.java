@@ -55,6 +55,7 @@ public class PagingRedFlagsBean extends BasePagingNotificationsBean<RedFlag> {
         CATEGORIES.add(EventCategory.HOS);
         CATEGORIES.add(EventCategory.TEXT);
         CATEGORIES.add(EventCategory.DVIR);
+        CATEGORIES.add(EventCategory.MAINTENANCE);
         
 	}
 
