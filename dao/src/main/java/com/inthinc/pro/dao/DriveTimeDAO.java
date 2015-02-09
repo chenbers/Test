@@ -22,6 +22,10 @@ public interface DriveTimeDAO  {
     Long getEngineHoursAtDate(Vehicle vehicle, Date evDate);
     Long getDriveTimeAtDate(Vehicle vehicle, Integer nType, Integer eventCode, Date evDate);
     Date getPrevEventDate(Vehicle vehicle, Integer nType, Integer eventCode, Date evDate, Integer deviceId);
+    /**
+     * @param vehicleEventData
+     * @return a map of <Integer vehicleID, Date dateOfLastEvent> where dateOfLastEvent is last event before vehicleEventData's querying date for this vehicle
+     */
     Map<Integer, Date> getPrevEventDates(VehicleEventData vehicleEventData);
     Map<Integer, String> getDriveOdometersAtDates(VehicleEventData vehicleEventData);
     Map<Integer, String> getDriveOdometersAtLastDates(VehicleEventData vehicleEventData);
