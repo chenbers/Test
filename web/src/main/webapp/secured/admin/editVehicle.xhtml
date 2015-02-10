@@ -350,6 +350,22 @@
                       <td width="100"><h:outputText value="#{messages.organization_assignedDevice}:" /></td>
                       <td><h:outputText value="#{vehiclesBean.item.device.name}" /></td>
                     </tr>
+                    <!-- edit: glcode -->
+                    <tr>
+                      <td width="100" valign="top">
+                        <ui:include src="../../includes/admin/inputLabel.xhtml">
+                              <ui:param name="required" value="FALSE"/>
+                              <ui:param name="forId" value="editVehicle-glcode"/>
+                              <ui:param name="fieldName" value="glcode"/>
+                              <ui:param name="editBean" value="#{vehiclesBean}"/>
+                              <ui:param name="label" value="#{messages.editVehicle_glcode}"/>
+                              <ui:param name="context" value="editVehicleGlcode"/>
+                        </ui:include>
+                      </td>
+                      <td>
+                        <h:inputText value="#{vehiclesBean.item.glcode}" id="editVehicle-glcode" onchange="checkMultiple(this)" styleClass="text" size="30" maxlength="100" disabled="#{vehiclesBean.vehicleInfoDisabled}" />
+                      </td>
+                    </tr>
                   </table>
 
                           </td>

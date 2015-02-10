@@ -25,7 +25,7 @@ public class AdminDeviceJDBCDAO extends SimpleJdbcDaoSupport {
     private static final String PAGED_DEVICE_COLUMNS_STRING = "d.deviceID, d.acctID, d.baseID, d.status, d.autoLogoff," +
             " d.productVer, d.firmVer, d.witnessVer, d.emuFeatureMask, d.serialNum, d.name, d.imei, d.mcmid, d.altImei, " +
             " d.sim, d.phone, d.ephone, d.emuMd5, d.speedSet, d.accel, d.brake, d.turn, d.vert, d.modified, d.activated, " +
-            " d.vehicleID, d.vehicleName ";
+            " d.vehicleID, d.vehicleName, d.glcode ";
 
     private static final String PAGED_DEVICE_SUFFIX = "FROM (select d.*, vdd.vehicleID, veh.name vehicleName from device d " +
             " LEFT OUTER JOIN vddlog vdd ON (d.deviceID = vdd.deviceID and vdd.stop is null)" +
@@ -45,6 +45,7 @@ public class AdminDeviceJDBCDAO extends SimpleJdbcDaoSupport {
         pagedColumnMap.put("imei", "d.imei");
         pagedColumnMap.put("phone", "d.phone");
         pagedColumnMap.put("status", "d.status");
+        pagedColumnMap.put("glcode", "d.glcode");
     }
 
 
@@ -200,6 +201,7 @@ public class AdminDeviceJDBCDAO extends SimpleJdbcDaoSupport {
             device.setMcmid(getStringOrNullFromRS(rs, "mcmid"));
             device.setWitnessVersion(getIntOrNullFromRS(rs, "witnessVer"));
             device.setEmuMd5(getStringOrNullFromRS(rs, "emuMd5"));
+            device.setGlcode(getStringOrNullFromRS(rs, "glcode"));
 
             return device;
         }

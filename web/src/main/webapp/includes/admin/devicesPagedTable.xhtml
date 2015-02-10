@@ -94,6 +94,11 @@
       <f:facet name="header"><h:outputText value="#{messages.devicesHeader_mcmid}" /></f:facet>
       <h:outputText value="#{item.mcmid}" />
     </rich:column>
+
+    <rich:column id="glcode" rendered="#{devicesBean.tableColumns['glcode'].visible}" sortBy="#{glcode}"  filterBy="#{glcode}">
+      <f:facet name="header"><h:outputText value="#{messages.devicesHeader_glcode}" /></f:facet>
+      <h:outputText value="#{item.glcode}" />
+    </rich:column>
   </ui:define>
 
 </ui:composition>
