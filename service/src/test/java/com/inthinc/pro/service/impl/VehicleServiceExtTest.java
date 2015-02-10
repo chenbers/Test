@@ -9,6 +9,7 @@ import com.inthinc.pro.service.VehicleServiceExt;
 import com.inthinc.pro.service.adapters.VehicleDAOAdapter;
 import mockit.Expectations;
 import mockit.Mocked;
+import mockit.NonStrictExpectations;
 import org.joda.time.DateTime;
 import org.junit.After;
 import org.junit.Before;
@@ -335,11 +336,15 @@ public class VehicleServiceExtTest {
     @Test
     public void getVehiclesWithTripTest(){
 
-        new Expectations() {{
+        new NonStrictExpectations() {{
             mockVehicleDAO.getVehiclesInGroupHierarchy(anyInt);
             result = Arrays.asList(vehicle1, vehicle2, vehicle3);
-            mockLocationCassandraDAO.getLastTripForVehicle(anyInt);
-            result = Arrays.asList(mockTrip1, mockTrip2, mockTrip3);
+            mockLocationCassandraDAO.getLastTripForVehicle(vehicle1);
+            result = Arrays.asList(mockTrip1);
+            mockLocationCassandraDAO.getLastTripForVehicle(vehicle2);
+            result = Arrays.asList(mockTrip2);
+            mockLocationCassandraDAO.getLastTripForVehicle(vehicle3);
+            result = Arrays.asList(mockTrip3);
         }};
 
         Response response = vehicleServiceExt.getAllWithLastTrip();
