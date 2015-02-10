@@ -143,6 +143,11 @@ public class LocationCassandraDAO extends GenericCassandraDAO implements Locatio
         this.eventDAO = eventDAO;
     }
 
+    public Trip getLastTripForVehicle(Vehicle vehicle){
+        Trip trip = fetchLastCompletedTripForVehicle(vehicle);
+        return trip;
+    }
+
     @Override
     public Trip getLastTripForVehicle(Integer vehicleID) {
         Trip trip = fetchCurrentTripForAsset(vehicleID, false);
@@ -413,6 +418,30 @@ public class LocationCassandraDAO extends GenericCassandraDAO implements Locatio
         return isSamePos;
     }
 
+    private Trip fetchLastCompletedTripForVehicle(Vehicle vehicle) {
+        Trip trip = null;
+        SliceQuery<Integer, Composite, Long> sliceQuery = HFactory.createSliceQuery(getKeyspace(), integerSerializer, compositeSerializer, longSerializer);
+        sliceQuery.setColumnFamily(vehicleTripIndex_CF);
+        sliceQuery.setRange(null, null, true, 1);
+        sliceQuery.setKey(vehicle.getVehicleID());
+
+        QueryResult<ColumnSlice<Composite, Long>> result = sliceQuery.execute();
+        ColumnSlice<Composite, Long> columnSlice = result.get();
+
+        List<Long> rowKeysList = new ArrayList<Long>();
+        List<HColumn<Composite, Long>> columnList = columnSlice.getColumns();
+        for (HColumn<Composite, Long> column : columnList) {
+            rowKeysList.add(column.getValue());
+        }
+
+
+        List<Trip> tripList = fetchTrips(rowKeysList, vehicle.getVehicleID(), false, true);
+        if (tripList != null && tripList.size() > 0)
+            trip = tripList.get(0);
+
+        return trip;
+    }
+
     private Trip fetchLastCompletedTripForAsset(Integer assetId, boolean isDriver) {
         Trip trip = null;
         SliceQuery<Integer, Composite, Long> sliceQuery = HFactory.createSliceQuery(getKeyspace(), integerSerializer, compositeSerializer, longSerializer);
@@ -479,7 +508,7 @@ public class LocationCassandraDAO extends GenericCassandraDAO implements Locatio
         return rowKeysList;
     }
 
-    
+
     
     private List<Trip> fetchTrips(List<Long> rowKeyList, Integer assetID, boolean isDriver, boolean includeRoute) {
         List<Trip> tripList = new ArrayList<Trip>();
