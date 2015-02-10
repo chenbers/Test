@@ -87,6 +87,7 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
         AVAILABLE_COLUMNS.add("DOT");
         AVAILABLE_COLUMNS.add("IFTA");
         AVAILABLE_COLUMNS.add("productType");
+        AVAILABLE_COLUMNS.add("glcode");
         
 
         // years

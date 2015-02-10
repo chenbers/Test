@@ -68,9 +68,10 @@ public class AdminVehicleJDBCDAO extends SimpleJdbcDaoSupport{
         pagedColumnMap.put("DOT", "v.dot");    //?
         pagedColumnMap.put("IFTA", "v.ifta");
         pagedColumnMap.put("productType", "d.productVer");
+        pagedColumnMap.put("glcode", "v.glcode");
 
         PAGED_VEHICLE_COLUMNS_STRING = 
-                "v.vehicleID, v.groupID, v.status, v.name, v.make, v.model, v.year, v.color, v.vtype, v.vin, v.weight, v.license, v.stateID, v.odometer, v.ifta, v.absOdometer, "+
+                "v.vehicleID, v.groupID, v.status, v.name, v.make, v.model, v.year, v.color, v.vtype, v.vin, v.weight, v.license, v.stateID, v.odometer, v.ifta, v.absOdometer, v.glcode, "+
                 "d.deviceID, d.acctID, d.status, d.name, d.imei, d.sim, d.serialNum, d.phone, d.activated, d.baseID, d.productVer, d.firmVer, d.witnessVer, d.emuMd5, d.mcmid, d.altImei," +
                 "vdd.deviceID, vdd.driverID, CONCAT(p.first, ' ', p.last), g.name, p.first, p.middle, p.last, p.suffix";
                 
@@ -253,6 +254,7 @@ public class AdminVehicleJDBCDAO extends SimpleJdbcDaoSupport{
             vehicle.setVtype(VehicleType.valueOf(rs.getInt("v.vtype")));
             vehicle.setWeight(rs.getObject("v.weight") == null ? null : rs.getInt("v.weight"));
             vehicle.setYear(rs.getObject("v.year") == null ? null : rs.getInt("v.year"));
+            vehicle.setGlcode(rs.getString("v.glcode"));
 
             if (vehicle.getDeviceID() != null) {
                 Device device = new Device();

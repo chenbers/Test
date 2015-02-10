@@ -41,6 +41,9 @@ public class Device extends BaseEntity implements HasAccountId
     private String mcmid;   //Waysmart mcmid
     @Column(name = "altImei")
     private String altimei; //Alternate Waysmart imei
+    @Column(name = "glcode")
+    private String glcode;		// cost center glcode
+
 /* 
  * waySmartSerialNumber
  * 
@@ -267,4 +270,11 @@ public class Device extends BaseEntity implements HasAccountId
     public void setVehicleName(String vehicleName) {
         this.vehicleName = vehicleName;
     }
+
+    public String getGlcode() {
+		return glcode;
+	}
+	public void setGlcode(String glcode) {
+		this.glcode = glcode;
+	}
 }
