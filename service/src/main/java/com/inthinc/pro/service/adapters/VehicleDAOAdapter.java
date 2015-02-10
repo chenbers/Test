@@ -1,8 +1,10 @@
 package com.inthinc.pro.service.adapters;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import com.inthinc.pro.dao.cassandra.LocationCassandraDAO;
 import com.inthinc.pro.model.CustomDuration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -31,9 +33,11 @@ public class VehicleDAOAdapter extends BaseDAOAdapter<Vehicle> {
     @Autowired
     private VehicleDAO vehicleDAO;
     @Autowired
+    private LocationCassandraDAO locationCassandraDAO;
+    @Autowired
     private EventDAO eventDAO;   
     @Autowired
-    private VehicleReportDAO vehicleReportDAO;    
+    private VehicleReportDAO vehicleReportDAO;
 	
 //    @Autowired
 //    private ConfiguratorDAO configuratorDAO;
@@ -77,8 +81,14 @@ public class VehicleDAOAdapter extends BaseDAOAdapter<Vehicle> {
         return vehicleDAO.findByID(id);
     }
 
-    public List<Trip> getAllLastTrips(){
-        return vehicleDAO.getLastVehicleTripsByGrpIDDeep(getGroupID());
+    public List<Trip> getAllLastTrips(List<Vehicle> vehicleList){
+        List<Trip> tripList = new ArrayList<Trip>();
+        for (Vehicle vehicle: vehicleList){
+            Trip lastTrip = locationCassandraDAO.getLastTripForVehicle(vehicle);
+            if (lastTrip != null)
+                tripList.add(lastTrip);
+        }
+        return tripList;
     }
 
     public Vehicle findByName(String name) {
@@ -165,7 +175,15 @@ public class VehicleDAOAdapter extends BaseDAOAdapter<Vehicle> {
 		this.vehicleReportDAO = vehicleReportDAO;
 	}
 
-//	public ConfiguratorDAO getConfiguratorDAO() {
+    public LocationCassandraDAO getLocationCassandraDAO() {
+        return locationCassandraDAO;
+    }
+
+    public void setLocationCassandraDAO(LocationCassandraDAO locationCassandraDAO) {
+        this.locationCassandraDAO = locationCassandraDAO;
+    }
+
+    //	public ConfiguratorDAO getConfiguratorDAO() {
 //		return configuratorDAO;
 //	}
 //
