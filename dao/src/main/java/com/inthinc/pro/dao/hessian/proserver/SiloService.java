@@ -225,7 +225,7 @@ public interface SiloService extends HessianService
      */
     List<Map<String, Object>> getRecentNotes(Integer groupID, Integer eventCnt, Integer types[]) throws ProDAOException;
 
-    Map<String, Object> forgive(Integer driverID, Long noteID) throws ProDAOException;
+    Map<String, Object> forgive(Integer driverID, Long noteID, Long forgivenByUserID, String reason) throws ProDAOException;
     
     Map<String, Object> unforgive(Integer driverID, Long noteID) throws ProDAOException;
     

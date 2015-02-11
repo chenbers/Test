@@ -168,7 +168,7 @@ public class ForgiveEventTest extends SimpleJdbcDaoSupport {
         @Override
         public void run() {
             logger.info("forgive: " + noteID);
-            eventDAO.forgive(driverID, noteID);
+            eventDAO.forgive(driverID, noteID, 0l, "");
         }
         
     }
