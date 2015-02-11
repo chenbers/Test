@@ -70,6 +70,7 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
         AVAILABLE_COLUMNS.add("mcmid");
         AVAILABLE_COLUMNS.add("altimei");
         AVAILABLE_COLUMNS.add("productVer");
+        AVAILABLE_COLUMNS.add("glcode");
         
         CHOOSE_VEHICLE_COLUMNS = new ArrayList<String>();
         CHOOSE_VEHICLE_COLUMNS.add("name");
@@ -82,6 +83,7 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
         CHOOSE_VEHICLE_COLUMNS.add("status");
         CHOOSE_VEHICLE_COLUMNS.add("deviceID");
         CHOOSE_VEHICLE_COLUMNS.add("productVer");
+        CHOOSE_VEHICLE_COLUMNS.add("glcode");
 
         
     }

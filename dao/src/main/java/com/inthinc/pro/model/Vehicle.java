@@ -43,6 +43,8 @@ public class Vehicle extends BaseEntity
 
     @Column(updateable = false)
     private Device            device;
+    @Column(name = "glcode")
+    private String            glcode; // cost center glcode
 
     
     public Vehicle()
@@ -268,7 +270,7 @@ public class Vehicle extends BaseEntity
         return "Vehicle [VIN=" + VIN + ", color=" + color + ", deviceID=" + deviceID + ", driverID=" + driverID + ", groupID=" + groupID
                 + ", license=" + license + ", make=" + make + ", model=" + model + ", name=" + name + ", state=" + state + ", status=" + status + ", vehicleID=" + vehicleID
                 + ", vtype=" + vtype + ", weight=" + weight + ", year=" + year + //", hos="+ hos+
-                ", ifta="+ifta+
+                ", ifta="+ifta+ ", glcode="+ glcode +
                "]";
     }
     public Device getDevice() {
@@ -294,4 +296,11 @@ public class Vehicle extends BaseEntity
     public void setGroupName(String groupName) {
         this.groupName = groupName;
     }
+
+    public String getGlcode() {
+		return glcode;
+	}
+	public void setGlcode(String glcode) {
+		this.glcode = glcode;
+	}
 }

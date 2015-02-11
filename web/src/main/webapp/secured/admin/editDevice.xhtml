@@ -353,12 +353,29 @@
         </rich:togglePanel>
 		</ui:fragment>
 <!--                      <div class="spacer"></div>-->
-
-<!--                      <div><h:outputText value="#{messages.editDevice_speedSensitivityTab}" /></div>-->
-
+                   <!-- edit: glcode -->
+                   <table border="0" cellspacing="2" cellpadding="5" align="left" >
+                    <tr>
+                      <td width="100" valign="top">
+                        <ui:include src="../../includes/admin/inputLabel.xhtml">
+                              <ui:param name="required" value="FALSE"/>
+                              <ui:param name="forId" value="editDevice-glcode"/>
+                              <ui:param name="fieldName" value="glcode"/>
+                              <ui:param name="editBean" value="#{devicesBean}"/>
+                              <ui:param name="label" value="#{messages.editDevice_glcode}"/>
+                              <ui:param name="context" value="editDeviceGlcode"/>
+                        </ui:include>
+                      </td>
+                      <td>
+                        <h:inputText value="#{devicesBean.item.glcode}" id="editDevice-glcode" onchange="checkMultiple(this)" styleClass="text" size="30" maxlength="100" />
+                      </td>
+                    </tr>
+                   </table>
+                      <div class="spacer"></div>
+                      <div class="spacer"></div>
                       <div class="required-key"><h:outputText value="#{messages.requiredKey}" /></div>
 
-<!--                      <div class="spacer"></div>-->
+<!--                      <div><h:outputText value="#{messages.editDevice_speedSensitivityTab}" /></div>-->
 
                       <ul id="grid_nav" style="margin: 0;">
                         <li class="r">
