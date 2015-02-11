@@ -82,13 +82,7 @@ public class VehicleDAOAdapter extends BaseDAOAdapter<Vehicle> {
     }
 
     public List<Trip> getAllLastTrips(List<Vehicle> vehicleList){
-        List<Trip> tripList = new ArrayList<Trip>();
-        for (Vehicle vehicle: vehicleList){
-            Trip lastTrip = locationCassandraDAO.getLastTripForVehicle(vehicle);
-            if (lastTrip != null)
-                tripList.add(lastTrip);
-        }
-        return tripList;
+        return locationCassandraDAO.getLastTripsForVehicles(vehicleList);
     }
 
     public Vehicle findByName(String name) {

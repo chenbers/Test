@@ -339,12 +339,8 @@ public class VehicleServiceExtTest {
         new NonStrictExpectations() {{
             mockVehicleDAO.getVehiclesInGroupHierarchy(anyInt);
             result = Arrays.asList(vehicle1, vehicle2, vehicle3);
-            mockLocationCassandraDAO.getLastTripForVehicle(vehicle1);
-            result = Arrays.asList(mockTrip1);
-            mockLocationCassandraDAO.getLastTripForVehicle(vehicle2);
-            result = Arrays.asList(mockTrip2);
-            mockLocationCassandraDAO.getLastTripForVehicle(vehicle3);
-            result = Arrays.asList(mockTrip3);
+            mockLocationCassandraDAO.getLastTripsForVehicles(Arrays.asList(vehicle1, vehicle2, vehicle3));
+            result = Arrays.asList(mockTrip1, mockTrip2, mockTrip3);
         }};
 
         Response response = vehicleServiceExt.getAllWithLastTrip();

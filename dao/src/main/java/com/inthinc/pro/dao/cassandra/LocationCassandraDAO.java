@@ -143,10 +143,119 @@ public class LocationCassandraDAO extends GenericCassandraDAO implements Locatio
         this.eventDAO = eventDAO;
     }
 
-    public Trip getLastTripForVehicle(Vehicle vehicle){
-        Trip trip = fetchLastCompletedTripForVehicle(vehicle);
-        return trip;
+
+    /**
+     * Optimal get last trips for vehicles.
+     *
+     * @param vehicleList vehicle list
+     * @return vehicle trips
+     */
+    public List<Trip> getLastTripsForVehicles(List<Vehicle> vehicleList) {
+        if (vehicleList == null)
+            return null;
+
+        List<Integer> vehicleIdList = new ArrayList<Integer>();
+        for (Vehicle vehicle: vehicleList){
+            vehicleIdList.add(vehicle.getVehicleID());
+        }
+        List<Long> rowKeysList = new ArrayList<Long>();
+        List<Trip> tripList = new ArrayList<Trip>();
+
+        MultigetSliceQuery<Integer, Composite, Long> sliceQuery = HFactory.createMultigetSliceQuery(getKeyspace(), integerSerializer, compositeSerializer, longSerializer);
+        sliceQuery.setColumnFamily(vehicleTripIndex_CF);
+        sliceQuery.setRange(null, null, true, 1);
+        sliceQuery.setKeys(vehicleIdList);
+
+        QueryResult<Rows<Integer, Composite, Long>> result = sliceQuery.execute();
+
+        Rows<Integer, Composite, Long> rows = result.get();
+        for (Row<Integer, Composite, Long> row : rows) {
+            ColumnSlice<Composite, Long> columnSlice = row.getColumnSlice();
+
+            List<HColumn<Composite, Long>> columnList = columnSlice.getColumns();
+            for (HColumn<Composite, Long> column : columnList) {
+                rowKeysList.add(column.getValue());
+            }
+        }
+
+        MultigetSliceQuery<Long, String, Integer> tripSliceQuery = HFactory.createMultigetSliceQuery(getKeyspace(), longSerializer, stringSerializer, integerSerializer);
+
+        tripSliceQuery.setColumnFamily(trip_CF);
+        tripSliceQuery.setRange("!", "~", false, vehicleList.size()*2);
+        tripSliceQuery.setKeys(rowKeysList);
+
+        QueryResult<Rows<Long, String, Integer>> tripResult = tripSliceQuery.execute();
+
+        Rows<Long, String, Integer> tripRows = tripResult.get();
+        for (Row<Long, String, Integer> row : tripRows) {
+            ColumnSlice<String, Integer> columnSlice = row.getColumnSlice();
+            List<HColumn<String, Integer>> columnList = columnSlice.getColumns();
+
+            Map<String, Object> fieldMap = new HashMap<String, Object>();
+            if (columnList.size() > 0) {
+                for (HColumn<String, Integer> column : columnList) {
+                    if (column.getName().startsWith(START_LAT) || column.getName().startsWith(START_LNG) || column.getName().startsWith(END_LAT) || column.getName().startsWith(END_LNG))
+                        fieldMap.put(column.getName(), convertInt2Double(column.getValue()));
+                    else
+                        fieldMap.put(column.getName(), column.getValue());
+                }
+
+                Trip trip = mapper.convertToModelObject(fieldMap, Trip.class);
+                if (trip.getMileage() == null)
+                    trip.setMileage(0);
+
+                trip.setStatus(TripStatus.TRIP_COMPLETED);
+
+                List<LatLng> routeList = new ArrayList<LatLng>();
+
+                LatLng startLoc = new LatLng(trip.getStartLat(), trip.getStartLng());
+                startLoc.setTime(trip.getStartTime());
+                LatLng endLoc = new LatLng(trip.getEndLat(), trip.getEndLng());
+                endLoc.setTime(trip.getEndTime());
+
+                if (isValidLocation(startLoc))
+                    routeList.add(startLoc);
+
+                if (isValidLocation(endLoc))
+                    routeList.add(endLoc);
+
+                trip.setRoute(routeList);
+                trip.setFullRouteLoaded(!isValidLocation(startLoc) || !isValidLocation(endLoc));
+                tripList.add(trip);
+            }
+        }
+
+        tripList = cleanAndRemoveVehicleIdDuplicates(tripList);
+        Collections.sort(tripList, new LatestTimeTripComparator());
+        return tripList;
     }
+
+    /**
+     * Removes duplicate trips per vehicle id.
+     * Removes trips with no vehicle id.
+     *
+     * @param tripList trip list
+     * @return cleaned list
+     */
+    private List<Trip> cleanAndRemoveVehicleIdDuplicates(List<Trip> tripList){
+        List<Trip> returnList = new ArrayList<Trip>(tripList.size());
+        Map<Integer, Trip> map = new HashMap<Integer, Trip>();
+
+        for (Trip trip: tripList){
+            if (trip.getTripID()!=null) {
+                if (map.containsKey(trip.getVehicleID())) {
+                    Trip existing = map.get(trip.getVehicleID());
+                    if (existing.getStartTime().before(trip.getStartTime()))
+                        map.put(trip.getVehicleID(), trip);
+                }else{
+                    map.put(trip.getVehicleID(), trip);
+                }
+            }
+        }
+        returnList.addAll(map.values());
+        return returnList;
+    }
+
 
     @Override
     public Trip getLastTripForVehicle(Integer vehicleID) {
@@ -236,7 +345,7 @@ public class LocationCassandraDAO extends GenericCassandraDAO implements Locatio
         DriverStops stop = null;
         Map<Integer, String> vehicleNameMap = new HashMap<Integer, String>();
         for (Trip trip : tripList) {
-            
+
             String vehicleName = vehicleNameMap.get(trip.getVehicleID());
             if (vehicleName == null) {
                 Vehicle vehicle = vehicleDAO.findByID(trip.getVehicleID());
@@ -283,7 +392,7 @@ public class LocationCassandraDAO extends GenericCassandraDAO implements Locatio
                 }
             }
         }
-        
+
         //If current stop, add
         if (stop != null && stop.getArriveTime() != null && stop.getDepartTime() == null)
             stopsList.add(stop);
@@ -313,7 +422,7 @@ public class LocationCassandraDAO extends GenericCassandraDAO implements Locatio
                             // We have an idle event right before a start trip. Make it the some stop
                             s.setIdleHi(s.getIdleHi() + idleHi);
                             s.setIdleLo(s.getIdleLo() + idleLo);
-    
+
                             // Set the arrivalTime to the idle noteTime - its idle time
                             s.setArriveTime(DateUtil.convertDateToSeconds(event.getTime()) - (s.getIdleHi() + s.getIdleLo()));
                             break;
@@ -327,7 +436,7 @@ public class LocationCassandraDAO extends GenericCassandraDAO implements Locatio
                             s.setDepartTime(DateUtil.convertDateToSeconds(event.getTime()));
                             break;
                         }
-                    }    
+                    }
                 }
 
                 //We have idles that don't back up against a stop.
@@ -392,22 +501,22 @@ public class LocationCassandraDAO extends GenericCassandraDAO implements Locatio
         }
         return stop;
     }
-    
+
     private void adjustStopDriveTimes(List<DriverStops> stopsList) {
         Collections.sort(stopsList, new EarliestTimeStopComparator());
-        
+
         Long departTime = null;
         for (DriverStops stop : stopsList) {
             if (departTime != null) {
                 long driveTime = stop.getArriveTime() - departTime;
                 stop.setDriveTime(driveTime > 0 ? driveTime : 0L);
-            } 
-                
+            }
+
             departTime = stop.getDepartTime();
         }
     }
 
-    
+
     private boolean isSamePosition(Double lat1, Double lng1, Double lat2, Double lng2) {
         boolean isSamePos = true;
         Double deltaLat = Math.abs(lat1 - lat2);
@@ -416,30 +525,6 @@ public class LocationCassandraDAO extends GenericCassandraDAO implements Locatio
             isSamePos = false;
 
         return isSamePos;
-    }
-
-    private Trip fetchLastCompletedTripForVehicle(Vehicle vehicle) {
-        Trip trip = null;
-        SliceQuery<Integer, Composite, Long> sliceQuery = HFactory.createSliceQuery(getKeyspace(), integerSerializer, compositeSerializer, longSerializer);
-        sliceQuery.setColumnFamily(vehicleTripIndex_CF);
-        sliceQuery.setRange(null, null, true, 1);
-        sliceQuery.setKey(vehicle.getVehicleID());
-
-        QueryResult<ColumnSlice<Composite, Long>> result = sliceQuery.execute();
-        ColumnSlice<Composite, Long> columnSlice = result.get();
-
-        List<Long> rowKeysList = new ArrayList<Long>();
-        List<HColumn<Composite, Long>> columnList = columnSlice.getColumns();
-        for (HColumn<Composite, Long> column : columnList) {
-            rowKeysList.add(column.getValue());
-        }
-
-
-        List<Trip> tripList = fetchTrips(rowKeysList, vehicle.getVehicleID(), false, true);
-        if (tripList != null && tripList.size() > 0)
-            trip = tripList.get(0);
-
-        return trip;
     }
 
     private Trip fetchLastCompletedTripForAsset(Integer assetId, boolean isDriver) {
@@ -458,7 +543,7 @@ public class LocationCassandraDAO extends GenericCassandraDAO implements Locatio
             rowKeysList.add(column.getValue());
         }
 
-        
+
         List<Trip> tripList = fetchTrips(rowKeysList, assetId, isDriver, true);
         if (tripList != null && tripList.size() > 0)
             trip = tripList.get(0);
@@ -509,7 +594,7 @@ public class LocationCassandraDAO extends GenericCassandraDAO implements Locatio
     }
 
 
-    
+
     private List<Trip> fetchTrips(List<Long> rowKeyList, Integer assetID, boolean isDriver, boolean includeRoute) {
         List<Trip> tripList = new ArrayList<Trip>();
         MultigetSliceQuery<Long, String, Integer> sliceQuery = HFactory.createMultigetSliceQuery(getKeyspace(), longSerializer, stringSerializer, integerSerializer);
@@ -543,13 +628,13 @@ public class LocationCassandraDAO extends GenericCassandraDAO implements Locatio
                 logger.debug("trip: " + trip);
                 if (trip.getMileage() == null)
                     trip.setMileage(0);
-                
+
                 trip.setStatus(TripStatus.TRIP_COMPLETED);
 
                 // logger.debug("LocationCassandraDAO fetchTrips() trip = " + trip);
 
-                List<LatLng> routeList = new ArrayList<LatLng>();  
-                
+                List<LatLng> routeList = new ArrayList<LatLng>();
+
                 LatLng startLoc = new LatLng(trip.getStartLat(), trip.getStartLng());
                 startLoc.setTime(trip.getStartTime());
                 LatLng endLoc = new LatLng(trip.getEndLat(), trip.getEndLng());
@@ -559,13 +644,13 @@ public class LocationCassandraDAO extends GenericCassandraDAO implements Locatio
 					routeList.add(startLoc);
                 if (includeRoute || !isValidLocation(startLoc) || !isValidLocation(endLoc)) {
                     routeList.addAll(fetchRouteForTrip(assetID, (int) DateUtil.convertDateToSeconds(trip.getStartTime()), (int) DateUtil.convertDateToSeconds(trip.getEndTime()), isDriver));
-                }    
+                }
 				if (isValidLocation(endLoc))
 					routeList.add(endLoc);
 
                 trip.setRoute(routeList);
                 trip.setFullRouteLoaded(includeRoute || !isValidLocation(startLoc) || !isValidLocation(endLoc));
-                
+
                 tripList.add(trip);
             }
         }
@@ -579,14 +664,14 @@ public class LocationCassandraDAO extends GenericCassandraDAO implements Locatio
     private Trip fetchCurrentTripForAsset(Integer id, boolean isDriver) {
         Trip trip = null;
         Vehicle vehicle = null;
-        
+
         if (vehicleDAO != null) {
             if (isDriver)
                 vehicle = vehicleDAO.findByDriverID(id);
             else
                 vehicle = vehicleDAO.findByID(id);
         }
-        
+
         logger.debug("fetchCurrentTripForAsset vehicle: " + vehicle);
 
         if (vehicle != null) {
@@ -603,11 +688,11 @@ public class LocationCassandraDAO extends GenericCassandraDAO implements Locatio
                     trip.setDriverID(id);
                 else
                     trip.setDriverID(vehicle.getDriverID());
-                
+
                 trip.setStatus(TripStatus.TRIP_IN_PROGRESS);
                 trip.setQuality(TripQuality.UNKNOWN);
                 Device device = deviceDAO.findByID(vehicle.getDeviceID());
-                
+
                 if (device.isWaySmart()){
                     int startOdometer = trip.getMileage();
                     int endOdometer = lastLocation.getOdometer();
@@ -617,14 +702,14 @@ public class LocationCassandraDAO extends GenericCassandraDAO implements Locatio
                     int mileage = sumMiles(vehicle.getVehicleID(), trip.getStartTime(), new Date());
                     trip.setMileage(mileage);
                 }
-                
+
                 trip.setEndLat(lastLocation.getLoc().getLat());
                 trip.setEndLng(lastLocation.getLoc().getLng());
                 trip.setEndTime(new Date());
                 trip.setRoute(fetchRouteForTrip(id, (int) DateUtil.convertDateToSeconds(trip.getStartTime()), (int) DateUtil.convertDateToSeconds(trip.getEndTime()), isDriver));
-            }    
+            }
         }
-        
+
         logger.debug("fetchCurrentTripForAsset trip: " + ((trip == null) ? "null" : trip));
 
         return trip;
@@ -633,12 +718,12 @@ public class LocationCassandraDAO extends GenericCassandraDAO implements Locatio
     public List<LatLng> getLocationsForDriverTrip(Integer driverID, Date startTime, Date endTime) {
         return fetchRouteForTrip(driverID, (int) DateUtil.convertDateToSeconds(startTime), (int) DateUtil.convertDateToSeconds(endTime), true);
     }
-    
+
     public List<LatLng> getLocationsForVehicleTrip(Integer vehicleID, Date startTime, Date endTime) {
         return fetchRouteForTrip(vehicleID, (int) DateUtil.convertDateToSeconds(startTime), (int) DateUtil.convertDateToSeconds(endTime), false);
     }
 
-        
+
     private List<LatLng> fetchRouteForTrip(Integer id, Integer startTime, Integer endTime, boolean isDriver) {
         logger.debug("fetchRouteForTrip ID: " + id + " startTime: " + startTime + " endTime: " + endTime);
         List<LatLng> locationList = new ArrayList<LatLng>();
@@ -680,7 +765,7 @@ public class LocationCassandraDAO extends GenericCassandraDAO implements Locatio
             location.setHeading(0);
 //            logger.info("fieldMap: " + fieldMap);
 //            logger.info("Trip LatLng: " + location);
-            
+
 //            log(fieldMap);
 			if (isValidLocation(location))
 				locationList.add(location);
@@ -690,17 +775,17 @@ public class LocationCassandraDAO extends GenericCassandraDAO implements Locatio
     }
 
     private void log(Map<String, Object> fieldMap){
-        
+
 //        System.out.println(fieldMap);
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
         Integer timeDS = ((Number)fieldMap.get(Attrib.NOTETIME.getFieldName())).intValue();
         Integer odometer = ((Number)fieldMap.get(Attrib.NOTEODOMETER.getFieldName())).intValue();
         Date time = new Date(timeDS*1000L);
-        
+
         System.out.println("UPDATE note20 set odometer=" + odometer + " WHERE deviceID=43316 AND time='" + dateFormat.format(time) + "';");
-    } 
-    
+    }
+
     private LastLocation fetchLastLocationForAsset(String index_cf, String breadcrumb_cf, Integer id, boolean isDriver) {
 
         LastLocation lastLocation = null;
@@ -731,7 +816,7 @@ public class LocationCassandraDAO extends GenericCassandraDAO implements Locatio
                 lastLocation = fetchLastLocationFromNote(noteId);
 //                lastLocation.setDriverID(isDriver ? id : assetId);
 //                lastLocation.setVehicleID((!isDriver) ? id : assetId);
-            }    
+            }
         }
         return lastLocation;
     }
@@ -770,7 +855,7 @@ public class LocationCassandraDAO extends GenericCassandraDAO implements Locatio
         return keyMap;
     }
 */
-    
+
     private Map<Composite, Long> fetchLastLocationNoteFromIndex(String INDEX_CF, Integer id) {
         final int MAX_COLS = 10;
 
@@ -921,12 +1006,12 @@ public class LocationCassandraDAO extends GenericCassandraDAO implements Locatio
         SliceQuery<Integer, Composite, byte[]> sliceQuery = HFactory.createSliceQuery(getCacheKeyspace(), integerSerializer, compositeSerializer, bytesArraySerializer);
 
         sliceQuery.setColumnFamily(startTripCache_CF);
-        sliceQuery.setRange(startColName, endColName, false, 1); 
-        
+        sliceQuery.setRange(startColName, endColName, false, 1);
+
         sliceQuery.setKey(1);
 
         QueryResult<ColumnSlice<Composite, byte[]>> result = sliceQuery.execute();
-        ColumnSlice<Composite, byte[]> columnSlice = result.get();            
+        ColumnSlice<Composite, byte[]> columnSlice = result.get();
 
         if (columnSlice.getColumns().size() > 0) {
             trip = new Trip();
@@ -946,9 +1031,9 @@ public class LocationCassandraDAO extends GenericCassandraDAO implements Locatio
             trip.setVehicleID(vehicleID);
         }
         return trip;
-    }    
+    }
 
-    
+
     private int sumMiles(Integer vehicleID, Date startTime, Date endTime) {
         return sumMiles(vehicleID, (int)(startTime.getTime()/1000), (int)(endTime.getTime()/1000));
     }
@@ -960,7 +1045,7 @@ public class LocationCassandraDAO extends GenericCassandraDAO implements Locatio
         return miles;
     }
 
-    
+
     private int sumMiles(Integer vehicleID, Integer startTime, Integer endTime, String CF)
     {
         SliceQuery<Integer, Composite, byte[]> sliceQuery = HFactory.createSliceQuery(getKeyspace(), integerSerializer, compositeSerializer, bytesArraySerializer);
@@ -1007,7 +1092,7 @@ public class LocationCassandraDAO extends GenericCassandraDAO implements Locatio
     private class EarliestTimeStopComparator implements Comparator<DriverStops> {
         @Override
         public int compare(DriverStops s1, DriverStops s2) {
-            Long arrive1 = (s1.getArriveTime() == null) ? 0 : s1.getArriveTime(); 
+            Long arrive1 = (s1.getArriveTime() == null) ? 0 : s1.getArriveTime();
             Long arrive2 = (s2.getArriveTime() == null) ? 0 : s2.getArriveTime();
             return arrive1.compareTo(arrive2);
         }
