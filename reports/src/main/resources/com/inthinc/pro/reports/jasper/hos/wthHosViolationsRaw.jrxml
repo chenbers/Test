@@ -34,10 +34,10 @@
 		<band height="19">
 			<textField isStretchWithOverflow="true" isBlankWhenNull="false">
 				<reportElement key="textField-40" stretchType="RelativeToBandHeight" mode="Opaque" x="0" y="0" width="105" height="19" forecolor="#000000" backcolor="#FFFFFF" uuid="aa86d8e8-62e3-46bb-8820-00c460626429"/>
-				<textElement>
+				<textElement textAlignment="Center">
 					<font isBold="false" pdfFontName="Helvetica-Bold"/>
 				</textElement>
-				<textFieldExpression><![CDATA[str("column.1.raw")]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$R{group.title}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="false">
 				<reportElement key="textField" x="105" y="0" width="45" height="19" isPrintWhenDetailOverflows="true" uuid="a3c0b5e7-7386-42bd-bbbc-77f3b0e41b55"/>
@@ -77,7 +77,7 @@
 			<textField isStretchWithOverflow="true" pattern="###0" isBlankWhenNull="false">
 				<reportElement key="textField" x="420" y="0" width="107" height="19" isPrintWhenDetailOverflows="true" uuid="29e08053-608e-4a64-bf10-f5623efa3764"/>
 				<textElement textAlignment="Center"/>
-				<textFieldExpression><![CDATA[str("column.16.raw")]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$R{column.4.english}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" pattern="###0" isBlankWhenNull="false">
 				<reportElement key="textField" x="527" y="0" width="45" height="19" isPrintWhenDetailOverflows="true" uuid="b7dce702-7e36-4fe3-926d-8f2f12116a16"/>
@@ -122,8 +122,7 @@
 				<reportElement key="textField" x="285" y="0" width="45" height="19" isPrintWhenDetailOverflows="true" uuid="63061530-6551-4fe9-9f6f-f1f4f52804df"/>
 				<textElement textAlignment="Center"/>
 				<textFieldExpression><![CDATA[$F{hourDriving11}.intValue()+$F{onDutyHours14}.intValue()+
-$F{onDutyHours70}.intValue()+$F{thirtyMinuteBreak}.intValue()
-]]></textFieldExpression>
+$F{onDutyHours70}.intValue()+$F{thirtyMinuteBreak}.intValue()]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="false">
 				<reportElement key="textField" x="330" y="0" width="45" height="19" isPrintWhenDetailOverflows="true" uuid="b4cba127-0551-47a8-8700-a7c9db818476"/>
@@ -145,8 +144,7 @@ $F{onDutyHours70}.intValue()+$F{thirtyMinuteBreak}.intValue()
 				<textElement textAlignment="Center"/>
 				<textFieldExpression><![CDATA[($F{totalMilesNoDriver} != null && $F{totalMilesNoDriver}.intValue() != 0) ?
 (Double.valueOf(com.inthinc.pro.reports.hos.converter.Converter.convertRemarkDistance($F{totalMilesNoDriver},$P{USE_METRIC},$P{REPORT_LOCALE})) / Double.valueOf(com.inthinc.pro.reports.hos.converter.Converter.convertRemarkDistance($F{totalMiles},$P{USE_METRIC},$P{REPORT_LOCALE})))
-: new Double(0.0)
-]]></textFieldExpression>
+: new Double(0.0)]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00 %" isBlankWhenNull="false">
 				<reportElement key="textField" x="572" y="0" width="107" height="19" isPrintWhenDetailOverflows="true" uuid="02b697a0-a6c2-4e6e-800d-ac0e6e9a5401"/>
