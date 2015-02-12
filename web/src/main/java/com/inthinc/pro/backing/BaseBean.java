@@ -297,6 +297,11 @@ public class BaseBean implements Serializable {
         String maintenanceEnabled = getProUser().getAccountAttributes().getMaintenanceEnabled();
         return (maintenanceEnabled == null || maintenanceEnabled.equals("false")) ? false : true;
     }
+
+    public boolean getWeatherfordViolationsReport(){
+        String weatherfordVilationsReportEnabled = getProUser().getAccountAttributes().getWeatherfordViolationsReportEnabled();
+        return (weatherfordVilationsReportEnabled == null || weatherfordVilationsReportEnabled.equals("false")) ? false : true;
+    }
     
     public boolean isAccountRedirectVehicleAdmin() {
         return getProUser().getAccountAttributes().getRedirectVehiclesAssets().equals("ASSETS");
