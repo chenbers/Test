@@ -611,7 +611,7 @@ $V{SUM_70}.intValue()+$V{SUM_30}.intValue()]]></textFieldExpression>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Center"/>
-				<textFieldExpression><![CDATA[$V{SUM_onDuty_2_1}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$V{SUM_driverCnt_1}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" pattern="###0" isBlankWhenNull="false">
 				<reportElement key="textField-30" style="ColumnHeader" mode="Transparent" x="501" y="5" width="90" height="19" isRemoveLineWhenBlank="true" backcolor="#CCCCCC" uuid="f3a66efb-8a23-4927-bd86-78090a6f5cd9"/>
