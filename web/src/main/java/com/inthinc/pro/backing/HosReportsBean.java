@@ -50,6 +50,8 @@ public class HosReportsBean extends ReportsBean {
             if (!rt.isCategory(category)) continue;
             if (catRequiresHOS && !rt.getRequiresHOSAccount())
                 continue;
+            if (rt.equals(ReportGroup.WEATHERFORD_HOS_VIOLATIONS_SUMMARY_REPORT) && !getWeatherfordViolationsReport())
+                continue;
             items.add(new SelectItem(rt.getCode(), MessageUtil.getMessageString(rt.toString())));
             reportGroupMap.put(rt.getCode(), rt);
         }

@@ -23,9 +23,6 @@ public class GroupListReportCriteria extends ReportCriteria {
 
     }
 
-    public String getShortGroupName(GroupHierarchy groupHierarchy) {
-        return groupHierarchy.getTopGroup().getName();
-    }
 
     protected List<Driver> getReportDriverList(List<Group> reportGroupList){
         return getReportDriverList(reportGroupList, getIncludeInactiveDrivers());
