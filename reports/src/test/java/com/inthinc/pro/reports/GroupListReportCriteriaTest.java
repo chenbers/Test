@@ -28,8 +28,8 @@ public class GroupListReportCriteriaTest {
         groupHierarchy.setGroupList(Arrays.asList(group1, group2));
 
         GroupListReportCriteria groupListReportCriteria = new GroupListReportCriteria(ReportType.BACKING_REPORT, Locale.CANADA);
-        String result = groupListReportCriteria.getShortGroupName(groupHierarchy);
+        String result = groupHierarchy.getLastGroupName();
 
-        assertEquals(result, "name1");
+        assertEquals(result, "name2");
     }
 }
