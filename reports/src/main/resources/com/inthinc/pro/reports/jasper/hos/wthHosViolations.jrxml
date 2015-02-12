@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="hosViolations" pageWidth="842" pageHeight="595" orientation="Landscape" whenNoDataType="NoDataSection" columnWidth="782" leftMargin="30" rightMargin="30" topMargin="20" bottomMargin="20" resourceBundle="i18n/hosViolations" uuid="de056cfc-c88a-4a98-b1fc-790894c6f49d">
 	<property name="ireport.zoom" value="1.4641000000000008"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="54"/>
+	<property name="ireport.y" value="0"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
@@ -241,7 +241,7 @@
 					<bottomPen lineWidth="0.0" lineColor="#000000"/>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
-				<textElement textAlignment="Center">
+				<textElement textAlignment="Center" verticalAlignment="Top">
 					<font fontName="SansSerif" size="12" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$R{column.4.english}]]></textFieldExpression>
@@ -271,7 +271,7 @@
 					<bottomPen lineWidth="0.0" lineColor="#000000"/>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
-				<textElement textAlignment="Center">
+				<textElement textAlignment="Center" verticalAlignment="Top">
 					<font fontName="SansSerif" size="12" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$R{column.6.english}]]></textFieldExpression>
@@ -284,66 +284,66 @@
 					<bottomPen lineWidth="0.0" lineColor="#000000"/>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
-				<textElement textAlignment="Center">
+				<textElement textAlignment="Center" verticalAlignment="Top">
 					<font fontName="SansSerif" size="12" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$R{column.7}]]></textFieldExpression>
 			</textField>
 			<textField pattern="" isBlankWhenNull="false">
-				<reportElement key="textField-77" style="PageHeader" positionType="FixRelativeToBottom" mode="Transparent" x="419" y="39" width="84" height="18" backcolor="#CCCCCC" uuid="2f3ff70c-ad5c-4588-81d2-7e5d933f431d"/>
+				<reportElement key="textField-77" style="PageHeader" positionType="FixRelativeToBottom" mode="Transparent" x="419" y="25" width="84" height="32" backcolor="#CCCCCC" uuid="2f3ff70c-ad5c-4588-81d2-7e5d933f431d"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<bottomPen lineWidth="0.0" lineColor="#000000"/>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
-				<textElement textAlignment="Center">
+				<textElement textAlignment="Center" verticalAlignment="Top">
 					<font fontName="SansSerif" size="12" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$R{column.2}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="false">
-				<reportElement key="textField-78" style="ColumnHeader" mode="Transparent" x="0" y="39" width="84" height="18" backcolor="#CCCCCC" uuid="f7078a9a-4ff8-4fd6-984c-55967667f20e"/>
+				<reportElement key="textField-78" style="ColumnHeader" mode="Transparent" x="0" y="25" width="84" height="32" backcolor="#CCCCCC" uuid="f7078a9a-4ff8-4fd6-984c-55967667f20e"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<bottomPen lineWidth="0.0" lineColor="#000000"/>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Bottom"/>
+				<textElement textAlignment="Center" verticalAlignment="Top"/>
 				<textFieldExpression><![CDATA[$R{column.11hrs}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="false">
-				<reportElement key="textField-79" style="ColumnHeader" mode="Transparent" x="84" y="39" width="84" height="18" backcolor="#CCCCCC" uuid="209f72eb-953c-4e67-89cd-cde7578fc849"/>
+				<reportElement key="textField-79" style="ColumnHeader" mode="Transparent" x="84" y="25" width="84" height="32" backcolor="#CCCCCC" uuid="209f72eb-953c-4e67-89cd-cde7578fc849"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<bottomPen lineWidth="0.0" lineColor="#000000"/>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Bottom"/>
+				<textElement textAlignment="Center" verticalAlignment="Top"/>
 				<textFieldExpression><![CDATA[$R{column.14hrs}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="false">
-				<reportElement key="textField-80" style="ColumnHeader" mode="Transparent" x="167" y="39" width="84" height="18" backcolor="#CCCCCC" uuid="d1f5d90c-d652-4723-b740-06b99dd43ee7"/>
+				<reportElement key="textField-80" style="ColumnHeader" mode="Transparent" x="167" y="25" width="84" height="32" backcolor="#CCCCCC" uuid="d1f5d90c-d652-4723-b740-06b99dd43ee7"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<bottomPen lineWidth="0.0" lineColor="#000000"/>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Bottom"/>
+				<textElement textAlignment="Center" verticalAlignment="Top"/>
 				<textFieldExpression><![CDATA[$R{column.70hrs}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="false">
-				<reportElement key="textField-81" style="ColumnHeader" mode="Transparent" x="251" y="39" width="84" height="18" backcolor="#CCCCCC" uuid="45824a00-4303-41ad-9aeb-03331e7e302a"/>
+				<reportElement key="textField-81" style="ColumnHeader" mode="Transparent" x="251" y="25" width="84" height="32" backcolor="#CCCCCC" uuid="45824a00-4303-41ad-9aeb-03331e7e302a"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<bottomPen lineWidth="0.0" lineColor="#000000"/>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Bottom"/>
+				<textElement textAlignment="Center" verticalAlignment="Top"/>
 				<textFieldExpression><![CDATA[$R{column.30min}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="false">
@@ -365,7 +365,7 @@
 					<bottomPen lineWidth="0.0" lineColor="#000000"/>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Bottom"/>
+				<textElement textAlignment="Center" verticalAlignment="Top"/>
 				<textFieldExpression><![CDATA[$R{column.all}]]></textFieldExpression>
 			</textField>
 		</band>
@@ -426,8 +426,7 @@
 				</box>
 				<textElement textAlignment="Center"/>
 				<textFieldExpression><![CDATA[$F{hourDriving11}.intValue()+$F{onDutyHours14}.intValue()+
-$F{onDutyHours70}.intValue()+$F{thirtyMinuteBreak}.intValue()
-]]></textFieldExpression>
+$F{onDutyHours70}.intValue()+$F{thirtyMinuteBreak}.intValue()]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0" isBlankWhenNull="false">
 				<reportElement key="textField" style="Details1" x="501" y="3" width="90" height="19" isPrintWhenDetailOverflows="true" uuid="e96a37ce-4b80-42c3-9c7b-b6b72ffd443f"/>
@@ -462,8 +461,7 @@ $F{onDutyHours70}.intValue()+$F{thirtyMinuteBreak}.intValue()
 				<textElement textAlignment="Right"/>
 				<textFieldExpression><![CDATA[($F{totalMilesNoDriver} != null && $F{totalMilesNoDriver}.intValue() != 0) ?
 (Double.valueOf(com.inthinc.pro.reports.hos.converter.Converter.convertRemarkDistance($F{totalMilesNoDriver},$P{USE_METRIC},$P{REPORT_LOCALE})) / Double.valueOf(com.inthinc.pro.reports.hos.converter.Converter.convertRemarkDistance($F{totalMiles},$P{USE_METRIC},$P{REPORT_LOCALE})))
-: new Double(0.0)
-]]></textFieldExpression>
+: new Double(0.0)]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" pattern="#,##0.00 %" isBlankWhenNull="false">
 				<reportElement key="textField-19" style="Details1" x="707" y="3" width="71" height="19" isPrintWhenDetailOverflows="true" uuid="75d041be-e066-4787-bf97-edf73d225329"/>
