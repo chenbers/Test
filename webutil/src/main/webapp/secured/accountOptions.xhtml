@@ -94,6 +94,16 @@
                     </tr>
 
                     <tr>
+                        <td style="vertical-align: middle;"><h:outputText value="Weatherford violations report: " /></td>
+                        <td>
+                            <h:selectOneMenu id="editAccount-weatherford" value="#{accountOptionsBean.account.props.weatherfordViolationsReportEnabled}">
+                                <f:selectItem itemLabel="Disabled" itemValue="false"/>
+                                <f:selectItem itemLabel="Enabled" itemValue="true"/>
+                            </h:selectOneMenu>
+                        </td>
+                    </tr>
+
+                    <tr>
                         <td style="vertical-align: middle;"><h:outputText value="Redirect to Vehicle Page: " /></td>
                         <td>
                             <h:selectOneMenu id="editAccount-redirect-assets" value="#{accountOptionsBean.account.props.redirectVehiclesAssets}">

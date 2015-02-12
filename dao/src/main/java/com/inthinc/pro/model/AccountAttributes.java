@@ -40,6 +40,7 @@ public class AccountAttributes extends BaseEntity {
     private String eventQueueEnabled;
     private String redirectVehiclesAssets;
     private String sbsAccessEnabled;
+    private String weatherfordViolationsReportEnabled;
 
 
     @Column(updateable = false)
@@ -309,5 +310,13 @@ public class AccountAttributes extends BaseEntity {
 
     public void setSbsAccessEnabled(String sbsAccessEnabledEnabled) {
         this.sbsAccessEnabled = sbsAccessEnabledEnabled;
+    }
+
+    public String getWeatherfordViolationsReportEnabled() {
+        return weatherfordViolationsReportEnabled;
+    }
+
+    public void setWeatherfordViolationsReportEnabled(String weatherfordViolationsReportEnabled) {
+        this.weatherfordViolationsReportEnabled = weatherfordViolationsReportEnabled;
     }
 }

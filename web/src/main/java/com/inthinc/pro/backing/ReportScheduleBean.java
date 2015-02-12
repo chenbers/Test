@@ -180,6 +180,8 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
             }
             if (!rt.isCategory(category))
                 continue;
+            if (rt.equals(ReportGroup.WEATHERFORD_HOS_VIOLATIONS_SUMMARY_REPORT) && !getWeatherfordViolationsReport())
+                continue;
             if (rt.getRequiresHOSAccount() && !getAccountIsHOS())
                 continue;
             if (rt.getRequiresWaySmartAccount() && !getAccountIsWaysmart())
