@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="hosViolations" pageWidth="1042" pageHeight="595" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="1042" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" resourceBundle="i18n/hosViolations" uuid="c709c882-5555-462a-9dbc-493e00542ca2">
-	<property name="ireport.zoom" value="1.1000000000000094"/>
-	<property name="ireport.x" value="0"/>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="hosViolations" pageWidth="935" pageHeight="595" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="935" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" resourceBundle="i18n/hosViolations" uuid="c709c882-5555-462a-9dbc-493e00542ca2">
+	<property name="ireport.zoom" value="1.464100000000023"/>
+	<property name="ireport.x" value="111"/>
 	<property name="ireport.y" value="0"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
@@ -55,14 +55,14 @@
 		<groupFooter>
 			<band height="20">
 				<textField isBlankWhenNull="false">
-					<reportElement key="textField" x="474" y="1" width="60" height="19" isPrintWhenDetailOverflows="true" uuid="b4cba127-0551-47a8-8700-a7c9db818476"/>
+					<reportElement key="textField" x="474" y="0" width="60" height="19" isPrintWhenDetailOverflows="true" uuid="b4cba127-0551-47a8-8700-a7c9db818476"/>
 					<textElement textAlignment="Center">
 						<font isBold="false"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{driverCnt}]]></textFieldExpression>
 				</textField>
 				<textField isBlankWhenNull="false">
-					<reportElement key="textField" x="174" y="1" width="60" height="19" isPrintWhenDetailOverflows="true" uuid="bd8f3fd1-ff7b-4cf7-bde4-d35453c1acf1"/>
+					<reportElement key="textField" x="174" y="0" width="60" height="19" isPrintWhenDetailOverflows="true" uuid="bd8f3fd1-ff7b-4cf7-bde4-d35453c1acf1"/>
 					<textElement textAlignment="Center">
 						<font isBold="false"/>
 					</textElement>
@@ -95,21 +95,21 @@ $F{onDutyHours70}.intValue()+$F{thirtyMinuteBreak}.intValue()
 					<textFieldExpression><![CDATA[com.inthinc.pro.reports.hos.converter.Converter.convertRemarkDistance($F{totalMiles},$P{USE_METRIC},$P{REPORT_LOCALE})]]></textFieldExpression>
 				</textField>
 				<textField isBlankWhenNull="false">
-					<reportElement key="textField" x="234" y="1" width="60" height="19" isPrintWhenDetailOverflows="true" uuid="fd5c6014-5e87-4d1d-b1db-a977b8c93e2a"/>
+					<reportElement key="textField" x="234" y="0" width="60" height="19" isPrintWhenDetailOverflows="true" uuid="fd5c6014-5e87-4d1d-b1db-a977b8c93e2a"/>
 					<textElement textAlignment="Center">
 						<font isBold="false"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{onDutyHours14}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true" isBlankWhenNull="false">
-					<reportElement key="textField-40" stretchType="RelativeToBandHeight" mode="Opaque" x="0" y="0" width="174" height="19" forecolor="#000000" backcolor="#FFFFFF" uuid="71d10fc7-48f4-4292-b622-f820e0e4a73d"/>
+					<reportElement key="textField-40" stretchType="RelativeToBandHeight" mode="Transparent" x="0" y="0" width="174" height="19" forecolor="#000000" backcolor="#FFFFFF" uuid="71d10fc7-48f4-4292-b622-f820e0e4a73d"/>
 					<textElement textAlignment="Left" rotation="None">
 						<font isBold="false"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{groupName}]]></textFieldExpression>
 				</textField>
 				<textField isBlankWhenNull="false">
-					<reportElement key="textField" x="414" y="1" width="60" height="19" isPrintWhenDetailOverflows="true" uuid="63061530-6551-4fe9-9f6f-f1f4f52804df"/>
+					<reportElement key="textField" x="414" y="0" width="60" height="19" isPrintWhenDetailOverflows="true" uuid="63061530-6551-4fe9-9f6f-f1f4f52804df"/>
 					<textElement textAlignment="Center">
 						<font isBold="false"/>
 					</textElement>
@@ -117,14 +117,14 @@ $F{onDutyHours70}.intValue()+$F{thirtyMinuteBreak}.intValue()
 $F{onDutyHours70}.intValue()+$F{thirtyMinuteBreak}.intValue()]]></textFieldExpression>
 				</textField>
 				<textField isBlankWhenNull="false">
-					<reportElement key="textField" x="294" y="1" width="60" height="19" isPrintWhenDetailOverflows="true" uuid="a6adf136-f8cd-45e3-bc82-f75804b3d3d5"/>
+					<reportElement key="textField" x="294" y="0" width="60" height="19" isPrintWhenDetailOverflows="true" uuid="a6adf136-f8cd-45e3-bc82-f75804b3d3d5"/>
 					<textElement textAlignment="Center">
 						<font isBold="false"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{onDutyHours70}]]></textFieldExpression>
 				</textField>
 				<textField isBlankWhenNull="false">
-					<reportElement key="textField" x="354" y="1" width="60" height="19" isPrintWhenDetailOverflows="true" uuid="a5a0446d-3fde-429b-a6d1-3cebb00d412e"/>
+					<reportElement key="textField" x="354" y="0" width="60" height="19" isPrintWhenDetailOverflows="true" uuid="a5a0446d-3fde-429b-a6d1-3cebb00d412e"/>
 					<textElement textAlignment="Center">
 						<font isBold="false"/>
 					</textElement>
@@ -142,7 +142,7 @@ $F{onDutyHours70}.intValue()+$F{thirtyMinuteBreak}.intValue()]]></textFieldExpre
 	</group>
 	<columnHeader>
 		<band height="20">
-			<textField isStretchWithOverflow="true" pattern="###0" isBlankWhenNull="false">
+			<textField pattern="###0" isBlankWhenNull="false">
 				<reportElement key="textField" x="730" y="0" width="100" height="19" isPrintWhenDetailOverflows="true" uuid="8f976d66-4fab-431a-bdf2-5c950a0158bb">
 					<printWhenExpression><![CDATA[Boolean.valueOf($P{USE_METRIC}.booleanValue())]]></printWhenExpression>
 				</reportElement>
@@ -151,7 +151,7 @@ $F{onDutyHours70}.intValue()+$F{thirtyMinuteBreak}.intValue()]]></textFieldExpre
 				</textElement>
 				<textFieldExpression><![CDATA[$R{column.6.metric}]]></textFieldExpression>
 			</textField>
-			<textField isStretchWithOverflow="true" pattern="###0" isBlankWhenNull="false">
+			<textField pattern="###0" isBlankWhenNull="false">
 				<reportElement key="textField" x="730" y="0" width="100" height="19" isPrintWhenDetailOverflows="true" uuid="b7dce702-7e36-4fe3-926d-8f2f12116a16">
 					<printWhenExpression><![CDATA[Boolean.valueOf(!$P{USE_METRIC}.booleanValue())]]></printWhenExpression>
 				</reportElement>
@@ -161,20 +161,20 @@ $F{onDutyHours70}.intValue()+$F{thirtyMinuteBreak}.intValue()]]></textFieldExpre
 				<textFieldExpression><![CDATA[$R{column.6.english}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="false">
-				<reportElement key="textField" x="474" y="1" width="60" height="19" isPrintWhenDetailOverflows="true" uuid="bb046a49-fa08-4bb0-8889-f8b9a908b7ba"/>
+				<reportElement key="textField" x="474" y="0" width="60" height="19" isPrintWhenDetailOverflows="true" uuid="bb046a49-fa08-4bb0-8889-f8b9a908b7ba"/>
 				<textElement textAlignment="Center">
 					<font isBold="false"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$R{column.2}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="false">
-				<reportElement key="textField" x="354" y="1" width="60" height="19" isPrintWhenDetailOverflows="true" uuid="7ba8bab7-c238-4d28-b596-b778309ba539"/>
+				<reportElement key="textField" x="354" y="0" width="60" height="19" isPrintWhenDetailOverflows="true" uuid="7ba8bab7-c238-4d28-b596-b778309ba539"/>
 				<textElement textAlignment="Center">
 					<font isBold="false"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$R{column.30min}]]></textFieldExpression>
 			</textField>
-			<textField isStretchWithOverflow="true" pattern="###0" isBlankWhenNull="false">
+			<textField pattern="###0" isBlankWhenNull="false">
 				<reportElement key="textField" x="630" y="0" width="100" height="19" isPrintWhenDetailOverflows="true" uuid="29e08053-608e-4a64-bf10-f5623efa3764">
 					<printWhenExpression><![CDATA[Boolean.valueOf(!$P{USE_METRIC}.booleanValue())]]></printWhenExpression>
 				</reportElement>
@@ -183,14 +183,14 @@ $F{onDutyHours70}.intValue()+$F{thirtyMinuteBreak}.intValue()]]></textFieldExpre
 				</textElement>
 				<textFieldExpression><![CDATA[$R{column.4.english}]]></textFieldExpression>
 			</textField>
-			<textField isStretchWithOverflow="true" pattern="###0" isBlankWhenNull="false">
+			<textField pattern="###0" isBlankWhenNull="false">
 				<reportElement key="textField" x="534" y="0" width="96" height="19" isPrintWhenDetailOverflows="true" uuid="ab9959ad-8570-4740-9b1a-1531eacdb7d2"/>
 				<textElement textAlignment="Center">
 					<font isBold="false"/>
 				</textElement>
 				<textFieldExpression><![CDATA[str("column.15.raw")]]></textFieldExpression>
 			</textField>
-			<textField isStretchWithOverflow="true" pattern="###0" isBlankWhenNull="false">
+			<textField pattern="###0" isBlankWhenNull="false">
 				<reportElement key="textField" x="830" y="0" width="100" height="19" isPrintWhenDetailOverflows="true" uuid="b9b2378e-a17c-4a3d-9906-f289f7afa58c"/>
 				<textElement textAlignment="Center">
 					<font isBold="false"/>
@@ -198,34 +198,34 @@ $F{onDutyHours70}.intValue()+$F{thirtyMinuteBreak}.intValue()]]></textFieldExpre
 				<textFieldExpression><![CDATA[$R{column.7}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="false">
-				<reportElement key="textField" x="174" y="1" width="60" height="19" isPrintWhenDetailOverflows="true" uuid="a3c0b5e7-7386-42bd-bbbc-77f3b0e41b55"/>
+				<reportElement key="textField" x="174" y="0" width="60" height="19" isPrintWhenDetailOverflows="true" uuid="a3c0b5e7-7386-42bd-bbbc-77f3b0e41b55"/>
 				<textElement textAlignment="Center">
 					<font isBold="false"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$R{column.11hrs}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="false">
-				<reportElement key="textField" x="414" y="1" width="60" height="19" isPrintWhenDetailOverflows="true" uuid="c8391eab-d3c6-4d02-8f8a-b31817bd13de"/>
+				<reportElement key="textField" x="414" y="0" width="60" height="19" isPrintWhenDetailOverflows="true" uuid="c8391eab-d3c6-4d02-8f8a-b31817bd13de"/>
 				<textElement textAlignment="Center">
 					<font isBold="false"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$R{column.all}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="false">
-				<reportElement key="textField-40" stretchType="RelativeToBandHeight" mode="Opaque" x="0" y="0" width="174" height="19" forecolor="#000000" backcolor="#FFFFFF" uuid="aa86d8e8-62e3-46bb-8820-00c460626429"/>
+				<reportElement key="textField-40" stretchType="RelativeToBandHeight" mode="Transparent" x="0" y="0" width="174" height="19" forecolor="#000000" backcolor="#FFFFFF" uuid="aa86d8e8-62e3-46bb-8820-00c460626429"/>
 				<textElement textAlignment="Left" rotation="None">
 					<font isBold="false" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$R{group.title}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="false">
-				<reportElement key="textField" x="234" y="1" width="60" height="19" isPrintWhenDetailOverflows="true" uuid="b56cd448-f4e9-4bb9-8532-dbfca162f89e"/>
+				<reportElement key="textField" x="234" y="0" width="60" height="19" isPrintWhenDetailOverflows="true" uuid="b56cd448-f4e9-4bb9-8532-dbfca162f89e"/>
 				<textElement textAlignment="Center">
 					<font isBold="false"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$R{column.14hrs}]]></textFieldExpression>
 			</textField>
-			<textField isStretchWithOverflow="true" pattern="###0" isBlankWhenNull="false">
+			<textField pattern="###0" isBlankWhenNull="false">
 				<reportElement key="textField" x="630" y="0" width="100" height="19" isPrintWhenDetailOverflows="true" uuid="1539bb07-20b7-4a4c-a0a5-8078f917ec52">
 					<printWhenExpression><![CDATA[Boolean.valueOf($P{USE_METRIC}.booleanValue())]]></printWhenExpression>
 				</reportElement>
@@ -235,7 +235,7 @@ $F{onDutyHours70}.intValue()+$F{thirtyMinuteBreak}.intValue()]]></textFieldExpre
 				<textFieldExpression><![CDATA[$R{column.4.metric}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="false">
-				<reportElement key="textField" x="294" y="1" width="60" height="19" isPrintWhenDetailOverflows="true" uuid="f5b94484-0c62-4ba5-b2d1-ae4111fdac29"/>
+				<reportElement key="textField" x="294" y="0" width="60" height="19" isPrintWhenDetailOverflows="true" uuid="f5b94484-0c62-4ba5-b2d1-ae4111fdac29"/>
 				<textElement textAlignment="Center">
 					<font isBold="false"/>
 				</textElement>
@@ -244,9 +244,9 @@ $F{onDutyHours70}.intValue()+$F{thirtyMinuteBreak}.intValue()]]></textFieldExpre
 		</band>
 	</columnHeader>
 	<lastPageFooter>
-		<band height="61">
-			<textField isBlankWhenNull="false">
-				<reportElement key="textField-78" style="ColumnHeader" mode="Transparent" x="0" y="1" width="174" height="19" backcolor="#CCCCCC" uuid="3344c8da-8e38-488c-a3a7-8c6bef91dde6"/>
+		<band height="39">
+			<textField isStretchWithOverflow="true" isBlankWhenNull="false">
+				<reportElement key="textField-78" style="ColumnHeader" mode="Transparent" x="0" y="0" width="174" height="19" backcolor="#FFFFFF" uuid="3344c8da-8e38-488c-a3a7-8c6bef91dde6"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -258,7 +258,7 @@ $F{onDutyHours70}.intValue()+$F{thirtyMinuteBreak}.intValue()]]></textFieldExpre
 				</textElement>
 				<textFieldExpression><![CDATA[$R{column.Totals}]]></textFieldExpression>
 			</textField>
-			<textField isStretchWithOverflow="true" pattern="#,##0.00 %" isBlankWhenNull="false">
+			<textField pattern="#,##0.00 %" isBlankWhenNull="false">
 				<reportElement key="textField-19" style="Details1" x="830" y="0" width="100" height="19" isPrintWhenDetailOverflows="true" uuid="5604e896-e210-413a-8354-8ffae59979d7"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -274,8 +274,8 @@ $V{SUM_11}.intValue()+$V{SUM_14}.intValue()+
 $V{SUM_70}.intValue()+$V{SUM_30}.intValue()
 ) / (double)$V{SUM_driverCnt_1}.intValue()) : new Double(0.0)]]></textFieldExpression>
 			</textField>
-			<textField isStretchWithOverflow="true" pattern="###0" isBlankWhenNull="false">
-				<reportElement key="textField-31" style="ColumnHeader" mode="Transparent" x="630" y="0" width="100" height="19" backcolor="#CCCCCC" uuid="8f58080e-da0b-4cf2-828e-59a2e729fe1a"/>
+			<textField pattern="###0" isBlankWhenNull="false">
+				<reportElement key="textField-31" style="ColumnHeader" mode="Transparent" x="630" y="0" width="100" height="19" isPrintWhenDetailOverflows="true" backcolor="#CCCCCC" uuid="8f58080e-da0b-4cf2-828e-59a2e729fe1a"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -287,8 +287,8 @@ $V{SUM_70}.intValue()+$V{SUM_30}.intValue()
 				</textElement>
 				<textFieldExpression><![CDATA[com.inthinc.pro.reports.hos.converter.Converter.convertRemarkDistance($V{SUM_totalMilesNoDriver_1},$P{USE_METRIC},$P{REPORT_LOCALE})]]></textFieldExpression>
 			</textField>
-			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement key="textField-20" style="ColumnHeader" mode="Transparent" x="174" y="1" width="60" height="19" backcolor="#CCCCCC" uuid="455baf65-8e47-490c-bd65-7bb2717e3376"/>
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField-20" style="ColumnHeader" mode="Transparent" x="174" y="0" width="60" height="19" isPrintWhenDetailOverflows="true" backcolor="#CCCCCC" uuid="455baf65-8e47-490c-bd65-7bb2717e3376"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -300,7 +300,7 @@ $V{SUM_70}.intValue()+$V{SUM_30}.intValue()
 				</textElement>
 				<textFieldExpression><![CDATA[$V{SUM_11}]]></textFieldExpression>
 			</textField>
-			<textField isStretchWithOverflow="true" pattern="#,##0.00 %" isBlankWhenNull="false">
+			<textField pattern="#,##0.00 %" isBlankWhenNull="false">
 				<reportElement key="textField-18" style="Details1" x="730" y="0" width="100" height="19" isPrintWhenDetailOverflows="true" uuid="60fda592-104c-4d99-8270-82b7822ad347"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -315,8 +315,8 @@ $V{SUM_70}.intValue()+$V{SUM_30}.intValue()
 (Double.valueOf(com.inthinc.pro.reports.hos.converter.Converter.convertRemarkDistance($V{SUM_totalMilesNoDriver_1},$P{USE_METRIC},$P{REPORT_LOCALE})) / Double.valueOf(com.inthinc.pro.reports.hos.converter.Converter.convertRemarkDistance($V{SUM_totalMiles_1},$P{USE_METRIC},$P{REPORT_LOCALE})))
 : new Double(0.0)]]></textFieldExpression>
 			</textField>
-			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement key="textField-23" style="ColumnHeader" mode="Transparent" x="414" y="1" width="60" height="19" backcolor="#CCCCCC" uuid="ad51e480-00b0-47a1-907a-2f40b2bc53b4"/>
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField-23" style="ColumnHeader" mode="Transparent" x="414" y="0" width="60" height="19" isPrintWhenDetailOverflows="true" backcolor="#CCCCCC" uuid="ad51e480-00b0-47a1-907a-2f40b2bc53b4"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -329,8 +329,8 @@ $V{SUM_70}.intValue()+$V{SUM_30}.intValue()
 				<textFieldExpression><![CDATA[$V{SUM_11}.intValue()+ $V{SUM_14}.intValue()+
 $V{SUM_70}.intValue()+$V{SUM_30}.intValue()]]></textFieldExpression>
 			</textField>
-			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement key="textField-21" style="ColumnHeader" mode="Transparent" x="294" y="1" width="60" height="19" backcolor="#CCCCCC" uuid="0207e231-7f5c-4bec-9eb6-78b770e8577a"/>
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField-21" style="ColumnHeader" mode="Transparent" x="294" y="0" width="60" height="19" isPrintWhenDetailOverflows="true" backcolor="#CCCCCC" uuid="0207e231-7f5c-4bec-9eb6-78b770e8577a"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -342,8 +342,8 @@ $V{SUM_70}.intValue()+$V{SUM_30}.intValue()]]></textFieldExpression>
 				</textElement>
 				<textFieldExpression><![CDATA[$V{SUM_70}]]></textFieldExpression>
 			</textField>
-			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement key="textField-20" style="ColumnHeader" mode="Transparent" x="234" y="1" width="60" height="19" backcolor="#CCCCCC" uuid="93bdb459-f30e-4149-9099-0a3e5f6d4a11"/>
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField-20" style="ColumnHeader" mode="Transparent" x="234" y="0" width="60" height="19" isPrintWhenDetailOverflows="true" backcolor="#CCCCCC" uuid="93bdb459-f30e-4149-9099-0a3e5f6d4a11"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -355,8 +355,8 @@ $V{SUM_70}.intValue()+$V{SUM_30}.intValue()]]></textFieldExpression>
 				</textElement>
 				<textFieldExpression><![CDATA[$V{SUM_14}]]></textFieldExpression>
 			</textField>
-			<textField isStretchWithOverflow="true" pattern="###0" isBlankWhenNull="false">
-				<reportElement key="textField-30" style="ColumnHeader" mode="Transparent" x="534" y="0" width="96" height="19" isRemoveLineWhenBlank="true" backcolor="#CCCCCC" uuid="33e9c089-5938-4e36-b796-1c5cebbea7ad"/>
+			<textField pattern="###0" isBlankWhenNull="false">
+				<reportElement key="textField-30" style="ColumnHeader" mode="Transparent" x="534" y="0" width="96" height="19" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true" backcolor="#CCCCCC" uuid="33e9c089-5938-4e36-b796-1c5cebbea7ad"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -368,8 +368,8 @@ $V{SUM_70}.intValue()+$V{SUM_30}.intValue()]]></textFieldExpression>
 				</textElement>
 				<textFieldExpression><![CDATA[com.inthinc.pro.reports.hos.converter.Converter.convertRemarkDistance($V{SUM_totalMiles_1},$P{USE_METRIC},$P{REPORT_LOCALE})]]></textFieldExpression>
 			</textField>
-			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement key="textField-24" style="ColumnHeader" mode="Transparent" x="474" y="1" width="60" height="19" backcolor="#CCCCCC" uuid="4576a530-b209-44f4-b2e3-4777673e39b9"/>
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField-24" style="ColumnHeader" mode="Transparent" x="474" y="0" width="60" height="19" isPrintWhenDetailOverflows="true" backcolor="#CCCCCC" uuid="4576a530-b209-44f4-b2e3-4777673e39b9"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -381,8 +381,8 @@ $V{SUM_70}.intValue()+$V{SUM_30}.intValue()]]></textFieldExpression>
 				</textElement>
 				<textFieldExpression><![CDATA[$V{SUM_driverCnt_1}]]></textFieldExpression>
 			</textField>
-			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement key="textField-22" style="ColumnHeader" mode="Transparent" x="354" y="1" width="60" height="19" backcolor="#CCCCCC" uuid="455cf37b-fe29-47c6-8e0e-1c878b1b9f00"/>
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField-22" style="ColumnHeader" mode="Transparent" x="354" y="0" width="60" height="19" isPrintWhenDetailOverflows="true" backcolor="#CCCCCC" uuid="455cf37b-fe29-47c6-8e0e-1c878b1b9f00"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -394,8 +394,8 @@ $V{SUM_70}.intValue()+$V{SUM_30}.intValue()]]></textFieldExpression>
 				</textElement>
 				<textFieldExpression><![CDATA[$V{SUM_30}]]></textFieldExpression>
 			</textField>
-			<textField isStretchWithOverflow="true" pattern="#,##0.00 %" isBlankWhenNull="false">
-				<reportElement key="textField-19" style="Details1" x="414" y="20" width="60" height="38" isPrintWhenDetailOverflows="true" uuid="34f6ed16-c799-46bb-8629-50062312930c"/>
+			<textField pattern="#,##0.00 %" isBlankWhenNull="false">
+				<reportElement key="textField-19" style="Details1" x="414" y="19" width="60" height="19" isPrintWhenDetailOverflows="true" uuid="34f6ed16-c799-46bb-8629-50062312930c"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -407,8 +407,8 @@ $V{SUM_70}.intValue()+$V{SUM_30}.intValue()]]></textFieldExpression>
 				</textElement>
 				<textFieldExpression><![CDATA[new Double(1)]]></textFieldExpression>
 			</textField>
-			<textField isStretchWithOverflow="true" pattern="#,##0.00 %" isBlankWhenNull="false">
-				<reportElement key="textField-19" style="Details1" x="294" y="20" width="60" height="38" isPrintWhenDetailOverflows="true" uuid="894740b9-83f4-437d-a4e8-2276f9842662"/>
+			<textField pattern="#,##0.00 %" isBlankWhenNull="false">
+				<reportElement key="textField-19" style="Details1" x="294" y="19" width="60" height="19" isPrintWhenDetailOverflows="true" uuid="894740b9-83f4-437d-a4e8-2276f9842662"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -421,8 +421,8 @@ $V{SUM_70}.intValue()+$V{SUM_30}.intValue()]]></textFieldExpression>
 				<textFieldExpression><![CDATA[new Double(($V{SUM_70}.intValue()) / (double)($V{SUM_11}.intValue()+ $V{SUM_14}.intValue()+
 $V{SUM_70}.intValue()+$V{SUM_30}.intValue()))]]></textFieldExpression>
 			</textField>
-			<textField isBlankWhenNull="false">
-				<reportElement key="textField-78" style="ColumnHeader" mode="Transparent" x="0" y="20" width="174" height="19" backcolor="#CCCCCC" uuid="321f6b6b-3500-4250-8254-4dab0453b290"/>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="false">
+				<reportElement key="textField-78" style="ColumnHeader" mode="Transparent" x="0" y="19" width="174" height="19" backcolor="#FFFFFF" uuid="321f6b6b-3500-4250-8254-4dab0453b290"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -434,8 +434,8 @@ $V{SUM_70}.intValue()+$V{SUM_30}.intValue()))]]></textFieldExpression>
 				</textElement>
 				<textFieldExpression><![CDATA[$R{column.PercOfViolations}]]></textFieldExpression>
 			</textField>
-			<textField isStretchWithOverflow="true" pattern="#,##0.00 %" isBlankWhenNull="false">
-				<reportElement key="textField-19" style="Details1" x="174" y="20" width="60" height="38" isPrintWhenDetailOverflows="true" uuid="722e3e8f-681a-4370-901e-c4a5d141f15d"/>
+			<textField pattern="#,##0.00 %" isBlankWhenNull="false">
+				<reportElement key="textField-19" style="Details1" x="174" y="19" width="60" height="19" isPrintWhenDetailOverflows="true" uuid="722e3e8f-681a-4370-901e-c4a5d141f15d"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -448,8 +448,8 @@ $V{SUM_70}.intValue()+$V{SUM_30}.intValue()))]]></textFieldExpression>
 				<textFieldExpression><![CDATA[new Double(($V{SUM_11}.intValue()) / (double)($V{SUM_11}.intValue()+ $V{SUM_14}.intValue()+
 $V{SUM_70}.intValue()+$V{SUM_30}.intValue()))]]></textFieldExpression>
 			</textField>
-			<textField isStretchWithOverflow="true" pattern="#,##0.00 %" isBlankWhenNull="false">
-				<reportElement key="textField-19" style="Details1" x="354" y="20" width="60" height="38" isPrintWhenDetailOverflows="true" uuid="47f26c1a-29c7-499f-be57-4a43513de213"/>
+			<textField pattern="#,##0.00 %" isBlankWhenNull="false">
+				<reportElement key="textField-19" style="Details1" x="354" y="19" width="60" height="19" isPrintWhenDetailOverflows="true" uuid="47f26c1a-29c7-499f-be57-4a43513de213"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -462,8 +462,8 @@ $V{SUM_70}.intValue()+$V{SUM_30}.intValue()))]]></textFieldExpression>
 				<textFieldExpression><![CDATA[new Double(($V{SUM_30}.intValue()) / (double)($V{SUM_11}.intValue()+ $V{SUM_14}.intValue()+
 $V{SUM_70}.intValue()+$V{SUM_30}.intValue()))]]></textFieldExpression>
 			</textField>
-			<textField isStretchWithOverflow="true" pattern="#,##0.00 %" isBlankWhenNull="false">
-				<reportElement key="textField-19" style="Details1" x="234" y="20" width="60" height="38" isPrintWhenDetailOverflows="true" uuid="46a71eda-a7ba-4d31-9897-05367c4c2d79"/>
+			<textField pattern="#,##0.00 %" isBlankWhenNull="false">
+				<reportElement key="textField-19" style="Details1" x="234" y="19" width="60" height="19" isPrintWhenDetailOverflows="true" uuid="46a71eda-a7ba-4d31-9897-05367c4c2d79"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
