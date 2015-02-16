@@ -187,6 +187,7 @@ public class PersonServiceImpl extends AbstractService<Person, PersonDAOAdapter>
                     score.setAggressiveTurn(driveQMap.getAggressiveTurn());
                     score.setStartingOdometer(driveQMap.getStartingOdometer());
                     score.setEndingOdometer(driveQMap.getEndingOdometer());
+                    score.setOverall(driveQMap.getOverall());
 
                     scoreMap.put(driverID, score);
                 }
