@@ -169,7 +169,7 @@ public class MaintenanceIntervalReportCriteriaTest extends BasePerformanceUnitTe
 
         // Build maintenanceIntervalBuilder (and exercise code)
         MaintenanceIntervalReportCriteria.Builder maintenanceIntervalBuilder = new MaintenanceIntervalReportCriteria.Builder(groupHierarchyMock, groupReportDAOMock, groupDAOMock, vehicleDAOMock, eventDAOMock, groupIDListMock,
-                intervalMock, measurementTypeMock, configuratorDAOMock, driveTimeDAOMock, maintenanceReportsDAOMock);
+                 measurementTypeMock, configuratorDAOMock, driveTimeDAOMock, maintenanceReportsDAOMock);
 
         maintenanceIntervalBuilder.setLocale(LOCALE);
         maintenanceIntervalReportCriteria = maintenanceIntervalBuilder.build();
