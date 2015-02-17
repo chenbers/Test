@@ -33,7 +33,7 @@ public class MaintenanceReportsJDBCDAO extends SimpleJdbcDaoSupport implements M
                     "join vehicle v on (avs.vehicleID = v.vehicleID) " +
                     "join groups g on (v.groupID = g.groupID) " +
                     "where v.groupID in (:groupID_list) " +
-                    "  and settingID in ("+SettingType.MAINT_THRESHOLD_ENGINE_HOURS.getCode()+" , "+SettingType.MAINT_THRESHOLD_ODOMETER.getCode()+", "+SettingType.MAINT_THRESHOLD_ODOMETER_START.getCode()+") " +
+                    "  and settingID in ("+SettingType.MAINT_THRESHOLD_ENGINE_HOURS.getSettingID()+" , "+SettingType.MAINT_THRESHOLD_ODOMETER.getSettingID()+", "+SettingType.MAINT_THRESHOLD_ODOMETER_START.getSettingID()+") " +
                     "order by avs.vehicleID, settingID asc ";
     
 
