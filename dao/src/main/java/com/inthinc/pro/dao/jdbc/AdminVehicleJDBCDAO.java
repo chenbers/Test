@@ -2,11 +2,13 @@ package com.inthinc.pro.dao.jdbc;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.springframework.jdbc.core.simple.ParameterizedRowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
@@ -103,7 +105,9 @@ public class AdminVehicleJDBCDAO extends SimpleJdbcDaoSupport{
 
     private static final String MILES_DRIVEN =
             "SELECT MAX(vs.endingOdometer) milesDriven FROM vehicleScoreByDay vs where vs.vehicleID = :vehicleID";
-
+    private static final String MILES_DRIVEN_MULT_VEHICLE =
+                    "SELECT MAX(vs.endingOdometer) milesDriven, vs.vehicleID vehicleID FROM vehicleScoreByDay vs where vs.vehicleID in ( :vehicleID_list ) group by vehicleID";
+    
     private static final String FILTERED_VEHICLES_IDS_SELECT = 
             "SELECT v.vehicleID, d.productVer "+ PAGED_VEHICLE_SUFFIX;
 
@@ -142,6 +146,26 @@ public class AdminVehicleJDBCDAO extends SimpleJdbcDaoSupport{
         
         return miles == null ? 0 : miles;
     }
+    
+    public Map<Integer , Integer > getMilesDriven(Set<Integer> vehicleIDs){
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("vehicleID_list", vehicleIDs);
+        
+        List<Map.Entry<Integer, Integer>> resultEntries = getSimpleJdbcTemplate().query(MILES_DRIVEN_MULT_VEHICLE, new ParameterizedRowMapper<Map.Entry<Integer, Integer>>() {
+            @Override
+            public Map.Entry<Integer, Integer> mapRow(ResultSet rs, int rowNum) throws SQLException {
+                Integer miles = rs.getInt("milesDriven");
+                Map.Entry<Integer, Integer> resultsMap = new AbstractMap.SimpleEntry<Integer, Integer>(rs.getInt("vehicleID"), (miles!=null)?miles:0);
+                return resultsMap;
+            }           
+        } , params);
+        Map<Integer, Integer> resultsMap = new HashMap<Integer, Integer>();
+        for(Map.Entry<Integer, Integer> entry: resultEntries) {
+            resultsMap.put(entry.getKey(), entry.getValue());
+        }
+        return resultsMap;
+    }
+
     
     private String addFiltersToQuery(final List<TableFilterField> filters,
             String queryStr, Map<String, Object> params) {

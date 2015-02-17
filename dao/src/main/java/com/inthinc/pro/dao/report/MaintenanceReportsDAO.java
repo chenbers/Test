@@ -10,17 +10,33 @@ import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.model.pagination.PageParams;
 import com.inthinc.pro.model.pagination.TableFilterField;
 
+/**
+ * DAO specific to the Maintenance Reports.
+ * Separated out for performance concerns
+ *
+ */
 public interface MaintenanceReportsDAO {
-//    public List<TrailerReportItem> getTrailerReportItemByGroupPaging(Integer acctID, List<Integer> groupIDList, PageParams pageParams);
-//    public Integer getTrailerReportCount(Integer acctID, List<Integer> groupIDList, List<TableFilterField> tableFilterFieldList);
-//    public Boolean isValidTrailer(Integer acctID, String trailerName);
-    
+    /**
+     * @param groupIDList
+     * @return
+     */
     public List<MaintenanceReportItem> getVehiclesWithThreshold(List<Integer> groupIDList);
 
+    /**
+     * @param vehicleID
+     * @return
+     */
     Integer getMilesDriven(Integer vehicleID);
 
+    /**
+     * @param vehicleIDs
+     * @return
+     */
     Map<Integer, Integer> getMilesDriven(Set<Integer> vehicleIDs);
 
+    /**
+     * @param vehicleIDs
+     * @return
+     */
     Map<Integer, Integer> getEngineHours(List<Integer> vehicleIDs);
-    
 }

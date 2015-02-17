@@ -156,18 +156,22 @@ public class MaintenanceEventsReportCriteria extends ReportCriteria {
             searchNoteType.add(NoteType.FULLEVENT);
             searchNoteType.add(NoteType.ROLLOVER);
             searchNoteType.add(NoteType.UNPLUGGED);
-
+            List<Event> events = new ArrayList<Event>();
             List<Vehicle> allVehicles = new ArrayList<Vehicle>();
             for (Integer id: groupIDList){
                 allVehicles.addAll(vehicleDAO.getVehiclesInGroupHierarchy(id));
+                events.addAll(eventDAO.getEventsForGroupFromVehicles(id, searchNoteType, interval.getStart().toDate(), interval.getEnd().toDate()));
             }
 
             List<Vehicle> vehiclesWithEvents = new ArrayList<Vehicle>();
             List<Integer> vehicleIDForVehiclesWithEvents = new ArrayList<Integer>();
             Map<Integer, List<Event>> foundEvents = new HashMap<Integer, List<Event>>();
 
+            
+            
             for (Vehicle vehicle: allVehicles){
-                List<Event> events = eventDAO.getEventsForVehicle(vehicle.getVehicleID(), interval.getStart().toDate(), interval.getEnd().toDate(), searchNoteType, 0);
+                //List<Event> events = eventDAO.getEventsForVehicle(vehicle.getVehicleID(), interval.getStart().toDate(), interval.getEnd().toDate(), searchNoteType, 0);
+                
                 if (events != null && !events.isEmpty()){
                     
                     // Filter vehicles without maintenance events
@@ -208,11 +212,11 @@ public class MaintenanceEventsReportCriteria extends ReportCriteria {
                 Map<Vehicle, Event> calcMap = new HashMap<Vehicle, Event>();
                 for (Map.Entry<Vehicle,List<Event>> entry: dataset.entrySet()){
                     Vehicle vehicle = entry.getKey();
-                    List<Event> events = entry.getValue();
+                    List<Event> vehicleEvents = entry.getValue();
 
-                    if (events!=null && !events.isEmpty()){
-                        calcMap.put(vehicle, events.remove(events.size() - 1));
-                        dataset.put(vehicle, events);
+                    if (vehicleEvents!=null && !vehicleEvents.isEmpty()){
+                        calcMap.put(vehicle, vehicleEvents.remove(vehicleEvents.size() - 1));
+                        dataset.put(vehicle, vehicleEvents);
                         found = true;
                     }
                 }

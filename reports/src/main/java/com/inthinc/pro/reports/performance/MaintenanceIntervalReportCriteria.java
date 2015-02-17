@@ -5,11 +5,13 @@ import java.util.*;
 import com.inthinc.pro.ProDAOException;
 import com.inthinc.pro.dao.*;
 import com.inthinc.pro.dao.jdbc.GenericJDBCDAO;
+import com.inthinc.pro.model.MaintenanceReportItem;
 import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.aggregation.DriveTimeRecord;
 import com.inthinc.pro.model.aggregation.VehiclePerformance;
 import com.inthinc.pro.model.configurator.MaintenanceSettings;
+import com.inthinc.pro.model.configurator.SettingType;
 import com.inthinc.pro.model.event.Event;
 import com.inthinc.pro.model.event.EventAttr;
 import com.inthinc.pro.model.event.NoteType;
@@ -19,6 +21,7 @@ import org.apache.log4j.Logger;
 import org.joda.time.DateTimeZone;
 import org.joda.time.Interval;
 import com.inthinc.pro.dao.report.GroupReportDAO;
+import com.inthinc.pro.dao.report.MaintenanceReportsDAO;
 import com.inthinc.pro.model.GroupHierarchy;
 import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.reports.ReportCriteria;
@@ -78,9 +81,11 @@ public class MaintenanceIntervalReportCriteria extends ReportCriteria {
         private DataSource dataSource;
 
         private DriveTimeDAO driveTimeDAO;
+        
+        private MaintenanceReportsDAO maintenanceReportsDAO;
 
         public Builder(GroupHierarchy groupHierarchy, GroupReportDAO groupReportDAO, GroupDAO groupDAO, VehicleDAO vehicleDAO, EventDAO eventDAO, List<Integer> groupIDList, Interval interval, MeasurementType measurementType,
-                       ConfiguratorDAO configuratorDAO, DriveTimeDAO driveTimeDAO) {
+                       ConfiguratorDAO configuratorDAO, DriveTimeDAO driveTimeDAO, MaintenanceReportsDAO maintenanceReportsDAO) {
 
             this.dateTimeZone = DateTimeZone.UTC;
             this.locale = Locale.US;
@@ -94,6 +99,7 @@ public class MaintenanceIntervalReportCriteria extends ReportCriteria {
             this.groupDAO = groupDAO;
             this.configuratorJDBCDAO = configuratorDAO;
             this.driveTimeDAO = driveTimeDAO;
+            this.maintenanceReportsDAO = maintenanceReportsDAO;
         }
         public DataSource getDataSource() {
             return dataSource;
@@ -175,7 +181,65 @@ public class MaintenanceIntervalReportCriteria extends ReportCriteria {
             this.driveTimeDAO = driveTimeDAO;
         }
 
+        private Integer calcOverage(Integer start, Integer threshold, Integer actual) {
+            start = (start != null)?start:0;
+            threshold = (threshold != null)?threshold:1; //no threshold is logically equivalent to threshold = 1
+            return (actual % threshold) - start;
+        }
         public MaintenanceIntervalReportCriteria build() {
+            logger.debug(String.format("Building MaintenanceIntervalReportCriteria with locale %s", locale));
+            
+            MaintenanceIntervalReportCriteria criteria = new MaintenanceIntervalReportCriteria(this.locale);
+            List<BackingWrapper> backingWrappers = new ArrayList<BackingWrapper>();
+            
+            // get vehicles with an odometer or engine hours threshold set
+            //for each result add a row/entry to backingWrappers (if there are two (one each odo and hours) add TWO rows...)
+            List<MaintenanceReportItem> reportItems = maintenanceReportsDAO.getVehiclesWithThreshold(groupIDList);
+            List<Integer> vehicleIDs = new ArrayList<Integer>();
+            for(MaintenanceReportItem item: reportItems) {
+                vehicleIDs.add(item.getVehicleID());
+            }
+            //from/for that list of vehicles determine the latest hours?
+            Map<Integer, Integer> engineHoursMap;
+            if(vehicleIDs != null && !vehicleIDs.isEmpty()) {
+                engineHoursMap = maintenanceReportsDAO.getEngineHours(vehicleIDs);
+            } else {
+                engineHoursMap = Collections.emptyMap();
+            }
+            for(MaintenanceReportItem item: reportItems) {
+                item.setVehicleEngineHours(engineHoursMap.get(item.getVehicleID()));
+                Integer baseOdometer = item.getThresholdBase();
+                Integer thresholdMiles = null;
+                Integer thresholdHours = null;
+                if(item.getSettingType().equals(SettingType.MAINT_THRESHOLD_ENGINE_HOURS)) {
+                    thresholdHours = item.getThreshold().intValue();
+                } else if(item.getSettingType().equals(SettingType.MAINT_THRESHOLD_ODOMETER)) {
+                    thresholdMiles = item.getThreshold().intValue();
+                }
+                Integer distanceOver = calcOverage(baseOdometer, thresholdMiles, item.getVehicleOdometer());
+                Integer baseHours = 0;
+                Integer hoursOver = calcOverage(baseHours, thresholdHours, item.getVehicleEngineHours());
+                backingWrappers.add(new BackingWrapper(item.getVehicleName(), item.getYmmString(), baseOdometer, thresholdMiles, item.getVehicleOdometer(), distanceOver, baseHours, thresholdHours, item.getVehicleEngineHours(), hoursOver, item.getGroupName()));
+            }
+            
+
+            
+            
+            
+            
+            
+            
+            
+            criteria.setMainDataset(backingWrappers);
+            //criteria.addDateParameter(REPORT_START_DATE,interval.getStart().toDate(), this.dateTimeZone.toTimeZone());
+
+            /* The interval returns for the end date the beginning of the next day. We minus a second to get the previous day */
+            //criteria.addDateParameter(REPORT_END_DATE, interval.getEnd().minusSeconds(1).toDate(), this.dateTimeZone.toTimeZone());
+            criteria.setUseMetric(measurementType == MeasurementType.METRIC);
+            //NOT DONE WITH CRIT YET
+            return criteria;
+        }
+        public MaintenanceIntervalReportCriteria buildOLD() {
             logger.debug(String.format("Building MaintenanceIntervalReportCriteria with locale %s", locale));
 
             List<BackingWrapper> backingWrappers = new ArrayList<BackingWrapper>();
@@ -271,6 +335,12 @@ public class MaintenanceIntervalReportCriteria extends ReportCriteria {
 
         public void setIncludeZeroMilesDrivers(Boolean includeZeroMilesDrivers) {
             this.includeZeroMilesDrivers = includeZeroMilesDrivers;
+        }
+        public MaintenanceReportsDAO getMaintenanceReportsDAO() {
+            return maintenanceReportsDAO;
+        }
+        public void setMaintenanceReportsDAO(MaintenanceReportsDAO maintenanceReportsDAO) {
+            this.maintenanceReportsDAO = maintenanceReportsDAO;
         }
     }
 
