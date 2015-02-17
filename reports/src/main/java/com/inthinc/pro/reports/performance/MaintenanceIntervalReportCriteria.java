@@ -1,36 +1,35 @@
 package com.inthinc.pro.reports.performance;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 
-import com.inthinc.pro.ProDAOException;
-import com.inthinc.pro.dao.*;
-import com.inthinc.pro.dao.jdbc.GenericJDBCDAO;
-import com.inthinc.pro.model.MaintenanceReportItem;
-import com.inthinc.pro.model.Vehicle;
-import com.inthinc.pro.model.Group;
-import com.inthinc.pro.model.aggregation.DriveTimeRecord;
-import com.inthinc.pro.model.aggregation.VehiclePerformance;
-import com.inthinc.pro.model.configurator.MaintenanceSettings;
-import com.inthinc.pro.model.configurator.SettingType;
-import com.inthinc.pro.model.event.Event;
-import com.inthinc.pro.model.event.EventAttr;
-import com.inthinc.pro.model.event.NoteType;
+import javax.sql.DataSource;
 
-import org.apache.cassandra.thrift.Cassandra.login_args;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTimeZone;
 import org.joda.time.Interval;
+
+import com.inthinc.pro.dao.ConfiguratorDAO;
+import com.inthinc.pro.dao.DriveTimeDAO;
+import com.inthinc.pro.dao.EventDAO;
+import com.inthinc.pro.dao.GroupDAO;
+import com.inthinc.pro.dao.VehicleDAO;
 import com.inthinc.pro.dao.report.GroupReportDAO;
 import com.inthinc.pro.dao.report.MaintenanceReportsDAO;
+import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.GroupHierarchy;
+import com.inthinc.pro.model.MaintenanceReportItem;
 import com.inthinc.pro.model.MeasurementType;
+import com.inthinc.pro.model.Vehicle;
+import com.inthinc.pro.model.configurator.MaintenanceSettings;
+import com.inthinc.pro.model.configurator.SettingType;
+import com.inthinc.pro.model.configurator.VehicleSetting;
 import com.inthinc.pro.reports.ReportCriteria;
 import com.inthinc.pro.reports.ReportType;
-
-import com.inthinc.pro.model.configurator.VehicleSetting;
-
-
-import javax.sql.DataSource;
 
 public class MaintenanceIntervalReportCriteria extends ReportCriteria {
 
