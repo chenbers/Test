@@ -11,7 +11,6 @@ import javax.sql.DataSource;
 
 import org.apache.log4j.Logger;
 import org.joda.time.DateTimeZone;
-import org.joda.time.Interval;
 
 import com.inthinc.pro.dao.ConfiguratorDAO;
 import com.inthinc.pro.dao.DriveTimeDAO;
@@ -66,8 +65,8 @@ public class MaintenanceIntervalReportCriteria extends ReportCriteria {
         
         private DataSource dataSource;
         
-        public Builder(GroupHierarchy groupHierarchy, GroupReportDAO groupReportDAO, GroupDAO groupDAO, VehicleDAO vehicleDAO, EventDAO eventDAO, List<Integer> groupIDList, Interval interval,
-                        MeasurementType measurementType, ConfiguratorDAO configuratorDAO, DriveTimeDAO driveTimeDAO, MaintenanceReportsDAO maintenanceReportsDAO) {
+        public Builder(GroupHierarchy groupHierarchy, GroupReportDAO groupReportDAO, GroupDAO groupDAO, VehicleDAO vehicleDAO, EventDAO eventDAO, List<Integer> groupIDList, MeasurementType measurementType,
+                        ConfiguratorDAO configuratorDAO, DriveTimeDAO driveTimeDAO, MaintenanceReportsDAO maintenanceReportsDAO) {
             
             this.dateTimeZone = DateTimeZone.UTC;
             this.locale = Locale.US;
@@ -76,7 +75,6 @@ public class MaintenanceIntervalReportCriteria extends ReportCriteria {
             this.measurementType = measurementType;
             this.vehicleDAO = vehicleDAO;
             this.eventDAO = eventDAO;
-            this.interval = interval;
             this.groupIDList = groupIDList;
             this.groupDAO = groupDAO;
             this.configuratorJDBCDAO = configuratorDAO;
