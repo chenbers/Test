@@ -25,6 +25,7 @@ import com.inthinc.pro.dao.EventDAO;
 import com.inthinc.pro.dao.GroupDAO;
 import com.inthinc.pro.dao.VehicleDAO;
 import com.inthinc.pro.dao.report.GroupReportDAO;
+import com.inthinc.pro.dao.report.MaintenanceReportsDAO;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.GroupHierarchy;
 import com.inthinc.pro.model.MeasurementType;
@@ -80,6 +81,8 @@ public class MaintenanceIntervalReportCriteriaTest extends BasePerformanceUnitTe
     private ConfiguratorDAO configuratorDAOMock;
     @Mocked
     private DriveTimeDAO driveTimeDAOMock;
+    @Mocked
+    private MaintenanceReportsDAO maintenanceReportsDAOMock;
     @Mocked
     private GroupHierarchy groupHierarchyMock;
     @Mocked
@@ -166,7 +169,7 @@ public class MaintenanceIntervalReportCriteriaTest extends BasePerformanceUnitTe
 
         // Build maintenanceIntervalBuilder (and exercise code)
         MaintenanceIntervalReportCriteria.Builder maintenanceIntervalBuilder = new MaintenanceIntervalReportCriteria.Builder(groupHierarchyMock, groupReportDAOMock, groupDAOMock, vehicleDAOMock, eventDAOMock, groupIDListMock,
-                intervalMock, measurementTypeMock, configuratorDAOMock, driveTimeDAOMock);
+                intervalMock, measurementTypeMock, configuratorDAOMock, driveTimeDAOMock, maintenanceReportsDAOMock);
 
         maintenanceIntervalBuilder.setLocale(LOCALE);
         maintenanceIntervalReportCriteria = maintenanceIntervalBuilder.build();
