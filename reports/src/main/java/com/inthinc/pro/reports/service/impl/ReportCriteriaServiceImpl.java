@@ -35,10 +35,12 @@ import com.inthinc.pro.dao.ScoreDAO;
 import com.inthinc.pro.dao.StateMileageDAO;
 import com.inthinc.pro.dao.UserDAO;
 import com.inthinc.pro.dao.VehicleDAO;
+import com.inthinc.pro.dao.cassandra.EventCassandraDAO;
 import com.inthinc.pro.dao.report.DVIRInspectionRepairReportDAO;
 import com.inthinc.pro.dao.report.DVIRViolationReportDAO;
 import com.inthinc.pro.dao.report.DriverPerformanceDAO;
 import com.inthinc.pro.dao.report.GroupReportDAO;
+import com.inthinc.pro.dao.report.MaintenanceReportsDAO;
 import com.inthinc.pro.dao.report.TrailerReportDAO;
 import com.inthinc.pro.dao.util.DateUtil;
 import com.inthinc.pro.map.ReportAddressLookupBean;
@@ -124,6 +126,7 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
     private MpgDAO mpgDAO;
     private VehicleDAO vehicleDAO;
     private EventDAO eventDAO;
+    private EventCassandraDAO eventCassandraDAO;
     private RedFlagDAO redFlagDAO;
     private EventAggregationDAO eventAggregationDAO;
 
@@ -138,6 +141,7 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
     private AddressDAO addressDAO;
     private StateMileageDAO stateMileageDAO;
     private DriveTimeDAO driveTimeDAO;
+    private MaintenanceReportsDAO maintenanceReportsDAO;
     private DriverPerformanceDAO driverPerformanceDAO;
     private UserDAO userDAO;
     private FormsDAO formsDAO;
@@ -1642,7 +1646,7 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
 
     @Override
     public ReportCriteria getMaintenanceEventsReportCriteria(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, Interval interval, Locale locale, DateTimeZone timeZone, MeasurementType measurementType) {
-        MaintenanceEventsReportCriteria.Builder builder = new MaintenanceEventsReportCriteria.Builder(accountGroupHierarchy, groupReportDAO, groupDAO, vehicleDAO, eventDAO, groupIDList, interval, measurementType, configuratorJDBCDAO, driveTimeDAO);
+        MaintenanceEventsReportCriteria.Builder builder = new MaintenanceEventsReportCriteria.Builder(accountGroupHierarchy, groupReportDAO, groupDAO, vehicleDAO, eventCassandraDAO, groupIDList, interval, measurementType, configuratorJDBCDAO, driveTimeDAO);
         builder.setLocale(locale);
         builder.setDateTimeZone(timeZone);
         return builder.build();
@@ -1652,7 +1656,7 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
 
     @Override
     public ReportCriteria getMaintenanceIntervalReportCriteria(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, Interval interval, Locale locale, DateTimeZone timeZone, MeasurementType measurementType) {
-        MaintenanceIntervalReportCriteria.Builder builder = new MaintenanceIntervalReportCriteria.Builder(accountGroupHierarchy, groupReportDAO, groupDAO, vehicleDAO, eventDAO, groupIDList, interval, measurementType, configuratorJDBCDAO, driveTimeDAO);
+        MaintenanceIntervalReportCriteria.Builder builder = new MaintenanceIntervalReportCriteria.Builder(accountGroupHierarchy, groupReportDAO, groupDAO, vehicleDAO, eventDAO, groupIDList, interval, measurementType, configuratorJDBCDAO, driveTimeDAO, maintenanceReportsDAO);
         builder.setLocale(locale);
         builder.setDateTimeZone(timeZone);
         return builder.build();
@@ -2195,5 +2199,21 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
         }
 
         return reportCriteriaList;
+    }
+
+    public EventCassandraDAO getEventCassandraDAO() {
+        return eventCassandraDAO;
+    }
+
+    public void setEventCassandraDAO(EventCassandraDAO eventCassandraDAO) {
+        this.eventCassandraDAO = eventCassandraDAO;
+    }
+
+    public MaintenanceReportsDAO getMaintenanceReportsDAO() {
+        return maintenanceReportsDAO;
+    }
+
+    public void setMaintenanceReportsDAO(MaintenanceReportsDAO maintenanceReportsDAO) {
+        this.maintenanceReportsDAO = maintenanceReportsDAO;
     }
 }

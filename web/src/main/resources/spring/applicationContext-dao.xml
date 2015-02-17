@@ -60,7 +60,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
     <bean id="locationDAO" class="com.inthinc.pro.dao.cassandra.LocationCassandraDAO">
         <property name="eventDAO" ref="eventTripDAO"/>
     </bean>
-
+    <bean id="eventCassandraDAO" class="com.inthinc.pro.dao.cassandra.EventCassandraDAO"/>
     <bean id="eventDAO" class="com.inthinc.pro.dao.hessian.EventHessianJdbcHybridDAO" />
     <bean id="mpgDAO" class="${mpgDAO}" />
     <bean id="scoreDAO" class="${scoreDAO}" />
@@ -112,6 +112,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
     <!-- <bean id="stateMileageDAO" class="com.inthinc.pro.reports.dao.mock.MockStateMileageDAO"></bean> -->
     <bean id="stateMileageDAO" class="com.inthinc.pro.dao.jdbc.StateMileageJDBCDAO" parent="genericJDBCDAO" />
     <bean id="driveTimeDAO" class="com.inthinc.pro.dao.jdbc.DriveTimeJDBCDAO" parent="genericJDBCDAO" />
+    <bean id="maintenanceReportsDAO" class="com.inthinc.pro.dao.jdbc.MaintenanceReportsJDBCDAO" parent="genericJDBCDAO" />
     <bean id="fwdCmdSpoolWSIridiumJDBCDAO" class="com.inthinc.pro.dao.jdbc.FwdCmdSpoolWSIridiumJDBCDAO" parent="genericJDBCDAO" />
     <bean id="fwdCmdSpoolWSHttpJDBCDAO" class="com.inthinc.pro.dao.jdbc.FwdCmdSpoolWSHttpJDBCDAO" parent="genericJDBCDAO" />
     <bean id="fwdCmdSpoolWS" class="com.inthinc.pro.dao.jdbc.FwdCmdSpoolWS" />
