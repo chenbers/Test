@@ -1673,7 +1673,7 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
 
     @Override
     public ReportCriteria getMaintenanceIntervalReportCriteria(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, Interval interval, Locale locale, DateTimeZone timeZone, MeasurementType measurementType) {
-        MaintenanceIntervalReportCriteria.Builder builder = new MaintenanceIntervalReportCriteria.Builder(accountGroupHierarchy, groupReportDAO, groupDAO, vehicleDAO, eventDAO, groupIDList, interval, measurementType, configuratorJDBCDAO, driveTimeDAO, maintenanceReportsDAO);
+        MaintenanceIntervalReportCriteria.Builder builder = new MaintenanceIntervalReportCriteria.Builder(accountGroupHierarchy, groupReportDAO, groupDAO, vehicleDAO, eventDAO, groupIDList, measurementType, configuratorJDBCDAO, driveTimeDAO, maintenanceReportsDAO);
         builder.setLocale(locale);
         builder.setDateTimeZone(timeZone);
         return builder.build();
