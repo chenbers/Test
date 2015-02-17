@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="hosViolations" pageWidth="935" pageHeight="595" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="935" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" resourceBundle="i18n/hosViolations" uuid="c709c882-5555-462a-9dbc-493e00542ca2">
-	<property name="ireport.zoom" value="1.464100000000023"/>
-	<property name="ireport.x" value="111"/>
+	<property name="ireport.zoom" value="1.2100000000000202"/>
+	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
@@ -244,7 +244,7 @@ $F{onDutyHours70}.intValue()+$F{thirtyMinuteBreak}.intValue()]]></textFieldExpre
 		</band>
 	</columnHeader>
 	<lastPageFooter>
-		<band height="39">
+		<band height="97">
 			<textField isStretchWithOverflow="true" isBlankWhenNull="false">
 				<reportElement key="textField-78" style="ColumnHeader" mode="Transparent" x="0" y="0" width="174" height="19" backcolor="#FFFFFF" uuid="3344c8da-8e38-488c-a3a7-8c6bef91dde6"/>
 				<box>
@@ -475,6 +475,27 @@ $V{SUM_70}.intValue()+$V{SUM_30}.intValue()))]]></textFieldExpression>
 				</textElement>
 				<textFieldExpression><![CDATA[new Double(($V{SUM_14}.intValue()) / (double)($V{SUM_11}.intValue()+ $V{SUM_14}.intValue()+
 $V{SUM_70}.intValue()+$V{SUM_30}.intValue()))]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="0" y="46" width="930" height="16" uuid="13ee0774-cff2-4073-a52d-32ede0ec058c"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$R{notice.line1}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="0" y="78" width="930" height="16" uuid="99cb2fe6-c091-4fae-8f41-f83d2d4b5001"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$R{notice.line3}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="0" y="62" width="930" height="16" uuid="a1c94473-7640-47a6-a68d-0d9db848b2e4"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$R{notice.line2}]]></textFieldExpression>
 			</textField>
 		</band>
 	</lastPageFooter>
