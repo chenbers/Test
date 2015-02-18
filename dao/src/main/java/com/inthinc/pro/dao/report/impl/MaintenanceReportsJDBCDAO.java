@@ -812,4 +812,10 @@ System.out.println("statement:" + statement.toString());
         // TODO Auto-generated method stub
         return null;
     }
+
+    @Override
+    public Map<Integer, Integer> getBaseOdometer(List<Integer> vehicleIDs) {
+        // TODO Auto-generated method stub
+        return null;
+    }
 }
