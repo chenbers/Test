@@ -56,7 +56,7 @@ public class ViolationsReportCriteriaTest extends BaseUnitTest {
     WthHosViolationsSummary wthHosViolationsExpectedData[][] = {
             { new WthHosViolationsSummary("HOS", 32, 0, 0, 0, 0, 306500.0d, 0.0d),
                     new WthHosViolationsSummary("HOS->Open Hole", 7, 0, 0, 0, 0, 531200.0d, 5300.0d),
-                    new WthHosViolationsSummary("HOS->Cased Hole", 54, 0, 0, 0, 0, 1296500.0d, 21000.0d), // Note: this is off by 1 mile on the zero miles from what gain reports, but it matches the hos zero miles report
+                    new WthHosViolationsSummary("HOS->Cased Hole", 54, 0, 10, 8, 0, 1296500.0d, 21000.0d), // Note: this is off by 1 mile on the zero miles from what gain reports, but it matches the hos zero miles report
                     new WthHosViolationsSummary("HOS->Slickline", 6, 0, 0, 0, 0, 133900.0d, 0.0d),
                     new WthHosViolationsSummary("HOS->Tech", 5, 0, 0, 0, 0, 0.0d, 0.0d),
                     new WthHosViolationsSummary("HOS->Gun Loader", 8, 0, 0, 0, 0, 0.0d, 0.0d),
