@@ -50,6 +50,7 @@ public class DriveTimeJDBCDAO extends GenericJDBCDAO implements DriveTimeDAO {
     private static final String REPORT_HOURS_AT_DATE = "select sum(a.driveTime) tdiff from agg a where a.vehicleID = ? and a.aggDate <= ?";
 
     private static final String REPORT_ODOMETER_AT_DATE = "select sum(a.odometer6) odiff from agg a where a.vehicleID = ? and a.aggDate <= ?";
+    private static final String REPORT_ODOMETER_AT_DATE_MULT_VEHILCE = "select sum(a.odometer6) odiff from agg a where a.vehicleID in ( VEHICLEID_LIST ) and a.aggDate <= ?";
 
     private static final DateTimeFormatter dateFormatter = DateTimeFormat.forPattern("yyyy-MM-dd");
 

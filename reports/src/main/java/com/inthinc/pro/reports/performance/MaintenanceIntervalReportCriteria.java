@@ -204,18 +204,11 @@ public class MaintenanceIntervalReportCriteria extends ReportCriteria {
                 item.setVehicleEngineHours(engineHoursMap.get(item.getVehicleID()));
                 Integer baseOdometer = baseOdometerMap.get(item.getVehicleID());
                 baseOdometer = (baseOdometer!=null)?baseOdometer:0;
-                
-                Integer thresholdMiles = null;
-                Integer thresholdHours = null;
-                if (SettingType.MAINT_THRESHOLD_ENGINE_HOURS.equals(item.getSettingType())) {
-                    thresholdHours = item.getThreshold().intValue();
-                } else if (SettingType.MAINT_THRESHOLD_ODOMETER.equals(item.getSettingType())) {
-                    thresholdMiles = item.getThreshold().intValue();
-                }
-                Integer distanceOver = calcOverage(baseOdometer, thresholdMiles, item.getVehicleOdometer());
+                Integer distanceOver = calcOverage(baseOdometer, item.getThresholdOdo(), item.getVehicleOdometer());
                 Integer baseHours = 0;
-                Integer hoursOver = calcOverage(baseHours, thresholdHours, item.getVehicleEngineHours());
-                backingWrappers.add(new BackingWrapper(item.getVehicleName(), item.getYmmString(), baseOdometer, thresholdMiles, item.getVehicleOdometer(), distanceOver, baseHours, thresholdHours,
+                Integer hoursOver = calcOverage(baseHours, item.getThresholdHours(), item.getVehicleEngineHours());
+                if((hoursOver < 0 && hoursOver > - 250) || (distanceOver < 0 && distanceOver > - 250))
+                backingWrappers.add(new BackingWrapper(item.getVehicleName(), item.getYmmString(), baseOdometer, item.getThresholdOdo(), item.getVehicleOdometer(), distanceOver, baseHours, item.getThresholdHours(),
                                 item.getVehicleEngineHours(), hoursOver, item.getGroupName()));
             }
             

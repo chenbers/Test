@@ -33,7 +33,7 @@ public class MaintenanceReportsJDBCDAO extends SimpleJdbcDaoSupport implements M
                     "join vehicle v on (avs.vehicleID = v.vehicleID) " +
                     "join groups g on (v.groupID = g.groupID) " +
                     "where v.groupID in (:groupID_list) " +
-                    "  and settingID in ("+SettingType.MAINT_THRESHOLD_ENGINE_HOURS.getSettingID()+" , "+SettingType.MAINT_THRESHOLD_ODOMETER.getSettingID()+" ) " +
+                    "  and settingID in ("+SettingType.MAINT_THRESHOLD_ENGINE_HOURS.getSettingID()+" , "+SettingType.MAINT_THRESHOLD_ODOMETER.getSettingID()+" , "+SettingType.MAINT_THRESHOLD_ODOMETER_START+" ) " +
                     "order by avs.vehicleID, settingID asc ";
     
     private static final String BASE_ODOMETER_MULT_VEHICLE = "select vehicleID, deviceID, settingID, value " +
@@ -143,16 +143,17 @@ public class MaintenanceReportsJDBCDAO extends SimpleJdbcDaoSupport implements M
                 Integer vehicleID = rs.getInt("vehicleID");
 
                 item.setVehicleName(rs.getString("vehicleName"));
-                // item.setCreated(null);//base entity
-                // item.setEventOdometer(eventOdometer);
-                // item.setEventTime(null)
-                // item.setEventType(null);
-                // item.setEventValue(null);
                 item.setGroupID(rs.getInt("vehicleGroupID"));
                 item.setGroupName(rs.getString("vehicleGroupName"));
-                // item.setModified(modified); //base entity
                 item.setSettingType(settingType);
-                item.setThreshold(rs.getDouble("value"));
+                Integer value = ((Double)rs.getDouble("value")).intValue();
+                if(SettingType.MAINT_THRESHOLD_ENGINE_HOURS.equals(settingType)) {
+                    item.setThresholdHours(value);
+                } else if(SettingType.MAINT_THRESHOLD_ODOMETER.equals(settingType)) {
+                    item.setThresholdOdo(value);
+                } else if(SettingType.MAINT_THRESHOLD_ODOMETER_START.equals(settingType)) {
+                    item.setThresholdBase(value);
+                }
                 item.setVehicleName(rs.getString("value"));
                 item.setVehicleID(vehicleID);
                 StringBuffer ymmString = new StringBuffer();
@@ -174,6 +175,28 @@ public class MaintenanceReportsJDBCDAO extends SimpleJdbcDaoSupport implements M
             }
         }, params);
         // TODO Auto-generated method stub
+        Map<Integer, MaintenanceReportItem> reportItemMap = new HashMap<Integer, MaintenanceReportItem>();
+        for(MaintenanceReportItem item: results) {
+            if(reportItemMap.containsKey(item.getVehicleID())) {
+                //merge vehicle settings!
+                //non shared values are : 
+                //item.getThreshold()
+                if(item.getThresholdOdo() != null) {
+                    reportItemMap.get(item.getVehicleID()).setThresholdOdo(item.getThresholdOdo());
+                }
+                if(item.getThresholdHours() != null) {
+                    reportItemMap.get(item.getVehicleID()).setThresholdHours(item.getThresholdHours());
+                }
+                if(item.getThresholdOdo() != null) {
+                    reportItemMap.get(item.getVehicleID()).setThresholdOdo(item.getThresholdOdo());
+                }
+                //item.getSettingType()
+                //item.getThresholdBase()
+                
+            }else {
+                reportItemMap.put(item.getVehicleID(), item);
+            }
+        }
         return results;
     }
     
