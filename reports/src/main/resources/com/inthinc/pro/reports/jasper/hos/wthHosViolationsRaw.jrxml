@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="hosViolations" pageWidth="935" pageHeight="595" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="935" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" resourceBundle="i18n/hosViolations" uuid="c709c882-5555-462a-9dbc-493e00542ca2">
 	<property name="ireport.zoom" value="1.464100000000023"/>
-	<property name="ireport.x" value="111"/>
+	<property name="ireport.x" value="160"/>
 	<property name="ireport.y" value="0"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
@@ -10,18 +10,6 @@
 	<style name="Details1" fontName="SansSerif" fontSize="12"/>
 	<parameter name="USE_METRIC" class="java.lang.Boolean" isForPrompting="false"/>
 	<field name="groupName" class="java.lang.String"/>
-	<field name="driving_1" class="java.lang.Integer"/>
-	<field name="driving_2" class="java.lang.Integer"/>
-	<field name="driving_3" class="java.lang.Integer"/>
-	<field name="onDuty_1" class="java.lang.Integer"/>
-	<field name="onDuty_2" class="java.lang.Integer"/>
-	<field name="onDuty_3" class="java.lang.Integer"/>
-	<field name="cumulative_1" class="java.lang.Integer"/>
-	<field name="cumulative_2" class="java.lang.Integer"/>
-	<field name="cumulative_3" class="java.lang.Integer"/>
-	<field name="offDuty_1" class="java.lang.Integer"/>
-	<field name="offDuty_2" class="java.lang.Integer"/>
-	<field name="offDuty_3" class="java.lang.Integer"/>
 	<field name="driverCnt" class="java.lang.Integer"/>
 	<field name="totalMiles" class="java.lang.Double"/>
 	<field name="totalMilesNoDriver" class="java.lang.Double"/>
@@ -82,10 +70,10 @@
 					<textElement textAlignment="Left">
 						<font isBold="false"/>
 					</textElement>
-					<textFieldExpression><![CDATA[($V{SUM_driverCnt_1}!=null && $V{SUM_driverCnt_1}.intValue() != 0) ? new Double((double)(
+					<textFieldExpression><![CDATA[($F{driverCnt}!=null && $F{driverCnt}.intValue() != 0) ? new Double((double)(
 $F{hourDriving11}.intValue()+$F{onDutyHours14}.intValue()+
 $F{onDutyHours70}.intValue()+$F{thirtyMinuteBreak}.intValue()
-) / (double)$V{SUM_driverCnt_1}.intValue()) : new Double(0.0)]]></textFieldExpression>
+) / (double)$F{driverCnt}.intValue()) : new Double(0.0)]]></textFieldExpression>
 				</textField>
 				<textField pattern="###0" isBlankWhenNull="false">
 					<reportElement key="textField" x="534" y="0" width="96" height="19" isPrintWhenDetailOverflows="true" uuid="406d2062-659e-4328-8f86-d2a75b364393"/>

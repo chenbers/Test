@@ -211,18 +211,10 @@ public class WthHosViolationsSummaryReportCriteria extends ViolationsSummaryRepo
         for (WthHosViolationsSummary summary : dataList) {
             List<Result> row = new ArrayList<Result>();
             row.add(new Result(summary.getGroupName(), summary.getGroupName()));
-            row.add(new Result(summary.getDriving_1().toString(), summary.getDriving_1()));
-            row.add(new Result(summary.getDriving_2().toString(), summary.getDriving_2()));
-            row.add(new Result(summary.getDriving_3().toString(), summary.getDriving_3()));
-            row.add(new Result(summary.getOnDuty_1().toString(), summary.getOnDuty_1()));
-            row.add(new Result(summary.getOnDuty_2().toString(), summary.getOnDuty_2()));
-            row.add(new Result(summary.getOnDuty_3().toString(), summary.getOnDuty_3()));
-            row.add(new Result(summary.getCumulative_1().toString(), summary.getCumulative_1()));
-            row.add(new Result(summary.getCumulative_2().toString(), summary.getCumulative_2()));
-            row.add(new Result(summary.getCumulative_3().toString(), summary.getCumulative_3()));
-            row.add(new Result(summary.getOffDuty_1().toString(), summary.getOffDuty_1()));
-            row.add(new Result(summary.getOffDuty_2().toString(), summary.getOffDuty_2()));
-            row.add(new Result(summary.getOffDuty_3().toString(), summary.getOffDuty_3()));
+            row.add(new Result(summary.getHourDriving11().toString(), summary.getHourDriving11()));
+            row.add(new Result(summary.getOnDutyHours14().toString(), summary.getOnDutyHours14()));
+            row.add(new Result(summary.getOnDutyHours70().toString(), summary.getOnDutyHours70()));
+            row.add(new Result(summary.getThirtyMinuteBreak().toString(), summary.getThirtyMinuteBreak()));
             row.add(new Result(summary.getDriverCnt().toString(), summary.getDriverCnt()));
             row.add(new Result(Converter.convertRemarkDistance(summary.getTotalMiles(), getUseMetric(), getLocale()), summary.getTotalMiles()));
             row.add(new Result(Converter.convertRemarkDistance(summary.getTotalMilesNoDriver(), getUseMetric(), getLocale()), summary.getTotalMilesNoDriver()));

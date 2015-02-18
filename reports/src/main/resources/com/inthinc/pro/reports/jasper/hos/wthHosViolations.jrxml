@@ -26,18 +26,6 @@
 		<![CDATA[exec report_jasper_hosViolations  $P{REPORT_START_DATE}, $P{REPORT_END_DATE}]]>
 	</queryString>
 	<field name="groupName" class="java.lang.String"/>
-	<field name="driving_1" class="java.lang.Integer"/>
-	<field name="driving_2" class="java.lang.Integer"/>
-	<field name="driving_3" class="java.lang.Integer"/>
-	<field name="onDuty_1" class="java.lang.Integer"/>
-	<field name="onDuty_2" class="java.lang.Integer"/>
-	<field name="onDuty_3" class="java.lang.Integer"/>
-	<field name="cumulative_1" class="java.lang.Integer"/>
-	<field name="cumulative_2" class="java.lang.Integer"/>
-	<field name="cumulative_3" class="java.lang.Integer"/>
-	<field name="offDuty_1" class="java.lang.Integer"/>
-	<field name="offDuty_2" class="java.lang.Integer"/>
-	<field name="offDuty_3" class="java.lang.Integer"/>
 	<field name="driverCnt" class="java.lang.Integer"/>
 	<field name="totalMiles" class="java.lang.Double"/>
 	<field name="totalMilesNoDriver" class="java.lang.Double"/>
@@ -46,33 +34,6 @@
 	<field name="onDutyHours70" class="java.lang.Integer"/>
 	<field name="thirtyMinuteBreak" class="java.lang.Integer"/>
 	<sortField name="groupName"/>
-	<variable name="SUM_driving_1_1" class="java.lang.Integer" calculation="Sum">
-		<variableExpression><![CDATA[$F{driving_1}]]></variableExpression>
-	</variable>
-	<variable name="SUM_driving_2_1" class="java.lang.Integer" calculation="Sum">
-		<variableExpression><![CDATA[$F{driving_2}]]></variableExpression>
-	</variable>
-	<variable name="SUM_driving_3_1" class="java.lang.Integer" calculation="Sum">
-		<variableExpression><![CDATA[$F{driving_3}]]></variableExpression>
-	</variable>
-	<variable name="SUM_onDuty_1_1" class="java.lang.Integer" calculation="Sum">
-		<variableExpression><![CDATA[$F{onDuty_1}]]></variableExpression>
-	</variable>
-	<variable name="SUM_onDuty_2_1" class="java.lang.Integer" calculation="Sum">
-		<variableExpression><![CDATA[$F{onDuty_2}]]></variableExpression>
-	</variable>
-	<variable name="SUM_onDuty_3_1" class="java.lang.Integer" calculation="Sum">
-		<variableExpression><![CDATA[$F{onDuty_3}]]></variableExpression>
-	</variable>
-	<variable name="SUM_cumulative_1_1" class="java.lang.Integer" calculation="Sum">
-		<variableExpression><![CDATA[$F{cumulative_1}]]></variableExpression>
-	</variable>
-	<variable name="SUM_cumulative_2_1" class="java.lang.Integer" calculation="Sum">
-		<variableExpression><![CDATA[$F{cumulative_2}]]></variableExpression>
-	</variable>
-	<variable name="SUM_cumulative_3_1" class="java.lang.Integer" calculation="Sum">
-		<variableExpression><![CDATA[$F{cumulative_3}]]></variableExpression>
-	</variable>
 	<variable name="SUM_driverCnt_1" class="java.lang.Integer" calculation="Sum">
 		<variableExpression><![CDATA[$F{driverCnt}]]></variableExpression>
 	</variable>
@@ -81,15 +42,6 @@
 	</variable>
 	<variable name="SUM_totalMilesNoDriver_1" class="java.lang.Double" calculation="Sum">
 		<variableExpression><![CDATA[$F{totalMilesNoDriver}]]></variableExpression>
-	</variable>
-	<variable name="SUM_offDuty_1_1" class="java.lang.Integer" calculation="Sum">
-		<variableExpression><![CDATA[$F{offDuty_1}]]></variableExpression>
-	</variable>
-	<variable name="SUM_offDuty_2_1" class="java.lang.Integer" calculation="Sum">
-		<variableExpression><![CDATA[$F{offDuty_2}]]></variableExpression>
-	</variable>
-	<variable name="SUM_offDuty_3_1" class="java.lang.Integer" calculation="Sum">
-		<variableExpression><![CDATA[$F{offDuty_3}]]></variableExpression>
 	</variable>
 	<variable name="SUM_11" class="java.lang.Integer" calculation="Sum">
 		<variableExpression><![CDATA[$F{hourDriving11}]]></variableExpression>
@@ -210,10 +162,10 @@ $F{onDutyHours70}.intValue()+$F{thirtyMinuteBreak}.intValue()]]></textFieldExpre
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement textAlignment="Right"/>
-					<textFieldExpression><![CDATA[($V{SUM_driverCnt_1}!=null && $V{SUM_driverCnt_1}.intValue() != 0) ? new Double((double)(
+					<textFieldExpression><![CDATA[($F{driverCnt}!=null && $F{driverCnt}.intValue() != 0) ? new Double((double)(
 $F{hourDriving11}.intValue()+$F{onDutyHours14}.intValue()+
 $F{onDutyHours70}.intValue()+$F{thirtyMinuteBreak}.intValue()
-) / (double)$V{SUM_driverCnt_1}.intValue()) : new Double(0.0)]]></textFieldExpression>
+) / (double)$F{driverCnt}.intValue()) : new Double(0.0)]]></textFieldExpression>
 				</textField>
 				<textField isBlankWhenNull="false">
 					<reportElement key="textField" style="Details1" x="470" y="4" width="60" height="19" isPrintWhenDetailOverflows="true" uuid="974e27b0-1f09-441c-a8b8-009a38fbff94"/>
