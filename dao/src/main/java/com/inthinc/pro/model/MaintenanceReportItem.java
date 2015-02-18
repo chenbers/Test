@@ -19,7 +19,8 @@ public class MaintenanceReportItem extends BaseEntity implements Comparable<Main
     private String ymmString;
     private EventType eventType;
     private Double eventValue;
-    private Double threshold; // could be hours OR miles depending on settingtype
+    private Integer thresholdOdo;
+    private Integer thresholdHours;
     private Integer thresholdBase;
     private SettingType settingType;
     private DateTime eventTime;
@@ -79,14 +80,6 @@ public class MaintenanceReportItem extends BaseEntity implements Comparable<Main
 
     public void setEventValue(Double eventValue) {
         this.eventValue = eventValue;
-    }
-
-    public Double getThreshold() {
-        return threshold;
-    }
-
-    public void setThreshold(Double threshold) {
-        this.threshold = threshold;
     }
 
     public SettingType getSettingType() {
@@ -151,5 +144,21 @@ public class MaintenanceReportItem extends BaseEntity implements Comparable<Main
 
     public void setThresholdBase(Integer thresholdBase) {
         this.thresholdBase = thresholdBase;
+    }
+
+    public Integer getThresholdOdo() {
+        return thresholdOdo;
+    }
+
+    public void setThresholdOdo(Integer thresholdOdo) {
+        this.thresholdOdo = thresholdOdo;
+    }
+
+    public Integer getThresholdHours() {
+        return thresholdHours;
+    }
+
+    public void setThresholdHours(Integer thresholdHours) {
+        this.thresholdHours = thresholdHours;
     }
 }
