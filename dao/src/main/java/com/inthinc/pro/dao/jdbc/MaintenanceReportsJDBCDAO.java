@@ -154,7 +154,7 @@ public class MaintenanceReportsJDBCDAO extends SimpleJdbcDaoSupport implements M
                 } else if(SettingType.MAINT_THRESHOLD_ODOMETER_START.equals(settingType)) {
                     item.setThresholdBase(value);
                 }
-                item.setVehicleName(rs.getString("value"));
+                
                 item.setVehicleID(vehicleID);
                 StringBuffer ymmString = new StringBuffer();
                 ymmString.append(rs.getString("year") + " ");
