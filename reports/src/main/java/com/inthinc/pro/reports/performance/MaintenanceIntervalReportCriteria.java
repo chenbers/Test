@@ -3,9 +3,11 @@ package com.inthinc.pro.reports.performance;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 
 import javax.sql.DataSource;
 
@@ -162,9 +164,10 @@ public class MaintenanceIntervalReportCriteria extends ReportCriteria {
             this.driveTimeDAO = driveTimeDAO;
         }
         
-        private Integer calcOverage(Integer start, Integer threshold, Integer actual) {
+        private static Integer calcOverage(Integer start, Integer threshold, Integer actual) {
             start = (start != null) ? start : 0;
-            threshold = (threshold != null) ? threshold : 1; // no threshold is logically equivalent to threshold = 1
+            threshold = (threshold != null && threshold != 0) ? threshold : 1; // no threshold is logically equivalent to threshold = 1
+            actual = (actual != null) ? actual : 0;
             return (actual % threshold) - start;
         }
         
@@ -173,14 +176,23 @@ public class MaintenanceIntervalReportCriteria extends ReportCriteria {
             
             MaintenanceIntervalReportCriteria criteria = new MaintenanceIntervalReportCriteria(this.locale);
             List<BackingWrapper> backingWrappers = new ArrayList<BackingWrapper>();
-            
+            Set<Integer> groupHeirarchySet = new HashSet<Integer>();
+            for(Integer groupID : groupIDList) {
+                groupHeirarchySet.addAll(groupHierarchy.getGroupIDList(groupID));
+            }
+            List<Integer> completeGroupIDList = new ArrayList<Integer>();
+            completeGroupIDList.addAll(groupHeirarchySet);
             // get vehicles with an odometer or engine hours threshold set
             // for each result add a row/entry to backingWrappers (if there are two (one each odo and hours) add TWO rows...)
-            List<MaintenanceReportItem> reportItems = maintenanceReportsDAO.getVehiclesWithThreshold(groupIDList);
+            List<MaintenanceReportItem> reportItems = maintenanceReportsDAO.getVehiclesWithThreshold(completeGroupIDList);
+
             List<Integer> vehicleIDs = new ArrayList<Integer>();
             for (MaintenanceReportItem item : reportItems) {
                 vehicleIDs.add(item.getVehicleID());
             }
+            
+            Map<Integer, Integer> baseOdometerMap = maintenanceReportsDAO.getBaseOdometer(vehicleIDs);
+            
             // from/for that list of vehicles determine the latest hours?
             Map<Integer, Integer> engineHoursMap;
             if (vehicleIDs != null && !vehicleIDs.isEmpty()) {
@@ -190,12 +202,14 @@ public class MaintenanceIntervalReportCriteria extends ReportCriteria {
             }
             for (MaintenanceReportItem item : reportItems) {
                 item.setVehicleEngineHours(engineHoursMap.get(item.getVehicleID()));
-                Integer baseOdometer = item.getThresholdBase();
+                Integer baseOdometer = baseOdometerMap.get(item.getVehicleID());
+                baseOdometer = (baseOdometer!=null)?baseOdometer:0;
+                
                 Integer thresholdMiles = null;
                 Integer thresholdHours = null;
-                if (item.getSettingType().equals(SettingType.MAINT_THRESHOLD_ENGINE_HOURS)) {
+                if (SettingType.MAINT_THRESHOLD_ENGINE_HOURS.equals(item.getSettingType())) {
                     thresholdHours = item.getThreshold().intValue();
-                } else if (item.getSettingType().equals(SettingType.MAINT_THRESHOLD_ODOMETER)) {
+                } else if (SettingType.MAINT_THRESHOLD_ODOMETER.equals(item.getSettingType())) {
                     thresholdMiles = item.getThreshold().intValue();
                 }
                 Integer distanceOver = calcOverage(baseOdometer, thresholdMiles, item.getVehicleOdometer());

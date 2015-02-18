@@ -33,9 +33,13 @@ public class MaintenanceReportsJDBCDAO extends SimpleJdbcDaoSupport implements M
                     "join vehicle v on (avs.vehicleID = v.vehicleID) " +
                     "join groups g on (v.groupID = g.groupID) " +
                     "where v.groupID in (:groupID_list) " +
-                    "  and settingID in ("+SettingType.MAINT_THRESHOLD_ENGINE_HOURS.getSettingID()+" , "+SettingType.MAINT_THRESHOLD_ODOMETER.getSettingID()+", "+SettingType.MAINT_THRESHOLD_ODOMETER_START.getSettingID()+") " +
+                    "  and settingID in ("+SettingType.MAINT_THRESHOLD_ENGINE_HOURS.getSettingID()+" , "+SettingType.MAINT_THRESHOLD_ODOMETER.getSettingID()+" ) " +
                     "order by avs.vehicleID, settingID asc ";
     
+    private static final String BASE_ODOMETER_MULT_VEHICLE = "select vehicleID, deviceID, settingID, value " +
+                    "from actualVSet avs " +
+                    "where vehicleID in ( :vehicleID_list ) " +
+                    "and settingID = "+SettingType.MAINT_THRESHOLD_ODOMETER_START.getSettingID()+" and value > 0";
 
     private static final String MILES_DRIVEN =
             "SELECT MAX(vs.endingOdometer) milesDriven FROM vehicleScoreByDay vs where vs.vehicleID = :vehicleID";
@@ -104,6 +108,26 @@ public class MaintenanceReportsJDBCDAO extends SimpleJdbcDaoSupport implements M
         }
         return resultsMap;
     }
+    
+    @Override
+    public Map<Integer, Integer> getBaseOdometer(List<Integer> vehicleIDs){
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("vehicleID_list", vehicleIDs);
+        List<Map.Entry<Integer, Integer>> resultEntries = getSimpleJdbcTemplate().query(BASE_ODOMETER_MULT_VEHICLE, new ParameterizedRowMapper<Map.Entry<Integer, Integer>>() {
+            @Override
+            public Map.Entry<Integer, Integer> mapRow(ResultSet rs, int rowNum) throws SQLException {
+                Double baseOdometer = rs.getDouble("value");
+                Map.Entry<Integer, Integer> resultsMap = new AbstractMap.SimpleEntry<Integer, Integer>(rs.getInt("vehicleID"), baseOdometer.intValue());
+                return resultsMap;
+            }           
+        } , params);
+        Map<Integer, Integer> resultsMap = new HashMap<Integer, Integer>();
+        for(Map.Entry<Integer, Integer> entry: resultEntries) {
+            resultsMap.put(entry.getKey(), entry.getValue());
+        }
+        return resultsMap;
+       
+    }
 
 
     @Override
@@ -112,23 +136,12 @@ public class MaintenanceReportsJDBCDAO extends SimpleJdbcDaoSupport implements M
         params.put("groupID_list", groupIDList);
         
         List<MaintenanceReportItem> results = getSimpleJdbcTemplate().query(VEHICLES_WITH_THRESHOLDS, new ParameterizedRowMapper<MaintenanceReportItem>() {
-            private Integer tempVehicleID = null;
-            private Integer tempBaseOdometer = 0;
             @Override
             public MaintenanceReportItem mapRow(ResultSet rs, int rowNum) throws SQLException {
                 MaintenanceReportItem item = new MaintenanceReportItem();
-                SettingType settingType = SettingType.valueOf(rs.getInt("settingID"));
+                SettingType settingType = SettingType.getBySettingID(rs.getInt("settingID"));
                 Integer vehicleID = rs.getInt("vehicleID");
-                if(SettingType.MAINT_THRESHOLD_ODOMETER_START.equals(settingType)) {
-                    tempVehicleID = vehicleID;
-                    tempBaseOdometer = Double.valueOf(rs.getDouble("value")).intValue();
-                } else if(SettingType.MAINT_THRESHOLD_ODOMETER.equals(settingType)) {
-                    tempBaseOdometer = 0;
-                    tempVehicleID = null;
-                    if(tempVehicleID.equals(vehicleID)) {
-                        item.setThresholdBase(tempBaseOdometer)
-;                    }
-                }
+
                 item.setVehicleName(rs.getString("vehicleName"));
                 // item.setCreated(null);//base entity
                 // item.setEventOdometer(eventOdometer);
@@ -160,11 +173,6 @@ public class MaintenanceReportsJDBCDAO extends SimpleJdbcDaoSupport implements M
                 return item;
             }
         }, params);
-        for(MaintenanceReportItem item: results) {
-            if(item.getSettingType().equals(SettingType.MAINT_THRESHOLD_ODOMETER_START)) {
-                
-            }
-        }
         // TODO Auto-generated method stub
         return results;
     }
