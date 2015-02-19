@@ -10,8 +10,7 @@ public enum ReportCategory {
         Mileage(6,"Mileage","Mileage"),
         Communication(7,"Communication","Communication"),
         DVIR(8,"DVIR","DVIR"),
-        //Maintenance(9,"Maintenance","Maintenance")
-        ;
+        Maintenance(9,"Maintenance","Maintenance");
         
         /**
          * 
