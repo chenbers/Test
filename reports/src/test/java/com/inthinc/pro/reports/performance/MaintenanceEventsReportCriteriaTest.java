@@ -21,6 +21,7 @@ import com.inthinc.pro.dao.EventDAO;
 import com.inthinc.pro.dao.GroupDAO;
 import com.inthinc.pro.dao.VehicleDAO;
 import com.inthinc.pro.dao.report.GroupReportDAO;
+import com.inthinc.pro.dao.report.MaintenanceReportsDAO;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.GroupHierarchy;
 import com.inthinc.pro.model.MeasurementType;
@@ -70,15 +71,19 @@ public class MaintenanceEventsReportCriteriaTest extends BasePerformanceUnitTest
     
     // mocks
     @Mocked GroupHierarchy mockGroupHierarchy;
+    
     @Mocked GroupReportDAO mockGroupReportDAO;
     @Mocked GroupDAO mockGroupDAO;
     @Mocked VehicleDAO mockVehicleDAO;
     @Mocked EventDAO mockEventDAO;
+    @Mocked ConfiguratorDAO mockConfiguratorDAO;
+    @Mocked DriveTimeDAO mockDriveTimeDAO;
+    @Mocked private MaintenanceReportsDAO maintenanceReportsDAOMock;
+    
     @Mocked List<Integer> mockGroupIDList;
     @Mocked Interval mockInterval;
     @Mocked MeasurementType mockMeasurementType;
-    @Mocked ConfiguratorDAO mockConfiguratorDAO;
-    @Mocked DriveTimeDAO mockDriveTimeDAO;
+   
     @Mocked NoteType mockNoteType;
     @Mocked Group mockGroup;
 //    @Mocked VehicleSetting mockVehicleSetting;
@@ -173,7 +178,7 @@ public class MaintenanceEventsReportCriteriaTest extends BasePerformanceUnitTest
         }};
         
         MaintenanceEventsReportCriteria.Builder maintenanceEventsBuilder = new MaintenanceEventsReportCriteria.Builder(
-                            mockGroupHierarchy, mockGroupReportDAO, mockGroupDAO, mockVehicleDAO, mockEventDAO, mockGroupIDList, mockInterval, mockMeasurementType, mockConfiguratorDAO, mockDriveTimeDAO);
+                            mockGroupHierarchy, mockGroupReportDAO, mockGroupDAO, mockVehicleDAO, mockEventDAO, mockGroupIDList, mockInterval, mockMeasurementType, mockConfiguratorDAO, mockDriveTimeDAO, null);
         maintenanceEventsBuilder.setLocale(LOCALE);
         maintenanceEventsReportCriteria = maintenanceEventsBuilder.build();
         

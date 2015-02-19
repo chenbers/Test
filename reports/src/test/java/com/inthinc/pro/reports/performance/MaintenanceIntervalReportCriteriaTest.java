@@ -69,28 +69,18 @@ public class MaintenanceIntervalReportCriteriaTest extends BasePerformanceUnitTe
     private static MaintenanceIntervalReportCriteria maintenanceIntervalReportCriteria;
 
     // mocks
-    @Mocked
-    private GroupReportDAO groupReportDAOMock;
-    @Mocked
-    private GroupDAO groupDAOMock;
-    @Mocked
-    private VehicleDAO vehicleDAOMock;
-    @Mocked
-    private EventDAO eventDAOMock;
-    @Mocked
-    private ConfiguratorDAO configuratorDAOMock;
-    @Mocked
-    private DriveTimeDAO driveTimeDAOMock;
-    @Mocked
-    private MaintenanceReportsDAO maintenanceReportsDAOMock;
-    @Mocked
-    private GroupHierarchy groupHierarchyMock;
-    @Mocked
-    private List<Integer> groupIDListMock;
-    @Mocked
-    private MeasurementType measurementTypeMock;
-    @Mocked
-    private Interval intervalMock;
+    @Mocked private GroupReportDAO groupReportDAOMock;
+    @Mocked private GroupDAO groupDAOMock;
+    @Mocked private VehicleDAO vehicleDAOMock;
+    @Mocked private EventDAO eventDAOMock;
+    @Mocked private ConfiguratorDAO configuratorDAOMock;
+    @Mocked private DriveTimeDAO driveTimeDAOMock;
+    @Mocked private MaintenanceReportsDAO maintenanceReportsDAOMock;
+    
+    @Mocked private GroupHierarchy groupHierarchyMock;
+    @Mocked private List<Integer> groupIDListMock;
+    @Mocked private MeasurementType measurementTypeMock;
+    @Mocked private Interval intervalMock;
 
     private List<Vehicle> vehiclesList;
 
