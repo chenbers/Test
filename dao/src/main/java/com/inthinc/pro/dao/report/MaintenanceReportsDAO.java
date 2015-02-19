@@ -1,5 +1,6 @@
 package com.inthinc.pro.dao.report;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -45,4 +46,12 @@ public interface MaintenanceReportsDAO {
      * @return
      */
     Map<Integer, Integer> getBaseOdometer(List<Integer> vehicleIDs);
+
+    /**
+     * @param groupIDs
+     * @param startDate
+     * @param endDate
+     * @return
+     */
+    List<MaintenanceReportItem> getMaintenanceEventsByGroupIDs(List<Integer> groupIDs, Date startDate, Date endDate);
 }

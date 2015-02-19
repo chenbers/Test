@@ -207,9 +207,12 @@ public class MaintenanceIntervalReportCriteria extends ReportCriteria {
                 Integer distanceOver = calcOverage(baseOdometer, item.getThresholdOdo(), item.getVehicleOdometer());
                 Integer baseHours = 0;
                 Integer hoursOver = calcOverage(baseHours, item.getThresholdHours(), item.getVehicleEngineHours());
-                if((hoursOver < 0 && hoursOver > - 250) || (distanceOver < 0 && distanceOver > - 250))
+                if(((hoursOver < 0 && hoursOver > - 250) || (distanceOver < 0 && distanceOver > - 250)) && (item.getThresholdHours() != null || item.getThresholdOdo() != null))
                 backingWrappers.add(new BackingWrapper(item.getVehicleName(), item.getYmmString(), baseOdometer, item.getThresholdOdo(), item.getVehicleOdometer(), distanceOver, baseHours, item.getThresholdHours(),
                                 item.getVehicleEngineHours(), hoursOver, item.getGroupName()));
+            }
+            for(BackingWrapper backingWrapper: backingWrappers) {
+                System.out.println(backingWrapper.toString());
             }
             
             criteria.setMainDataset(backingWrappers);

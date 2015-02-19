@@ -87,6 +87,11 @@ public enum SettingType implements BaseEnum
     MAINT_THRESHOLD_ENGINE_HOURS(59, 195, 0,0, "maint_by_engine_hours_threshold"),
     MAINT_THRESHOLD_ODOMETER_START(59, 196, 0,0, "maint_by_dist_start"),
     MAINT_THRESHOLD_ODOMETER(61, 197, 0,0, "maint_by_dist_threshold"),
+    MAINT_THRESHOLD_ENGINE_TEMP(62, 190, 0,0, "maint_by_dist_threshold"),
+    MAINT_THRESHOLD_TRANSMISSION_TEMP(63, 191, 0,0, "maint_by_dist_threshold"),
+    MAINT_THRESHOLD_DPF_FLOW_RATE(64, 192, 0,0, "maint_by_dist_threshold"),
+    MAINT_THRESHOLD_OIL_PRESSURE(65, 193, 0,0, "maint_by_dist_threshold"),
+    MAINT_THRESHOLD_BATTERY_VOLTAGE(66, 194, 0,0, "maint_by_dist_threshold"),
     ;
     
     private Integer       settingsCount; //This is how many possible values there are for this device setting

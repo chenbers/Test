@@ -146,8 +146,35 @@ public class MaintenanceEventsReportCriteria extends ReportCriteria {
             this.driveTimeDAO = driveTimeDAO;
         }
         public MaintenanceEventsReportCriteria buildNew() {
+            List<BackingWrapper> backingWrappers = new ArrayList<BackingWrapper>();
             //filter by date range and groupIDs
+            Set<Integer> groupHeirarchySet = new HashSet<Integer>();
+            for(Integer groupID : groupIDList) {
+                groupHeirarchySet.addAll(groupHierarchy.getGroupIDList(groupID));
+            }
+            List<MaintenanceReportItem> events = maintenanceReportsDAO.getMaintenanceEventsByGroupIDs(groupIDList, interval.getStart().toDate(), interval.getEnd().toDate());
             
+            
+            for(MaintenanceReportItem event: events) {
+                
+                String threshold=null;
+                
+                String distanceSince = (event.getVehicleOdometer() - event.getEventOdometer())+"";
+                String hoursSince = (event.getVehicleEngineHours() - event.getEventEngineHours())+"";
+                String eventValue;
+                String vehicleName = event.getVehicleName();
+                String vehicleYMM = event.getYmmString();
+                String maintenanceEvent = event.getMaintenanceEventType().toString();
+                Date date = event.getEventTime().toDate();
+                String odometer = event.getEventOdometer().toString();
+                String engineHours = event.getEventEngineHours().toString();
+                String groupPath = event.getGroupName();
+                if(event.getEventDpfFlowRate() != null) {
+                    maintenanceEvent = event.getMaintenanceEventType().toString();
+                    eventValue = event.getEventDpfFlowRate().toString();
+                    new BackingWrapper(vehicleName, vehicleYMM, maintenanceEvent, date, eventValue, threshold, odometer, distanceSince, engineHours, hoursSince, groupPath);
+                }
+            }
             //
             return null; //TODO: FINISH
         }

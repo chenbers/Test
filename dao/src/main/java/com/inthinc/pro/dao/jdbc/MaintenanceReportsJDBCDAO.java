@@ -25,6 +25,7 @@ import com.inthinc.pro.model.app.States;
 import com.inthinc.pro.model.configurator.ProductType;
 import com.inthinc.pro.model.configurator.SettingType;
 import com.inthinc.pro.model.event.Event;
+import com.inthinc.pro.model.event.EventType;
 import com.inthinc.pro.model.event.NoteType;
 
 public class MaintenanceReportsJDBCDAO extends SimpleJdbcDaoSupport implements MaintenanceReportsDAO {
@@ -66,7 +67,7 @@ public class MaintenanceReportsJDBCDAO extends SimpleJdbcDaoSupport implements M
                     " , substring(attribs, locate(';233=', attribs )+5, (locate(';', attribs, locate(';233=', attribs )+1) - locate(';233=', attribs )-5)) as mileage233  " +
                     " , substring(attribs, locate(';81=', attribs )+4, (locate(';', attribs, locate(';81=', attribs )+1) - locate(';81=', attribs )-4)) as voltage " +
                     " , substring(attribs, locate(';171=', attribs )+5, (locate(';', attribs, locate(';171=', attribs )+1) - locate(';171=', attribs )-5)) as engineTemp " +
-                    " , substring(attribs, locate(';172=', attribs )+5, (locate(';', attribs, locate(';172=', attribs )+1) - locate(';172=', attribs )-5)) as trasmissionTemp " +
+                    " , substring(attribs, locate(';172=', attribs )+5, (locate(';', attribs, locate(';172=', attribs )+1) - locate(';172=', attribs )-5)) as transmissionTemp " +
                     " , substring(attribs, locate(';173=', attribs )+5, (locate(';', attribs, locate(';173=', attribs )+1) - locate(';173=', attribs )-5)) as dpfFlowRate " +
                     " , substring(attribs, locate(';174=', attribs )+5, (locate(';', attribs, locate(';174=', attribs )+1) - locate(';174=', attribs )-5)) as oilPressure " +
                     " , substring(attribs, locate(';240=', attribs )+5, (locate(';', attribs, locate(';240=', attribs )+1) - locate(';240=', attribs )-5)) as engineHoursX100 " +
@@ -86,6 +87,7 @@ public class MaintenanceReportsJDBCDAO extends SimpleJdbcDaoSupport implements M
 
     //    List<Event> getEventsForGroupFromVehicles(Integer groupID, List<NoteType> eventTypes, Date startDate, Date endDate);
 
+    @Override
     public List<MaintenanceReportItem> getMaintenanceEventsByGroupIDs(List<Integer> groupIDs, Date startDate, Date endDate ){
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("groupID_list", groupIDs);
@@ -104,14 +106,31 @@ public class MaintenanceReportsJDBCDAO extends SimpleJdbcDaoSupport implements M
                 item.setGroupID(rs.getInt("vehicleGroupID"));
                 item.setGroupName(rs.getString("vehicleGroupName"));
                 item.setSettingType(settingType);
-                Integer value = ((Double)rs.getDouble("value")).intValue();
+                Double value = rs.getDouble("value");
                 if(SettingType.MAINT_THRESHOLD_ENGINE_HOURS.equals(settingType)) {
-                    item.setThresholdHours(value);
-                } else if(SettingType.MAINT_THRESHOLD_ODOMETER.equals(settingType)) {
-                    item.setThresholdOdo(value);
-                } else if(SettingType.MAINT_THRESHOLD_ODOMETER_START.equals(settingType)) {
-                    item.setThresholdBase(value);
+                    item.setThresholdHours(value.intValue());
+                } else if (SettingType.MAINT_THRESHOLD_ODOMETER.equals(settingType)) {
+                    item.setThresholdOdo(value.intValue());
+                } else if (SettingType.MAINT_THRESHOLD_ODOMETER_START.equals(settingType)) {
+                    item.setThresholdBase(value.intValue());
+                } else if (SettingType.MAINT_THRESHOLD_BATTERY_VOLTAGE.equals(settingType)) {
+                    item.setThresholdVoltage(value);
+                } else if (SettingType.MAINT_THRESHOLD_DPF_FLOW_RATE.equals(settingType)) {
+                    item.setThresholdDpfFlowRate(value);
+                } else if (SettingType.MAINT_THRESHOLD_ENGINE_TEMP.equals(settingType)) {
+                    item.setThresholdEngineTemp(value);
+                } else if (SettingType.MAINT_THRESHOLD_OIL_PRESSURE.equals(settingType)) {
+                    item.setThresholdOilPressure(value);
+                } else if (SettingType.MAINT_THRESHOLD_TRANSMISSION_TEMP.equals(settingType)) {
+                    item.setThresholdTransmissionTemp(value);
                 }
+                
+                item.setEventDpfFlowRate(rs.getDouble("dpfFlowRate"));
+                item.setEventEngineHours(rs.getInt("engineHoursX100")/100);
+                item.setEventEngineTemp(rs.getDouble("engineTemp"));
+                item.setEventOilPressure(rs.getDouble("oilPressure"));
+                item.setEventTransmissionTemp(rs.getDouble("transmissionTemp"));
+                item.setEventVoltage(rs.getDouble("volgage"));
                 
                 item.setVehicleID(vehicleID);
                 StringBuffer ymmString = new StringBuffer();
