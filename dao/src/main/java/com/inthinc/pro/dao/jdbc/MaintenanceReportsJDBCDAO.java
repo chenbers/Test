@@ -3,6 +3,7 @@ package com.inthinc.pro.dao.jdbc;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.AbstractMap;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,6 +24,8 @@ import com.inthinc.pro.model.VehicleType;
 import com.inthinc.pro.model.app.States;
 import com.inthinc.pro.model.configurator.ProductType;
 import com.inthinc.pro.model.configurator.SettingType;
+import com.inthinc.pro.model.event.Event;
+import com.inthinc.pro.model.event.NoteType;
 
 public class MaintenanceReportsJDBCDAO extends SimpleJdbcDaoSupport implements MaintenanceReportsDAO {
     
@@ -58,7 +61,96 @@ public class MaintenanceReportsJDBCDAO extends SimpleJdbcDaoSupport implements M
                     "where cnv.vehicleID in (:vehicleID_list) " + //select vehicleID from vehicle where groupID in (select groupId from groups where acctID = 438)
                     "  and type = 20 " +
                     "group by vehicleID";
+    private static final String MAINTENANCE_EVENTS_BY_GROUPIDS_BY_DATE_RANGE = "select " +
+                    "   substring(attribs, locate(';218=', attribs )+5, (locate(';', attribs, locate(';218=', attribs )+1) - locate(';218=', attribs )-5)) as mileage218 " + 
+                    " , substring(attribs, locate(';233=', attribs )+5, (locate(';', attribs, locate(';233=', attribs )+1) - locate(';233=', attribs )-5)) as mileage233  " +
+                    " , substring(attribs, locate(';81=', attribs )+4, (locate(';', attribs, locate(';81=', attribs )+1) - locate(';81=', attribs )-4)) as voltage " +
+                    " , substring(attribs, locate(';171=', attribs )+5, (locate(';', attribs, locate(';171=', attribs )+1) - locate(';171=', attribs )-5)) as engineTemp " +
+                    " , substring(attribs, locate(';172=', attribs )+5, (locate(';', attribs, locate(';172=', attribs )+1) - locate(';172=', attribs )-5)) as trasmissionTemp " +
+                    " , substring(attribs, locate(';173=', attribs )+5, (locate(';', attribs, locate(';173=', attribs )+1) - locate(';173=', attribs )-5)) as dpfFlowRate " +
+                    " , substring(attribs, locate(';174=', attribs )+5, (locate(';', attribs, locate(';174=', attribs )+1) - locate(';174=', attribs )-5)) as oilPressure " +
+                    " , substring(attribs, locate(';240=', attribs )+5, (locate(';', attribs, locate(';240=', attribs )+1) - locate(';240=', attribs )-5)) as engineHoursX100 " +
+                    " , v.name, year, make, model, cnv.type, cnv.aggType, time, v.vehicleID, v.groupID vehicleGroupID, g.name vehicleGroupName " +
+                    " , avs.value as threshold " +
+                    " , attribs " +
+                    " from cachedNoteView cnv " + 
+                    " left outer join actualVSet avs on (cnv.vehicleID = avs.vehicleID) " +
+                    " left outer join vehicle v on (cnv.vehicleID = v.vehicleID) " +
+                    " join groups g on (v.groupID = g.groupID) " +
+                    " where cnv.time between :startDate and :endDate " +
+                    "   and cnv.type in (238, 20 , 66, 1, 209, 202)  " + //maintenance note types
+                    "   and avs.settingID in (195, 196, 197) " + //maintenance settings
+                    "   and cnv.attribs is not null " +
+                    "   and (attribs like '%;81=%' or attribs like '%;171=%' or attribs like '%;172=%' or attribs like '%;173=%' or attribs like '%;174=%' or attribs like '%;240=%' ) " +
+                    "   and cnv.groupID in ( :groupID_list )";
 
+    //    List<Event> getEventsForGroupFromVehicles(Integer groupID, List<NoteType> eventTypes, Date startDate, Date endDate);
+
+    public List<MaintenanceReportItem> getMaintenanceEventsByGroupIDs(List<Integer> groupIDs, Date startDate, Date endDate ){
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("groupID_list", groupIDs);
+        params.put("startDate", startDate);
+        params.put("endDate", endDate);
+        
+        
+        List<MaintenanceReportItem> results = getSimpleJdbcTemplate().query(MAINTENANCE_EVENTS_BY_GROUPIDS_BY_DATE_RANGE, new ParameterizedRowMapper<MaintenanceReportItem>() {
+            @Override
+            public MaintenanceReportItem mapRow(ResultSet rs, int rowNum) throws SQLException {
+                MaintenanceReportItem item = new MaintenanceReportItem();
+                SettingType settingType = SettingType.getBySettingID(rs.getInt("settingID"));
+                Integer vehicleID = rs.getInt("vehicleID");
+
+                item.setVehicleName(rs.getString("vehicleName"));
+                item.setGroupID(rs.getInt("vehicleGroupID"));
+                item.setGroupName(rs.getString("vehicleGroupName"));
+                item.setSettingType(settingType);
+                Integer value = ((Double)rs.getDouble("value")).intValue();
+                if(SettingType.MAINT_THRESHOLD_ENGINE_HOURS.equals(settingType)) {
+                    item.setThresholdHours(value);
+                } else if(SettingType.MAINT_THRESHOLD_ODOMETER.equals(settingType)) {
+                    item.setThresholdOdo(value);
+                } else if(SettingType.MAINT_THRESHOLD_ODOMETER_START.equals(settingType)) {
+                    item.setThresholdBase(value);
+                }
+                
+                item.setVehicleID(vehicleID);
+                StringBuffer ymmString = new StringBuffer();
+                ymmString.append(rs.getString("year") + " ");
+                ymmString.append(rs.getString("make") + " ");
+                ymmString.append(rs.getString("model") + " ");
+                item.setYmmString(ymmString.toString());
+                
+                Long absOdometer = rs.getObject("absOdometer") == null ? null : (rs.getLong("absOdometer"));
+                Long odometer = rs.getObject("odometer") == null ? null : rs.getLong("odometer");
+                if (absOdometer != null) {
+                    item.setVehicleOdometer(Long.valueOf(absOdometer / 100l).intValue());
+                } else if (odometer != null) {
+                    Integer milesDriven = getMilesDriven(item.getVehicleID());
+                    item.setVehicleOdometer(Long.valueOf((odometer + milesDriven) / 100).intValue());
+                }
+                
+                return item;
+            }
+        }, params);
+        // TODO Auto-generated method stub
+        Map<Integer, MaintenanceReportItem> reportItemMap = new HashMap<Integer, MaintenanceReportItem>();
+        for(MaintenanceReportItem item: results) {
+            if(reportItemMap.containsKey(item.getVehicleID())) {
+                if(item.getThresholdOdo() != null) {
+                    reportItemMap.get(item.getVehicleID()).setThresholdOdo(item.getThresholdOdo());
+                }
+                if(item.getThresholdHours() != null) {
+                    reportItemMap.get(item.getVehicleID()).setThresholdHours(item.getThresholdHours());
+                }
+                if(item.getThresholdOdo() != null) {
+                    reportItemMap.get(item.getVehicleID()).setThresholdOdo(item.getThresholdOdo());
+                }
+            }else {
+                reportItemMap.put(item.getVehicleID(), item);
+            }
+        }
+        return results;
+    }
     @Override
     public Integer getMilesDriven(Integer vehicleID) {
         Map<String, Object> params = new HashMap<String, Object>();

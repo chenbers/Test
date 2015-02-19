@@ -13,6 +13,7 @@ import org.joda.time.DateTimeZone;
 import org.joda.time.Interval;
 
 import com.inthinc.pro.dao.report.GroupReportDAO;
+import com.inthinc.pro.dao.report.MaintenanceReportsDAO;
 import com.inthinc.pro.reports.ReportCriteria;
 import com.inthinc.pro.reports.ReportType;
 
@@ -38,11 +39,13 @@ public class MaintenanceEventsReportCriteria extends ReportCriteria {
         private MeasurementType measurementType;
 
         private GroupReportDAO groupReportDAO;
-
         private VehicleDAO vehicleDAO;
-
         private EventDAO eventDAO;
-
+        private MaintenanceReportsDAO maintenanceReportsDAO;
+        private GroupDAO groupDAO;
+        private ConfiguratorDAO configuratorJDBCDAO;
+        private DriveTimeDAO driveTimeDAO;
+        
         private GroupHierarchy groupHierarchy;
 
         private Boolean includeInactiveDrivers;
@@ -51,14 +54,10 @@ public class MaintenanceEventsReportCriteria extends ReportCriteria {
 
         private Interval interval;
 
-        private GroupDAO groupDAO;
 
-        private ConfiguratorDAO configuratorJDBCDAO;
-
-        private DriveTimeDAO driveTimeDAO;
 
         public Builder(GroupHierarchy groupHierarchy, GroupReportDAO groupReportDAO, GroupDAO groupDAO, VehicleDAO vehicleDAO, EventDAO eventDAO, List<Integer> groupIDList, Interval interval, MeasurementType measurementType,
-                       ConfiguratorDAO configuratorDAO, DriveTimeDAO driveTimeDAO) {
+                       ConfiguratorDAO configuratorDAO, DriveTimeDAO driveTimeDAO, MaintenanceReportsDAO maintenanceReportsDAO) {
 
             this.groupIDList = groupIDList;
             this.dateTimeZone = DateTimeZone.UTC;
@@ -72,6 +71,7 @@ public class MaintenanceEventsReportCriteria extends ReportCriteria {
             this.groupDAO = groupDAO;
             this.driveTimeDAO = driveTimeDAO;
             this.configuratorJDBCDAO = configuratorDAO;
+            this.maintenanceReportsDAO = maintenanceReportsDAO;
         }
 
         public void setDateTimeZone(DateTimeZone dateTimeZone) {
@@ -145,7 +145,12 @@ public class MaintenanceEventsReportCriteria extends ReportCriteria {
         public void setDriveTimeDAO(DriveTimeDAO driveTimeDAO) {
             this.driveTimeDAO = driveTimeDAO;
         }
-
+        public MaintenanceEventsReportCriteria buildNew() {
+            //filter by date range and groupIDs
+            
+            //
+            return null; //TODO: FINISH
+        }
         public MaintenanceEventsReportCriteria build() {
             logger.debug(String.format("Building MaintenanceEventsReportCriteria with locale %s", locale));
 
@@ -426,6 +431,14 @@ public class MaintenanceEventsReportCriteria extends ReportCriteria {
          */
         private Map<Integer, String> getEngineHoursAtLastDatesMap(VehicleEventData vehicleEventData) {
             return driveTimeDAO.getEngineHoursAtLastDates(vehicleEventData);
+        }
+
+        public MaintenanceReportsDAO getMaintenanceReportsDAO() {
+            return maintenanceReportsDAO;
+        }
+
+        public void setMaintenanceReportsDAO(MaintenanceReportsDAO maintenanceReportsDAO) {
+            this.maintenanceReportsDAO = maintenanceReportsDAO;
         }
 
     }
