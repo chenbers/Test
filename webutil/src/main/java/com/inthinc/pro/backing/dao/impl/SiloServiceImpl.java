@@ -340,7 +340,7 @@ public class SiloServiceImpl implements SiloService {
 
     @Override
     @MethodDescription(description = "Marks the specified note as 'forgiven'.", crudType=CrudType.UPDATE)
-    @DAODescription(daoID="eventDAO", daoMethod="forgive")
+    //@DAODescription(daoID="eventDAO", daoMethod="forgive")
     public Map<String, Object> forgive(@DaoParam(name = "driverID") Integer driverID, @DaoParam(name = "noteID") Long noteID, @DaoParam(name = "forgivenByUserID") Long forgivenByUserID, @DaoParam(name = "reason") String reason) throws ProDAOException {
         return null;
     }
