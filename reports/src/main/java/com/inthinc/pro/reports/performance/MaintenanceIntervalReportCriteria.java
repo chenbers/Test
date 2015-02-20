@@ -201,13 +201,14 @@ public class MaintenanceIntervalReportCriteria extends ReportCriteria {
                 engineHoursMap = Collections.emptyMap();
             }
             for (MaintenanceReportItem item : reportItems) {
+                System.out.println("item: "+item);
                 item.setVehicleEngineHours(engineHoursMap.get(item.getVehicleID()));
                 Integer baseOdometer = baseOdometerMap.get(item.getVehicleID());
                 baseOdometer = (baseOdometer!=null)?baseOdometer:0;
                 Integer distanceOver = calcOverage(baseOdometer, item.getThresholdOdo(), item.getVehicleOdometer());
                 Integer baseHours = 0;
                 Integer hoursOver = calcOverage(baseHours, item.getThresholdHours(), item.getVehicleEngineHours());
-                if(((hoursOver < 0 && hoursOver > - 250) || (distanceOver < 0 && distanceOver > - 250)) && (item.getThresholdHours() != null || item.getThresholdOdo() != null))
+                // if(((hoursOver < 0 && hoursOver > - 250) || (distanceOver < 0 && distanceOver > - 250)) && (item.getThresholdHours() != null || item.getThresholdOdo() != null))
                 backingWrappers.add(new BackingWrapper(item.getVehicleName(), item.getYmmString(), baseOdometer, item.getThresholdOdo(), item.getVehicleOdometer(), distanceOver, baseHours, item.getThresholdHours(),
                                 item.getVehicleEngineHours(), hoursOver, item.getGroupName()));
             }
