@@ -107,7 +107,7 @@ public class AutoStepCreator extends StepCreator {
     }
 
     
-    public class NullPointerStep extends ParameterisedStep {
+    public class NullPointerStep extends ParametrisedStep {
         
         private final String stepAsString;
         private final NullPointerException e;
@@ -134,7 +134,7 @@ public class AutoStepCreator extends StepCreator {
         return new PopupStep(stepAsString);
     }
     
-    public class PopupStep extends ParameterisedStep {
+    public class PopupStep extends ParametrisedStep {
         private final String stepAsString;
         
         public PopupStep(String stepAsString){
@@ -173,7 +173,7 @@ public class AutoStepCreator extends StepCreator {
     
 
     
-    public class AutoPageStep extends ParameterisedStep {
+    public class AutoPageStep extends ParametrisedStep {
         
         private final String stepAsString;
         private final Method method;
@@ -262,7 +262,7 @@ public class AutoStepCreator extends StepCreator {
         return new SaveVariableStep(instance, step.stepAsString(), method, step.stepAsString().substring(step.stepAsString().indexOf(" ")), parameters);
     }
     
-    public class SaveVariableStep extends ParameterisedStep {
+    public class SaveVariableStep extends ParametrisedStep {
         
         private final String stepAsString;
         private final Method method;
@@ -319,7 +319,7 @@ public class AutoStepCreator extends StepCreator {
         return new ValidationStep(elementClass, step.stepAsString(), method, step.stepAsString().substring(step.stepAsString().indexOf(" ")), parameters);
     }
     
-    public class ValidationStep extends ParameterisedStep {
+    public class ValidationStep extends ParametrisedStep {
         
         private final String stepAsString;
         private final Method method;
