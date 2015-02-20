@@ -17,3 +17,11 @@ Then I validate the Error text contains "Username is a required field."
 And I validate the Error text contains "Password is a required field."
 And I validate the User Name textfield is ""
 And I validate the Password textfield is ""
+
+Scenario: TC1242: Log In - Bookmark Page Entry
+Given I am logged in
+When I bookmark the page
+And I click the Logout link
+And I click the bookmark I just added
+And I log back in
+Then I validate I am on the Executive Dashboard page

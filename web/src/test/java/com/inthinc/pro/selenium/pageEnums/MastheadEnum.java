@@ -25,7 +25,7 @@ public enum MastheadEnum implements SeleniumEnums {
 
     /* Header Elements */
     HELP("Help", "headerForm:contextSensitiveHelp", "//a[@class='tb-help']", "//div[@id='horz_nav']/ul/li[1]/span/a"),
-    LOGOUT("Log Out", "//div[@id='horz_nav']/ul/li[4]/a", "//a[@class='tb-logout']"),
+    LOGOUT("Log Out", "//a[@id='template-settings-logout']"),
     MY_ACCOUNT("My Account", "headerForm:headerMyAccount", "//div[@id='horz_nav']/ul/li[3]/span/a"),
     MY_MESSAGES("My Messages", "headerForm:headerMyMessages", "//form[@id='headerForm']/ul/li[2]/span/a"),
 
