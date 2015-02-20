@@ -68,7 +68,9 @@ public class HTTPCommands {
     public String constructQuery(String ...items) {
         StringWriter query = new StringWriter();
         for (int i=0; i<items.length;i++){
-            if (i!=0){
+            if (i==2){
+                query.write("?");
+            }else if (i>2){
                 query.write("&");
             }
             query.write(items[i] + "=" + items[++i]);
