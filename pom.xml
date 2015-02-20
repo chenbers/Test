@@ -92,8 +92,8 @@
         <log4j.version>1.2.12</log4j.version>
         <jmockit.version>0.999.4</jmockit.version>
         <hos.version>0.0.34-SNAPSHOT</hos.version>
-        <selenium.version>2.26.0</selenium.version>
-        <jbehave.core.version>3.7.5</jbehave.core.version>
+        <selenium.version>2.44.0</selenium.version>
+        <jbehave.core.version>3.9.5</jbehave.core.version>
         <jacksonVersion>2.0.2</jacksonVersion>
         <codehausjacksonVersion>1.9.9</codehausjacksonVersion>
         <jacksonVersion>2.0.2</jacksonVersion>
@@ -628,6 +628,11 @@ mi2KFq<Nc4zYl8ZVexWN8GNR2KNYvC5rn293xhqnaa8hMH QROnTXrOnpnpNqQpRomwtNpNmPMPpMnrp
             <!-- <version>1.8.4</version> -->
             <!-- <scope>test</scope> -->
             <!-- </dependency> -->
+            <dependency>
+            	<groupId>org.seleniumhq.selenium</groupId>
+            	<artifactId>selenium-server</artifactId>
+            	<version>${selenium.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
