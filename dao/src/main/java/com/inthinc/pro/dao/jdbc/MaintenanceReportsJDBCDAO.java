@@ -3,6 +3,7 @@ package com.inthinc.pro.dao.jdbc;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.AbstractMap;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -161,14 +162,33 @@ public class MaintenanceReportsJDBCDAO extends SimpleJdbcDaoSupport implements M
                 if(item.getThresholdHours() != null) {
                     reportItemMap.get(item.getVehicleID()).setThresholdHours(item.getThresholdHours());
                 }
-                if(item.getThresholdOdo() != null) {
-                    reportItemMap.get(item.getVehicleID()).setThresholdOdo(item.getThresholdOdo());
+                if(item.getThresholdBase() != null) {
+                    reportItemMap.get(item.getVehicleID()).setThresholdBase(item.getThresholdBase());
+                }
+                if(item.getThresholdVoltage() != null) {
+                    reportItemMap.get(item.getVehicleID()).setThresholdVoltage(item.getThresholdVoltage());
+                }
+                if(item.getThresholdDpfFlowRate() != null) {
+                    reportItemMap.get(item.getVehicleID()).setThresholdDpfFlowRate(item.getThresholdDpfFlowRate());
+                }
+                if(item.getThresholdEngineTemp() != null) {
+                    reportItemMap.get(item.getVehicleID()).setThresholdEngineTemp(item.getThresholdEngineTemp());
+                }
+                if(item.getThresholdOilPressure() != null) {
+                    reportItemMap.get(item.getVehicleID()).setThresholdOilPressure(item.getThresholdOilPressure());
+                }
+                if(item.getThresholdTransmissionTemp() != null) {
+                    reportItemMap.get(item.getVehicleID()).setThresholdTransmissionTemp(item.getThresholdTransmissionTemp());
                 }
             }else {
                 reportItemMap.put(item.getVehicleID(), item);
             }
         }
-        return results;
+        List<MaintenanceReportItem> resultsItems = new ArrayList<MaintenanceReportItem>();
+        for(Integer vehicleID : reportItemMap.keySet()) {
+            resultsItems.add(reportItemMap.get(vehicleID));
+        }
+        return resultsItems;
     }
     @Override
     public Integer getMilesDriven(Integer vehicleID) {
@@ -246,7 +266,7 @@ public class MaintenanceReportsJDBCDAO extends SimpleJdbcDaoSupport implements M
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("groupID_list", groupIDList);
         
-        List<MaintenanceReportItem> results = getSimpleJdbcTemplate().query(VEHICLES_WITH_THRESHOLDS, new ParameterizedRowMapper<MaintenanceReportItem>() {
+        List<MaintenanceReportItem> queryResults = getSimpleJdbcTemplate().query(VEHICLES_WITH_THRESHOLDS, new ParameterizedRowMapper<MaintenanceReportItem>() {
             @Override
             public MaintenanceReportItem mapRow(ResultSet rs, int rowNum) throws SQLException {
                 MaintenanceReportItem item = new MaintenanceReportItem();
@@ -287,11 +307,9 @@ public class MaintenanceReportsJDBCDAO extends SimpleJdbcDaoSupport implements M
         }, params);
         // TODO Auto-generated method stub
         Map<Integer, MaintenanceReportItem> reportItemMap = new HashMap<Integer, MaintenanceReportItem>();
-        for(MaintenanceReportItem item: results) {
+        for(MaintenanceReportItem item: queryResults) {
             if(reportItemMap.containsKey(item.getVehicleID())) {
                 //merge vehicle settings!
-                //non shared values are : 
-                //item.getThreshold()
                 if(item.getThresholdOdo() != null) {
                     reportItemMap.get(item.getVehicleID()).setThresholdOdo(item.getThresholdOdo());
                 }
@@ -301,14 +319,17 @@ public class MaintenanceReportsJDBCDAO extends SimpleJdbcDaoSupport implements M
                 if(item.getThresholdOdo() != null) {
                     reportItemMap.get(item.getVehicleID()).setThresholdOdo(item.getThresholdOdo());
                 }
-                //item.getSettingType()
-                //item.getThresholdBase()
                 
             }else {
                 reportItemMap.put(item.getVehicleID(), item);
             }
         }
-        return results;
+        List<MaintenanceReportItem> resultsItems = new ArrayList<MaintenanceReportItem>();
+        for(Integer vehicleID : reportItemMap.keySet()) {
+            resultsItems.add(reportItemMap.get(vehicleID));
+        }
+        return resultsItems;
+        
     }
     
     
