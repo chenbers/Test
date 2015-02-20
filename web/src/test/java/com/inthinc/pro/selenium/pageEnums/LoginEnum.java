@@ -15,9 +15,9 @@ public enum LoginEnum implements SeleniumEnums {
     
     FORGOT_USERNAME_LINK("Forgot your user name or password?", "//span[5]/a"),
     LOGO_TEXT("inthinc", "//div[@id='content']/div"),
-    COPYRIGHT_TEXT("@2012 inthinc", "//div[2]/span"),
+    COPYRIGHT_TEXT("©2009-2015 inthinc", "//span[@class='footer-info copyright pull-right']"),
     
-    ERROR_TEXT(null, "//span[@id='credentials.errors']")
+    ERROR_TEXT(null, "//p[@id='credentials.errors']")
     ;
     
     private String text, url;
