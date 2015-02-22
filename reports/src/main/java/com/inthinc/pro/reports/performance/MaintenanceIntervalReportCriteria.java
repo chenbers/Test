@@ -184,19 +184,19 @@ public class MaintenanceIntervalReportCriteria extends ReportCriteria {
             completeGroupIDList.addAll(groupHeirarchySet);
             // get vehicles with an odometer or engine hours threshold set
             // for each result add a row/entry to backingWrappers (if there are two (one each odo and hours) add TWO rows...)
-            List<MaintenanceReportItem> reportItems = maintenanceReportsDAO.getVehiclesWithThreshold(completeGroupIDList);
+            List<MaintenanceReportItem> reportItems = maintenanceReportsDAO.findVehiclesWithThreshold(completeGroupIDList);
 
             List<Integer> vehicleIDs = new ArrayList<Integer>();
             for (MaintenanceReportItem item : reportItems) {
                 vehicleIDs.add(item.getVehicleID());
             }
             
-            Map<Integer, Integer> baseOdometerMap = maintenanceReportsDAO.getBaseOdometer(vehicleIDs);
+            Map<Integer, Integer> baseOdometerMap = maintenanceReportsDAO.findBaseOdometer(vehicleIDs);
             
             // from/for that list of vehicles determine the latest hours?
             Map<Integer, Integer> engineHoursMap;
             if (vehicleIDs != null && !vehicleIDs.isEmpty()) {
-                engineHoursMap = maintenanceReportsDAO.getEngineHours(vehicleIDs);
+                engineHoursMap = maintenanceReportsDAO.findEngineHours(vehicleIDs);
             } else {
                 engineHoursMap = Collections.emptyMap();
             }

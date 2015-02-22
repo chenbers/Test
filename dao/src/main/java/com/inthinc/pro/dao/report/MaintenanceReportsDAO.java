@@ -21,37 +21,45 @@ public interface MaintenanceReportsDAO {
      * @param groupIDList
      * @return
      */
-    public List<MaintenanceReportItem> getVehiclesWithThreshold(List<Integer> groupIDList);
+    public List<MaintenanceReportItem> findVehiclesWithThreshold(List<Integer> groupIDList);
 
     /**
      * @param vehicleID
      * @return
      */
-    Integer getMilesDriven(Integer vehicleID);
+    Integer findMilesDriven(Integer vehicleID);
 
     /**
      * @param vehicleIDs
      * @return
      */
-    Map<Integer, Integer> getMilesDriven(Set<Integer> vehicleIDs);
+    Map<Integer, Integer> findMilesDriven(Set<Integer> vehicleIDs);
 
     /**
      * @param vehicleIDs
      * @return
      */
-    Map<Integer, Integer> getEngineHours(List<Integer> vehicleIDs);
+    Map<Integer, Integer> findEngineHours(List<Integer> vehicleIDs);
 
     /**
      * @param vehicleIDs
      * @return
      */
-    Map<Integer, Integer> getBaseOdometer(List<Integer> vehicleIDs);
+    Map<Integer, Integer> findBaseOdometer(List<Integer> vehicleIDs);
 
+    /**
+     * Find the odometer values for the given set of vehicleIDs (TiwiSpecific)
+     * @param vehilceIDs
+     * @return a map with 
+     *          key<Integer> = vehicleID
+     *          value<Integer> = odometer
+     */
+    Map<Integer, Integer> findTiwiOdometer(Set<Integer> vehicleIDs);
     /**
      * @param groupIDs
      * @param startDate
      * @param endDate
      * @return
      */
-    List<MaintenanceReportItem> getMaintenanceEventsByGroupIDs(List<Integer> groupIDs, Date startDate, Date endDate);
+    List<MaintenanceReportItem> findMaintenanceEventsByGroupIDs(List<Integer> groupIDs, Date startDate, Date endDate);
 }

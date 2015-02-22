@@ -45,24 +45,32 @@ public class MaintenanceReportsJDBCDAO extends SimpleJdbcDaoSupport implements M
                     "from actualVSet avs " +
                     "where vehicleID in ( :vehicleID_list ) " +
                     "and settingID = "+SettingType.MAINT_THRESHOLD_ODOMETER_START.getSettingID()+" and value > 0";
+    
+    private static final String ODOMETER_TIWI_MULTI_VEHICLE = 
+                    "select agg.aggID, agg.vehicleID, agg.vehicleEndingOdometer, agg.aggDate "+
+                    "from agg "+
+                    "join (select vehicleID, max(aggDate) as max_aggDate from agg where aggDate <= now() group by vehicleID)vid_maxAggDate on vid_maxAggDate.vehicleID = agg.vehicleID and vid_maxAggDate.max_aggDate = agg.aggDate "+
+                    "where agg.vehicleID in ( :vehicleID_list );";
 
     private static final String MILES_DRIVEN =
-            "SELECT MAX(vs.endingOdometer) milesDriven FROM vehicleScoreByDay vs where vs.vehicleID = :vehicleID";
+                    "SELECT MAX(vs.endingOdometer) milesDriven, vs.vehicleID vehicleID FROM vehicleScoreByDay vs where vs.vehicleID = :vehicleID";
     private static final String MILES_DRIVEN_MULT_VEHICLE =
                     "SELECT MAX(vs.endingOdometer) milesDriven, vs.vehicleID vehicleID FROM vehicleScoreByDay vs where vs.vehicleID in ( :vehicleID_list ) group by vehicleID";
     private static final String ENGINE_HOURS_MULT_VEHICLE =
                     "select " +
-                    "   max(time) " + 
-                    "   ,noteID, driverID, cnv.vehicleID, type, aggType, time, cnv.groupID, vehicleGroupID, driverGroupID, personID " +  
+                    "   time  " +
+                    "   ,noteID, driverID, cnv.vehicleID, type, aggType, time, cnv.groupID, vehicleGroupID, driverGroupID, personID " + 
                     "   ,substring(attribs, locate(';218=', attribs )+5, (locate(';', attribs, locate(';218=', attribs )+1) - locate(';218=', attribs )-5)) as mileage218 " + 
-                    "   ,substring(attribs, locate(';233=', attribs )+5, (locate(';', attribs, locate(';233=', attribs )+1) - locate(';233=', attribs )-5)) as mileage233  " +
-                    "  ,substring(attribs, locate(';240=', attribs )+5, (locate(';', attribs, locate(';240=', attribs )+1) - locate(';240=', attribs )-5)) as engineHours  " +
-                    "  , v.odometer, v.absOdometer " +
-                    "from cachedNoteView cnv "  +
-                    "left outer join vehicle v on (cnv.vehicleID = v.vehicleID) " +
-                    "where cnv.vehicleID in (:vehicleID_list) " + //select vehicleID from vehicle where groupID in (select groupId from groups where acctID = 438)
-                    "  and type = 20 " +
-                    "group by vehicleID";
+                    "   ,substring(attribs, locate(';233=', attribs )+5, (locate(';', attribs, locate(';233=', attribs )+1) - locate(';233=', attribs )-5)) as mileage233   " +
+                    "  ,substring(attribs, locate(';240=', attribs )+5, (locate(';', attribs, locate(';240=', attribs )+1) - locate(';240=', attribs )-5)) as engineHours   " +
+                    "  , v.odometer, v.absOdometer  " +
+                    "from cachedNoteView cnv  " +
+                    "JOIN (select max(time) as max_time, vehicleID from cachedNoteView where cachedNoteView.vehicleID in (select vehicleID from vehicle where groupID in (select groupId from groups where acctID = 438)) and type = 20 group by vehicleID)vid_maxTime " + 
+                    "        on vid_maxTime.vehicleID = cnv.vehicleID and vid_maxTime.max_time = cnv.time " +
+                    "left outer join vehicle v on (cnv.vehicleID = v.vehicleID)  " +
+                    "where cnv.vehicleID in (:vehicleID_list) " +
+                    "  and type = 20  " + //ignition off
+                    "group by vehicleID;";
     private static final String MAINTENANCE_EVENTS_BY_GROUPIDS_BY_DATE_RANGE = "select " +
                     "   substring(attribs, locate(';218=', attribs )+5, (locate(';', attribs, locate(';218=', attribs )+1) - locate(';218=', attribs )-5)) as mileage218 " + 
                     " , substring(attribs, locate(';233=', attribs )+5, (locate(';', attribs, locate(';233=', attribs )+1) - locate(';233=', attribs )-5)) as mileage233  " +
@@ -89,7 +97,7 @@ public class MaintenanceReportsJDBCDAO extends SimpleJdbcDaoSupport implements M
     //    List<Event> getEventsForGroupFromVehicles(Integer groupID, List<NoteType> eventTypes, Date startDate, Date endDate);
 
     @Override
-    public List<MaintenanceReportItem> getMaintenanceEventsByGroupIDs(List<Integer> groupIDs, Date startDate, Date endDate ){
+    public List<MaintenanceReportItem> findMaintenanceEventsByGroupIDs(List<Integer> groupIDs, Date startDate, Date endDate ){
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("groupID_list", groupIDs);
         params.put("startDate", startDate);
@@ -145,7 +153,7 @@ public class MaintenanceReportsJDBCDAO extends SimpleJdbcDaoSupport implements M
                 if (absOdometer != null) {
                     item.setVehicleOdometer(Long.valueOf(absOdometer / 100l).intValue());
                 } else if (odometer != null) {
-                    Integer milesDriven = getMilesDriven(item.getVehicleID());
+                    Integer milesDriven = findMilesDriven(item.getVehicleID());
                     item.setVehicleOdometer(Long.valueOf((odometer + milesDriven) / 100).intValue());
                 }
                 
@@ -154,7 +162,7 @@ public class MaintenanceReportsJDBCDAO extends SimpleJdbcDaoSupport implements M
         }, params);
         // TODO Auto-generated method stub
         Map<Integer, MaintenanceReportItem> reportItemMap = new HashMap<Integer, MaintenanceReportItem>();
-        for(MaintenanceReportItem item: results) {
+        for(MaintenanceReportItem item: results) { //TODO: note that this merge might NOT be correct???? we DO want to see one line PER EVENT??? I believe
             if(reportItemMap.containsKey(item.getVehicleID())) {
                 if(item.getThresholdOdo() != null) {
                     reportItemMap.get(item.getVehicleID()).setThresholdOdo(item.getThresholdOdo());
@@ -191,7 +199,7 @@ public class MaintenanceReportsJDBCDAO extends SimpleJdbcDaoSupport implements M
         return resultsItems;
     }
     @Override
-    public Integer getMilesDriven(Integer vehicleID) {
+    public Integer findMilesDriven(Integer vehicleID) {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("vehicleID", vehicleID);
         
@@ -201,7 +209,7 @@ public class MaintenanceReportsJDBCDAO extends SimpleJdbcDaoSupport implements M
     }
     
     @Override
-    public Map<Integer , Integer > getMilesDriven(Set<Integer> vehicleIDs){
+    public Map<Integer , Integer > findMilesDriven(Set<Integer> vehicleIDs){
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("vehicleID_list", vehicleIDs);
         
@@ -221,7 +229,7 @@ public class MaintenanceReportsJDBCDAO extends SimpleJdbcDaoSupport implements M
     }
     
     @Override
-    public Map<Integer, Integer> getEngineHours(List<Integer> vehicleIDs){
+    public Map<Integer, Integer> findEngineHours(List<Integer> vehicleIDs){
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("vehicleID_list", vehicleIDs);
         
@@ -241,7 +249,7 @@ public class MaintenanceReportsJDBCDAO extends SimpleJdbcDaoSupport implements M
     }
     
     @Override
-    public Map<Integer, Integer> getBaseOdometer(List<Integer> vehicleIDs){
+    public Map<Integer, Integer> findBaseOdometer(List<Integer> vehicleIDs){
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("vehicleID_list", vehicleIDs);
         List<Map.Entry<Integer, Integer>> resultEntries = getSimpleJdbcTemplate().query(BASE_ODOMETER_MULT_VEHICLE, new ParameterizedRowMapper<Map.Entry<Integer, Integer>>() {
@@ -262,7 +270,7 @@ public class MaintenanceReportsJDBCDAO extends SimpleJdbcDaoSupport implements M
 
 
     @Override
-    public List<MaintenanceReportItem> getVehiclesWithThreshold(List<Integer> groupIDList) {
+    public List<MaintenanceReportItem> findVehiclesWithThreshold(List<Integer> groupIDList) {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("groupID_list", groupIDList);
         
@@ -293,14 +301,14 @@ public class MaintenanceReportsJDBCDAO extends SimpleJdbcDaoSupport implements M
                 ymmString.append(rs.getString("model") + " ");
                 item.setYmmString(ymmString.toString());
                 
-                Long absOdometer = rs.getObject("absOdometer") == null ? null : (rs.getLong("absOdometer"));
-                Long odometer = rs.getObject("odometer") == null ? null : rs.getLong("odometer");
-                if (absOdometer != null) {
-                    item.setVehicleOdometer(Long.valueOf(absOdometer / 100l).intValue());
-                } else if (odometer != null) {
-                    Integer milesDriven = getMilesDriven(item.getVehicleID());
-                    item.setVehicleOdometer(Long.valueOf((odometer + milesDriven) / 100).intValue());
-                }
+                
+//
+//                if (absOdometer != null) {
+//                    item.setVehicleOdometer(Long.valueOf(absOdometer / 100l).intValue());
+//                } else if (odometer != null) {
+//                    Integer milesDriven = getMilesDriven(item.getVehicleID());
+//                    item.setVehicleOdometer(Long.valueOf((odometer + milesDriven) / 100).intValue());
+//                }
                 
                 return item;
             }
@@ -395,5 +403,24 @@ public class MaintenanceReportsJDBCDAO extends SimpleJdbcDaoSupport implements M
             return vehicle;
         }
     };
+
+    @Override
+    public Map<Integer, Integer> findTiwiOdometer(Set<Integer> vehicleIDs) {
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("vehicleID_list", vehicleIDs);
+        List<Map.Entry<Integer, Integer>> resultEntries = getSimpleJdbcTemplate().query(BASE_ODOMETER_MULT_VEHICLE, new ParameterizedRowMapper<Map.Entry<Integer, Integer>>() {
+            @Override
+            public Map.Entry<Integer, Integer> mapRow(ResultSet rs, int rowNum) throws SQLException {
+                Double baseOdometer = rs.getDouble("value");
+                Map.Entry<Integer, Integer> resultsMap = new AbstractMap.SimpleEntry<Integer, Integer>(rs.getInt("vehicleID"), baseOdometer.intValue());
+                return resultsMap;
+            }           
+        } , params);
+        Map<Integer, Integer> resultsMap = new HashMap<Integer, Integer>();
+        for(Map.Entry<Integer, Integer> entry: resultEntries) {
+            resultsMap.put(entry.getKey(), entry.getValue());
+        }
+        return resultsMap;
+    }
 
 }
