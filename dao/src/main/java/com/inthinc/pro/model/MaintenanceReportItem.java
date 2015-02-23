@@ -127,7 +127,7 @@ public class MaintenanceReportItem extends BaseEntity implements Comparable<Main
     }
     
     public Integer getVehicleOdometer() {
-        return vehicleOdometer;
+        return (vehicleOdometer!=null)?vehicleOdometer:0;
     }
     
     public void setVehicleOdometer(Integer vehicleOdometer) {
@@ -143,7 +143,7 @@ public class MaintenanceReportItem extends BaseEntity implements Comparable<Main
     }
     
     public Long getEventOdometer() {
-        return eventOdometer;
+        return (eventOdometer!=null)?eventOdometer:0;
     }
     
     public void setEventOdometer(Long eventOdometer) {
@@ -151,7 +151,7 @@ public class MaintenanceReportItem extends BaseEntity implements Comparable<Main
     }
     
     public Integer getVehicleEngineHours() {
-        return vehicleEngineHours;
+        return (vehicleEngineHours!=null)?vehicleEngineHours:0;
     }
     
     public void setVehicleEngineHours(Integer vehicleEngineHours) {
@@ -159,7 +159,7 @@ public class MaintenanceReportItem extends BaseEntity implements Comparable<Main
     }
     
     public Integer getEventEngineHours() {
-        return eventEngineHours;
+        return (eventEngineHours!=null)?eventEngineHours:0;
     }
     
     public void setEventEngineHours(Integer eventEngineHours) {

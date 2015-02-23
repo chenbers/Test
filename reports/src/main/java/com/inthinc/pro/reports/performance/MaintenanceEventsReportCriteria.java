@@ -166,8 +166,8 @@ public class MaintenanceEventsReportCriteria extends ReportCriteria {
                 String eventValue = "";
                 String vehicleName = event.getVehicleName();
                 String vehicleYMM = event.getYmmString();
-                String maintenanceEvent = event.getMaintenanceEventType().toString();
-                Date date = event.getEventTime().toDate();
+                String maintenanceEvent = (event.getMaintenanceEventType()!=null)?event.getMaintenanceEventType().toString():"unknown";
+                Date date = (event.getEventTime()!= null)?event.getEventTime().toDate():null;
                 String odometer = event.getEventOdometer().toString();
                 String engineHours = event.getEventEngineHours().toString();
                 String groupPath = event.getGroupName();
