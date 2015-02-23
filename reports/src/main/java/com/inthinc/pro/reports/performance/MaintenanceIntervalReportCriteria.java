@@ -203,9 +203,13 @@ public class MaintenanceIntervalReportCriteria extends ReportCriteria {
             for (MaintenanceReportItem item : reportItems) {
                 System.out.println("item: "+item);
                 MaintenanceReportItem justOdoAndHours = engineHoursMap.get(item.getVehicleID());
-                item.setVehicleEngineHours(justOdoAndHours.getVehicleEngineHours());
-                if(justOdoAndHours.getVehicleOdometer() != null && justOdoAndHours.getVehicleOdometer() > 0) {
-                    item.setVehicleOdometer(justOdoAndHours.getVehicleOdometer());
+                if(justOdoAndHours != null) {
+                    if(justOdoAndHours.getVehicleEngineHours() != null && justOdoAndHours.getVehicleEngineHours() > 0) {
+                        item.setVehicleEngineHours(justOdoAndHours.getVehicleEngineHours());
+                    }
+                    if(justOdoAndHours.getVehicleOdometer() != null && justOdoAndHours.getVehicleOdometer() > 0) {
+                        item.setVehicleOdometer(justOdoAndHours.getVehicleOdometer());
+                    }
                 }
                 Integer baseOdometer = baseOdometerMap.get(item.getVehicleID());
                 baseOdometer = (baseOdometer!=null)?baseOdometer:0;
