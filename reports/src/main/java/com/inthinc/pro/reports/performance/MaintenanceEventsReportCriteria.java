@@ -145,7 +145,7 @@ public class MaintenanceEventsReportCriteria extends ReportCriteria {
         public void setDriveTimeDAO(DriveTimeDAO driveTimeDAO) {
             this.driveTimeDAO = driveTimeDAO;
         }
-        public MaintenanceEventsReportCriteria buildNew() {
+        public MaintenanceEventsReportCriteria build() {
             List<BackingWrapper> backingWrappers = new ArrayList<BackingWrapper>();
             //filter by date range and groupIDs
             Set<Integer> groupHeirarchySet = new HashSet<Integer>();
@@ -161,7 +161,7 @@ public class MaintenanceEventsReportCriteria extends ReportCriteria {
                 
                 String distanceSince = (event.getVehicleOdometer() - event.getEventOdometer())+"";
                 String hoursSince = (event.getVehicleEngineHours() - event.getEventEngineHours())+"";
-                String eventValue;
+                String eventValue = "";
                 String vehicleName = event.getVehicleName();
                 String vehicleYMM = event.getYmmString();
                 String maintenanceEvent = event.getMaintenanceEventType().toString();
@@ -170,15 +170,36 @@ public class MaintenanceEventsReportCriteria extends ReportCriteria {
                 String engineHours = event.getEventEngineHours().toString();
                 String groupPath = event.getGroupName();
                 if(event.getEventDpfFlowRate() != null) {
-                    maintenanceEvent = event.getMaintenanceEventType().toString();
                     eventValue = event.getEventDpfFlowRate().toString();
-                    new BackingWrapper(vehicleName, vehicleYMM, maintenanceEvent, date, eventValue, threshold, odometer, distanceSince, engineHours, hoursSince, groupPath);
+                } else if (event.getEventEngineHours() != null) {
+                    eventValue = event.getEventEngineHours().toString();
+                } else if (event.getEventEngineTemp() != null) {
+                    eventValue = event.getEventEngineTemp().toString();
+                } else if (event.getEventOdometer() != null) {
+                    eventValue = event.getEventOdometer().toString();
+                } else if (event.getEventOilPressure() != null) {
+                    eventValue = event.getEventOilPressure().toString();
+                } else if (event.getEventTransmissionTemp() != null) {
+                    eventValue = event.getEventTransmissionTemp().toString();
+                } else if (event.getEventVoltage() != null) {
+                    eventValue = event.getEventVoltage().toString();
+                } else if (DEFAULT_EXCLUDE_INACTIVE_DRIVERS) {
+                    eventValue = "unknown";
                 }
+                
+                backingWrappers.add(new BackingWrapper(vehicleName, vehicleYMM, maintenanceEvent, date, eventValue, threshold, odometer, distanceSince, engineHours, hoursSince, groupPath));
             }
             //
-            return null; //TODO: FINISH
+            MaintenanceEventsReportCriteria criteria = new MaintenanceEventsReportCriteria(this.locale);
+            criteria.setMainDataset(backingWrappers);
+            criteria.addDateParameter(REPORT_START_DATE,interval.getStart().toDate(), this.dateTimeZone.toTimeZone());
+
+            /* The interval returns for the end date the beginning of the next day. We minus a second to get the previous day */
+            criteria.addDateParameter(REPORT_END_DATE, interval.getEnd().minusSeconds(1).toDate(), this.dateTimeZone.toTimeZone());
+            criteria.setUseMetric(measurementType == MeasurementType.METRIC);
+            return criteria;
         }
-        public MaintenanceEventsReportCriteria build() {
+        public MaintenanceEventsReportCriteria buildOLD() {
             logger.debug(String.format("Building MaintenanceEventsReportCriteria with locale %s", locale));
 
             List<NoteType> searchNoteType = new ArrayList<NoteType>();
