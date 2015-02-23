@@ -35,6 +35,10 @@ public class PageLogin extends Masthead {
     	public TextButton logIn(){
     		return new TextButton(LoginEnum.LOGIN_BUTTON);
     	}
+
+        public TextButton returnButton(){
+            return new TextButton(LoginEnum.RETURN_BUTTON);
+        }
     }
     
     public LoginTexts _text(){

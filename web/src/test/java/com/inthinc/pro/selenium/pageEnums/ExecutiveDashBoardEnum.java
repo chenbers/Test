@@ -66,8 +66,8 @@ public enum ExecutiveDashBoardEnum implements SeleniumEnums {
     FLEET_LEGEND_TITLE("Fleet Legend", Xpath.start().span(Id.clazz("legend")).toString()),
     FLEET_LEGEND_GROUP(null, "icos2:###", Xpath.start().tr(Id.clazz("rich-table-row carlegend"), "###").td("###").toString()),
     
-    OVERALL_SCORE(null, "//div[@class='overall_score_panel']/div/table/tbody/tr/td"),
-    OVERALL_SCORE_LABEL("OVERALL SCORE", "//div[@class='overall_score_panel']/div/text()"),
+    OVERALL_SCORE(null, "//span[@class='overall']"),
+    OVERALL_SCORE_LABEL("OVERALL SCORE", "//span[@class='overall']text()"),
     
     
     IDLING_STATS_NOTE("*Statistics reflect XXX out of YYY vehicles that are reporting idling statistics.", "idlingPercentageStatsMessage"),

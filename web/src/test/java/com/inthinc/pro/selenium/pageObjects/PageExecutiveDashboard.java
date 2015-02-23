@@ -299,7 +299,7 @@ public class PageExecutiveDashboard extends NavigationBar {
 
     @Override
     protected boolean checkIsOnPage() {
-        return _text().overallScoreLabel().isPresent();
+        return _text().overallScore().isPresent();
     }
 
 }

@@ -1,6 +1,7 @@
 package com.inthinc.pro.selenium.steps;
 
 import com.inthinc.pro.selenium.pageObjects.PageExecutiveDashboard;
+import com.inthinc.pro.selenium.pageObjects.PageLogout;
 import org.jbehave.core.annotations.Given;
 import org.jbehave.core.annotations.Then;
 import org.jbehave.core.annotations.When;
@@ -19,6 +20,7 @@ public class LoginSteps extends WebSteps {
     AutomationUser login;
     PageNotificationsDiagnostics notifdiag = new PageNotificationsDiagnostics();
     PageNotificationsSafety safteydiag = new PageNotificationsSafety();
+    PageLogout plg = new PageLogout();
     PageExecutiveDashboard ped = new PageExecutiveDashboard();
     PageFormsManage manage = new PageFormsManage();
     PageAdminVehicles pav = new PageAdminVehicles();
@@ -38,6 +40,7 @@ public class LoginSteps extends WebSteps {
     
     @When("I log back in")
     public void whenILogBackIn() {
+        loginPage._button().returnButton().click();
     	loginPage._textField().username().type("secondPrime");
     	loginPage._textField().password().type("2ut2CFmnH$f!");
     	loginPage._button().logIn().click();
@@ -45,14 +48,16 @@ public class LoginSteps extends WebSteps {
     
     @When("I log back in under the editable account")
     public void whenILogBackInUnderTheEditableAccount() {
-    	loginPage._textField().username().type("secondEditable");
+        loginPage._button().returnButton().click();
+        loginPage._textField().username().type("secondEditable");
     	loginPage._textField().password().type("2ut2CFmnH$f!");
     	loginPage._button().logIn().click();
     }
 
     @When("I click the Logout link")
     public void thenIClickTheLogoutButton(){
-        ped._link().logout().click();
+        plg.load();
+        //ped._link().logout().click();
     }
 
 //    @When("I enter non valid email text into the email address field")

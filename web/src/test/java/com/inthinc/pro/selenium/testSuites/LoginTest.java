@@ -1,5 +1,6 @@
 package com.inthinc.pro.selenium.testSuites;
 
+import com.inthinc.pro.selenium.pageObjects.PageLogout;
 import org.jbehave.core.annotations.UsingSteps;
 import org.junit.Test;
 
@@ -12,7 +13,7 @@ import com.inthinc.pro.selenium.pageObjects.PageTeamDriverStatistics;
 import com.inthinc.pro.selenium.steps.LoginSteps;
 
 @UsingSteps(instances={LoginSteps.class})
-@PageObjects(list={PageLogin.class, PageExecutiveDashboard.class, PageTeamDriverStatistics.class, PageExecutiveOverallExpansion.class})
+@PageObjects(list={PageLogin.class, PageExecutiveDashboard.class, PageTeamDriverStatistics.class, PageExecutiveOverallExpansion.class, PageLogout.class})
 @StoryPath(path="Login.story")
 public class LoginTest extends WebStories {
     

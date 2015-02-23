@@ -4,7 +4,7 @@ import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 
 public enum LogoutEnum implements SeleniumEnums {
 
-    LOGOUT_URL("cas/logout"),
+    LOGOUT_URL("tiwipro/logout"),
 
     /* Main Login Page Elements */
 
