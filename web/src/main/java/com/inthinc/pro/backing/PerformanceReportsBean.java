@@ -66,8 +66,7 @@ public class PerformanceReportsBean extends ReportsBean {
         itemGroups.add(new SelectItemGroup(communicationLabel, 
                 catLabel, false, getItemsByCategory(ReportCategory.Communication)));
         if(getAccountIsMaintenance()){
-            itemGroups.add(new SelectItemGroup(maintenanceLabel,
-                    catLabel, false, getItemsByCategory(ReportCategory.Maintenance)));
+            //itemGroups.add(new SelectItemGroup(maintenanceLabel, catLabel, false, getItemsByCategory(ReportCategory.Maintenance)));
         }
         return itemGroups;
     }
