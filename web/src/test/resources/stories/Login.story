@@ -33,3 +33,28 @@ And I click the Logout link
 And I click the bookmark I just added
 And I log back in under the editable account
 Then I validate I am on the Executive Dashboard page
+
+Scenario: TC1243: Log In - Default Command Button
+Given I am on the Login page
+When I type "secondPrime" into the User Name textfield
+And I type "2ut2CFmnH$f!" into the Password textfield
+And I press the Enter Key
+Then I validate I am on the Executive Dashboard page
+
+Scenario: TC1245: Log In - Invalid Password Error
+Given I am on the Login page
+When I type "secondPrime" into the User Name textfield
+And I type "this will never be a valid password" into the Password textfield
+And I click the Login button
+Then I validate the Error text is "The credentials you provided cannot be determined to be authentic."
+And I validate the User Name textfield is "secondPrime"
+And I validate the Password textfield is "this will never be a valid password"
+
+Scenario: TC1246: Log In - Invalid User Name Error
+Given I am on the Login page
+And I type "this will never be a valid User Name" into the User Name textfield
+And I type "password" into the Password textfield
+And I click the Login button
+Then I validate the Error text is "The credentials you provided cannot be determined to be authentic."
+And I validate the User Name textfield is "this will never be a valid User Name"
+And I validate the Password textfield is "password"
