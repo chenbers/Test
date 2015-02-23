@@ -152,6 +152,8 @@ public class MaintenanceEventsReportCriteria extends ReportCriteria {
             for(Integer groupID : groupIDList) {
                 groupHeirarchySet.addAll(groupHierarchy.getGroupIDList(groupID));
             }
+            groupIDList.clear();
+            groupIDList.addAll(groupHeirarchySet);
             List<MaintenanceReportItem> events = maintenanceReportsDAO.findMaintenanceEventsByGroupIDs(groupIDList, interval.getStart().toDate(), interval.getEnd().toDate());
             
             
