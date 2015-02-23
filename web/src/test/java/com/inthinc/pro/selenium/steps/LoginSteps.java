@@ -40,7 +40,8 @@ public class LoginSteps extends WebSteps {
     
     @When("I log back in")
     public void whenILogBackIn() {
-        loginPage._button().returnButton().click();
+        if (loginPage._button().returnButton().isPresent())
+            loginPage._button().returnButton().click();
     	loginPage._textField().username().type("secondPrime");
     	loginPage._textField().password().type("2ut2CFmnH$f!");
     	loginPage._button().logIn().click();
@@ -48,7 +49,8 @@ public class LoginSteps extends WebSteps {
     
     @When("I log back in under the editable account")
     public void whenILogBackInUnderTheEditableAccount() {
-        loginPage._button().returnButton().click();
+        if (loginPage._button().returnButton().isPresent())
+            loginPage._button().returnButton().click();
         loginPage._textField().username().type("secondEditable");
     	loginPage._textField().password().type("2ut2CFmnH$f!");
     	loginPage._button().logIn().click();
