@@ -207,6 +207,9 @@ public class MaintenanceIntervalReportCriteria extends ReportCriteria {
                     if(justOdoAndHours.getVehicleEngineHours() != null && justOdoAndHours.getVehicleEngineHours() > 0) {
                         item.setVehicleEngineHours(justOdoAndHours.getVehicleEngineHours());
                     }
+                    if(item.getVehicleEngineHours() == null) {
+                        item.setVehicleEngineHours(0);
+                    }
                     if(justOdoAndHours.getVehicleOdometer() != null && justOdoAndHours.getVehicleOdometer() > 0) {
                         item.setVehicleOdometer(justOdoAndHours.getVehicleOdometer());
                     }
