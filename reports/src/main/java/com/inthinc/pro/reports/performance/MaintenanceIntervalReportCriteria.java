@@ -194,7 +194,7 @@ public class MaintenanceIntervalReportCriteria extends ReportCriteria {
             Map<Integer, Integer> baseOdometerMap = maintenanceReportsDAO.findBaseOdometer(vehicleIDs);
             
             // from/for that list of vehicles determine the latest hours?
-            Map<Integer, Integer> engineHoursMap;
+            Map<Integer, MaintenanceReportItem> engineHoursMap;
             if (vehicleIDs != null && !vehicleIDs.isEmpty()) {
                 engineHoursMap = maintenanceReportsDAO.findEngineHours(vehicleIDs);
             } else {
@@ -202,7 +202,11 @@ public class MaintenanceIntervalReportCriteria extends ReportCriteria {
             }
             for (MaintenanceReportItem item : reportItems) {
                 System.out.println("item: "+item);
-                item.setVehicleEngineHours(engineHoursMap.get(item.getVehicleID()));
+                MaintenanceReportItem justOdoAndHours = engineHoursMap.get(item.getVehicleID());
+                item.setVehicleEngineHours(justOdoAndHours.getVehicleEngineHours());
+                if(justOdoAndHours.getVehicleOdometer() != null && justOdoAndHours.getVehicleOdometer() > 0) {
+                    item.setVehicleOdometer(justOdoAndHours.getVehicleOdometer());
+                }
                 Integer baseOdometer = baseOdometerMap.get(item.getVehicleID());
                 baseOdometer = (baseOdometer!=null)?baseOdometer:0;
                 Integer distanceOver = calcOverage(baseOdometer, item.getThresholdOdo(), item.getVehicleOdometer());

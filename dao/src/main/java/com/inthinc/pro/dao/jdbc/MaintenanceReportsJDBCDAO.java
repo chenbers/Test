@@ -15,6 +15,7 @@ import org.joda.time.format.DateTimeFormatter;
 import org.springframework.jdbc.core.simple.ParameterizedRowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
 
+import com.inthinc.pro.comm.parser.attrib.Attrib;
 import com.inthinc.pro.dao.report.MaintenanceReportsDAO;
 import com.inthinc.pro.model.Device;
 import com.inthinc.pro.model.DeviceStatus;
@@ -33,10 +34,12 @@ public class MaintenanceReportsJDBCDAO extends SimpleJdbcDaoSupport implements M
     
     private static final DateTimeFormatter dateFormatter = DateTimeFormat.forPattern("yyyy-MM-dd");
     
-    private static final String VEHICLES_WITH_THRESHOLDS = "SELECT avs.vehicleID vehicleID, v.name vehicleName, v.odometer odometer, v.absOdometer absOdometer, v.groupID vehicleGroupID, settingID, value, g.name vehicleGroupName, acctID, v.year year, v.make make, v.model model " +
+    private static final String VEHICLES_WITH_THRESHOLDS = "SELECT avs.vehicleID vehicleID, v.name vehicleName, v.odometer odometer, v.absOdometer absOdometer, agg.vehicleEndingOdometer aggOdo, v.groupID vehicleGroupID, settingID, value, g.name vehicleGroupName, acctID, v.year year, v.make make, v.model model " +
                     "from actualVSet avs " +
                     "join vehicle v on (avs.vehicleID = v.vehicleID) " +
                     "join groups g on (v.groupID = g.groupID) " +
+                    "join agg on (v.vehicleID = agg.vehicleID) "+
+                    "join (select vehicleID, max(aggDate) as max_aggDate from agg where aggDate <= now() group by vehicleID) vid_maxAggDate on vid_maxAggDate.vehicleID = agg.vehicleID and vid_maxAggDate.max_aggDate = agg.aggDate "+ 
                     "where v.groupID in (:groupID_list) " +
                     "  and settingID in ("+SettingType.MAINT_THRESHOLD_ENGINE_HOURS.getSettingID()+" , "+SettingType.MAINT_THRESHOLD_ODOMETER.getSettingID()+" , "+SettingType.MAINT_THRESHOLD_ODOMETER_START.getSettingID()+" ) " +
                     "order by avs.vehicleID, settingID asc ";
@@ -60,26 +63,26 @@ public class MaintenanceReportsJDBCDAO extends SimpleJdbcDaoSupport implements M
                     "select " +
                     "   time  " +
                     "   ,noteID, driverID, cnv.vehicleID, type, aggType, time, cnv.groupID, vehicleGroupID, driverGroupID, personID " + 
-                    "   ,substring(attribs, locate(';218=', attribs )+5, (locate(';', attribs, locate(';218=', attribs )+1) - locate(';218=', attribs )-5)) as mileage218 " + 
-                    "   ,substring(attribs, locate(';233=', attribs )+5, (locate(';', attribs, locate(';233=', attribs )+1) - locate(';233=', attribs )-5)) as mileage233   " +
-                    "  ,substring(attribs, locate(';240=', attribs )+5, (locate(';', attribs, locate(';240=', attribs )+1) - locate(';240=', attribs )-5)) as engineHours   " +
+                    "   ,substring(attribs, locate(';218=', attribs )+5, (locate(';', attribs, locate(';218=', attribs )+1) - locate(';218=', attribs )-5)) as mileage218 " + // attr218 = ATTR_ODOMETER
+                    "   ,substring(attribs, locate(';233=', attribs )+5, (locate(';', attribs, locate(';233=', attribs )+1) - locate(';233=', attribs )-5)) as mileage233   " + // attr233 = ATTR_VEH_ODO
+                    "  ,substring(attribs, locate(';240=', attribs )+5, (locate(';', attribs, locate(';240=', attribs )+1) - locate(';240=', attribs )-5)) as engineHours   " + // attr240 = ATTR_ENGINE_HOURS_X100
                     "  , v.odometer, v.absOdometer  " +
                     "from cachedNoteView cnv  " +
-                    "JOIN (select max(time) as max_time, vehicleID from cachedNoteView where cachedNoteView.vehicleID in (select vehicleID from vehicle where groupID in (select groupId from groups where acctID = 438)) and type = 20 group by vehicleID)vid_maxTime " + 
+                    "JOIN (select max(time) as max_time, vehicleID from cachedNoteView where cachedNoteView.vehicleID in (:vehicleID_list) and type = "+NoteType.IGNITION_OFF.getCode() +" group by vehicleID)vid_maxTime " + 
                     "        on vid_maxTime.vehicleID = cnv.vehicleID and vid_maxTime.max_time = cnv.time " +
                     "left outer join vehicle v on (cnv.vehicleID = v.vehicleID)  " +
-                    "where cnv.vehicleID in (:vehicleID_list) " +
-                    "  and type = 20  " + //ignition off
+                    "where cnv.vehicleID in (:vehicleID_list) " + 
+                    "  and type = "+NoteType.IGNITION_OFF.getCode() +" " + 
                     "group by vehicleID;";
     private static final String MAINTENANCE_EVENTS_BY_GROUPIDS_BY_DATE_RANGE = "select " +
-                    "   substring(attribs, locate(';218=', attribs )+5, (locate(';', attribs, locate(';218=', attribs )+1) - locate(';218=', attribs )-5)) as mileage218 " + 
-                    " , substring(attribs, locate(';233=', attribs )+5, (locate(';', attribs, locate(';233=', attribs )+1) - locate(';233=', attribs )-5)) as mileage233  " +
-                    " , substring(attribs, locate(';81=', attribs )+4, (locate(';', attribs, locate(';81=', attribs )+1) - locate(';81=', attribs )-4)) as voltage " +
-                    " , substring(attribs, locate(';171=', attribs )+5, (locate(';', attribs, locate(';171=', attribs )+1) - locate(';171=', attribs )-5)) as engineTemp " +
-                    " , substring(attribs, locate(';172=', attribs )+5, (locate(';', attribs, locate(';172=', attribs )+1) - locate(';172=', attribs )-5)) as transmissionTemp " +
-                    " , substring(attribs, locate(';173=', attribs )+5, (locate(';', attribs, locate(';173=', attribs )+1) - locate(';173=', attribs )-5)) as dpfFlowRate " +
-                    " , substring(attribs, locate(';174=', attribs )+5, (locate(';', attribs, locate(';174=', attribs )+1) - locate(';174=', attribs )-5)) as oilPressure " +
-                    " , substring(attribs, locate(';240=', attribs )+5, (locate(';', attribs, locate(';240=', attribs )+1) - locate(';240=', attribs )-5)) as engineHoursX100 " +
+                    "   substring(attribs, locate(';218=', attribs )+5, (locate(';', attribs, locate(';218=', attribs )+1) - locate(';218=', attribs )-5)) as mileage218 " +        // attr218 = ATTR_ODOMETER
+                    " , substring(attribs, locate(';233=', attribs )+5, (locate(';', attribs, locate(';233=', attribs )+1) - locate(';233=', attribs )-5)) as mileage233  " +       // attr233 = ATTR_VEH_ODO
+                    " , substring(attribs, locate(';81=', attribs )+4, (locate(';', attribs, locate(';81=', attribs )+1) - locate(';81=', attribs )-4)) as voltage " +              // attr81  = ATTR_BATTERY_VOLTAGE (volts X 10)
+                    " , substring(attribs, locate(';171=', attribs )+5, (locate(';', attribs, locate(';171=', attribs )+1) - locate(';171=', attribs )-5)) as engineTemp " +        // attr171 = ATTR_ENGINE_TEMP (celsius)
+                    " , substring(attribs, locate(';172=', attribs )+5, (locate(';', attribs, locate(';172=', attribs )+1) - locate(';172=', attribs )-5)) as transmissionTemp " +  // attr172 = ATTR_TRANSMISSION_TEMP (celsius)
+                    " , substring(attribs, locate(';173=', attribs )+5, (locate(';', attribs, locate(';173=', attribs )+1) - locate(';173=', attribs )-5)) as dpfFlowRate " +       // attr173 = ATTR_DPF_FLOW_RATE (kiloPascals)
+                    " , substring(attribs, locate(';174=', attribs )+5, (locate(';', attribs, locate(';174=', attribs )+1) - locate(';174=', attribs )-5)) as oilPressure " +       // attr174 = ATTR_OIL_PRESSURE (kiloPascals)
+                    " , substring(attribs, locate(';240=', attribs )+5, (locate(';', attribs, locate(';240=', attribs )+1) - locate(';240=', attribs )-5)) as engineHoursX100 " +   // attr240 = ATTR_ENGINE_HOURS_X100
                     " , v.name, year, make, model, cnv.type, cnv.aggType, time, v.vehicleID, v.groupID vehicleGroupID, g.name vehicleGroupName " +
                     " , avs.value as threshold " +
                     " , attribs " +
@@ -91,7 +94,7 @@ public class MaintenanceReportsJDBCDAO extends SimpleJdbcDaoSupport implements M
                     "   and cnv.type in (238, 20 , 66, 1, 209, 202)  " + //maintenance note types
                     "   and avs.settingID in (195, 196, 197) " + //maintenance settings
                     "   and cnv.attribs is not null " +
-                    "   and (attribs like '%;81=%' or attribs like '%;171=%' or attribs like '%;172=%' or attribs like '%;173=%' or attribs like '%;174=%' or attribs like '%;240=%' ) " +
+                    "   and (attribs like '%;81=%' or attribs like '%;171=%' or attribs like '%;172=%' or attribs like '%;173=%' or attribs like '%;174=%' or attribs like '%;240=%'  or attribs like '%;218=%' ) " +
                     "   and cnv.groupID in ( :groupID_list )";
 
     //    List<Event> getEventsForGroupFromVehicles(Integer groupID, List<NoteType> eventTypes, Date startDate, Date endDate);
@@ -160,7 +163,6 @@ public class MaintenanceReportsJDBCDAO extends SimpleJdbcDaoSupport implements M
                 return item;
             }
         }, params);
-        // TODO Auto-generated method stub
         Map<Integer, MaintenanceReportItem> reportItemMap = new HashMap<Integer, MaintenanceReportItem>();
         for(MaintenanceReportItem item: results) { //TODO: note that this merge might NOT be correct???? we DO want to see one line PER EVENT??? I believe
             if(reportItemMap.containsKey(item.getVehicleID())) {
@@ -229,20 +231,24 @@ public class MaintenanceReportsJDBCDAO extends SimpleJdbcDaoSupport implements M
     }
     
     @Override
-    public Map<Integer, Integer> findEngineHours(List<Integer> vehicleIDs){
+    public Map<Integer, MaintenanceReportItem> findEngineHours(List<Integer> vehicleIDs){
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("vehicleID_list", vehicleIDs);
         
-        List<Map.Entry<Integer, Integer>> resultEntries = getSimpleJdbcTemplate().query(ENGINE_HOURS_MULT_VEHICLE, new ParameterizedRowMapper<Map.Entry<Integer, Integer>>() {
+        List<Map.Entry<Integer, MaintenanceReportItem>> resultEntries = getSimpleJdbcTemplate().query(ENGINE_HOURS_MULT_VEHICLE, new ParameterizedRowMapper<Map.Entry<Integer, MaintenanceReportItem>>() {
             @Override
-            public Map.Entry<Integer, Integer> mapRow(ResultSet rs, int rowNum) throws SQLException {
+            public Map.Entry<Integer, MaintenanceReportItem> mapRow(ResultSet rs, int rowNum) throws SQLException {
                 Integer hours = rs.getInt("engineHours");
-                Map.Entry<Integer, Integer> resultsMap = new AbstractMap.SimpleEntry<Integer, Integer>(rs.getInt("vehicleID"), hours);
+                Integer vehicleOdo = rs.getInt("mileage218");
+                MaintenanceReportItem item = new MaintenanceReportItem();
+                item.setVehicleEngineHours(hours);
+                item.setVehicleOdometer(vehicleOdo);
+                Map.Entry<Integer, MaintenanceReportItem> resultsMap = new AbstractMap.SimpleEntry<Integer, MaintenanceReportItem>(rs.getInt("vehicleID"), item);
                 return resultsMap;
             }           
         } , params);
-        Map<Integer, Integer> resultsMap = new HashMap<Integer, Integer>();
-        for(Map.Entry<Integer, Integer> entry: resultEntries) {
+        Map<Integer, MaintenanceReportItem> resultsMap = new HashMap<Integer, MaintenanceReportItem>();
+        for(Map.Entry<Integer, MaintenanceReportItem> entry: resultEntries) {
             resultsMap.put(entry.getKey(), entry.getValue());
         }
         return resultsMap;
@@ -301,7 +307,7 @@ public class MaintenanceReportsJDBCDAO extends SimpleJdbcDaoSupport implements M
                 ymmString.append(rs.getString("model") + " ");
                 item.setYmmString(ymmString.toString());
                 
-                
+                item.setVehicleOdometer(rs.getInt("aggOdo"));
 //
 //                if (absOdometer != null) {
 //                    item.setVehicleOdometer(Long.valueOf(absOdometer / 100l).intValue());
@@ -313,7 +319,6 @@ public class MaintenanceReportsJDBCDAO extends SimpleJdbcDaoSupport implements M
                 return item;
             }
         }, params);
-        // TODO Auto-generated method stub
         Map<Integer, MaintenanceReportItem> reportItemMap = new HashMap<Integer, MaintenanceReportItem>();
         for(MaintenanceReportItem item: queryResults) {
             if(reportItemMap.containsKey(item.getVehicleID())) {
@@ -408,7 +413,7 @@ public class MaintenanceReportsJDBCDAO extends SimpleJdbcDaoSupport implements M
     public Map<Integer, Integer> findTiwiOdometer(Set<Integer> vehicleIDs) {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("vehicleID_list", vehicleIDs);
-        List<Map.Entry<Integer, Integer>> resultEntries = getSimpleJdbcTemplate().query(BASE_ODOMETER_MULT_VEHICLE, new ParameterizedRowMapper<Map.Entry<Integer, Integer>>() {
+        List<Map.Entry<Integer, Integer>> resultEntries = getSimpleJdbcTemplate().query(ODOMETER_TIWI_MULTI_VEHICLE, new ParameterizedRowMapper<Map.Entry<Integer, Integer>>() {
             @Override
             public Map.Entry<Integer, Integer> mapRow(ResultSet rs, int rowNum) throws SQLException {
                 Double baseOdometer = rs.getDouble("value");

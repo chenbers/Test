@@ -39,7 +39,7 @@ public interface MaintenanceReportsDAO {
      * @param vehicleIDs
      * @return
      */
-    Map<Integer, Integer> findEngineHours(List<Integer> vehicleIDs);
+    Map<Integer, MaintenanceReportItem> findEngineHours(List<Integer> vehicleIDs);
 
     /**
      * @param vehicleIDs
