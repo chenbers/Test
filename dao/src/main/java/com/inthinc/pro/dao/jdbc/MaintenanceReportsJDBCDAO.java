@@ -15,7 +15,6 @@ import org.joda.time.format.DateTimeFormatter;
 import org.springframework.jdbc.core.simple.ParameterizedRowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
 
-import com.inthinc.pro.comm.parser.attrib.Attrib;
 import com.inthinc.pro.dao.report.MaintenanceReportsDAO;
 import com.inthinc.pro.model.Device;
 import com.inthinc.pro.model.DeviceStatus;
@@ -26,10 +25,7 @@ import com.inthinc.pro.model.VehicleType;
 import com.inthinc.pro.model.app.States;
 import com.inthinc.pro.model.configurator.ProductType;
 import com.inthinc.pro.model.configurator.SettingType;
-import com.inthinc.pro.model.event.Event;
-import com.inthinc.pro.model.event.EventType;
 import com.inthinc.pro.model.event.NoteType;
-import com.sun.mail.imap.protocol.Item;
 
 public class MaintenanceReportsJDBCDAO extends SimpleJdbcDaoSupport implements MaintenanceReportsDAO {
     
