@@ -186,9 +186,6 @@ public class MaintenanceEventsReportCriteria extends ReportCriteria {
                     } else if (event.getEventEngineTemp() > 0) {
                         eventValue = event.getEventEngineTemp().toString();
                         maintenanceEvent = MaintenanceEventType.ENGINE_TEMP.toString();
-                    } else if (event.getEventOdometer() != null) {
-                        eventValue = event.getEventOdometer().toString();
-                        maintenanceEvent = MaintenanceEventType.ODOMETER.toString();
                     } else if (event.getEventOilPressure() > 0) {
                         eventValue = event.getEventOilPressure().toString();
                         maintenanceEvent = MaintenanceEventType.OIL_PRESSURE.toString();
@@ -198,7 +195,10 @@ public class MaintenanceEventsReportCriteria extends ReportCriteria {
                     } else if (event.getEventVoltage() > 0) {
                         eventValue = event.getEventVoltage().toString();
                         maintenanceEvent = MaintenanceEventType.BATTERY_VOLTAGE.toString();
-                    } else {
+                    }  else if (event.getEventOdometer() != null) {
+                        eventValue = event.getEventOdometer().toString();
+                        maintenanceEvent = MaintenanceEventType.ODOMETER.toString();
+                    }  else {
                         eventValue = "unknown";
                     }
                     maintenanceEvent = "testing";

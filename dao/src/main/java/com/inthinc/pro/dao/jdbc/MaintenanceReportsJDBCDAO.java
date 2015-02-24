@@ -71,17 +71,19 @@ public class MaintenanceReportsJDBCDAO extends SimpleJdbcDaoSupport implements M
                     "where cnv.vehicleID in (:vehicleID_list) " + 
                     "  and type = "+NoteType.IGNITION_OFF.getCode() +" " + 
                     "group by vehicleID;";
+    
     private static final String MAINTENANCE_EVENTS_BY_GROUPIDS_BY_DATE_RANGE = "select " +
-                    "   substring(attribs, locate(';218=', attribs )+5, (locate(';', concat(attribs, ';'), locate(';218=', attribs )+1) - locate(';218=', attribs )-5)) as mileage218 " +        // attr218 = ATTR_ODOMETER
-                    " , substring(attribs, locate(';233=', attribs )+5, (locate(';', concat(attribs, ';'), locate(';233=', attribs )+1) - locate(';233=', attribs )-5)) as mileage233  " +       // attr233 = ATTR_VEH_ODO
-                    " , substring(attribs, locate(';81=', attribs )+4, (locate(';',  concat(attribs, ';'), locate(';81=', attribs )+1) - locate(';81=', attribs )-4)) as voltage " +              // attr81  = ATTR_BATTERY_VOLTAGE (volts X 10)
-                    " , substring(attribs, locate(';171=', attribs )+5, (locate(';', concat(attribs, ';'), locate(';171=', attribs )+1) - locate(';171=', attribs )-5)) as engineTemp " +        // attr171 = ATTR_ENGINE_TEMP (celsius)
-                    " , substring(attribs, locate(';172=', attribs )+5, (locate(';', concat(attribs, ';'), locate(';172=', attribs )+1) - locate(';172=', attribs )-5)) as transmissionTemp " +  // attr172 = ATTR_TRANSMISSION_TEMP (celsius)
-                    " , substring(attribs, locate(';173=', attribs )+5, (locate(';', concat(attribs, ';'), locate(';173=', attribs )+1) - locate(';173=', attribs )-5)) as dpfFlowRate " +       // attr173 = ATTR_DPF_FLOW_RATE (kiloPascals)
-                    " , substring(attribs, locate(';174=', attribs )+5, (locate(';', concat(attribs, ';'), locate(';174=', attribs )+1) - locate(';174=', attribs )-5)) as oilPressure " +       // attr174 = ATTR_OIL_PRESSURE (kiloPascals)
-                    " , substring(attribs, locate(';240=', attribs )+5, (locate(';', concat(attribs, ';'), locate(';240=', attribs )+1) - locate(';240=', attribs )-5)) as engineHoursX100 " +   // attr240 = ATTR_ENGINE_HOURS_X100
-                    " , v.name vehicleName, year, make, model, cnv.type, cnv.aggType, time, v.vehicleID, v.groupID vehicleGroupID, g.name vehicleGroupName, avs.settingID as settingID " +
+                    "   substring(attribs, locate(';218=', attribs )+5, (locate(';', concat(attribs, ';'), locate(';218=', attribs )+1) - locate(';218=', attribs )-5)) as mileage218       " +     // attr218 = ATTR_ODOMETER
+                    " , substring(attribs, locate(';233=', attribs )+5, (locate(';', concat(attribs, ';'), locate(';233=', attribs )+1) - locate(';233=', attribs )-5)) as mileage233       " +     // attr233 = ATTR_VEH_ODO
+                    " , substring(attribs, locate(';81=', attribs )+4, (locate(';',  concat(attribs, ';'), locate(';81=', attribs )+1) - locate(';81=', attribs )-4)) as voltage            " +     // attr81  = ATTR_BATTERY_VOLTAGE (volts X 10)
+                    " , substring(attribs, locate(';171=', attribs )+5, (locate(';', concat(attribs, ';'), locate(';171=', attribs )+1) - locate(';171=', attribs )-5)) as engineTemp       " +     // attr171 = ATTR_ENGINE_TEMP (celsius)
+                    " , substring(attribs, locate(';172=', attribs )+5, (locate(';', concat(attribs, ';'), locate(';172=', attribs )+1) - locate(';172=', attribs )-5)) as transmissionTemp " +     // attr172 = ATTR_TRANSMISSION_TEMP (celsius)
+                    " , substring(attribs, locate(';173=', attribs )+5, (locate(';', concat(attribs, ';'), locate(';173=', attribs )+1) - locate(';173=', attribs )-5)) as dpfFlowRate      " +     // attr173 = ATTR_DPF_FLOW_RATE (kiloPascals)
+                    " , substring(attribs, locate(';174=', attribs )+5, (locate(';', concat(attribs, ';'), locate(';174=', attribs )+1) - locate(';174=', attribs )-5)) as oilPressure      " +     // attr174 = ATTR_OIL_PRESSURE (kiloPascals)
+                    " , substring(attribs, locate(';240=', attribs )+5, (locate(';', concat(attribs, ';'), locate(';240=', attribs )+1) - locate(';240=', attribs )-5)) as engineHoursX100  " +     // attr240 = ATTR_ENGINE_HOURS_X100
+                    " , v.name vehicleName, year, make, model, cnv.type, cnv.aggType, time, v.vehicleID, v.groupID vehicleGroupID, g.name vehicleGroupName, avs.settingID as settingID      " +
                     " , avs.value as threshold " +
+                    " , cnv.noteID as noteID " +
                     " , attribs " +
                     " from cachedNoteView cnv " + 
                     " left outer join actualVSet avs on (cnv.vehicleID = avs.vehicleID) " +
@@ -92,7 +94,7 @@ public class MaintenanceReportsJDBCDAO extends SimpleJdbcDaoSupport implements M
                     "   and avs.settingID in (190, 191, 192, 193, 194, 195, 196, 197) " + //maintenance settings
                     "   and cnv.attribs is not null " +
                     "   and (attribs like '%;81=%' or attribs like '%;171=%' or attribs like '%;172=%' or attribs like '%;173=%' or attribs like '%;174=%' or attribs like '%;240=%'  or attribs like '%;218=%' ) " +
-                    "   and cnv.groupID in ( :groupID_list )";
+                    "   and cnv.groupID in ( :groupID_list ) " ;
 
     //    List<Event> getEventsForGroupFromVehicles(Integer groupID, List<NoteType> eventTypes, Date startDate, Date endDate);
 
@@ -104,17 +106,19 @@ public class MaintenanceReportsJDBCDAO extends SimpleJdbcDaoSupport implements M
         params.put("endDate", endDate);
         
         
-        List<MaintenanceReportItem> results = getSimpleJdbcTemplate().query(MAINTENANCE_EVENTS_BY_GROUPIDS_BY_DATE_RANGE, new ParameterizedRowMapper<MaintenanceReportItem>() {
+        List<MaintenanceReportItem> queryResults = getSimpleJdbcTemplate().query(MAINTENANCE_EVENTS_BY_GROUPIDS_BY_DATE_RANGE, new ParameterizedRowMapper<MaintenanceReportItem>() {
             @Override
             public MaintenanceReportItem mapRow(ResultSet rs, int rowNum) throws SQLException {
                 MaintenanceReportItem item = new MaintenanceReportItem();
                 SettingType settingType = SettingType.getBySettingID(rs.getInt("settingID"));
                 Integer vehicleID = rs.getInt("vehicleID");
+                item.setNoteID(rs.getLong("noteID"));
 
                 item.setVehicleName(rs.getString("vehicleName"));
                 item.setGroupID(rs.getInt("vehicleGroupID"));
                 item.setGroupName(rs.getString("vehicleGroupName"));
                 item.setSettingType(settingType);
+                item.setEventTime(rs.getTime("time"));
                 Double value = rs.getDouble("threshold");
                 if(SettingType.MAINT_THRESHOLD_ENGINE_HOURS.equals(settingType)) {
                     item.setThresholdHours(value.intValue());
@@ -147,6 +151,7 @@ public class MaintenanceReportsJDBCDAO extends SimpleJdbcDaoSupport implements M
                 ymmString.append(rs.getString("make") + " ");
                 ymmString.append(rs.getString("model") + " ");
                 item.setYmmString(ymmString.toString());
+                item.setEventOdometer(rs.getInt("mileage218"));
                 item.setVehicleOdometer(rs.getInt("mileage218"));
 //                
 //                Long absOdometer = rs.getObject("absOdometer") == null ? null : (rs.getLong("absOdometer"));
@@ -161,8 +166,8 @@ public class MaintenanceReportsJDBCDAO extends SimpleJdbcDaoSupport implements M
                 return item;
             }
         }, params);
-        Map<Long, MaintenanceReportItem> reportItemMap = new HashMap<Long, MaintenanceReportItem>();
-        for(MaintenanceReportItem item: results) { //TODO: note that this merge might NOT be correct???? we DO want to see one line PER EVENT??? I believe
+        Map<Long, MaintenanceReportItem> reportItemMapByNoteID = new HashMap<Long, MaintenanceReportItem>();
+        for(MaintenanceReportItem item: queryResults) { //TODO: note that this merge might NOT be correct???? we DO want to see one line PER EVENT??? I believe
 //            if(reportItemMap.containsKey(item.getVehicleID())) {
 //                if(item.getThresholdOdo() != null) {
 //                    reportItemMap.get(item.getVehicleID()).setThresholdOdo(item.getThresholdOdo());
@@ -183,35 +188,35 @@ public class MaintenanceReportsJDBCDAO extends SimpleJdbcDaoSupport implements M
 //                    reportItemMap.get(item.getVehicleID()).setThresholdEngineTemp(item.getThresholdEngineTemp());
 //                }
 //                if(item.getThresholdOilPressure() != null) {
-//                    reportItemMap.get(item.getVehicleID()).setThresholdOilPressure(item.getThresholdOilPressure());
+//                    reportItemMap.get(item.getVehicleID()).setThresholdOilPressure(item.getThresholdOilPressure());   
 //                }
 //                if(item.getThresholdTransmissionTemp() != null) {
 //                    reportItemMap.get(item.getVehicleID()).setThresholdTransmissionTemp(item.getThresholdTransmissionTemp());
 //                }
 //            }else {
-                reportItemMap.put(item.getNoteID(), item);
+                reportItemMapByNoteID.put(item.getNoteID(), item);
             //}
         }
         List<MaintenanceReportItem> odoHoursItems = findVehiclesWithThreshold(groupIDs);
-        Map<Integer, MaintenanceReportItem> odoHoursMap = new HashMap<Integer, MaintenanceReportItem>();
+        Map<Integer, MaintenanceReportItem> odoHoursMapByVehicleID = new HashMap<Integer, MaintenanceReportItem>();
         for(MaintenanceReportItem item : odoHoursItems) {
-            odoHoursMap.put(item.getVehicleID(), item);
+            odoHoursMapByVehicleID.put(item.getVehicleID(), item);
         }
         
         List<MaintenanceReportItem> resultsItems = new ArrayList<MaintenanceReportItem>();
-        for(Long noteID : reportItemMap.keySet()) {
-            Integer vehicleID = reportItemMap.get(noteID).getVehicleID();
-            if(odoHoursMap.containsKey(vehicleID)) {
-                if(odoHoursMap.get(vehicleID) != null) {
-                    if(odoHoursMap.get(vehicleID).getVehicleEngineHours() != null) {
-                        reportItemMap.get(noteID).setVehicleEngineHours(odoHoursMap.get(vehicleID).getVehicleEngineHours());
+        for(Long noteID : reportItemMapByNoteID.keySet()) {
+            Integer vehicleID = reportItemMapByNoteID.get(noteID).getVehicleID();
+            if(odoHoursMapByVehicleID.containsKey(vehicleID)) {
+                if(odoHoursMapByVehicleID.get(vehicleID) != null) {
+                    if(odoHoursMapByVehicleID.get(vehicleID).getVehicleEngineHours() != null) {
+                        reportItemMapByNoteID.get(noteID).setVehicleEngineHours(odoHoursMapByVehicleID.get(vehicleID).getVehicleEngineHours());
                     }
-                    if(odoHoursMap.get(vehicleID).getVehicleOdometer() != null) {
-                        reportItemMap.get(noteID).setVehicleOdometer(odoHoursMap.get(vehicleID).getVehicleOdometer());
+                    if(odoHoursMapByVehicleID.get(vehicleID).getVehicleOdometer() != null) {
+                        reportItemMapByNoteID.get(noteID).setVehicleOdometer(odoHoursMapByVehicleID.get(vehicleID).getVehicleOdometer());
                     }
                 }
             }
-            resultsItems.add(reportItemMap.get(vehicleID));
+            resultsItems.add(reportItemMapByNoteID.get(noteID));
         }
         return resultsItems;
     }

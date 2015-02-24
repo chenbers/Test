@@ -1,11 +1,12 @@
 package com.inthinc.pro.model;
 
+import java.sql.Time;
+
 import javax.xml.bind.annotation.XmlRootElement;
 
 import org.joda.time.DateTime;
 
 import com.inthinc.pro.model.configurator.SettingType;
-import com.inthinc.pro.model.event.EventType;
 
 @XmlRootElement
 public class MaintenanceReportItem extends BaseEntity implements Comparable<MaintenanceReportItem> {
@@ -39,7 +40,7 @@ public class MaintenanceReportItem extends BaseEntity implements Comparable<Main
     
     private SettingType settingType;
     private DateTime eventTime;
-    private Long eventOdometer;
+    private Integer eventOdometer;
     private Integer eventEngineHours;
     
     @Override
@@ -139,15 +140,19 @@ public class MaintenanceReportItem extends BaseEntity implements Comparable<Main
         return eventTime;
     }
     
+    public void setEventTime(Time time) {
+        this.eventTime = new DateTime(time);
+    }
+    
     public void setEventTime(DateTime eventTime) {
         this.eventTime = eventTime;
     }
     
-    public Long getEventOdometer() {
+    public Integer getEventOdometer() {
         return (eventOdometer!=null)?eventOdometer:0;
     }
     
-    public void setEventOdometer(Long eventOdometer) {
+    public void setEventOdometer(Integer eventOdometer) {
         this.eventOdometer = eventOdometer;
     }
     
