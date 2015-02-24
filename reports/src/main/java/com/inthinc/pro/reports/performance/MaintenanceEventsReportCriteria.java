@@ -157,55 +157,56 @@ public class MaintenanceEventsReportCriteria extends ReportCriteria {
             List<MaintenanceReportItem> events = maintenanceReportsDAO.findMaintenanceEventsByGroupIDs(groupIDList, interval.getStart().toDate(), interval.getEnd().toDate());
             
             if(events.size() > 0) {
-            for(MaintenanceReportItem event: events) {
-                
-                String threshold=null;
-                
-                String distanceSince = "*"; 
-                if(event.getVehicleOdometer() != null && event.getEventOdometer() !=null) {
-                    distanceSince = (event.getVehicleOdometer() - event.getEventOdometer())+"";
+                for (MaintenanceReportItem event : events) {
+                    
+                    String threshold = null;
+                    
+                    String distanceSince = "*";
+                    if (event.getVehicleOdometer() != null && event.getEventOdometer() != null) {
+                        distanceSince = (event.getVehicleOdometer() - event.getEventOdometer()) + "";
+                    }
+                    String hoursSince = "*";
+                    if (event.getVehicleEngineHours() != null && event.getEventEngineHours() != null) {
+                        hoursSince = (event.getVehicleEngineHours() - event.getEventEngineHours()) + "";
+                    }
+                    String eventValue = "";
+                    String vehicleName = event.getVehicleName();
+                    String vehicleYMM = event.getYmmString();
+                    String maintenanceEvent = (event.getMaintenanceEventType() != null) ? event.getMaintenanceEventType().toString() : "unknown";
+                    Date date = (event.getEventTime() != null) ? event.getEventTime().toDate() : null;
+                    String odometer = event.getEventOdometer().toString();
+                    String engineHours = event.getEventEngineHours().toString();
+                    String groupPath = event.getGroupName();
+                    if (event.getEventDpfFlowRate() > 0) {
+                        eventValue = event.getEventDpfFlowRate().toString();
+                        maintenanceEvent = EventType.DPF_FLOW_RATE.toString();
+                    } else if (event.getEventEngineHours() > 0) {
+                        eventValue = event.getEventEngineHours().toString();
+                        maintenanceEvent = MaintenanceEventType.ATTR_ENGINE_HOURS.toString();
+                    } else if (event.getEventEngineTemp() > 0) {
+                        eventValue = event.getEventEngineTemp().toString();
+                        maintenanceEvent = MaintenanceEventType.ENGINE_TEMP.toString();
+                    } else if (event.getEventOdometer() != null) {
+                        eventValue = event.getEventOdometer().toString();
+                        maintenanceEvent = MaintenanceEventType.ODOMETER.toString();
+                    } else if (event.getEventOilPressure() > 0) {
+                        eventValue = event.getEventOilPressure().toString();
+                        maintenanceEvent = MaintenanceEventType.OIL_PRESSURE.toString();
+                    } else if (event.getEventTransmissionTemp() > 0) {
+                        eventValue = event.getEventTransmissionTemp().toString();
+                        maintenanceEvent = MaintenanceEventType.TRANSMISSION_TEMP.toString();
+                    } else if (event.getEventVoltage() > 0) {
+                        eventValue = event.getEventVoltage().toString();
+                        maintenanceEvent = MaintenanceEventType.BATTERY_VOLTAGE.toString();
+                    } else {
+                        eventValue = "unknown";
+                    }
+                    maintenanceEvent = "testing";
+                    BackingWrapper backingWrapper = new BackingWrapper(vehicleName + "nameTest", vehicleYMM, maintenanceEvent, date, eventValue, threshold, odometer, distanceSince, engineHours,
+                                    hoursSince, groupPath);
+                    System.out.println("backingWrapper: " + backingWrapper);
+                    backingWrappers.add(backingWrapper);
                 }
-                String hoursSince = "*";
-                if(event.getVehicleEngineHours() != null && event.getEventEngineHours() !=null) {
-                    hoursSince = (event.getVehicleEngineHours() - event.getEventEngineHours())+"";
-                }
-                String eventValue = "";
-                String vehicleName = event.getVehicleName();
-                String vehicleYMM = event.getYmmString();
-                String maintenanceEvent = (event.getMaintenanceEventType()!=null)?event.getMaintenanceEventType().toString():"unknown";
-                Date date = (event.getEventTime()!= null)?event.getEventTime().toDate():null;
-                String odometer = event.getEventOdometer().toString();
-                String engineHours = event.getEventEngineHours().toString();
-                String groupPath = event.getGroupName();
-                if(event.getEventDpfFlowRate() > 0) {
-                    eventValue = event.getEventDpfFlowRate().toString();
-                    maintenanceEvent = EventType.DPF_FLOW_RATE.toString();
-                } else if (event.getEventEngineHours() > 0) {
-                    eventValue = event.getEventEngineHours().toString();
-                    maintenanceEvent = MaintenanceEventType.ATTR_ENGINE_HOURS.toString();
-                } else if (event.getEventEngineTemp() > 0) {
-                    eventValue = event.getEventEngineTemp().toString();
-                    maintenanceEvent = MaintenanceEventType.ENGINE_TEMP.toString();
-                } else if (event.getEventOdometer() != null) {
-                    eventValue = event.getEventOdometer().toString();
-                    maintenanceEvent = MaintenanceEventType.ODOMETER.toString();
-                } else if (event.getEventOilPressure() > 0) {
-                    eventValue = event.getEventOilPressure().toString();
-                    maintenanceEvent = MaintenanceEventType.OIL_PRESSURE.toString();
-                } else if (event.getEventTransmissionTemp() > 0) {
-                    eventValue = event.getEventTransmissionTemp().toString();
-                    maintenanceEvent = MaintenanceEventType.TRANSMISSION_TEMP.toString();
-                } else if (event.getEventVoltage() > 0) {
-                    eventValue = event.getEventVoltage().toString();
-                    maintenanceEvent = MaintenanceEventType.BATTERY_VOLTAGE.toString();
-                } else {
-                    eventValue = "unknown";
-                }
-                maintenanceEvent = "testing";
-                BackingWrapper backingWrapper = new BackingWrapper(vehicleName+"nameTest", vehicleYMM, maintenanceEvent, date, eventValue, threshold, odometer, distanceSince, engineHours, hoursSince, groupPath);
-                System.out.println("backingWrapper: "+backingWrapper);
-                backingWrappers.add(backingWrapper);
-            }
             }
             //
             MaintenanceEventsReportCriteria criteria = new MaintenanceEventsReportCriteria(this.locale);
