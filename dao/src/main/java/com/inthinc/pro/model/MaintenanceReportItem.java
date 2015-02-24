@@ -12,6 +12,7 @@ public class MaintenanceReportItem extends BaseEntity implements Comparable<Main
     
     private String groupName;
     private Integer vehicleID;
+    private Long noteID;
     private Integer groupID;
     private String vehicleName;
     private Integer vehicleOdometer;
@@ -45,6 +46,7 @@ public class MaintenanceReportItem extends BaseEntity implements Comparable<Main
     public String toString() {
         StringBuilder toString = new StringBuilder();
         toString.append("MaintenanceReportItem: [");
+        toString.append("noteID=" + noteID + ", ");
         toString.append("groupName=" + groupName + ", ");
         toString.append("vehicleID=" + vehicleID + ", ");
         toString.append("groupID=" + groupID + ", ");
@@ -76,7 +78,6 @@ public class MaintenanceReportItem extends BaseEntity implements Comparable<Main
         toString.append("]");
         
         return toString.toString();
-        
     }
     
     @Override
@@ -284,5 +285,13 @@ public class MaintenanceReportItem extends BaseEntity implements Comparable<Main
     
     public void setThresholdOilPressure(Double thresholdOilPressure) {
         this.thresholdOilPressure = thresholdOilPressure;
+    }
+
+    public Long getNoteID() {
+        return noteID;
+    }
+
+    public void setNoteID(Long noteID) {
+        this.noteID = noteID;
     }
 }

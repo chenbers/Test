@@ -161,8 +161,14 @@ public class MaintenanceEventsReportCriteria extends ReportCriteria {
                 
                 String threshold=null;
                 
-                String distanceSince = (event.getVehicleOdometer() - event.getEventOdometer())+"";
-                String hoursSince = (event.getVehicleEngineHours() - event.getEventEngineHours())+"";
+                String distanceSince = "*"; 
+                if(event.getVehicleOdometer() != null && event.getEventOdometer() !=null) {
+                    distanceSince = (event.getVehicleOdometer() - event.getEventOdometer())+"";
+                }
+                String hoursSince = "*";
+                if(event.getVehicleEngineHours() != null && event.getEventEngineHours() !=null) {
+                    hoursSince = (event.getVehicleEngineHours() - event.getEventEngineHours())+"";
+                }
                 String eventValue = "";
                 String vehicleName = event.getVehicleName();
                 String vehicleYMM = event.getYmmString();
@@ -171,25 +177,34 @@ public class MaintenanceEventsReportCriteria extends ReportCriteria {
                 String odometer = event.getEventOdometer().toString();
                 String engineHours = event.getEventEngineHours().toString();
                 String groupPath = event.getGroupName();
-                if(event.getEventDpfFlowRate() != null) {
+                if(event.getEventDpfFlowRate() > 0) {
                     eventValue = event.getEventDpfFlowRate().toString();
-                } else if (event.getEventEngineHours() != null) {
+                    maintenanceEvent = EventType.DPF_FLOW_RATE.toString();
+                } else if (event.getEventEngineHours() > 0) {
                     eventValue = event.getEventEngineHours().toString();
-                } else if (event.getEventEngineTemp() != null) {
+                    maintenanceEvent = MaintenanceEventType.ATTR_ENGINE_HOURS.toString();
+                } else if (event.getEventEngineTemp() > 0) {
                     eventValue = event.getEventEngineTemp().toString();
+                    maintenanceEvent = MaintenanceEventType.ENGINE_TEMP.toString();
                 } else if (event.getEventOdometer() != null) {
                     eventValue = event.getEventOdometer().toString();
-                } else if (event.getEventOilPressure() != null) {
+                    maintenanceEvent = MaintenanceEventType.ODOMETER.toString();
+                } else if (event.getEventOilPressure() > 0) {
                     eventValue = event.getEventOilPressure().toString();
-                } else if (event.getEventTransmissionTemp() != null) {
+                    maintenanceEvent = MaintenanceEventType.OIL_PRESSURE.toString();
+                } else if (event.getEventTransmissionTemp() > 0) {
                     eventValue = event.getEventTransmissionTemp().toString();
-                } else if (event.getEventVoltage() != null) {
+                    maintenanceEvent = MaintenanceEventType.TRANSMISSION_TEMP.toString();
+                } else if (event.getEventVoltage() > 0) {
                     eventValue = event.getEventVoltage().toString();
-                } else if (DEFAULT_EXCLUDE_INACTIVE_DRIVERS) {
+                    maintenanceEvent = MaintenanceEventType.BATTERY_VOLTAGE.toString();
+                } else {
                     eventValue = "unknown";
                 }
-                
-                backingWrappers.add(new BackingWrapper(vehicleName, vehicleYMM, maintenanceEvent, date, eventValue, threshold, odometer, distanceSince, engineHours, hoursSince, groupPath));
+                maintenanceEvent = "testing";
+                BackingWrapper backingWrapper = new BackingWrapper(vehicleName+"nameTest", vehicleYMM, maintenanceEvent, date, eventValue, threshold, odometer, distanceSince, engineHours, hoursSince, groupPath);
+                System.out.println("backingWrapper: "+backingWrapper);
+                backingWrappers.add(backingWrapper);
             }
             //
             MaintenanceEventsReportCriteria criteria = new MaintenanceEventsReportCriteria(this.locale);
@@ -201,7 +216,7 @@ public class MaintenanceEventsReportCriteria extends ReportCriteria {
             criteria.setUseMetric(measurementType == MeasurementType.METRIC);
             return criteria;
         }
-        public MaintenanceEventsReportCriteria buildOLD() {
+        public MaintenanceEventsReportCriteria buildLoops() {
             logger.debug(String.format("Building MaintenanceEventsReportCriteria with locale %s", locale));
 
             List<NoteType> searchNoteType = new ArrayList<NoteType>();
@@ -223,7 +238,7 @@ public class MaintenanceEventsReportCriteria extends ReportCriteria {
             Map<Integer, List<Event>> foundEvents = new HashMap<Integer, List<Event>>();
 
             
-            
+            Map<Integer, Group> groupMap = new HashMap<Integer, Group>();
             for (Vehicle vehicle: allVehicles){
                 //List<Event> events = eventDAO.getEventsForVehicle(vehicle.getVehicleID(), interval.getStart().toDate(), interval.getEnd().toDate(), searchNoteType, 0);
                 
@@ -260,12 +275,11 @@ public class MaintenanceEventsReportCriteria extends ReportCriteria {
                 }
             }
 
-
             while (found){
                 found = false;
 
                 Map<Vehicle, Event> calcMap = new HashMap<Vehicle, Event>();
-                for (Map.Entry<Vehicle,List<Event>> entry: dataset.entrySet()){
+                for (Map.Entry<Vehicle,List<Event>> entry: dataset.entrySet()){ //173 QA 850
                     Vehicle vehicle = entry.getKey();
                     List<Event> vehicleEvents = entry.getValue();
 
@@ -275,6 +289,8 @@ public class MaintenanceEventsReportCriteria extends ReportCriteria {
                         found = true;
                     }
                 }
+                
+                
 
                 if (found) {
                     VehicleEventData vehicleEventData = new VehicleEventData();
@@ -285,7 +301,14 @@ public class MaintenanceEventsReportCriteria extends ReportCriteria {
                         int noteCod = event.getType().getCode();
                         int evCode = 0;
                         Integer groupId = vehicle.getGroupID();
-                        Group group = groupDAO.findByID(groupId);
+                        
+                        Group group;
+                        if(groupMap.containsKey(groupId)) {
+                            group = groupMap.get(groupId);
+                        } else {
+                            group = groupDAO.findByID(groupId);
+                            groupMap.put(groupId, group);
+                        }
                         String groupName = group.getName();
                         String vehicleID = event.getVehicleID().toString();
                         String vehicleYMM = vehicle.getYear() + " " + vehicle.getMake() + " " + vehicle.getModel();
@@ -532,6 +555,29 @@ public class MaintenanceEventsReportCriteria extends ReportCriteria {
             this.engineHours = engineHours;
             this.hoursSince = hoursSince;
             this.groupPath = groupPath;
+        }
+        
+        @Override
+        public String toString() {
+            StringBuilder toString = new StringBuilder();
+            toString.append("Event BackingWrapper: [");
+            toString.append("vehicleID=" + vehicleID + ", ");
+            toString.append("vehicleYMM=" + vehicleYMM + ", ");
+            toString.append("maintenanceEvent=" + maintenanceEvent + ", ");
+            toString.append("date=" + date + ", ");
+            toString.append("value=" + value + ", ");
+            toString.append("actual(threshold)=" + actual + ", ");
+            
+            toString.append("odometer=" + odometer + ", ");
+            toString.append("engineHours=" + distanceSince + ", ");
+            toString.append("engineHours=" + engineHours + ", ");
+            toString.append("hoursSince=" + hoursSince + ", ");
+            toString.append("groupPath=" + groupPath + ", ");
+            
+            toString.append("]");
+            
+            return toString.toString();
+            
         }
 
         @Override

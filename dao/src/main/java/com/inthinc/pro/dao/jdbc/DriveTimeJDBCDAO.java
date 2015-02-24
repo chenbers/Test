@@ -442,6 +442,8 @@ public class DriveTimeJDBCDAO extends GenericJDBCDAO implements DriveTimeDAO {
             conn = getConnection();
             statement = (PreparedStatement) conn.prepareStatement(sqlBuilder.toString());
             System.out.println("getPrevEventDates SQL: "+statement.toString()); //TODO: jwimmer remove
+            System.out.println("getPrevEventDates minDate: "+minDate); //TODO: jwimmer remove
+            System.out.println("getPrevEventDates maxDate: "+maxDate); //TODO: jwimmer remove
 
             statement.setDate(1, new java.sql.Date(minDate));
             statement.setDate(2, new java.sql.Date(maxDate));

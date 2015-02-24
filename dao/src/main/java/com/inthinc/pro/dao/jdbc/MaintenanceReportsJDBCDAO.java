@@ -89,7 +89,7 @@ public class MaintenanceReportsJDBCDAO extends SimpleJdbcDaoSupport implements M
                     " join groups g on (v.groupID = g.groupID) " +
                     " where cnv.time between :startDate and :endDate " +
                     "   and cnv.type in (238, 20 , 66, 1, 209, 202)  " + //maintenance note types
-                    "   and avs.settingID in (195, 196, 197) " + //maintenance settings
+                    "   and avs.settingID in (190, 191, 192, 193, 194, 195, 196, 197) " + //maintenance settings
                     "   and cnv.attribs is not null " +
                     "   and (attribs like '%;81=%' or attribs like '%;171=%' or attribs like '%;172=%' or attribs like '%;173=%' or attribs like '%;174=%' or attribs like '%;240=%'  or attribs like '%;218=%' ) " +
                     "   and cnv.groupID in ( :groupID_list )";
@@ -161,36 +161,36 @@ public class MaintenanceReportsJDBCDAO extends SimpleJdbcDaoSupport implements M
                 return item;
             }
         }, params);
-        Map<Integer, MaintenanceReportItem> reportItemMap = new HashMap<Integer, MaintenanceReportItem>();
+        Map<Long, MaintenanceReportItem> reportItemMap = new HashMap<Long, MaintenanceReportItem>();
         for(MaintenanceReportItem item: results) { //TODO: note that this merge might NOT be correct???? we DO want to see one line PER EVENT??? I believe
-            if(reportItemMap.containsKey(item.getVehicleID())) {
-                if(item.getThresholdOdo() != null) {
-                    reportItemMap.get(item.getVehicleID()).setThresholdOdo(item.getThresholdOdo());
-                }
-                if(item.getThresholdHours() != null) {
-                    reportItemMap.get(item.getVehicleID()).setThresholdHours(item.getThresholdHours());
-                }
-                if(item.getThresholdBase() != null) {
-                    reportItemMap.get(item.getVehicleID()).setThresholdBase(item.getThresholdBase());
-                }
-                if(item.getThresholdVoltage() != null) {
-                    reportItemMap.get(item.getVehicleID()).setThresholdVoltage(item.getThresholdVoltage());
-                }
-                if(item.getThresholdDpfFlowRate() != null) {
-                    reportItemMap.get(item.getVehicleID()).setThresholdDpfFlowRate(item.getThresholdDpfFlowRate());
-                }
-                if(item.getThresholdEngineTemp() != null) {
-                    reportItemMap.get(item.getVehicleID()).setThresholdEngineTemp(item.getThresholdEngineTemp());
-                }
-                if(item.getThresholdOilPressure() != null) {
-                    reportItemMap.get(item.getVehicleID()).setThresholdOilPressure(item.getThresholdOilPressure());
-                }
-                if(item.getThresholdTransmissionTemp() != null) {
-                    reportItemMap.get(item.getVehicleID()).setThresholdTransmissionTemp(item.getThresholdTransmissionTemp());
-                }
-            }else {
-                reportItemMap.put(item.getVehicleID(), item);
-            }
+//            if(reportItemMap.containsKey(item.getVehicleID())) {
+//                if(item.getThresholdOdo() != null) {
+//                    reportItemMap.get(item.getVehicleID()).setThresholdOdo(item.getThresholdOdo());
+//                }
+//                if(item.getThresholdHours() != null) {
+//                    reportItemMap.get(item.getVehicleID()).setThresholdHours(item.getThresholdHours());
+//                }
+//                if(item.getThresholdBase() != null) {
+//                    reportItemMap.get(item.getVehicleID()).setThresholdBase(item.getThresholdBase());
+//                }
+//                if(item.getThresholdVoltage() != null) {
+//                    reportItemMap.get(item.getVehicleID()).setThresholdVoltage(item.getThresholdVoltage());
+//                }
+//                if(item.getThresholdDpfFlowRate() != null) {
+//                    reportItemMap.get(item.getVehicleID()).setThresholdDpfFlowRate(item.getThresholdDpfFlowRate());
+//                }
+//                if(item.getThresholdEngineTemp() != null) {
+//                    reportItemMap.get(item.getVehicleID()).setThresholdEngineTemp(item.getThresholdEngineTemp());
+//                }
+//                if(item.getThresholdOilPressure() != null) {
+//                    reportItemMap.get(item.getVehicleID()).setThresholdOilPressure(item.getThresholdOilPressure());
+//                }
+//                if(item.getThresholdTransmissionTemp() != null) {
+//                    reportItemMap.get(item.getVehicleID()).setThresholdTransmissionTemp(item.getThresholdTransmissionTemp());
+//                }
+//            }else {
+                reportItemMap.put(item.getNoteID(), item);
+            //}
         }
         List<MaintenanceReportItem> odoHoursItems = findVehiclesWithThreshold(groupIDs);
         Map<Integer, MaintenanceReportItem> odoHoursMap = new HashMap<Integer, MaintenanceReportItem>();
@@ -199,14 +199,15 @@ public class MaintenanceReportsJDBCDAO extends SimpleJdbcDaoSupport implements M
         }
         
         List<MaintenanceReportItem> resultsItems = new ArrayList<MaintenanceReportItem>();
-        for(Integer vehicleID : reportItemMap.keySet()) {
+        for(Long noteID : reportItemMap.keySet()) {
+            Integer vehicleID = reportItemMap.get(noteID).getVehicleID();
             if(odoHoursMap.containsKey(vehicleID)) {
                 if(odoHoursMap.get(vehicleID) != null) {
                     if(odoHoursMap.get(vehicleID).getVehicleEngineHours() != null) {
-                        reportItemMap.get(vehicleID).setVehicleEngineHours(odoHoursMap.get(vehicleID).getVehicleEngineHours());
+                        reportItemMap.get(noteID).setVehicleEngineHours(odoHoursMap.get(vehicleID).getVehicleEngineHours());
                     }
                     if(odoHoursMap.get(vehicleID).getVehicleOdometer() != null) {
-                        reportItemMap.get(vehicleID).setVehicleOdometer(odoHoursMap.get(vehicleID).getVehicleOdometer());
+                        reportItemMap.get(noteID).setVehicleOdometer(odoHoursMap.get(vehicleID).getVehicleOdometer());
                     }
                 }
             }
