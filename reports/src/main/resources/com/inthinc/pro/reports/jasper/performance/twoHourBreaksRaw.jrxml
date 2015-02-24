@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="payrollDetailRaw" pageWidth="1350" pageHeight="595" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="1350" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" resourceBundle="i18n/payrollDetail" isIgnorePagination="true">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="payrollDetailRaw" pageWidth="1350" pageHeight="595" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="1350" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" resourceBundle="i18n/payrollDetail" isIgnorePagination="true" uuid="0462c49a-5079-49ac-96ed-e7d9ec7a90f8">
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
-	<property name="ireport.zoom" value="1.0"/>
-	<property name="ireport.x" value="0"/>
+	<property name="ireport.zoom" value="1.2100000000000009"/>
+	<property name="ireport.x" value="359"/>
 	<property name="ireport.y" value="0"/>
 	<property name="net.sf.jasperreports.export.xls.exclude.origin.keep.first.band.1" value="columnHeader"/>
 	<property name="net.sf.jasperreports.export.xls.wrap.text" value="false"/>
@@ -24,7 +24,7 @@
 	<columnHeader>
 		<band height="31">
 			<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="false">
-				<reportElement key="textField-23" positionType="Float" mode="Opaque" x="0" y="2" width="332" height="29" forecolor="#000000" backcolor="#FFFFFF"/>
+				<reportElement key="textField-23" positionType="Float" mode="Opaque" x="0" y="2" width="332" height="29" forecolor="#000000" backcolor="#FFFFFF" uuid="4848e5e9-c7be-4369-ae4c-96e748372531"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -34,56 +34,56 @@
 				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font size="12" isBold="true" pdfFontName="Helvetica"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$R{column.groupName}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$R{column.groupName}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="false">
-				<reportElement key="textField-51" mode="Opaque" x="334" y="2" width="150" height="29" backcolor="#FFFFFF"/>
+				<reportElement key="textField-51" mode="Opaque" x="334" y="2" width="150" height="29" backcolor="#FFFFFF" uuid="bd177b13-a0fc-4c00-9890-626f3404905f"/>
 				<textElement verticalAlignment="Middle">
 					<font size="12" isBold="true"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$R{column.employeeID}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$R{column.employeeID}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="false">
-				<reportElement key="textField-51" mode="Opaque" x="486" y="2" width="250" height="29" backcolor="#FFFFFF"/>
+				<reportElement key="textField-51" mode="Opaque" x="486" y="2" width="250" height="29" backcolor="#FFFFFF" uuid="903264d2-ab41-4161-9bd7-4029a6633224"/>
 				<textElement verticalAlignment="Middle">
 					<font size="12" isBold="true"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$R{column.driverName}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$R{column.driverName}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="false">
-				<reportElement key="textField-51" mode="Opaque" x="738" y="2" width="100" height="29" backcolor="#FFFFFF"/>
+				<reportElement key="textField-51" mode="Opaque" x="738" y="2" width="100" height="29" backcolor="#FFFFFF" uuid="17413495-1f34-4ae8-846e-5f33bce8ac5c"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="12" isBold="true"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$R{column.onDutyHours}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$R{column.onDutyHours}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="false">
-				<reportElement key="textField-51" mode="Opaque" x="840" y="2" width="100" height="29" backcolor="#FFFFFF"/>
+				<reportElement key="textField-51" mode="Opaque" x="840" y="2" width="100" height="29" backcolor="#FFFFFF" uuid="6e0e02cb-0d08-49cd-b8f8-c9066cdd0107"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="12" isBold="true"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$R{column.offDutyHours}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$R{column.offDutyHours}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="false">
-				<reportElement key="textField-51" mode="Opaque" x="942" y="2" width="100" height="29" backcolor="#FFFFFF"/>
+				<reportElement key="textField-51" mode="Opaque" x="942" y="2" width="100" height="29" backcolor="#FFFFFF" uuid="4fe16f24-c50a-439b-adb4-402bc1a247c5"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="12" isBold="true"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$R{column.breakCount}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$R{column.breakCount}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="false">
-				<reportElement key="textField-51" mode="Opaque" x="1044" y="2" width="100" height="29" backcolor="#FFFFFF"/>
+				<reportElement key="textField-51" mode="Opaque" x="1044" y="2" width="100" height="29" backcolor="#FFFFFF" uuid="3b52a8be-1a4e-491f-9fa3-b677fc7ab836"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="12" isBold="true"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$R{column.breakHours}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$R{column.breakHours}]]></textFieldExpression>
 			</textField>
 		</band>
 	</columnHeader>
 	<detail>
 		<band height="26">
 			<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="false">
-				<reportElement key="textField-23" positionType="Float" mode="Opaque" x="0" y="0" width="332" height="23" forecolor="#000000" backcolor="#FFFFFF"/>
+				<reportElement key="textField-23" positionType="Float" mode="Opaque" x="0" y="0" width="332" height="23" forecolor="#000000" backcolor="#FFFFFF" uuid="4e58d357-8e1e-41c8-83d9-7f8fce568e19"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -93,10 +93,10 @@
 				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font size="12" isBold="false" pdfFontName="Helvetica"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{groupName}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{groupName}]]></textFieldExpression>
 			</textField>
 			<textField pattern="" isBlankWhenNull="true">
-				<reportElement key="textField-30" mode="Opaque" x="334" y="0" width="150" height="23" forecolor="#000000" backcolor="#FFFFFF"/>
+				<reportElement key="textField-30" mode="Opaque" x="334" y="0" width="150" height="23" forecolor="#000000" backcolor="#FFFFFF" uuid="f174fc68-5d35-4298-b9ec-52ae5f2ab995"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -106,10 +106,10 @@
 				<textElement verticalAlignment="Middle">
 					<font size="12" isBold="false" pdfFontName="Helvetica-Bold"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{employeeID}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{employeeID}]]></textFieldExpression>
 			</textField>
 			<textField pattern="" isBlankWhenNull="false">
-				<reportElement key="textField-31" mode="Opaque" x="486" y="0" width="250" height="23" forecolor="#000000" backcolor="#FFFFFF"/>
+				<reportElement key="textField-31" mode="Opaque" x="486" y="0" width="250" height="23" forecolor="#000000" backcolor="#FFFFFF" uuid="d832e9a6-fed9-4f7b-b499-a0a107212b40"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -119,10 +119,10 @@
 				<textElement verticalAlignment="Middle">
 					<font size="12" isBold="false"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{driverName}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{driverName}]]></textFieldExpression>
 			</textField>
-			<textField pattern="" isBlankWhenNull="false">
-				<reportElement key="textField-38" mode="Opaque" x="738" y="0" width="100" height="23" backcolor="#FFFFFF"/>
+			<textField pattern="###0.00" isBlankWhenNull="true">
+				<reportElement key="textField-38" mode="Opaque" x="738" y="0" width="100" height="23" backcolor="#FFFFFF" uuid="ee61b49b-1090-43c4-b615-79b39f50550d"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -132,10 +132,10 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="12" isBold="false"/>
 				</textElement>
-				<textFieldExpression class="java.lang.Double"><![CDATA[$F{onDutyDecimalHours}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{onDutyDecimalHours}!=null?Double.valueOf($F{onDutyDecimalHours}):new Double(0.0)]]></textFieldExpression>
 			</textField>
-			<textField pattern="" isBlankWhenNull="false">
-				<reportElement key="textField-39" mode="Opaque" x="840" y="0" width="100" height="23" backcolor="#FFFFFF"/>
+			<textField pattern="###0.00" isBlankWhenNull="true">
+				<reportElement key="textField-39" mode="Opaque" x="840" y="0" width="100" height="23" backcolor="#FFFFFF" uuid="7208dcf8-afd2-4936-828a-7dc717e9852a"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -145,10 +145,10 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="12" isBold="false"/>
 				</textElement>
-				<textFieldExpression class="java.lang.Double"><![CDATA[$F{offDutyDecimalHours}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{offDutyDecimalHours}!=null?Double.valueOf($F{offDutyDecimalHours}):new Double(0.0)]]></textFieldExpression>
 			</textField>
-			<textField pattern="" isBlankWhenNull="false">
-				<reportElement key="textField-37" mode="Opaque" x="942" y="0" width="100" height="23" backcolor="#FFFFFF"/>
+			<textField pattern="###0.00" isBlankWhenNull="true">
+				<reportElement key="textField-37" mode="Opaque" x="942" y="0" width="100" height="23" backcolor="#FFFFFF" uuid="07ef7dd0-d30f-4bc5-8220-5a04780a6244"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -158,10 +158,10 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="12" isBold="false"/>
 				</textElement>
-				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{breakCount}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{breakCount}!=null?Double.valueOf($F{breakCount}):new Double(0.0)]]></textFieldExpression>
 			</textField>
-			<textField pattern="" isBlankWhenNull="false">
-				<reportElement key="textField-40" mode="Opaque" x="1044" y="0" width="100" height="23" backcolor="#FFFFFF"/>
+			<textField pattern="###0.00" isBlankWhenNull="false">
+				<reportElement key="textField-40" mode="Opaque" x="1044" y="0" width="100" height="23" backcolor="#FFFFFF" uuid="970d88f7-ab72-4938-9f5d-e869ee9c6223"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -171,7 +171,7 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="12" isBold="false"/>
 				</textElement>
-				<textFieldExpression class="java.lang.Double"><![CDATA[$F{breakDecimalHours}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{breakDecimalHours}!=null?Double.valueOf($F{breakDecimalHours}):new Double(0.0)]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
