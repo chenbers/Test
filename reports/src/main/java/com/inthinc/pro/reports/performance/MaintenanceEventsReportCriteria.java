@@ -156,7 +156,7 @@ public class MaintenanceEventsReportCriteria extends ReportCriteria {
             groupIDList.addAll(groupHeirarchySet);
             List<MaintenanceReportItem> events = maintenanceReportsDAO.findMaintenanceEventsByGroupIDs(groupIDList, interval.getStart().toDate(), interval.getEnd().toDate());
             
-            
+            if(events.size() > 0) {
             for(MaintenanceReportItem event: events) {
                 
                 String threshold=null;
@@ -205,6 +205,7 @@ public class MaintenanceEventsReportCriteria extends ReportCriteria {
                 BackingWrapper backingWrapper = new BackingWrapper(vehicleName+"nameTest", vehicleYMM, maintenanceEvent, date, eventValue, threshold, odometer, distanceSince, engineHours, hoursSince, groupPath);
                 System.out.println("backingWrapper: "+backingWrapper);
                 backingWrappers.add(backingWrapper);
+            }
             }
             //
             MaintenanceEventsReportCriteria criteria = new MaintenanceEventsReportCriteria(this.locale);
