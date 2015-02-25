@@ -94,7 +94,9 @@ public class MaintenanceReportsJDBCDAO extends SimpleJdbcDaoSupport implements M
                     "   and avs.settingID in (190, 191, 192, 193, 194, 195, 196, 197) " + //maintenance settings
                     "   and cnv.attribs is not null " +
                     "   and (attribs like '%;81=%' or attribs like '%;171=%' or attribs like '%;172=%' or attribs like '%;173=%' or attribs like '%;174=%' or attribs like '%;240=%'  or attribs like '%;218=%' ) " +
-                    "   and cnv.groupID in ( :groupID_list ) " ;
+                    "   and cnv.groupID in ( :groupID_list ) " + 
+                    " order by groupID , vehicleID, time"
+                    ;
 
     //    List<Event> getEventsForGroupFromVehicles(Integer groupID, List<NoteType> eventTypes, Date startDate, Date endDate);
 

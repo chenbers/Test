@@ -177,33 +177,48 @@ public class MaintenanceEventsReportCriteria extends ReportCriteria {
                     String odometer = event.getEventOdometer().toString();
                     String engineHours = event.getEventEngineHours().toString();
                     String groupPath = event.getGroupName();
+                    System.out.println(""+event.getNoteID());
                     if (event.getEventDpfFlowRate() > 0) {
                         eventValue = event.getEventDpfFlowRate().toString();
+                        threshold = event.getThresholdDpfFlowRate()+"";
                         maintenanceEvent = EventType.DPF_FLOW_RATE.toString();
                     } else if (event.getEventEngineHours() > 0) {
                         eventValue = event.getEventEngineHours().toString();
+                        threshold = event.getThresholdHours()+"";
                         maintenanceEvent = MaintenanceEventType.ATTR_ENGINE_HOURS.toString();
                     } else if (event.getEventEngineTemp() > 0) {
                         eventValue = event.getEventEngineTemp().toString();
+                        threshold = event.getThresholdEngineTemp()+"";
                         maintenanceEvent = MaintenanceEventType.ENGINE_TEMP.toString();
                     } else if (event.getEventOilPressure() > 0) {
                         eventValue = event.getEventOilPressure().toString();
+                        System.out.println(""+event.getNoteID());
+                        if(event.getThresholdOilPressure() == null) {
+                            System.out.println("event with oil pressure but no oil pressure THRESHOLD??? "+event.getNoteID());
+                        }
+                        threshold = event.getThresholdOilPressure()+"";
                         maintenanceEvent = MaintenanceEventType.OIL_PRESSURE.toString();
                     } else if (event.getEventTransmissionTemp() > 0) {
                         eventValue = event.getEventTransmissionTemp().toString();
+                        System.out.println(""+event.getNoteID());
+                        if(event.getThresholdTransmissionTemp() == null) {
+                            System.out.println("event with transmission temp but no transmission temp THRESHOLD??? "+event.getNoteID());
+                        }
+                        threshold = event.getThresholdTransmissionTemp()+"";
                         maintenanceEvent = MaintenanceEventType.TRANSMISSION_TEMP.toString();
                     } else if (event.getEventVoltage() > 0) {
                         eventValue = event.getEventVoltage().toString();
+                        threshold = event.getThresholdVoltage()+"";
                         maintenanceEvent = MaintenanceEventType.BATTERY_VOLTAGE.toString();
                     }  else if (event.getEventOdometer() != null) {
                         eventValue = event.getEventOdometer().toString();
+                        threshold = event.getThresholdOdo()+"";
                         maintenanceEvent = MaintenanceEventType.ODOMETER.toString();
                     }  else {
                         eventValue = "unknown";
                     }
-                    maintenanceEvent = "testing";
                     BackingWrapper backingWrapper = new BackingWrapper(vehicleName + "nameTest", vehicleYMM, maintenanceEvent, date, eventValue, threshold, odometer, distanceSince, engineHours,
-                                    hoursSince, groupPath);
+                                    hoursSince, groupPath, event.getNoteID());
                     System.out.println("backingWrapper: " + backingWrapper);
                     backingWrappers.add(backingWrapper);
                 }
@@ -410,9 +425,10 @@ public class MaintenanceEventsReportCriteria extends ReportCriteria {
                         }
 
                         String hoursSince = stringToInt(engineHourAtDate) - stringToInt(engineHourAtLastDate) + "";
+                        Long noteID = null;
 
                         BackingWrapper backingWrapper = new BackingWrapper(vehicleName, vehicleYms, maintenanceEvent, date, value, actual,
-                                driveOdometer, distanceSince, engineHourAtDate, hoursSince, groupName);
+                                driveOdometer, distanceSince, engineHourAtDate, hoursSince, groupName, noteID);
 
                         // Filter non-maintenance events
                         if (eventCode > 0)
@@ -543,9 +559,10 @@ public class MaintenanceEventsReportCriteria extends ReportCriteria {
         private String distanceSince;
         private String engineHours;
         private String hoursSince;
+        private Long noteID;
 
         public BackingWrapper(String vehicleID, String vehicleYMM, String maintenanceEvent, Date date, String value,String actual, String odometer, String distanceSince,
-                              String engineHours, String hoursSince, String groupPath) {
+                              String engineHours, String hoursSince, String groupPath, Long noteID) {
             this.vehicleID = vehicleID;
             this.vehicleYMM = vehicleYMM;
             this.maintenanceEvent = maintenanceEvent;
@@ -557,6 +574,7 @@ public class MaintenanceEventsReportCriteria extends ReportCriteria {
             this.engineHours = engineHours;
             this.hoursSince = hoursSince;
             this.groupPath = groupPath;
+            this.noteID = noteID;
         }
         
         @Override
@@ -571,7 +589,7 @@ public class MaintenanceEventsReportCriteria extends ReportCriteria {
             toString.append("actual(threshold)=" + actual + ", ");
             
             toString.append("odometer=" + odometer + ", ");
-            toString.append("engineHours=" + distanceSince + ", ");
+            toString.append("distanceSince=" + distanceSince + ", ");
             toString.append("engineHours=" + engineHours + ", ");
             toString.append("hoursSince=" + hoursSince + ", ");
             toString.append("groupPath=" + groupPath + ", ");
@@ -673,6 +691,14 @@ public class MaintenanceEventsReportCriteria extends ReportCriteria {
 
         public void setHoursSince(String hoursSince) {
             this.hoursSince = hoursSince;
+        }
+
+        public Long getNoteID() {
+            return noteID;
+        }
+
+        public void setNoteID(Long noteID) {
+            this.noteID = noteID;
         }
 
     }
