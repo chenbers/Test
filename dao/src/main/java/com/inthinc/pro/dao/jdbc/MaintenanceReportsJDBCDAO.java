@@ -28,7 +28,6 @@ import com.inthinc.pro.model.app.States;
 import com.inthinc.pro.model.configurator.ProductType;
 import com.inthinc.pro.model.configurator.SettingType;
 import com.inthinc.pro.model.event.NoteType;
-import com.sun.jna.platform.win32.Sspi.TimeStamp;
 
 public class MaintenanceReportsJDBCDAO extends SimpleJdbcDaoSupport implements MaintenanceReportsDAO {
     
