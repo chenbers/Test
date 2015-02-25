@@ -89,8 +89,13 @@ public class EventAggregationJDBCDAO extends SimpleJdbcDaoSupport implements Eve
                         driverForgivenEventTotal = driverForgivenEventTotalMap.get(mapId);
                         driverForgivenEventTotal.setEventCount(driverForgivenEventTotal.getEventCount() + rs.getInt("eventCount"));
                         driverForgivenEventTotal.setEventCountForgiven(driverForgivenEventTotal.getEventCountForgiven() + rs.getInt("eventCountForgiven"));
-                        if (newReason != null && !newReason.trim().isEmpty())
-                            driverForgivenEventTotal.setReasons(driverForgivenEventTotal.getReasons() + "; " + newReason);
+                        if (newReason != null && !newReason.trim().isEmpty()){
+                            if (driverForgivenEventTotal.getReasons() == null || driverForgivenEventTotal.getReasons().trim().isEmpty()){
+                                driverForgivenEventTotal.setReasons(newReason);
+                            }else{
+                                driverForgivenEventTotal.setReasons(driverForgivenEventTotal.getReasons() + "; " + newReason);
+                            }
+                        }
                     } else {
                         Driver driver = driverDAO.findByID(rs.getInt("driverID"));
                         
