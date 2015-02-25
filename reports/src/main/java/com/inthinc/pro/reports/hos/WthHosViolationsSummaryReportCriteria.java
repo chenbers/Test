@@ -190,8 +190,8 @@ public class WthHosViolationsSummaryReportCriteria extends ViolationsSummaryRepo
         ResourceBundle resourceBundle = ReportType.WEATHERFORD_HOS_VIOLATIONS_SUMMARY_REPORT.getResourceBundle(getLocale());
 
         List<String> columnHeaders = new ArrayList<String>();
-        for (int i = 1; i <= 16; i++) {
-            if (i > 14 && getUseMetric())
+        for (int i = 1; i <= 9; i++) {
+            if (i > 8 && getUseMetric())
                 columnHeaders.add(MessageUtil.getBundleString(resourceBundle, "column." + i + ".tabular.METRIC"));
             else columnHeaders.add(MessageUtil.getBundleString(resourceBundle, "column." + i + ".tabular"));
         }
@@ -209,20 +209,14 @@ public class WthHosViolationsSummaryReportCriteria extends ViolationsSummaryRepo
         List<List<Result>> records = new ArrayList<List<Result>>();
 
         for (WthHosViolationsSummary summary : dataList) {
+            Integer total = summary.getHourDriving11()+summary.getOnDutyHours14()+summary.getOnDutyHours70()+summary.getThirtyMinuteBreak();
             List<Result> row = new ArrayList<Result>();
             row.add(new Result(summary.getGroupName(), summary.getGroupName()));
-            row.add(new Result(summary.getDriving_1().toString(), summary.getDriving_1()));
-            row.add(new Result(summary.getDriving_2().toString(), summary.getDriving_2()));
-            row.add(new Result(summary.getDriving_3().toString(), summary.getDriving_3()));
-            row.add(new Result(summary.getOnDuty_1().toString(), summary.getOnDuty_1()));
-            row.add(new Result(summary.getOnDuty_2().toString(), summary.getOnDuty_2()));
-            row.add(new Result(summary.getOnDuty_3().toString(), summary.getOnDuty_3()));
-            row.add(new Result(summary.getCumulative_1().toString(), summary.getCumulative_1()));
-            row.add(new Result(summary.getCumulative_2().toString(), summary.getCumulative_2()));
-            row.add(new Result(summary.getCumulative_3().toString(), summary.getCumulative_3()));
-            row.add(new Result(summary.getOffDuty_1().toString(), summary.getOffDuty_1()));
-            row.add(new Result(summary.getOffDuty_2().toString(), summary.getOffDuty_2()));
-            row.add(new Result(summary.getOffDuty_3().toString(), summary.getOffDuty_3()));
+            row.add(new Result(summary.getHourDriving11().toString(), summary.getHourDriving11()));
+            row.add(new Result(summary.getOnDutyHours14().toString(), summary.getOnDutyHours14()));
+            row.add(new Result(summary.getOnDutyHours70().toString(), summary.getOnDutyHours70()));
+            row.add(new Result(summary.getThirtyMinuteBreak().toString(), summary.getThirtyMinuteBreak()));
+            row.add(new Result(total.toString(), total));
             row.add(new Result(summary.getDriverCnt().toString(), summary.getDriverCnt()));
             row.add(new Result(Converter.convertRemarkDistance(summary.getTotalMiles(), getUseMetric(), getLocale()), summary.getTotalMiles()));
             row.add(new Result(Converter.convertRemarkDistance(summary.getTotalMilesNoDriver(), getUseMetric(), getLocale()), summary.getTotalMilesNoDriver()));
@@ -240,12 +234,6 @@ public class WthHosViolationsSummaryReportCriteria extends ViolationsSummaryRepo
         ResourceBundle resourceBundle = ReportType.WEATHERFORD_HOS_VIOLATIONS_SUMMARY_REPORT.getResourceBundle(getLocale());
 
         List<ColumnHeader> columnHeaders = new ArrayList<ColumnHeader>();
-        columnHeaders.add(new ColumnHeader(MessageUtil.getBundleString(resourceBundle, "column.1.tabularHeader"), 1));
-        columnHeaders.add(new ColumnHeader(MessageUtil.getBundleString(resourceBundle, "column.2to4.tabularHeader"), 3));
-        columnHeaders.add(new ColumnHeader(MessageUtil.getBundleString(resourceBundle, "column.5to7.tabularHeader"), 3));
-        columnHeaders.add(new ColumnHeader(MessageUtil.getBundleString(resourceBundle, "column.8to10.tabularHeader"), 3));
-        columnHeaders.add(new ColumnHeader(MessageUtil.getBundleString(resourceBundle, "column.11to13.tabularHeader"), 3));
-        columnHeaders.add(new ColumnHeader(MessageUtil.getBundleString(resourceBundle, "column.14to16.tabularHeader"), 3));
         return columnHeaders;
     }
 }
