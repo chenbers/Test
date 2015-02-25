@@ -75,6 +75,7 @@ public class VehicleStatusUtil {
                 IDLE,
                 ROLLOVER,
                 COACHING_SPEEDING,
+                START_MOTION,
                 STOP_MOTION,
                 OFF_HOURS_DRIVING,
                 BACKING);
@@ -155,6 +156,7 @@ public class VehicleStatusUtil {
                 case BACKING:
                 case FULLEVENT:
                 case ROLLOVER:
+                case START_MOTION:
                 case STOP_MOTION:
                 case PARKING_BRAKE:
                 case LOCATION:
