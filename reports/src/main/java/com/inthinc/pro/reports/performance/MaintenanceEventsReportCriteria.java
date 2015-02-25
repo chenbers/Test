@@ -217,14 +217,16 @@ public class MaintenanceEventsReportCriteria extends ReportCriteria {
                     }  else {
                         eventValue = "unknown";
                     }
+                    
+                    System.out.println("threshold: " + threshold);
                     if(threshold == null || threshold.equals("") || threshold.equals("null")) {
                         threshold = " - ";
                     }
                     if(eventValue == null || eventValue.equals("") || eventValue.equals("null")) {
                         eventValue = " - ";
                     }
-                    // BackingWrapper backingWrapper = new BackingWrapper(vehicleName, vehicleYMM, maintenanceEvent+ "typeTest", date, eventValue, threshold, odometer, distanceSince, engineHours, hoursSince, groupPath, event.getNoteID());
-                    BackingWrapper backingWrapper = new BackingWrapper(event.getNoteID()+"", maintenanceEvent, maintenanceEvent+ "typeTest", date, eventValue, threshold, odometer, distanceSince, engineHours, hoursSince, groupPath, event.getNoteID());
+                    BackingWrapper backingWrapper = new BackingWrapper(vehicleName, vehicleYMM, maintenanceEvent, date, eventValue, threshold, odometer+" - "+event.getEventOdometer()+" =", distanceSince, engineHours, hoursSince, groupPath, event.getNoteID());
+                    //BackingWrapper backingWrapper = new BackingWrapper(event.getNoteID()+"", maintenanceEvent, maintenanceEvent+ "typeTest", date, eventValue, threshold, odometer, distanceSince, engineHours, hoursSince, groupPath, event.getNoteID());
                     System.out.println("backingWrapper: " + backingWrapper);
                     backingWrappers.add(backingWrapper);
                 }
