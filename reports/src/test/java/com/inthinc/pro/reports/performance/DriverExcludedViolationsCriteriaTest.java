@@ -103,6 +103,7 @@ public class DriverExcludedViolationsCriteriaTest extends BaseUnitTest{
             int listId = random.nextInt(3);
             driverForgivenEventTotal.setGroupID(groupIDPickList.get(listId));
             driverForgivenEventTotal.setGroupName(groupHierarchy.getGroup(driverForgivenEventTotal.getGroupID()).getName());
+            driverForgivenEventTotal.setReasons("reason+"+i);
             double percent = 1D / 189D;
             driverForgivenEventTotal.setPercentForgiven(Double.valueOf(percent));
             driverForgivenEventTotals.add(driverForgivenEventTotal);
