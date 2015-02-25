@@ -1,5 +1,6 @@
 package com.inthinc.pro.model;
 
+import java.sql.Date;
 import java.sql.Time;
 
 import javax.xml.bind.annotation.XmlRootElement;
@@ -140,7 +141,7 @@ public class MaintenanceReportItem extends BaseEntity implements Comparable<Main
         return eventTime;
     }
     
-    public void setEventTime(Time time) {
+    public void setEventTime(Date time) {
         this.eventTime = new DateTime(time);
     }
     

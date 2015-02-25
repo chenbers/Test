@@ -2,6 +2,7 @@ package com.inthinc.pro.dao.jdbc;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.Date;
@@ -10,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.springframework.jdbc.core.simple.ParameterizedRowMapper;
@@ -26,6 +28,7 @@ import com.inthinc.pro.model.app.States;
 import com.inthinc.pro.model.configurator.ProductType;
 import com.inthinc.pro.model.configurator.SettingType;
 import com.inthinc.pro.model.event.NoteType;
+import com.sun.jna.platform.win32.Sspi.TimeStamp;
 
 public class MaintenanceReportsJDBCDAO extends SimpleJdbcDaoSupport implements MaintenanceReportsDAO {
     
@@ -95,7 +98,7 @@ public class MaintenanceReportsJDBCDAO extends SimpleJdbcDaoSupport implements M
                     "   and cnv.attribs is not null " +
                     "   and (attribs like '%;81=%' or attribs like '%;171=%' or attribs like '%;172=%' or attribs like '%;173=%' or attribs like '%;174=%' or attribs like '%;240=%'  or attribs like '%;218=%' ) " +
                     "   and cnv.groupID in ( :groupID_list ) " + 
-                    " order by groupID , vehicleID, time"
+                    " order by cnv.groupID , vehicleID, time"
                     ;
 
     //    List<Event> getEventsForGroupFromVehicles(Integer groupID, List<NoteType> eventTypes, Date startDate, Date endDate);
@@ -120,7 +123,8 @@ public class MaintenanceReportsJDBCDAO extends SimpleJdbcDaoSupport implements M
                 item.setGroupID(rs.getInt("vehicleGroupID"));
                 item.setGroupName(rs.getString("vehicleGroupName"));
                 item.setSettingType(settingType);
-                item.setEventTime(rs.getTime("time"));
+                Timestamp ts = rs.getTimestamp("time");
+                item.setEventTime(new DateTime(ts));
                 Double value = rs.getDouble("threshold");
                 if(SettingType.MAINT_THRESHOLD_ENGINE_HOURS.equals(settingType)) {
                     item.setThresholdHours(value.intValue());

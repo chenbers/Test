@@ -198,7 +198,7 @@
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement mode="Transparent" x="158" y="0" width="111" height="20"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[str($F{maintenanceEvent}.toString())]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{maintenanceEvent}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement mode="Transparent" x="269" y="0" width="63" height="20"/>

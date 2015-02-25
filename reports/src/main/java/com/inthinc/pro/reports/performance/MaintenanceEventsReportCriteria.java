@@ -179,50 +179,71 @@ public class MaintenanceEventsReportCriteria extends ReportCriteria {
                     String groupPath = event.getGroupName();
                     System.out.println(""+event.getNoteID());
                     if (event.getEventDpfFlowRate() > 0) {
-                        eventValue = event.getEventDpfFlowRate().toString();
+                        eventValue = event.getEventDpfFlowRate()+"";
                         threshold = event.getThresholdDpfFlowRate()+"";
-                        maintenanceEvent = EventType.DPF_FLOW_RATE.toString();
+                        maintenanceEvent = EventType.DPF_FLOW_RATE+"";
                     } else if (event.getEventEngineHours() > 0) {
-                        eventValue = event.getEventEngineHours().toString();
+                        eventValue = event.getEventEngineHours()+"";
                         threshold = event.getThresholdHours()+"";
-                        maintenanceEvent = MaintenanceEventType.ATTR_ENGINE_HOURS.toString();
+                        maintenanceEvent = MaintenanceEventType.ATTR_ENGINE_HOURS+"";
                     } else if (event.getEventEngineTemp() > 0) {
-                        eventValue = event.getEventEngineTemp().toString();
+                        eventValue = event.getEventEngineTemp()+"";
                         threshold = event.getThresholdEngineTemp()+"";
-                        maintenanceEvent = MaintenanceEventType.ENGINE_TEMP.toString();
+                        maintenanceEvent = MaintenanceEventType.ENGINE_TEMP+"";
                     } else if (event.getEventOilPressure() > 0) {
-                        eventValue = event.getEventOilPressure().toString();
+                        eventValue = event.getEventOilPressure()+"";
                         System.out.println(""+event.getNoteID());
                         if(event.getThresholdOilPressure() == null) {
                             System.out.println("event with oil pressure but no oil pressure THRESHOLD??? "+event.getNoteID());
                         }
                         threshold = event.getThresholdOilPressure()+"";
-                        maintenanceEvent = MaintenanceEventType.OIL_PRESSURE.toString();
+                        maintenanceEvent = MaintenanceEventType.OIL_PRESSURE+"";
                     } else if (event.getEventTransmissionTemp() > 0) {
-                        eventValue = event.getEventTransmissionTemp().toString();
+                        eventValue = event.getEventTransmissionTemp()+"";
                         System.out.println(""+event.getNoteID());
                         if(event.getThresholdTransmissionTemp() == null) {
                             System.out.println("event with transmission temp but no transmission temp THRESHOLD??? "+event.getNoteID());
                         }
                         threshold = event.getThresholdTransmissionTemp()+"";
-                        maintenanceEvent = MaintenanceEventType.TRANSMISSION_TEMP.toString();
+                        maintenanceEvent = MaintenanceEventType.TRANSMISSION_TEMP+"";
                     } else if (event.getEventVoltage() > 0) {
-                        eventValue = event.getEventVoltage().toString();
+                        eventValue = event.getEventVoltage()+"";
                         threshold = event.getThresholdVoltage()+"";
-                        maintenanceEvent = MaintenanceEventType.BATTERY_VOLTAGE.toString();
+                        maintenanceEvent = MaintenanceEventType.BATTERY_VOLTAGE+"";
                     }  else if (event.getEventOdometer() != null) {
-                        eventValue = event.getEventOdometer().toString();
+                        eventValue = event.getEventOdometer()+"";
                         threshold = event.getThresholdOdo()+"";
-                        maintenanceEvent = MaintenanceEventType.ODOMETER.toString();
+                        maintenanceEvent = MaintenanceEventType.ODOMETER+"";
                     }  else {
                         eventValue = "unknown";
                     }
-                    BackingWrapper backingWrapper = new BackingWrapper(vehicleName + "nameTest", vehicleYMM, maintenanceEvent, date, eventValue, threshold, odometer, distanceSince, engineHours,
-                                    hoursSince, groupPath, event.getNoteID());
+                    if(threshold == null || threshold.equals("") || threshold.equals("null")) {
+                        threshold = " - ";
+                    }
+                    if(eventValue == null || eventValue.equals("") || eventValue.equals("null")) {
+                        eventValue = " - ";
+                    }
+                    // BackingWrapper backingWrapper = new BackingWrapper(vehicleName, vehicleYMM, maintenanceEvent+ "typeTest", date, eventValue, threshold, odometer, distanceSince, engineHours, hoursSince, groupPath, event.getNoteID());
+                    BackingWrapper backingWrapper = new BackingWrapper(event.getNoteID()+"", maintenanceEvent, maintenanceEvent+ "typeTest", date, eventValue, threshold, odometer, distanceSince, engineHours, hoursSince, groupPath, event.getNoteID());
                     System.out.println("backingWrapper: " + backingWrapper);
                     backingWrappers.add(backingWrapper);
                 }
             }
+            Collections.sort(backingWrappers, new Comparator<BackingWrapper>() {
+
+                @Override
+                public int compare(BackingWrapper o1, BackingWrapper o2) {
+                    int compareResult = o1.getGroupPath().compareTo(o2.getGroupPath());
+                    if(compareResult == 0) {
+                        compareResult = o1.getVehicleID().compareTo(o2.getVehicleID());
+                    }
+                    if(compareResult == 0) {
+                        compareResult = o1.getDate().compareTo(o2.getDate());
+                    }
+                    return compareResult;
+                }
+                
+            });
             //
             MaintenanceEventsReportCriteria criteria = new MaintenanceEventsReportCriteria(this.locale);
             criteria.setMainDataset(backingWrappers);
