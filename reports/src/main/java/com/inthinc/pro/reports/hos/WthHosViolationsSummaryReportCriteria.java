@@ -190,7 +190,7 @@ public class WthHosViolationsSummaryReportCriteria extends ViolationsSummaryRepo
         ResourceBundle resourceBundle = ReportType.WEATHERFORD_HOS_VIOLATIONS_SUMMARY_REPORT.getResourceBundle(getLocale());
 
         List<String> columnHeaders = new ArrayList<String>();
-        for (int i = 1; i <= 9; i++) {
+        for (int i = 1; i <= 11; i++) {
             if (i > 8 && getUseMetric())
                 columnHeaders.add(MessageUtil.getBundleString(resourceBundle, "column." + i + ".tabular.METRIC"));
             else columnHeaders.add(MessageUtil.getBundleString(resourceBundle, "column." + i + ".tabular"));
@@ -220,6 +220,10 @@ public class WthHosViolationsSummaryReportCriteria extends ViolationsSummaryRepo
             row.add(new Result(summary.getDriverCnt().toString(), summary.getDriverCnt()));
             row.add(new Result(Converter.convertRemarkDistance(summary.getTotalMiles(), getUseMetric(), getLocale()), summary.getTotalMiles()));
             row.add(new Result(Converter.convertRemarkDistance(summary.getTotalMilesNoDriver(), getUseMetric(), getLocale()), summary.getTotalMilesNoDriver()));
+            Double zeroMilesPercent = summary.getTotalMilesNoDriver() != null && summary.getTotalMilesNoDriver().intValue() != 0 ? summary.getTotalMilesNoDriver() * 100d / (double) summary.getTotalMiles() : 0d;
+            row.add(new Result(Converter.convertRemarkDistance(zeroMilesPercent, getUseMetric(), getLocale()), zeroMilesPercent));
+            Double violationsPercent = summary.getDriverCnt() != null && summary.getDriverCnt() != 0 ? ((summary.getHourDriving11() + summary.getOnDutyHours14() + summary.getOnDutyHours70() + summary.getThirtyMinuteBreak()) * 100d / (double) summary.getDriverCnt()) : 0d;
+            row.add(new Result(String.format("%.2f",violationsPercent), violationsPercent));
 
             records.add(row);
         }
