@@ -370,7 +370,7 @@ public class ReportCriteria
      * to an integer with rounding
      */
     protected static Integer stringToInt(String string) {
-        return string != null ? Math.round(Float.parseFloat(string)) : null;
+        return string != null ? Math.round(Float.parseFloat(string)) : 0;
     }
 
     public Boolean getHosDriversOnly() {
