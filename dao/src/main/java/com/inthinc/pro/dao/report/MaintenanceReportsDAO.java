@@ -36,8 +36,17 @@ public interface MaintenanceReportsDAO {
     Map<Integer, Integer> findMilesDriven(Set<Integer> vehicleIDs);
 
     /**
+     * Find the current Engine Hours and Odometer values for a given set of vehicleID's
+     * @param vehicleIDs a SET of vehicleIDs to query
+     * @return Map of MaintenanceReportItems keyed off vehicleID, but only Engine Hours and Odometer values have been populated
+     */
+    Map<Integer, MaintenanceReportItem> findEngineHours(Set<Integer> vehicleIDs);
+    
+    /**
+     * Find the current Engine Hours and Odometer values for a given list of vehicleID's.
+     * If vehicleIDs list contains duplicates no promises are made for performance.
      * @param vehicleIDs
-     * @return
+     * @return Map of MaintenanceReportItems keyed off vehicleID, but only Engine Hours and Odometer values have been populated
      */
     Map<Integer, MaintenanceReportItem> findEngineHours(List<Integer> vehicleIDs);
 

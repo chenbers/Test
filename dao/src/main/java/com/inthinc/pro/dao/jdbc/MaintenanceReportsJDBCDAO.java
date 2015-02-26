@@ -5,8 +5,10 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.AbstractMap;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -92,7 +94,7 @@ public class MaintenanceReportsJDBCDAO extends SimpleJdbcDaoSupport implements M
                     " left outer join vehicle v on (cnv.vehicleID = v.vehicleID) " +
                     " join groups g on (v.groupID = g.groupID) " +
                     " where cnv.time between :startDate and :endDate " +
-                    "   and cnv.type in (238, 20 , 66, 1, 209, 202)  " + //maintenance note types
+                    "   and cnv.type = 238  " + //maintenance note types
                     "   and avs.settingID in (190, 191, 192, 193, 194, 195, 196, 197) " + //maintenance settings
                     "   and cnv.attribs is not null " +
                     "   and (attribs like '%;81=%' or attribs like '%;171=%' or attribs like '%;172=%' or attribs like '%;173=%' or attribs like '%;174=%' or attribs like '%;240=%'  or attribs like '%;218=%' ) " +
@@ -172,40 +174,17 @@ public class MaintenanceReportsJDBCDAO extends SimpleJdbcDaoSupport implements M
             }
         }, params);
         Map<Long, MaintenanceReportItem> reportItemMapByNoteID = new HashMap<Long, MaintenanceReportItem>();
-        for(MaintenanceReportItem item: queryResults) { //TODO: note that this merge might NOT be correct???? we DO want to see one line PER EVENT??? I believe
-//            if(reportItemMap.containsKey(item.getVehicleID())) {
-//                if(item.getThresholdOdo() != null) {
-//                    reportItemMap.get(item.getVehicleID()).setThresholdOdo(item.getThresholdOdo());
-//                }
-//                if(item.getThresholdHours() != null) {
-//                    reportItemMap.get(item.getVehicleID()).setThresholdHours(item.getThresholdHours());
-//                }
-//                if(item.getThresholdBase() != null) {
-//                    reportItemMap.get(item.getVehicleID()).setThresholdBase(item.getThresholdBase());
-//                }
-//                if(item.getThresholdVoltage() != null) {
-//                    reportItemMap.get(item.getVehicleID()).setThresholdVoltage(item.getThresholdVoltage());
-//                }
-//                if(item.getThresholdDpfFlowRate() != null) {
-//                    reportItemMap.get(item.getVehicleID()).setThresholdDpfFlowRate(item.getThresholdDpfFlowRate());
-//                }
-//                if(item.getThresholdEngineTemp() != null) {
-//                    reportItemMap.get(item.getVehicleID()).setThresholdEngineTemp(item.getThresholdEngineTemp());
-//                }
-//                if(item.getThresholdOilPressure() != null) {
-//                    reportItemMap.get(item.getVehicleID()).setThresholdOilPressure(item.getThresholdOilPressure());   
-//                }
-//                if(item.getThresholdTransmissionTemp() != null) {
-//                    reportItemMap.get(item.getVehicleID()).setThresholdTransmissionTemp(item.getThresholdTransmissionTemp());
-//                }
-//            }else {
-                reportItemMapByNoteID.put(item.getNoteID(), item);
-            //}
+        Set<Integer> vehicleIDs = new HashSet<Integer>();
+        for(MaintenanceReportItem item: queryResults) { 
+            reportItemMapByNoteID.put(item.getNoteID(), item);
+            vehicleIDs.add(item.getVehicleID());
         }
-        List<MaintenanceReportItem> odoHoursItems = findVehiclesWithThreshold(groupIDs);
-        Map<Integer, MaintenanceReportItem> odoHoursMapByVehicleID = new HashMap<Integer, MaintenanceReportItem>();
-        for(MaintenanceReportItem item : odoHoursItems) {
-            odoHoursMapByVehicleID.put(item.getVehicleID(), item);
+        //List<MaintenanceReportItem> odoHoursItems = findVehiclesWithThreshold(groupIDs);
+        Map<Integer, MaintenanceReportItem> odoHoursMapByVehicleID;
+        if (vehicleIDs != null && !vehicleIDs.isEmpty()) {
+            odoHoursMapByVehicleID = findEngineHours(vehicleIDs);
+        } else {
+            odoHoursMapByVehicleID = Collections.emptyMap();
         }
         
         List<MaintenanceReportItem> resultsItems = new ArrayList<MaintenanceReportItem>();
@@ -254,7 +233,12 @@ public class MaintenanceReportsJDBCDAO extends SimpleJdbcDaoSupport implements M
         }
         return resultsMap;
     }
-    
+    @Override
+    public Map<Integer, MaintenanceReportItem> findEngineHours(Set<Integer> vehicleIDs){
+        List<Integer> vehicleIDList = new ArrayList<Integer>();
+        vehicleIDList.addAll(vehicleIDs);
+        return findEngineHours(vehicleIDList);
+    }
     @Override
     public Map<Integer, MaintenanceReportItem> findEngineHours(List<Integer> vehicleIDs){
         Map<String, Object> params = new HashMap<String, Object>();
