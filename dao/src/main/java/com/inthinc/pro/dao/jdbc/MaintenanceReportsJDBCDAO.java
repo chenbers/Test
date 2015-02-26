@@ -176,7 +176,34 @@ public class MaintenanceReportsJDBCDAO extends SimpleJdbcDaoSupport implements M
         Map<Long, MaintenanceReportItem> reportItemMapByNoteID = new HashMap<Long, MaintenanceReportItem>();
         Set<Integer> vehicleIDs = new HashSet<Integer>();
         for(MaintenanceReportItem item: queryResults) { 
-            reportItemMapByNoteID.put(item.getNoteID(), item);
+            MaintenanceReportItem oldSameNoteItem = reportItemMapByNoteID.put(item.getNoteID(), item);
+            if(oldSameNoteItem != null) {
+                if(isSignificant(oldSameNoteItem.getThresholdBase()) && !isSignificant(item.getThresholdBase())) {
+                    item.setThresholdBase(oldSameNoteItem.getThresholdBase());
+                }
+                if(isSignificant(oldSameNoteItem.getThresholdDpfFlowRate()) && !isSignificant(item.getThresholdDpfFlowRate())) {
+                    item.setThresholdDpfFlowRate(oldSameNoteItem.getThresholdDpfFlowRate());
+                }
+                if(isSignificant(oldSameNoteItem.getThresholdEngineTemp()) && !isSignificant(item.getThresholdEngineTemp())) {
+                    item.setThresholdEngineTemp(oldSameNoteItem.getThresholdEngineTemp());
+                }
+                if(isSignificant(oldSameNoteItem.getThresholdHours()) && !isSignificant(item.getThresholdHours())) {
+                    item.setThresholdHours(oldSameNoteItem.getThresholdHours());
+                }
+                if(isSignificant(oldSameNoteItem.getThresholdOdo()) && !isSignificant(item.getThresholdOdo())) {
+                    item.setThresholdOdo(oldSameNoteItem.getThresholdOdo());
+                }
+                if(isSignificant(oldSameNoteItem.getThresholdOilPressure()) && !isSignificant(item.getThresholdOilPressure())) {
+                    item.setThresholdOilPressure(oldSameNoteItem.getThresholdOilPressure());
+                }
+                if(isSignificant(oldSameNoteItem.getThresholdTransmissionTemp()) && !isSignificant(item.getThresholdTransmissionTemp())) {
+                    item.setThresholdTransmissionTemp(oldSameNoteItem.getThresholdTransmissionTemp());
+                }
+                if(isSignificant(oldSameNoteItem.getThresholdVoltage()) && !isSignificant(item.getThresholdVoltage())) {
+                    item.setThresholdVoltage(oldSameNoteItem.getThresholdVoltage());
+                }
+            }
+           
             vehicleIDs.add(item.getVehicleID());
         }
         //List<MaintenanceReportItem> odoHoursItems = findVehiclesWithThreshold(groupIDs);
@@ -203,6 +230,12 @@ public class MaintenanceReportsJDBCDAO extends SimpleJdbcDaoSupport implements M
             resultsItems.add(reportItemMapByNoteID.get(noteID));
         }
         return resultsItems;
+    }
+    private static boolean isSignificant(Object object) {
+        if(object == null) return false;
+        if(object instanceof String && ((String)object).length() == 0) return false;
+        if(object instanceof Integer &&((Integer)object) == 0) return false;
+        return true;
     }
     @Override
     public Integer findMilesDriven(Integer vehicleID) {
