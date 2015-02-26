@@ -758,24 +758,24 @@ $V{SUM_70}.intValue()+$V{SUM_30}.intValue()))]]></textFieldExpression>
 				<textElement textAlignment="Right"/>
 				<textFieldExpression><![CDATA[new Double(1)]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isStretchWithOverflow="true">
 				<reportElement x="3" y="84" width="779" height="16" uuid="04a76b4c-4a71-41c7-8ea5-883cdacf40f6"/>
 				<textElement>
-					<font size="12"/>
+					<font size="10"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$R{notice.line1}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isStretchWithOverflow="true">
 				<reportElement x="3" y="100" width="779" height="16" uuid="4911c9f2-5e17-4a7c-96d8-59d1eea8fcd9"/>
 				<textElement>
-					<font size="12"/>
+					<font size="10"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$R{notice.line2}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isStretchWithOverflow="true">
 				<reportElement x="3" y="116" width="779" height="16" uuid="11aa94e8-653a-481d-addf-71764efb4397"/>
 				<textElement>
-					<font size="12"/>
+					<font size="10"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$R{notice.line3}]]></textFieldExpression>
 			</textField>
