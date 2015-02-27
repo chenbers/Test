@@ -2,9 +2,9 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="thirtyMinuteBreaks" pageWidth="842" pageHeight="595" whenNoDataType="NoDataSection" columnWidth="782" leftMargin="30" rightMargin="30" topMargin="20" bottomMargin="20" resourceBundle="thirtyMinuteBreaksReport" uuid="c8c1a20c-5daf-4471-a1de-d2225961fe21">
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
-	<property name="ireport.zoom" value="1.9487171000000083"/>
-	<property name="ireport.x" value="594"/>
-	<property name="ireport.y" value="3"/>
+	<property name="ireport.zoom" value="1.4641000000000095"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
@@ -122,49 +122,49 @@
 				<textFieldExpression><![CDATA[$R{column.employeeID}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="100" y="1" width="100" height="35" uuid="c6695bc5-a225-4eb6-8437-412148ff3458"/>
+				<reportElement x="100" y="1" width="179" height="35" uuid="c6695bc5-a225-4eb6-8437-412148ff3458"/>
 				<textElement verticalAlignment="Bottom">
 					<font size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$R{column.driverName}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="400" y="1" width="62" height="35" uuid="5eb6b595-0aae-4fec-87bc-a3acddbf5f89"/>
+				<reportElement x="462" y="1" width="80" height="35" uuid="5eb6b595-0aae-4fec-87bc-a3acddbf5f89"/>
 				<textElement verticalAlignment="Bottom">
 					<font size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$R{column.breakCount}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="500" y="1" width="100" height="35" uuid="01cd62f4-3c4b-4129-a4f8-3c8556d99484"/>
+				<reportElement x="542" y="1" width="80" height="35" uuid="01cd62f4-3c4b-4129-a4f8-3c8556d99484"/>
 				<textElement verticalAlignment="Bottom">
 					<font size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$R{column.breakHours}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="300" y="1" width="83" height="35" uuid="482270f2-0877-412f-8621-3f86d0e976be"/>
+				<reportElement x="382" y="1" width="80" height="35" uuid="482270f2-0877-412f-8621-3f86d0e976be"/>
 				<textElement verticalAlignment="Bottom">
 					<font size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$R{column.offDutyHours}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="200" y="1" width="76" height="35" uuid="9f7e7141-b1c9-4698-92b4-acaf639f2005"/>
+				<reportElement x="302" y="1" width="80" height="35" uuid="9f7e7141-b1c9-4698-92b4-acaf639f2005"/>
 				<textElement verticalAlignment="Bottom">
 					<font size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$R{column.onDutyHours}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="600" y="1" width="100" height="35" uuid="16c6b829-d715-4572-915f-f23fae5e9e63"/>
+				<reportElement x="622" y="1" width="80" height="35" uuid="16c6b829-d715-4572-915f-f23fae5e9e63"/>
 				<textElement verticalAlignment="Bottom">
 					<font size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$R{column.totalOnDutyAndBreak}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="700" y="1" width="81" height="35" uuid="e5f53177-35f8-4b84-a353-704220c1563a"/>
+				<reportElement x="702" y="1" width="80" height="35" uuid="e5f53177-35f8-4b84-a353-704220c1563a"/>
 				<textElement verticalAlignment="Bottom">
 					<font size="12"/>
 				</textElement>
@@ -180,38 +180,38 @@
 				<textFieldExpression><![CDATA[$F{employeeID}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="100" y="0" width="100" height="20" uuid="32ef9353-3af6-4398-ae00-7659866e9da5"/>
+				<reportElement x="100" y="0" width="179" height="20" uuid="32ef9353-3af6-4398-ae00-7659866e9da5"/>
 				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{driverName}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="200" y="0" width="100" height="20" uuid="3a374cb9-1485-4e52-9fbc-05f9bbcbe677"/>
+				<reportElement x="302" y="0" width="80" height="20" uuid="3a374cb9-1485-4e52-9fbc-05f9bbcbe677"/>
 				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{onDutyDecimalHours}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="300" y="0" width="100" height="20" uuid="218b628b-46e7-4cc2-bbac-5163bc0ff911"/>
+				<reportElement x="382" y="0" width="80" height="20" uuid="218b628b-46e7-4cc2-bbac-5163bc0ff911"/>
 				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{offDutyDecimalHours}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="400" y="0" width="100" height="20" uuid="13f4915f-618f-43f7-8bcf-6ae257cc7fa5"/>
+				<reportElement x="462" y="0" width="80" height="20" uuid="13f4915f-618f-43f7-8bcf-6ae257cc7fa5"/>
 				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{breakCount}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="500" y="0" width="100" height="20" uuid="6736edd2-0130-4999-9380-5f0023f2ea8f"/>
+				<reportElement x="542" y="0" width="80" height="20" uuid="6736edd2-0130-4999-9380-5f0023f2ea8f"/>
 				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{breakDecimalHours}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="600" y="0" width="100" height="20" uuid="c15417dc-30e3-4f68-912a-0c925ffa2d8c"/>
+				<reportElement x="622" y="0" width="80" height="20" uuid="c15417dc-30e3-4f68-912a-0c925ffa2d8c"/>
 				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[($F{onDutyDecimalHours} != null ? $F{onDutyDecimalHours}.doubleValue() : 0d) +
 ($F{breakDecimalHours} != null ? $F{breakDecimalHours}.doubleValue() : 0d)]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="700" y="0" width="81" height="20" uuid="faec416a-87ec-470d-9338-73ba90496f56"/>
+				<reportElement x="702" y="0" width="80" height="20" uuid="faec416a-87ec-470d-9338-73ba90496f56"/>
 				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{sleeperBerthDecimalHours}]]></textFieldExpression>
 			</textField>
