@@ -150,7 +150,7 @@ public class MaintenanceReportsJDBCDAO extends SimpleJdbcDaoSupport implements M
                 item.setEventEngineTemp(rs.getDouble("engineTemp"));
                 item.setEventOilPressure(rs.getDouble("oilPressure"));
                 item.setEventTransmissionTemp(rs.getDouble("transmissionTemp"));
-                item.setEventVoltage(rs.getDouble("voltage"));
+                item.setEventVoltage(rs.getDouble("voltage")/100);
                 
                 item.setVehicleID(vehicleID);
                 StringBuffer ymmString = new StringBuffer();
