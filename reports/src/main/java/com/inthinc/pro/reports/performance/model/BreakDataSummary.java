@@ -41,6 +41,7 @@ public class BreakDataSummary implements Comparable<BreakDataSummary> {
             addOffDutyMinutes(day.getOffDutyMinutes());
             addBreakCount(day.getNumberOfBreaks());
             addBreakMinutes(day.getBreakMinutes());
+            addSleeperBerthMinutes(day.getTwoHourSleeperBerthBreakMinutes());
         }
     }
     
@@ -96,7 +97,8 @@ public class BreakDataSummary implements Comparable<BreakDataSummary> {
     }
 
     private void addSleeperBerthMinutes(Integer newMinutes) {
-        this.sleeperBerthMinutes += newMinutes;
+        if (newMinutes != null)
+            this.sleeperBerthMinutes += newMinutes;
     }
     
     public DateTime getStartDate() {
