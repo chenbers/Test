@@ -18,6 +18,7 @@ import com.inthinc.pro.reports.ReportCriteria;
 import com.inthinc.pro.reports.ReportType;
 import com.inthinc.pro.reports.performance.model.BreakDataSummary;
 import com.inthinc.pro.reports.util.DateTimeUtil;
+import org.apache.log4j.Logger;
 import org.joda.time.DateTimeZone;
 import org.joda.time.Interval;
 import org.joda.time.format.DateTimeFormat;
@@ -32,6 +33,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 public class TwoHourBreaksReportCriteria extends GroupListReportCriteria {
+    private static final Logger logger = Logger.getLogger(TwoHourBreaksReportCriteria.class);
 
     protected DateTimeFormatter dateTimeFormatter;
 
@@ -78,13 +80,17 @@ public class TwoHourBreaksReportCriteria extends GroupListReportCriteria {
         List<BreakDataSummary> dataList = new ArrayList<BreakDataSummary>();
         
         for (Entry<Driver, List<HOSRec>> entry : driverHOSRecMap.entrySet()) {
-            Driver driver = entry.getKey();
-            List<HOSRec> hosRec = entry.getValue();
-            HOSRules ruleSet = RuleSetFactory.getRulesForRuleSetType(driver.getDot());
-            DateTimeZone timeZone = DateTimeZone.forTimeZone(driver.getPerson().getTimeZone());
-            List<DayData> dayData = ruleSet.getDayData(hosRec, interval, timeZone, 1, 120);
-            BreakDataSummary breakData = compileBreakData(interval, accountGroupHierarchy, driver, dayData);
-            dataList.add(breakData);
+            try {
+                Driver driver = entry.getKey();
+                List<HOSRec> hosRec = entry.getValue();
+                HOSRules ruleSet = RuleSetFactory.getRulesForRuleSetType(driver.getDot());
+                DateTimeZone timeZone = DateTimeZone.forTimeZone(driver.getPerson().getTimeZone());
+                List<DayData> dayData = ruleSet.getDayData(hosRec, interval, timeZone, 1, 120);
+                BreakDataSummary breakData = compileBreakData(interval, accountGroupHierarchy, driver, dayData);
+                dataList.add(breakData);
+            }catch(IllegalArgumentException iae){
+                logger.error(iae);
+            }
         }
         
         Collections.sort(dataList);

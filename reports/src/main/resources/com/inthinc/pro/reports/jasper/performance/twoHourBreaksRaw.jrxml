@@ -2,8 +2,8 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="payrollDetailRaw" pageWidth="1350" pageHeight="595" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="1350" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" resourceBundle="i18n/payrollDetail" isIgnorePagination="true" uuid="0462c49a-5079-49ac-96ed-e7d9ec7a90f8">
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
-	<property name="ireport.zoom" value="1.2100000000000009"/>
-	<property name="ireport.x" value="359"/>
+	<property name="ireport.zoom" value="2.357947691000006"/>
+	<property name="ireport.x" value="2128"/>
 	<property name="ireport.y" value="0"/>
 	<property name="net.sf.jasperreports.export.xls.exclude.origin.keep.first.band.1" value="columnHeader"/>
 	<property name="net.sf.jasperreports.export.xls.wrap.text" value="false"/>
@@ -18,6 +18,7 @@
 	<field name="offDutyDecimalHours" class="java.lang.Double"/>
 	<field name="breakCount" class="java.lang.Integer"/>
 	<field name="breakDecimalHours" class="java.lang.Double"/>
+	<field name="sleeperBerthDecimalHours" class="java.lang.Double"/>
 	<group name="Group">
 		<groupExpression><![CDATA[$F{groupID}]]></groupExpression>
 	</group>
@@ -77,6 +78,20 @@
 					<font size="12" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$R{column.breakHours}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="false">
+				<reportElement key="textField-51" mode="Opaque" x="1144" y="2" width="100" height="29" backcolor="#FFFFFF" uuid="56d06b25-e607-46c1-a924-6edcc5a507fc"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$R{column.totalOnDutyAndBreak}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="false">
+				<reportElement key="textField-51" mode="Opaque" x="1244" y="2" width="100" height="29" backcolor="#FFFFFF" uuid="7d80494f-e2ac-492b-b395-82c9c3509275"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$R{column.twoPlusSleeperBerth}]]></textFieldExpression>
 			</textField>
 		</band>
 	</columnHeader>
@@ -172,6 +187,33 @@
 					<font size="12" isBold="false"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{breakDecimalHours}!=null?Double.valueOf($F{breakDecimalHours}):new Double(0.0)]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.00" isBlankWhenNull="false">
+				<reportElement key="textField-40" mode="Opaque" x="1144" y="0" width="100" height="23" backcolor="#FFFFFF" uuid="f3077ab6-d711-445b-8384-3fcd8ae042cc"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[($F{onDutyDecimalHours} != null ? $F{onDutyDecimalHours}.doubleValue() : 0d) +
+($F{breakDecimalHours} != null ? $F{breakDecimalHours}.doubleValue() : 0d)]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.00" isBlankWhenNull="false">
+				<reportElement key="textField-40" mode="Opaque" x="1244" y="0" width="100" height="23" backcolor="#FFFFFF" uuid="fee82052-213c-4c36-860e-573e8e2ab6eb"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{sleeperBerthDecimalHours}!=null?Double.valueOf($F{sleeperBerthDecimalHours}):new Double(0.0)]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>

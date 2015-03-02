@@ -21,6 +21,7 @@ public class BreakDataSummary implements Comparable<BreakDataSummary> {
     private Integer offDutyMinutes;
     private Integer breakCount;
     private Integer breakMinutes;
+    private Integer sleeperBerthMinutes;
     
     private Integer roundingPlaces = 2;
 
@@ -33,11 +34,14 @@ public class BreakDataSummary implements Comparable<BreakDataSummary> {
         this.offDutyMinutes = 0;
         this.breakCount = 0;
         this.breakMinutes = 0;
+        this.sleeperBerthMinutes=0;
+
         for (DayData day : dayData) {
             addOnDutyMinutes(day.getOnDutyMinutes());
             addOffDutyMinutes(day.getOffDutyMinutes());
             addBreakCount(day.getNumberOfBreaks());
             addBreakMinutes(day.getBreakMinutes());
+            addSleeperBerthMinutes(day.getTwoHourSleeperBerthBreakMinutes());
         }
     }
     
@@ -58,6 +62,8 @@ public class BreakDataSummary implements Comparable<BreakDataSummary> {
         stringBuffer.append(this.getOnDutyDecimalHours());
         stringBuffer.append(", Off-Duty Hours: ");
         stringBuffer.append(this.getOffDutyDecimalHours());
+        stringBuffer.append(", Sleeper berth > 2 Hours: ");
+        stringBuffer.append(this.getSleeperBerthDecimalHours());
         stringBuffer.append(", Number of Breaks: ");
         stringBuffer.append(this.getBreakCount());
         stringBuffer.append(", Break Time: ");
@@ -88,6 +94,11 @@ public class BreakDataSummary implements Comparable<BreakDataSummary> {
     
     private void addBreakMinutes(Integer newMinutes) {
         this.breakMinutes += newMinutes;
+    }
+
+    private void addSleeperBerthMinutes(Integer newMinutes) {
+        if (newMinutes != null)
+            this.sleeperBerthMinutes += newMinutes;
     }
     
     public DateTime getStartDate() {
@@ -160,6 +171,12 @@ public class BreakDataSummary implements Comparable<BreakDataSummary> {
         return hours;
     }
 
+    public Double getSleeperBerthDecimalHours() {
+        Double hours = (double) getSleeperBerthMinutes() / 60;
+        hours = round(hours, 2);
+        return hours;
+    }
+
     public void setOnDutyMinutes(Integer onDutyMinutes) {
         this.onDutyMinutes = onDutyMinutes;
     }
@@ -189,7 +206,15 @@ public class BreakDataSummary implements Comparable<BreakDataSummary> {
     public void setBreakMinutes(Integer breakMinutes) {
         this.breakMinutes = breakMinutes;
     }
-    
+
+    public Integer getSleeperBerthMinutes() {
+        return sleeperBerthMinutes;
+    }
+
+    public void setSleeperBerthMinutes(Integer sleeperBerthMinutes) {
+        this.sleeperBerthMinutes = sleeperBerthMinutes;
+    }
+
     private static double round(double value, int places) {
         if (places < 0) throw new IllegalArgumentException();
         BigDecimal bd = new BigDecimal(value);
