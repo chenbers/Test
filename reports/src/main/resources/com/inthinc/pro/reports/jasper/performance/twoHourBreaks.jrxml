@@ -204,7 +204,7 @@
 				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{breakDecimalHours}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField pattern="###0.00">
 				<reportElement x="622" y="0" width="80" height="20" uuid="c15417dc-30e3-4f68-912a-0c925ffa2d8c"/>
 				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[($F{onDutyDecimalHours} != null ? $F{onDutyDecimalHours}.doubleValue() : 0d) +
