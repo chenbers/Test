@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="hosViolations" pageWidth="842" pageHeight="595" orientation="Landscape" whenNoDataType="NoDataSection" columnWidth="782" leftMargin="30" rightMargin="30" topMargin="20" bottomMargin="20" resourceBundle="i18n/hosViolations" uuid="de056cfc-c88a-4a98-b1fc-790894c6f49d">
-	<property name="ireport.zoom" value="1.1000000000000187"/>
+	<property name="ireport.zoom" value="2.8531167061100544"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="490"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
@@ -497,7 +497,7 @@ $F{onDutyHours70}.intValue()+$F{thirtyMinuteBreak}.intValue()
 		</band>
 	</pageFooter>
 	<lastPageFooter>
-		<band height="143" splitType="Stretch">
+		<band height="161" splitType="Stretch">
 			<rectangle radius="0">
 				<reportElement key="rectangle-3" style="FooterRect" stretchType="RelativeToBandHeight" mode="Opaque" x="0" y="0" width="782" height="53" forecolor="#000000" backcolor="#CCCCCC" uuid="e7bd6f32-0109-4100-8e4c-4b74a9441611"/>
 				<graphicElement>
@@ -759,21 +759,21 @@ $V{SUM_70}.intValue()+$V{SUM_30}.intValue()))]]></textFieldExpression>
 				<textFieldExpression><![CDATA[new Double(1)]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
-				<reportElement x="3" y="84" width="779" height="16" uuid="04a76b4c-4a71-41c7-8ea5-883cdacf40f6"/>
+				<reportElement x="3" y="100" width="779" height="16" uuid="04a76b4c-4a71-41c7-8ea5-883cdacf40f6"/>
 				<textElement>
 					<font size="10"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$R{notice.line1}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
-				<reportElement x="3" y="100" width="779" height="16" uuid="4911c9f2-5e17-4a7c-96d8-59d1eea8fcd9"/>
+				<reportElement x="3" y="118" width="779" height="16" uuid="4911c9f2-5e17-4a7c-96d8-59d1eea8fcd9"/>
 				<textElement>
 					<font size="10"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$R{notice.line2}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
-				<reportElement x="3" y="116" width="779" height="16" uuid="11aa94e8-653a-481d-addf-71764efb4397"/>
+				<reportElement x="3" y="136" width="779" height="16" uuid="11aa94e8-653a-481d-addf-71764efb4397"/>
 				<textElement>
 					<font size="10"/>
 				</textElement>
