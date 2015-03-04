@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="hosViolations" pageWidth="842" pageHeight="595" orientation="Landscape" whenNoDataType="NoDataSection" columnWidth="782" leftMargin="30" rightMargin="30" topMargin="20" bottomMargin="20" resourceBundle="i18n/hosViolations" uuid="de056cfc-c88a-4a98-b1fc-790894c6f49d">
-	<property name="ireport.zoom" value="2.8531167061100544"/>
+	<property name="ireport.zoom" value="1.771561000000036"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="490"/>
+	<property name="ireport.y" value="75"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
