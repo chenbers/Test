@@ -595,7 +595,6 @@ public class HOSJDBCDAO extends NamedParameterJdbcDaoSupport implements HOSDAO {
             hosRecord.setOrigin(HOSOrigin.DEVICE);
         }
 
-        hosRecord.setNoteID(0l);
         populateTrailerService(hosRecord);
         populateDriver(hosRecord);
         populateVehicle(hosRecord);
