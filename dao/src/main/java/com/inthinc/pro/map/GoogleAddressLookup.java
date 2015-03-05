@@ -4,6 +4,8 @@ import java.math.BigDecimal;
 import java.security.InvalidKeyException;
 import java.text.DecimalFormat;
 
+import org.apache.log4j.Logger;
+
 import com.google.code.geocoder.Geocoder;
 import com.google.code.geocoder.GeocoderRequestBuilder;
 import com.google.code.geocoder.model.GeocodeResponse;
@@ -20,7 +22,7 @@ import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.model.NoAddressFoundException;
 
 public class GoogleAddressLookup extends AddressLookup {
-    
+    public static Logger logger = Logger.getLogger(GoogleAddressLookup.class);
     private static String CLIENT_ID = "gme-inthinc";
     private static String CLIENT_KEY ="75DvrHN4--GCuiYpLF3JifZGIx4=";
 	
@@ -103,6 +105,7 @@ public class GoogleAddressLookup extends AddressLookup {
             if (!gotPlacemarkInfo && !localityProvided){
                 // display no city provided - lat x long y
                 DecimalFormat df = new DecimalFormat("#.#####");
+                logger.warn("no city provided - lat, long: "+df.format(latLng.getLat())+", "+df.format(latLng.getLng()));
                 placemark.setLocalityPlaceholder("no city provided - lat, long: "+df.format(latLng.getLat())+", "+df.format(latLng.getLng()));
                 gotPlacemarkInfo = true;
             }
