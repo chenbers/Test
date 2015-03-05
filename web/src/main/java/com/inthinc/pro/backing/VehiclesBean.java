@@ -817,6 +817,20 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
             wirelineKillMotor = new WirelineKillMotorCommand(getDevice(), getFwdCmdAddress(), bean.getFwdCmdSpoolWS());
         }
 
+        /**
+         * Get the sum between odometer and max(agg.vehicleEndingOdometer) from agg
+         *
+         * @return sum or null if both are null
+         */
+        public Integer getOdometerAndMaxVehicleEndingOdometer() {
+            Integer odometer = getOdometer();
+            Integer maxOdometer = getMaxVehicleEndingOdometer();
+            if (odometer == null && maxOdometer == null)
+                return null;
+
+            return (odometer != null ? odometer : 0) + (maxOdometer != null ? maxOdometer : 0);
+        }
+
         public String getProduct() {
             return editableVehicleSettings.getProductDisplayName();
         }

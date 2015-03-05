@@ -73,7 +73,8 @@ public class AdminVehicleJDBCDAO extends SimpleJdbcDaoSupport{
         PAGED_VEHICLE_COLUMNS_STRING = 
                 "v.vehicleID, v.groupID, v.status, v.name, v.make, v.model, v.year, v.color, v.vtype, v.vin, v.weight, v.license, v.stateID, v.odometer, v.ifta, v.absOdometer, v.glcode, "+
                 "d.deviceID, d.acctID, d.status, d.name, d.imei, d.sim, d.serialNum, d.phone, d.activated, d.baseID, d.productVer, d.firmVer, d.witnessVer, d.emuMd5, d.mcmid, d.altImei," +
-                "vdd.deviceID, vdd.driverID, CONCAT(p.first, ' ', p.last), g.name, p.first, p.middle, p.last, p.suffix";
+                "vdd.deviceID, vdd.driverID, CONCAT(p.first, ' ', p.last), g.name, p.first, p.middle, p.last, p.suffix, " +
+                "(select max(agg.vehicleEndingOdometer) from agg where vehicleID = v.vehicleID) maxVehicleEndingOdometer ";
                 
     };
     private static final String VEHICLE_PLUS_LASTLOC_SELECT_BY_ACCOUNT = //
@@ -241,12 +242,16 @@ public class AdminVehicleJDBCDAO extends SimpleJdbcDaoSupport{
 
             Long absOdometer = rs.getObject("v.absOdometer") == null ? null : (rs.getLong("v.absOdometer"));
             Long odometer = rs.getObject("v.odometer") == null ? null : rs.getLong("v.odometer");
+            Long maxVehicleEndingOdometer = rs.getObject("maxVehicleEndingOdometer") == null ? null : rs.getLong("maxVehicleEndingOdometer");
             if (absOdometer != null) {
                 vehicle.setOdometer(Long.valueOf(absOdometer/100l).intValue());
             }
             else if (odometer != null) {
                 //Integer milesDriven = getMilesDriven(vehicle.getVehicleID());
                 vehicle.setOdometer(Long.valueOf((odometer)/100).intValue());
+            }
+            if (maxVehicleEndingOdometer != null){
+                vehicle.setMaxVehicleEndingOdometer(Long.valueOf(maxVehicleEndingOdometer/100l).intValue());
             }
             vehicle.setState(States.getStateById(rs.getInt("v.stateID")));
             vehicle.setStatus(Status.valueOf(rs.getInt("v.status")));
