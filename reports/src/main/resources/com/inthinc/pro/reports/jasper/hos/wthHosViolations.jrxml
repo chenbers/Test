@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="hosViolations" pageWidth="842" pageHeight="595" orientation="Landscape" whenNoDataType="NoDataSection" columnWidth="782" leftMargin="30" rightMargin="30" topMargin="20" bottomMargin="20" resourceBundle="i18n/hosViolations" uuid="de056cfc-c88a-4a98-b1fc-790894c6f49d">
-	<property name="ireport.zoom" value="1.771561000000036"/>
-	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="231"/>
+	<property name="ireport.zoom" value="1.610510000000033"/>
+	<property name="ireport.x" value="217"/>
+	<property name="ireport.y" value="0"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
@@ -226,7 +226,7 @@ $F{onDutyHours70}.intValue()+$F{thirtyMinuteBreak}.intValue()
 		</band>
 	</pageHeader>
 	<columnHeader>
-		<band height="58" splitType="Stretch">
+		<band height="67" splitType="Stretch">
 			<rectangle>
 				<reportElement key="rectangle-2" x="0" y="0" width="782" height="23" backcolor="#000000" uuid="58d5939a-2e16-4aec-abe1-e8aac6126a99"/>
 				<graphicElement>
@@ -234,13 +234,13 @@ $F{onDutyHours70}.intValue()+$F{thirtyMinuteBreak}.intValue()
 				</graphicElement>
 			</rectangle>
 			<rectangle>
-				<reportElement key="rectangle-1" x="0" y="22" width="782" height="35" forecolor="#000000" backcolor="#CCCCCC" uuid="7e98d404-914a-4462-a2f0-dc81942a0f86"/>
+				<reportElement key="rectangle-1" x="0" y="22" width="782" height="45" forecolor="#000000" backcolor="#CCCCCC" uuid="7e98d404-914a-4462-a2f0-dc81942a0f86"/>
 				<graphicElement>
 					<pen lineWidth="0.0" lineStyle="Solid"/>
 				</graphicElement>
 			</rectangle>
 			<textField isBlankWhenNull="false">
-				<reportElement key="textField-67" style="PageHeader" mode="Transparent" x="530" y="25" width="60" height="32" backcolor="#CCCCCC" uuid="e19b7ab9-3818-4651-ab0d-7137e345f98e">
+				<reportElement key="textField-67" style="PageHeader" mode="Transparent" x="530" y="25" width="60" height="42" backcolor="#CCCCCC" uuid="e19b7ab9-3818-4651-ab0d-7137e345f98e">
 					<printWhenExpression><![CDATA[Boolean.valueOf(!$P{USE_METRIC}.booleanValue())]]></printWhenExpression>
 				</reportElement>
 				<box>
@@ -255,7 +255,7 @@ $F{onDutyHours70}.intValue()+$F{thirtyMinuteBreak}.intValue()
 				<textFieldExpression><![CDATA[$R{column.3.english}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="false">
-				<reportElement key="textField-69" style="PageHeader" mode="Transparent" x="590" y="25" width="63" height="32" backcolor="#CCCCCC" uuid="97dd8661-7bce-475c-8006-98cc31f7bbdb">
+				<reportElement key="textField-69" style="PageHeader" mode="Transparent" x="590" y="25" width="63" height="42" backcolor="#CCCCCC" uuid="97dd8661-7bce-475c-8006-98cc31f7bbdb">
 					<printWhenExpression><![CDATA[$P{USE_METRIC}]]></printWhenExpression>
 				</reportElement>
 				<box>
@@ -270,7 +270,7 @@ $F{onDutyHours70}.intValue()+$F{thirtyMinuteBreak}.intValue()
 				<textFieldExpression><![CDATA[$R{column.4.metric}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="false">
-				<reportElement key="textField-70" style="PageHeader" mode="Transparent" x="590" y="25" width="63" height="32" backcolor="#CCCCCC" uuid="1b6789ef-1e09-4c70-9184-908e9ef9abcb">
+				<reportElement key="textField-70" style="PageHeader" mode="Transparent" x="590" y="25" width="63" height="42" backcolor="#CCCCCC" uuid="1b6789ef-1e09-4c70-9184-908e9ef9abcb">
 					<printWhenExpression><![CDATA[Boolean.valueOf(!$P{USE_METRIC}.booleanValue())]]></printWhenExpression>
 				</reportElement>
 				<box>
@@ -285,7 +285,7 @@ $F{onDutyHours70}.intValue()+$F{thirtyMinuteBreak}.intValue()
 				<textFieldExpression><![CDATA[$R{column.4.english}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="false">
-				<reportElement key="textField-73" style="PageHeader" mode="Transparent" x="653" y="25" width="63" height="32" backcolor="#CCCCCC" uuid="9d24d052-e358-4e2b-995c-52d572d7ab4f">
+				<reportElement key="textField-73" style="PageHeader" mode="Transparent" x="653" y="25" width="63" height="42" backcolor="#CCCCCC" uuid="9d24d052-e358-4e2b-995c-52d572d7ab4f">
 					<printWhenExpression><![CDATA[$P{USE_METRIC}]]></printWhenExpression>
 				</reportElement>
 				<box>
@@ -300,7 +300,7 @@ $F{onDutyHours70}.intValue()+$F{thirtyMinuteBreak}.intValue()
 				<textFieldExpression><![CDATA[$R{column.6.metric}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="false">
-				<reportElement key="textField-74" style="PageHeader" mode="Transparent" x="653" y="25" width="63" height="32" backcolor="#CCCCCC" uuid="7b3bf387-d697-418c-9e92-3e3498c1c08e">
+				<reportElement key="textField-74" style="PageHeader" mode="Transparent" x="653" y="25" width="63" height="42" backcolor="#CCCCCC" uuid="7b3bf387-d697-418c-9e92-3e3498c1c08e">
 					<printWhenExpression><![CDATA[Boolean.valueOf(!$P{USE_METRIC}.booleanValue())]]></printWhenExpression>
 				</reportElement>
 				<box>
@@ -315,7 +315,7 @@ $F{onDutyHours70}.intValue()+$F{thirtyMinuteBreak}.intValue()
 				<textFieldExpression><![CDATA[$R{column.6.english}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="false">
-				<reportElement key="textField-76" style="PageHeader" mode="Transparent" x="716" y="25" width="64" height="32" backcolor="#CCCCCC" uuid="86bbd619-8d83-463f-9a1d-cc6a96401bca"/>
+				<reportElement key="textField-76" style="PageHeader" mode="Transparent" x="716" y="25" width="64" height="42" backcolor="#CCCCCC" uuid="86bbd619-8d83-463f-9a1d-cc6a96401bca"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -328,7 +328,7 @@ $F{onDutyHours70}.intValue()+$F{thirtyMinuteBreak}.intValue()
 				<textFieldExpression><![CDATA[$R{column.7}]]></textFieldExpression>
 			</textField>
 			<textField pattern="" isBlankWhenNull="false">
-				<reportElement key="textField-77" style="PageHeader" positionType="FixRelativeToBottom" mode="Transparent" x="470" y="25" width="60" height="32" backcolor="#CCCCCC" uuid="2f3ff70c-ad5c-4588-81d2-7e5d933f431d"/>
+				<reportElement key="textField-77" style="PageHeader" positionType="FixRelativeToBottom" mode="Transparent" x="470" y="25" width="60" height="42" backcolor="#CCCCCC" uuid="2f3ff70c-ad5c-4588-81d2-7e5d933f431d"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -341,7 +341,7 @@ $F{onDutyHours70}.intValue()+$F{thirtyMinuteBreak}.intValue()
 				<textFieldExpression><![CDATA[$R{column.2}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="false">
-				<reportElement key="textField-78" style="ColumnHeader" mode="Transparent" x="120" y="25" width="70" height="32" backcolor="#CCCCCC" uuid="f7078a9a-4ff8-4fd6-984c-55967667f20e"/>
+				<reportElement key="textField-78" style="ColumnHeader" mode="Transparent" x="120" y="25" width="70" height="42" backcolor="#CCCCCC" uuid="f7078a9a-4ff8-4fd6-984c-55967667f20e"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -352,7 +352,7 @@ $F{onDutyHours70}.intValue()+$F{thirtyMinuteBreak}.intValue()
 				<textFieldExpression><![CDATA[$R{column.11hrs}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="false">
-				<reportElement key="textField-79" style="ColumnHeader" mode="Transparent" x="190" y="25" width="70" height="32" backcolor="#CCCCCC" uuid="209f72eb-953c-4e67-89cd-cde7578fc849"/>
+				<reportElement key="textField-79" style="ColumnHeader" mode="Transparent" x="190" y="25" width="70" height="42" backcolor="#CCCCCC" uuid="209f72eb-953c-4e67-89cd-cde7578fc849"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -363,7 +363,7 @@ $F{onDutyHours70}.intValue()+$F{thirtyMinuteBreak}.intValue()
 				<textFieldExpression><![CDATA[$R{column.14hrs}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="false">
-				<reportElement key="textField-80" style="ColumnHeader" mode="Transparent" x="260" y="25" width="70" height="32" backcolor="#CCCCCC" uuid="d1f5d90c-d652-4723-b740-06b99dd43ee7"/>
+				<reportElement key="textField-80" style="ColumnHeader" mode="Transparent" x="260" y="25" width="70" height="42" backcolor="#CCCCCC" uuid="d1f5d90c-d652-4723-b740-06b99dd43ee7"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -374,7 +374,7 @@ $F{onDutyHours70}.intValue()+$F{thirtyMinuteBreak}.intValue()
 				<textFieldExpression><![CDATA[$R{column.70hrs}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="false">
-				<reportElement key="textField-81" style="ColumnHeader" mode="Transparent" x="330" y="25" width="70" height="32" backcolor="#CCCCCC" uuid="45824a00-4303-41ad-9aeb-03331e7e302a"/>
+				<reportElement key="textField-81" style="ColumnHeader" mode="Transparent" x="330" y="25" width="70" height="42" backcolor="#CCCCCC" uuid="45824a00-4303-41ad-9aeb-03331e7e302a"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -396,7 +396,7 @@ $F{onDutyHours70}.intValue()+$F{thirtyMinuteBreak}.intValue()
 				<textFieldExpression><![CDATA[$P{REPORT_START_DATE} + " to " + $P{REPORT_END_DATE}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="false">
-				<reportElement key="textField-81" style="ColumnHeader" mode="Transparent" x="400" y="25" width="70" height="32" backcolor="#CCCCCC" uuid="5ce7278a-f353-4bdc-a698-40ad71e57452"/>
+				<reportElement key="textField-81" style="ColumnHeader" mode="Transparent" x="400" y="25" width="70" height="42" backcolor="#CCCCCC" uuid="5ce7278a-f353-4bdc-a698-40ad71e57452"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -407,7 +407,7 @@ $F{onDutyHours70}.intValue()+$F{thirtyMinuteBreak}.intValue()
 				<textFieldExpression><![CDATA[$R{column.all}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="false">
-				<reportElement key="textField-78" style="ColumnHeader" mode="Transparent" x="1" y="25" width="119" height="32" backcolor="#CCCCCC" uuid="3761431b-b2aa-42ff-a9e5-b36bf3983368"/>
+				<reportElement key="textField-78" style="ColumnHeader" mode="Transparent" x="1" y="25" width="119" height="42" backcolor="#CCCCCC" uuid="3761431b-b2aa-42ff-a9e5-b36bf3983368"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -418,7 +418,7 @@ $F{onDutyHours70}.intValue()+$F{thirtyMinuteBreak}.intValue()
 				<textFieldExpression><![CDATA[$R{group.title}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="false">
-				<reportElement key="textField-68" style="PageHeader" mode="Transparent" x="530" y="25" width="60" height="32" backcolor="#CCCCCC" uuid="20260d87-7a33-4706-8490-499dcb5dff3c">
+				<reportElement key="textField-68" style="PageHeader" mode="Transparent" x="530" y="25" width="60" height="42" backcolor="#CCCCCC" uuid="20260d87-7a33-4706-8490-499dcb5dff3c">
 					<printWhenExpression><![CDATA[$P{USE_METRIC}]]></printWhenExpression>
 				</reportElement>
 				<box>
