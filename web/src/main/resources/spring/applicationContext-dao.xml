@@ -81,7 +81,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
     <bean id="driverDAO" class="com.inthinc.pro.dao.hessian.DriverHessianDAO"></bean>
     <bean id="driverJDBCDAO" class="com.inthinc.pro.dao.jdbc.DriverJDBCDAO" />
     <bean id="redFlagDAO" class="com.inthinc.pro.dao.hessian.RedFlagHessianDAO"></bean>
-    <bean id="redFlagAlertDAO" class="com.inthinc.pro.dao.hessian.RedFlagAlertHessianDAO"></bean>
+    <bean id="redFlagAlertDAO" class="com.inthinc.pro.dao.jdbc.RedFlagAlertJDBCDAO"></bean>
     <bean id="tablePreferenceDAO" class="com.inthinc.pro.dao.hessian.TablePreferenceHessianDAO"></bean>
     <bean id="zoneDAO" class="com.inthinc.pro.dao.hessian.ZoneHessianDAO"></bean>
     <!-- <bean id="zoneAlertDAO" class="com.inthinc.pro.dao.hessian.ZoneAlertHessianDAO"></bean> -->
@@ -94,7 +94,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
     <bean id="textMsgAlertDAO" class="com.inthinc.pro.dao.hessian.TextMsgAlertHessianDAO" />
     <bean id="configuratorDAO" class="com.inthinc.pro.dao.hessian.ConfiguratorHessianDAO" />
     <bean id="configuratorJDBCDAO" class="com.inthinc.pro.dao.jdbc.ConfiguratorJDBCDAO" />
-    <bean id="redFlagAlertsDAO" class="com.inthinc.pro.dao.hessian.RedFlagAlertHessianDAO"></bean>
+    <bean id="redFlagAlertsDAO" class="com.inthinc.pro.dao.jdbc.RedFlagAlertJDBCDAO"></bean>
     <bean id="phoneControlDAO" class="com.inthinc.pro.dao.hessian.PhoneControlHessianDAO"></bean>
     <bean id="reportDAO" class="com.inthinc.pro.dao.jdbc.ReportJDBCDAO">
         <property name="dataSource" ref="dataSource" />

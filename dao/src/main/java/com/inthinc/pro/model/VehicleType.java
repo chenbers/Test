@@ -1,7 +1,11 @@
 package com.inthinc.pro.model;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.EnumSet;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Set;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -58,11 +62,43 @@ public enum VehicleType implements BaseEnum, FilterableEnum
 //        return sb.toString();
     }
 
+    public Long getBitMask(){
+        return 1l << code;
+    }
+
+    public static List<VehicleType> getVehicleTypes(Long vehicleTypeMask){
+        Set<VehicleType> vehicleTypes = EnumSet.noneOf(VehicleType.class);
+        if (vehicleTypeMask == null) return Collections.emptyList();
+        for(VehicleType vt : EnumSet.allOf(VehicleType.class)){
+           if (vehicleTypeMatch(vt.code, vehicleTypeMask)){
+               vehicleTypes.add(vt);
+           }
+        }
+        return new ArrayList<VehicleType>(vehicleTypes);
+    }
+
+    public static  Long convertTypes(List<VehicleType> vehicleTypes){
+        Long vehicleTypeMask = new Long(0);
+        if(vehicleTypes != null){
+            for(VehicleType vt : vehicleTypes){
+
+                long bitValue = vt.getBitMask();
+                vehicleTypeMask = vehicleTypeMask.longValue()  | bitValue;
+            }
+        }
+        return vehicleTypeMask;
+    }
+
+    private static boolean vehicleTypeMatch(int vtype, long vtypeMask) {
+        return ((vtypeMask & (1 << vtype)) != 0);
+    }
+
+
     @Override
     public Object getFilter() {
         return ""+code;
     }
-    
+
     @Override
     public Boolean includeNull() {
         return false;
