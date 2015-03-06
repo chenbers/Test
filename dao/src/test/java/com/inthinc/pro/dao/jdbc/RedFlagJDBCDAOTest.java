@@ -18,6 +18,7 @@ import it.com.inthinc.pro.dao.model.ITData;
 import it.config.ITDataSource;
 import it.config.IntegrationConfig;
 import org.apache.log4j.Logger;
+import org.joda.time.DateTime;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -39,6 +40,9 @@ public class RedFlagJDBCDAOTest extends BaseJDBCTest {
     private static Integer goodVehicleID;
     private static String goodGroupName;
     private static String badGroupName;
+
+    private static DateTime startDate = new DateTime().withYear(2014).withMonthOfYear(11).withDayOfMonth(1);
+    private static DateTime endDate = startDate.plusMonths(1);
 
     TestFilterParams[] redFlagFilterTestListFlag = {
             new TestFilterParams("level", 6, 0),
@@ -94,18 +98,17 @@ public class RedFlagJDBCDAOTest extends BaseJDBCTest {
         eventDAO.setSiloService(siloService);
         redFlagJDBCDAO.setEventDAO(eventDAO);
 
-        org.joda.time.DateTime today = new org.joda.time.DateTime();
 
         // no filters
         for (int teamIdx = ITData.GOOD; teamIdx <= ITData.BAD; teamIdx++) {
             GroupData team = itData.teamGroupData.get(teamIdx);
-            Integer redFlagCount = redFlagJDBCDAO.getRedFlagCount(goodGroupID, today.minusDays(1).toDate(), today.toDate(), 0, null);
+            Integer redFlagCount = redFlagJDBCDAO.getRedFlagCount(goodGroupID, startDate.toDate(), endDate.toDate(), 0, null);
             assertTrue(redFlagCount > 0);
             PageParams pageParams = new PageParams();
             pageParams.setStartRow(0);
             pageParams.setEndRow(redFlagCount - 1);
 
-            List<RedFlag> redFlagList = redFlagJDBCDAO.getRedFlagPage(goodGroupID, today.minusDays(1).toDate(), today.toDate(), 0, pageParams);
+            List<RedFlag> redFlagList = redFlagJDBCDAO.getRedFlagPage(goodGroupID, startDate.toDate(), endDate.toDate(), 0, pageParams);
             assertTrue(!redFlagList.isEmpty());
 
 
@@ -113,18 +116,18 @@ public class RedFlagJDBCDAOTest extends BaseJDBCTest {
         //filters
         //Since there is no actual datagen for this i only tested for filters that return empty list otherwise a datagen with more data is required i think
         GroupData team = itData.teamGroupData.get(ITData.GOOD);
-        Integer allDriverCount = redFlagJDBCDAO.getRedFlagCount(goodGroupID, today.minusDays(1).toDate(), today.toDate(), 0, null);
+        Integer allDriverCount = redFlagJDBCDAO.getRedFlagCount(goodGroupID, startDate.toDate(), endDate.toDate(), 0, null);
         for (TestFilterParams testFilterParams : redFlagFilterTestListFlag) {
             PageParams pageParams = new PageParams();
             pageParams.setStartRow(0);
             pageParams.setEndRow(allDriverCount - 1);
             List<TableFilterField> filterList = new ArrayList<TableFilterField>();
             filterList.add(new TableFilterField(testFilterParams.field, testFilterParams.value));
-            Integer redFlagCount = redFlagJDBCDAO.getRedFlagCount(goodGroupID, today.minusDays(1).toDate(), today.toDate(), 0, filterList);
+            Integer redFlagCount = redFlagJDBCDAO.getRedFlagCount(goodGroupID, startDate.toDate(), endDate.toDate(), 0, filterList);
 
             assertTrue(redFlagCount == 0);
             pageParams.setFilterList(filterList);
-            List<RedFlag> list = redFlagJDBCDAO.getRedFlagPage(goodGroupID, today.minusDays(1).toDate(), today.toDate(), 0, pageParams);
+            List<RedFlag> list = redFlagJDBCDAO.getRedFlagPage(goodGroupID, startDate.toDate(), endDate.toDate(), 0, pageParams);
             assertTrue(list.isEmpty());
         }
     }
