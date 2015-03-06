@@ -1,15 +1,11 @@
 package com.inthinc.pro.dao.jdbc;
 
-import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.dao.EventDAO;
 import com.inthinc.pro.dao.RedFlagDAO;
-import com.inthinc.pro.dao.VehicleDAO;
 import com.inthinc.pro.model.AlertSentStatus;
-import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.RedFlag;
 import com.inthinc.pro.model.RedFlagLevel;
 import com.inthinc.pro.model.Status;
-import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.model.configurator.ProductType;
 import com.inthinc.pro.model.event.Event;
 import com.inthinc.pro.model.event.NoteType;
@@ -17,8 +13,6 @@ import com.inthinc.pro.model.pagination.FilterOp;
 import com.inthinc.pro.model.pagination.PageParams;
 import com.inthinc.pro.model.pagination.SortOrder;
 import com.inthinc.pro.model.pagination.TableFilterField;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
 import org.springframework.jdbc.core.simple.ParameterizedRowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
@@ -85,19 +79,6 @@ public class RedFlagJDBCDAO extends SimpleJdbcDaoSupport implements RedFlagDAO {
             } catch (Exception e) {
                 logger.error(e);
             }
-//
-//            String strCreated = rs.getString("cnv.created");
-//            String strModified = rs.getString("cnv.modified");
-//            java.util.Date created = null;
-//            java.util.Date modified = null;
-//            try{
-//                created = dateFormat.parse(strCreated);
-//                modified = dateFormat.parse(strModified);
-//            } catch (Exception e){
-//                logger.error(e);
-//            }
-
-//            Event event=eventDAO.findByID(rs.getLong("cnv.noteID"));
 
             Event event = new Event();
             event.setNoteID(rs.getLong("cnv.noteID"));
@@ -142,12 +123,12 @@ public class RedFlagJDBCDAO extends SimpleJdbcDaoSupport implements RedFlagDAO {
         params.put("endDate", endDate);
 
         //it seems the old hessian is ignoring the includeForgiven verification too and only selects the ones that are not forgiven
-        if (includeForgiven == 1||includeForgiven==0) {
+        if (includeForgiven == 1 || includeForgiven == 0) {
             params.put("forgiven", 0);
         }
         /***FILTERING***/
         StringBuilder redFlagSelectCount = new StringBuilder(addFiltersToQuery(filterList, RED_FLAG_QUERY_COUNT, params, pagedColumnMapRedFlagCount));
-        if (includeForgiven == 1||includeForgiven==0) {
+        if (includeForgiven == 1 || includeForgiven == 0) {
             params.put("forgiven", 0);
             redFlagSelectCount.append(" and forgiven=:forgiven");
         }
@@ -167,13 +148,13 @@ public class RedFlagJDBCDAO extends SimpleJdbcDaoSupport implements RedFlagDAO {
         params.put("startDate", startDate);
         params.put("endDate", endDate);
         //it seems the old hessian is ignoring the includeForgiven verification too and only selects the ones that are not forgiven
-        if (includeForgiven == 1||includeForgiven==0) {
+        if (includeForgiven == 1 || includeForgiven == 0) {
             params.put("forgiven", 0);
         }
 
         /***FILTERING***/
         StringBuilder redFlagSelect = new StringBuilder(addFiltersToQuery(pageParams.getFilterList(), RED_FLAG_QUERY, params, pagedColumnMapRedFlag));
-        if (includeForgiven == 1||includeForgiven==0) {
+        if (includeForgiven == 1 || includeForgiven == 0) {
             params.put("forgiven", 0);
             redFlagSelect.append(" and forgiven=:forgiven");
         }
@@ -185,9 +166,6 @@ public class RedFlagJDBCDAO extends SimpleJdbcDaoSupport implements RedFlagDAO {
         /***PAGING***/
         if (pageParams.getStartRow() != null && pageParams.getEndRow() != null)
             redFlagSelect.append(" LIMIT " + pageParams.getStartRow() + ", " + ((pageParams.getEndRow() - pageParams.getStartRow()) + 1));
-
-//        StringBuilder redFlagSelect = new StringBuilder(addFiltersToQuery(pageParams.getFilterList(),RED_FLAG_QUERY,params,pagedColumnMapRedFlag));
-//        redFlagSelect.append(" order by cnv.time desc");
 
         List<RedFlag> redFlagList = getSimpleJdbcTemplate().query(redFlagSelect.toString(), redFlagParameterizedRowMapper, params);
 
