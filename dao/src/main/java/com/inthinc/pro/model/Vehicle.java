@@ -38,7 +38,7 @@ public class Vehicle extends BaseEntity
     private Integer           deviceID;
     
     private Integer           odometer;
-    private Integer           maxVehicleEndingOdometer;
+    private Integer           currentOdometer;
     
     private Boolean           ifta;
 
@@ -305,11 +305,11 @@ public class Vehicle extends BaseEntity
 		this.glcode = glcode;
 	}
 
-    public Integer getMaxVehicleEndingOdometer() {
-        return maxVehicleEndingOdometer;
+    public Integer getCurrentOdometer() {
+        return currentOdometer;
     }
 
-    public void setMaxVehicleEndingOdometer(Integer maxVehicleEndingOdometer) {
-        this.maxVehicleEndingOdometer = maxVehicleEndingOdometer;
+    public void setCurrentOdometer(Integer currentOdometer) {
+        this.currentOdometer = currentOdometer;
     }
 }

@@ -620,6 +620,9 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
                 assignDriver(vehicle);
                 drivers = null;
             }
+
+            // so it doesn't calculate the sum until the user left the post save view page, then it will show correctly
+            vehicle.setCurrentOdometer(vehicle.getOdometer());
             
             // added for pagination
             vehicleSettingsFactory.updateVehicleSettingManager(getVehicleSettingManagers(), vehicle);
@@ -815,20 +818,6 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
         public void initForwardCommandDefs() {
             wirelineDoorAlarm = new WirelineDoorAlarmCommand(getDevice(), getFwdCmdAddress(), bean.getFwdCmdSpoolWS());
             wirelineKillMotor = new WirelineKillMotorCommand(getDevice(), getFwdCmdAddress(), bean.getFwdCmdSpoolWS());
-        }
-
-        /**
-         * Get the sum between odometer and max(agg.vehicleEndingOdometer) from agg
-         *
-         * @return sum or null if both are null
-         */
-        public Integer getOdometerAndMaxVehicleEndingOdometer() {
-            Integer odometer = getOdometer();
-            Integer maxOdometer = getMaxVehicleEndingOdometer();
-            if (odometer == null && maxOdometer == null)
-                return null;
-
-            return (odometer != null ? odometer : 0) + (maxOdometer != null ? maxOdometer : 0);
         }
 
         public String getProduct() {

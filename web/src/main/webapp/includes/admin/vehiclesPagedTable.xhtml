@@ -122,8 +122,8 @@
     </rich:column>
     <rich:column id="odometer" rendered="#{vehiclesBean.tableColumns['odometer'].visible}">
       <f:facet name="header"><h:outputText value="#{messages.vehiclesHeader_odometerCurrent}" /></f:facet>
-      <h:outputFormat value="#{messages.label_two_parameters}" rendered="#{item.odometerAndMaxVehicleEndingOdometer ne null}">
-         <a4j:actionparam value="#{item.odometerAndMaxVehicleEndingOdometer}" converter="MilesToKilometersConverterInput"/>
+      <h:outputFormat value="#{messages.label_two_parameters}" rendered="#{item.currentOdometer ne null}">
+         <a4j:actionparam value="#{item.currentOdometer}" converter="MilesToKilometersConverterInput"/>
          <a4j:actionparam value="mi" converter="MeasurementTextConverter"/>
       </h:outputFormat>
     </rich:column>    

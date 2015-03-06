@@ -250,8 +250,19 @@ public class AdminVehicleJDBCDAO extends SimpleJdbcDaoSupport{
                 //Integer milesDriven = getMilesDriven(vehicle.getVehicleID());
                 vehicle.setOdometer(Long.valueOf((odometer)/100).intValue());
             }
+
+            // calculate current odometer
+            long currentOdometer = 0l;
+            if (odometer != null)
+                currentOdometer += odometer;
+
+            if (maxVehicleEndingOdometer != null)
+                currentOdometer += maxVehicleEndingOdometer;
+
+            currentOdometer = currentOdometer / 100;
+
             if (maxVehicleEndingOdometer != null){
-                vehicle.setMaxVehicleEndingOdometer(Long.valueOf(maxVehicleEndingOdometer/100l).intValue());
+                vehicle.setCurrentOdometer(Long.valueOf(currentOdometer).intValue());
             }
             vehicle.setState(States.getStateById(rs.getInt("v.stateID")));
             vehicle.setStatus(Status.valueOf(rs.getInt("v.status")));
