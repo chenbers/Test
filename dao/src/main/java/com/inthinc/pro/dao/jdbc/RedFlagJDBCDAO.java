@@ -36,7 +36,7 @@ public class RedFlagJDBCDAO extends SimpleJdbcDaoSupport implements RedFlagDAO {
             " cnv.distance, cnv.deltaX, cnv.deltaY, cnv.deltaZ, cnv.forgiven, cnv.flagged, cnv.level, cnv.sent, cnv.idleLo, cnv.idleHi, cnv.zoneID, cnv.textId," +
             " cnv.textMsg, cnv.hazmatFlag, cnv.serviceId, cnv.trailerId, cnv.trailerIdOld, cnv.inspectionType, cnv.vehicleSafeToOperate, cnv.duration, cnv.groupID," +
             " cnv.driverGroupID, cnv.vehicleGroupID, cnv.personID, cnv.driverName, cnv.groupName, cnv.vehicleName, cnv.tzID, cnv.tzName  FROM cachedNoteView cnv " +
-            " WHERE cnv.groupId in (select groupID from groups where groupPath like :groupID) and flagged=1 and cnv.forgiven=:forgiven and cnv.time between :startDate and :endDate ";
+            " WHERE cnv.groupId in (select groupID from groups where groupPath like :groupID) and flagged=1 and cnv.time between :startDate and :endDate ";
     private static String RED_FLAG_QUERY_COUNT = "SELECT count(*) as nr FROM cachedNoteView WHERE groupId in (select groupID from groups where groupPath like :groupID) and flagged=1 and time between :startDate and :endDate ";
 
     private static final Map<String, String> pagedColumnMapRedFlag = new HashMap<String, String>();
@@ -49,6 +49,7 @@ public class RedFlagJDBCDAO extends SimpleJdbcDaoSupport implements RedFlagDAO {
         pagedColumnMapRedFlag.put("vehicleName", "cnv.vehicleName");
         pagedColumnMapRedFlag.put("status", "cnv.status");
         pagedColumnMapRedFlag.put("type", "cnv.type");
+        pagedColumnMapRedFlag.put("forgiven", "cnv.forgiven");
 
     }
 
@@ -122,16 +123,8 @@ public class RedFlagJDBCDAO extends SimpleJdbcDaoSupport implements RedFlagDAO {
         params.put("startDate", startDate);
         params.put("endDate", endDate);
 
-        //it seems the old hessian is ignoring the includeForgiven verification too and only selects the ones that are not forgiven
-        if (includeForgiven == 1 || includeForgiven == 0) {
-            params.put("forgiven", 0);
-        }
         /***FILTERING***/
         StringBuilder redFlagSelectCount = new StringBuilder(addFiltersToQuery(filterList, RED_FLAG_QUERY_COUNT, params, pagedColumnMapRedFlagCount));
-        if (includeForgiven == 1 || includeForgiven == 0) {
-            params.put("forgiven", 0);
-            redFlagSelectCount.append(" and forgiven=:forgiven");
-        }
 
         List<Integer> cntRedFlag = getSimpleJdbcTemplate().query(redFlagSelectCount.toString(), redFlagCountRowMapper, params);
 
@@ -147,17 +140,9 @@ public class RedFlagJDBCDAO extends SimpleJdbcDaoSupport implements RedFlagDAO {
         params.put("groupID", "%/" + groupID + "/%");
         params.put("startDate", startDate);
         params.put("endDate", endDate);
-        //it seems the old hessian is ignoring the includeForgiven verification too and only selects the ones that are not forgiven
-        if (includeForgiven == 1 || includeForgiven == 0) {
-            params.put("forgiven", 0);
-        }
 
         /***FILTERING***/
         StringBuilder redFlagSelect = new StringBuilder(addFiltersToQuery(pageParams.getFilterList(), RED_FLAG_QUERY, params, pagedColumnMapRedFlag));
-        if (includeForgiven == 1 || includeForgiven == 0) {
-            params.put("forgiven", 0);
-            redFlagSelect.append(" and forgiven=:forgiven");
-        }
 
         /***SORTING***/
         if (pageParams.getSort() != null && !pageParams.getSort().getField().isEmpty())
