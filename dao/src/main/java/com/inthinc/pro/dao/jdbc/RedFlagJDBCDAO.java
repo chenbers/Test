@@ -169,6 +169,25 @@ public class RedFlagJDBCDAO extends SimpleJdbcDaoSupport implements RedFlagDAO {
             filter.setFilter(Status.valueOf(filterVal).getCode());
         }
 
+        if (filter.getField().equals("type")) {
+            if(filter.getFilter() instanceof String){
+                return filter; // filter already processed
+            } else if (filter.getFilter() instanceof ArrayList){
+                filter.setFilterOp(FilterOp.IN);
+                List<NoteType> noteTypes = (List<NoteType>) filter.getFilter();
+                filterVal = "";
+                for (NoteType noteType: noteTypes){
+                    filterVal += noteType.getCode() + ",";
+                }
+                if (filterVal.contains(",")){
+                    filterVal = filterVal.substring(0, filterVal.lastIndexOf(","));
+                }
+                filter.setFilter(filterVal);
+            }else {
+                filter.setFilter(NoteType.valueOf(filterVal).getCode());
+            }
+        }
+
         //product version
         if (filter.getField().equals("productVersion")) {
             if (filter.getFilter() instanceof List) {
