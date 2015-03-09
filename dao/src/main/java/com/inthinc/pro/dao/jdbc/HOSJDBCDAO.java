@@ -46,7 +46,7 @@ import com.inthinc.pro.model.hos.HOSVehicleMileage;
 @SuppressWarnings("unchecked")
 public class HOSJDBCDAO extends NamedParameterJdbcDaoSupport implements HOSDAO {
     
-    private final static String SELECT_SQL = "SELECT h.hosLogID, h.driverID, h.vehicleID, h.logTime, "+ 
+    private final static String SELECT_SQL = "SELECT h.hosLogID, h.driverID, h.vehicleID, concat(h.logTime, 'FORCESTRING') logTime, "+ 
             "tz.tzName, h.status, h.driverDOTType, h.vehicleIsDOTFlag, h.vehicleOdometer, h.origin, coalesce(h.trailerID, '') AS trailerID, coalesce(h.serviceID, '') AS serviceID, "+
             "h.latitude, h.longitude, coalesce(h.location, '') AS location, coalesce(cl.location, '') AS originalLocation, " +
             "h.deletedFlag, h.editedFlag, h.editCount, h.editUserName, " +
