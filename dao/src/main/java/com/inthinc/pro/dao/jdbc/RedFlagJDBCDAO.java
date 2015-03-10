@@ -10,11 +10,13 @@ import com.inthinc.pro.model.configurator.ProductType;
 import com.inthinc.pro.model.event.AggressiveDrivingEvent;
 import com.inthinc.pro.model.event.BackingMultipleEvent;
 import com.inthinc.pro.model.event.DOTStoppedEvent;
+import com.inthinc.pro.model.event.DOTStoppedState;
 import com.inthinc.pro.model.event.DVIREvent;
 import com.inthinc.pro.model.event.Event;
 import com.inthinc.pro.model.event.EventAttr;
 import com.inthinc.pro.model.event.FullEvent;
 import com.inthinc.pro.model.event.HOSNoHoursEvent;
+import com.inthinc.pro.model.event.HOSNoHoursState;
 import com.inthinc.pro.model.event.HardVertical820Event;
 import com.inthinc.pro.model.event.IdleEvent;
 import com.inthinc.pro.model.event.IgnitionOffMaintenanceEvent;
@@ -23,6 +25,7 @@ import com.inthinc.pro.model.event.InvalidOccupantEvent;
 import com.inthinc.pro.model.event.MaintenanceEvent;
 import com.inthinc.pro.model.event.NoteType;
 import com.inthinc.pro.model.event.ParkingBrakeEvent;
+import com.inthinc.pro.model.event.ParkingBrakeState;
 import com.inthinc.pro.model.event.QSIVersionEvent;
 import com.inthinc.pro.model.event.SeatBeltEvent;
 import com.inthinc.pro.model.event.SpeedingEvent;
@@ -160,10 +163,12 @@ public class RedFlagJDBCDAO extends SimpleJdbcDaoSupport implements RedFlagDAO {
                 } else if (clazz.equals(IgnitionOffMaintenanceEvent.class)) {
                     IgnitionOffMaintenanceEvent ignitionOffMaintenanceEvent = new IgnitionOffMaintenanceEvent();
                     ignitionOffMaintenanceEvent.setAttrMap(attrMap);
+
                     if (attrMap.containsKey(EventAttr.ATTR_CHECK_ENGINE))
                         ignitionOffMaintenanceEvent.setCheckEngine((Integer) attrMap.get(EventAttr.ATTR_CHECK_ENGINE));
 
-                    // TODO drive time
+                    if (attrMap.containsKey(EventAttr.TRIP_DURATION))
+                        ignitionOffMaintenanceEvent.setDriveTime((Integer) attrMap.get(EventAttr.TRIP_DURATION));
 
                     if (attrMap.containsKey(EventAttr.GGA_GPS_QUALITY))
                         ignitionOffMaintenanceEvent.setGpsQuality((Integer) attrMap.get(EventAttr.GGA_GPS_QUALITY));
@@ -177,13 +182,12 @@ public class RedFlagJDBCDAO extends SimpleJdbcDaoSupport implements RedFlagDAO {
                     if (attrMap.containsKey(EventAttr.MPG_DISTANCE))
                         ignitionOffMaintenanceEvent.setMpgDistance((Integer) attrMap.get(EventAttr.MPG_DISTANCE));
 
-                    // TODO threshold
-
                     event = (Event) ignitionOffMaintenanceEvent;
                 } else if (clazz.equals(DOTStoppedEvent.class)) {
                     DOTStoppedEvent dotStoppedEvent = new DOTStoppedEvent();
 
-                    // TODO dot stopped status
+                    if (attrMap.containsKey(EventAttr.REASON_CODE_DOT))
+                        dotStoppedEvent.setStatus(DOTStoppedState.valueOf((Integer)attrMap.get(EventAttr.REASON_CODE_DOT)));
 
                     event = (Event) dotStoppedEvent;
                 } else if (clazz.equals(TrailerDataEvent.class)) {
@@ -213,7 +217,8 @@ public class RedFlagJDBCDAO extends SimpleJdbcDaoSupport implements RedFlagDAO {
                 } else if (clazz.equals(HOSNoHoursEvent.class)) {
                     HOSNoHoursEvent hosNoHoursEvent = new HOSNoHoursEvent();
 
-                    // TODO hos no hour status
+                    if (attrMap.containsKey(EventAttr.REASON_CODE_HOS))
+                        hosNoHoursEvent.setStatus(HOSNoHoursState.valueOf((Integer) attrMap.get(EventAttr.REASON_CODE_HOS)));
 
                     event = (Event) hosNoHoursEvent;
                 } else if (clazz.equals(SpeedingEvent.class)) {
@@ -252,7 +257,8 @@ public class RedFlagJDBCDAO extends SimpleJdbcDaoSupport implements RedFlagDAO {
                 } else if (clazz.equals(ValidDriverEvent.class)) {
                     ValidDriverEvent validDriverEvent = new ValidDriverEvent();
 
-                    //TODO dottype
+                    if (attrMap.containsKey(EventAttr.MCM_RULESET))
+                        validDriverEvent.setDotType((Integer) attrMap.get(EventAttr.MCM_RULESET));
 
                     event = (Event) validDriverEvent;
                 } else if (clazz.equals(ZoneArrivalEvent.class)) {
@@ -281,7 +287,8 @@ public class RedFlagJDBCDAO extends SimpleJdbcDaoSupport implements RedFlagDAO {
                 } else if (clazz.equals(ParkingBrakeEvent.class)) {
                     ParkingBrakeEvent parkingBrakeEvent = new ParkingBrakeEvent();
 
-                    //TODO parking break status
+                    if (attrMap.containsKey(EventAttr.SEVERITY))
+                        parkingBrakeEvent.setStatus(ParkingBrakeState.valueOf((Integer) attrMap.get(EventAttr.STATE)));
 
                     event = (Event) parkingBrakeEvent;
                 } else if (clazz.equals(IdleEvent.class)) {
@@ -343,8 +350,6 @@ public class RedFlagJDBCDAO extends SimpleJdbcDaoSupport implements RedFlagDAO {
 
                     if (attrMap.containsKey(EventAttr.ATTR_TRANSMISSION_TEMP))
                         maintenanceEvent.setTransmissionTemp((Integer) attrMap.get(EventAttr.ATTR_TRANSMISSION_TEMP));
-
-                    // TODO set value
 
                     event = (Event) maintenanceEvent;
                 } else {
