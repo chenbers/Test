@@ -188,8 +188,7 @@ public class RedFlagJDBCDAO extends SimpleJdbcDaoSupport implements RedFlagDAO {
                 } else if (clazz.equals(DOTStoppedEvent.class)) {
                     DOTStoppedEvent dotStoppedEvent = new DOTStoppedEvent();
 
-                    if (attrMap.containsKey(EventAttr.REASON_CODE_DOT))
-                        dotStoppedEvent.setStatus(DOTStoppedState.valueOf((Integer) attrMap.get(EventAttr.REASON_CODE_DOT)));
+                    dotStoppedEvent.setStatus(DOTStoppedState.valueOf(rs.getInt("cnv.status")));
 
                     event = (Event) dotStoppedEvent;
                 } else if (clazz.equals(TrailerDataEvent.class)) {
@@ -219,8 +218,7 @@ public class RedFlagJDBCDAO extends SimpleJdbcDaoSupport implements RedFlagDAO {
                 } else if (clazz.equals(HOSNoHoursEvent.class)) {
                     HOSNoHoursEvent hosNoHoursEvent = new HOSNoHoursEvent();
 
-                    if (attrMap.containsKey(EventAttr.REASON_CODE_HOS))
-                        hosNoHoursEvent.setStatus(HOSNoHoursState.valueOf((Integer) attrMap.get(EventAttr.REASON_CODE_HOS)));
+                    hosNoHoursEvent.setStatus(HOSNoHoursState.valueOf(rs.getInt("cnv.status")));
 
                     event = (Event) hosNoHoursEvent;
                 } else if (clazz.equals(SpeedingEvent.class)) {
@@ -289,8 +287,7 @@ public class RedFlagJDBCDAO extends SimpleJdbcDaoSupport implements RedFlagDAO {
                 } else if (clazz.equals(ParkingBrakeEvent.class)) {
                     ParkingBrakeEvent parkingBrakeEvent = new ParkingBrakeEvent();
 
-                    if (attrMap.containsKey(EventAttr.SEVERITY))
-                        parkingBrakeEvent.setStatus(ParkingBrakeState.valueOf((Integer) attrMap.get(EventAttr.STATE)));
+                    parkingBrakeEvent.setStatus(ParkingBrakeState.valueOf(rs.getInt("cnv.status")));
 
                     event = (Event) parkingBrakeEvent;
                 } else if (clazz.equals(IdleEvent.class)) {
