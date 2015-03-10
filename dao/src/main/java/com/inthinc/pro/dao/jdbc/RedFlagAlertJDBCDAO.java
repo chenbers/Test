@@ -184,7 +184,6 @@ public class RedFlagAlertJDBCDAO extends SimpleJdbcDaoSupport implements RedFlag
             redFlagAlert.setDescription(rs.getString("description"));
             redFlagAlert.setStartTOD(rs.getInt("startTOD"));
             redFlagAlert.setStopTOD(rs.getInt("stopTOD"));
-
             redFlagAlert.setZoneID(getIntOrNullFromRS(rs, "zoneID"));
             redFlagAlert.setSeverityLevel(RedFlagLevel.valueOf(rs.getInt("severityLevel")));
             redFlagAlert.setHardAcceleration(getIntOrNullFromRS(rs, "accel"));
@@ -195,7 +194,7 @@ public class RedFlagAlertJDBCDAO extends SimpleJdbcDaoSupport implements RedFlag
             redFlagAlert.setMaxEscalationTryTime(getIntOrNullFromRS(rs, "escalationTryTimeLimit"));
 
             String ss = getStringOrNullFromRS(rs, "speedSettings");
-            if (ss == null || ss.isEmpty() || ss.contains("")) {
+            if (ss == null || ss.trim().isEmpty()) {
                 redFlagAlert.setSpeedSettings(null);
             } else if (!ss.contains("~")) {
                 String[] sss = ss.split(" ");
@@ -1250,6 +1249,10 @@ public class RedFlagAlertJDBCDAO extends SimpleJdbcDaoSupport implements RedFlag
 
     private Date getDateOrNullFromRS(ResultSet rs, String columnName) throws SQLException {
         return rs.getObject(columnName) == null ? null : rs.getDate(columnName);
+    }
+    
+    private Date getTimeOrNullFromRS(ResultSet rs, String columnName) throws SQLException {
+        return rs.getObject(columnName) == null ? null : rs.getTime(columnName);
     }
 
     private Date toUTC(Date date) {
