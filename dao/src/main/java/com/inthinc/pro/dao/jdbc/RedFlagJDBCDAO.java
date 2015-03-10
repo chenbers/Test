@@ -78,6 +78,7 @@ public class RedFlagJDBCDAO extends SimpleJdbcDaoSupport implements RedFlagDAO {
         pagedColumnMapRedFlag.put("vehicleName", "cnv.vehicleName");
         pagedColumnMapRedFlag.put("status", "cnv.status");
         pagedColumnMapRedFlag.put("type", "cnv.type");
+        pagedColumnMapRedFlag.put("aggType", "cnv.aggType");
         pagedColumnMapRedFlag.put("forgiven", "cnv.forgiven");
 
     }
@@ -92,6 +93,7 @@ public class RedFlagJDBCDAO extends SimpleJdbcDaoSupport implements RedFlagDAO {
         pagedColumnMapRedFlagCount.put("vehicleName", "vehicleName");
         pagedColumnMapRedFlagCount.put("status", "status");
         pagedColumnMapRedFlagCount.put("type", "type");
+        pagedColumnMapRedFlagCount.put("aggType", "aggType");
 
     }
 
@@ -187,7 +189,7 @@ public class RedFlagJDBCDAO extends SimpleJdbcDaoSupport implements RedFlagDAO {
                     DOTStoppedEvent dotStoppedEvent = new DOTStoppedEvent();
 
                     if (attrMap.containsKey(EventAttr.REASON_CODE_DOT))
-                        dotStoppedEvent.setStatus(DOTStoppedState.valueOf((Integer)attrMap.get(EventAttr.REASON_CODE_DOT)));
+                        dotStoppedEvent.setStatus(DOTStoppedState.valueOf((Integer) attrMap.get(EventAttr.REASON_CODE_DOT)));
 
                     event = (Event) dotStoppedEvent;
                 } else if (clazz.equals(TrailerDataEvent.class)) {
@@ -458,6 +460,25 @@ public class RedFlagJDBCDAO extends SimpleJdbcDaoSupport implements RedFlagDAO {
                 filterVal = "";
                 for (NoteType noteType: noteTypes){
                     filterVal += noteType.getCode() + ",";
+                }
+                if (filterVal.contains(",")){
+                    filterVal = filterVal.substring(0, filterVal.lastIndexOf(","));
+                }
+                filter.setFilter(filterVal);
+            }else {
+                filter.setFilter(NoteType.valueOf(filterVal).getCode());
+            }
+        }
+
+        if (filter.getField().equals("aggType")) {
+            if(filter.getFilter() instanceof String){
+                return filter; // filter already processed
+            } else if (filter.getFilter() instanceof ArrayList){
+                filter.setFilterOp(FilterOp.IN);
+                List<Integer> aggTypes = (List<Integer>) filter.getFilter();
+                filterVal = "";
+                for (Integer aggType: aggTypes){
+                    filterVal += aggType + ",";
                 }
                 if (filterVal.contains(",")){
                     filterVal = filterVal.substring(0, filterVal.lastIndexOf(","));
