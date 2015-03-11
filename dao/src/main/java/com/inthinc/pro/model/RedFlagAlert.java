@@ -365,8 +365,8 @@ public class RedFlagAlert extends BaseEntity implements Comparable<RedFlagAlert>
 
     public void setSpeedSettings(Integer[] speedSettings) {
         this.speedSettings = speedSettings;
-        if ((speedSettings != null) && (speedSettings.length != SpeedingConstants.INSTANCE.NUM_SPEEDS && speedSettings.length != SpeedingConstants.INSTANCE.NUM_SPEEDS_SHORT))
-            throw new IllegalArgumentException("speedSettings.length must be either " + SpeedingConstants.INSTANCE.NUM_SPEEDS + " or " + SpeedingConstants.INSTANCE.NUM_SPEEDS_SHORT);
+        if ((speedSettings != null) && (speedSettings.length != SpeedingConstants.INSTANCE.NUM_SPEEDS))
+            throw new IllegalArgumentException("speedSettings.length must be " + SpeedingConstants.INSTANCE.NUM_SPEEDS);
     }
 
     public Boolean isHardAccelerationNull(){

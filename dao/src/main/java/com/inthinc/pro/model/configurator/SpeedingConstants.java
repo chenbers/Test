@@ -4,7 +4,6 @@ public enum SpeedingConstants {
     INSTANCE;
     
     public final int NUM_SPEEDS = 15;
-    public final int NUM_SPEEDS_SHORT = 1;
     public final Integer[] DEFAULT_SPEED_SETTING = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};    
 //    public final Integer[] DEFAULT_SPEED_SETTING = {5, 10, 15, 20, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25};    
     public final String DEFAULT_SPEED_SET = "0 0 0 0 0 0 0 0 0 0 0 0 0 0 0";
