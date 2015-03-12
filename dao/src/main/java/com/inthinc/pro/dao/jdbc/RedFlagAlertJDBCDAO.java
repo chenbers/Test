@@ -190,9 +190,10 @@ public class RedFlagAlertJDBCDAO extends SimpleJdbcDaoSupport implements RedFlag
 
             // special mask for alert message types
             redFlagAlert.setTypes(AlertMessageType.getAlertMessageTypes(getLongOrNullFromRS(rs, "alertTypeMask")));
-
             redFlagAlert.setStatus(Status.valueOf(rs.getInt("status")));
-            redFlagAlert.setModified(getDateOrNullFromRS(rs, "modified"));
+            
+            Date modified = getDateTimeOrNullFromRS(rs, "modified");
+            redFlagAlert.setModified(modified != null ? new DateTime(modified).toDate() : null);
             redFlagAlert.setAccountID(rs.getInt("acctID"));
             redFlagAlert.setUserID(rs.getInt("userID"));
             redFlagAlert.setName(rs.getString("name"));
@@ -442,7 +443,7 @@ public class RedFlagAlertJDBCDAO extends SimpleJdbcDaoSupport implements RedFlag
                 ps.setLong(13, VehicleType.convertTypes(entity.getVehicleTypes()));
 
                 if (entity.getSpeedSettings() == null) {
-                    ps.setInt(14, SpeedingConstants.INSTANCE.DEFAULT_SPEED_SETTING.length);
+                    ps.setString(14, SpeedingConstants.INSTANCE.DEFAULT_SPEED_SET);
                 } else {
                     ps.setString(14, Arrays.toString(entity.getSpeedSettings()));
                 }
@@ -620,7 +621,7 @@ public class RedFlagAlertJDBCDAO extends SimpleJdbcDaoSupport implements RedFlag
                 ps.setLong(13, VehicleType.convertTypes(entity.getVehicleTypes()));
 
                 if (entity.getSpeedSettings() == null) {
-                    ps.setInt(14, SpeedingConstants.INSTANCE.DEFAULT_SPEED_SETTING.length);
+                    ps.setString(14, SpeedingConstants.INSTANCE.DEFAULT_SPEED_SET);
                 } else {
                     ps.setInt(14, entity.getSpeedSettings().length);
                 }
@@ -1293,6 +1294,10 @@ public class RedFlagAlertJDBCDAO extends SimpleJdbcDaoSupport implements RedFlag
     
     private Date getTimeOrNullFromRS(ResultSet rs, String columnName) throws SQLException {
         return rs.getObject(columnName) == null ? null : rs.getTime(columnName);
+    }
+    
+    private Date getDateTimeOrNullFromRS(ResultSet rs, String columnName) throws SQLException {
+        return rs.getObject(columnName) == null ? null : rs.getTimestamp(columnName);
     }
 
     private Date toUTC(Date date) {

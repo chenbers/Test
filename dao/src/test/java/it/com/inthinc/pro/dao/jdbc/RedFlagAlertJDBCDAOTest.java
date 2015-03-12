@@ -222,10 +222,10 @@ public class RedFlagAlertJDBCDAOTest extends SimpleJdbcDaoSupport {
             DataSource dataSource = new ITDataSource().getRealDataSource();
             redFlagAlertJDBCDAO.setDataSource(dataSource);
 
-            GroupData team = itData.teamGroupData.get(0);
-            Integer groupID = team.group.getGroupID();
+            RedFlagAlert team = itData.redFlagAlertList.get(0);
+            Integer alertID = team.getAlertID();
 
-            List<RedFlagAlertAssignItem> redFlagAlertListGroupList = redFlagAlertJDBCDAO.getRedFlagAlertGroupsByAlertID(groupID);
+            List<RedFlagAlertAssignItem> redFlagAlertListGroupList = redFlagAlertJDBCDAO.getRedFlagAlertGroupsByAlertID(alertID);
 
             assertTrue(redFlagAlertListGroupList.size() > 0);
 
