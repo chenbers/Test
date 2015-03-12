@@ -1,5 +1,6 @@
 package com.inthinc.pro.selenium.steps;
 
+import com.inthinc.pro.selenium.pageObjects.PageAdminVehicles;
 import org.jbehave.core.annotations.Then;
 import org.jbehave.core.annotations.When;
 
@@ -10,7 +11,9 @@ public class AdminVehicleSteps extends StepsAdmin {
     
 	private PageAdminAddEditVehicle vehicleAddEdit = new PageAdminAddEditVehicle();
 	private PageAdminVehicleDetails details = new PageAdminVehicleDetails();
-    
+    private PageAdminVehicles vehicles = new PageAdminVehicles();
+
+
     @Then ("I should be able to edit Vehicle information")
     public void thenIShouldBeAbleToEditVehicleInformation(){
         test.assertEquals(true, vehicleAddEdit._textField().VIN().isEditable());
@@ -111,5 +114,11 @@ public class AdminVehicleSteps extends StepsAdmin {
     public void thenIShouldNotBeAbleToSave(){
         test.assertEquals(false, vehicleAddEdit._button().saveTop().isClickable());
         test.assertEquals(false, vehicleAddEdit._button().saveBottom().isClickable());
+    }
+
+
+    @When("I click the first vehicle edit row")
+    public void whenIclickTheFirstVehicleEditRow(){
+        vehicles._link().editFirstVehicleLink().clickTheFirstClickable();
     }
 }

@@ -58,7 +58,8 @@ public class PageAdminVehicles extends AdminTables {
 
     public class AdminVehiclesLinks extends AdminTablesLinks {
     	public TextTableLink editVehicleLink()			{return new TextTableLink(AdminVehiclesEnum.EDIT, page, VehicleColumns.EDIT);}
-    	public TextTableLink vehicleEditLink()			{return new TextTableLink(AdminVehiclesEnum.EDIT);}
+        public TextTableLink editFirstVehicleLink()			{return new TextTableLink(AdminVehiclesEnum.FIRST_EDIT_LINK, page, VehicleColumns.EDIT);}
+        public TextTableLink vehicleEditLink()			{return new TextTableLink(AdminVehiclesEnum.EDIT);}
         public TextTableLink entryVehicleId()			{return new TextTableLink(AdminBarEnum.TABLE_ENTRIES, page, VehicleColumns.VEHICLE_ID);}
         public TextTableLink vehicleId()				{return new TextTableLink(AdminVehiclesEnum.VEH_ID);}
 
