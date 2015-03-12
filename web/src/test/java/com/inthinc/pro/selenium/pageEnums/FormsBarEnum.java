@@ -5,9 +5,9 @@ import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 
 public enum FormsBarEnum implements SeleniumEnums {
 
-    MANAGE("Forms", "//div[2]/div[1]/div/ul/li[1]/a"),
-    PUBLISHED("Published", "//div[2]/div[1]/div/ul/li[2]/a"),
-    SUBMISSIONS("Submissions", "//div[2]/div[1]/div/ul/li[3]/a"),
+    MANAGE("Forms", "//ul[@class='nav nav-pills']/li[1]/a"),
+    PUBLISHED("Published", "//ul[@class='nav nav-pills']/li[2]/a"),
+    SUBMISSIONS("Submissions", "//ul[@class='nav nav-pills']/li[3]/a"),
     CUSTOMERS("Customers", "//div[2]/div[1]/div/ul/li[4]/a"),
 
     //THESE FIVE CAN BE MOVED UP TO THE MASTHEAD ONCE WE MERGE THE FORMS AND CURRENT PORTAL INTERFACES     
