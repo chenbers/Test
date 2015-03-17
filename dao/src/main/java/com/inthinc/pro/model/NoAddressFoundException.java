@@ -34,7 +34,13 @@ public class NoAddressFoundException extends Exception {
         this.lng = lng;
         this.geocoderStatus = geocoderStatus;
     }
-
+    public NoAddressFoundException(Double lat, Double lng, GeocoderStatus geocoderStatus, String address) {
+        super();
+        this.lat = lat;
+        this.lng = lng;
+        this.geocoderStatus = geocoderStatus;
+        this.address = address;
+    }
     public NoAddressFoundException(Double lat, Double lng, reasons reason, String address) {
         super();
         this.lat = lat;
