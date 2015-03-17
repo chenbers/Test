@@ -107,7 +107,7 @@ public class GoogleAddressLookup extends AddressLookup {
                 DecimalFormat df = new DecimalFormat("#.#####");
                 logger.warn("no city provided - lat, long: "+df.format(latLng.getLat())+", "+df.format(latLng.getLng()));
                 placemark.setLocalityPlaceholder("no city provided - lat, long: "+df.format(latLng.getLat())+", "+df.format(latLng.getLng()));
-                gotPlacemarkInfo = true;
+                //gotPlacemarkInfo = true;
             }
 
             if (!gotPlacemarkInfo) {
