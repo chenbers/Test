@@ -184,7 +184,7 @@ public class GoogleAddressLookup extends AddressLookup {
         logger.warn("google geocoder.geocode("+latLng+")");
         GeocodeResponse geocoderResponse = geocoder.geocode(geocoderRequest);
         if (geocoderResponse == null || geocoderResponse.getStatus() != GeocoderStatus.OK || geocoderResponse.getResults() == null || geocoderResponse.getResults().isEmpty()) {
-            throw new NoAddressFoundException(latLng.getLat(), latLng.getLng(), NoAddressFoundException.reasons.NO_ADDRESS_FOUND);
+            throw new NoAddressFoundException(latLng.getLat(), latLng.getLng(), geocoderResponse.getStatus());
         }
         
         return geocoderResponse;
