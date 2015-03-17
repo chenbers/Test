@@ -105,7 +105,7 @@ public class GoogleAddressLookup extends AddressLookup {
             if (!gotPlacemarkInfo && !localityProvided){
                 // display no city provided - lat x long y
                 DecimalFormat df = new DecimalFormat("#.#####");
-                logger.warn("no city provided - lat, long: "+df.format(latLng.getLat())+", "+df.format(latLng.getLng()));
+                logger.warn("Google: no city provided - lat, long: "+df.format(latLng.getLat())+", "+df.format(latLng.getLng()));
                 placemark.setLocalityPlaceholder("no city provided - lat, long: "+df.format(latLng.getLat())+", "+df.format(latLng.getLng()));
                 //gotPlacemarkInfo = true;
             }
@@ -128,7 +128,7 @@ public class GoogleAddressLookup extends AddressLookup {
                 // The location (lat, lng) in the original request is for the county not the city, so looking up the city to gauge the distance and heading)
                 Geocoder geocoder = getGeocoder();
                 GeocoderRequest geocoderRequest = new GeocoderRequestBuilder().setAddress(placemark.getCityState()).getGeocoderRequest();
-                logger.warn("google geocoder.geocode("+placemark.getCityState()+")");
+                logger.warn("Google geocoder.geocode("+placemark.getCityState()+")");
                 geocoderResponse = geocoder.geocode(geocoderRequest);
                 if (geocoderResponse == null || geocoderResponse.getStatus() != GeocoderStatus.OK || geocoderResponse.getResults() == null || geocoderResponse.getResults().isEmpty()) {
                     return placemark.getDescription();
@@ -161,7 +161,7 @@ public class GoogleAddressLookup extends AddressLookup {
 	public LatLng lookupLatLngForAddress(String address) throws NoAddressFoundException {
 
 	    GeocoderRequest geocoderRequest = new GeocoderRequestBuilder().setLanguage(getLanguage()).setAddress(address).getGeocoderRequest();
-        logger.warn("google geocoder.geocode("+address+")");
+        logger.warn("Google geocoder.geocode("+address+")");
         GeocodeResponse geocoderResponse = getGeocoder().geocode(geocoderRequest);
         if (geocoderResponse == null || geocoderResponse.getStatus() != GeocoderStatus.OK || geocoderResponse.getResults() == null || geocoderResponse.getResults().isEmpty()) {
             throw new NoAddressFoundException(null, null, NoAddressFoundException.reasons.NO_LAT_LNG_FOUND, address);
@@ -181,7 +181,7 @@ public class GoogleAddressLookup extends AddressLookup {
         }
         Geocoder geocoder = getGeocoder();
         GeocoderRequest geocoderRequest = new GeocoderRequestBuilder().setLanguage(getLanguage()).setLocation(new com.google.code.geocoder.model.LatLng(BigDecimal.valueOf(latLng.getLat()), BigDecimal.valueOf(latLng.getLng()))).getGeocoderRequest();
-        logger.warn("google geocoder.geocode("+latLng+")");
+        logger.warn("Google geocoder.geocode("+latLng+")");
         GeocodeResponse geocoderResponse = geocoder.geocode(geocoderRequest);
         if (geocoderResponse == null || geocoderResponse.getStatus() != GeocoderStatus.OK || geocoderResponse.getResults() == null || geocoderResponse.getResults().isEmpty()) {
             throw new NoAddressFoundException(latLng.getLat(), latLng.getLng(), geocoderResponse.getStatus());
