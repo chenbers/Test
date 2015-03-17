@@ -80,6 +80,7 @@
                 <entry key="accountDAO" value-ref="accountDAO" />
                 <entry key="webContextPath" value="${contextPath.web}" />
                 <entry key="amazonQueue"  value-ref="amazonQueue" />
+                <entry key="enabled" value="${scheduler.enabled}" />
             </map>
         </property>
     </bean>
@@ -102,6 +103,7 @@
                 <entry key="personDAO" value-ref="personDAO" />
                 <entry key="amazonQueue"  value-ref="amazonQueue" />
                 <entry key="reportLogData" value-ref="jsonReportLogData"/>
+                <entry key="enabled" value="${scheduler.enabled}" />
             </map>
         </property>
     </bean>

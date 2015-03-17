@@ -57,7 +57,7 @@ import java.util.Set;
  * Time: 4:10 PM
  * To change this template use File | Settings | File Templates.
  */
-public class EmailReportAmazonPullJob extends QuartzJobBean {
+public class EmailReportAmazonPullJob extends BaseEmailReportJob {
     private static final Logger logger = Logger.getLogger(EmailReportAmazonPullJob.class);
 
     private static final String DEFAULT_NO_REPLY_EMAIL_ADDRESS = "noreply@inthinc.com";
@@ -201,7 +201,7 @@ public class EmailReportAmazonPullJob extends QuartzJobBean {
     }
 
     @Override
-    protected void executeInternal(JobExecutionContext jobExecutionContext) throws JobExecutionException {
+    protected void executeIfEnabled(JobExecutionContext jobExecutionContext) throws JobExecutionException {
         initTextEncryptor();
 
         try {
