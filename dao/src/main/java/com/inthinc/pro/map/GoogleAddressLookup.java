@@ -183,6 +183,17 @@ public class GoogleAddressLookup extends AddressLookup {
         GeocoderRequest geocoderRequest = new GeocoderRequestBuilder().setLanguage(getLanguage()).setLocation(new com.google.code.geocoder.model.LatLng(BigDecimal.valueOf(latLng.getLat()), BigDecimal.valueOf(latLng.getLng()))).getGeocoderRequest();
         logger.warn("Google geocoder.geocode("+latLng+")");
         GeocodeResponse geocoderResponse = geocoder.geocode(geocoderRequest);
+        
+        //as per google usage limits guidelines, pausing 2 seconds and retrying 
+        if(geocoderResponse.getStatus().equals(GeocoderStatus.OVER_QUERY_LIMIT)) {
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            logger.warn("Google: OVER_QUERY LIMIT; paused and retried: google geocoder.geocode("+latLng+")");
+            geocoderResponse = geocoder.geocode(geocoderRequest);
+        }
         if (geocoderResponse == null || geocoderResponse.getStatus() != GeocoderStatus.OK || geocoderResponse.getResults() == null || geocoderResponse.getResults().isEmpty()) {
             throw new NoAddressFoundException(latLng.getLat(), latLng.getLng(), geocoderResponse.getStatus());
         }
