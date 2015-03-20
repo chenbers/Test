@@ -454,8 +454,7 @@ public class ReportJDBCDAO extends SimpleJdbcDaoSupport implements ReportDAO {
             vehicleReportItem.setSpeedScore(rs.getInt("vp.speedScore") == 0 ? null : rs.getInt("vp.speedScore"));
             vehicleReportItem.setOverallScore(rs.getInt("vp.overallScore") == 0 ? null : rs.getInt("vp.overallScore"));
             vehicleReportItem.setMilesDriven(rs.getInt("vp.milesDriven"));
-//            vehicleReportItem.setOdometer(getValidIntOrNullFromRS(rs, "vp.odometer"));
-            vehicleReportItem.setOdometer(rs.getLong("vp.odometer"));
+            vehicleReportItem.setOdometer(getValidIntOrNullFromRS(rs, "vp.odometer"));
             vehicleReportItem.setVehicleID(rs.getInt("vp.vehicleID"));
             vehicleReportItem.setVehicleName(rs.getString("vp.vehicleName"));
             vehicleReportItem.setVehicleYMM(rs.getString("vp.vehicleYMM"));
