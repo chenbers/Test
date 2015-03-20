@@ -41,8 +41,11 @@ import com.inthinc.pro.reports.tabular.Result;
 import com.inthinc.pro.reports.tabular.Tabular;
 import com.inthinc.pro.reports.util.DateTimeUtil;
 import com.inthinc.pro.reports.util.MessageUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class DotHoursRemainingReportCriteria extends GroupListReportCriteria implements Tabular {
+    private static Logger logger = LoggerFactory.getLogger(DotHoursRemainingReportCriteria.class.getName());
 
     private GroupDAO groupDAO;
     private HOSDAO hosDAO;
@@ -64,12 +67,18 @@ public class DotHoursRemainingReportCriteria extends GroupListReportCriteria imp
         List<Driver> driverList = getReportDriverList(reportGroupList);
 
         DateTime currentDate = new DateTime(); 
-        
+
+        logger.info("DE10195 - current date is: "+currentDate);
+
         Map<Driver, List<HOSRecord>> driverHOSRecordMap = new HashMap<Driver, List<HOSRecord>> ();
         for (Driver driver : driverList) {
             if (driver.getDot() == null || driver.getDot().equals(RuleSetType.NON_DOT))
                 continue;
             Interval interval = DateTimeUtil.getDaysBackInterval(currentDate, DateTimeZone.forTimeZone(driver.getPerson().getTimeZone()), RuleSetFactory.getDaysBackForRuleSetType(driver.getDot()));
+
+            logger.info("DE10195 - calculated interval start date is : "+interval.getStart());
+            logger.info("DE10195 - calculated interval end date is : "+interval.getEnd());
+
             if(includeDriver(getDriverDAO(), driver.getDriverID(), interval)){
                 driverHOSRecordMap.put(driver, hosDAO.getHOSRecords(driver.getDriverID(), interval, true));
             }
