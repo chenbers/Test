@@ -69,6 +69,7 @@ public class DotHoursRemainingReportCriteria extends GroupListReportCriteria imp
         DateTime currentDate = new DateTime(); 
 
         logger.info("DE10195 - current date is: "+currentDate);
+        System.out.println("DE10195 - current date is: "+currentDate);
 
         Map<Driver, List<HOSRecord>> driverHOSRecordMap = new HashMap<Driver, List<HOSRecord>> ();
         for (Driver driver : driverList) {
@@ -77,7 +78,9 @@ public class DotHoursRemainingReportCriteria extends GroupListReportCriteria imp
             Interval interval = DateTimeUtil.getDaysBackInterval(currentDate, DateTimeZone.forTimeZone(driver.getPerson().getTimeZone()), RuleSetFactory.getDaysBackForRuleSetType(driver.getDot()));
 
             logger.info("DE10195 - calculated interval start date is : "+interval.getStart());
+            System.out.println("DE10195 - calculated interval start date is : "+interval.getStart());
             logger.info("DE10195 - calculated interval end date is : "+interval.getEnd());
+            System.out.println("DE10195 - calculated interval end date is : "+interval.getEnd());
 
             if(includeDriver(getDriverDAO(), driver.getDriverID(), interval)){
                 driverHOSRecordMap.put(driver, hosDAO.getHOSRecords(driver.getDriverID(), interval, true));
