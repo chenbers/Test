@@ -39,6 +39,9 @@ public class AccountAttributes extends BaseEntity {
     private String driveTimeViolationsReportEnabled;
     private String eventQueueEnabled;
     private String redirectVehiclesAssets;
+    private String sbsAccessEnabled;
+    private String weatherfordViolationsReportEnabled;
+    private String texasOilDrivingOnDutyOnlyEnabled;
 
 
     @Column(updateable = false)
@@ -298,5 +301,31 @@ public class AccountAttributes extends BaseEntity {
 
     public void setRedirectVehiclesAssets(String redirectVehiclesAssets) {
         this.redirectVehiclesAssets = redirectVehiclesAssets;
+    }
+
+    public String getSbsAccessEnabled() {
+        if (sbsAccessEnabled == null)
+            return "false";
+        return sbsAccessEnabled;
+    }
+
+    public void setSbsAccessEnabled(String sbsAccessEnabledEnabled) {
+        this.sbsAccessEnabled = sbsAccessEnabledEnabled;
+    }
+
+    public String getWeatherfordViolationsReportEnabled() {
+        return weatherfordViolationsReportEnabled;
+    }
+
+    public void setWeatherfordViolationsReportEnabled(String weatherfordViolationsReportEnabled) {
+        this.weatherfordViolationsReportEnabled = weatherfordViolationsReportEnabled;
+    }
+
+    public String getTexasOilDrivingOnDutyOnlyEnabled() {
+        return texasOilDrivingOnDutyOnlyEnabled;
+    }
+
+    public void setTexasOilDrivingOnDutyOnlyEnabled(String texasOilDrivingOnDutyOnlyEnabled) {
+        this.texasOilDrivingOnDutyOnlyEnabled = texasOilDrivingOnDutyOnlyEnabled;
     }
 }

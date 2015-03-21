@@ -1424,11 +1424,50 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
         return SelectItemUtil.toList(CellStatusType.class, false);
     }
     
+    /**
+     * Simply checks to ensure that this is a Texas ruleSet
+     * @param ruleSetType
+     * @return true if ruleSetType is a Texas ruleSet
+     */
+    private boolean isTexasRuleset(RuleSetType ruleSetType) {
+        return ruleSetType.equals(RuleSetType.TEXAS) || ruleSetType.equals(RuleSetType.TEXAS_DOD15_7DAY);
+    }
+    
+    /**
+     * Ensures that if the user's account has the Texas Oil Driving / On-Duty ONLY account option enabled
+     * that the only Texas ruleSet they see is the TEXAS_DOD15_7DAY ruleSet
+     * @param ruleSetType
+     * @return true only if this is a texas ruleset available to this company 
+     */
+    private boolean isCorrectTexasRuleset(RuleSetType ruleSetType) {
+        boolean result = false;
+        if(isTexasRuleset(ruleSetType)) {
+            if(ruleSetType.equals(RuleSetType.TEXAS)){
+                result = !getAccount().hasTexasOilDrivingOnDutyOnlyEnabled();
+            } else if(ruleSetType.equals(RuleSetType.TEXAS_DOD15_7DAY)) {
+                result = getAccount().hasTexasOilDrivingOnDutyOnlyEnabled();
+            }
+        }
+        return result;
+    }
+    
+    /**
+     * Returns a list of available DOT types for this company.
+     * Currently checks to NOT show:
+     * - deprecated RuleSets
+     * - SLB_INTERNAL RuleSet
+     * - filters the TEXAS rulesets so that only 1 is shown determined by an account option
+     * @return a List of available DOT types
+     */
     public List<SelectItem> getDotTypes() {
         List<SelectItem> selectItemList = new ArrayList<SelectItem>();
         for (RuleSetType ruleSetType : EnumSet.allOf(RuleSetType.class)) {
-           if(ruleSetType != RuleSetType.SLB_INTERNAL && !ruleSetType.isDeprecated() )
+           if(ruleSetType != RuleSetType.SLB_INTERNAL 
+              && !ruleSetType.isDeprecated()
+              &&(!isTexasRuleset(ruleSetType) || isCorrectTexasRuleset(ruleSetType)) //if this IS a texasRuleset make sure it is the correctTexasRuleSet
+              ){
                selectItemList.add(new SelectItem(ruleSetType,MessageUtil.getMessageString(ruleSetType.toString())));
+           }
         }
         
         return selectItemList;
