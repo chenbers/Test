@@ -94,7 +94,16 @@
                     </tr>
 
                     <tr>
-                        <td style="vertical-align: middle;"><h:outputText value="Weatherford violations report: " /></td>
+                        <td style="vertical-align: middle;"><h:outputText  value="Visible Texas Oil Ruleset: "  /></td>
+                        <td>
+                            <h:selectOneMenu id="editAccount-texasOilRuleset" value="#{accountOptionsBean.account.props.texasOilDrivingOnDutyOnlyEnabled}">
+                                <f:selectItem itemLabel="Texas oil 7-day " itemValue="false"/>
+                                <f:selectItem itemLabel="Texas oil 7-day (driving/on-duty 15-hour limit)" itemValue="true"/>
+                            </h:selectOneMenu>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="vertical-align: middle;"><h:outputText value="Weatherford violations report: "/></td>
                         <td>
                             <h:selectOneMenu id="editAccount-weatherford" value="#{accountOptionsBean.account.props.weatherfordViolationsReportEnabled}">
                                 <f:selectItem itemLabel="Disabled" itemValue="false"/>
@@ -102,7 +111,6 @@
                             </h:selectOneMenu>
                         </td>
                     </tr>
-
                     <tr>
                         <td style="vertical-align: middle;"><h:outputText value="Redirect to Vehicle Page: " /></td>
                         <td>
