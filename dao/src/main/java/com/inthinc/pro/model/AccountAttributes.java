@@ -41,6 +41,7 @@ public class AccountAttributes extends BaseEntity {
     private String redirectVehiclesAssets;
     private String sbsAccessEnabled;
     private String weatherfordViolationsReportEnabled;
+    private String texasOilDrivingOnDutyOnlyEnabled;
 
 
     @Column(updateable = false)
@@ -318,5 +319,13 @@ public class AccountAttributes extends BaseEntity {
 
     public void setWeatherfordViolationsReportEnabled(String weatherfordViolationsReportEnabled) {
         this.weatherfordViolationsReportEnabled = weatherfordViolationsReportEnabled;
+    }
+
+    public String getTexasOilDrivingOnDutyOnlyEnabled() {
+        return texasOilDrivingOnDutyOnlyEnabled;
+    }
+
+    public void setTexasOilDrivingOnDutyOnlyEnabled(String texasOilDrivingOnDutyOnlyEnabled) {
+        this.texasOilDrivingOnDutyOnlyEnabled = texasOilDrivingOnDutyOnlyEnabled;
     }
 }
