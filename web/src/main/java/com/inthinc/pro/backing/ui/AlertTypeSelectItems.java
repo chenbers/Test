@@ -34,7 +34,8 @@ public class AlertTypeSelectItems {
                                                       EventSubCategory.EMERGENCY,
                                                       EventSubCategory.SPEED,
                                                       EventSubCategory.VEHICLE,
-                                                      EventSubCategory.DVIR);
+                                                      EventSubCategory.DVIR,
+                                                      EventSubCategory.TWO_HOURS_BREAK);
         return addSet(alertTypeSelectItems,defaultSet);
     }
     private static List<SelectItem> addHosTypes(List<SelectItem> alertTypeSelectItems, Boolean hosEnabled){
