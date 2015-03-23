@@ -47,4 +47,9 @@ public class DriveQMetricList implements SelectList {
 		return selectList;
 	}
 
+    @Override
+    public Object valueOf(Object value) {
+        return value;
+    }
+
 }

@@ -2,6 +2,7 @@ package com.inthinc.pro.dao.cassandra.report;
 
 import java.util.List;
 
+import com.inthinc.pro.model.CustomDuration;
 import org.apache.log4j.Logger;
 
 import com.inthinc.pro.dao.report.VehicleReportDAO;
@@ -21,9 +22,21 @@ public class VehicleReportCassandraDAO extends ReportCassandraDAO implements Veh
     }
 
     @Override
+    public Score getScore(Integer driverID, CustomDuration customDuration) {
+        logger.debug("getScore(): " + driverID);
+        return getScoreForAsset(driverID, EntityType.ENTITY_DRIVER, customDuration);
+    }
+
+    @Override
     public List<Trend> getTrend(Integer driverID, Duration duration) {
         logger.debug("getTrend(): " + driverID);
         return getTrendForAsset(driverID, EntityType.ENTITY_DRIVER, duration);
+    }
+
+    @Override
+    public List<Trend> getTrend(Integer driverID, CustomDuration customDuration) {
+        logger.debug("getTrend(): " + driverID);
+        return getTrendForAsset(driverID, EntityType.ENTITY_DRIVER, customDuration);
     }
 
 }

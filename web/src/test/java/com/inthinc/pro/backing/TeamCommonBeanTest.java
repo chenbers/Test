@@ -67,10 +67,9 @@ public class TeamCommonBeanTest extends BaseBeanTest {
 
         teamCommonBean.setTimeFrame(TimeFrame.TODAY);
         
-        DateTime trendEndingDate = new DateTime();
+        DateTime trendEndingDate = new DateTime().withZone(DateTimeZone.UTC);
         trendEndingDate = trendEndingDate.minusDays(30);
         trendEndingDate = trendEndingDate.withHourOfDay(0).withMinuteOfHour(0).withSecondOfMinute(0).withMillisOfSecond(0);
-        trendEndingDate = trendEndingDate.withZone(DateTimeZone.UTC);
         
         List<Trend> trendList = new ArrayList<Trend>();
         Trend trend = new Trend();

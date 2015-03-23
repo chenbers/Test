@@ -143,6 +143,11 @@
                     <li id="diagnosticstab" class="#{diagnosticsSubSelected}">
                         <pretty:link id="#{context}-diagnostics" mappingId="diagnostics"><span>#{messages.notes_tab_diagnostics}</span></pretty:link>
                     </li>
+                    <ui:fragment rendered="#{personBean.accountIsMaintenance}">
+                    <li id="maintenancetab" class="#{maintenanceSubSelected}">
+                        <pretty:link id="#{context}-maintenance" mappingId="maintenance"><span>#{messages.notes_tab_maintenance}</span></pretty:link>
+                    </li>
+                    </ui:fragment>
                     <li id="zoneEventstab" class="#{zonesSubSelected}">
                         <pretty:link id="#{context}-zoneEvents" mappingId="zoneEvents"><span>#{messages.notes_tab_zone}</span></pretty:link>
                     </li>

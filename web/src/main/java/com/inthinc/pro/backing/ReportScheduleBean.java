@@ -19,6 +19,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.model.SelectItem;
 import javax.faces.model.SelectItemGroup;
 
+import com.inthinc.pro.reports.FormatType;
 import org.apache.log4j.Logger;
 import org.joda.time.DateMidnight;
 import org.joda.time.DateTime;
@@ -145,10 +146,12 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
 
         reportGroups.add(new SelectItemGroup("", "", false, getItemsByCategory(null)));
         for (ReportCategory cat : ReportCategory.values()) {
-            SelectItem[] items = getItemsByCategory(cat);
-            if (items != null && items.length > 0) {
-                String catLabel = MessageUtil.getMessageString(cat.toString());
-                reportGroups.add(new SelectItemGroup(catLabel, catLabel, false, items));
+            if(cat != ReportCategory.Maintenance || getAccountIsMaintenance()){
+                SelectItem[] items = getItemsByCategory(cat);
+                if (items != null && items.length > 0) {
+                    String catLabel = MessageUtil.getMessageString(cat.toString());
+                    reportGroups.add(new SelectItemGroup(catLabel, catLabel, false, items));
+                }
             }
         }
 
@@ -176,6 +179,8 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
                 continue;
             }
             if (!rt.isCategory(category))
+                continue;
+            if (rt.equals(ReportGroup.WEATHERFORD_HOS_VIOLATIONS_SUMMARY_REPORT) && !getWeatherfordViolationsReport())
                 continue;
             if (rt.getRequiresHOSAccount() && !getAccountIsHOS())
                 continue;
@@ -235,6 +240,16 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
 
     public List<SelectItem> getDurations() {
         return SelectItemUtil.toList(Duration.class, true);
+    }
+
+    public List<SelectItem> getFormats(){
+       List<SelectItem> ret = new ArrayList<SelectItem>();
+
+       ret.add(new SelectItem(FormatType.PDF.toString(),FormatType.PDF.toString()));
+       ret.add(new SelectItem(FormatType.EXCEL.toString(),FormatType.EXCEL.toString()));
+       ret.add(new SelectItem(FormatType.CSV.toString(),FormatType.CSV.toString()));
+       ret.add(new SelectItem(FormatType.HTML.toString(),FormatType.HTML.toString()));
+       return ret;
     }
 
     public String getReportTimeFrameStr() {
@@ -303,6 +318,7 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
         getItem().setIftaOnly(false);
         getItem().setIncludeInactiveDrivers(false);
         getItem().setIncludeZeroMilesDrivers(false);
+        getItem().setHosDriversOnly(false);
         getItem().setGroupName(null);
         getItem().setDriverName(null);
         getItem().setVehicleName(null);
@@ -350,6 +366,7 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
         reportSchedule.setUserID(getUserID());
         reportSchedule.setDeliverToManagers(Boolean.FALSE);
         reportSchedule.setManagerDeliveryType(ReportManagerDeliveryType.ALL);
+        reportSchedule.setFormat(FormatType.PDF.toString());
         List<Boolean> booleanList = new ArrayList<Boolean>();
         booleanList.add(Boolean.FALSE);
         booleanList.add(Boolean.FALSE);
@@ -369,6 +386,8 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
     @Override
     protected ReportScheduleView completeEditItem(ReportScheduleView selectedItem) {
         ReportSchedule reportSchedule = reportScheduleDAO.findByID(selectedItem.getReportScheduleID());
+        if (reportSchedule.getFormat()==null)
+            reportSchedule.setFormat(FormatType.PDF.toString());
         selectedItem = completeReportScheduleView(reportSchedule, selectedItem);
         selectedItem.setSelected(true);
         return selectedItem;
@@ -925,6 +944,8 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
         private String groupName;
         @Column(updateable = false)
         private String driverName;
+        @Column(updateable = true)
+        private String format;
         @Column(updateable = false)
         private String vehicleName;
         @Column(updateable = false)
@@ -1078,6 +1099,14 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
 
         public Integer getDayOfMonth() {
             return dayOfMonth;
+        }
+
+        public String getFormat() {
+            return format;
+        }
+
+        public void setFormat(String format) {
+            this.format = format;
         }
     }
 }

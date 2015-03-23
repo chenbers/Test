@@ -2,6 +2,8 @@ package it.com.inthinc.pro.dao.jdbc;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+
+import com.inthinc.pro.model.aggregation.DriverForgivenEventTotal;
 import it.config.ITDataSource;
 import it.config.IntegrationConfig;
 
@@ -32,8 +34,10 @@ public class EventAggregationJDBCDAOTest extends BaseJDBCTest {
     // this generates an account with a bunch of devices, vehicles, drivers and a trip for each device/vehicle
     // Set the interval day to the day after the generator is run (UTC).
     // TEST_ACCOUNT_ID and EXPECTED_VALID_COUNT will need to be adjusted to reflect the new data set.
-    private static Integer TEST_ACCOUNT_ID = 791;
+    private static Integer TEST_ACCOUNT_ID = 2;
     private static Integer EXPECTED_VALID_COUNT = 240;
+    private static Boolean dontIncludeUnassignedDevice =true;
+    private static Boolean activeInterval=true;
     
     
     private static List<Integer> testGroupList;
@@ -76,7 +80,7 @@ public class EventAggregationJDBCDAOTest extends BaseJDBCTest {
         eventAggregationJDBCDAO.setDataSource(new ITDataSource().getRealDataSource());
 
         List<LastReportedEvent> lastEventListOld = eventAggregationJDBCDAO.findRecentEventByDevice(testGroupList, VALID_TEST_INTERVAL);
-        List<LastReportedEvent> lastEventListNew = eventAggregationJDBCDAO.findLastEventForVehicles(testGroupList, VALID_TEST_INTERVAL);
+        List<LastReportedEvent> lastEventListNew = eventAggregationJDBCDAO.findLastEventForVehicles(testGroupList, VALID_TEST_INTERVAL,dontIncludeUnassignedDevice,activeInterval);
         
         assertEquals("old method of fetching matches new", lastEventListOld.size(), lastEventListNew.size());
         
@@ -96,7 +100,7 @@ public class EventAggregationJDBCDAOTest extends BaseJDBCTest {
         EventAggregationJDBCDAO eventAggregationJDBCDAO = new EventAggregationJDBCDAO();
         eventAggregationJDBCDAO.setDataSource(new ITDataSource().getRealDataSource());
         
-        List<LastReportedEvent> lastEventList= eventAggregationJDBCDAO.findLastEventForVehicles(testGroupList, VALID_TEST_INTERVAL);
+        List<LastReportedEvent> lastEventList= eventAggregationJDBCDAO.findLastEventForVehicles(testGroupList, VALID_TEST_INTERVAL,dontIncludeUnassignedDevice,activeInterval);
         assertEquals("expected count", EXPECTED_VALID_COUNT.intValue(), lastEventList.size());
         
         for (LastReportedEvent event : lastEventList) {
@@ -106,4 +110,21 @@ public class EventAggregationJDBCDAOTest extends BaseJDBCTest {
 
     }
 
+    @Test
+    public void testReasonColumnInSelect() {
+        // first, get the data
+        EventAggregationJDBCDAO eventAggregationJDBCDAO = new EventAggregationJDBCDAO();
+        eventAggregationJDBCDAO.setDataSource(new ITDataSource().getRealDataSource());
+        List<DriverForgivenEventTotal> dfetList = eventAggregationJDBCDAO.findDriverForgivenEventTotalsByGroups(testGroupList, VALID_TEST_INTERVAL, true, true);
+
+        // then count the number of reasons found
+        int found = 0;
+        if (dfetList != null && !dfetList.isEmpty()){
+            for (DriverForgivenEventTotal df: dfetList){
+                if (df.getReasons() != null && !df.getReasons().trim().isEmpty()){
+                    found ++;
+                }
+            }
+        }
+    }
 }

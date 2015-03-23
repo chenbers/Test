@@ -46,5 +46,13 @@ public class PagingDiagnosticsEventsBean extends PagingEventsBean {
     	return EventCategory.DIAGNOSTICS;
     }
 
+    public boolean testMaintenance(List<EventCategory> CATEGORIES){
+        for (EventCategory eventCategory : CATEGORIES){
+            if (eventCategory.valueOf(eventCategory.getCode()).toString().equals("MAINTENANCE")) {
+                return false;
+            }
+        }
+        return true;
+    }
 
 }

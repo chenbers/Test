@@ -17,7 +17,7 @@ import com.inthinc.pro.model.Person;
 import com.inthinc.pro.model.RedFlagAlert;
 import com.inthinc.pro.model.Status;
 import com.inthinc.pro.model.Zone;
-@Ignore
+//@Ignore
 public class RedFlagAlertHessianDAOTest
 {
     RedFlagAlertHessianDAO redFlagAlertHessianDAO;
@@ -40,11 +40,11 @@ public class RedFlagAlertHessianDAOTest
     public void setUp() throws Exception
     {
         redFlagAlertHessianDAO = new RedFlagAlertHessianDAO();
-        redFlagAlertHessianDAO.setSiloService(new SiloServiceCreator("dev-pro.inthinc.com", 8099).getService());
+        redFlagAlertHessianDAO.setSiloService(new SiloServiceCreator("localhost", 8099).getService());
         zoneHessianDAO = new ZoneHessianDAO();
-        zoneHessianDAO.setSiloService(new SiloServiceCreator("dev-pro.inthinc.com", 8099).getService());
+        zoneHessianDAO.setSiloService(new SiloServiceCreator("localhost", 8099).getService());
         personHessianDAO = new PersonHessianDAO();
-        personHessianDAO.setSiloService(new SiloServiceCreator("dev-pro.inthinc.com", 8099).getService());
+        personHessianDAO.setSiloService(new SiloServiceCreator("localhost", 8099).getService());
         List<Person> people = personHessianDAO.getPeopleInGroupHierarchy(1);
         Person admin = null;
         for(Person person:people){

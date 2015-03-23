@@ -12,6 +12,7 @@ public enum ReportType
 {
     DRIVER_REPORT("Driver Report","DriverReport.jrxml","DriverReportRaw.jrxml"),
     VEHICLE_REPORT("Vehicle Report","VehicleReport.jrxml","VehicleReportRaw.jrxml"),
+    VEHICLE_ADMIN_REPORT("Vehicles Report","VehiclesReport.jrxml","VehiclesReportRaw.jrxml"),
     TRAILER_REPORT("Trailer Report","TrailerReport.jrxml", "TrailerReportRaw.jrxml"),
     IDLING_REPORT("Idling Report","IdlingReport.jrxml","IdlingReportRaw.jrxml"),
     IDLING_VEHICLE_REPORT("Idling Vehicle Report","IdlingVehicleReport.jrxml","IdlingVehicleReportRaw.jrxml"),
@@ -55,6 +56,7 @@ public enum ReportType
     // HOS
     HOS_DAILY_DRIVER_LOG_REPORT("HOS Daily Driver Log Report","HOSDailyDriverLog.jrxml", null, "hos", "com.inthinc.pro.reports.jasper.hos.i18n.HOSDriverDailyLog"),
     HOS_VIOLATIONS_SUMMARY_REPORT("HOS Violations Summary Report","hosViolations.jrxml", "hosViolationsRaw.jrxml", "hos", "com.inthinc.pro.reports.jasper.hos.i18n.hosViolations", null, true),
+    WEATHERFORD_HOS_VIOLATIONS_SUMMARY_REPORT("Weatherford US HOS Violations Summary Report","wthHosViolations.jrxml", "wthHosViolationsRaw.jrxml", "hos", "com.inthinc.pro.reports.jasper.hos.i18n.wthHosViolations", null, true),
     NON_DOT_VIOLATIONS_SUMMARY_REPORT("NON-DOT Violations Summary Report","nonDOTViolations.jrxml", "nonDOTViolationsRaw.jrxml", "hos", "com.inthinc.pro.reports.jasper.hos.i18n.nonDOTViolations"),
     DRIVING_TIME_VIOLATIONS_SUMMARY_REPORT("Driving Time Violations Summary Report","drivingTimeViolations.jrxml", "drivingTimeViolationsRaw.jrxml", "hos", "com.inthinc.pro.reports.jasper.hos.i18n.drivingTimeViolations"),
     HOS_VIOLATIONS_DETAIL_REPORT("HOS Violations Detail Report","hosViolationsDetail.jrxml", "hosViolationsDetailRaw.jrxml", "hos", "com.inthinc.pro.reports.jasper.hos.i18n.violationsDetail", "HOS_VIOLATIONS_DETAIL", true),
@@ -68,20 +70,24 @@ public enum ReportType
     // Performance
     PAYROLL_DETAIL("Driver Hours Report","payrollDetail.jrxml", "payrollRaw.jrxml", "performance", "com.inthinc.pro.reports.jasper.performance.i18n.payrollDetail", null, true),
     PAYROLL_SIGNOFF("Driver Hours Signoff","payrollSignOff.jrxml", "payrollRaw.jrxml", "performance", "com.inthinc.pro.reports.jasper.performance.i18n.payrollSignOff", null, true),
-    PAYROLL_SUMMARY("Driver Hours Summary","payrollSummary.jrxml", "payrollRaw.jrxml", "performance", "com.inthinc.pro.reports.jasper.performance.i18n.payrollSummary", null, true),
+    PAYROLL_SUMMARY("Driver Hours Summary","payrollSummary.jrxml", "payrollSummaryRaw.jrxml", "performance", "com.inthinc.pro.reports.jasper.performance.i18n.payrollSummary", null, true),
     PAYROLL_COMPENSATED_HOURS("Payroll Compensated Hours","payrollCompensatedHoursReport.jrxml", "payrollCompensatedHoursRaw.jrxml", "performance", "com.inthinc.pro.reports.jasper.performance.i18n.payrollReportCompensatedHours", null, true),
     
     TEN_HOUR_DAY_VIOLATIONS("Ten Hour Day Violations","tenHourDayViolations.jrxml","tenHourDayViolationsRaw.jrxml", "performance","com.inthinc.pro.reports.jasper.performance.i18n.tenHourDayViolations", null, false),
     DRIVER_HOURS("Driver Hours","driverHoursReport.jrxml","driverHoursReportRaw.jrxml", "performance","com.inthinc.pro.reports.jasper.performance.i18n.driverHours", null, false), 
+    THIRTY_MINUTE_BREAKS("30 Minute Breaks", "thirtyMinuteBreaks.jrxml", "thirtyMinuteBreaksRaw.jrxml", "performance", "com.inthinc.pro.reports.jasper.performance.i18n.thirtyMinuteBreaks", null, false),
+    TWO_HOUR_BREAKS("Break Report (0-2 hrs.)", "twoHourBreaks.jrxml", "twoHourBreaksRaw.jrxml", "performance", "com.inthinc.pro.reports.jasper.performance.i18n.twoHourBreaks", null, false),
+
     VEHICLE_USAGE("Vehicle usage","vehicleUsageReport.jrxml","vehicleUsageReportRaw.jrxml", "performance","com.inthinc.pro.reports.jasper.performance.i18n.vehicleUsageReport", null, false),
 
-    DRIVER_PERFORMANCE_KEY_METRICS("Driver Performance Key Metrics", null,"driverPerformanceKeyMetrics.jrxml", "performance","com.inthinc.pro.reports.jasper.performance.i18n.driverPerformanceKeyMetrics", null, false),
-    DRIVER_PERFORMANCE_KEY_METRICS_TF_RYG("Driver Performance Key Metrics Time Frame RYG",null,"driverPerformanceKeyMetricsRYG.jrxml", "performance","com.inthinc.pro.reports.jasper.performance.i18n.driverPerformanceKeyMetrics", null, false),
+    DRIVER_PERFORMANCE_KEY_METRICS("Driver Performance Key Metrics", "driverPerformanceKeyMetrics.jrxml","driverPerformanceKeyMetricsRaw.jrxml", "performance","com.inthinc.pro.reports.jasper.performance.i18n.driverPerformanceKeyMetrics", null, false),
+    DRIVER_PERFORMANCE_KEY_METRICS_TF_RYG("Driver Performance Key Metrics Time Frame RYG","driverPerformanceKeyMetricsRYG.jrxml","driverPerformanceKeyMetricsRYGRaw.jrxml", "performance","com.inthinc.pro.reports.jasper.performance.i18n.driverPerformanceKeyMetrics", null, false),
     DRIVER_PERFORMANCE_TEAM("Driver Performance (Team)","driverPerformanceReport.jrxml","driverPerformanceRaw.jrxml", "performance","com.inthinc.pro.reports.jasper.performance.i18n.driverPerformanceReport", null, false), 
     DRIVER_PERFORMANCE_INDIVIDUAL("Driver  Performance (Individual)","driverPerformanceReport.jrxml","driverPerformanceRaw.jrxml", "performance","com.inthinc.pro.reports.jasper.performance.i18n.driverPerformanceReport", null, false), 
     DRIVER_PERFORMANCE_RYG_TEAM("Driver Performance RYG(Team)","driverPerformanceReport.jrxml","driverPerformanceRaw.jrxml", "performance","com.inthinc.pro.reports.jasper.performance.i18n.driverPerformanceReport", null, false), 
     DRIVER_PERFORMANCE_RYG_INDIVIDUAL("Driver  Performance RYG(Individual)","driverPerformanceReport.jrxml","driverPerformanceRaw.jrxml", "performance","com.inthinc.pro.reports.jasper.performance.i18n.driverPerformanceReport", null, false), 
     BACKING_REPORT("Back-Up Events Report","backingReport.jrxml","backingReportRaw.jrxml","performance","com.inthinc.pro.reports.jasper.performance.i18n.backingReport"),
+    FIRST_MOVE_FORWARD_REPORT("First Move Forward Violation Report","firstMoveForwardReport.jrxml","firstMoveForwardReportRaw.jrxml","performance","com.inthinc.pro.reports.jasper.performance.i18n.firstMoveForwardReport"),
 
     // ASSET
     WARRANTY_LIST("Warranty List","warrantyListReport.jrxml","warrantyListReportRaw.jrxml", "performance","com.inthinc.pro.reports.jasper.asset.i18n.warrantyList", null, false),
@@ -92,6 +98,7 @@ public enum ReportType
     //DEVON ENERGY CORP
     DRIVER_EXCLUDED_VIOLATIONS("Driver Excluded Violations","driverExcludedViolationsReport.jrxml","driverExcludedViolationsReportRaw.jrxml","performance","com.inthinc.pro.reports.jasper.performance.i18n.driverExcludedViolationsReport"),
     DRIVER_COACHING("Driver Coaching Report","driverCoachingReport.jrxml","driverCoachingReport.jrxml", "performance","com.inthinc.pro.reports.jasper.performance.i18n.driverCoachingReport", null, false),
+    DRIVER_COACHING_SCORE("Driver Coaching and Score Report","driverCoachingScoreReport.jrxml","driverCoachingScoreReport.jrxml", "performance","com.inthinc.pro.reports.jasper.performance.i18n.driverCoachingScoreReport", null, false),
     //FORMS
     DVIR_PRETRIP("Driver Vehicle Inspection Reports - PreTrip","driverVehiclePreTripInspectionReport.jrxml","driverVehiclePreTripInspectionReport.jrxml","forms"),
     DVIR_POSTTRIP("Driver Vehicle Inspection Reports - PostTrip","driverVehiclePostTripInspectionReport.jrxml","driverVehiclePostTripInspectionReport.jrxml","forms"),
@@ -99,8 +106,12 @@ public enum ReportType
     //DVIR
     DVIR_VIOLATION("Driver Vehicle Inspection Reports - Violations","driverVehicleViolationInspectionReport.jrxml","driverVehicleViolationInspectionReport.jrxml","dvir"),
     DVIR_REPAIR("Driver Vehicle Inspeciton Reports - Inspection Repair Complete", "driverVehicleInspectionRepairComplete.jrxml","driverVehicleInspectionRepairComplete.jrxml","dvir"),
-    DVIR_REPAIR_DETAIL("Driver Vehicle Inspeciton Reports - Inspection Repair Complete With Details", "driverVehicleInspectionRepairCompleteDetailed.jrxml","driverVehicleInspectionRepairCompleteDetailed.jrxml","dvir");
-    
+    DVIR_REPAIR_DETAIL("Driver Vehicle Inspeciton Reports - Inspection Repair Complete With Details", "driverVehicleInspectionRepairCompleteDetailed.jrxml","driverVehicleInspectionRepairCompleteDetailed.jrxml","dvir"),
+
+    //MAINTENANCE
+    VEHICLE_MAINTENANCE_EVENTS_REPORT("Vehicle Maintenance Events Report","vehicleMaintenanceEventsReport.jrxml","vehicleMaintenanceEventsReportRaw.jrxml", "performance","com.inthinc.pro.reports.jasper.performance.i18n.maintenanceEventsReport"),
+    VEHICLE_MAINTENANCE_INTERVAL_REPORT("Vehicle Maintenance Interval Report","vehicleMaintenanceIntervalReport.jrxml","vehicleMaintenanceIntervalReportRaw.jrxml", "performance","com.inthinc.pro.reports.jasper.performance.i18n.maintenanceIntervalReport");
+
     private String prettyTemplate;
     private String rawTemplate;
     private String label;

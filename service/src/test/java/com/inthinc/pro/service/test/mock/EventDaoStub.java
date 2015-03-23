@@ -130,7 +130,7 @@ public class EventDaoStub implements EventDAO {
     }
 
     @Override
-    public Integer forgive(Integer driverID, Long noteID) {
+    public Integer forgive(Integer driverID, Long noteID, Long forgivenByUserID, String reason) {
         // TODO Auto-generated method stub
         return null;
     }

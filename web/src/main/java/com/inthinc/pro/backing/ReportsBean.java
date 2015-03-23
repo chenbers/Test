@@ -76,7 +76,7 @@ public abstract class ReportsBean extends BaseBean {
         boolean ryg = false;
         switch (reportGroup.getReports()[0]) {
             case SEATBELT_CLICKS_REPORT:
-                reportCriteriaList.add(getReportCriteriaService().getSeatbeltClicksReportCriteria(getAccountGroupHierarchy(),params.getGroupID(),params.getTimeFrameSelect().getTimeFrame(), getLocale(), getDateTimeZone(), getUser().getPerson().getMeasurementType(), params.isIncludeInactiveDrivers(), params.isIncludeZeroMilesDrivers()));
+                reportCriteriaList.add(getReportCriteriaService().getSeatbeltClicksReportCriteria(getAccountGroupHierarchy(),params.getGroupID(),params.getTimeFrameSelect().getTimeFrame(),params.getDateRange().getInterval(), getLocale(), getDateTimeZone(), getUser().getPerson().getMeasurementType(), params.isIncludeInactiveDrivers(), params.isIncludeZeroMilesDrivers()));
                 break;
             case HOS_DAILY_DRIVER_LOG_REPORT:
                 if (params.getParamType() == ReportParamType.DRIVER )
@@ -88,7 +88,8 @@ public abstract class ReportsBean extends BaseBean {
                     									params.getLocale(), 
                     									getUser().getPerson().getMeasurementType() == MeasurementType.METRIC,
                     									getDateTimeZone(),
-                    									params.isIncludeInactiveDrivers()));
+                    									params.isIncludeInactiveDrivers(),
+                                                        params.isHosDriversOnly()));
                 else
                     reportCriteriaList.addAll(getReportCriteriaService()
                     							.getHosDailyDriverLogReportCriteria(
@@ -98,10 +99,15 @@ public abstract class ReportsBean extends BaseBean {
                     									params.getLocale(), 
                     									getUser().getPerson().getMeasurementType() == MeasurementType.METRIC,
                                                         getDateTimeZone(),
-                    									params.isIncludeInactiveDrivers()));
+                    									params.isIncludeInactiveDrivers(),
+                                                        params.isHosDriversOnly()));
                 break;
             case HOS_VIOLATIONS_SUMMARY_REPORT:
                 reportCriteriaList.add(getReportCriteriaService().getHosViolationsSummaryReportCriteria(getAccountGroupHierarchy(), params.getGroupIDList(), params.getDateRange().getInterval(), 
+                        params.getLocale()));
+                break;
+            case WEATHERFORD_HOS_VIOLATIONS_SUMMARY_REPORT:
+                reportCriteriaList.add(getReportCriteriaService().getWthHosViolationsSummaryReportCriteria(getAccountGroupHierarchy(), params.getGroupIDList(), params.getDateRange().getInterval(),
                         params.getLocale()));
                 break;
             case HOS_VIOLATIONS_DETAIL_REPORT:
@@ -162,11 +168,11 @@ public abstract class ReportsBean extends BaseBean {
                 break;
             
             case TEN_HOUR_DAY_VIOLATIONS:
-                reportCriteriaList.add(getReportCriteriaService().getTenHoursDayViolationsCriteria(getAccountGroupHierarchy(), params.getGroupID(), params.getDateRange().getInterval(),  
+                reportCriteriaList.add(getReportCriteriaService().getTenHoursDayViolationsCriteria(getAccountGroupHierarchy(), params.getGroupID(), params.getDateRange().getInterval(),
                         params.getLocale(), params.isIncludeInactiveDrivers(), params.isIncludeZeroMilesDrivers()));
                 break;
             case PAYROLL_SUMMARY:
-                reportCriteriaList.add(getReportCriteriaService().getPayrollSummaryReportCriteria(getAccountGroupHierarchy(), params.getGroupIDList(), params.getDateRange().getInterval(),  
+                reportCriteriaList.add(getReportCriteriaService().getPayrollSummaryReportCriteria(getAccountGroupHierarchy(), params.getGroupIDList(), params.getDateRange().getInterval(),
                         params.getLocale(), params.isIncludeInactiveDrivers()));
                 break;
             case PAYROLL_COMPENSATED_HOURS:
@@ -189,6 +195,14 @@ public abstract class ReportsBean extends BaseBean {
             case DRIVER_HOURS:
                 reportCriteriaList.add(getReportCriteriaService().getDriverHoursReportCriteria(getAccountGroupHierarchy(), params.getGroupIDList(), params.getDateRange().getInterval(),
                         params.getLocale(), params.isIncludeInactiveDrivers(), params.isIncludeZeroMilesDrivers()));
+                break;
+            case THIRTY_MINUTE_BREAKS:
+                reportCriteriaList.add(getReportCriteriaService().getThirtyMinuteBreaksReportCriteria(getAccountGroupHierarchy(), params.getGroupIDList(), params.getDateRange().getInterval(),  
+                        params.getLocale(), params.isIncludeInactiveDrivers()));
+                break;
+            case TWO_HOUR_BREAKS:
+                reportCriteriaList.add(getReportCriteriaService().getTwoHourBreaksReportCriteria(getAccountGroupHierarchy(), params.getGroupIDList(), params.getDateRange().getInterval(),
+                        params.getLocale(), params.isIncludeInactiveDrivers()));
                 break;
                 
             case VEHICLE_USAGE:
@@ -258,7 +272,7 @@ public abstract class ReportsBean extends BaseBean {
                 reportCriteriaList.add(getReportCriteriaService().getDriverPerformanceKeyMetricsTimeFrameReportCriteria(getAccountGroupHierarchy(), params.getGroupIDList(), params.getTimeFrameSelect().getTimeFrame(), params.getDateRange().getInterval(), params.getLocale(), getUser().getPerson().getMeasurementType(), params.isIncludeInactiveDrivers(), params.isIncludeZeroMilesDrivers()));
                 break;
             case TEAM_STOPS_REPORT:
-                reportCriteriaList.add(getReportCriteriaService().getTeamStopsReportCriteriaByGroup(getAccountGroupHierarchy(),params.getGroupIDList(), params.getTimeFrameSelect().getTimeFrame(), 
+                reportCriteriaList.add(getReportCriteriaService().getTeamStopsReportCriteriaByGroup(params.getDateRange().getInterval(),getAccountGroupHierarchy(),params.getGroupIDList(), params.getTimeFrameSelect().getTimeFrame(),
                         getDateTimeZone(), getLocale()));
                 break;    
             case DRIVER_COACHING:
@@ -268,12 +282,20 @@ public abstract class ReportsBean extends BaseBean {
                 if (params.getParamType().equals(ReportParamType.GROUPS)){
                     reportCriteriaList.addAll(getReportCriteriaService().getDriverCoachingReportCriteriaByGroup(getAccountGroupHierarchy(),params.getGroupID(),  params.getDateRange().getInterval(), getLocale(),getDateTimeZone(), params.isIncludeInactiveDrivers(), params.isIncludeZeroMilesDrivers()));
                 }
+                break; 
+            case DRIVER_COACHING_SCORE:
+                if (params.getParamType().equals(ReportParamType.DRIVER)){
+                    reportCriteriaList.add(getReportCriteriaService().getDriverCoachingScoreReportCriteriaByDriver(getAccountGroupHierarchy(),params.getDriverID(),params.getDateRange().getInterval(), getLocale(),getDateTimeZone(), params.isIncludeInactiveDrivers(), params.isIncludeZeroMilesDrivers()));
+                }
+                if (params.getParamType().equals(ReportParamType.GROUPS)){
+                    reportCriteriaList.addAll(getReportCriteriaService().getDriverCoachingScoreReportCriteriaByGroup(getAccountGroupHierarchy(),params.getGroupID(),  params.getDateRange().getInterval(), getLocale(),getDateTimeZone(), params.isIncludeInactiveDrivers(), params.isIncludeZeroMilesDrivers()));
+                }
                 break;
             case DRIVER_EXCLUDED_VIOLATIONS:
                 reportCriteriaList.add(getReportCriteriaService().getDriverExcludedViolationCriteria(getAccountGroupHierarchy(),params.getGroupID(),params.getDateRange().getInterval(), getLocale(),getDateTimeZone(), params.isIncludeInactiveDrivers(), params.isIncludeZeroMilesDrivers()));
                 break;
             case NON_COMM:
-                reportCriteriaList.add(getReportCriteriaService().getNonCommReportCriteria(getAccountGroupHierarchy(),params.getGroupID(),params.getTimeFrameSelect().getTimeFrame(), getLocale(),getDateTimeZone()));
+                reportCriteriaList.add(getReportCriteriaService().getNonCommReportCriteria(getAccountGroupHierarchy(),params.getGroupID(),params.getTimeFrameSelect().getTimeFrame(),params.getDateRange().getInterval(), getLocale(),getDateTimeZone(),params.isDontIncludeUnassignedDevice()));
                 break;
             case DVIR_PRETRIP:
                 reportCriteriaList.add(getReportCriteriaService().getDVIRPreTripReportCriteria(getAccountGroupHierarchy(),params.getGroupID(),params.getTimeFrameSelect().getTimeFrame(), getLocale(),getDateTimeZone()));
@@ -285,10 +307,26 @@ public abstract class ReportsBean extends BaseBean {
                 reportCriteriaList.add(getReportCriteriaService().getDVIRViolationReportCriteria(getAccountGroupHierarchy(),params.getGroupID(),params.getTimeFrameSelect().getTimeFrame(), getLocale(),getDateTimeZone()));
                 break;
             case BACKING_REPORT:
-                reportCriteriaList.add(getReportCriteriaService().getBackingReportCriteria(getAccountGroupHierarchy(), 
-                        params.getGroupID(),params.getTimeFrameSelect().getTimeFrame(), getLocale(), getDateTimeZone(), 
+                reportCriteriaList.add(getReportCriteriaService().getBackingReportCriteria(params.getDateRange().getInterval(),getAccountGroupHierarchy(),
+                        params.getGroupID(),params.getTimeFrameSelect().getTimeFrame(), getLocale(), getDateTimeZone(),
                         getUser().getPerson().getMeasurementType(), params.isIncludeInactiveDrivers(), 
                         params.isIncludeZeroMilesDrivers()));
+                break;
+            case FIRST_MOVE_FORWARD_REPORT:
+                reportCriteriaList.add(getReportCriteriaService().getFirstMoveForwardCriteria(params.getDateRange().getInterval(),getAccountGroupHierarchy(),
+                        params.getGroupID(),params.getTimeFrameSelect().getTimeFrame(), getLocale(), getDateTimeZone(),
+                        getUser().getPerson().getMeasurementType(), params.isIncludeInactiveDrivers(),
+                        params.isIncludeZeroMilesDrivers()));
+                break;
+            case VEHICLE_MAINTENANCE_EVENTS_REPORT:
+                reportCriteriaList.add(getReportCriteriaService().getMaintenanceEventsReportCriteria(getAccountGroupHierarchy(),
+                        params.getGroupIDList(),params.getDateRange().getInterval(), getLocale(), getDateTimeZone(),
+                        getUser().getPerson().getMeasurementType()));
+                break;
+            case VEHICLE_MAINTENANCE_INTERVAL_REPORT:
+                reportCriteriaList.add(getReportCriteriaService().getMaintenanceIntervalReportCriteria(getAccountGroupHierarchy(),
+                        params.getGroupIDList(),params.getDateRange().getInterval(), getLocale(), getDateTimeZone(),
+                        getUser().getPerson().getMeasurementType()));
                 break;
             default:
                 break;
@@ -393,9 +431,12 @@ public abstract class ReportsBean extends BaseBean {
         
         String output = reportRenderer.exportReportToString(reportCriteriaList, FormatType.HTML, getFacesContext());
         if (output != null) {
+            int ifIeIndex = output.lastIndexOf("<![if IE]>");
+            if (ifIeIndex != -1) {
+                output = output.substring(0, ifIeIndex);
+            }
             setHtml(output);
         }
-      
     }
 
     public void tabular()

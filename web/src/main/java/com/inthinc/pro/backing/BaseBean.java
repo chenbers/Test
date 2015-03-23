@@ -200,6 +200,7 @@ public class BaseBean implements Serializable {
         
         return noReplyEmailAddress;
     }
+    
     public List<String> getEmailAddressList() {
         String[] emails = getEmailAddress().split(",");
         return Arrays.asList(emails);
@@ -272,21 +273,44 @@ public class BaseBean implements Serializable {
         String waySmart = getProUser().getAccountAttributes().getWaySmart();
         return (waySmart == null) ? false : Boolean.valueOf(waySmart); 
     }
+    
     public boolean getAccountIsRHAEnabled() {
         String rhaEnabled = getProUser().getAccountAttributes().getRhaEnabled();
         return (rhaEnabled == null) ? false : Boolean.valueOf(rhaEnabled); 
     }
+    
     public boolean getAccountIsFormsEnabled() {
         String formsEnabled = getProUser().getAccountAttributes().getFormsEnabled();
         return (formsEnabled == null) ? false : Boolean.valueOf(formsEnabled); 
     }
+    
     public boolean getAccountIsDriveTimeViolationsReportEnabled() {
         return Boolean.valueOf(getProUser().getAccountAttributes().getDriveTimeViolationsReportEnabled()); 
     }
+    
     public boolean getAccountIsTrailersEnabled() {
         String trailersEnabled = getProUser().getAccountAttributes().getTrailersEnabled();
         return (trailersEnabled == null) ? false : Boolean.valueOf(trailersEnabled); 
     }
+    
+    public boolean getAccountIsMaintenance() {
+        String maintenanceEnabled = getProUser().getAccountAttributes().getMaintenanceEnabled();
+        return (maintenanceEnabled == null || maintenanceEnabled.equals("false")) ? false : true;
+    }
+
+    public boolean getWeatherfordViolationsReport(){
+        String weatherfordVilationsReportEnabled = getProUser().getAccountAttributes().getWeatherfordViolationsReportEnabled();
+        return (weatherfordVilationsReportEnabled == null || weatherfordVilationsReportEnabled.equals("false")) ? false : true;
+    }
+    
+    public boolean isAccountRedirectVehicleAdmin() {
+        return getProUser().getAccountAttributes().getRedirectVehiclesAssets().equals("ASSETS");
+    }
+    
+    public boolean getAccountIsAssetsEnabled() {
+        return (getAccountIsTrailersEnabled() || getAccountIsMaintenance() || isAccountRedirectVehicleAdmin()) ? true : false;
+    }
+    
     private static final int MILLIS_PER_MINUTE = 1000 * 60;
     private static final int MILLIS_PER_HOUR = MILLIS_PER_MINUTE * 60;
     public String getTimeZoneDisplayName(TimeZone timeZone) {

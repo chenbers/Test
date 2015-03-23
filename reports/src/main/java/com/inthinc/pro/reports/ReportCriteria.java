@@ -1,5 +1,6 @@
 package com.inthinc.pro.reports;
 
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -42,6 +43,9 @@ public class ReportCriteria
     private TimeZone timeZone;
     private Boolean includeInactiveDrivers = DEFAULT_EXCLUDE_INACTIVE_DRIVERS;
     private Boolean includeZeroMilesDrivers = DEFAULT_EXCLUDE_ZERO_MILES_DRIVERS;
+    private Boolean dontIncludeUnassignedDevice = DEFAULT_EXCLUDE_ZERO_MILES_DRIVERS;
+    private Boolean hosDriversOnly = DEFAULT_HOS_DRIVERS_ONLY;
+
 
     private static final String INTHINC_NAME = "Inthinc";
     private static final String REPORT_DATE_STRING = "REPORT_DATE_AS_STRING";
@@ -62,6 +66,7 @@ public class ReportCriteria
     public static final String USER_TIME_ZONE = "USER_TIME_ZONE";
 
     public static final boolean DEFAULT_EXCLUDE_INACTIVE_DRIVERS = false;
+    public static final boolean DEFAULT_HOS_DRIVERS_ONLY = false;
     public static final boolean DEFAULT_EXCLUDE_ZERO_MILES_DRIVERS = false;
     public static final boolean DEFAULT_INCLUDE_INACTIVE_DRIVERS = true;
     public static final boolean DEFAULT_INCLUDE_ZERO_MILES_DRIVERS = true;
@@ -327,6 +332,12 @@ public class ReportCriteria
 		this.timeFrame = timeFrame;
 	}
 
+    public void setTimeFrame(TimeFrame timeFrame, Interval interval) {
+        DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
+        paramMap.put("TIME_FRAME", df.format(interval.getStart().toDate()) + " - " + df.format(interval.getEnd().toDate()));
+        this.timeFrame = timeFrame;
+    }
+
     public TimeZone getTimeZone() {
         return timeZone;
     }
@@ -349,8 +360,33 @@ public class ReportCriteria
     public void setIncludeZeroMilesDrivers(Boolean includeZeroMilesDrivers) {
         this.includeZeroMilesDrivers = includeZeroMilesDrivers;
     }
+
+    public Boolean getDontIncludeUnassignedDevice() {
+        return dontIncludeUnassignedDevice;
+    }
+
+    public void setDontIncludeUnassignedDevice(Boolean dontIncludeUnassignedDevice) {
+        this.dontIncludeUnassignedDevice = dontIncludeUnassignedDevice;
+    }
+
     public void addReportStartEndDateParams(Interval interval) {
         addParameter(REPORT_START_DATE, startEndDateTimeFormatter.withLocale(locale).print(interval.getStart()));
         addParameter(REPORT_END_DATE, startEndDateTimeFormatter.withLocale(locale).print(interval.getEnd()));
+    }
+    
+    /*
+     * Converts a string representation of a number
+     * to an integer with rounding
+     */
+    protected static Integer stringToInt(String string) {
+        return string != null ? Math.round(Float.parseFloat(string)) : null;
+    }
+
+    public Boolean getHosDriversOnly() {
+        return hosDriversOnly;
+    }
+
+    public void setHosDriversOnly(Boolean hosDriversOnly) {
+        this.hosDriversOnly = hosDriversOnly;
     }
 }

@@ -32,12 +32,11 @@
             <!-- Data -->
             <rich:column id="mapColumn" style="text-align: center;">
                 <h:graphicImage value="/images/ico_map.png" id="mapIcon" styleClass="clickable-map-icon">
-                    <rich:componentControl for="eventLocationModal" event="onclick" disableDefault="true" operation="show">
+                    <rich:componentControl for="eventLocationModal" event="onclick" disableDefault="true" operation="show" rendered="#{event.correctLocation}">
                         <f:param name="lat" value="#{event.latitude}" />
                         <f:param name="lng" value="#{event.longitude}" />
                   		<f:param name="zonePoints" value="#{event.zonePointsStr}" />
                   		<f:param name="noteID" value="noteID#{event.noteID}" />
-                        
                     </rich:componentControl>
                 </h:graphicImage>
 		  		<ui:include src="/includes/addressToolTip.xhtml">	
@@ -68,7 +67,13 @@
                 	</h:panelGrid>
 				</div>
             </rich:column>
-             
+            <rich:column id="address_test" rendered="#{tableColumns['address'].visible}">
+                <f:facet name="header">
+                    <h:outputText value="#{messages.notes_address}" />
+                </f:facet>
+                <h:outputText value="#{event.latLng}" converter="#{latLngAddressGoogleConverter}">
+                </h:outputText>
+            </rich:column>
             <rich:column id="date" rendered="#{tableColumns['date'].visible}" sortBy="#{event.time}"  sortOrder="DESCENDING">
                 <f:facet name="header">
                     <h:outputText value="#{messages.notes_date}" />

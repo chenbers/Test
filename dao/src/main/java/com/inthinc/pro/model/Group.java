@@ -46,6 +46,8 @@ public class Group extends BaseEntity implements HasAccountId
     private String   path;
     private String aggDate;
 
+    @Column(name = "glcode")
+    private String glCode;
 
 	public Group()
     {
@@ -284,6 +286,14 @@ public class Group extends BaseEntity implements HasAccountId
         return "Group [accountID=" + accountID + ", description=" + description + ", groupID=" + groupID + ", managerID=" + managerID + ", mapLat=" + mapLat + ", mapLng=" + mapLng + ", mapZoom="
                 + mapZoom + ", name=" + name + ", parentID=" + parentID + ", status=" + status + ", type=" + type + ", zoneRev=" + zoneRev + "dotOfficeType="+dotOfficeType+", addressID"+addressID+"]";
     }
+
+	public String getGlCode() {
+		return glCode;
+	}
+
+	public void setGlCode(String glCode) {
+		this.glCode = glCode;
+	}
 
     
 }

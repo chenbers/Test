@@ -250,4 +250,57 @@ public class Account extends BaseEntity implements Comparable<Account>, HasAccou
         
     }
 
+    public Boolean hasMaintenanceEnabled() {
+        AccountAttributes options = getProps();
+        if (options == null)
+            return false;
+
+        String maintenanceEnabled = options.getMaintenanceEnabled();
+        if (maintenanceEnabled == null)
+            return false;
+
+        return Boolean.valueOf(maintenanceEnabled);
+
+    }
+
+
+    public Boolean hasWeatherfordViolationsReportEnabled() {
+        AccountAttributes options = getProps();
+        if (options == null)
+            return false;
+
+        String weatherfordReportEnabled = options.getWeatherfordViolationsReportEnabled();
+        if (weatherfordReportEnabled == null)
+            return false;
+
+        return Boolean.valueOf(weatherfordReportEnabled);
+
+    }
+
+    public String getRedirectVehiclesAssetsValue() {
+        AccountAttributes options = getProps();
+        if (options == null)
+            return "NONE";
+
+        String redirectVehiclesAssetsValue = options.getRedirectVehiclesAssets();
+        if (redirectVehiclesAssetsValue == null)
+            return "NONE";
+
+        return redirectVehiclesAssetsValue;
+
+    }
+
+    public Boolean hasSbsAccessEnabled() { // Speed-By-Street access
+        AccountAttributes options = getProps();
+        if (options == null)
+            return false;
+
+        String sbsEnabled = options.getSbsAccessEnabled();
+        if (sbsEnabled == null)
+            return false;
+
+        return Boolean.valueOf(sbsEnabled);
+
+    }
+
 }

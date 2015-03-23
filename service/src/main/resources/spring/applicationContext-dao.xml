@@ -38,8 +38,18 @@
 	   <property name="removeAbandoned" value="${jdbc.dbcp.removeAbandoned}"/>
 	   <property name="logAbandoned" value="${jdbc.dbcp.logAbandoned}"/>
 	</bean>
-	
-	
+
+    <bean id="cassandraDB" class="com.inthinc.pro.dao.cassandra.CassandraDB">
+        <constructor-arg index="0" value="${cassandra.active}" />
+        <constructor-arg index="1" value="${cassandra.clusterName}" />
+        <constructor-arg index="2" value="${cassandra.keyspaceName}" />
+        <constructor-arg index="3" value="${cassandra.cacheKeyspaceName}" />
+        <constructor-arg index="4" value="${cassandra.nodeAddress}" />
+        <constructor-arg index="5" value="${cassandra.maxActive}" />
+        <constructor-arg index="6" value="${cassandra.autoDiscoverHost}" />
+        <constructor-arg index="7" value="${cassandra.quorumConsistency}" />
+    </bean>
+
 	<!--
 		<bean id="mcmServiceCreator" class="com.inthinc.pro.dao.hessian.proserver.MCMServiceCreator"> <constructor-arg value="${proxy.mcmDataAccessHost}" /> <constructor-arg
 		value="${proxy.mcmDataAccessPort}" /> </bean>
@@ -57,9 +67,18 @@
     <bean id="genericJDBCDAO" class="com.inthinc.pro.dao.jdbc.GenericJDBCDAO" abstract="true">
         <property name="dataSource" ref="tiwiJDBCDataSource" />
     </bean>
+    <bean id="genericCassandraDAO" class="com.inthinc.pro.dao.cassandra.GenericCassandraDAO" abstract="true">
+        <property name="cassandraDB" ref="cassandraDB" />
+    </bean>
 	<bean id="abstractReportDAO" class="com.inthinc.pro.dao.hessian.report.AbstractReportHessianDAO" abstract="true">
 		<property name="reportService" ref="reportServiceBean" />
 	</bean>
+    <bean id="rawScoreDAO" class="com.inthinc.pro.dao.hessian.RawScoreHessianDAO">
+        <property name="reportService" ref="reportServiceBean"/>
+    </bean>
+    <bean id="adminVehicleJDBCDAO" class="com.inthinc.pro.dao.jdbc.AdminVehicleJDBCDAO" parent="genericJDBCDAO"></bean>
+    <bean id="eventStatisticsDAO" class="com.inthinc.pro.dao.jdbc.EventStatisticsJDBCDAO" parent="genericJDBCDAO"></bean>
+
 	<bean id="accountDAO" class="com.inthinc.pro.dao.hessian.AccountHessianDAO" parent="genericDAO"></bean>
 	<bean id="userDAO" class="com.inthinc.pro.dao.hessian.UserHessianDAO" parent="genericDAO"></bean>
 	<bean id="personDAO" class="com.inthinc.pro.dao.hessian.PersonHessianDAO" parent="genericDAO"></bean>
@@ -86,7 +105,9 @@
 	<bean id="stateDAO" class="com.inthinc.pro.dao.hessian.StateHessianDAO" parent="genericDAO"></bean>
 	<bean id="timeZoneDAO" class="com.inthinc.pro.dao.hessian.TimeZoneHessianDAO" parent="genericDAO"></bean>
 	<bean id="reportScheduleDAO" class="com.inthinc.pro.dao.hessian.ReportScheduleHessianDAO" parent="genericDAO"></bean>
-	<bean id="addressDAO" class="com.inthinc.pro.dao.jdbc.AddressJDBCDAO"></bean>
+    <bean id="addressDAO" class="com.inthinc.pro.dao.jdbc.AddressJDBCDAO">
+        <property name="dataSource" ref="tiwiJDBCDataSource" />
+    </bean>
 	<bean id="crashReportDAO" class="com.inthinc.pro.dao.hessian.CrashReportHessianDAO" parent="genericDAO" />
 	<bean id="driverReportDAO" class="com.inthinc.pro.dao.hessian.report.DriverReportHessianDAO" parent="abstractReportDAO" />
 	<bean id="vehicleReportDAO" class="com.inthinc.pro.dao.hessian.report.VehicleReportHessianDAO" parent="abstractReportDAO" />
@@ -99,6 +120,9 @@
 	<bean id="phoneControlDAO" class="com.inthinc.pro.dao.hessian.PhoneControlHessianDAO" parent="genericDAO"></bean>
 	<bean id="superuserDAO" class="com.inthinc.pro.dao.hessian.SuperuserHessianDAO" parent="genericDAO"></bean>
 
+   	<bean id="fipsDAO" class="com.inthinc.pro.dao.jdbc.FipsJDBCDAO">
+        <property name="dataSource" ref="tiwiJDBCDataSource" />
+    </bean>
 
     <!-- Address Lookup -->
 	<bean id="geonamesAddressLookupBean" class="com.inthinc.pro.map.GeonamesAddressLookup">
@@ -106,5 +130,9 @@
 	</bean>
 	<bean id="googleAddressLookupBean" class="com.inthinc.pro.map.GoogleAddressLookup">
 	</bean>
+
+    <bean id="locationCassandraDAO" class="com.inthinc.pro.dao.cassandra.LocationCassandraDAO">
+        <property name="eventDAO" ref="eventDAO"/>
+    </bean>
 
 </beans>

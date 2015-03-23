@@ -10,6 +10,7 @@ import java.util.List;
 import mockit.Expectations;
 import mockit.Mocked;
 
+import mockit.NonStrictExpectations;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -38,8 +39,9 @@ public class VehicleDAOAdapterTest {
 	private final Integer DRIVER_ID = new Integer(4);
 	private final Vehicle vehicle = new Vehicle();
 	private final String VIN = "VIN";
+    private final String NAME = "NAME";
 
-	@Mocked(methods = {"getGroupID"})	
+	@Mocked(methods = {"getGroupID", "getAccountID"})
 	private VehicleDAOAdapter adapterSUT; 
 	
 	@Mocked private VehicleDAO vehicleDAOMock;
@@ -113,6 +115,18 @@ public class VehicleDAOAdapterTest {
 		}};
 		assertEquals(adapterSUT.findByVIN(VIN), vehicle);
 	}
+
+
+    @Test
+    public void testFindByName(){
+		new NonStrictExpectations(){{
+			adapterSUT.getAccountID(); returns(1);
+		}};
+        new Expectations(){{
+            vehicleDAOMock.findByName(1, NAME); returns(vehicle);
+        }};
+        assertEquals(adapterSUT.findByName(NAME), vehicle);
+    }
 
 	@Test
 	public void testGetEvents(){

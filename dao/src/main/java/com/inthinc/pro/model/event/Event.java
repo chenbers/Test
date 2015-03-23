@@ -28,6 +28,7 @@ public class Event extends BaseEntity implements Comparable<Event>, Serializable
     private static final long serialVersionUID = 1L;
 
     private Long noteID;
+    private String deviceName;
 
     private Integer forgiven = 0;
     private Integer flags;
@@ -80,6 +81,9 @@ public class Event extends BaseEntity implements Comparable<Event>, Serializable
     @EventAttrID(name="SPEED_LIMIT")
     private Integer speedLimit;
     private Map<Object, Object> attrMap;
+
+    @Column(name = "attribs")
+    private String attribs ;
     
     @SuppressWarnings("unused")
     private String eventTypeString;    
@@ -444,5 +448,73 @@ public class Event extends BaseEntity implements Comparable<Event>, Serializable
     
     public EventAttr[] getEventAttrList() {
         return null;
+    }
+
+    public String getAttribs() {
+        return attribs;
+    }
+
+    public void setAttribs(String attribs) {
+        this.attribs = attribs;
+    }
+
+    public String getDeviceName() {
+        return deviceName;
+    }
+
+    public void setDeviceName(String deviceName) {
+        this.deviceName = deviceName;
+    }
+
+    public Boolean getCorrectLocation(){
+        return (latitude != null && !latitude.equals(0.0)) || (longitude != null && !longitude.equals(0.0));
+    }
+
+    @XmlElement
+    public String getStartTime() {
+        String startTime="";
+        try {
+            Map<Object, Object> attrMap = getAttrMap();
+            if (attrMap != null && attrMap.isEmpty()) {
+                if (attrMap.containsKey(EventAttr.START_TIME)) {
+                    startTime = attrMap.get(EventAttr.START_TIME).toString();
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return startTime;
+    }
+
+    @XmlElement
+    public String getStopTime() {
+        String stopTime = "";
+        try {
+            Map<Object, Object> attrMap = getAttrMap();
+            if (attrMap != null && attrMap.isEmpty()) {
+                if (attrMap.containsKey(EventAttr.STOP_TIME)) {
+                    stopTime = attrMap.get(EventAttr.STOP_TIME).toString();
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return stopTime;
+    }
+    
+    public String getAttrByType(EventAttr type) {
+        String attr = "";
+        try {
+            Map<Object, Object> attrMap = getAttrMap();
+            if (attrMap != null && attrMap.isEmpty()) {
+                if (attrMap.containsKey(type)) {
+                    attr = attrMap.get(type).toString();
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return attr;
+        
     }
 }

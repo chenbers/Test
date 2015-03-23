@@ -3,6 +3,7 @@ package com.inthinc.pro.dao.hessian.report;
 import java.util.Collections;
 import java.util.List;
 
+import com.inthinc.pro.model.CustomDuration;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
@@ -68,10 +69,30 @@ public class GroupReportHessianDAO extends AbstractReportHessianDAO implements G
     }
 
     @Override
+    public List<GroupTrendWrapper> getSubGroupsAggregateDriverTrends(Integer groupID, CustomDuration customDuration, GroupHierarchy gh) {
+        logger.debug("getSubGroupsAggregateDriverTrends start end: " + groupID);
+        try {
+            return mapper.convertToModelObject(reportService.getSDTrendsByGTC(groupID, customDuration.getCode(), customDuration.getDvqCount()), GroupTrendWrapper.class);
+        } catch (EmptyResultSetException e) {
+            return null;
+        }
+    }
+
+    @Override
     public List<GroupScoreWrapper> getSubGroupsAggregateDriverScores(Integer groupID, Duration duration, GroupHierarchy gh) {
     	logger.debug("getSubGroupsAggregateDriverTrends duration: " + groupID);
         try {
             return mapper.convertToModelObject(reportService.getSDScoresByGT(groupID, duration.getCode()), GroupScoreWrapper.class);
+        } catch (EmptyResultSetException e) {
+            return null;
+        }
+    }
+
+    @Override
+    public List<GroupScoreWrapper> getSubGroupsAggregateDriverScores(Integer groupID, CustomDuration customDuration, GroupHierarchy gh) {
+        logger.debug("getSubGroupsAggregateDriverTrends duration: " + groupID);
+        try {
+            return mapper.convertToModelObject(reportService.getSDScoresByGT(groupID, customDuration.getCode()), GroupScoreWrapper.class);
         } catch (EmptyResultSetException e) {
             return null;
         }
@@ -113,7 +134,12 @@ public class GroupReportHessianDAO extends AbstractReportHessianDAO implements G
     public List<DriverVehicleScoreWrapper> getDriverScores(Integer groupID, Duration duration, GroupHierarchy gh) {
         return getDriverScores(groupID, duration.getDvqCode(), gh);
     }
-    
+
+    @Override
+    public List<DriverVehicleScoreWrapper> getDriverScores(Integer groupID, CustomDuration customDuration, GroupHierarchy gh) {
+        return getDriverScores(groupID, customDuration.getDvqCode(), gh);
+    }
+
     @Override
     public List<DriverVehicleScoreWrapper> getDriverScores(Integer groupID, DateTime day, GroupHierarchy gh) {
         //The hessian method being called requires two params, both should be the same midnight value of the day you are trying to indicate.
@@ -156,6 +182,11 @@ public class GroupReportHessianDAO extends AbstractReportHessianDAO implements G
     @Override
     public List<DriverVehicleScoreWrapper> getVehicleScores(Integer groupID, Duration duration, GroupHierarchy gh) {
     	return getVehicleScores(groupID, duration.getCode(), gh);
+    }
+
+    @Override
+    public List<DriverVehicleScoreWrapper> getVehicleScores(Integer groupID, CustomDuration customDuration, GroupHierarchy gh) {
+        return getVehicleScores(groupID, customDuration.getCode(), gh);
     }
     
     @Override

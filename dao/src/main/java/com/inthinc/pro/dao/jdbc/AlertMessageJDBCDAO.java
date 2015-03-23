@@ -20,8 +20,10 @@ import org.apache.log4j.Logger;
 import com.inthinc.pro.ProDAOException;
 import com.inthinc.pro.comm.parser.attrib.Attrib;
 import com.inthinc.pro.dao.AlertMessageDAO;
+import com.inthinc.pro.dao.DeviceDAO;
 import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.dao.EventDAO;
+import com.inthinc.pro.dao.GroupDAO;
 import com.inthinc.pro.dao.PersonDAO;
 import com.inthinc.pro.dao.VehicleDAO;
 import com.inthinc.pro.dao.ZoneDAO;
@@ -35,7 +37,10 @@ import com.inthinc.pro.model.AlertMessageBuilder;
 import com.inthinc.pro.model.AlertMessageDeliveryType;
 import com.inthinc.pro.model.AlertMessageType;
 import com.inthinc.pro.model.AlertSentStatus;
+import com.inthinc.pro.model.Device;
 import com.inthinc.pro.model.Driver;
+import com.inthinc.pro.model.Group;
+import com.inthinc.pro.model.GroupHierarchy;
 import com.inthinc.pro.model.LatLng;
 import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.model.Person;
@@ -57,7 +62,9 @@ public class AlertMessageJDBCDAO extends GenericJDBCDAO implements AlertMessageD
     private PersonDAO personDAO;
     private VehicleDAO vehicleDAO;
     private DriverDAO driverDAO;
+    private DeviceDAO deviceDAO;
     private ZoneDAO zoneDAO;
+    private GroupDAO groupDAO;
     private AddressLookup addressLookup;
     // private FormsDAO formsDAO;
     private String formSubmissionsURL;
@@ -177,6 +184,7 @@ public class AlertMessageJDBCDAO extends GenericJDBCDAO implements AlertMessageD
                 alertMessage.setAttribs(resultSet.getString(5));
                 alertMessage.setPersonID(resultSet.getInt(6));
                 alertMessage.setAlertID(resultSet.getInt(7));
+                alertMessage.setName(findAlertName(alertMessage.getAlertID()));
                 alertMessage.setAlertMessageType(AlertMessageType.valueOf(resultSet.getInt(8)));
                 alertMessage.setAlertMessageDeliveryType(AlertMessageDeliveryType.valueOf(resultSet.getInt(9)));
                 alertMessage.setStatus(AlertEscalationStatus.valueOf(resultSet.getInt(10)));
@@ -184,6 +192,36 @@ public class AlertMessageJDBCDAO extends GenericJDBCDAO implements AlertMessageD
                 alertMessage.setEscalationOrdinal(resultSet.getInt(12));
                 alertMessage.setEscalationTryCount(resultSet.getInt(13));
                 return alertMessage;
+            }
+
+        } // end try
+        catch (SQLException e) { // handle database hosLogs in the usual manner
+            throw new ProDAOException(statement.toString(), e);
+        } // end catch
+        finally { // clean up and release the connection
+            close(resultSet);
+            close(statement);
+            close(conn);
+        } // end finally
+
+        return null;
+    }
+    
+    final String FETCH_ALERT_NAME = "SELECT name FROM alert WHERE alertID = ?";
+
+    private String findAlertName(Integer alertID) {
+
+        Connection conn = null;
+        java.sql.PreparedStatement statement = null;
+        ResultSet resultSet = null;
+
+        try {
+            conn = getConnection();
+            statement = conn.prepareStatement(FETCH_ALERT_NAME);
+            statement.setInt(1, alertID);
+            resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                return resultSet.getString(1);
             }
 
         } // end try
@@ -237,78 +275,103 @@ public class AlertMessageJDBCDAO extends GenericJDBCDAO implements AlertMessageD
         List<AlertMessageBuilder> messageBuilders = new ArrayList<AlertMessageBuilder>();
 
         for (AlertMessage alertMessage : messages) {
-            Person person = getPerson(alertMessage.getPersonID());
-            if (person == null) {
-                continue;
-            }
-            logger.debug("Preparing message for: " + person.getFullName());
-
-            Event event = null;
-            
-            if (alertMessage.getAttribs() == null || alertMessage.getAttribs().isEmpty())
-                event = eventDAO.findByID(alertMessage.getNoteID());
-            
-            if (event == null) {
-                logger.debug("alertMessage.getAttribs(): " + alertMessage.getAttribs());
-                if (alertMessage.getAttribs() != null && !alertMessage.getAttribs().equalsIgnoreCase("")) {
-                    Mapper mapper = new EventHessianMapper();
-                    event = mapper.convertToModelObject(Attrib.convertToHashMap(alertMessage.getAttribs()), Event.class);
-                    event.setDriverID(alertMessage.getDriverID());
-                    event.setVehicleID(alertMessage.getVehicleID());
-                    event.setDeviceID(alertMessage.getDeviceID());
-                    logger.debug("event: " + event);
-                }    
-                if (event == null) {
-                    logger.debug("event is Null ");
-                    continue;
-                }
-            }
-            
-            if(event instanceof SpeedingEvent){
-	            if(!((SpeedingEvent)event).isValidEvent()){
-	            	
-	            	StringBuilder sb = new StringBuilder();
-	            	
-	            	sb.append("Invalid speeding event has occured! ")
-	            	.append(" DriverID: ")
-	            	.append(event.getDriverID() == null ? "Not Available " : String.valueOf(event.getDriverID()))
-	            	.append(" VehicleID: ")
-	            	.append(event.getVehicleID() == null ? "Not Available " : String.valueOf(event.getVehicleID()))
-	            	.append(" DeviceID: ")
-	            	.append(event.getDeviceID() == null ? "Not Available " : String.valueOf(event.getDeviceID()))
-	            	.append(" SpeedLimit: ")
-	            	.append(((SpeedingEvent)event).getSpeedLimit() == null ? "Not Available " : String.valueOf(((SpeedingEvent)event).getSpeedLimit()))
-	            	.append(" Speed: ")
-	            	.append(((SpeedingEvent)event).getSpeed()  == null ? "Not Available" : String.valueOf(((SpeedingEvent)event).getSpeed()));
-	            	
-	            	logger.error(sb.toString());
-	            	
-	            	continue;
+        	try {
+	            Person person = getPerson(alertMessage.getPersonID());
+	            if (person == null) {
+	                continue;
 	            }
-            }
+	            logger.debug("Preparing message for: " + person.getFullName());
+	
+	            Event event = null;
+	            
+	            if (alertMessage.getAttribs() == null || alertMessage.getAttribs().isEmpty())
+	                event = eventDAO.findByID(alertMessage.getNoteID());
+	            
+	            if (event == null) {
+	                logger.debug("alertMessage.getAttribs(): " + alertMessage.getAttribs());
+	                if (alertMessage.getAttribs() != null && !alertMessage.getAttribs().equalsIgnoreCase("")) {
+	                    Mapper mapper = new EventHessianMapper();
+	                    event = mapper.convertToModelObject(Attrib.convertToHashMap(alertMessage.getAttribs()), Event.class);
+	                    event.setDriverID(alertMessage.getDriverID());
+	                    event.setVehicleID(alertMessage.getVehicleID());
+	                    event.setDeviceID(alertMessage.getDeviceID());
+	                    logger.debug("event: " + event);
+	                }    
+	                if (event == null) {
+	                    logger.debug("event is Null ");
+	                    continue;
+	                }
+	            }
+	            
+	            if(event instanceof SpeedingEvent){
+		            if(!((SpeedingEvent)event).isValidEvent()){
+		            	
+		            	StringBuilder sb = new StringBuilder();
+		            	
+		            	sb.append("Invalid speeding event has occured! ")
+		            	.append(" DriverID: ")
+		            	.append(event.getDriverID() == null ? "Not Available " : String.valueOf(event.getDriverID()))
+		            	.append(" VehicleID: ")
+		            	.append(event.getVehicleID() == null ? "Not Available " : String.valueOf(event.getVehicleID()))
+		            	.append(" DeviceID: ")
+		            	.append(event.getDeviceID() == null ? "Not Available " : String.valueOf(event.getDeviceID()))
+		            	.append(" SpeedLimit: ")
+		            	.append(((SpeedingEvent)event).getSpeedLimit() == null ? "Not Available " : String.valueOf(((SpeedingEvent)event).getSpeedLimit()))
+		            	.append(" Speed: ")
+		            	.append(((SpeedingEvent)event).getSpeed()  == null ? "Not Available" : String.valueOf(((SpeedingEvent)event).getSpeed()));
+		            	
+		            	logger.error(sb.toString());
+		            	
+		            	continue;
+		            }
+	            }
+	
+	            Locale locale = getLocale(person);
+	            
+	            List<String> parameterList = new ParameterList().getParameterList(event, person.getMeasurementType(), alertMessage.getAlertMessageType(), locale, alertMessage.getZoneID());
+	            if (!alertReady(parameterList))
+	                continue;
+	
+	            if (!AlertEscalationStatus.SENT.equals(alertMessage.getStatus())) {
+	                alertMessage.setAddress(getAlertMessageAddress(person, messageDeliveryType));
+	            }
+	            
+	            AlertMessageBuilder  alertMessageBuilder;
+	            if (AlertMessageDeliveryType.EMAIL == messageDeliveryType &&
+	                AlertMessageType.getEzCrmAlertTypes().contains(alertMessage.getAlertMessageType())) {
+	                
+	                List<String> ezParameterList = new EzCrmParameterList().getParameterList(event, person, alertMessage, locale);
+	                if (!alertReady(ezParameterList))
+	                    continue;
 
-            Locale locale = getLocale(person);
-            
-            List<String> parameterList = new ParameterList().getParameterList(event, person.getMeasurementType(), alertMessage.getAlertMessageType(), locale, alertMessage.getZoneID());
-            if (!alertReady(parameterList))
-                continue;
-
-            if (!AlertEscalationStatus.SENT.equals(alertMessage.getStatus())) {
-                alertMessage.setAddress(getAlertMessageAddress(person, messageDeliveryType));
-            }
-            AlertMessageBuilder  alertMessageBuilder = new AlertMessageBuilder(alertMessage.getAlertID(), 
-                    alertMessage.getMessageID(), 
-                    locale, 
-                    alertMessage.getAddress(),
-                    alertMessage.getAlertMessageType(), 
-                    alertMessage.getAcknowledge(),
-                    parameterList);
-
-            if (alertMessageBuilder != null) {
-                messageBuilders.add(alertMessageBuilder);
-            }
-
-            logMessage(conn, alertMessage.getMessageID(), alertMessage.getPersonID());
+	                alertMessageBuilder = new AlertMessageBuilder(alertMessage.getAlertID(),
+	                                alertMessage.getName(),
+	                                alertMessage.getMessageID(), 
+	                                locale, 
+	                                alertMessage.getAddress(),
+	                                alertMessage.getAlertMessageType(), 
+	                                alertMessage.getAcknowledge(),
+	                                parameterList,
+	                                ezParameterList);
+	            } else {
+	            
+    	            alertMessageBuilder = new AlertMessageBuilder(alertMessage.getAlertID(),
+    	                    alertMessage.getMessageID(), 
+    	                    locale, 
+    	                    alertMessage.getAddress(),
+    	                    alertMessage.getAlertMessageType(), 
+    	                    alertMessage.getAcknowledge(),
+    	                    parameterList);
+	            }
+	
+	            if (alertMessageBuilder != null) {
+	                messageBuilders.add(alertMessageBuilder);
+	            }
+	
+	            logMessage(conn, alertMessage.getMessageID(), alertMessage.getPersonID());
+        	} catch(Throwable e) {
+            	logger.error("Exception sending alert message. MessageID: " + alertMessage.getMessageID() + " " + e);
+        	}
         }
         return messageBuilders;
     }
@@ -361,7 +424,7 @@ public class AlertMessageJDBCDAO extends GenericJDBCDAO implements AlertMessageD
         try {
             // Grab all the messages for this job
             preparedStatement = (PreparedStatement) conn
-                    .prepareStatement("SELECT msgID,noteID,personID,alertID,alertTypeID,created,modified,deliveryMethodID,address,message,status,level,owner,zoneID, IF(status=2,0,1) as acknowledge, attribs, driverID, vehicleID, deviceID FROM message WHERE owner=?");
+            		.prepareStatement("SELECT a.name, m.msgID,m.noteID,m.personID,m.alertID,m.alertTypeID,m.created,m.modified,m.deliveryMethodID,m.address,m.message,m.status,m.level,m.owner,m.zoneID, IF(m.status=2,0,1) as acknowledge, m.attribs, m.driverID, m.vehicleID, m.deviceID FROM message m, alert a WHERE m.alertID = a.alertID and owner=?");
             preparedStatement.setLong(1, owner);
             messageResultSet = preparedStatement.executeQuery();
 
@@ -371,6 +434,8 @@ public class AlertMessageJDBCDAO extends GenericJDBCDAO implements AlertMessageD
                         AlertMessageType.valueOf(messageResultSet.getInt("alertTypeID")), RedFlagLevel.valueOf(messageResultSet.getInt("level")), messageResultSet.getString("address"),
                         messageResultSet.getString("message"), messageResultSet.getLong("noteID"), messageResultSet.getInt("personID"), messageResultSet.getInt("alertID"),
                         messageResultSet.getInt("zoneID"), messageResultSet.getBoolean("acknowledge"), AlertEscalationStatus.valueOf(messageResultSet.getInt("status")), messageResultSet.getString("attribs"), messageResultSet.getInt("driverID"), messageResultSet.getInt("vehicleID"), messageResultSet.getInt("deviceID"));
+
+                alertMessage.setName(messageResultSet.getString("name"));
                 messages.add(alertMessage);
             }
         } catch (SQLException e) { // handle database errors in the usual manner
@@ -462,6 +527,14 @@ public class AlertMessageJDBCDAO extends GenericJDBCDAO implements AlertMessageD
         return personDAO;
     }
 
+    public void setGroupDAO(GroupDAO groupDAO) {
+        this.groupDAO = groupDAO;
+    }
+
+    public GroupDAO getGroupDAO() {
+        return groupDAO;
+    }
+
     public void setPersonDAO(PersonDAO personDAO) {
         this.personDAO = personDAO;
     }
@@ -482,59 +555,71 @@ public class AlertMessageJDBCDAO extends GenericJDBCDAO implements AlertMessageD
         this.zoneDAO = zoneDAO;
     }
 
+    public DeviceDAO getDeviceDAO() {
+        return deviceDAO;
+    }
+
+    public void setDeviceDAO(DeviceDAO deviceDAO) {
+        this.deviceDAO = deviceDAO;
+    }
+
     private static final String FETCH_RED_FLAG_MESSAGE_INFO_PREFIX = "SELECT noteID, msgID, status FROM message WHERE noteID IN (";
     private static final String FETCH_RED_FLAG_MESSAGE_INFO_SUFFIX = ") order by noteID";
 
-    @Override
-    public void fillInRedFlagMessageInfo(List<RedFlag> redFlagList) {
-        Map<Long, RedFlag> redFlagMap = new HashMap<Long, RedFlag>();
-        StringBuffer noteIDList = new StringBuffer();
-        for (RedFlag redFlag : redFlagList) {
-            redFlag.setMsgIDList(new ArrayList<Integer>());
-            redFlag.setSent(AlertSentStatus.NONE);
-            if (noteIDList.length() > 0)
-                noteIDList.append(",");
-            noteIDList.append(redFlag.getEvent().getNoteID());
-            redFlagMap.put(redFlag.getEvent().getNoteID(), redFlag);
-        }
+	@Override
+	public void fillInRedFlagMessageInfo(List<RedFlag> redFlagList) {
+		Map<Long, RedFlag> redFlagMap = new HashMap<Long, RedFlag>();
+		StringBuffer noteIDList = new StringBuffer();
+		for (RedFlag redFlag : redFlagList) {
+			redFlag.setMsgIDList(new ArrayList<Integer>());
+			if (noteIDList.length() > 0)
+				noteIDList.append(",");
+			noteIDList.append(redFlag.getEvent().getNoteID());
+			redFlagMap.put(redFlag.getEvent().getNoteID(), redFlag);
+		}
+		if (!(noteIDList.toString() == null)) {
+			Connection conn = null;
+			Statement statement = null;
+			ResultSet resultSet = null;
+			try {
+				conn = getConnection();
+				statement = conn.createStatement();
+				resultSet = statement
+						.executeQuery(FETCH_RED_FLAG_MESSAGE_INFO_PREFIX
+								+ noteIDList.toString() 
+								+ FETCH_RED_FLAG_MESSAGE_INFO_SUFFIX);
 
-        Connection conn = null;
-        Statement statement = null;
-        ResultSet resultSet = null;
-        try {
-            conn = getConnection();
-            statement = conn.createStatement();
-            resultSet = statement.executeQuery(FETCH_RED_FLAG_MESSAGE_INFO_PREFIX + !(noteIDList.toString() == null) + FETCH_RED_FLAG_MESSAGE_INFO_SUFFIX);
+				while (resultSet.next()) {
+					long noteID = resultSet.getLong(1);
+					int msgID = resultSet.getInt(2);
+					AlertEscalationStatus status = AlertEscalationStatus
+							.valueOf(resultSet.getInt(3));
+					RedFlag redFlag = redFlagMap.get(noteID);
+					redFlag.getMsgIDList().add(msgID);
+					if (redFlag.getSent() != AlertSentStatus.PENDING
+							&& redFlag.getSent() != AlertSentStatus.CANCELED) {
 
-            while (resultSet.next()) {
-                long noteID = resultSet.getLong(1);
-                int msgID = resultSet.getInt(2);
-                AlertEscalationStatus status = AlertEscalationStatus.valueOf(resultSet.getInt(3));
-                RedFlag redFlag = redFlagMap.get(noteID);
-                redFlag.getMsgIDList().add(msgID);
-                // System.out.println("msgStatus: " + status + " redFlag status: " + redFlag.getSent());
-                if (redFlag.getSent() != AlertSentStatus.PENDING && redFlag.getSent() != AlertSentStatus.CANCELED) {
-
-                    if (status == AlertEscalationStatus.CANCELED)
-                        redFlag.setSent(AlertSentStatus.CANCELED);
-                    else if (status == AlertEscalationStatus.ESCALATED_AWAITING_ACKNOWLEDGE || status == AlertEscalationStatus.NEW)
-                        redFlag.setSent(AlertSentStatus.PENDING);
-                    else if (status == AlertEscalationStatus.SENT || status == AlertEscalationStatus.ESCALATED_ACKNOWLEDGED)
-                        redFlag.setSent(AlertSentStatus.SENT);
-                }
-                // System.out.println("new redFlag status: " + redFlag.getSent());
-            }
-        } // end try
-        catch (SQLException e) { // handle database hosLogs in the usual manner
-            throw new ProDAOException(statement.toString(), e);
-        } // end catch
-        finally { // clean up and release the connection
-            close(resultSet);
-            close(statement);
-            close(conn);
-        } // end finally
-
-    }
+						if (status == AlertEscalationStatus.CANCELED)
+							redFlag.setSent(AlertSentStatus.CANCELED);
+						else if (status == AlertEscalationStatus.ESCALATED_AWAITING_ACKNOWLEDGE
+								|| status == AlertEscalationStatus.NEW)
+							redFlag.setSent(AlertSentStatus.PENDING);
+						else if (status == AlertEscalationStatus.SENT
+								|| status == AlertEscalationStatus.ESCALATED_ACKNOWLEDGED)
+							redFlag.setSent(AlertSentStatus.SENT);
+					}
+				}
+			} // end try
+			catch (SQLException e) { // handle database hosLogs in the usual manner
+				throw new ProDAOException(statement.toString(), e);
+			} // end catch
+			finally { // clean up and release the connection
+				close(resultSet);
+				close(statement);
+				close(conn);
+			} // end finally
+		}
+	}
 
     public class ParameterList {
         private List<String> parameterList;
@@ -557,6 +642,9 @@ public class AlertMessageJDBCDAO extends GenericJDBCDAO implements AlertMessageD
 
             String driverFullName = getDriverFullName(driver);
             parameterList.add(driverFullName);
+            
+            String driverOrgStructure = getDriverOrgStructure(driver);
+            parameterList.add(driverOrgStructure);
         }
 
         private SimpleDateFormat getDriverDate(Driver driver, Locale locale) {
@@ -576,6 +664,19 @@ public class AlertMessageJDBCDAO extends GenericJDBCDAO implements AlertMessageD
             if (driver != null && driver.getPerson() != null)
                 return driver.getPerson().getFullName();
             else {
+                return "";
+            }
+        }
+        
+        private String getDriverOrgStructure (Driver driver) {
+            if (driver != null && driver.getPerson() != null) {
+                Person driverPerson = driver.getPerson();
+                Integer acctID = driverPerson.getAcctID();
+                List<Group> groupList = groupDAO.getGroupsByAcctID(acctID);
+                GroupHierarchy groupHierarchy = new GroupHierarchy(groupList);
+                String groupName = groupHierarchy.getFullGroupName(driver.getGroupID(), " > ");
+                return groupName;
+            } else {
                 return "";
             }
         }
@@ -692,4 +793,331 @@ public class AlertMessageJDBCDAO extends GenericJDBCDAO implements AlertMessageD
             return parameterList;
         }
     }
+
+    public class EzCrmParameterList {
+        //#RedFlag ezCRM Parmeter List
+        //#0 {Red Flag Alert Name} - for subject line
+        //#1 {GROUP} - fmt: division-division-...-team
+        //#2 {CATEGORY} - 0|1|2 for now...One of: Critical|Normal|Information 
+        //#3 {DATE} - fmt: yyyy-mm-dd hh:mm:ss
+        //#4 {EMP ID} - fmt: external driver id | omitted if no driver
+        //#5 {DRIVER ID} - fmt: internal driver id | UNKNOWN if no driver - empty here
+        //#6 {DRIVER NAME} - fmt: First Middle Last | UNKNOWN - empty here
+        //#7 {VEHICLE NAME}
+        //#8 {VEHICLE ID} - fmt: internal vehicle ID
+        //#9 {YEAR} - fmt: yyyy | ommited if blank
+        //#10 {MAKE} - ommited if blank
+        //#11 {MODEL} - ommited if blank
+        //#12 {LAT} - latitude | NO GPS LOCK
+        //#13 {LON} - longitude | NO GPS LOCK
+        //#14 {ADDRESS} - address | UNKNOWN
+        //#15 {ODOMETER} - fmt: NNNNN (KM | Mi)
+        //#16 {SPEED} - fmt: NN (KPH | MPH)
+        //#17 {MeasurementType}: 0 or 1
+        //#18 {Event Detail Param1}
+        //#19 {Event Detail Param2}
+
+        private List<String> parameterList;
+        private Event event;
+        private MeasurementType personMeasurementType;
+        private Locale locale;
+        private Person person;
+        private Driver driver;
+        private AlertMessage alertMessage;
+        
+        public List<String> getParameterList(Event event, Person person, AlertMessage alertMessage, Locale locale) {
+            if (event == null)
+                return null;
+            parameterList = new ArrayList<String>();
+            personMeasurementType = person.getMeasurementType();
+            this.locale = locale;
+            this.setPerson(person);
+            driver = driverDAO.findByID(event.getDriverID());
+            
+            parameterList.add(alertMessage.getName());          //#0
+            parameterList.add(getDriverOrgStructure(driver));   //#1
+            addRedFlagLevel(alertMessage);              //#2
+            addEventTime(event.getTime());              //#3
+            addDriverInfo(driver);                      //#4 - #6
+            addVehicleInfo(event.getVehicleID());       //#7 - #11
+            addLocationInfo(event);                     //#12 - #14
+            addOdometer(event);                         //#15
+            addSpeed(event);                            //#16
+            parameterList.add(String.valueOf(personMeasurementType.ordinal()));    //#17 - needs to be 0|1 -- 0-english or 1-metric
+            addEventParams(event, alertMessage);        //#18+  if any
+
+            return parameterList;
+        }
+
+        public List<String> getParameterListTest() {
+            if (this.event == null)
+                return null;
+            parameterList = new ArrayList<String>();
+            //personMeasurementType = person.getMeasurementType();
+            //this.locale = locale;
+            //this.setPerson(person);
+            //driver = driverDAO.findByID(event.getDriverID());
+            
+            parameterList.add(this.alertMessage.getName());          //#0
+            parameterList.add(getDriverOrgStructure(driver));   //#1
+            addRedFlagLevel(alertMessage);              //#2
+            addEventTime(event.getTime());              //#3
+            addDriverInfo(driver);                      //#4 - #6
+            addVehicleInfo(event.getVehicleID());       //#7 - #11
+            addLocationInfo(event);                     //#12 - #14
+            addOdometer(event);                         //#15
+            addSpeed(event);                            //#16
+            parameterList.add(String.valueOf(personMeasurementType.ordinal()));    //#17 - needs to be 0|1 -- 0-english or 1-metric
+            addEventParams(event, alertMessage);        //#18+  if any
+
+            return parameterList;
+        }
+
+        private void addRedFlagLevel(AlertMessage alertMessage) {
+            int category;
+            switch(alertMessage.getLevel()) {
+                case CRITICAL:
+                    category = 0;
+                    break;
+                case WARNING:
+                    category = 1;
+                    break;
+                case INFO:
+                default:
+                    category = 2;
+                    break;
+            }
+            parameterList.add(String.valueOf(category));
+        }
+        
+        private void addEventTime(Date eventTime) {
+            SimpleDateFormat driverDateFormat = getDriverDate(driver);
+            // Construct the message parameter list
+            parameterList.add(driverDateFormat.format(eventTime));
+        }
+
+        private SimpleDateFormat getDriverDate(Driver driver) {
+
+            SimpleDateFormat driverDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss (z)", locale);
+
+            if ((driver != null) && (driver.getPerson() != null)) {
+                driverDateFormat.setTimeZone(driver.getPerson().getTimeZone());
+            } else {
+                driverDateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
+            }
+            return driverDateFormat;
+        }
+
+        private void addDriverInfo(Driver driver) {
+            if ((driver != null) && (driver.getPerson() != null)) {
+                parameterList.add(driver.getPerson().getEmpid());
+                parameterList.add(driver.getDriverID().toString());
+                parameterList.add(getDriverFullName(driver));
+                
+            } else {
+                parameterList.add("");
+                parameterList.add("");
+                parameterList.add("");
+            }
+        }
+        
+        private String getDriverFullName(Driver driver) {
+
+            if (driver != null && driver.getPerson() != null)
+                return driver.getPerson().getFullName();
+            else {
+                return "";
+            }
+        }
+        
+        private String getDriverOrgStructure (Driver driver) {
+            if (driver != null && driver.getPerson() != null) {
+                Person driverPerson = driver.getPerson();
+                Integer acctID = driverPerson.getAcctID();
+                List<Group> groupList = groupDAO.getGroupsByAcctID(acctID);
+                GroupHierarchy groupHierarchy = new GroupHierarchy(groupList);
+                String groupName = groupHierarchy.getFullGroupName(driver.getGroupID(), " - ");
+                return groupName;
+            } else {
+                return "";
+            }
+        }
+
+        private void addVehicleInfo(Integer vehicleID) {
+            Vehicle vehicle = vehicleDAO.findByID(vehicleID);
+            //#7 {VEHICLE NAME}
+            parameterList.add(vehicle.getName());
+            //#8 {VEHICLE ID} - fmt: internal vehicle ID
+            parameterList.add(vehicleID.toString());
+            //#9 {YEAR} - fmt: yyyy | ommited if blank
+            String tmp = new String("");
+            Integer year = vehicle.getYear();
+            if (year > 0) {
+                tmp = String.format("%04d", year);
+            }
+            parameterList.add(tmp);
+            //#10 {MAKE} - ommited if blank
+            tmp = vehicle.getMake();
+            parameterList.add(tmp);
+            //#11 {MODEL} - ommited if blank
+            tmp = vehicle.getModel();
+            parameterList.add(tmp);
+        }
+        
+        private void addLocationInfo(Event event) {
+            String tmp = new String("");
+            //#12 {LAT} - latitude | NO GPS LOCK
+            if (!event.getLatitude().equals(0.0))
+                tmp = String.format("%.5f", event.getLatitude());
+            parameterList.add(tmp);
+            //#13 {LON} - longitude | NO GPS LOCK
+            tmp = "";
+            if (!event.getLongitude().equals(0.0))
+                tmp = String.format("%.5f", event.getLongitude());
+            parameterList.add(tmp);
+            //#14 {ADDRESS} - address | UNKNOWN
+            addAddress(event);
+        }
+
+        private void addOdometer(Event event) {
+            String tmp = new String();
+            //#15 {ODOMETER} - fmt: NNNNN (KM | Mi)
+            tmp = String.format("%d", event.getOdometer());
+            parameterList.add(tmp);
+        }
+
+        private void addSpeed(Event event) {
+            String tmp = new String();
+            //#16 {SPEED} - fmt: NN (KPH | MPH)
+            tmp = String.format("%d", event.getSpeed());
+            parameterList.add(tmp);
+        }
+
+        private void addEventParams(Event event, AlertMessage alertMessage) {
+            logger.debug("addEventParams alertMessageType: " + alertMessage.getAlertMessageType());
+            switch (alertMessage.getAlertMessageType()) {
+                case ALERT_TYPE_SPEEDING:   // Add {Top Speed} & {Speed Limit}
+                    {
+                        addSpeedingRelatedData((SpeedingEvent) event);
+                    }
+                    break;
+                case ALERT_TYPE_ENTER_ZONE: // add {Zone Name} & {ZoneID}
+                case ALERT_TYPE_EXIT_ZONE:  // add {Zone Name} & {ZoneID}
+                    addZoneRelatedData(alertMessage.getZoneID());
+                    break;
+                case ALERT_TYPE_FIRMWARE_CURRENT:   // add {Firmware version}
+                    {
+                        Device device = deviceDAO.findByID(event.getDeviceID());
+                        if (device == null) {
+                            logger.error("Device could not be found for deviceID: " + event.getDeviceID());
+                            parameterList.add("");
+                        } else {
+                            parameterList.add(device.getFirmwareVersion().toString());
+                        }
+                    }
+                    break;
+                case ALERT_TYPE_QSI_UPDATED:    // add {QSI Update Status}
+                case ALERT_TYPE_ZONES_CURRENT: // add {Zones Update Status}
+                    {
+                        // EventAttr.UP_TO_DATE_STATUS gives an update status
+                        //  up to date flags:
+                        //      #define FLAG_UP_TO_DATE_UPDATED             1
+                        //      #define FLAG_UP_TO_DATE_ALREADY_CURRENT     2
+                        //      #define FLAG_UP_TO_DATE_SERVER_OLDER        3
+                        //      #define FLAG_UP_TO_DATE_INVALID             4
+                        //      #define FLAG_UP_TO_DATE_MISSING             5
+                        //      #define FLAG_UP_TO_DATE_DEVICE_TIMEOUT      6
+                        String status = event.getAttrByType(EventAttr.UP_TO_DATE_STATUS);
+                        if (status.isEmpty()) {
+                            logger.error("Invalid update status");
+                            parameterList.add("");
+                        } else {
+                            parameterList.add(status);
+                        }
+                    }
+                    break;
+                case ALERT_TYPE_WITNESS_UPDATED:    // add {Witness version}
+                    {
+                        Device device = deviceDAO.findByID(event.getDeviceID());
+                        if (device == null) {
+                            logger.error("Device could not be found for deviceID: " + event.getDeviceID());
+                            parameterList.add("");
+                        } else {
+                            parameterList.add(device.getWitnessVersion().toString());
+                        }
+                    }
+                    break;
+                case ALERT_TYPE_IDLING: // add {Total idling Time}
+                    {
+                        Integer totalIdle = ((IdleEvent) event).getTotalIdling();
+                        parameterList.add(totalIdle.toString());
+                    }
+                    break;
+                default:
+}
+        }
+
+        private void addAddress(Event event) {
+            parameterList.add(addressLookup.getAddressOrLatLng(new LatLng(event.getLatitude(), event.getLongitude())));
+        }
+
+        private void addZoneRelatedData(Integer zoneID) {
+
+            Zone zone = zoneDAO.findByID(zoneID);
+            if (zone == null) {
+                logger.error("Zone could not be found for zoneID: " + zoneID);
+                parameterList.add("");
+            } else {
+                parameterList.add(zone.getName());
+            }
+            parameterList.add(zoneID.toString());
+        }
+
+        private void addSpeedingRelatedData(SpeedingEvent event) {
+            Number topSpeed = MeasurementConversionUtil.convertSpeed(event.getTopSpeed(), personMeasurementType);
+            parameterList.add(String.valueOf(topSpeed));
+
+            Number speedLimit = MeasurementConversionUtil.convertSpeed(event.getSpeedLimit(), personMeasurementType);
+            parameterList.add(String.valueOf(speedLimit));
+        }
+        
+        public List<String> getParameterList() {
+            return parameterList;
+        }
+
+        public Event getEvent() {
+            return event;
+        }
+
+        public void setEvent(Event event) {
+            this.event = event;
+        }
+
+        public Person getPerson() {
+            return person;
+        }
+
+        public void setPerson(Person person) {
+            this.person = person;
+        }
+        public void setMeasurementType(MeasurementType type) {
+            this.personMeasurementType = type;
+        }
+        public Locale getLocale() {
+            return locale;
+        }
+        public void setLocal(Locale locale) {
+            this.locale = locale;
+        }
+        public Driver getDriver() {
+            return driver;
+        }
+        public void setDriver(Driver driver) {
+            this.driver = driver;
+        }
+        public void setAlertMessage(AlertMessage alertMessage) {
+            this.alertMessage = alertMessage;
+        }
+    }
+
 }

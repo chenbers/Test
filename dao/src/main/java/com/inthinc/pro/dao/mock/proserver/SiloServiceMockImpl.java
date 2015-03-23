@@ -178,6 +178,12 @@ public class SiloServiceMockImpl extends AbstractServiceMockImpl implements Silo
     }
 
     @Override
+    public Map<String, Object> getVehicleByName(Integer acctID, String name) throws ProDAOException {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
     public Map<String, Object> deleteVehicle(Integer vehicleID) throws ProDAOException {
         return createReturnValue("count", 0);
     }
@@ -265,6 +271,13 @@ public class SiloServiceMockImpl extends AbstractServiceMockImpl implements Silo
         Map<String, Object> matches = MockData.getInstance().lookup(Trip.class, criteria);
         return matches;
 
+    }
+
+    @Override
+    public List<Map<String, Object>> getLastVehicleTripsByGrpIDDeep(Integer groupID) {
+        SearchCriteria criteria = new SearchCriteria();
+        List<Map<String, Object>> matches = MockData.getInstance().lookupList(Trip.class, criteria);
+        return matches;
     }
 
     @Override
@@ -893,7 +906,7 @@ public class SiloServiceMockImpl extends AbstractServiceMockImpl implements Silo
     }
 
     @Override
-    public Map<String, Object> forgive(Integer driverID, Long noteID) throws ProDAOException {
+    public Map<String, Object> forgive(Integer driverID, Long noteID, Long forgivenByUserID, String reason) throws ProDAOException {
         Integer temp = 1;
         return TempConversionUtil.createMapFromObject(temp, true);
     }

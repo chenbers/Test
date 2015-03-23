@@ -20,15 +20,7 @@
 	<bean id="newAccountBean" class="com.inthinc.pro.backing.NewAccountBean" init-method="init" scope="session"/>
 	<bean id="dateFormatBean" class="com.inthinc.pro.backing.dao.DateFormatBean" scope="session" />
 	<bean id="baseBean" class="com.inthinc.pro.backing.BaseBean" scope="session"/>
-    <bean id="groupDAO" class="com.inthinc.pro.dao.hessian.GroupHessianDAO"></bean>
-    <bean id="driverDAO" class="com.inthinc.pro.dao.hessian.DriverHessianDAO"></bean>
-    <bean id="vehicleDAO" class="com.inthinc.pro.dao.hessian.VehicleHessianDAO"></bean>
-    <bean id="daoUtilBean" class="com.inthinc.pro.backing.dao.DaoUtilBean" init-method="init" parent="baseBean" scope="session">
-        <property name="driverDAO" ref="driverDAO"/>
-        <property name="vehicleDAO" ref="vehicleDAO"/>
-        <property name="groupDAO" ref="groupDAO"/>
-        <property name="userDAO" ref="userDAO"/>
-    </bean>
+    <bean id="daoUtilBean" class="com.inthinc.pro.backing.dao.DaoUtilBean" init-method="init" parent="baseBean" scope="session"></bean>
 
 	<bean id="fwdcmdBean" class="com.inthinc.pro.backing.FwdCmdBean" scope="session"/>
 	<bean id="fwdcmdresBean" class="com.inthinc.pro.backing.FwdCmdResBean" init-method="init" parent="baseBean" scope="session"/>
@@ -108,7 +100,11 @@
 	
 	<!--  hos -->
 	<bean id="RuleSetFactory" class="com.inthinc.hos.rules.RuleSetFactory">
-  		<property name="effectiveDateForUS2013Changes" value="${hos.usrules.effective.date}"/>
+		<!-- <property name="effectiveDateForUS2013Changes" value="${hos.usrules.effective.date}"/> -->
+		<property name="effectiveDateForUS2013ChangesBigResetPreWeek" value="${hos.usrules.effective.date.BIG_RESET_PER_WEEK}" />
+		<property name="effectiveDateForUS2013ChangesBigReset1am5am" value="${hos.usrules.effective.date.BIG_RESET_1AM_5AM}" />
+		<property name="effectiveDateForUS2013ChangesRestBreak8Hrs" value="${hos.usrules.effective.date.REST_BREAK_8_HRS}" />
+		<property name="effectiveDateForUS2013ChangesPassengerException" value="${hos.usrules.effective.date.PASSENGER_EXCEPTION}" />
   	</bean>
 	
 </beans>

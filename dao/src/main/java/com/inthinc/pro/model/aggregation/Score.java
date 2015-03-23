@@ -92,6 +92,8 @@ public class Score {
     private Number speedEventsOver80Mph;
     private Number backingTime;
     private Number backingEvents;
+    private Number firstMoveForwardTime;
+    private Number firstMoveForwardEvents;
 
 
     public Score()
@@ -156,6 +158,8 @@ public class Score {
 	    speedEventsOver80Mph = 0;
 	    backingTime = 0;
 	    backingEvents = 0;
+        firstMoveForwardTime = 0;
+        firstMoveForwardEvents = 0;
     }
     
     
@@ -304,6 +308,9 @@ public class Score {
     }
 
     public Number getDriveTime() {
+        if (driveTime != null && driveTime instanceof java.lang.Integer){
+            driveTime = (long) driveTime.intValue();
+        }
         return driveTime;
     }
 
@@ -344,6 +351,9 @@ public class Score {
     }
 
     public Number getIdleHi() {
+        if (idleHi != null && idleHi instanceof java.lang.Integer){
+            idleHi = (long) idleHi.intValue();
+        }
         return idleHi;
     }
 
@@ -360,6 +370,9 @@ public class Score {
     }
 
     public Number getIdleLo() {
+        if (idleLo != null && idleLo instanceof java.lang.Integer){
+            idleLo = (long) idleLo.intValue();
+        }
         return idleLo;
     }
 
@@ -876,12 +889,25 @@ public class Score {
     }
 
     public Number getBackingTime() {
+        if (backingTime != null && backingTime instanceof java.lang.Integer){
+            backingTime = (long) backingTime.intValue();
+        }
         return backingTime;
     }
 
 
     public void setBackingTime(Number backingTime) {
         this.backingTime = backingTime;
+    }
+
+
+    public Number getFirstMoveForwardTime() {
+        return firstMoveForwardTime;
+    }
+
+
+    public void setFirstMoveForwardTime(Number firstMoveForwardTime) {
+        this.firstMoveForwardTime = firstMoveForwardTime;
     }
 
 
@@ -892,6 +918,16 @@ public class Score {
 
     public void setBackingEvents(Number backingEvents) {
         this.backingEvents = backingEvents;
+    }
+
+
+    public Number getFirstMoveForwardEvents() {
+        return firstMoveForwardEvents;
+    }
+
+
+    public void setFirstMoveForwardEvents(Number firstMoveForwardEvents) {
+        this.firstMoveForwardEvents = firstMoveForwardEvents;
     }
 
     @Override

@@ -90,7 +90,9 @@ public enum EventAttr {
 	SOURCE(71),
     SBS_DLD_ERR(72),
 
-	// Attribute Id (128->191 have two byte values)
+    ATTR_BACKING_TYPE(80),
+
+    // Attribute Id (128->191 have two byte values)
     DISTANCE(129),
     
     MAX_RPM(130), // true rpm
@@ -412,6 +414,7 @@ public enum EventAttr {
     IMEI(24593, 15, true),                  // string 15 max, variable length,              \0 terminated
     MCM_ID_STR(24594, 9, true),             // string  9 max, variable length,              \0 terminated
     TRAILERID_OLD(24602, 20, true),         // string 20 max, variable length,              \0 terminated
+    MOBILEUNIT_ID(24603, 20, true),         // string 20 max, variable length,              \0 terminated
 
     SKIP_INT(32000),
     
@@ -462,7 +465,7 @@ public enum EventAttr {
     MESSAGES_SIZE(32799),
     
     NOPT_WEEKLY_WRITE_COUNT(32800),
-    ODOMETER(32801),
+    ODOMETER(218),
     ODOMETER_GPS_COUNT(32802),
     ODOMETER_ODB_COUNT(32803),
     ODOMETER_RECEIVES(32804),
@@ -562,6 +565,15 @@ public enum EventAttr {
     CRASH_TRACE(49168, 16384),                      //binary approximately 16K bytes (not in DB attr) 16384
     WKLY_DRIVER_HISTOGRAM_STATS(49169, 1024),  //binary approximately 1k bytes (not in db attr)
 
+    ATTR_BATTERY_VOLTAGE(81),
+    ATTR_ENGINE_TEMP(171),
+    ATTR_TRANSMISSION_TEMP(172),
+    ATTR_DPF_FLOW_RATE(173),
+    ATTR_OIL_PRESSURE(174),
+    ATTR_MALFUNCTION_INDICATOR_LAMP(243),
+    ATTR_CHECK_ENGINE(244),
+//    ATTR_ENGINE_HOURS_X100(32868),
+    ATTR_MAINTENANCE_CAPABILITIES(245),
 
     // Attribute Id (255) has a stringId byte,
     // followed by a null terminate string.
@@ -643,5 +655,11 @@ public enum EventAttr {
     public String toString(){
         return String.format("%s(%d)", name(), code);
     }
-    
+
+    public int getCode() {
+        return code;
+    }
+    public String getCodeAsString() {
+        return code+"";
+    }
 }

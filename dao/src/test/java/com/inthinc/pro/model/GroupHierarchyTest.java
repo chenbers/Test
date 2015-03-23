@@ -230,4 +230,28 @@ public class GroupHierarchyTest{
 		final List<Group> children = groupHierarchy.getChildren(null);
 		assertNull(children);
 	}
+
+    @Test
+    public void testGetLastGroupName() throws Exception {
+        Integer groupID = 1;
+        list = new ArrayList<Group>();
+        groupHierarchy = new GroupHierarchy();
+        Group g1 = new Group();
+        g1.setParentID(null);
+        g1.setGroupID(9);
+        g1.setName("G1");
+        g1.setType(GroupType.FLEET);
+        list.add(g1);
+
+        Group g2 = new Group();
+        g2.setParentID(g1.getGroupID());
+        g2.setType(GroupType.DIVISION);
+        g2.setGroupID(groupID++);
+        g2.setName("G2");
+        list.add(g2);
+
+        groupHierarchy = new GroupHierarchy(list);
+
+        assertEquals(g1.getName(), groupHierarchy.getLastGroupName());
+    }
  }

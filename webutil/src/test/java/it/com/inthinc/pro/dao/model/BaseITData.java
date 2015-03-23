@@ -346,7 +346,6 @@ System.out.println("acct name: " + "TEST " + timeStamp.substring(15));
         redFlagAlert.setSeverityLevel(RedFlagLevel.INFO);
         addRedFlagAlert(redFlagAlert, redFlagAlertDAO);
 
-    
     }
 
 

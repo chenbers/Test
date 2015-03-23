@@ -81,8 +81,8 @@ public enum TimeFrame implements BaseEnum {
         }
     },
     SIX_MONTHS(AggregationDuration.SIX_MONTH, 13) {
-        public Interval getInterval(DateTimeZone dateTimeZone) {
-            return new Interval(new DateMidnight(getCurrent().minusMonths(6), dateTimeZone), new DateMidnight(getCurrent().plusDays(1), dateTimeZone).toDateTime().minusSeconds(1));
+        public Interval getInterval(DateTimeZone dateTimeZone) { 
+            return new Interval(new DateMidnight(getCurrent(dateTimeZone).minusMonths(6), dateTimeZone), new DateMidnight(getCurrent(dateTimeZone).plusDays(1), dateTimeZone).toDateTime().minusSeconds(1));
         }
     },
     YEAR(AggregationDuration.TWELVE_MONTH, 14) {
@@ -105,7 +105,7 @@ public enum TimeFrame implements BaseEnum {
     },
     PAST_SEVEN_DAYS(AggregationDuration.SEVEN_DAY, 17) {
         public Interval getInterval(DateTimeZone dateTimeZone) {
-            return new Interval(new DateMidnight(getCurrent().minusDays(7), dateTimeZone), new DateMidnight(getCurrent().plusDays(1), dateTimeZone).toDateTime().minusSeconds(1));
+            return new Interval(new DateMidnight(getCurrent().minusDays(7), dateTimeZone), new DateMidnight(getCurrent(), dateTimeZone).toDateTime().minusSeconds(1));
         }
     },
     CUSTOM_RANGE(AggregationDuration.ONE_DAY, 18){
@@ -140,6 +140,11 @@ public enum TimeFrame implements BaseEnum {
 
     }
 
+    public DateTime getCurrent(DateTimeZone zone) {
+        if (current == null)
+            return new DateTime(zone);
+        return current;
+    }
     public DateTime getCurrent() {
         if (current == null)
             return new DateTime();

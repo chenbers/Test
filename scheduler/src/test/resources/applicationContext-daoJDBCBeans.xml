@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
+  xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.5.xsd"
+default-autowire="byName">
+    <!-- Service Related Beans -->
+
+    <bean id="genericJDBCDAO" class="com.inthinc.pro.dao.jdbc.GenericJDBCDAO" abstract="true">
+        <property name="dataSource" ref="tiwiJDBCDataSource" />
+    </bean>
+	
+	<bean id="DBUtil" class="com.inthinc.pro.aggregation.db.DBUtil">
+		<property name="dataSource" ref="tiwiJDBCDataSource"/>
+	</bean>
+
+  <bean id="hosDAO" class="com.inthinc.pro.dao.jdbc.HOSJDBCDAO" parent="genericJDBCDAO"></bean>
+  <bean id="waysmartDAO" class="com.inthinc.pro.reports.dao.impl.WaysmartDAOImpl"></bean>
+  <bean id="zonePublishDAO" class="com.inthinc.pro.dao.jdbc.ZonePublishJDBCDAO" parent="genericJDBCDAO"></bean>
+  <bean id="stateMileageDAO" class="com.inthinc.pro.dao.jdbc.StateMileageJDBCDAO" parent="genericJDBCDAO"/>
+  <bean id="eventAggregationDAO" class="com.inthinc.pro.dao.jdbc.EventAggregationJDBCDAO" parent="genericJDBCDAO"/>
+
+  <bean id="driveTimeDAO" class="com.inthinc.pro.dao.jdbc.DriveTimeJDBCDAO" parent="genericJDBCDAO"/>
+  <bean id="vehiclePerformanceDAO" class="com.inthinc.pro.dao.jdbc.VehiclePerformanceJDBCDAO" parent="genericJDBCDAO"/>
+  <bean id="dvirViolationReportDAO" class="com.inthinc.pro.dao.jdbc.DVIRViolationReportJDBCDAO" parent="genericJDBCDAO"/>
+  <bean id="dvirInspectionRepairReportDAO" class="com.inthinc.pro.dao.jdbc.DVIRInspectionRepairReportJDBCDAO" parent="genericJDBCDAO"/>
+  <bean id="reportIdlingDAO" class="com.inthinc.pro.dao.jdbc.ReportIdlingJDBCDAO">
+          <property name="dataSource" ref="tiwiJDBCDataSource"/>
+  </bean>
+</beans>

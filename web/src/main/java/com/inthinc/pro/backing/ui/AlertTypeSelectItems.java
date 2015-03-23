@@ -7,12 +7,13 @@ import java.util.Set;
 
 import javax.faces.model.SelectItem;
 
+import com.inthinc.pro.model.AlertMessageType;
 import com.inthinc.pro.model.event.EventSubCategory;
 import com.inthinc.pro.util.MessageUtil;
 
 public class AlertTypeSelectItems {
     
-    public static List<SelectItem> getAlertTypeSelectItems(Boolean hosEnabled, Boolean waySmartEnabled, Boolean hasZones) {
+    public static List<SelectItem> getAlertTypeSelectItems(Boolean hosEnabled, Boolean waySmartEnabled, Boolean hasZones, Boolean hasPrevMaintenance) {
         
         List<SelectItem> alertTypeSelectItems = new ArrayList<SelectItem>();
 
@@ -20,7 +21,10 @@ public class AlertTypeSelectItems {
         alertTypeSelectItems = addHosTypes(alertTypeSelectItems,hosEnabled);
         alertTypeSelectItems = addWaySmartTypes(alertTypeSelectItems,waySmartEnabled);
         alertTypeSelectItems = addZones(alertTypeSelectItems,hasZones);
-        
+        alertTypeSelectItems = addConditionals(alertTypeSelectItems,hasPrevMaintenance);
+        alertTypeSelectItems = addPrevMaintenance(alertTypeSelectItems, hasPrevMaintenance);
+        alertTypeSelectItems = addForward(alertTypeSelectItems, true);
+
         return alertTypeSelectItems;
     }
     private static List<SelectItem> addDefaultTypes(List<SelectItem> alertTypeSelectItems){
@@ -59,6 +63,36 @@ public class AlertTypeSelectItems {
         }
         return alertTypeSelectItems;
     }
+    private static List<SelectItem> addConditionals(List<SelectItem> alertTypeSelectItems, Boolean hasConditionals){
+
+        if (hasConditionals){
+            EventSubCategory.CONDITIONAL.getAlertMessageTypeSet().add(AlertMessageType.ATTR_MALFUNCTION_INDICATOR_LAMP);
+            EventSubCategory.CONDITIONAL.getAlertMessageTypeSet().add(AlertMessageType.ATTR_CHECK_ENGINE);
+            alertTypeSelectItems = addSet(alertTypeSelectItems,EnumSet.of(EventSubCategory.CONDITIONAL));
+        }
+        return alertTypeSelectItems;
+    }
+
+    private static List<SelectItem> addPrevMaintenance(List<SelectItem> alertTypeSelectItems, Boolean hasPrevMaintenance){
+
+        if (hasPrevMaintenance){
+            alertTypeSelectItems = addSet(alertTypeSelectItems,EnumSet.of(EventSubCategory.PREVENTATIVE_MAINTENANCE));
+        }
+        return alertTypeSelectItems;
+    }
+
+
+    private static List<SelectItem> addForward(List<SelectItem> alertTypeSelectItems, Boolean hasForward) {
+        if (hasForward) {
+
+            alertTypeSelectItems = addSet(alertTypeSelectItems, EnumSet.of(EventSubCategory.FIRST_MOVE_FORWARD));
+
+        }
+
+        return alertTypeSelectItems;
+
+    }
+
     private static List<SelectItem> addSet(List<SelectItem> alertTypeSelectItems,Set<EventSubCategory> setOfAlertTypes){
         
         for (EventSubCategory e : setOfAlertTypes)

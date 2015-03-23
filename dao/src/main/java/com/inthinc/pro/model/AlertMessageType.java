@@ -57,7 +57,22 @@ public enum AlertMessageType implements BaseEnum
     ALERT_TYPE_DVIR_DRIVEN_INSPECTED_UNSAFE(41),
     ALERT_TYPE_DVIR_DRIVEN_WITHOUT_INSPECTION(42),
     ALERT_TYPE_DVIR_NO_POST_TRIP_INSPECTION(43),
-    ALERT_TYPE_DVIR_REPAIR(44);
+    ALERT_TYPE_DVIR_REPAIR(44),
+    ALERT_TYPE_SATELLITE(45),
+    ALERT_TYPE_VEHICLE_MOVE_BACKWARDS(46),
+    ATTR_BATTERY_VOLTAGE(47),
+    ATTR_ENGINE_TEMP(48),
+    ATTR_TRANSMISSION_TEMP(49),
+    ATTR_DPF_FLOW_RATE(50),
+    ATTR_OIL_PRESSURE(51),
+    ATTR_MALFUNCTION_INDICATOR_LAMP(52),
+    ATTR_CHECK_ENGINE(53),
+    ATTR_ENGINE_HOURS(57),
+    ATTR_RED_STOP(58),
+    ATTR_AMBER_WARNING(59),
+    ATTR_PROTECT(60),
+    ATTR_ODOMETER(61),
+    ALERT_FIRST_MOVE_FORWARD(62);
     
     private int code;
 
@@ -131,6 +146,40 @@ public enum AlertMessageType implements BaseEnum
                             ALERT_TYPE_HARD_ACCEL,
                             ALERT_TYPE_HARD_TURN,
                             ALERT_TYPE_HARD_BUMP);
+    }
+    public static Set<AlertMessageType> getEzCrmAlertTypes() {
+        return EnumSet.of(  ALERT_TYPE_SPEEDING,
+                            ALERT_TYPE_SEATBELT,
+                            ALERT_TYPE_ENTER_ZONE,
+                            ALERT_TYPE_EXIT_ZONE,
+                            ALERT_TYPE_LOW_BATTERY,
+                            ALERT_TYPE_TAMPERING,
+                            ALERT_TYPE_CRASH,
+                            ALERT_TYPE_HARD_BRAKE,
+                            ALERT_TYPE_HARD_ACCEL,
+                            ALERT_TYPE_HARD_TURN,
+                            ALERT_TYPE_HARD_BUMP,
+                            ALERT_TYPE_NO_DRIVER,
+                            ALERT_TYPE_OFF_HOURS,
+                            ALERT_TYPE_TEXT_MESSAGE_RECEIVED,
+                            ALERT_TYPE_PARKING_BRAKE,
+                            ALERT_TYPE_PANIC,   
+                            ALERT_TYPE_MAN_DOWN,   
+                            ALERT_TYPE_MAN_DOWN_OK,   
+                            ALERT_TYPE_IGNITION_ON,   
+                            ALERT_TYPE_HOS_DOT_STOPPED,
+                            ALERT_TYPE_HOS_NO_HOURS_REMAINING,
+                            ALERT_TYPE_WIRELINE_ALARM,
+                            ALERT_TYPE_DSS_MICROSLEEP,
+                            ALERT_TYPE_INSTALL,
+                            ALERT_TYPE_FIRMWARE_CURRENT,
+                            ALERT_TYPE_LOCATION_DEBUG,
+                            ALERT_TYPE_QSI_UPDATED,
+                            ALERT_TYPE_WITNESS_UPDATED,
+                            ALERT_TYPE_ZONES_CURRENT,
+                            ALERT_TYPE_NO_INTERNAL_THUMB_DRIVE,
+                            ALERT_TYPE_WITNESS_HEARTBEAT_VIOLATION,
+                            ALERT_TYPE_IDLING);        
     }
     @Override
     public String toString()

@@ -19,6 +19,9 @@ import com.inthinc.pro.reports.ReportCriteria;
 import com.inthinc.pro.reports.ReportType;
 import com.inthinc.pro.model.aggregation.DriverVehicleScoreWrapper;
 import com.inthinc.pro.model.aggregation.Score;
+import org.joda.time.Interval;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 
 public class SeatbeltClicksReportCriteria extends ReportCriteria {
 
@@ -32,6 +35,8 @@ public class SeatbeltClicksReportCriteria extends ReportCriteria {
     public static class Builder {
 
         private Locale locale;
+
+        protected DateTimeFormatter dateTimeFormatter;
 
         private DateTimeZone dateTimeZone;
 
@@ -49,11 +54,13 @@ public class SeatbeltClicksReportCriteria extends ReportCriteria {
 
         private Boolean includeZeroMilesDrivers;
 
-        public Builder(GroupHierarchy groupHierarchy, GroupReportDAO groupReportDAO, Integer groupID, TimeFrame timeFrame, MeasurementType measurementType) {
-            this(groupHierarchy, groupReportDAO, groupID, timeFrame, measurementType, ReportCriteria.DEFAULT_EXCLUDE_INACTIVE_DRIVERS, ReportCriteria.DEFAULT_EXCLUDE_ZERO_MILES_DRIVERS);
+        private Interval interval;
+
+        public Builder(GroupHierarchy groupHierarchy, GroupReportDAO groupReportDAO, Integer groupID, TimeFrame timeFrame, Interval interval, MeasurementType measurementType) {
+            this(groupHierarchy, groupReportDAO, groupID, timeFrame, interval,measurementType, ReportCriteria.DEFAULT_EXCLUDE_INACTIVE_DRIVERS, ReportCriteria.DEFAULT_EXCLUDE_ZERO_MILES_DRIVERS);
         }
 
-        public Builder(GroupHierarchy groupHierarchy, GroupReportDAO groupReportDAO, Integer groupID, TimeFrame timeFrame, MeasurementType measurementType, boolean includeInactiveDrivers, boolean includeZeroMilesDrivers) {
+        public Builder(GroupHierarchy groupHierarchy, GroupReportDAO groupReportDAO, Integer groupID, TimeFrame timeFrame, Interval interval, MeasurementType measurementType, boolean includeInactiveDrivers, boolean includeZeroMilesDrivers) {
             this.dateTimeZone = DateTimeZone.UTC;
             this.locale = Locale.US;
             this.groupID = groupID;
@@ -63,6 +70,7 @@ public class SeatbeltClicksReportCriteria extends ReportCriteria {
             this.includeInactiveDrivers = includeInactiveDrivers;
             this.includeZeroMilesDrivers = includeZeroMilesDrivers;
             this.measurementType = measurementType;
+            this.interval = interval;
         }
 
         public void setDateTimeZone(DateTimeZone dateTimeZone) {
@@ -100,10 +108,18 @@ public class SeatbeltClicksReportCriteria extends ReportCriteria {
         public SeatbeltClicksReportCriteria build() {
             logger.debug(String.format("Building SeatbeltClicksCriteria with locale %s", locale));
             List<DriverVehicleScoreWrapper> resultsList = new ArrayList<DriverVehicleScoreWrapper>();
+            dateTimeFormatter = DateTimeFormat.forPattern(ReportCriteria.DATE_FORMAT).withLocale(locale);
 
-            resultsList = groupReportDAO.getDriverScores(groupID, timeFrame.getInterval(), groupHierarchy);
 
-            List<SeatbeltClicksReportCriteria.SeatbeltClicksWrapper> seatbeltClicksWrappers = new ArrayList<SeatbeltClicksReportCriteria.SeatbeltClicksWrapper>();
+            if (timeFrame != null && !timeFrame.equals(TimeFrame.CUSTOM_RANGE))
+            {
+                resultsList = groupReportDAO.getDriverScores(groupID, timeFrame.getInterval(), groupHierarchy);
+            }
+            else {
+                resultsList = groupReportDAO.getDriverScores(groupID, interval, groupHierarchy);
+            }
+
+            List<SeatbeltClicksWrapper> seatbeltClicksWrappers = new ArrayList<SeatbeltClicksWrapper>();
             for (DriverVehicleScoreWrapper dvsw : resultsList) {
                 Score s = dvsw.getScore();
                 Integer totalMiles = s.getOdometer6() == null ? 0 : s.getOdometer6().intValue();
@@ -117,7 +133,7 @@ public class SeatbeltClicksReportCriteria extends ReportCriteria {
                     int driveMiles = dvsw.getScore().getOdometer6().intValue();
                     String groupName = groupHierarchy.getFullGroupName(dvsw.getDriver().getGroupID());
 
-                    SeatbeltClicksReportCriteria.SeatbeltClicksWrapper seatbeltClicksWrapper = new SeatbeltClicksReportCriteria.SeatbeltClicksWrapper(driverName,
+                    SeatbeltClicksWrapper seatbeltClicksWrapper = new SeatbeltClicksWrapper(driverName,
                             dvsw.getScore().getTrips().intValue(), dvsw.getScore().getSeatbeltClicks().intValue(), driveMiles, seatbelt, groupName);
                     seatbeltClicksWrappers.add(seatbeltClicksWrapper);
                 }
@@ -126,13 +142,11 @@ public class SeatbeltClicksReportCriteria extends ReportCriteria {
 
             SeatbeltClicksReportCriteria criteria = new SeatbeltClicksReportCriteria(this.locale);
             criteria.setMainDataset(seatbeltClicksWrappers);
-            criteria.addDateParameter(REPORT_START_DATE, timeFrame.getInterval().getStart().toDate(), this.dateTimeZone.toTimeZone());
 
-            /* The interval returns for the end date the beginning of the next day. We minus a second to get the previous day */
-            criteria.addDateParameter(REPORT_END_DATE, timeFrame.getInterval().getEnd().minusSeconds(1).toDate(), this.dateTimeZone.toTimeZone());
+            criteria.addParameter(REPORT_START_DATE, dateTimeFormatter.print(interval.getStart()));
+            criteria.addParameter(REPORT_END_DATE, dateTimeFormatter.print(interval.getEnd()));
             criteria.setUseMetric(measurementType == MeasurementType.METRIC);
             return criteria;
-
         }
 
         public Boolean getIncludeInactiveDrivers() {

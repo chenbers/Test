@@ -2,6 +2,7 @@ package com.inthinc.pro.model;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -100,6 +101,15 @@ public class GroupHierarchy implements Serializable
     		return childGroup;
     	return getTopGroup(potentialParent);
     }
+    public Group getLastGroup(){
+        Group lastGroup = null;
+        Iterator<Group> iterator = groupMap.values().iterator();
+        while(iterator.hasNext())
+            lastGroup = iterator.next();
+
+        return lastGroup;
+    }
+
     public Group getGroup(Integer groupID)
     {
         try{
@@ -120,8 +130,9 @@ public class GroupHierarchy implements Serializable
     {
     	StringBuilder builder = new StringBuilder();
     	Group group = groupMap.get(groupID);
-    	if (group == null) 
+    	if (group == null) {
     	    return "";
+    	}
     	if (group.getParentID() != null && group.getParentID().intValue() != 0)
     	{
     		builder.append(getFullGroupName(group.getParentID(), separator));
@@ -130,6 +141,14 @@ public class GroupHierarchy implements Serializable
             builder.append(separator);
     	builder.append(group.getName());
         return builder.toString();
+    }
+
+    public String getLastGroupName() {
+        Group lastGroup = getLastGroup();
+        if (lastGroup != null)
+            return lastGroup.getName();
+
+        return null;
     }
     
     /**

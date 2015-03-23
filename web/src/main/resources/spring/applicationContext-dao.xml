@@ -54,24 +54,14 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 
     <!-- Data Access Beans -->
     
-    <!-- Temporary DAO Beans for Transition to Cassandra -->
-    <bean id="eventTempDAO" class="${eventDAO}" />
-    <bean id="locationTempDAO" class="${locationDAO}">
-        <property name="driverDAO" ref="driverTempDAO"/>
-        <property name="vehicleDAO" ref="vehicleTempDAO"/>
-        <property name="eventDAO" ref="eventTempDAO"/>
+    <!-- Temporary Event DAO Bean for Transition to Cassandra -->
+    <bean id="eventTripDAO" class="${eventDAO}" />
+
+    <bean id="locationDAO" class="com.inthinc.pro.dao.cassandra.LocationCassandraDAO">
+        <property name="eventDAO" ref="eventTripDAO"/>
     </bean>
-    <bean id="driverTempDAO" class="com.inthinc.pro.dao.hessian.DriverHessianDAO">
-        <property name="locationDAO" ref="locationTempDAO"></property>
-        <property name="vehicleDAO" ref="vehicleTempDAO"/>
-    </bean>
-    <bean id="vehicleTempDAO" class="com.inthinc.pro.dao.hessian.VehicleHessianDAO">
-        <property name="locationDAO" ref="locationTempDAO"></property>
-    </bean>
-    
 
     <bean id="eventDAO" class="com.inthinc.pro.dao.hessian.EventHessianJdbcHybridDAO" />
-    <bean id="locationDAO" class="com.inthinc.pro.dao.hessian.LocationHessianDAO" />
     <bean id="mpgDAO" class="${mpgDAO}" />
     <bean id="scoreDAO" class="${scoreDAO}" />
     <bean id="driverReportDAO" class="${driverReportDAO}" />
@@ -103,6 +93,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
     <bean id="crashReportDAO" class="com.inthinc.pro.dao.hessian.CrashReportHessianDAO" />
     <bean id="textMsgAlertDAO" class="com.inthinc.pro.dao.hessian.TextMsgAlertHessianDAO" />
     <bean id="configuratorDAO" class="com.inthinc.pro.dao.hessian.ConfiguratorHessianDAO" />
+    <bean id="configuratorJDBCDAO" class="com.inthinc.pro.dao.jdbc.ConfiguratorJDBCDAO" />
     <bean id="redFlagAlertsDAO" class="com.inthinc.pro.dao.hessian.RedFlagAlertHessianDAO"></bean>
     <bean id="phoneControlDAO" class="com.inthinc.pro.dao.hessian.PhoneControlHessianDAO"></bean>
     <bean id="reportDAO" class="com.inthinc.pro.dao.jdbc.ReportJDBCDAO">
@@ -133,6 +124,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
     <bean id="adminReportScheduleDAO" class="com.inthinc.pro.dao.jdbc.AdminReportScheduleJDBCDAO"/>
     <bean id="eventAggregationDAO" class="com.inthinc.pro.dao.jdbc.EventAggregationJDBCDAO" parent="genericJDBCDAO" />
     <bean id="trailerReportDAO" class="com.inthinc.pro.dao.jdbc.TrailerReportJDBCDAO" />
+   	<bean id="fipsDAO" class="com.inthinc.pro.dao.jdbc.FipsJDBCDAO"/>
     
     <!-- Custom Mappers -->
     <bean id="driverPerformanceMapper" class="com.inthinc.pro.dao.hessian.mapper.DriverPerformanceMapper"/>

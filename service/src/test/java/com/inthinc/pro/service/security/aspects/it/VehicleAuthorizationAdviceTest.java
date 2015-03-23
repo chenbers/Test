@@ -6,6 +6,7 @@ package com.inthinc.pro.service.security.aspects.it;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.inthinc.pro.model.CustomDuration;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -106,7 +107,19 @@ public class VehicleAuthorizationAdviceTest {
             }
 
             @Override
+            public List<Trend> getTrend(Integer vehicleID, CustomDuration customDuration) {
+                // TODO Auto-generated method stub
+                return new ArrayList<Trend>();
+            }
+
+            @Override
             public Score getScore(Integer vehicleID, Duration duration) {
+                // TODO Auto-generated method stub
+                return new Score();
+            }
+
+            @Override
+            public Score getScore(Integer vehicleID, CustomDuration customDuration) {
                 // TODO Auto-generated method stub
                 return new Score();
             }
@@ -127,8 +140,8 @@ public class VehicleAuthorizationAdviceTest {
         vehicleDaoAdapter.findByID(1);
         vehicleDaoAdapter.findByVIN("");
         vehicleDaoAdapter.getLastLocation(1);
-        vehicleDaoAdapter.getScore(1, null);
-        vehicleDaoAdapter.getTrend(1, null);
+        vehicleDaoAdapter.getScore(1, (Duration) null);
+        vehicleDaoAdapter.getTrend(1, (Duration) null);
         vehicleDaoAdapter.getTrips(1, null, null);
         vehicleDaoAdapter.update(vehicle);
     }

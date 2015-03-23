@@ -32,7 +32,6 @@ public class AccountOptionsBean extends BaseBean {
         for (Account account : accountList) {
             accountSelectList.add(new SelectItem(account.getAccountID(), account.getAccountID() + " - " + account.getAcctName()));
         }
-        
         sort(accountSelectList);
     }
     
@@ -104,13 +103,17 @@ public class AccountOptionsBean extends BaseBean {
                                 " , Waysmart is " + (account.hasWaySmartSupport() ? "Enabled" : "Disabled") + 
                                 " , RHA is " + (account.hasRHAEnabled() ? "Enabled" : "Disabled") + 
                                 " , Forms is " + (account.hasFormsEnabled() ? "Enabled" : "Disabled") + 
-                                " , Trailers is " + (account.hasTrailersEnabled() ? "Enabled" : "Disabled") + 
+                                " , Trailers is " + (account.hasTrailersEnabled() ? "Enabled" : "Disabled") +
+                                " , Maintenance is " + (account.hasMaintenanceEnabled() ? "Enabled" : "Disabled") +
+                                " , Weatherford violations report is " + (account.hasWeatherfordViolationsReportEnabled() ? "Enabled" : "Disabled") +
+                                " , Redirect to Vehicle Page is  " + (account.getRedirectVehiclesAssetsValue().equals("NONE") ? "None" :account.getRedirectVehiclesAssetsValue().equals("PORTAL")? "Admin>Vehicles Page" : "Assets>Vehicles Page") +
                                 " , Drive Time Violations Report is " + (account.hasDriveTimeViolationsReportEnabled() ? "Enabled" : "Disabled") +
                                 " , Event Queue is " + (account.hasEventsQueueEnabled() ? "Enabled" : "Disabled") + 
                                 " , Login Expire is " +(account.getProps().getLoginExpire()) + 
                                 " , Password Expire is "+(account.getProps().getPasswordExpire()) +
                                 " , Password Strength is "+(account.getProps().getPasswordStrength()) +
-                                " and Password Change Required is "+(account.getProps().getPasswordChange())+
+                                " , Password Change Required is "+(account.getProps().getPasswordChange())+
+                                " and Speed-By-Street access is " + (account.hasSbsAccessEnabled() ? "Enabled" : "Disabled") +
                                 " for Account: " + account.getAcctName());
         }
     }

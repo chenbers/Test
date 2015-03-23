@@ -38,4 +38,10 @@ default-autowire="byName">
         <property name="dataSource" ref="tiwiJDBCDataSource" />
     </bean>
   
+   	<bean id="fipsDAO" class="com.inthinc.pro.dao.jdbc.FipsJDBCDAO">
+        <property name="dataSource" ref="tiwiJDBCDataSource" />
+    </bean>
+    <bean id="configuratorJDBCDAO" class="com.inthinc.pro.dao.jdbc.ConfiguratorJDBCDAO">
+        <property name="dataSource" ref="tiwiJDBCDataSource" />
+    </bean>
 </beans>

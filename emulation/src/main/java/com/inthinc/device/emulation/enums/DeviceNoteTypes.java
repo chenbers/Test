@@ -437,7 +437,7 @@ public enum DeviceNoteTypes implements BaseEnum  {
 	 * is disabled by default.
 	 * Attributes None
 	 */
-	DRIVER_HISTOGRAM_STATS(216),
+	START_MOTION(216),
 
 	/**
 	 * This note indicates that the vehicle has stopped moving.  This event is used primarily for cell phone control (ZoomSafer, Cell Control) and

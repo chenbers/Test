@@ -1,6 +1,7 @@
 package com.inthinc.pro.reports.performance;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -12,19 +13,30 @@ import org.joda.time.DateMidnight;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.Interval;
+import org.joda.time.LocalDate;
 
+import com.inthinc.hos.model.HOSRec;
+import com.inthinc.hos.model.RuleSetType;
+import com.inthinc.hos.model.ViolationsData;
+import com.inthinc.hos.rules.RuleSetFactory;
+import com.inthinc.hos.violations.DailyViolations;
+import com.inthinc.hos.violations.ShiftViolations;
 import com.inthinc.pro.dao.DriverDAO;
+import com.inthinc.pro.dao.HOSDAO;
 import com.inthinc.pro.dao.report.DriverPerformanceDAO;
 import com.inthinc.pro.dao.report.GroupReportDAO;
 import com.inthinc.pro.dao.util.DateUtil;
+import com.inthinc.pro.dao.util.HOSUtil;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.GroupHierarchy;
 import com.inthinc.pro.model.TimeFrame;
 import com.inthinc.pro.model.aggregation.DriverPerformance;
 import com.inthinc.pro.model.aggregation.DriverVehicleScoreWrapper;
 import com.inthinc.pro.model.aggregation.Score;
+import com.inthinc.pro.model.hos.HOSRecord;
 import com.inthinc.pro.reports.ReportCriteria;
 import com.inthinc.pro.reports.ReportType;
+import com.inthinc.pro.reports.util.DateTimeUtil;
 
 /**
  * 
@@ -73,8 +85,12 @@ public class DriverCoachingReportCriteria extends ReportCriteria{
         private Boolean includeZeroMilesDrivers;
 
 		private GroupHierarchy groupHierarchy;
-
-		public Builder(GroupReportDAO groupReportDAO,DriverPerformanceDAO driverPerformanceDAO,Integer groupID,Interval interval) {
+		
+		private Boolean accountHOSEnabled;
+		
+        private HOSDAO hosDAO;
+        
+        public Builder(GroupReportDAO groupReportDAO,DriverPerformanceDAO driverPerformanceDAO,Integer groupID,Interval interval) {
 		    this(groupReportDAO, driverPerformanceDAO, groupID, interval, ReportCriteria.DEFAULT_EXCLUDE_INACTIVE_DRIVERS, ReportCriteria.DEFAULT_EXCLUDE_ZERO_MILES_DRIVERS);
 		}
         public Builder(GroupReportDAO groupReportDAO,DriverPerformanceDAO driverPerformanceDAO,Integer groupID,Interval interval, boolean includeInactiveDrivers, boolean includeZeroMilesDrivers) {
@@ -116,6 +132,21 @@ public class DriverCoachingReportCriteria extends ReportCriteria{
             return this;
         }
 
+        public Boolean isAccountHOSEnabled() {
+            return accountHOSEnabled;
+        }
+
+        public void setAccountHOSEnabled(Boolean accountHOSEnabled) {
+            this.accountHOSEnabled = accountHOSEnabled;
+        }
+
+        public void setHosDAO(HOSDAO hosDAO) {
+            this.hosDAO = hosDAO;
+        }
+        
+        public void setDriverDAO(DriverDAO driverDAO) {
+            this.driverDAO = driverDAO;
+        }
 
         /**
          * Gets a custom interval with the end date equal to the given interval and the start date based on the
@@ -159,29 +190,64 @@ public class DriverCoachingReportCriteria extends ReportCriteria{
                 groupID = driver.getGroupID();
             }
 
-            loadDriverScoresIntoMap(TimeFrame.DAY, getCustomInterval(TimeFrame.DAY, interval, dateTimeZone));
-            loadDriverScoresIntoMap(TimeFrame.PAST_SEVEN_DAYS, getCustomInterval(TimeFrame.PAST_SEVEN_DAYS, interval, dateTimeZone));
-            loadDriverScoresIntoMap(TimeFrame.LAST_THIRTY_DAYS, getCustomInterval(TimeFrame.LAST_THIRTY_DAYS, interval, dateTimeZone));
-            loadDriverScoresIntoMap(TimeFrame.THREE_MONTHS, getCustomInterval(TimeFrame.THREE_MONTHS, interval, dateTimeZone));
-
             List<ReportCriteria> driverCoachingReportCriterias = new ArrayList<ReportCriteria>();
             
             /* 
-             * Iterate over the driver performances and place the individual driver stats into a spererate collection which the report will be able 
-             * to iterate over.
+             * Iterate over the driver performances and place the individual driver stats 
+             * into a separate collection over which the report can iterate.
              */
             List<DriverPerformance> driverPerformances =  driverPerformanceDAO.getDriverPerformanceListForGroup(groupID, null, interval, includeInactiveDrivers, includeZeroMilesDrivers);
             for(DriverPerformance driverPerformance:driverPerformances){
                 if(driverID != null && driverPerformance.getDriverID().equals(driverID)){
+                    if (isAccountHOSEnabled()) {
+                        populationHOSViolationCount(driverPerformance, interval);
+                    }
                     DriverCoachingReportCriteria driverCoachingReportCriteria = convert(driverPerformance);
                     driverCoachingReportCriterias.add(driverCoachingReportCriteria);
                     break;
                 }else if (driverID == null){
+                    if (isAccountHOSEnabled()) {
+                        populationHOSViolationCount(driverPerformance, interval);
+                    }
                     DriverCoachingReportCriteria driverCoachingReportCriteria = convert(driverPerformance);
                     driverCoachingReportCriterias.add(driverCoachingReportCriteria);
                 }
             }
+            
+            /*
+             * If there were no drivers stats, we still need to pass a single empty
+             * criteria so the report can return an error message instead of silently
+             * failing and returning an empty report.
+             */
+            if(driverCoachingReportCriterias.size() == 0) {
+                DriverCoachingReportCriteria emptyCriteria = new DriverCoachingReportCriteria(locale);
+                driverCoachingReportCriterias.add(emptyCriteria);
+            }
+            
             return driverCoachingReportCriterias;
+        }
+        
+        private void populationHOSViolationCount(DriverPerformance driverPerformance, Interval interval) {
+            Driver driver = driverDAO.findByID(driverPerformance.getDriverID());
+            RuleSetType driverDOTType = driver.getDot();
+            if (driverDOTType == null || driverDOTType == RuleSetType.NON_DOT) { 
+                return;
+            }
+            
+            DateTimeZone driverTimeZone = DateTimeZone.forTimeZone(driver.getPerson().getTimeZone());
+            Interval queryInterval = DateTimeUtil.getExpandedInterval(interval, driverTimeZone, RuleSetFactory.getDaysBackForRuleSetType(driverDOTType), RuleSetFactory.getDaysForwardForRuleSetType(driverDOTType));
+            List<HOSRecord> hosRecordList = hosDAO.getHOSRecords(driver.getDriverID(), queryInterval, false);
+            Collections.sort(hosRecordList);
+
+            DateTime reportEndDate = new LocalDate(interval.getEnd()).toDateTimeAtStartOfDay(driverTimeZone).plusDays(1).minusSeconds(1);
+            if (reportEndDate.isAfterNow())
+                reportEndDate = new DateTime();
+
+            List<HOSRec> recListForViolationsCalc = HOSUtil.getRecListFromLogList(hosRecordList, reportEndDate.toDate(), true);
+            List<ViolationsData> dailyViolations = new DailyViolations().getDailyHosViolationsForReport(interval, driverTimeZone.toTimeZone(), driverDOTType, recListForViolationsCalc);
+            List<ViolationsData> shiftViolations = new ShiftViolations().getHosViolationsInTimeFrame(interval, driverTimeZone.toTimeZone(), driverDOTType, null, recListForViolationsCalc);
+            
+            driverPerformance.setHosViolationCount((dailyViolations == null ? 0 : dailyViolations.size()) + (shiftViolations == null ? 0 : shiftViolations.size()));
         }
         
         public ReportCriteria buildSingle(){
@@ -217,38 +283,6 @@ public class DriverCoachingReportCriteria extends ReportCriteria{
             return driverCoachingReportCriteria;
         }
         
-        /**
-         * Adds the list of driver scores to a map for a particular time frame
-         * This loads the scores from the database and adds the scores by time frame to a map which is associated with a
-         * driver id.
-         * 
-         * This is used to display all scores along the top of the report.
-         * 
-         * @param timeFrame
-         * @param interval
-         */
-        private void loadDriverScoresIntoMap(TimeFrame timeFrame, Interval interval){
-            List<DriverVehicleScoreWrapper> dayScoreList =  groupReportDAO.getDriverScores(groupID, interval, this.groupHierarchy);
-            
-            for(DriverVehicleScoreWrapper driverVehicleScoreWrapper:dayScoreList){
-                /* If the driverID is present, then we're going to only allow the driver to be added */
-                if(driverID != null && driverVehicleScoreWrapper.getDriver().getDriverID().equals(driverID)){
-                    if(this.driverTimeFrameScoreMap.get(driverVehicleScoreWrapper.getDriver().getDriverID()) == null){
-                        driverTimeFrameScoreMap.put(driverVehicleScoreWrapper.getDriver().getDriverID(), new HashMap<String, Integer>());
-                    }
-                    Score score = driverVehicleScoreWrapper.getScore();
-                    driverTimeFrameScoreMap.get(driverVehicleScoreWrapper.getDriver().getDriverID()).put(timeFrame.name(), score.getOverall() == null?-1:score.getOverall().intValue());
-                    break;
-                }else if(this.driverID == null){
-                    if(this.driverTimeFrameScoreMap.get(driverVehicleScoreWrapper.getDriver().getDriverID()) == null){
-                        driverTimeFrameScoreMap.put(driverVehicleScoreWrapper.getDriver().getDriverID(), new HashMap<String, Integer>());
-                    }
-                    Score score = driverVehicleScoreWrapper.getScore();
-                    driverTimeFrameScoreMap.get(driverVehicleScoreWrapper.getDriver().getDriverID()).put(timeFrame.name(), score.getOverall() == null?-1:score.getOverall().intValue());
-                }
-            }
-        }
-        
         private List<DriverCoachingReportViolationSummary> toViolationSummaryList(DriverPerformance driverPerformance){
             List<DriverCoachingReportViolationSummary> violationsSummaryList = new ArrayList<DriverCoachingReportViolationSummary>();
             Integer speedTotal = driverPerformance.getSpeedCount0to7Over() + driverPerformance.getSpeedCount8to14Over() + driverPerformance.getSpeedCount15Over();
@@ -256,7 +290,7 @@ public class DriverCoachingReportCriteria extends ReportCriteria{
             violationsSummaryList.add(new DriverCoachingReportViolationSummary(DriverCoachingReportViolation.SEAT_BELT, driverPerformance.getSeatbeltCount() == null?"0":driverPerformance.getSeatbeltCount().toString()));
             
             /* 
-             * Setup aggresive driving totals. Add aggressive child violations to the 
+             * Setup aggressive driving totals. Add aggressive child violations to the 
              * aggressive driving parent violation summary which is a total of all it's children 
              * */
             Integer aggresiveDrivingTotal = driverPerformance.getHardAccelCount() + driverPerformance.getHardBrakeCount() + driverPerformance.getHardTurnCount() + driverPerformance.getHardVerticalCount();
@@ -266,7 +300,10 @@ public class DriverCoachingReportCriteria extends ReportCriteria{
             aggressiveViolationSummary.addChildViolation(new DriverCoachingReportViolationSummary(DriverCoachingReportViolation.HARD_BRAKE, driverPerformance.getHardBrakeCount() == null?"0":driverPerformance.getHardBrakeCount().toString()));
             aggressiveViolationSummary.addChildViolation(new DriverCoachingReportViolationSummary(DriverCoachingReportViolation.HARD_TURN, driverPerformance.getHardTurnCount() == null?"0":driverPerformance.getHardTurnCount().toString()));
             aggressiveViolationSummary.addChildViolation(new DriverCoachingReportViolationSummary(DriverCoachingReportViolation.HARD_BUMP, driverPerformance.getHardVerticalCount() == null?"0":driverPerformance.getHardVerticalCount().toString()));
-            violationsSummaryList.add(new DriverCoachingReportViolationSummary(DriverCoachingReportViolation.IDLE_DURATION, DateUtil.getDurationFromSeconds(driverPerformance.getIdleLo().intValue())));
+            violationsSummaryList.add(new DriverCoachingReportViolationSummary(DriverCoachingReportViolation.IDLE_DURATION, DateUtil.getDurationFromSeconds(driverPerformance.getIdleLo() == null ? 0 : driverPerformance.getIdleLo().intValue())));
+            if (isAccountHOSEnabled()) {
+                violationsSummaryList.add(new DriverCoachingReportViolationSummary(DriverCoachingReportViolation.HOS, driverPerformance.getHosViolationCount() == null?"0":driverPerformance.getHosViolationCount().toString()));
+            }
             
             return violationsSummaryList;
         }
@@ -357,7 +394,8 @@ public class DriverCoachingReportCriteria extends ReportCriteria{
         HARD_BRAKE("violation.hardBrake"),
         HARD_TURN("violation.hardTurn"),
         HARD_BUMP("violation.hardBump"),
-        IDLE_DURATION("violation.idleDuration");
+        IDLE_DURATION("violation.idleDuration"),
+        HOS("violation.hos");
         
         private String i18nCode;
         

@@ -110,7 +110,8 @@ public class DaoUtilBeanTest {
 		Map<String, DaoMethod> methodMap = dab.getMethodMap();
 		Method[] siloMethods = new SiloServiceImpl().getClass().getMethods();
 		for (Method method : siloMethods) {
-			if (dab.getExcludedMethods().contains(method.getName()))
+		    DaoMethod daoMethod = methodMap.get(method.getName());
+			if (dab.getExcludedMethods().contains(method.getName()) || daoMethod == null)
 				continue;
 			assertTrue(method.getName(), methodMap.get(method.getName()) != null);
 		}

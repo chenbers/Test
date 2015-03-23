@@ -36,12 +36,21 @@ public class VehicleDaoStub implements VehicleDAO {
     }
 
     /* (non-Javadoc)
-     * @see com.inthinc.pro.dao.VehicleDAO#findByDriverID(java.lang.Integer)
+     * @see com.inthinc.pro.dao.VehicleDAO#findByName(java.lang.String)
      */
+    @Override
+    public Vehicle findByName(Integer acctID, String name) {
+        return new Vehicle();
+    }
+
+    /* (non-Javadoc)
+ * @see com.inthinc.pro.dao.VehicleDAO#findByDriverID(java.lang.Integer)
+ */
     @Override
     public Vehicle findByDriverID(Integer driverID) {
         return new Vehicle();
     }
+
 
     /* (non-Javadoc)
      * @see com.inthinc.pro.dao.VehicleDAO#findByDriverInGroup(java.lang.Integer, java.lang.Integer)
@@ -84,7 +93,12 @@ public class VehicleDaoStub implements VehicleDAO {
     public List<Trip> getTrips(Integer vehicleID, Date startDate, Date endDate) {
         return new ArrayList<Trip>();
     }
-    
+
+    @Override
+    public List<Trip> getLastVehicleTripsByGrpIDDeep(Integer groupID) {
+        return new ArrayList<Trip>();
+    }
+
     @Override
     public List<LatLng> getLocationsForTrip(Integer driverID, Date startTime, Date endTime) {
         return Collections.emptyList();

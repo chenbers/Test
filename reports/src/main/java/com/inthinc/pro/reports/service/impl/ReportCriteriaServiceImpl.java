@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import com.inthinc.pro.reports.hos.WthHosViolationsSummaryReportCriteria;
+import com.inthinc.pro.reports.performance.*;
 import org.apache.log4j.Logger;
 import org.joda.time.DateMidnight;
 import org.joda.time.DateTime;
@@ -41,6 +43,7 @@ import com.inthinc.pro.dao.report.GroupReportDAO;
 import com.inthinc.pro.dao.report.TrailerReportDAO;
 import com.inthinc.pro.dao.util.DateUtil;
 import com.inthinc.pro.map.ReportAddressLookupBean;
+import com.inthinc.pro.model.AccountHOSType;
 import com.inthinc.pro.model.DriverStopReport;
 import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.EntityType;
@@ -91,7 +94,9 @@ import com.inthinc.pro.reports.model.CategorySeriesData;
 import com.inthinc.pro.reports.model.PieScoreData;
 import com.inthinc.pro.reports.model.PieScoreRange;
 import com.inthinc.pro.reports.performance.BackingReportCriteria;
+import com.inthinc.pro.reports.performance.FirstMoveForwardReportCriteria;
 import com.inthinc.pro.reports.performance.DriverCoachingReportCriteria;
+import com.inthinc.pro.reports.performance.DriverCoachingScoreReportCriteria;
 import com.inthinc.pro.reports.performance.DriverExcludedViolationsCriteria;
 import com.inthinc.pro.reports.performance.DriverHoursReportCriteria;
 import com.inthinc.pro.reports.performance.DriverPerformanceKeyMetricsReportCriteria;
@@ -104,9 +109,13 @@ import com.inthinc.pro.reports.performance.SeatbeltClicksReportCriteria;
 import com.inthinc.pro.reports.performance.TeamStopsReportCriteria;
 import com.inthinc.pro.reports.performance.TenHoursViolationReportCriteria;
 import com.inthinc.pro.reports.performance.VehicleUsageReportCriteria;
+import com.inthinc.pro.reports.performance.MaintenanceEventsReportCriteria;
+import com.inthinc.pro.reports.performance.MaintenanceIntervalReportCriteria;
 import com.inthinc.pro.reports.service.ReportCriteriaService;
 import com.inthinc.pro.reports.util.MessageUtil;
 import com.inthinc.pro.reports.util.ReportUtil;
+
+import com.inthinc.pro.dao.ConfiguratorDAO;
 
 public class ReportCriteriaServiceImpl implements ReportCriteriaService {
 
@@ -135,7 +144,9 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
     private DVIRViolationReportDAO dvirViolationReportDAO;
     private DVIRInspectionRepairReportDAO dvirInspectionRepairReportDAO;
     private TrailerReportDAO trailerReportDAO;
-    
+
+    private ConfiguratorDAO configuratorJDBCDAO;
+
     public ReportIdlingDAO getReportIdlingDAO() {
         return reportIdlingDAO;
     }
@@ -351,7 +362,27 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
 
         return reportCriteria;
     }
-    
+
+    @Override
+    public ReportCriteria getVehicleAdminReportCriteria(Integer groupID, Duration duration, Locale locale) {
+        this.locale = locale;
+        Group group = groupDAO.findByID(groupID);
+        ReportCriteria reportCriteria = new ReportCriteria(ReportType.VEHICLE_ADMIN_REPORT, group.getName(), locale);
+
+
+            if (duration.equals(Duration.TWELVE)) {
+                Integer rowCount = reportDAO.getVehicleReportCount(groupID, null);
+                PageParams pageParams = new PageParams(0, rowCount, null, null);
+                reportCriteria.setMainDataset(reportDAO.getVehicleReportPage(groupID, pageParams));
+            } else {
+                reportCriteria.setMainDataset(scoreDAO.getVehicleReportData(groupID, duration, getGroupMap(group)));
+            }
+            reportCriteria.setDuration(duration);
+
+
+        return reportCriteria;
+    }
+
     @Override
     public ReportCriteria getTrailerReportCriteria(Integer groupID, Duration duration, Locale locale, Boolean initDataSet) {
         logger.warn("ReportCriteria getTrailerReportCriteria(Integer "+groupID+", Duration "+duration+", Locale "+locale+", Boolean "+initDataSet+")");
@@ -626,31 +657,32 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
     }
 
     @Override
-    public ReportCriteria getTeamStopsReportCriteria(GroupHierarchy accountGroupHierarchy, Integer driverID, TimeFrame timeFrame, DateTimeZone timeZone, Locale locale,
+    public ReportCriteria getTeamStopsReportCriteria(Interval interval, GroupHierarchy accountGroupHierarchy, Integer driverID, TimeFrame timeFrame, DateTimeZone timeZone, Locale locale,
             DriverStopReport driverStopReport) {
 
         TeamStopsReportCriteria reportCriteria = new TeamStopsReportCriteria(locale);
         reportCriteria.setDriverDAO(driverDAO);
         reportCriteria.setReportAddressLookupBean(reportAddressLookupBean);
-        reportCriteria.init(accountGroupHierarchy, driverID, timeFrame, timeZone, driverStopReport);
+        Boolean active = true;
+        reportCriteria.init(active, interval, accountGroupHierarchy, driverID, timeFrame, timeZone, driverStopReport);
         return reportCriteria;
     }
 
     @Override
-    public ReportCriteria getTeamStopsReportCriteriaByGroup(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, TimeFrame timeFrame, DateTimeZone timeZone, Locale locale) {
+    public ReportCriteria getTeamStopsReportCriteriaByGroup(Interval interval, GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, TimeFrame timeFrame, DateTimeZone timeZone, Locale locale) {
         TeamStopsReportCriteria reportCriteria = new TeamStopsReportCriteria(locale);
         reportCriteria.setDriverDAO(driverDAO);
         reportCriteria.setReportAddressLookupBean(reportAddressLookupBean);
 
-        reportCriteria.init(accountGroupHierarchy, groupIDList, timeFrame, timeZone);
+        reportCriteria.init(interval, accountGroupHierarchy, groupIDList, timeFrame, timeZone);
         return reportCriteria;
     }
     @Override
     public List<ReportCriteria> getHosDailyDriverLogReportCriteria(GroupHierarchy accountGroupHierarchy, Integer driverID, Interval interval, Locale locale, Boolean defaultUseMetric, DateTimeZone dateTimeZone) {
-        return getHosDailyDriverLogReportCriteria(accountGroupHierarchy, driverID, interval, locale, defaultUseMetric, dateTimeZone, ReportCriteria.DEFAULT_EXCLUDE_INACTIVE_DRIVERS);
+        return getHosDailyDriverLogReportCriteria(accountGroupHierarchy, driverID, interval, locale, defaultUseMetric, dateTimeZone, ReportCriteria.DEFAULT_EXCLUDE_INACTIVE_DRIVERS, ReportCriteria.DEFAULT_HOS_DRIVERS_ONLY);
     }
     @Override
-    public List<ReportCriteria> getHosDailyDriverLogReportCriteria(GroupHierarchy accountGroupHierarchy, Integer driverID, Interval interval, Locale locale, Boolean defaultUseMetric, DateTimeZone dateTimeZone, boolean includeInactiveDrivers) {
+    public List<ReportCriteria> getHosDailyDriverLogReportCriteria(GroupHierarchy accountGroupHierarchy, Integer driverID, Interval interval, Locale locale, Boolean defaultUseMetric, DateTimeZone dateTimeZone, boolean includeInactiveDrivers, Boolean hosDriversOnly) {
         HosDailyDriverLogReportCriteria hosDailyDriverLogReportCriteria = new HosDailyDriverLogReportCriteria(locale, defaultUseMetric, dateTimeZone);
         hosDailyDriverLogReportCriteria.setDriverDAO(driverDAO);
         hosDailyDriverLogReportCriteria.setGroupDAO(groupDAO);
@@ -660,6 +692,7 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
         hosDailyDriverLogReportCriteria.setUserDAO(userDAO);
         hosDailyDriverLogReportCriteria.setVehicleDAO(vehicleDAO);
         hosDailyDriverLogReportCriteria.setIncludeInactiveDrivers(includeInactiveDrivers);
+        hosDailyDriverLogReportCriteria.setHosDriversOnly(hosDriversOnly==null?false:hosDriversOnly);
 
         hosDailyDriverLogReportCriteria.init(accountGroupHierarchy, driverID, interval);
         return hosDailyDriverLogReportCriteria.getCriteriaList();
@@ -667,10 +700,10 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
     
     @Override
     public List<ReportCriteria> getHosDailyDriverLogReportCriteria(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, Interval interval, Locale locale, Boolean defaultUseMetric, DateTimeZone dateTimeZone) {
-        return getHosDailyDriverLogReportCriteria(accountGroupHierarchy, groupIDList, interval, locale, defaultUseMetric, dateTimeZone, ReportCriteria.DEFAULT_EXCLUDE_INACTIVE_DRIVERS);
+        return getHosDailyDriverLogReportCriteria(accountGroupHierarchy, groupIDList, interval, locale, defaultUseMetric, dateTimeZone, ReportCriteria.DEFAULT_EXCLUDE_INACTIVE_DRIVERS, ReportCriteria.DEFAULT_HOS_DRIVERS_ONLY);
     }
     @Override
-    public List<ReportCriteria> getHosDailyDriverLogReportCriteria(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, Interval interval, Locale locale, Boolean defaultUseMetric, DateTimeZone dateTimeZone, boolean includeInactiveDrivers) {
+    public List<ReportCriteria> getHosDailyDriverLogReportCriteria(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, Interval interval, Locale locale, Boolean defaultUseMetric, DateTimeZone dateTimeZone, boolean includeInactiveDrivers, Boolean hosDriversOnly) {
         HosDailyDriverLogReportCriteria hosDailyDriverLogReportCriteria = new HosDailyDriverLogReportCriteria(locale, defaultUseMetric, dateTimeZone);
         hosDailyDriverLogReportCriteria.setDriverDAO(driverDAO);
         hosDailyDriverLogReportCriteria.setGroupDAO(groupDAO);
@@ -680,10 +713,11 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
         hosDailyDriverLogReportCriteria.setUserDAO(userDAO);
         hosDailyDriverLogReportCriteria.setVehicleDAO(vehicleDAO);
         hosDailyDriverLogReportCriteria.setIncludeInactiveDrivers(includeInactiveDrivers);
+        hosDailyDriverLogReportCriteria.setHosDriversOnly(hosDriversOnly==null?false:hosDriversOnly);
+
 
         hosDailyDriverLogReportCriteria.init(accountGroupHierarchy, groupIDList, interval);
         return hosDailyDriverLogReportCriteria.getCriteriaList();
-
     }
 
     @Override
@@ -700,6 +734,23 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
         criteria.init(accountGroupHierarchy, groupIDList, interval);
         return criteria;
     }
+
+    @Override
+    public ReportCriteria getWthHosViolationsSummaryReportCriteria(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, Interval interval, Locale locale) {
+        return getWthHosViolationsSummaryReportCriteria(accountGroupHierarchy, groupIDList, interval, locale, ReportCriteria.DEFAULT_EXCLUDE_INACTIVE_DRIVERS);
+    }
+
+    @Override
+    public ReportCriteria getWthHosViolationsSummaryReportCriteria(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, Interval interval, Locale locale, boolean includeInactiveDrivers) {
+        WthHosViolationsSummaryReportCriteria criteria = new WthHosViolationsSummaryReportCriteria(locale);
+        criteria.setDriverDAO(driverDAO);
+        criteria.setGroupDAO(groupDAO);
+        criteria.setHosDAO(hosDAO);
+        criteria.setIncludeInactiveDrivers(includeInactiveDrivers);
+        criteria.init(accountGroupHierarchy, groupIDList, interval);
+        return criteria;
+    }
+
 
     @Override
     public ReportCriteria getHosViolationsDetailReportCriteria(GroupHierarchy accountGroupHierarchy, Integer driverID, Interval interval, Locale locale) {
@@ -915,7 +966,7 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
     /**
      * {@inheritDoc}
      * 
-     * @see com.inthinc.pro.reports.service.ReportCriteriaService#getDriverHoursReportCriteria(java.lang.Integer, org.joda.time.Interval, java.util.Locale)
+     * @see com.inthinc.pro.reports.service.ReportCriteriaService#getDriverHoursReportCriteria(Integer, org.joda.time.Interval, java.util.Locale)
      */
     @Override
     public ReportCriteria getDriverHoursReportCriteria(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, Interval interval, Locale locale) {
@@ -932,6 +983,39 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
         criteria.setIncludeInactiveDrivers(includeInactiveDrivers);
         criteria.init(accountGroupHierarchy, groupIDList, interval);
         
+        return criteria;
+    }
+    
+    @Override
+    public ReportCriteria getThirtyMinuteBreaksReportCriteria(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, Interval interval, Locale local) {
+        return getThirtyMinuteBreaksReportCriteria(accountGroupHierarchy, groupIDList, interval, locale, ReportCriteria.DEFAULT_EXCLUDE_INACTIVE_DRIVERS);
+        
+    }
+
+    @Override
+    public ReportCriteria getTwoHourBreaksReportCriteria(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, Interval interval, Locale local) {
+        return getTwoHourBreaksReportCriteria(accountGroupHierarchy, groupIDList, interval, locale, ReportCriteria.DEFAULT_EXCLUDE_INACTIVE_DRIVERS);
+    }
+    
+    @Override
+    public ReportCriteria getThirtyMinuteBreaksReportCriteria(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, Interval interval, Locale locale, boolean includeInactiveDrivers) {
+        ThirtyMinuteBreaksReportCriteria criteria = new ThirtyMinuteBreaksReportCriteria(locale);
+        criteria.setAccountDAO(accountDAO);
+        criteria.setDriverDAO(driverDAO);
+        criteria.setHosDAO(hosDAO);
+        criteria.setIncludeInactiveDrivers(includeInactiveDrivers);
+        criteria.init(accountGroupHierarchy, groupIDList, interval);
+        return criteria;
+    }
+
+    @Override
+    public ReportCriteria getTwoHourBreaksReportCriteria(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, Interval interval, Locale locale, boolean includeInactiveDrivers) {
+        TwoHourBreaksReportCriteria criteria = new TwoHourBreaksReportCriteria(locale);
+        criteria.setAccountDAO(accountDAO);
+        criteria.setDriverDAO(driverDAO);
+        criteria.setHosDAO(hosDAO);
+        criteria.setIncludeInactiveDrivers(includeInactiveDrivers);
+        criteria.init(accountGroupHierarchy, groupIDList, interval);
         return criteria;
     }
 
@@ -962,7 +1046,7 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
     /**
      * {@inheritDoc}
      * 
-     * @see com.inthinc.pro.reports.service.ReportCriteriaService#getMileageByVehicleReportCriteria(java.lang.Integer, org.joda.time.Interval, java.util.Locale, boolean)
+     * @see com.inthinc.pro.reports.service.ReportCriteriaService#getMileageByVehicleReportCriteria(Integer, org.joda.time.Interval, java.util.Locale, boolean)
      */
     @Override
     public ReportCriteria getMileageByVehicleReportCriteria(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, Interval interval, Locale locale, MeasurementType measurementType,
@@ -979,7 +1063,7 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
     /**
      * {@inheritDoc}
      * 
-     * @see com.inthinc.pro.reports.service.ReportCriteriaService#getMileageByVehicleReportCriteria(java.lang.Integer, org.joda.time.Interval, java.util.Locale, boolean)
+     * @see com.inthinc.pro.reports.service.ReportCriteriaService#getMileageByVehicleReportCriteria(Integer, org.joda.time.Interval, java.util.Locale, boolean)
      */
     @Override
     public ReportCriteria getStateMileageByVehicleRoadStatusReportCriteria(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, Interval interval, Locale locale, MeasurementType type,
@@ -1049,7 +1133,7 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
     /**
      * {@inheritDoc}
      * 
-     * @see com.inthinc.pro.reports.service.ReportCriteriaService#getWarrantyListReportCriteria(java.lang.Integer, java.util.Locale, boolean)
+     * @see com.inthinc.pro.reports.service.ReportCriteriaService#getWarrantyListReportCriteria(Integer, java.util.Locale, boolean)
      */
     @Override
     public ReportCriteria getWarrantyListReportCriteria(GroupHierarchy accountGroupHierarchy, Integer groupID, Integer accountID, String accountName, Locale locale, boolean expiredOnly) {
@@ -1174,6 +1258,14 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
 
     public void setHosDAO(HOSDAO hosDAO) {
         this.hosDAO = hosDAO;
+    }
+
+    public ConfiguratorDAO getConfiguratorJDBCDAO() {
+           return configuratorJDBCDAO;
+    }
+
+    public void setConfiguratorJDBCDAO(ConfiguratorDAO configuratorDAO) {
+           this.configuratorJDBCDAO = configuratorDAO;
     }
 
     /**
@@ -1405,13 +1497,34 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
     public ReportCriteria getDriverCoachingReportCriteriaByDriver(GroupHierarchy accountGroupHierarchy, Integer driverID, Interval interval, Locale locale, DateTimeZone timeZone) {
         return getDriverCoachingReportCriteriaByDriver(accountGroupHierarchy, driverID, interval, locale, timeZone, ReportCriteria.DEFAULT_EXCLUDE_INACTIVE_DRIVERS, ReportCriteria.DEFAULT_EXCLUDE_ZERO_MILES_DRIVERS);
     }
+
+    @Override
+    public ReportCriteria getDriverCoachingScoreReportCriteriaByDriver(GroupHierarchy accountGroupHierarchy, Integer driverID, Interval interval, Locale locale, DateTimeZone timeZone) {
+        return getDriverCoachingScoreReportCriteriaByDriver(accountGroupHierarchy, driverID, interval, locale, timeZone, ReportCriteria.DEFAULT_EXCLUDE_INACTIVE_DRIVERS, ReportCriteria.DEFAULT_EXCLUDE_ZERO_MILES_DRIVERS);
+    }
     @Override
     public ReportCriteria getDriverCoachingReportCriteriaByDriver(GroupHierarchy accountGroupHierarchy, Integer driverID, Interval interval, Locale locale, DateTimeZone timeZone, boolean includeInactiveDrivers, boolean includeZeroMilesDrivers) {
         DriverCoachingReportCriteria.Builder builder = new DriverCoachingReportCriteria.Builder(groupReportDAO, driverPerformanceDAO, driverDAO, driverID, interval, includeInactiveDrivers, includeZeroMilesDrivers);
         builder.setDateTimeZone(timeZone);
         builder.setLocale(locale);
         builder.setGroupHierarchy(accountGroupHierarchy);
+        builder.setAccountHOSEnabled(isAccountHOSEnabled(accountGroupHierarchy.getGroupList().get(0).getAccountID()));
+        builder.setHosDAO(getHosDAO());
         return builder.buildSingle();
+    }
+    @Override
+    public ReportCriteria getDriverCoachingScoreReportCriteriaByDriver(GroupHierarchy accountGroupHierarchy, Integer driverID, Interval interval, Locale locale, DateTimeZone timeZone, boolean includeInactiveDrivers, boolean includeZeroMilesDrivers) {
+        DriverCoachingScoreReportCriteria.Builder builder = new DriverCoachingScoreReportCriteria.Builder(groupReportDAO, driverPerformanceDAO, driverDAO, driverID, interval, includeInactiveDrivers, includeZeroMilesDrivers);
+        builder.setDateTimeZone(timeZone);
+        builder.setLocale(locale);
+        builder.setGroupHierarchy(accountGroupHierarchy);
+        builder.setAccountHOSEnabled(isAccountHOSEnabled(accountGroupHierarchy.getGroupList().get(0).getAccountID()));
+        builder.setHosDAO(getHosDAO());
+        return builder.buildSingle();
+    }
+    
+    private boolean isAccountHOSEnabled(Integer accountID) {
+        return accountDAO.findByID(accountID).getHos() == AccountHOSType.HOS_SUPPORT;
     }
     @Override
     public List<ReportCriteria> getDriverCoachingReportCriteriaByGroup(GroupHierarchy accountGroupHierarchy, Integer groupID, Interval interval, Locale locale, DateTimeZone timeZone,
@@ -1420,11 +1533,30 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
         builder.setDateTimeZone(timeZone);
         builder.setLocale(locale);
         builder.setGroupHierarchy(accountGroupHierarchy);
+        builder.setAccountHOSEnabled(isAccountHOSEnabled(accountGroupHierarchy.getGroupList().get(0).getAccountID()));
+        builder.setHosDAO(getHosDAO());
+        builder.setDriverDAO(driverDAO);
+        return builder.build();
+    }
+    @Override
+    public List<ReportCriteria> getDriverCoachingScoreReportCriteriaByGroup(GroupHierarchy accountGroupHierarchy, Integer groupID, Interval interval, Locale locale, DateTimeZone timeZone,
+            boolean includeInactiveDrivers, boolean includeZeroMilesDrivers) {
+        DriverCoachingScoreReportCriteria.Builder builder = new DriverCoachingScoreReportCriteria.Builder(groupReportDAO, driverPerformanceDAO, groupID, interval, includeInactiveDrivers, includeZeroMilesDrivers);
+        builder.setDateTimeZone(timeZone);
+        builder.setLocale(locale);
+        builder.setGroupHierarchy(accountGroupHierarchy);
+        builder.setAccountHOSEnabled(isAccountHOSEnabled(accountGroupHierarchy.getGroupList().get(0).getAccountID()));
+        builder.setHosDAO(getHosDAO());
+        builder.setDriverDAO(driverDAO);
         return builder.build();
     }
     @Override
     public List<ReportCriteria> getDriverCoachingReportCriteriaByGroup(GroupHierarchy accountGroupHierarchy, Integer groupID, Interval interval, Locale locale, DateTimeZone timeZone) {
         return getDriverCoachingReportCriteriaByGroup(accountGroupHierarchy, groupID, interval, locale, timeZone, ReportCriteria.DEFAULT_EXCLUDE_INACTIVE_DRIVERS, ReportCriteria.DEFAULT_EXCLUDE_ZERO_MILES_DRIVERS);
+    }
+    @Override
+    public List<ReportCriteria> getDriverCoachingScoreReportCriteriaByGroup(GroupHierarchy accountGroupHierarchy, Integer groupID, Interval interval, Locale locale, DateTimeZone timeZone) {
+        return getDriverCoachingScoreReportCriteriaByGroup(accountGroupHierarchy, groupID, interval, locale, timeZone, ReportCriteria.DEFAULT_EXCLUDE_INACTIVE_DRIVERS, ReportCriteria.DEFAULT_EXCLUDE_ZERO_MILES_DRIVERS);
     }
 
     @Override
@@ -1444,21 +1576,21 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
 
     /* Communication */
     @Override
-    public ReportCriteria getNonCommReportCriteria(GroupHierarchy accountGroupHierarchy, Integer groupID, TimeFrame timeFrame, Locale locale, DateTimeZone timeZone) {
+    public ReportCriteria getNonCommReportCriteria(GroupHierarchy accountGroupHierarchy, Integer groupID, TimeFrame timeFrame,Interval interval, Locale locale, DateTimeZone timeZone, boolean dontIncludeUnassignedDevice) {
         List<Integer> groupIDs = accountGroupHierarchy.getGroupIDList(groupID);
-        NonCommReportCriteria.Builder builder = new NonCommReportCriteria.Builder(accountGroupHierarchy, eventAggregationDAO, groupIDs, timeFrame);
+        NonCommReportCriteria.Builder builder = new NonCommReportCriteria.Builder(accountGroupHierarchy, eventAggregationDAO, groupIDs, timeFrame,interval,dontIncludeUnassignedDevice);
         builder.setLocale(locale);
         builder.setDateTimeZone(timeZone);
         return builder.build();
     }
     @Override
-    public ReportCriteria getSeatbeltClicksReportCriteria(GroupHierarchy accountGroupHierarchy, Integer groupID, TimeFrame timeFrame, Locale locale, DateTimeZone timeZone, MeasurementType measurementType) {
-        return getSeatbeltClicksReportCriteria(accountGroupHierarchy, groupID, timeFrame, locale, timeZone, measurementType, ReportCriteria.DEFAULT_EXCLUDE_INACTIVE_DRIVERS, ReportCriteria.DEFAULT_EXCLUDE_ZERO_MILES_DRIVERS);
+    public ReportCriteria getSeatbeltClicksReportCriteria(GroupHierarchy accountGroupHierarchy, Integer groupID, TimeFrame timeFrame,Interval interval, Locale locale, DateTimeZone timeZone, MeasurementType measurementType) {
+        return getSeatbeltClicksReportCriteria(accountGroupHierarchy, groupID, timeFrame, interval, locale, timeZone, measurementType, ReportCriteria.DEFAULT_EXCLUDE_INACTIVE_DRIVERS, ReportCriteria.DEFAULT_EXCLUDE_ZERO_MILES_DRIVERS);
         
     }
     @Override
-    public ReportCriteria getSeatbeltClicksReportCriteria(GroupHierarchy accountGroupHierarchy, Integer groupID, TimeFrame timeFrame, Locale locale, DateTimeZone timeZone, MeasurementType measurementType, boolean includeInactiveDrivers, boolean includeZeroMilesDrivers) {
-        SeatbeltClicksReportCriteria.Builder builder = new SeatbeltClicksReportCriteria.Builder(accountGroupHierarchy, groupReportDAO, groupID, timeFrame, measurementType, includeInactiveDrivers, includeZeroMilesDrivers);
+    public ReportCriteria getSeatbeltClicksReportCriteria(GroupHierarchy accountGroupHierarchy, Integer groupID, TimeFrame timeFrame,Interval interval, Locale locale, DateTimeZone timeZone, MeasurementType measurementType, boolean includeInactiveDrivers, boolean includeZeroMilesDrivers) {
+        SeatbeltClicksReportCriteria.Builder builder = new SeatbeltClicksReportCriteria.Builder(accountGroupHierarchy, groupReportDAO, groupID, timeFrame,interval, measurementType, includeInactiveDrivers, includeZeroMilesDrivers);
         builder.setLocale(locale);
         builder.setDateTimeZone(timeZone);
         return builder.build();
@@ -1499,13 +1631,45 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
 
     
     @Override
-    public ReportCriteria getBackingReportCriteria(GroupHierarchy accountGroupHierarchy, Integer groupID, TimeFrame timeFrame, Locale locale, DateTimeZone timeZone, MeasurementType measurementType) {
-        return getBackingReportCriteria(accountGroupHierarchy, groupID, timeFrame, locale, timeZone, measurementType, ReportCriteria.DEFAULT_EXCLUDE_INACTIVE_DRIVERS, ReportCriteria.DEFAULT_EXCLUDE_ZERO_MILES_DRIVERS);
+    public ReportCriteria getBackingReportCriteria(Interval interval, GroupHierarchy accountGroupHierarchy, Integer groupID, TimeFrame timeFrame, Locale locale, DateTimeZone timeZone, MeasurementType measurementType) {
+        return getBackingReportCriteria(interval, accountGroupHierarchy, groupID, timeFrame, locale, timeZone, measurementType, ReportCriteria.DEFAULT_EXCLUDE_INACTIVE_DRIVERS, ReportCriteria.DEFAULT_EXCLUDE_ZERO_MILES_DRIVERS);
         
     }
     @Override
-    public ReportCriteria getBackingReportCriteria(GroupHierarchy accountGroupHierarchy, Integer groupID, TimeFrame timeFrame, Locale locale, DateTimeZone timeZone, MeasurementType measurementType, boolean includeInactiveDrivers, boolean includeZeroMilesDrivers) {
-        BackingReportCriteria.Builder builder = new BackingReportCriteria.Builder(accountGroupHierarchy, groupReportDAO, groupID, timeFrame, measurementType, includeInactiveDrivers, includeZeroMilesDrivers);
+    public ReportCriteria getBackingReportCriteria(Interval interval, GroupHierarchy accountGroupHierarchy, Integer groupID, TimeFrame timeFrame, Locale locale, DateTimeZone timeZone, MeasurementType measurementType, boolean includeInactiveDrivers, boolean includeZeroMilesDrivers) {
+        BackingReportCriteria.Builder builder = new BackingReportCriteria.Builder(interval, accountGroupHierarchy, groupReportDAO, groupID, timeFrame, measurementType, includeInactiveDrivers, includeZeroMilesDrivers);
+        builder.setLocale(locale);
+        builder.setDateTimeZone(timeZone);
+        return builder.build();
+    }
+
+    @Override
+    public ReportCriteria getFirstMoveForwardCriteria(Interval interval, GroupHierarchy accountGroupHierarchy, Integer groupID, TimeFrame timeFrame, Locale locale, DateTimeZone timeZone, MeasurementType measurementType) {
+        return getFirstMoveForwardCriteria(interval, accountGroupHierarchy, groupID, timeFrame, locale, timeZone, measurementType, ReportCriteria.DEFAULT_EXCLUDE_INACTIVE_DRIVERS, ReportCriteria.DEFAULT_EXCLUDE_ZERO_MILES_DRIVERS);
+
+    }
+    @Override
+    public ReportCriteria getFirstMoveForwardCriteria(Interval interval, GroupHierarchy accountGroupHierarchy, Integer groupID, TimeFrame timeFrame, Locale locale, DateTimeZone timeZone, MeasurementType measurementType, boolean includeInactiveDrivers, boolean includeZeroMilesDrivers) {
+        FirstMoveForwardReportCriteria.Builder builder = new FirstMoveForwardReportCriteria.Builder(interval, accountGroupHierarchy, groupReportDAO, groupID, timeFrame, measurementType, includeInactiveDrivers, includeZeroMilesDrivers);
+        builder.setLocale(locale);
+        builder.setDateTimeZone(timeZone);
+        return builder.build();
+    }
+
+
+    @Override
+    public ReportCriteria getMaintenanceEventsReportCriteria(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, Interval interval, Locale locale, DateTimeZone timeZone, MeasurementType measurementType) {
+        MaintenanceEventsReportCriteria.Builder builder = new MaintenanceEventsReportCriteria.Builder(accountGroupHierarchy, groupReportDAO, groupDAO, vehicleDAO, eventDAO, groupIDList, interval, measurementType, configuratorJDBCDAO, driveTimeDAO);
+        builder.setLocale(locale);
+        builder.setDateTimeZone(timeZone);
+        return builder.build();
+    }
+
+
+
+    @Override
+    public ReportCriteria getMaintenanceIntervalReportCriteria(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, Interval interval, Locale locale, DateTimeZone timeZone, MeasurementType measurementType) {
+        MaintenanceIntervalReportCriteria.Builder builder = new MaintenanceIntervalReportCriteria.Builder(accountGroupHierarchy, groupReportDAO, groupDAO, vehicleDAO, eventDAO, groupIDList, interval, measurementType, configuratorJDBCDAO, driveTimeDAO);
         builder.setLocale(locale);
         builder.setDateTimeZone(timeZone);
         return builder.build();
@@ -1544,6 +1708,9 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
     }
 
     public List<ReportCriteria> getReportCriteria(ReportSchedule reportSchedule, GroupHierarchy groupHierarchy, Person person) {
+        if (person.getLocale() == null)
+            person.setLocale(Locale.ENGLISH);
+
         ReportGroup reportGroup = ReportGroup.valueOf(reportSchedule.getReportID());
         if (reportGroup == null) {
             logger.error("null reportGroup for schedule ID " + reportSchedule.getReportID());
@@ -1563,11 +1730,24 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
                 logger.error("no group id specified so skipping report id: " + reportSchedule.getReportScheduleID());
                 continue;
             }
+
             switch (reportGroup.getReports()[i]) {
+                case FIRST_MOVE_FORWARD_REPORT:
+                    reportCriteriaList.add(getFirstMoveForwardCriteria(timeFrame.getInterval(),
+                            groupHierarchy,
+                            reportSchedule.getGroupID(),
+                            timeFrame,
+                            person.getLocale(),
+                            DateTimeZone.forID(person.getTimeZone().getID()),
+                            person.getMeasurementType(),
+                            reportSchedule.getIncludeInactiveDrivers(),
+                            reportSchedule.getIncludeZeroMilesDrivers()));
+                    break;
                 case SEATBELT_CLICKS_REPORT:
                     reportCriteriaList.add(getSeatbeltClicksReportCriteria(groupHierarchy,
                                                                            reportSchedule.getGroupID(),
                                                                            timeFrame,
+                                                                           timeFrame.getInterval(),
                                                                            person.getLocale(),
                                                                            DateTimeZone.forID(person.getTimeZone().getID()),
                                                                            person.getMeasurementType(),
@@ -1610,7 +1790,7 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
                             groupHierarchy));
                     break;
                 case TEAM_STOPS_REPORT:
-                    reportCriteriaList.add(getTeamStopsReportCriteriaByGroup(groupHierarchy, reportSchedule.getGroupIDList(), timeFrame, DateTimeZone.forTimeZone(person.getTimeZone()),
+                    reportCriteriaList.add(getTeamStopsReportCriteriaByGroup(timeFrame.getInterval(), groupHierarchy, reportSchedule.getGroupIDList(), timeFrame, DateTimeZone.forTimeZone(person.getTimeZone()),
                             person.getLocale()));
                     break;
                 case HOS_DAILY_DRIVER_LOG_REPORT:
@@ -1623,22 +1803,19 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
                                         person.getLocale(),
                                         person.getMeasurementType() == MeasurementType.METRIC,
                                         DateTimeZone.forTimeZone(person.getTimeZone()),
-                                        reportSchedule.getIncludeInactiveDrivers()
+                                        reportSchedule.getIncludeInactiveDrivers(),
+                                        reportSchedule.getHosDriversOnly()
                                         )
                                        );
                     }
                     else
                     {
-                        reportCriteriaList.addAll(getHosDailyDriverLogReportCriteria(
-                                        groupHierarchy,
-                                        reportSchedule.getGroupIDList(),
-                                        timeFrame.getInterval(),
-                                        person.getLocale(),
-                                        person.getMeasurementType() == MeasurementType.METRIC,
-                                        DateTimeZone.forTimeZone(person.getTimeZone()),
-                                        reportSchedule.getIncludeInactiveDrivers()
-                                        )
-                                       );
+                        logger.info("reportCriteriaList: "+reportCriteriaList);
+                        logger.info("reportCriteria.size: "+reportCriteriaList.size());
+                        List<ReportCriteria> reportCritListToAdd = getHosDailyDriverLogReportCriteria(groupHierarchy,reportSchedule.getGroupIDList(),timeFrame.getInterval(),person.getLocale(),person.getMeasurementType() == MeasurementType.METRIC,DateTimeZone.forTimeZone(person.getTimeZone()),reportSchedule.getIncludeInactiveDrivers(),reportSchedule.getHosDriversOnly());
+                        logger.info("reportCritListToAdd: "+reportCritListToAdd);
+                        logger.info("reportCritListToAdd.size: "+reportCritListToAdd.size());
+                        reportCriteriaList.addAll(reportCritListToAdd);
                     }
                     break;
                 case HOS_VIOLATIONS_SUMMARY_REPORT:
@@ -1649,6 +1826,15 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
                                     person.getLocale(),
                                     reportSchedule.getIncludeInactiveDrivers()
                                     ));
+                    break;
+                case WEATHERFORD_HOS_VIOLATIONS_SUMMARY_REPORT:
+                    reportCriteriaList.add(getWthHosViolationsSummaryReportCriteria(
+                            groupHierarchy,
+                            reportSchedule.getGroupIDList(),
+                            timeFrame.getInterval(),
+                            person.getLocale(),
+                            reportSchedule.getIncludeInactiveDrivers()
+                    ));
                     break;
                 case HOS_VIOLATIONS_DETAIL_REPORT:
                     if (reportSchedule.getParamType() == ReportParamType.DRIVER)
@@ -1769,6 +1955,26 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
                                     reportSchedule.getIncludeInactiveDrivers(),
                                     reportSchedule.getIncludeZeroMilesDrivers()
                                     ));
+                    break;
+                case THIRTY_MINUTE_BREAKS:
+                    reportCriteriaList.add(getThirtyMinuteBreaksReportCriteria(
+                                    groupHierarchy,
+                                    reportSchedule.getGroupIDList(),
+                                    timeFrame.getInterval(),
+                                    person.getLocale(),
+                                    reportSchedule.getIncludeInactiveDrivers()
+                                    )
+                                    );
+                    break;
+                case TWO_HOUR_BREAKS:
+                    reportCriteriaList.add(getTwoHourBreaksReportCriteria(
+                                    groupHierarchy,
+                                    reportSchedule.getGroupIDList(),
+                                    timeFrame.getInterval(),
+                                    person.getLocale(),
+                                    reportSchedule.getIncludeInactiveDrivers()
+                            )
+                    );
                     break;
 
                 case MILEAGE_BY_VEHICLE:
@@ -1927,6 +2133,32 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
                                         );
                     }
                     break;
+                    
+                case DRIVER_COACHING_SCORE:
+                    DateTimeZone dtz1 = DateTimeZone.forTimeZone(person.getTimeZone());
+                    if (reportSchedule.getGroupID() != null) {
+                        reportCriteriaList.addAll(getDriverCoachingScoreReportCriteriaByGroup(
+                                        groupHierarchy,
+                                        reportSchedule.getGroupID(),
+                                        timeFrame.getInterval(),
+                                        person.getLocale(),
+                                        dtz1,   
+                                        reportSchedule.getIncludeInactiveDrivers(),
+                                        reportSchedule.getIncludeZeroMilesDrivers()
+                                        )
+                                        );
+                    } else {
+                        reportCriteriaList.add(getDriverCoachingScoreReportCriteriaByDriver(
+                                        groupHierarchy, reportSchedule.getDriverID(),
+                                        timeFrame.getInterval(), 
+                                        person.getLocale(),
+                                        dtz1,   
+                                        reportSchedule.getIncludeInactiveDrivers(),
+                                        reportSchedule.getIncludeZeroMilesDrivers()
+                                        )
+                                        );
+                    }
+                    break;
                 case DRIVER_EXCLUDED_VIOLATIONS:
                     reportCriteriaList.add(getDriverExcludedViolationCriteria(
                                     groupHierarchy,
@@ -1940,7 +2172,7 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
                                     );
                     break;
                 case NON_COMM:
-                    reportCriteriaList.add(getNonCommReportCriteria(groupHierarchy, reportSchedule.getGroupID(), timeFrame, person.getLocale(), DateTimeZone.forTimeZone(person.getTimeZone())));
+                    reportCriteriaList.add(getNonCommReportCriteria(groupHierarchy, reportSchedule.getGroupID(), timeFrame,timeFrame.getInterval(), person.getLocale(), DateTimeZone.forTimeZone(person.getTimeZone()),reportSchedule.getDontIncludeUnassignedDevice()));
                     break;
                 case DVIR_PRETRIP:
                     reportCriteriaList.add(getDVIRPreTripReportCriteria(groupHierarchy, reportSchedule.getGroupID(), timeFrame, person.getLocale(), DateTimeZone.forTimeZone(person.getTimeZone())));
@@ -1958,8 +2190,20 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
                     reportCriteriaList.add(getDVIRInspectionRepairCompleteCriteria(groupHierarchy, reportSchedule.getGroupID(), timeFrame, person.getLocale(), DateTimeZone.forTimeZone(person.getTimeZone()), true));
                     break;
                 case BACKING_REPORT:
-                    reportCriteriaList.add(getBackingReportCriteria(groupHierarchy, reportSchedule.getGroupID(), timeFrame, person.getLocale(), DateTimeZone.forID(person.getTimeZone().getID()),
+                    reportCriteriaList.add(getBackingReportCriteria(timeFrame.getInterval(), groupHierarchy, reportSchedule.getGroupID(), timeFrame, person.getLocale(), DateTimeZone.forID(person.getTimeZone().getID()),
                             person.getMeasurementType(), reportSchedule.getIncludeInactiveDrivers(), reportSchedule.getIncludeZeroMilesDrivers()));
+                    break;
+                case VEHICLE_MAINTENANCE_EVENTS_REPORT:
+                   dateTimeZone = DateTimeZone.forID(person.getTimeZone().getID());
+                   interval = new Interval(new DateMidnight(new DateTime().minusWeeks(1), dateTimeZone), new DateMidnight(new DateTime(), dateTimeZone).toDateTime().plusDays(1).minus(ONE_MINUTE));
+                    reportCriteriaList.add(getMaintenanceEventsReportCriteria(groupHierarchy,reportSchedule.getGroupIDList(),interval, person.getLocale(),
+                            DateTimeZone.forID(person.getTimeZone().getID()),person.getMeasurementType()));
+                    break;
+                case VEHICLE_MAINTENANCE_INTERVAL_REPORT:
+                    dateTimeZone = DateTimeZone.forID(person.getTimeZone().getID());
+                    interval = new Interval(new DateMidnight(new DateTime().minusWeeks(1), dateTimeZone), new DateMidnight(new DateTime(), dateTimeZone).toDateTime().plusDays(1).minus(ONE_MINUTE));
+                    reportCriteriaList.add(getMaintenanceIntervalReportCriteria(groupHierarchy, reportSchedule.getGroupIDList(), interval, person.getLocale(),
+                            DateTimeZone.forID(person.getTimeZone().getID()),person.getMeasurementType()));
                     break;
                 default:
                     break;

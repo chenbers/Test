@@ -177,7 +177,7 @@ public abstract class BasePerformanceEventsBean extends BasePerformanceBean {
    	}
     public synchronized void excludeEventAction()
     {
-        Integer result = eventDAO.forgive(getDriver().getDriverID(), clearItem.getEvent().getNoteID());
+        Integer result = eventDAO.forgive(getDriver().getDriverID(), clearItem.getEvent().getNoteID(), 0l, "");
         if(result.intValue() >= 1)
             {
         		initEvents();

@@ -71,7 +71,7 @@ public enum NoteType implements BaseEnum {
      * Sent when ignition off is detected <br/>
      * Attributes [ATTR_MPG], [ATTR_MPG_DISTANCE], [ATTR_TRIP_DURATION], ATTR_PERCENTAGE_GPS_FILTERED, [ATTR_SPEEDING_SQUELCHED], ATTR_CURRENT_IGN, [ATTR_NUM_GPS_REBOOTS], [ATTR_OBD_PCT], [ATTR_GPS_PCT], [ATTR_AGPS_DOWNLOADED], [ATTR_VIOLATION_FLAGS]
      */
-    IGNITION_OFF(20, EventType.IGNITION_OFF),
+    IGNITION_OFF(20, IgnitionOffMaintenanceEvent.class),
     
     MODEM_OFF(21), //WAYSMART
 
@@ -133,7 +133,7 @@ public enum NoteType implements BaseEnum {
      */
     LOW_POWER_MODE(52),
     
-    SATELLITE_SWITCH(53), //WAYSMART
+    SATELLITE_SWITCH(53, EventType.ATTR_RF_OFF_DISTANCE), //WAYSMART
     WITNESS_HEARTBEAT_VIOLATION(54, EventType.WITNESS_HEARTBEAT_VIOLATION), //WAYSMART
     DRIVER_HOURS(55), //WAYSMART
     DOT_STOPPED(56, DOTStoppedEvent.class), //WAYSMART
@@ -423,7 +423,7 @@ public enum NoteType implements BaseEnum {
      * is disabled by default.
      * Attributes None
      */
-    DRIVER_HISTOGRAM_STATS(216),
+    START_MOTION(216),
     
     /**
      * This note indicates that the vehicle has stopped moving.  This event is used primarily for cell phone control (ZoomSafer, Cell Control) and
@@ -457,9 +457,10 @@ public enum NoteType implements BaseEnum {
 
     
     //TODO: BACKUP TYPE
-    BACKING(235, BackingEvent.class),
-
+    BACKING(235, BackingMultipleEvent.class),
+    DEVICE_MODEM_PAIRING(236),
     TRAILER_PROGRAMMED(237, TrailerProgrammedEvent.class),
+    MAINTENANCE_EVENTS(238, MaintenanceEvent.class),
 
     // new notifications without header information - not really a real notification.
     // used primarily for background communication

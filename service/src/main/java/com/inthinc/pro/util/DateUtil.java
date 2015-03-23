@@ -1,5 +1,6 @@
 package com.inthinc.pro.util;
 
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -18,6 +19,11 @@ public class DateUtil {
     static final Integer DAYS_BACK = 7;
     static final String SIMPLE_DATE_FORMAT = "yyyyMMdd";
     static final String MONTH_FORMAT = "yyyyMMMZ";
+    
+    /**
+     * 2011-08-29T08:31:25-0600
+     */
+    private static final String DATE_TIME_FORMAT = "yyyy-MM-dd'T'hh:mm:ssZ";
     
     public static String getFormattedDate(DateTime date){
     	
@@ -94,5 +100,38 @@ public class DateUtil {
     	calendar.setTime(dateFormatter.parse(year+month+"+0000"));
 		DateTime selectedMonth = new DateTime(calendar.getTime()).toDateTime(DateTimeZone.UTC);
     	return selectedMonth;
+    }
+    public static void checkDateRange(Date startDate, Date endDate) throws BadDateRangeException {
+        if(!startDate.before(endDate)) {
+            throw new BadDateRangeException(startDate, endDate);
+        }
+    }
+    public static void checkDateRange(DateTime startDate, DateTime endDate) throws BadDateRangeException {
+        checkDateRange(startDate.toDate(), endDate.toDate());
+    }
+    
+    public static Date buildDateTimeFromString(String strDate) {
+        if (strDate == null)
+            return null;
+
+        if (strDate.contains(":")){
+            DateFormat df = new SimpleDateFormat(DATE_TIME_FORMAT);
+            try {
+                Date convertedDate = df.parse(strDate);
+                return convertedDate;
+            } catch (ParseException e) {
+                e.printStackTrace();
+                return null;
+            }
+        } else{
+            DateFormat df = new SimpleDateFormat(SIMPLE_DATE_FORMAT);
+            try {
+                Date convertedDate = df.parse(strDate);
+                return convertedDate;
+            } catch (ParseException e) {
+                e.printStackTrace();
+                return null;
+            }
+        }
     }
 }

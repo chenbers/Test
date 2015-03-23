@@ -87,6 +87,7 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
         AVAILABLE_COLUMNS.add("DOT");
         AVAILABLE_COLUMNS.add("IFTA");
         AVAILABLE_COLUMNS.add("productType");
+        AVAILABLE_COLUMNS.add("glcode");
         
 
         // years
@@ -119,7 +120,7 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
     private TreeMap<Integer, Boolean>             driverAssigned;
     
     private ProductType                           batchEditProductChoice;
-    
+
     // Stuff to do with vehicleSettings for the device
     private VehicleSettingsFactory              vehicleSettingsFactory;
     private Map<Integer, VehicleSettingManager> vehicleSettingManagers;
@@ -130,7 +131,8 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
 
     private Map<Integer, Driver> driverMap;
 
-    
+    private String redirectVehiclesAssetsValue;
+
     @Override
     public void initBean() {
         super.initBean();
@@ -786,6 +788,12 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
         private boolean           selected;
         @Column(updateable = false)
         private String           driverName;
+        @Column(updateable = false)
+        private String product;
+        @Column(updateable = false)
+        private String dot;
+
+
 
         @Column(updateable = false)
         private WaysmartForwardCommand wirelineDoorAlarm;
@@ -808,6 +816,37 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
             wirelineDoorAlarm = new WirelineDoorAlarmCommand(getDevice(), getFwdCmdAddress(), bean.getFwdCmdSpoolWS());
             wirelineKillMotor = new WirelineKillMotorCommand(getDevice(), getFwdCmdAddress(), bean.getFwdCmdSpoolWS());
         }
+
+        /**
+         * Get the sum between odometer and max(agg.vehicleEndingOdometer) from agg
+         *
+         * @return sum or null if both are null
+         */
+        public Integer getOdometerAndMaxVehicleEndingOdometer() {
+            Integer odometer = getOdometer();
+            Integer maxOdometer = getMaxVehicleEndingOdometer();
+            if (odometer == null && maxOdometer == null)
+                return null;
+
+            return (odometer != null ? odometer : 0) + (maxOdometer != null ? maxOdometer : 0);
+        }
+
+        public String getProduct() {
+            return editableVehicleSettings.getProductDisplayName();
+        }
+
+        public void setProduct(String product) {
+            this.product = product;
+        }
+
+        public String getDot() {
+            return (getDotVehicleType() == null) ? ((getHosDotType() == null) ? " " : MessageUtil.getMessageString(getHosDotType().toString())):MessageUtil.getMessageString(getDotVehicleType().toString());
+        }
+
+        public void setDot(String dot) {
+            this.dot = dot;
+        }
+
         public void setEditableVehicleSettings(EditableVehicleSettings editableVehicleSettings) {
             this.editableVehicleSettings = editableVehicleSettings;
         }
@@ -1074,4 +1113,15 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
     public void setDriverMap(Map<Integer, Driver> driverMap) {
         this.driverMap = driverMap;
     }
+
+    public String getRedirectVehiclesAssetsValue() {
+        String accountPropRedirect = getProUser().getAccountAttributes().getRedirectVehiclesAssets();
+        redirectVehiclesAssetsValue = accountPropRedirect == null ? "NONE" : accountPropRedirect;
+        return redirectVehiclesAssetsValue;
+    }
+
+    public void setRedirectVehiclesAssetsValue(String redirectVehiclesAssetsValue) {
+        this.redirectVehiclesAssetsValue = redirectVehiclesAssetsValue;
+    }
+
 }

@@ -461,7 +461,7 @@ public class SiloServiceTest {
             int size = result.size();
             if (size > 0) {
                 Event e = result.get(0);
-                eventDAO.forgive(e.getDriverID(), e.getNoteID());
+                eventDAO.forgive(e.getDriverID(), e.getNoteID(), 0l, "");
                 List<Event> newResult = eventDAO.getEventsForDriver(TESTING_DRIVER_ID, startDate, endDate, EventCategory.VIOLATION.getNoteTypesInCategory(),
                         EventDAO.EXCLUDE_FORGIVEN);
                 assertEquals("list size should be 1 less after forgive", (size - 1), newResult.size());
@@ -1183,17 +1183,20 @@ public class SiloServiceTest {
         groupDAO.setSiloService(siloService);
         // fleet
         fleetGroup = new Group(0, acctID, "Fleet", 0, GroupType.FLEET, null, "Fleet Group", 5, new LatLng(0.0, 0.0));
+        fleetGroup.setGlCode("GL1");
         Integer groupID = groupDAO.create(acctID, fleetGroup);
         // Integer managerID, String description, Integer mapZoom, LatLng mapCenter)
         assertNotNull(groupID);
         fleetGroup.setGroupID(groupID);
         // region
         regionGroup = new Group(0, acctID, "Region", fleetGroup.getGroupID(), GroupType.DIVISION, null, "Region Group", 5, new LatLng(0.0, 0.0));
+        regionGroup.setGlCode("GL2");
         groupID = groupDAO.create(acctID, regionGroup);
         assertNotNull(groupID);
         regionGroup.setGroupID(groupID);
         // team
         team1Group = new Group(0, acctID, "Team", regionGroup.getGroupID(), GroupType.TEAM, null, "Team 1 Group", 5, new LatLng(0.0, 0.0));
+        team1Group.setGlCode("GL3");
         AddressHessianDAO addressDAO = new AddressHessianDAO();
         addressDAO.setSiloService(siloService);
         // create
@@ -1206,6 +1209,7 @@ public class SiloServiceTest {
         assertNotNull(groupID);
         team1Group.setGroupID(groupID);
         team2Group = new Group(0, acctID, "Team 2", regionGroup.getGroupID(), GroupType.TEAM, null, "Team 2 Group", 5, new LatLng(0.0, 0.0));
+        team2Group.setGlCode("GL4");
         groupID = groupDAO.create(acctID, team2Group);
         assertNotNull(groupID);
         team2Group.setGroupID(groupID);
@@ -1615,7 +1619,7 @@ public class SiloServiceTest {
         Integer weeklyId = reportScheduleHessianDAO.create(acctID, reportScheduleWeekly);
         logger.debug("Report Schedule ID: " + weeklyId);
         logger.debug("Report Schedule acctID: " + acctID);
-        assertNotNull(weeklyId);
+        assertNotNull("acctID "+acctID+" and reportScheduleWeekly "+reportScheduleWeekly,weeklyId);
         reportScheduleWeekly.setReportScheduleID(weeklyId);
         
         // Daily report create

@@ -147,7 +147,7 @@ public class HosViolationsSummary extends ViolationsSummary  {
             return;
 //System.out.println(violationType + " " + minutes);            
         
-        if (violationType == RuleViolationTypes.DRIVING_HOUR || violationType == RuleViolationTypes.DAILY_DRIVING || violationType == RuleViolationTypes.REST_BREAK ) {
+        if (violationType == RuleViolationTypes.DRIVING_HOUR || violationType == RuleViolationTypes.DAILY_DRIVING || violationType == RuleViolationTypes.REST_BREAK || violationType == RuleViolationTypes.ALBERTA_REST_BREAK) {
             if (minutes < 15)
                 driving_1++;
             else if (minutes < 30) 
@@ -184,7 +184,7 @@ public class HosViolationsSummary extends ViolationsSummary  {
     }
     
     public void dump() {
-      System.out.println("new HosViolationsSummary(\", " + getGroupName() + "\"," + 
+      System.out.println("new HosViolationsSummary(\", " + getGroupName() + "\"," +
               getDriving_1() + "," + 
               getDriving_2() + "," + 
               getDriving_3() + "," + 

@@ -28,7 +28,7 @@ import java.util.Map;
  * Time: 1:49 PM
  * To change this template use File | Settings | File Templates.
  */
-public class EmailReportAmazonPushJob extends QuartzJobBean {
+public class EmailReportAmazonPushJob extends BaseEmailReportJob {
     private static final Logger logger = Logger.getLogger(EmailReportAmazonPushJob.class);
 
     private AmazonQueue amazonQueue;
@@ -71,7 +71,7 @@ public class EmailReportAmazonPushJob extends QuartzJobBean {
     }
 
     @Override
-    protected void executeInternal(JobExecutionContext jobExecutionContext) throws JobExecutionException {
+    protected void executeIfEnabled(JobExecutionContext jobExecutionContext) throws JobExecutionException {
 
         Long startExecutionTime = System.currentTimeMillis();
 

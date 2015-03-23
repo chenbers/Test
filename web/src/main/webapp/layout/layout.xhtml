@@ -15,6 +15,7 @@
 <f:loadBundle basename="com.inthinc.pro.resources.Messages" var="messages" />
 
 <head>
+<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE8" />
 <script type="text/javascript">var _sf_startpt=(new Date()).getTime()</script>
 
 <c:set var="titleText" value="#{messages.title} - #{title}"/>
@@ -94,6 +95,7 @@
 		
 		</script>
 	</f:verbatim>
+	<link rel="stylesheet" href="#{request.contextPath}/css/fleet-min.css" />
 </head>
     <body onload="if (typeof bodyLoad != 'undefined') bodyLoad()" onunload="if (typeof bodyUnload != 'undefined') bodyUnload()">
      <script type="text/javascript"></script>
@@ -149,6 +151,7 @@
     <a4j:form>
         <a4j:jsFunction limitToList="true" name="reloadAjaxPanels" reRender="#{ajaxPanels}" />
     </a4j:form>
+    <script type="text/javascript" src="#{facesContext.externalContext.requestContextPath}/js/ajax4jsf_AJAX_patched.js"></script>
     </body>
 </f:view>
 </html>

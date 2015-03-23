@@ -32,11 +32,15 @@ public class AccountAttributes extends BaseEntity {
     private String rhaEnabled;
     private String formsEnabled;
     private String trailersEnabled;
+    private String maintenanceEnabled;
     private String phoneControlProvider1;
     private String phoneControlProvider2;
     private String phoneControlProvider3;
     private String driveTimeViolationsReportEnabled;
     private String eventQueueEnabled;
+    private String redirectVehiclesAssets;
+    private String sbsAccessEnabled;
+    private String weatherfordViolationsReportEnabled;
 
 
     @Column(updateable = false)
@@ -280,5 +284,39 @@ public class AccountAttributes extends BaseEntity {
 
     public void setEventQueueEnabled(String eventQueueEnabled) {
         this.eventQueueEnabled = eventQueueEnabled;
+    }
+
+    public String getMaintenanceEnabled() {
+        return maintenanceEnabled;
+    }
+
+    public void setMaintenanceEnabled(String maintenanceEnabled) {
+        this.maintenanceEnabled = maintenanceEnabled;
+    }
+
+    public String getRedirectVehiclesAssets() {
+        return redirectVehiclesAssets;
+    }
+
+    public void setRedirectVehiclesAssets(String redirectVehiclesAssets) {
+        this.redirectVehiclesAssets = redirectVehiclesAssets;
+    }
+
+    public String getSbsAccessEnabled() {
+        if (sbsAccessEnabled == null)
+            return "false";
+        return sbsAccessEnabled;
+    }
+
+    public void setSbsAccessEnabled(String sbsAccessEnabledEnabled) {
+        this.sbsAccessEnabled = sbsAccessEnabledEnabled;
+    }
+
+    public String getWeatherfordViolationsReportEnabled() {
+        return weatherfordViolationsReportEnabled;
+    }
+
+    public void setWeatherfordViolationsReportEnabled(String weatherfordViolationsReportEnabled) {
+        this.weatherfordViolationsReportEnabled = weatherfordViolationsReportEnabled;
     }
 }

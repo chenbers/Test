@@ -3537,7 +3537,7 @@ hr.minorSeparator{
 
 .panel_title span.team_what_happened_disclaimer {
 	font-size: 9px;
-
+}
 /*to remove row separators in editcolumnspopup   */
 .editColumnNoGrid td {
 	border-bottom: 0px;

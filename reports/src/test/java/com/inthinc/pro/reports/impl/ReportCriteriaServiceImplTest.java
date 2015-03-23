@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import com.inthinc.pro.dao.mock.MockReportDAO;
 import com.inthinc.pro.model.Vehicle;
 import mockit.VerificationsInOrder;
 
@@ -226,6 +227,30 @@ public class ReportCriteriaServiceImplTest extends BaseUnitTest {
         reportCriteria.setDuration(duration);
         
         assertEquals(dao.numOfResults, reportCriteria.getMainDataset().size());
+        assertEquals(duration, reportCriteria.getDuration());
+    }
+
+    @Test
+    public void testGetVehicleAdminReportCriteria() {
+        String mockGroupName = "VehicleAdminGroupName";
+
+        ReportCriteria reportCriteria = new ReportCriteria(ReportType.VEHICLE_ADMIN_REPORT, mockGroupName, Locale.US);
+        Duration duration = Duration.TWELVE;
+
+        assertEquals(ReportType.VEHICLE_ADMIN_REPORT, reportCriteria.getReport());
+
+        MockReportDAO dao = new MockReportDAO();
+        List<Integer> groupIDs = new ArrayList<Integer>();
+
+        Integer rowCount = dao.getVehicleReportCount(1,null);
+
+        assertEquals(dao.getNumOfResults(), rowCount.intValue());
+
+        PageParams pageParams = new PageParams(0, rowCount, null, null);
+        reportCriteria.setMainDataset(dao.getVehicleReportPage(1,pageParams));
+        reportCriteria.setDuration(duration);
+
+        assertEquals(dao.getNumOfResults(), reportCriteria.getMainDataset().size());
         assertEquals(duration, reportCriteria.getDuration());
     }
 
@@ -573,7 +598,7 @@ public class ReportCriteriaServiceImplTest extends BaseUnitTest {
         }
 
         @Override
-        public List<HOSRecord> getHOSRecordAtSummaryTime(Integer driverID, Date summaryTime, Date startTime, Date endTime) {
+        public List<HOSRecord> getHOSRecordAtSummaryTime(Integer driverID, Integer vehicleID, Date summaryTime, Date startTime, Date endTime) {
             // TODO Auto-generated method stub
             return null;
         }

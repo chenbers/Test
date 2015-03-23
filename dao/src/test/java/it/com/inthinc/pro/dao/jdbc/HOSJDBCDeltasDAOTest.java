@@ -51,6 +51,7 @@ public class HOSJDBCDeltasDAOTest extends SimpleJdbcDaoSupport {
     private DateTime lastUpdateTime; 
     private static DateTimeFormatter dateTimeFormatter = DateTimeFormat.forPattern("yyyy-MM-dd hh:mm:ss").withZone(DateTimeZone.UTC);
 
+    private static HOSDAO hosDAO; 
     // initial state
     // 0   8:30    SLEEPER (1)
     // 1   8:20    DRIVING (2)
@@ -74,6 +75,10 @@ public class HOSJDBCDeltasDAOTest extends SimpleJdbcDaoSupport {
         testDateTime = new DateTime(itData.startDateInSec*1000l, DateTimeZone.UTC);
         
 //        System.out.println("Test DateTime: " + dateTimeFormatter.print(testDateTime));
+        hosDAO = new HOSJDBCDAO();
+        ((HOSJDBCDAO)hosDAO).setDataSource(new ITDataSource().getRealDataSource());
+//        hosDAO = new HOSJDBCDAO2();
+//        ((HOSJDBCDAO2)hosDAO).setDataSource(new ITDataSource().getRealDataSource());
     }
 
     
@@ -81,9 +86,6 @@ public class HOSJDBCDeltasDAOTest extends SimpleJdbcDaoSupport {
     // no changes
     public void testCaseNoChanges() {
 
-        HOSDAO hosDAO = new HOSJDBCDAO();
-        ((HOSJDBCDAO)hosDAO).setDataSource(new ITDataSource().getRealDataSource());
-        
         GroupData groupData = itData.teamGroupData.get(ITData.WS_GROUP);
         List<HOSRecord> initialList = setupforLogDeltasTest(groupData);
         List<HOSRecord> cloneList = copyLogTimeAndStatus(initialList);
@@ -102,9 +104,6 @@ public class HOSJDBCDeltasDAOTest extends SimpleJdbcDaoSupport {
     // Portal edit of record 1 status from Driving(2) to OFF_DUTY (0)
     public void testCaseChangeStatus() {
 
-        HOSDAO hosDAO = new HOSJDBCDAO();
-        ((HOSJDBCDAO)hosDAO).setDataSource(new ITDataSource().getRealDataSource());
-        
         GroupData groupData = itData.teamGroupData.get(ITData.WS_GROUP);
         List<HOSRecord> initialList = setupforLogDeltasTest(groupData);
         List<HOSRecord> cloneList = copyLogTimeAndStatus(initialList);
@@ -141,9 +140,6 @@ public class HOSJDBCDeltasDAOTest extends SimpleJdbcDaoSupport {
     // Portal edit of record 1 time 5 minutes later
     public void testCaseChangeLogTime() {
 
-        HOSDAO hosDAO = new HOSJDBCDAO();
-        ((HOSJDBCDAO)hosDAO).setDataSource(new ITDataSource().getRealDataSource());
-        
         GroupData groupData = itData.teamGroupData.get(ITData.WS_GROUP);
         List<HOSRecord> initialList = setupforLogDeltasTest(groupData);
         List<HOSRecord> cloneList = copyLogTimeAndStatus(initialList);
@@ -181,9 +177,7 @@ public class HOSJDBCDeltasDAOTest extends SimpleJdbcDaoSupport {
     @Test
     // Kiosk add a record
     public void testCaseAddLogFromKiosk() {
-        HOSDAO hosDAO = new HOSJDBCDAO();
-        ((HOSJDBCDAO)hosDAO).setDataSource(new ITDataSource().getRealDataSource());
-        
+
         GroupData groupData = itData.teamGroupData.get(ITData.WS_GROUP);
         Driver driver = groupData.driver;
         List<HOSRecord> initialList = setupforLogDeltasTest(groupData);
@@ -230,8 +224,6 @@ public class HOSJDBCDeltasDAOTest extends SimpleJdbcDaoSupport {
     @Test
     // Portal add a record
     public void testCaseAddLogFromPortal() {
-        HOSDAO hosDAO = new HOSJDBCDAO();
-        ((HOSJDBCDAO)hosDAO).setDataSource(new ITDataSource().getRealDataSource());
         
         GroupData groupData = itData.teamGroupData.get(ITData.WS_GROUP);
         Driver driver = groupData.driver;
@@ -279,8 +271,6 @@ public class HOSJDBCDeltasDAOTest extends SimpleJdbcDaoSupport {
     @Test
     // Portal delete a record
     public void testCaseDeleteLogFromPortal() {
-        HOSDAO hosDAO = new HOSJDBCDAO();
-        ((HOSJDBCDAO)hosDAO).setDataSource(new ITDataSource().getRealDataSource());
         
         GroupData groupData = itData.teamGroupData.get(ITData.WS_GROUP);
         List<HOSRecord> initialList = setupforLogDeltasTest(groupData);
@@ -317,9 +307,6 @@ public class HOSJDBCDeltasDAOTest extends SimpleJdbcDaoSupport {
     // Portal multiple edits of record 1 time 5 minutes later, status change from driving to off duty
     public void testCaseChangeLogTimeAndStatus() {
 
-        HOSDAO hosDAO = new HOSJDBCDAO();
-        ((HOSJDBCDAO)hosDAO).setDataSource(new ITDataSource().getRealDataSource());
-        
         GroupData groupData = itData.teamGroupData.get(ITData.WS_GROUP);
         List<HOSRecord> initialList = setupforLogDeltasTest(groupData);
         List<HOSRecord> cloneList = copyLogTimeAndStatus(initialList);
@@ -369,8 +356,6 @@ public class HOSJDBCDeltasDAOTest extends SimpleJdbcDaoSupport {
     // Portal multiple edits of record 1 time 5 minutes later, status change from driving to off duty
     public void testCaseHOSRecordAtSummaryTime() {
 
-        HOSDAO hosDAO = new HOSJDBCDAO();
-        ((HOSJDBCDAO)hosDAO).setDataSource(new ITDataSource().getRealDataSource());
         
         GroupData groupData = itData.teamGroupData.get(ITData.WS_GROUP);
         List<HOSRecord> initialList = setupforLogDeltasTest(groupData);
@@ -398,9 +383,6 @@ public class HOSJDBCDeltasDAOTest extends SimpleJdbcDaoSupport {
     // Portal multiple edits of record 1 time 5 minutes later, status change from driving to off duty, and then delete it
     public void testCaseMultipleChanges() {
 
-        HOSDAO hosDAO = new HOSJDBCDAO();
-        ((HOSJDBCDAO)hosDAO).setDataSource(new ITDataSource().getRealDataSource());
-        
         GroupData groupData = itData.teamGroupData.get(ITData.WS_GROUP);
         List<HOSRecord> initialList = setupforLogDeltasTest(groupData);
         List<HOSRecord> cloneList = copyLogTimeAndStatus(initialList);
@@ -424,9 +406,51 @@ public class HOSJDBCDeltasDAOTest extends SimpleJdbcDaoSupport {
         checkOriginalListAtSummaryTime(hosDAO, groupData, cloneList);
     }
 
+    @Test
+    // DE9503
+    public void testCaseHOSRecordAtSummaryTimeFromDevice() {
+        DataSource dataSource = new ITDataSource().getRealDataSource();
+        this.setDataSource(dataSource);
+        SimpleJdbcTemplate template = getSimpleJdbcTemplate();
+
+        GroupData groupData = itData.teamGroupData.get(ITData.WS_GROUP);
+        List<HOSRecord> initialList = setupforLogDeltasTest(groupData);
+        List<HOSRecord> cloneList = copyLogTimeAndStatus(initialList);
+        
+        // change the added/update time to 1 minute later
+        DateTime latentUpdateTime = testDateTime.plusHours(1).plusMinutes(1);
+        String sql = "UPDATE hoslog set timeAdded = '" + dateTimeFormatter.print(latentUpdateTime) + "', timeLastUpdated = '" + dateTimeFormatter.print(latentUpdateTime) + "' where driverID = " + groupData.driver.getDriverID();
+        Integer rows = template.update(sql);
+
+        // records added for same device/vehicle should not be filtered out of list
+        List<HOSRecord> recListAtSummaryTime = hosDAO.getHOSRecordAtSummaryTime(groupData.driver.getDriverID(), groupData.vehicle.getVehicleID(), lastUpdateTime.toDate(), testDateTime.toDate(), testDateTime.plusHours(1).toDate());
+        assertEquals("recListAtSummaryTime should match initial list", cloneList.size(), recListAtSummaryTime.size());
+        
+        
+        // change vehicleID on one
+        sql = "UPDATE hoslog set vehicleID = 0 where hosLogID = " + initialList.get(0).getHosLogID();
+        System.out.println("sql: " + sql);
+        rows = template.update(sql);
+        
+        // deleted flag on one
+        sql = "UPDATE hoslog set deletedFlag = 1 where hosLogID = " + initialList.get(1).getHosLogID();
+        System.out.println("sql: " + sql);
+        rows = template.update(sql);
+        
+        // edited flag on one
+        sql = "UPDATE hoslog set editedFlag = 1 where hosLogID = " + initialList.get(2).getHosLogID();
+        System.out.println("sql: " + sql);
+        rows = template.update(sql);
+
+        // should only have one left
+        recListAtSummaryTime = hosDAO.getHOSRecordAtSummaryTime(groupData.driver.getDriverID(), groupData.vehicle.getVehicleID(), lastUpdateTime.toDate(), testDateTime.toDate(), testDateTime.plusHours(1).toDate());
+        assertEquals("recListAtSummaryTime should be filtered to one record left", 1, recListAtSummaryTime.size());
+        
+    }
+
 
     private void checkOriginalListAtSummaryTime(HOSDAO hosDAO, GroupData groupData, List<HOSRecord> cloneList) {
-        List<HOSRecord> recListAtSummaryTime = hosDAO.getHOSRecordAtSummaryTime(groupData.driver.getDriverID(), lastUpdateTime.toDate(), testDateTime.toDate(), testDateTime.plusHours(1).toDate());
+        List<HOSRecord> recListAtSummaryTime = hosDAO.getHOSRecordAtSummaryTime(groupData.driver.getDriverID(), groupData.vehicle.getVehicleID(), lastUpdateTime.toDate(), testDateTime.toDate(), testDateTime.plusHours(1).toDate());
         assertEquals("recListAtSummaryTime should match initial list", cloneList.size(), recListAtSummaryTime.size());
         
         int cnt = 0;
@@ -476,13 +500,10 @@ public class HOSJDBCDeltasDAOTest extends SimpleJdbcDaoSupport {
         rows = template.update(sql);
 //        System.out.println("HOSLog Rows Deleted: " + rows);
         
-        
-        HOSDAO hosDAO = new HOSJDBCDAO();
-        ((HOSJDBCDAO)hosDAO).setDataSource(new ITDataSource().getRealDataSource());
-
         HOSRecord hosRecord = new HOSRecord();
         hosRecord.setDeviceID(groupData.device.getDeviceID());
         hosRecord.setVehicleID(groupData.vehicle.getVehicleID());
+        hosRecord.setDriverID(groupData.driver.getDriverID());
         hosRecord.setNoteID(0l);
         hosRecord.setVehicleOdometer(1000l);
         hosRecord.setLat(0.0f);
@@ -501,22 +522,18 @@ public class HOSJDBCDeltasDAOTest extends SimpleJdbcDaoSupport {
 
         hosRecord.setLogTime(logStartTime.toDate());
         hosRecord.setStatus(HOSStatus.ON_DUTY);
-        hosRecord.setStatusCode(hosRecord.getStatus().getCode());
         hosDAO.createFromNote(hosRecord);
         
         hosRecord.setLogTime(logStartTime.plusMinutes(10).toDate());
         hosRecord.setStatus(HOSStatus.OFF_DUTY);
-        hosRecord.setStatusCode(hosRecord.getStatus().getCode());
         hosDAO.createFromNote(hosRecord);
         
         hosRecord.setLogTime(logStartTime.plusMinutes(20).toDate());
         hosRecord.setStatus(HOSStatus.DRIVING);
-        hosRecord.setStatusCode(hosRecord.getStatus().getCode());
         hosDAO.createFromNote(hosRecord);
 
         hosRecord.setLogTime(logStartTime.plusMinutes(30).toDate());
         hosRecord.setStatus(HOSStatus.SLEEPER);
-        hosRecord.setStatusCode(hosRecord.getStatus().getCode());
         hosDAO.createFromNote(hosRecord);
 
     

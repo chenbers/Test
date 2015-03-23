@@ -3,6 +3,8 @@ package com.inthinc.pro.reports.service;
 import java.util.List;
 import java.util.Locale;
 
+import com.inthinc.pro.dao.VehicleDAO;
+import com.inthinc.pro.model.Vehicle;
 import org.joda.time.DateTimeZone;
 import org.joda.time.Interval;
 
@@ -36,10 +38,11 @@ public interface ReportCriteriaService
     ReportCriteria getSpeedPercentageReportCriteria(Integer groupID,Duration duration, Locale locale, GroupHierarchy gh);
     ReportCriteria getIdlePercentageReportCriteria(Integer groupID, Duration duration, Locale locale, GroupHierarchy gh);
     ReportCriteria getTeamStatisticsReportCriteria(Integer groupID, TimeFrame timeFrame, DateTimeZone timeZone, Locale locale, Boolean initDataSet, GroupHierarchy gh);
-    ReportCriteria getTeamStopsReportCriteria(GroupHierarchy accountGroupHierarchy, Integer driverID, TimeFrame timeFrame, DateTimeZone timeZone, Locale locale, DriverStopReport driverStopReport);
-    ReportCriteria getTeamStopsReportCriteriaByGroup(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, TimeFrame timeFrame, DateTimeZone timeZone, Locale locale);
-    ReportCriteria getSeatbeltClicksReportCriteria(GroupHierarchy accountGroupHierarchy, Integer groupID, TimeFrame timeFrame, Locale locale,DateTimeZone timeZone, MeasurementType measurementType);
-    ReportCriteria getSeatbeltClicksReportCriteria(GroupHierarchy accountGroupHierarchy, Integer groupID, TimeFrame timeFrame, Locale locale, DateTimeZone timeZone, MeasurementType measurementType, boolean includeInactiveDrivers, boolean includeZeroMilesDrivers);
+    ReportCriteria getTeamStopsReportCriteria(Interval interval, GroupHierarchy accountGroupHierarchy, Integer driverID, TimeFrame timeFrame, DateTimeZone timeZone, Locale locale, DriverStopReport driverStopReport);
+    ReportCriteria getTeamStopsReportCriteriaByGroup(Interval interval, GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, TimeFrame timeFrame, DateTimeZone timeZone, Locale locale);
+    ReportCriteria getSeatbeltClicksReportCriteria(GroupHierarchy accountGroupHierarchy, Integer groupID, TimeFrame timeFrame,Interval interval, Locale locale,DateTimeZone timeZone, MeasurementType measurementType);
+    ReportCriteria getSeatbeltClicksReportCriteria(GroupHierarchy accountGroupHierarchy, Integer groupID, TimeFrame timeFrame,Interval interval, Locale locale, DateTimeZone timeZone, MeasurementType measurementType, boolean includeInactiveDrivers, boolean includeZeroMilesDrivers);
+    ReportCriteria getVehicleAdminReportCriteria(Integer groupID,Duration duration, Locale locale);
 
     // DOT IFTA
     ReportCriteria getMileageByVehicleReportCriteria(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, Interval interval, Locale locale, MeasurementType measurementType, boolean dotOnly);
@@ -51,11 +54,13 @@ public interface ReportCriteriaService
 
     // HOS
     List<ReportCriteria> getHosDailyDriverLogReportCriteria(GroupHierarchy accountGroupHierarchy, Integer driverID, Interval interval, Locale locale, Boolean defaultUseMetric, DateTimeZone timeZone);
-    List<ReportCriteria> getHosDailyDriverLogReportCriteria(GroupHierarchy accountGroupHierarchy, Integer driverID, Interval interval, Locale locale, Boolean defaultUseMetric, DateTimeZone timeZone, boolean includeInactiveDrivers);
+    List<ReportCriteria> getHosDailyDriverLogReportCriteria(GroupHierarchy accountGroupHierarchy, Integer driverID, Interval interval, Locale locale, Boolean defaultUseMetric, DateTimeZone timeZone, boolean includeInactiveDrivers, Boolean hosDriversOnly);
     List<ReportCriteria> getHosDailyDriverLogReportCriteria(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, Interval interval, Locale locale, Boolean defaultUseMetric, DateTimeZone timeZone);
-    List<ReportCriteria> getHosDailyDriverLogReportCriteria(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, Interval interval, Locale locale, Boolean defaultUseMetric, DateTimeZone timeZone, boolean includeInactiveDrivers);
+    List<ReportCriteria> getHosDailyDriverLogReportCriteria(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, Interval interval, Locale locale, Boolean defaultUseMetric, DateTimeZone timeZone, boolean includeInactiveDrivers, Boolean hosDriversOnly);
     ReportCriteria getHosViolationsSummaryReportCriteria(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, Interval interval, Locale locale);
     ReportCriteria getHosViolationsSummaryReportCriteria(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, Interval interval, Locale locale, boolean includeInactiveDrivers);
+    ReportCriteria getWthHosViolationsSummaryReportCriteria(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, Interval interval, Locale locale);
+    ReportCriteria getWthHosViolationsSummaryReportCriteria(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, Interval interval, Locale locale, boolean includeInactiveDrivers);
     ReportCriteria getHosViolationsDetailReportCriteria(GroupHierarchy accountGroupHierarchy, Integer driverID, Interval interval, Locale locale);
     ReportCriteria getHosViolationsDetailReportCriteria(GroupHierarchy accountGroupHierarchy, Integer driverID, Interval interval, Locale locale, boolean includeInactiveDrivers);
     ReportCriteria getHosViolationsDetailReportCriteria(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, Interval interval, Locale locale);
@@ -96,6 +101,10 @@ public interface ReportCriteriaService
     ReportCriteria getTenHoursDayViolationsCriteria(GroupHierarchy accountGroupHierarchy, Integer groupID, Interval interval, Locale locale, boolean includeInactiveDrivers, boolean includeZeroMilesDrivers);
     ReportCriteria getDriverHoursReportCriteria(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, Interval interval, Locale locale);
     ReportCriteria getDriverHoursReportCriteria(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, Interval interval, Locale locale, boolean includeInactiveDrivers, boolean includeZeroMilesDrivers);
+    ReportCriteria getThirtyMinuteBreaksReportCriteria(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, Interval interval, Locale locale);
+    ReportCriteria getThirtyMinuteBreaksReportCriteria(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, Interval interval, Locale locale, boolean includeInactiveDrivers);
+    ReportCriteria getTwoHourBreaksReportCriteria(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, Interval interval, Locale locale);
+    ReportCriteria getTwoHourBreaksReportCriteria(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, Interval interval, Locale locale, boolean includeInactiveDrivers);
     ReportCriteria getVehicleUsageReportCriteria(Integer id, Interval interval, Locale locale, boolean group);
     ReportCriteria getDriverPerformanceReportCriteria(GroupHierarchy accountGroupHierarchy, Integer groupID, Interval interval, Locale locale, Boolean ryg);
     ReportCriteria getDriverPerformanceReportCriteria(GroupHierarchy accountGroupHierarchy, Integer groupID, Interval interval, Locale locale, Boolean ryg, boolean includeInactiveDrivers, boolean includeZeroMilesDrivers);
@@ -109,16 +118,25 @@ public interface ReportCriteriaService
     List<ReportCriteria> getDriverCoachingReportCriteriaByGroup(GroupHierarchy accountGroupHierarchy,Integer groupID,Interval interval,Locale locale,DateTimeZone timeZone, boolean includeInactiveDrivers, boolean includeZeroMilesDrivers);
     ReportCriteria getDriverCoachingReportCriteriaByDriver(GroupHierarchy accountGroupHierarchy,Integer driverID,Interval interval,Locale locale,DateTimeZone timeZone);
     ReportCriteria getDriverCoachingReportCriteriaByDriver(GroupHierarchy accountGroupHierarchy,Integer driverID,Interval interval,Locale locale,DateTimeZone timeZone, boolean includeInactiveDrivers, boolean includeZeroMilesDrivers);
+    List<ReportCriteria> getDriverCoachingScoreReportCriteriaByGroup(GroupHierarchy accountGroupHierarchy,Integer groupID,Interval interval,Locale locale,DateTimeZone timeZone);
+    List<ReportCriteria> getDriverCoachingScoreReportCriteriaByGroup(GroupHierarchy accountGroupHierarchy,Integer groupID,Interval interval,Locale locale,DateTimeZone timeZone, boolean includeInactiveDrivers, boolean includeZeroMilesDrivers);
+    ReportCriteria getDriverCoachingScoreReportCriteriaByDriver(GroupHierarchy accountGroupHierarchy,Integer driverID,Interval interval,Locale locale,DateTimeZone timeZone);
+    ReportCriteria getDriverCoachingScoreReportCriteriaByDriver(GroupHierarchy accountGroupHierarchy,Integer driverID,Interval interval,Locale locale,DateTimeZone timeZone, boolean includeInactiveDrivers, boolean includeZeroMilesDrivers);
     ReportCriteria getDriverExcludedViolationCriteria(GroupHierarchy accountGroupHierarchy,Integer groupID,Interval interval,Locale locale,DateTimeZone timeZone);
     ReportCriteria getDriverExcludedViolationCriteria(GroupHierarchy accountGroupHierarchy,Integer groupID,Interval interval,Locale locale,DateTimeZone timeZone, boolean includeInactiveDrivers, boolean includeZeroMilesDrivers);
-    ReportCriteria getBackingReportCriteria(GroupHierarchy accountGroupHierarchy, Integer groupID, TimeFrame timeFrame, Locale locale,DateTimeZone timeZone, MeasurementType measurementType);
-    ReportCriteria getBackingReportCriteria(GroupHierarchy accountGroupHierarchy, Integer groupID, TimeFrame timeFrame, Locale locale, DateTimeZone timeZone, MeasurementType measurementType, boolean includeInactiveDrivers, boolean includeZeroMilesDrivers);
-    
+    ReportCriteria getBackingReportCriteria(Interval interval, GroupHierarchy accountGroupHierarchy, Integer groupID, TimeFrame timeFrame, Locale locale,DateTimeZone timeZone, MeasurementType measurementType);
+    ReportCriteria getBackingReportCriteria(Interval interval, GroupHierarchy accountGroupHierarchy, Integer groupID, TimeFrame timeFrame, Locale locale, DateTimeZone timeZone, MeasurementType measurementType, boolean includeInactiveDrivers, boolean includeZeroMilesDrivers);
+    ReportCriteria getFirstMoveForwardCriteria(Interval interval, GroupHierarchy accountGroupHierarchy, Integer groupID, TimeFrame timeFrame, Locale locale,DateTimeZone timeZone, MeasurementType measurementType);
+    ReportCriteria getFirstMoveForwardCriteria(Interval interval, GroupHierarchy accountGroupHierarchy, Integer groupID, TimeFrame timeFrame, Locale locale, DateTimeZone timeZone, MeasurementType measurementType, boolean includeInactiveDrivers, boolean includeZeroMilesDrivers);
+    ReportCriteria getMaintenanceEventsReportCriteria(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, Interval interval, Locale locale, DateTimeZone timeZone, MeasurementType measurementType);
+
+    ReportCriteria getMaintenanceIntervalReportCriteria(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, Interval interval, Locale locale, DateTimeZone timeZone, MeasurementType measurementType);
+
     // Mileage
     ReportCriteria getStateMileageByVehicleReportCriteria(GroupHierarchy accountGroupHierarchy, Integer groupID, Interval interval, Locale locale, MeasurementType measurementType);
     
     //Communication
-    ReportCriteria getNonCommReportCriteria(GroupHierarchy accountGroupHierarchy, Integer groupID, TimeFrame timeFrame, Locale locale,DateTimeZone timeZone);
+    ReportCriteria getNonCommReportCriteria(GroupHierarchy accountGroupHierarchy, Integer groupID, TimeFrame timeFrame,Interval interval, Locale locale,DateTimeZone timeZone,boolean dontIncludeUnassignedDevice);
     
     // Asset
     ReportCriteria getWarrantyListReportCriteria(GroupHierarchy accountGroupHierarchy, Integer groupID, Integer accountID, String accountName, Locale locale, boolean expiredOnly);

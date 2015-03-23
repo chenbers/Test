@@ -57,7 +57,7 @@ import java.util.Set;
  * Time: 4:10 PM
  * To change this template use File | Settings | File Templates.
  */
-public class EmailReportAmazonPullJob extends QuartzJobBean {
+public class EmailReportAmazonPullJob extends BaseEmailReportJob {
     private static final Logger logger = Logger.getLogger(EmailReportAmazonPullJob.class);
 
     private static final String DEFAULT_NO_REPLY_EMAIL_ADDRESS = "noreply@inthinc.com";
@@ -201,7 +201,7 @@ public class EmailReportAmazonPullJob extends QuartzJobBean {
     }
 
     @Override
-    protected void executeInternal(JobExecutionContext jobExecutionContext) throws JobExecutionException {
+    protected void executeIfEnabled(JobExecutionContext jobExecutionContext) throws JobExecutionException {
         initTextEncryptor();
 
         try {
@@ -322,6 +322,12 @@ public class EmailReportAmazonPullJob extends QuartzJobBean {
     private void emailReport(ReportSchedule reportSchedule, Person person, List<ReportCriteria> reportCriteriaList, Person owner, boolean allowUnsubscribe) {
         // Set the current date of the reports
         FormatType formatType = FormatType.PDF;
+        try{
+            formatType = Enum.valueOf(FormatType.class, reportSchedule.getFormat());
+        } catch (Throwable t){
+            logger.info("Failed to read format type for report schedule: "+reportSchedule.getReportScheduleID()+". Keeping PDF as default.");
+        }
+
         if (reportSchedule == null) {
             logger.error("Email reportSchedule is null");
         }
@@ -341,9 +347,6 @@ public class EmailReportAmazonPullJob extends QuartzJobBean {
             reportCriteria.setMeasurementType(person.getMeasurementType());
             reportCriteria.setFuelEfficiencyType(person.getFuelEfficiencyType());
             reportCriteria.setTimeZone(person.getTimeZone());
-
-            if (reportCriteria.getReport().getPrettyTemplate() == null)
-                formatType = FormatType.EXCEL;
         }
         Report report = reportCreator.getReport(reportCriteriaList);
 
@@ -351,11 +354,13 @@ public class EmailReportAmazonPullJob extends QuartzJobBean {
 
         if (reportSchedule.getDeliverToManagers() != null && reportSchedule.getDeliverToManagers().equals(Boolean.TRUE)) {
             Person groupManager = person;
+            String unsubscribeURL = buildUnsubscribeURL(groupManager.getPriEmail(), reportSchedule.getReportScheduleID());
+            
             String subject = LocalizedMessage.getString("reportSchedule.emailSubject", person.getLocale()) + reportSchedule.getName();
             String message = LocalizedMessage.getStringWithValues("reportSchedule.emailMessage.groupManager", person.getLocale(),
                     (owner == null) ? person.getFullName() : owner.getFullName(),
                     (owner == null) ? person.getPriEmail() : owner.getPriEmail(),
-                    "");
+                                    unsubscribeURL);
 
             // Change noreplyemail address based on account
             String noReplyEmailAddress = DEFAULT_NO_REPLY_EMAIL_ADDRESS;
@@ -391,8 +396,7 @@ public class EmailReportAmazonPullJob extends QuartzJobBean {
                     noReplyEmailAddress = acct.getProps().getNoReplyEmail();
                 }
 
-
-                logger.info("report.exportReportToEmail(" + address + ", " + formatType + ", " + message + ", " + subject + ", " + noReplyEmailAddress + ");");
+                logger.debug("report.exportReportToEmail(" + address + ", " + formatType + ", " + message + ", " + subject + ", " + noReplyEmailAddress + ");");
                 report.exportReportToEmail(address, formatType, message, subject, noReplyEmailAddress);
             }
         }
@@ -520,7 +524,7 @@ public class EmailReportAmazonPullJob extends QuartzJobBean {
             }
 
             // send all the e-mails only if we make it though without errors
-            boolean allowUnsubscribe = false;
+            boolean allowUnsubscribe = true;
             for (IndividualReportEmail individualReportEmail : individualReportEmailList) {
                 logger.info("sending to driver " + individualReportEmail.driverPerson.getPriEmail());
                 emailReport(individualReportEmail.reportSchedule, individualReportEmail.driverPerson, individualReportEmail.driverReportCriteriaList, individualReportEmail.owner, allowUnsubscribe);

@@ -211,6 +211,13 @@ public abstract class AbstractMapper implements Mapper {
                     value = new Locale(locale[0], locale[1]);
             } else if (propertyType.equals(Boolean.class) && value instanceof Integer) {
                 value = ((Integer) value).equals(Integer.valueOf(0)) ? Boolean.FALSE : Boolean.TRUE;
+            } else if (propertyType.equals(Boolean.class) && value instanceof String) {
+            	if (value.equals("0") || value.equals("1")) 
+            		value = (value.equals("0")) ? Boolean.FALSE : Boolean.TRUE;
+            } else if (propertyType.equals(Integer.class) && value instanceof String) {
+            	try {
+            		value = Integer.parseInt((String)value);
+	            } catch(NumberFormatException e) {}
             } else if (ReferenceEntity.class.isAssignableFrom(propertyType) && value instanceof Integer) {
                 Method valueOf = propertyType.getMethod("valueOf", Integer.class);
                 if (valueOf != null)
@@ -219,6 +226,13 @@ public abstract class AbstractMapper implements Mapper {
                 Method valueOf = propertyType.getMethod("valueOf", Integer.class);
                 if (valueOf != null)
                     value = valueOf.invoke(null, value);
+            } else if (BaseEnum.class.isAssignableFrom(propertyType) && value instanceof String) {
+            	try {
+            		Integer intVal = Integer.parseInt((String)value);
+	                Method valueOf = propertyType.getMethod("valueOf", Integer.class);
+	                if (valueOf != null)
+	                    value = valueOf.invoke(null, intVal);
+	            	} catch(NumberFormatException e) {}
             } else if (EnumIntegerMapping.class.isAssignableFrom(propertyType) && value instanceof Integer) {
                 Method valueOf = propertyType.getMethod("valueOf", Integer.class);
                 if (valueOf != null)
@@ -373,6 +387,9 @@ public abstract class AbstractMapper implements Mapper {
                     if (Boolean.class.isAssignableFrom(fieldType) || Number.class.isAssignableFrom(fieldType) || String.class.isAssignableFrom(fieldType)
                             || Character.class.isAssignableFrom(fieldType) || Date.class.isAssignableFrom(fieldType) || TimeZone.class.isAssignableFrom(fieldType) || fieldType.isEnum())
                         value = convertSimpleList((List<?>) value, field, handled, includeNonUpdateables);
+                    else {
+                        value = convertList((List<?>) value, handled, includeNonUpdateables);
+                    }
                 }
             } else {
                 value = convertList((List<?>) value, handled, includeNonUpdateables);

@@ -20,7 +20,7 @@ import java.util.Map;
 
 public class AddressJDBCDAO extends SimpleJdbcDaoSupport implements AddressDAO {
 
-    private static final String GET_ADDRESS = "SELECT * FROM address a JOIN state s ON a.stateID=s.stateID";
+    private static final String GET_ADDRESS = "SELECT * FROM address a LEFT OUTER JOIN state s ON a.stateID=s.stateID";
     private static final String FIND_ADDRESS_BY_ID = GET_ADDRESS + " where a.addrID=:addrID";
     private static final String DEL_ADDRESS_BY_ID = "DELETE FROM address WHERE addrID = ?";
 
@@ -157,7 +157,9 @@ public class AddressJDBCDAO extends SimpleJdbcDaoSupport implements AddressDAO {
             }
         };
         jdbcTemplate.update(psc);
-        return address.getAddrID();
+//        return address.getAddrID();
+        // returns number of updated rows
+        return 1;
     }
 
     @Override

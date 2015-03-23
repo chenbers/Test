@@ -85,8 +85,8 @@
     <property name="reportCriteriaService" ref="reportCriteriaService" />
   </bean>
   <bean id="teamTripsBean" class="com.inthinc.pro.backing.TeamTripsBean" scope="request" parent="baseBean" init-method="init" >
-    <property name="eventDAO" ref="eventTempDAO" />
-    <property name="driverDAO" ref="driverTempDAO"/>
+    <property name="eventDAO" ref="eventTripDAO" />
+    <property name="driverDAO" ref="driverDAO"/>
   	<property name="colors">
   		<list>
   			<value>#002BD5</value>
@@ -150,7 +150,7 @@
   </bean>
   
   <bean id="teamStopsBean" class="com.inthinc.pro.backing.TeamStopsBean" scope="request" parent="baseBean" init-method="init" >
-    <property name="driverDAO" ref="driverTempDAO"/>   
+    <property name="driverDAO" ref="driverDAO"/>   
     <property name="teamCommonBean" ref="teamCommonBean"/>
     <property name="reportRenderer" ref="reportRenderer"/>
     <property name="reportCriteriaService" ref="reportCriteriaService"/>    
@@ -372,9 +372,9 @@
   </bean>
 
   <bean id="vehicleTripsBean" class="com.inthinc.pro.backing.TripsBean" scope="request" parent="baseBean">
-    <property name="eventDAO" ref="eventTempDAO"/>
-    <property name="driverDAO" ref="driverTempDAO"/>
-    <property name="vehicleDAO" ref="vehicleTempDAO"/>
+    <property name="eventDAO" ref="eventTripDAO"/>
+    <property name="driverDAO" ref="driverDAO"/>
+    <property name="vehicleDAO" ref="vehicleDAO"/>
     <property name="identifiableEntityBean" ref="vehicleBean" />
   </bean>
 
@@ -409,9 +409,9 @@
   </bean>
 
   <bean id="driverTripsBean" class="com.inthinc.pro.backing.TripsBean" scope="request" parent="baseBean">
-    <property name="eventDAO" ref="eventTempDAO"/>
-    <property name="driverDAO" ref="driverTempDAO"/>
-    <property name="vehicleDAO" ref="vehicleTempDAO"/>
+    <property name="eventDAO" ref="eventTripDAO"/>
+    <property name="driverDAO" ref="driverDAO"/>
+    <property name="vehicleDAO" ref="vehicleDAO"/>
     <property name="identifiableEntityBean" ref="driverBean" />
   </bean>
 
@@ -547,6 +547,9 @@
   <bean id="latLngAddressConverter" class="com.inthinc.pro.convert.LatLngAddressConverter">
     <property name="addressLookup" ref="${addressLookup}" />
   </bean>
+    <bean id="latLngAddressGoogleConverter" class="com.inthinc.pro.convert.LatLngAddressGoogleConverter">
+        <property name="addressLookup" ref="googleAddressLookupBean" />
+    </bean>
   <bean id="addressBean" class="com.inthinc.pro.backing.AddressBean" scope="session" parent="baseBean">
   </bean>
 
@@ -602,6 +605,10 @@
   <bean id="pagingDiagnosticsEventsBean" class="com.inthinc.pro.backing.paging.PagingDiagnosticsEventsBean" scope="request" parent="pagingEventsBean">
   </bean>
 
+  <bean id="pagingMaintenanceEventsBean" class="com.inthinc.pro.backing.paging.PagingMaintenanceEventsBean" scope="request" parent="pagingEventsBean">
+      <property name="tableDataProvider" ref="maintenanceEventPaginationTableDataProvider"></property>
+  </bean>
+
   <bean id="pagingEmergencyEventsBean" class="com.inthinc.pro.backing.paging.PagingEmergencyEventsBean" scope="request" parent="pagingEventsBean">
   </bean>
 
@@ -624,6 +631,15 @@
   <bean id="eventPaginationTableDataProvider" class="com.inthinc.pro.table.model.provider.EventPaginationTableDataProvider" scope="request">
     <property name="eventDAO" ref="eventDAO"></property>
     <property name="timeFrameBean" ref="timeFrameBean" />
+    <property name="vehicleDAO" ref="vehicleDAO"></property>
+    <property name="deviceDAO" ref="deviceDAO"></property>
+  </bean>
+
+  <bean id="maintenanceEventPaginationTableDataProvider" class="com.inthinc.pro.table.model.provider.MaintenanceEventPaginationTableDataProvider" scope="request">
+      <property name="eventDAO" ref="eventDAO"></property>
+      <property name="timeFrameBean" ref="timeFrameBean" />
+      <property name="vehicleDAO" ref="vehicleDAO"></property>
+      <property name="deviceDAO" ref="deviceDAO"></property>
   </bean>
 
   <bean id="pagingRedFlagsBean" class="com.inthinc.pro.backing.paging.PagingRedFlagsBean" scope="request" init-method="init" parent="basePagingNotificationsBean">
@@ -704,6 +720,7 @@
   <bean id="fuelStopsTableColumns" class="com.inthinc.pro.table.columns.FuelStopsTableColumns" scope="request" parent="baseTableColumns" />
   <bean id="driverLoginsTableColumns" class="com.inthinc.pro.table.columns.DriverLoginsTableColumns" scope="request" parent="eventsTableColumns" />
   <bean id="trailerReportTableColumns" class="com.inthinc.pro.table.columns.TrailerReportTableColumns" scope="request" parent="baseTableColumns" />
+    <bean id="maintenanceTableColumns" class="com.inthinc.pro.table.columns.DiagnosticsTableColumns" scope="request" parent="baseTableColumns" />
   
 <!--    
   <bean id="phoneBean" class="com.inthinc.pro.backing.PhoneBean" parent="baseBean">
@@ -784,6 +801,7 @@
   <bean id="navigationBarBean" class="com.inthinc.pro.backing.NavigationBarBean" scope="session" parent="baseBean">
   	<property name="formUrl" value="${navbar.forms.url}"/>
   	<property name="trailerUrl" value="${navbar.trailers.url}"/>
+  	<property name="assetUrl" value="${navbar.assets.url}"/>
   </bean>
   
     <!-- Address Lookup -->
@@ -801,9 +819,13 @@
 
 
 	<!--  hos -->
-  <bean id="RuleSetFactory" class="com.inthinc.hos.rules.RuleSetFactory">
-  	<property name="effectiveDateForUS2013Changes" value="${hos.usrules.effective.date}"/>
-  </bean>
+	<bean id="RuleSetFactory" class="com.inthinc.hos.rules.RuleSetFactory">
+		<!-- <property name="effectiveDateForUS2013Changes" value="${hos.usrules.effective.date}"/> -->
+		<property name="effectiveDateForUS2013ChangesBigResetPreWeek" value="${hos.usrules.effective.date.BIG_RESET_PER_WEEK}" />
+		<property name="effectiveDateForUS2013ChangesBigReset1am5am" value="${hos.usrules.effective.date.BIG_RESET_1AM_5AM}" />
+		<property name="effectiveDateForUS2013ChangesRestBreak8Hrs" value="${hos.usrules.effective.date.REST_BREAK_8_HRS}" />
+		<property name="effectiveDateForUS2013ChangesPassengerException" value="${hos.usrules.effective.date.PASSENGER_EXCEPTION}" />
+  	</bean>
 
 
   <bean id="timeZonesBean" class="com.inthinc.pro.backing.TimeZonesBean" scope="session" init-method="initBean"/>

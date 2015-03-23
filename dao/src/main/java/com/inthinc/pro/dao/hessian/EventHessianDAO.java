@@ -136,10 +136,10 @@ public class EventHessianDAO<T, ID> extends GenericHessianDAO<Event, Integer> im
     }    
 
     @Override
-    public Integer forgive(Integer driverID, Long noteID)
+    public Integer forgive(Integer driverID, Long noteID, Long forgivenByUserID, String reason)
     {
     	try{
-    		return getChangedCount(getSiloService().forgive(driverID, noteID));
+    		return getChangedCount(getSiloService().forgive(driverID, noteID, forgivenByUserID, reason));
     	}
     	catch (ProDAOException pDAOe){
     		

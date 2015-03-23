@@ -14,6 +14,7 @@ public abstract class EventsTableColumns extends BaseTableColumns {
     {
         // available columns
         AVAILABLE_COLUMNS = new ArrayList<String>();
+        AVAILABLE_COLUMNS.add("address");
         AVAILABLE_COLUMNS.add("date");
         AVAILABLE_COLUMNS.add("group");
         AVAILABLE_COLUMNS.add("driver");

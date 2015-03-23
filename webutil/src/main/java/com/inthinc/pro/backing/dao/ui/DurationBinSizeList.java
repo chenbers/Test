@@ -16,10 +16,14 @@ public class DurationBinSizeList implements SelectList{
 			selectList = new ArrayList<SelectItem> ();
 
 			selectList.add(new SelectItem(Integer.valueOf(Duration.BINSIZE_1_DAY), "DAY" ));
-			selectList.add(new SelectItem(Integer.valueOf(Duration.BINSIZE_1_MONTH),"MONTH"));
+            selectList.add(new SelectItem(Integer.valueOf(Duration.BINSIZE_1_MONTH), "MONTH"));
 		}
 		
 		return selectList;
 	}
+    @Override
+    public Object valueOf(Object value) {
+        return Duration.valueOf(Integer.valueOf(value+""));
+    }
 
 }

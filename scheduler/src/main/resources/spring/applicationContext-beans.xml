@@ -80,6 +80,7 @@
                 <entry key="accountDAO" value-ref="accountDAO" />
                 <entry key="webContextPath" value="${contextPath.web}" />
                 <entry key="amazonQueue"  value-ref="amazonQueue" />
+                <entry key="enabled" value="${scheduler.enabled}" />
             </map>
         </property>
     </bean>
@@ -102,6 +103,7 @@
                 <entry key="personDAO" value-ref="personDAO" />
                 <entry key="amazonQueue"  value-ref="amazonQueue" />
                 <entry key="reportLogData" value-ref="jsonReportLogData"/>
+                <entry key="enabled" value="${scheduler.enabled}" />
             </map>
         </property>
     </bean>
@@ -220,7 +222,11 @@
     
 	<!--  hos -->
 	<bean id="RuleSetFactory" class="com.inthinc.hos.rules.RuleSetFactory">
-  		<property name="effectiveDateForUS2013Changes" value="${hos.usrules.effective.date}"/>
+		<!-- <property name="effectiveDateForUS2013Changes" value="${hos.usrules.effective.date}"/> -->
+		<property name="effectiveDateForUS2013ChangesBigResetPreWeek" value="${hos.usrules.effective.date.BIG_RESET_PER_WEEK}" />
+		<property name="effectiveDateForUS2013ChangesBigReset1am5am" value="${hos.usrules.effective.date.BIG_RESET_1AM_5AM}" />
+		<property name="effectiveDateForUS2013ChangesRestBreak8Hrs" value="${hos.usrules.effective.date.REST_BREAK_8_HRS}" />
+		<property name="effectiveDateForUS2013ChangesPassengerException" value="${hos.usrules.effective.date.PASSENGER_EXCEPTION}" />
   	</bean>
 
     <!-- Amazon Queue -->

@@ -122,8 +122,8 @@
     </rich:column>
     <rich:column id="odometer" rendered="#{vehiclesBean.tableColumns['odometer'].visible}">
       <f:facet name="header"><h:outputText value="#{messages.vehiclesHeader_odometer}" /></f:facet>
-      <h:outputFormat value="#{messages.label_two_parameters}" rendered="#{item.odometer ne null}">
-         <a4j:actionparam value="#{item.odometer}" converter="MilesToKilometersConverterInput"/>
+      <h:outputFormat value="#{messages.label_two_parameters}" rendered="#{item.odometerAndMaxVehicleEndingOdometer ne null}">
+         <a4j:actionparam value="#{item.odometerAndMaxVehicleEndingOdometer}" converter="MilesToKilometersConverterInput"/>
          <a4j:actionparam value="mi" converter="MeasurementTextConverter"/>
       </h:outputFormat>
     </rich:column>    
@@ -136,16 +136,22 @@
     </rich:column>
     <rich:column id="ePhone" rendered="#{vehiclesBean.tableColumns['ephone'].visible}">
       <f:facet name="header">
-		<h:outputText value="#{messages.vehiclesHeader_ephone}" />    
+		<h:outputText value="#{messages.vehiclesHeader_ephone}" />
       </f:facet>
       <h:outputText value="#{item.editableVehicleSettings.ephone}" />
     </rich:column>
     <rich:column id="IFTA" rendered="#{vehiclesBean.tableColumns['IFTA'].visible}">
       <f:facet name="header">
-		<h:outputText value="#{messages.vehiclesHeader_IFTA}" />      
+		<h:outputText value="#{messages.vehiclesHeader_IFTA}" />
       </f:facet>
       <h:outputText value="#{item.ifta eq null?'':messages[item.ifta]}" />
     </rich:column>
-  </ui:define>
+    <rich:column id="glcode" rendered="#{vehiclesBean.tableColumns['glcode'].visible}" sortBy="#{glcode}" filterBy="#{glcode}">
+      <f:facet name="header">
+        <h:outputText value="#{messages.vehiclesHeader_glcode}" />
+      </f:facet>
+      <h:outputText value="#{item.glcode}" />
+    </rich:column>
+   </ui:define>
 
 </ui:composition>

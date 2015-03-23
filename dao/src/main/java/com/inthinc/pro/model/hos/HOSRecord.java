@@ -12,6 +12,7 @@ import com.inthinc.hos.model.HOSOrigin;
 import com.inthinc.hos.model.HOSStatus;
 import com.inthinc.hos.model.RuleSetType;
 import com.inthinc.pro.model.BaseEntity;
+import com.inthinc.pro.model.InspectionType;
 
 @XmlRootElement
 public class HOSRecord extends BaseEntity implements Comparable<HOSRecord>{
@@ -57,7 +58,13 @@ public class HOSRecord extends BaseEntity implements Comparable<HOSRecord>{
     private Boolean userEnteredLocationFlag;
     private Byte noteFlags;
     private Integer stateID;
-    private Integer statusCode;
+    private String mobileUnitID;
+    private InspectionType inspectionType;
+    private Integer tzID;
+    private String reason;
+    private String approvedBy;
+    private Date timeStamp;
+    private Integer editor;
     
     public HOSRecord()
     {
@@ -379,13 +386,46 @@ public class HOSRecord extends BaseEntity implements Comparable<HOSRecord>{
     public void setOriginalStatus(HOSStatus originalStatus) {
         this.originalStatus = originalStatus;
     }
-    public Integer getStatusCode() {
-        return statusCode;
+
+    public String getMobileUnitID() {
+        return mobileUnitID;
     }
 
-    public void setStatusCode(Integer statusCode) {
-        this.statusCode = statusCode;
+    public void setMobileUnitID(String mobileUnitID) {
+        this.mobileUnitID = mobileUnitID;
     }
+
+    public InspectionType getInspectionType() {
+        return inspectionType;
+    }
+
+    public void setInspectionType(InspectionType inspectionType) {
+        this.inspectionType = inspectionType;
+    }
+
+    public Integer getTzID() {
+        return tzID;
+    }
+
+    public void setTzID(Integer tzID) {
+        this.tzID = tzID;
+    }
+
+    public String getReason() { return reason; }
+
+    public void setReason(String reason) { this.reason = reason; }
+
+    public String getApprovedBy() { return approvedBy; }
+
+    public void setApprovedBy(String approvedBy) { this.approvedBy = approvedBy; }
+
+    public Date getTimeStamp() { return timeStamp; }
+
+    public void setTimeStamp(Date timeStamp) { this.timeStamp = timeStamp; }
+
+    public Integer getEditor() { return editor; }
+
+    public void setEditor(Integer editor) { this.editor = editor; }
 
     public void dump () {
         System.out.println("new HOSRecord(" +

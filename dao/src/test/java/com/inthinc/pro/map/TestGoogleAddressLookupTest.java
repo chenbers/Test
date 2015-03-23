@@ -1,13 +1,16 @@
 package com.inthinc.pro.map;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.util.HashMap;
+import java.util.Map;
 
 import org.junit.Before;
 import org.junit.Test;
 
+import com.inthinc.pro.dao.FipsDAO;
 import com.inthinc.pro.dao.util.GeoUtil;
 import com.inthinc.pro.model.LatLng;
 import com.inthinc.pro.model.MeasurementType;
@@ -21,6 +24,7 @@ public class TestGoogleAddressLookupTest {
     public void setUp() throws Exception
     {
         gal = new GoogleAddressLookup();
+        gal.setFipsDAO(new MockFipsDAO());
     }
     @Test
     public final void getClosestTown_impossibleLatLng_returnNoAddressFound() {
@@ -199,5 +203,63 @@ public class TestGoogleAddressLookupTest {
             e.printStackTrace();
             fail("exception thrown for getClosestTownString");
         }
+    }
+    
+    
+    @Test
+    public final void getWithNoLocality() {
+       HashMap<LatLng, String> testData = new HashMap<LatLng, String>();
+       testData.put(new LatLng(35.8455,-100.558), "no city provided - lat, long: 35.8455, -100.558");
+
+        String address = null;
+        boolean debugMode = false;
+        try {
+            for (LatLng latLng : testData.keySet()) {
+                address = gal.getClosestTownString(latLng, MeasurementType.ENGLISH, debugMode);
+                if(debugMode) {
+                  System.out.println("expected " + testData.get(latLng) + ";  returned " + address);
+                  System.out.println();
+                }
+                
+                assertEquals("address match", testData.get(latLng), address);
+            }
+        } catch (NoAddressFoundException e) {
+            e.printStackTrace();
+            fail("exception thrown for getWithNoLocality");
+        }
+    }
+
+    @Test
+    public final void getClosestTown_usingFIPSNotFound() {
+        HashMap<LatLng, String> testData = new HashMap<LatLng, String>();
+        testData.put(new LatLng(0,0), "");
+
+         String address = null;
+         boolean debugMode = true;
+         for (LatLng latLng : testData.keySet()) {
+             try {
+                 address = gal.getClosestTownString(latLng, MeasurementType.ENGLISH, debugMode);
+                 if(debugMode) {
+                   System.out.println("expected " + testData.get(latLng) + ";  returned " + address);
+                   System.out.println();
+                 }
+             } catch (NoAddressFoundException e) {
+                 continue;
+             }
+             fail("Expected NoAddressFoundException: returned: "+address);
+         }
+     }
+    
+    class MockFipsDAO  implements FipsDAO {
+
+        Map<LatLng, String> testFips = new HashMap<LatLng, String>();
+        
+        
+        @Override
+        public String getClosestTown(LatLng latLng) {
+            testFips.put(new LatLng(35.8455,-100.558), "Canadian, TX");
+            return testFips.get(latLng);
+        }
+        
     }
 }

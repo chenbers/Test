@@ -23,11 +23,11 @@ public enum ReportGroup {
     IDLING_REPORT("Idling Report", 4, EntityType.ENTITY_GROUP, new CriteriaType[] {}, new GroupType[] { GroupType.DIVISION, GroupType.FLEET, GroupType.TEAM }, ReportType.IDLING_REPORT),
     DEVICES_REPORT("Device Report", 5, EntityType.ENTITY_GROUP, new CriteriaType[] {}, new GroupType[] { GroupType.DIVISION, GroupType.FLEET, GroupType.TEAM }, ReportType.DEVICES_REPORT),
     TEAM_STATISTICS_REPORT("Team Statistics Report", 6, EntityType.ENTITY_GROUP, new CriteriaType[] { CriteriaType.TIMEFRAME }, new GroupType[] { GroupType.TEAM }, ReportType.TEAM_STATISTICS_REPORT),
-    TEAM_STOPS_REPORT("Team Stops Report", 106, EntityType.ENTITY_GROUP_LIST, new CriteriaType[] { CriteriaType.TIMEFRAME_ALT_DAYS }, new GroupType[] { GroupType.TEAM },
+    TEAM_STOPS_REPORT("Team Stops Report", 106, EntityType.ENTITY_GROUP_LIST, new CriteriaType[] { CriteriaType.TIMEFRAME_ALT_PLUS_CUSTOM_RANGE }, new GroupType[] { GroupType.TEAM },
             ReportCategory.DriverPerformance, null, ReportType.TEAM_STOPS_REPORT),
-    SEATBELT_CLICKS_REPORT("Seatbelt Clicks Report", 107, EntityType.ENTITY_GROUP, new CriteriaType[] { CriteriaType.TIMEFRAME_STRICT, CriteriaType.INACTIVE_DRIVERS, CriteriaType.ZERO_MILES_DRIVERS }, new GroupType[] { GroupType.DIVISION, GroupType.FLEET,
+    SEATBELT_CLICKS_REPORT("Seatbelt Clicks Report", 107, EntityType.ENTITY_GROUP, new CriteriaType[] { CriteriaType.TIMEFRAME_ALT_PLUS_CUSTOM_RANGE, CriteriaType.INACTIVE_DRIVERS, CriteriaType.ZERO_MILES_DRIVERS }, new GroupType[] { GroupType.DIVISION, GroupType.FLEET,
             GroupType.TEAM }, ReportCategory.DriverPerformance, EnumSet.of(ReportAccountType.PERFORMANCE), ReportType.SEATBELT_CLICKS_REPORT),
-    HOS_DAILY_DRIVER_LOG_REPORT("HOS Daily Driver Log Report", 7, EntityType.ENTITY_GROUP_LIST_OR_DRIVER, new CriteriaType[] { CriteriaType.TIMEFRAME, CriteriaType.INACTIVE_DRIVERS }, new GroupType[] { GroupType.DIVISION,
+    HOS_DAILY_DRIVER_LOG_REPORT("HOS Daily Driver Log Report", 7, EntityType.ENTITY_GROUP_LIST_OR_DRIVER, new CriteriaType[] { CriteriaType.TIMEFRAME, CriteriaType.INACTIVE_DRIVERS, CriteriaType.HOS_DRIVERS_ONLY }, new GroupType[] { GroupType.DIVISION,
             GroupType.FLEET, GroupType.TEAM }, ReportCategory.HOS, EnumSet.of(ReportAccountType.HOS), ReportType.HOS_DAILY_DRIVER_LOG_REPORT),
     HOS_VIOLATIONS_SUMMARY_REPORT("HOS Violations Summary Report", 8, EntityType.ENTITY_GROUP_LIST, new CriteriaType[] { CriteriaType.TIMEFRAME, CriteriaType.INACTIVE_DRIVERS }, new GroupType[] { GroupType.DIVISION,
             GroupType.FLEET, GroupType.TEAM }, ReportCategory.HOS, EnumSet.of(ReportAccountType.HOS), ReportType.HOS_VIOLATIONS_SUMMARY_REPORT),
@@ -51,6 +51,8 @@ public enum ReportGroup {
     DRIVING_TIME_VIOLATIONS_DETAIL_REPORT("Driving Time Violations Detail Report", 33, EntityType.ENTITY_GROUP_LIST_OR_DRIVER, new CriteriaType[] { CriteriaType.TIMEFRAME, CriteriaType.INACTIVE_DRIVERS}, new GroupType[] {
             GroupType.DIVISION, GroupType.FLEET, GroupType.TEAM }, ReportCategory.Performance, EnumSet.of(ReportAccountType.HOS, ReportAccountType.WAYSMART, ReportAccountType.DRIVE_TIME_VIOLATIONS),
             ReportType.DRIVING_TIME_VIOLATIONS_DETAIL_REPORT),
+    WEATHERFORD_HOS_VIOLATIONS_SUMMARY_REPORT("Weatherford US HOS Violations Summary Report", 113, EntityType.ENTITY_GROUP_LIST, new CriteriaType[] { CriteriaType.TIMEFRAME, CriteriaType.INACTIVE_DRIVERS }, new GroupType[] { GroupType.DIVISION,
+            GroupType.FLEET, GroupType.TEAM }, ReportCategory.HOS, EnumSet.of(ReportAccountType.HOS), ReportType.WEATHERFORD_HOS_VIOLATIONS_SUMMARY_REPORT),
 
     // IFTA
     MILEAGE_BY_VEHICLE("Mileage by vehicle", 20, EntityType.ENTITY_GROUP_LIST, new CriteriaType[] { CriteriaType.TIMEFRAME }, new GroupType[] { GroupType.DIVISION, GroupType.FLEET, GroupType.TEAM },
@@ -76,12 +78,13 @@ public enum ReportGroup {
             GroupType.TEAM }, ReportCategory.Mileage, EnumSet.of(ReportAccountType.PERFORMANCE), ReportType.STATE_MILEAGE_BY_VEHICLE_NON_IFTA),
 
     /* Communication */
-    NON_COMM("Vehicles Not Communicating Report", 27, EntityType.ENTITY_GROUP, new CriteriaType[] { CriteriaType.TIMEFRAME_STRICT }, new GroupType[] { GroupType.DIVISION, GroupType.FLEET,
+    NON_COMM("Vehicles Not Communicating Report", 27, EntityType.ENTITY_GROUP, new CriteriaType[] { CriteriaType.TIMEFRAME_ALT_PLUS_CUSTOM_RANGE,CriteriaType.DONT_INCLUDE_UNASSIGNED_DEVICE }, new GroupType[] { GroupType.DIVISION, GroupType.FLEET,
             GroupType.TEAM }, ReportCategory.Communication, EnumSet.of(ReportAccountType.PERFORMANCE), ReportType.NON_COMM),
 
     // Performance
     PAYROLL_SUMMARY("Payroll Report Summary", 14, EntityType.ENTITY_GROUP_LIST, new CriteriaType[] { CriteriaType.TIMEFRAME, CriteriaType.INACTIVE_DRIVERS }, new GroupType[] { GroupType.DIVISION, GroupType.FLEET, GroupType.TEAM },
             ReportCategory.Performance, EnumSet.of(ReportAccountType.WAYSMART, ReportAccountType.HOS), ReportType.PAYROLL_SUMMARY),
+            
     PAYROLL_COMPENSATED_HOURS("Payroll Compensated Hours", 39, EntityType.ENTITY_GROUP_LIST, new CriteriaType[] { CriteriaType.TIMEFRAME, CriteriaType.INACTIVE_DRIVERS }, new GroupType[] { GroupType.DIVISION, GroupType.FLEET,
             GroupType.TEAM }, ReportCategory.Performance, EnumSet.of(ReportAccountType.WAYSMART, ReportAccountType.HOS), ReportType.PAYROLL_COMPENSATED_HOURS),
     PAYROLL_DETAIL("Payroll Report Driver Detail", 15, EntityType.ENTITY_GROUP_LIST, new CriteriaType[] { CriteriaType.TIMEFRAME, CriteriaType.INACTIVE_DRIVERS }, new GroupType[] { GroupType.DIVISION, GroupType.FLEET,
@@ -92,6 +95,11 @@ public enum ReportGroup {
             GroupType.TEAM }, ReportCategory.Performance, EnumSet.of(ReportAccountType.WAYSMART), ReportType.TEN_HOUR_DAY_VIOLATIONS),
     DRIVER_HOURS("Driver Hours", 18, EntityType.ENTITY_GROUP_LIST, new CriteriaType[] { CriteriaType.TIMEFRAME, CriteriaType.INACTIVE_DRIVERS }, new GroupType[] { GroupType.DIVISION, GroupType.FLEET, GroupType.TEAM },
             ReportCategory.Performance, EnumSet.of(ReportAccountType.WAYSMART, ReportAccountType.HOS), ReportType.DRIVER_HOURS),
+    THIRTY_MINUTE_BREAKS("30 Minute Breaks", 111, EntityType.ENTITY_GROUP_LIST, new CriteriaType[] { CriteriaType.TIMEFRAME, CriteriaType.INACTIVE_DRIVERS }, new GroupType[] { GroupType.DIVISION, GroupType.FLEET, GroupType.TEAM },
+            ReportCategory.Performance, EnumSet.of(ReportAccountType.WAYSMART, ReportAccountType.HOS), ReportType.THIRTY_MINUTE_BREAKS),
+    TWO_HOUR_BREAKS("2 Hour Breaks", 112, EntityType.ENTITY_GROUP_LIST, new CriteriaType[] { CriteriaType.TIMEFRAME, CriteriaType.INACTIVE_DRIVERS }, new GroupType[] { GroupType.DIVISION, GroupType.FLEET, GroupType.TEAM },
+            ReportCategory.Performance, EnumSet.of(ReportAccountType.WAYSMART, ReportAccountType.HOS), ReportType.TWO_HOUR_BREAKS),
+
     DRIVER_PERFORMANCE_KEY_METRICS("Driver Performance Key Metrics", 38, EntityType.ENTITY_GROUP_LIST, new CriteriaType[] { CriteriaType.TIMEFRAME_ALT_PLUS_CUSTOM_RANGE, CriteriaType.INACTIVE_DRIVERS, CriteriaType.ZERO_MILES_DRIVERS },
             new GroupType[] { GroupType.DIVISION, GroupType.FLEET, GroupType.TEAM }, ReportCategory.DriverPerformance, EnumSet.of(ReportAccountType.PERFORMANCE),
             ReportType.DRIVER_PERFORMANCE_KEY_METRICS),
@@ -105,12 +113,16 @@ public enum ReportGroup {
             new GroupType[] { GroupType.DIVISION, GroupType.FLEET, GroupType.TEAM }, ReportCategory.DriverPerformance, EnumSet.of(ReportAccountType.PERFORMANCE), ReportType.DRIVER_PERFORMANCE_RYG_INDIVIDUAL),
     DRIVER_COACHING("Driver Coaching", 41, EntityType.ENTITY_GROUP_OR_DRIVER, new CriteriaType[] { CriteriaType.TIMEFRAME, CriteriaType.INACTIVE_DRIVERS, CriteriaType.ZERO_MILES_DRIVERS }, new GroupType[] { GroupType.DIVISION, GroupType.FLEET, GroupType.TEAM },
             ReportCategory.DriverPerformance, EnumSet.of(ReportAccountType.PERFORMANCE), ReportType.DRIVER_COACHING),
+    DRIVER_COACHING_SCORE("Driver Coaching and Score", 110, EntityType.ENTITY_GROUP_OR_DRIVER, new CriteriaType[] { CriteriaType.TIMEFRAME, CriteriaType.INACTIVE_DRIVERS, CriteriaType.ZERO_MILES_DRIVERS }, new GroupType[] { GroupType.DIVISION, GroupType.FLEET, GroupType.TEAM },
+            ReportCategory.DriverPerformance, EnumSet.of(ReportAccountType.PERFORMANCE), ReportType.DRIVER_COACHING_SCORE),
     DRIVER_EXCLUDED_VIOLATIONS("Driver Coaching", 42, EntityType.ENTITY_GROUP, new CriteriaType[] { CriteriaType.TIMEFRAME, CriteriaType.INACTIVE_DRIVERS, CriteriaType.ZERO_MILES_DRIVERS }, new GroupType[] { GroupType.DIVISION, GroupType.FLEET, GroupType.TEAM },
             ReportCategory.DriverPerformance, EnumSet.of(ReportAccountType.PERFORMANCE), ReportType.DRIVER_EXCLUDED_VIOLATIONS),
     BACKING_REPORT("Back-Up Events Report", 108, EntityType.ENTITY_GROUP, new CriteriaType[] { CriteriaType.TIMEFRAME_STRICT, CriteriaType.INACTIVE_DRIVERS, CriteriaType.ZERO_MILES_DRIVERS }, new GroupType[] { GroupType.DIVISION, GroupType.FLEET,
-                    GroupType.TEAM }, ReportCategory.DriverPerformance, EnumSet.of(ReportAccountType.PERFORMANCE), ReportType.BACKING_REPORT),
+            GroupType.TEAM }, ReportCategory.DriverPerformance, EnumSet.of(ReportAccountType.PERFORMANCE), ReportType.BACKING_REPORT),
+    FIRST_MOVE_FORWARD_REPORT("First Move Forward Violation Report", 109, EntityType.ENTITY_GROUP, new CriteriaType[] { CriteriaType.TIMEFRAME_STRICT, CriteriaType.INACTIVE_DRIVERS, CriteriaType.ZERO_MILES_DRIVERS }, new GroupType[] { GroupType.DIVISION, GroupType.FLEET,
+                    GroupType.TEAM }, ReportCategory.DriverPerformance, EnumSet.of(ReportAccountType.PERFORMANCE), ReportType.FIRST_MOVE_FORWARD_REPORT),
 
-            
+
      /* Forms */
     DVIR_PRE_TRIP("DVIR Pre-Trip", 43, EntityType.ENTITY_GROUP, new CriteriaType[] { CriteriaType.TIMEFRAME }, new GroupType[] { GroupType.DIVISION, GroupType.FLEET, GroupType.TEAM },
             ReportCategory.DVIR, EnumSet.of(ReportAccountType.DVIR), ReportType.DVIR_PRETRIP),
@@ -127,7 +139,12 @@ public enum ReportGroup {
     DVIR_REPAIR("DVIR Repairs", 47, EntityType.ENTITY_GROUP, new CriteriaType[] { CriteriaType.TIMEFRAME }, new GroupType[] { GroupType.DIVISION, GroupType.FLEET, GroupType.TEAM },
                     ReportCategory.DVIR, EnumSet.of(ReportAccountType.DVIR), ReportType.DVIR_REPAIR),
     DVIR_REPAIR_DETAIL("DVIR Repairs Detailed", 48, EntityType.ENTITY_GROUP, new CriteriaType[] { CriteriaType.TIMEFRAME }, new GroupType[] { GroupType.DIVISION, GroupType.FLEET, GroupType.TEAM },
-                    ReportCategory.DVIR, EnumSet.of(ReportAccountType.DVIR), ReportType.DVIR_REPAIR_DETAIL)
+                    ReportCategory.DVIR, EnumSet.of(ReportAccountType.DVIR), ReportType.DVIR_REPAIR_DETAIL),
+    /* MAINTENANCE */
+    MAINTENANCE_EVENTS_REPORT("Vehicle Maintenance Events Report", 49, EntityType.ENTITY_GROUP_LIST, new CriteriaType[] {  CriteriaType.TIMEFRAME}, new GroupType[] { GroupType.DIVISION,
+            GroupType.FLEET, GroupType.TEAM }, ReportCategory.Maintenance, EnumSet.of(ReportAccountType.PERFORMANCE), ReportType.VEHICLE_MAINTENANCE_EVENTS_REPORT),
+    MAINTENANCE_INTERVAL_REPORT("Vehicle Maintenance Interval Report", 50, EntityType.ENTITY_GROUP_LIST, new CriteriaType[] {}, new GroupType[] { GroupType.DIVISION,
+            GroupType.FLEET, GroupType.TEAM }, ReportCategory.Maintenance, EnumSet.of(ReportAccountType.PERFORMANCE), ReportType.VEHICLE_MAINTENANCE_INTERVAL_REPORT)
     ;
 
     private ReportType[] reports;
@@ -224,14 +241,14 @@ public enum ReportGroup {
 
     public Boolean getUseTimeFrame() {
         for (CriteriaType criteria : criterias)
-            if (criteria.equals(CriteriaType.TIMEFRAME) || criteria.equals(CriteriaType.TIMEFRAME_ALT) || criteria.equals(CriteriaType.TIMEFRAME_ALT_DAYS))
+            if (CriteriaType.TIMEFRAME.equals(criteria) || CriteriaType.TIMEFRAME_ALT.equals(criteria) || CriteriaType.TIMEFRAME_ALT_DAYS.equals(criteria))
                 return true;
         return false;
     }
 
     public Boolean getUseDuration() {
         for (CriteriaType criteria : criterias)
-            if (criteria.equals(CriteriaType.DURATION))
+            if (CriteriaType.DURATION.equals(criteria))
                 return true;
         return false;
     }

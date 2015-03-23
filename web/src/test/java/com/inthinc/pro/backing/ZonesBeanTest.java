@@ -1,14 +1,25 @@
 package com.inthinc.pro.backing;
 
-import java.util.ArrayList;
-import java.util.Date;
-
+import com.inthinc.pro.model.LatLng;
+import com.inthinc.pro.model.MeasurementType;
+import com.inthinc.pro.model.Person;
+import com.inthinc.pro.model.Zone;
+import com.inthinc.pro.model.zone.option.ZoneAvailableOption;
+import com.inthinc.pro.model.zone.option.type.OptionValue;
+import com.inthinc.pro.model.zone.option.type.SpeedValue;
+import com.inthinc.pro.util.MiscUtil;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import com.inthinc.pro.model.LatLng;
-import com.inthinc.pro.model.Zone;
-import com.inthinc.pro.util.MiscUtil;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+
+import static org.easymock.classextension.EasyMock.createMock;
+import static org.easymock.classextension.EasyMock.expect;
+import static org.easymock.classextension.EasyMock.replay;
 
 public class ZonesBeanTest extends BaseBeanTest
 {
@@ -162,6 +173,88 @@ public class ZonesBeanTest extends BaseBeanTest
         assertEquals(count - 1, zonesBean.getZonesCount());
     }
 
+    @Test
+    public void testTransformItemSpeedLimit() throws NoSuchMethodException {
+        // 100 mph in english should be 100 mph
+        ZonesBean mockZoneBean = getMockZoneBean(MeasurementType.ENGLISH, 100);
+        mockZoneBean.transformItemSpeedLimit();
+        SpeedValue speedValue = (SpeedValue) mockZoneBean.getItem().getOptionsMap().get(ZoneAvailableOption.SPEED_LIMIT);
+        assertEquals(speedValue.getValue().intValue(), 100);
+
+        // 100 kph in mph should be 62 km
+        mockZoneBean = getMockZoneBean(MeasurementType.METRIC, 100);
+        mockZoneBean.transformItemSpeedLimit();
+        speedValue = (SpeedValue) mockZoneBean.getItem().getOptionsMap().get(ZoneAvailableOption.SPEED_LIMIT);
+        assertEquals(speedValue.getValue().intValue(), 62);
+    }
+
+    @Test
+    public void testGetMeasurementTypeMaxSpeedLimit() throws NoSuchMethodException {
+        // english should have a max speed limit of 100 mph
+        ZonesBean mockZoneBean = getMockZoneBean(MeasurementType.ENGLISH, 100);
+        assertEquals(mockZoneBean.getMeasurementTypeMaxSpeedLimit(), ZonesBean.MAX_SPEED_IN_MPH.intValue());
+
+        // metric should have a max speed limit of 160 kph
+        mockZoneBean = getMockZoneBean(MeasurementType.METRIC, 100);
+        assertEquals(mockZoneBean.getMeasurementTypeMaxSpeedLimit(), ZonesBean.MAX_SPEED_IN_KPH.intValue());
+    }
+
+    @Test
+    public void testMeasurementTypeSpeedLimit() throws NoSuchMethodException {
+        // english should be in miles
+        ZonesBean mockZoneBean = getMockZoneBean(MeasurementType.ENGLISH, 100);
+        assertEquals(mockZoneBean.getMeasurementTypeSpeedLimit(), 100);
+
+        // metric should be transformed
+        mockZoneBean = getMockZoneBean(MeasurementType.METRIC, 100);
+        assertEquals(mockZoneBean.getMeasurementTypeSpeedLimit(), 161);
+    }
+    
+    @Test
+    public void testgetMeasurementTypeSpeedLimit_noZones_noException() throws NoSuchMethodException {
+        ZonesBean mockZonesBean = getMockZoneBeanWithNoZones();
+        assertEquals(mockZonesBean.getMeasurementTypeSpeedLimit(), 0);
+    }
+
+    @Test
+    public void testGetSpeedMeasurementName() throws NoSuchMethodException {
+        // english should be mph
+        ZonesBean mockZoneBean = getMockZoneBean(MeasurementType.ENGLISH, 100);
+        assertEquals(mockZoneBean.getSpeedMeasurementName(), "mph");
+
+        // metric should be kph
+        mockZoneBean = getMockZoneBean(MeasurementType.METRIC, 100);
+        assertEquals(mockZoneBean.getSpeedMeasurementName(), "kph");
+    }
+
+    private ZonesBean getMockZoneBeanWithNoZones() throws NoSuchMethodException {
+        ZonesBean zonesBean = createMock(ZonesBean.class, new Method[]{ZonesBean.class.getMethod("getPerson", null)});
+        return zonesBean;
+    }
+    
+    private ZonesBean getMockZoneBean(MeasurementType measurementType, Integer value) throws NoSuchMethodException {
+        ZonesBean zonesBean = createMock(ZonesBean.class, new Method[]{ZonesBean.class.getMethod("getPerson", null)});
+        Zone zone = getMockZone(value);
+        zonesBean.setTestZone(zone);
+        expect(zonesBean.getPerson()).andReturn(getMockPerson(measurementType));
+        replay(zonesBean);
+        return zonesBean;
+    }
+
+    private Person getMockPerson(MeasurementType measurementType) throws NoSuchMethodException {
+        Person person = new Person();
+        person.setMeasurementType(measurementType);
+        return person;
+    }
+
+    private Zone getMockZone(Integer value) {
+        Zone zone = new Zone();
+        Map<ZoneAvailableOption, OptionValue> optionMap = new HashMap<ZoneAvailableOption, OptionValue>();
+        optionMap.put(ZoneAvailableOption.SPEED_LIMIT, new SpeedValue(value));
+        zone.setOptionsMap(optionMap);
+        return zone;
+    }
+
     private ZonesBean getZonesBean()
     {
         return (ZonesBean) applicationContext.getBean("zonesBean");
@@ -183,7 +276,7 @@ public class ZonesBeanTest extends BaseBeanTest
     {
         // longitude in range -117 to -101
         float base = -101.0f;
-    
+
         return base + (MiscUtil.randomInt(0, 16000) / 1000.0f * -1.0f);
     }
 
@@ -191,7 +284,7 @@ public class ZonesBeanTest extends BaseBeanTest
     {
         // latitude in range 36 to 49
         float base = 36.0f;
-    
+
         return base + (MiscUtil.randomInt(0, 15000) / 1000.0f);
     }
 }

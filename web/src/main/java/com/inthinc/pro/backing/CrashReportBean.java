@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
+import java.util.Properties;
 import java.util.TimeZone;
 
 import javax.faces.model.SelectItem;
@@ -15,6 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.ajax4jsf.model.KeepAlive;
 import org.apache.log4j.Logger;
+import org.joda.time.DateTime;
 
 import com.inthinc.pro.dao.CrashReportDAO;
 import com.inthinc.pro.dao.DeviceDAO;
@@ -27,10 +29,11 @@ import com.inthinc.pro.model.CrashReportStatus;
 import com.inthinc.pro.model.Device;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.EntityType;
-import com.inthinc.pro.model.Person;
 import com.inthinc.pro.model.Trip;
 import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.model.event.Event;
+import com.inthinc.pro.model.event.EventSubCategory;
+import com.inthinc.pro.model.event.NoteType;
 import com.inthinc.pro.util.MessageUtil;
 import com.inthinc.pro.util.SelectItemUtil;
 
@@ -67,13 +70,17 @@ public class CrashReportBean extends BaseBean {
     private Integer crashTime;
     private Integer crashReportID; // Only used by pretty faces to set the crashReportID. Use crashReport when working with the crashReportID
     private Trip crashReportTrip;
+    private List<Event> crashEvents = new ArrayList<Event>();	//Defect #DE9207
     private File crashTraceFile;
     private FileUploadBean fileUploadBean;
+    
+    public CrashReportBean() {
+		super();
+    }
     
     public void serveCrashTrace() {
         HttpServletResponse response = (HttpServletResponse) getFacesContext().getExternalContext().getResponse();
         setCrashReport(crashReportDAO.findByID(crashTraceEventID));
-
         OutputStream out = null;
         try {
             out = response.getOutputStream();
@@ -486,6 +493,9 @@ public class CrashReportBean extends BaseBean {
     }
 
     // returns the Trip associated with the current CrashReport. Used on the Crash Report Detail page
+    /**
+     * @return
+     */
     public Trip getCrashReportTrip() {
         if (crashReport != null && crashReportTrip == null) {
             crashReportTrip = crashReportDAO.getTrip(crashReport);
@@ -499,9 +509,101 @@ public class CrashReportBean extends BaseBean {
 //            setUseExistingTrip(Boolean.TRUE);
 //        }
         
+        // Defect #DE9207 --> Start
+        // Check if crashReport have valid lat/lng values (i.e non (0,0))
+        if(crashReport != null && crashReport.getVehicleID() !=null && crashReport.getLat() != null ){
+        	if((crashReport.getLat() < 0.005 && crashReport.getLat() > -0.005) || (crashReport.getLng() < 0.005 && crashReport.getLng() > -0.005)){
+        	    // Get all cachedNote events associated with current CrashReport  	
+    			DateTime crashTime = new DateTime(crashReport.getDate()); 
+    			List<NoteType> crashEventTypeList = new ArrayList<NoteType>();
+    			crashEventTypeList.add(NoteType.CRASH_DATA);
+    			crashEventTypeList.add(NoteType.FULLEVENT);
+    			crashEventTypeList.add(NoteType.SEATBELT);
+    			crashEventTypeList.addAll(EventSubCategory.SPEED.getNoteTypesInSubCategory());
+    			crashEventTypeList.add(NoteType.ACCELERATION);
+    			crashEventTypeList.add(NoteType.LOCATION);
+    			crashEventTypeList.add(NoteType.PARKING_BRAKE);
+    			crashEventTypeList.addAll(EventSubCategory.DRIVING_STYLE.getNoteTypesInSubCategory());
+    			crashEventTypeList.add(NoteType.DSS_MICROSLEEP);
+    			crashEventTypeList.add(NoteType.BACKING);
+    			
+    			//load crash time duration via tiwipro.properties file to get associated cachedNote events for current crash details
+    			Properties prop = new Properties();
+    			int crashEventHr;
+    			int crashEventDay;
+    			try{
+    				prop.load(Thread.currentThread().getContextClassLoader().getResourceAsStream("tiwipro.properties"));
+    				crashEventHr = Integer.parseInt(prop.getProperty("crashEvent.CrashTimeHours"));
+    				crashEventDay = Integer.parseInt(prop.getProperty("crashEvent.CrashTimeDays"));   				                    
+    			}
+    			catch(IOException e){ 
+    				logger.debug("tiwipro.properties cannot be loaded.");
+    				return null;
+    			}
+    			
+    			// Get crashEvents associated with current crashReport Driver/ vehicle for specified hours of duration
+    			if (crashReport != null && crashReport.getDriverID() != null){
+    				crashEvents = eventDAO.getEventsForDriver(crashReport.getDriverID(), crashTime.minusHours(crashEventHr).toDate(), crashTime.plusHours(crashEventHr).toDate(), crashEventTypeList, getShowExcludedEvents());
+    				logger.debug("Driver Crash Events for +/-"+ crashEventHr +" Hour:"+ crashEvents);
+    			}
+    			else {
+    				crashEvents = eventDAO.getEventsForVehicle(crashReport.getVehicleID(), crashTime.minusHours(crashEventHr).toDate(), crashTime.plusHours(crashEventHr).toDate(), crashEventTypeList, getShowExcludedEvents());
+    				logger.debug("Vehicle Crash Events for +/-"+ crashEventHr +" Hour:"+ crashEvents);
+    			}
+        		
+    			// If crashEvents not found for specified hours of duration then do check for specified days of duration
+    			if(crashEvents.isEmpty()){
+    				if (crashReport != null && crashReport.getDriverID() != null){    
+    					crashEvents = eventDAO.getEventsForDriver(crashReport.getDriverID(), crashTime.minusDays(crashEventDay).toDate(), crashTime.plusDays(crashEventDay).toDate(), crashEventTypeList, getShowExcludedEvents());
+    					logger.debug("Driver Crash Events for +/-"+ crashEventDay +" Day:"+ crashEvents);
+    				}
+    				else {
+    					crashEvents = eventDAO.getEventsForVehicle(crashReport.getVehicleID(), crashTime.minusDays(crashEventDay).toDate(), crashTime.plusDays(crashEventDay).toDate(), crashEventTypeList, getShowExcludedEvents());
+    					logger.debug("Vehicle Crash Events for +/-"+ crashEventDay +" Day:"+ crashEvents);
+    				}
+    			}
+    			
+    			if((!crashEvents.isEmpty()) && crashEvents.size() > 0){
+    				// To change invalid crashReport lat/lng values use crash events 
+    				populateAddresses(crashEvents);
+    			}
+    			else{
+    				// Check if there are invalid crashReport lat/lng with valid trip details
+    		   		if(crashReportTrip!=null && ((crashReportTrip.getStartLat() > 0.005 || crashReportTrip.getStartLat() < -0.005) && (crashReportTrip.getStartLng() > 0.005 || crashReportTrip.getStartLng() < -0.005))){
+        			crashReport.setLat(crashReportTrip.getStartLat()+ 0.00005);
+        			crashReport.setLng(crashReportTrip.getStartLng());}
+    			}
+        	}
+        
+        }
+        // Defect #DE9207 --> end     
         return crashReportTrip;
     }
-
+    
+    public void populateAddresses(List<Event> crashEvents) {
+    	DateTime crashTime = new DateTime(crashReport.getDate());
+    	long absTimeDiff;
+    	long diff=0;
+    	Event validEvent = null;
+    	for (Event event : crashEvents) {
+    		// Check if event lat/lng are valid
+    		if ((event.getLatitude() > 0.005 || event.getLatitude() < -0.005) && (event.getLongitude() > 0.005 || event.getLongitude() < -0.005)){
+    			DateTime eventTime = new DateTime(event.getTime());
+    			// to find closest event with current crashReport
+    			absTimeDiff = Math.abs(eventTime.getMillis() - crashTime.getMillis());
+    			if(diff==0 || (absTimeDiff <= diff)){
+    				diff = absTimeDiff;
+    				validEvent = event;
+    			}
+			}
+		}
+    	// Replace invalid crashReport lat/lng with closest event from cachedNote
+    	if(validEvent!=null){
+			crashReport.setLat(validEvent.getLatitude() + 0.00001);
+			crashReport.setLng(validEvent.getLongitude());
+		}    	
+    }
+    
     public void setCrashTime(Integer crashTime) {
         if (crashReport != null && crashReport.getDate() != null) {
             Calendar dateTime = Calendar.getInstance();
@@ -570,5 +672,7 @@ public class CrashReportBean extends BaseBean {
     public CrashTraceBean getCrashTraceBean() {
         return crashTraceBean;
     }
+    
+    
 
 }

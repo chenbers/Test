@@ -29,6 +29,8 @@ import com.inthinc.pro.reports.performance.DriverExcludedViolationsCriteriaTest;
 public class NonCommReportCriteriaTest extends BaseUnitTest{
     
     private static Logger logger = Logger.getLogger(DriverExcludedViolationsCriteriaTest.class);
+    private static boolean dontIncludeUnassignedDevice=true;
+    private static boolean activeInterval=true;
     
     @Mocked
     private EventAggregationDAO eventAggregationDAO;
@@ -40,6 +42,8 @@ public class NonCommReportCriteriaTest extends BaseUnitTest{
     private static final List<Integer> eventIDPickList;
     
     private static final List<Integer> groupIDPickList;
+
+    private static  Interval interval;
     
     static{
         eventIDPickList = new ArrayList<Integer>();
@@ -112,12 +116,12 @@ public class NonCommReportCriteriaTest extends BaseUnitTest{
         List<Integer> groupIDs = new ArrayList<Integer>();
         groupIDs.add(12);
         
-        NonCommReportCriteria.Builder builder = new NonCommReportCriteria.Builder(groupHierarchy, eventAggregationDAO, groupIDs, TimeFrame.DAY);
+        NonCommReportCriteria.Builder builder = new NonCommReportCriteria.Builder(groupHierarchy, eventAggregationDAO, groupIDs, TimeFrame.DAY,interval,dontIncludeUnassignedDevice);
         
         builder.setLocale(Locale.US);
         List<ReportCriteria> reportCriterias = new ArrayList<ReportCriteria>();
         new NonStrictExpectations() {{
-            eventAggregationDAO.findLastEventForVehicles((List)any, (Interval)any);
+            eventAggregationDAO.findLastEventForVehicles((List)any, (Interval)any,dontIncludeUnassignedDevice,activeInterval);
             returns(lastReportedEvents);
         }};
         reportCriterias.add(builder.build());

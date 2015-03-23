@@ -122,7 +122,7 @@ function merge_tomcat6_blank_with_tmp {
 
 function setup_tomcat2_variables {
     echo "Enter function setup_tomcat2_variables"
-    DEB_Version="${SRC_VERSION}-${BUILD_NUMBER}~${DISTRIB_ID}~${DISTRIB_CODENAME}"
+    DEB_Version="${BUILD_NUMBER}-${SRC_VERSION}~${DISTRIB_ID}~${DISTRIB_CODENAME}"
     U_GID="1090"
     MY_GROUP_USER="tiwipro"
     MY_USER="tomcat2"
@@ -491,12 +491,12 @@ function create_archive {
         find etc -type f | sed -e 's/^\.//' |tee -a ${CONF_FILE}
     fi
     echo "Creating data.tar.gz for debian package"
-    tar -zcf ${TMP_DIR}/data.tar.gz *
+    tar -zcf ${TMP_DIR}/data.tar.gz ./
     cd ${TMP_DIR}/control
     echo "Removing underscores from Control file"
     perl -pi -e 's/_/-/g' ${CONTROL_FILE}
     echo "Creating control tarball for debian package"
-    tar -zcf ${TMP_DIR}/control.tar.gz *
+    tar -zcf ${TMP_DIR}/control.tar.gz ./
     cd ${TMP_DIR}
     echo "Removing data and control folders"
     /bin/rm -Rf data

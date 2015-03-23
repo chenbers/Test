@@ -1,8 +1,11 @@
 package com.inthinc.pro.service.adapters;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import com.inthinc.pro.dao.cassandra.LocationCassandraDAO;
+import com.inthinc.pro.model.CustomDuration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -30,9 +33,11 @@ public class VehicleDAOAdapter extends BaseDAOAdapter<Vehicle> {
     @Autowired
     private VehicleDAO vehicleDAO;
     @Autowired
+    private LocationCassandraDAO locationCassandraDAO;
+    @Autowired
     private EventDAO eventDAO;   
     @Autowired
-    private VehicleReportDAO vehicleReportDAO;    
+    private VehicleReportDAO vehicleReportDAO;
 	
 //    @Autowired
 //    private ConfiguratorDAO configuratorDAO;
@@ -74,7 +79,15 @@ public class VehicleDAOAdapter extends BaseDAOAdapter<Vehicle> {
     public Vehicle assignDriver(Integer id, Integer driverID) {
         vehicleDAO.setVehicleDriver(id, driverID);
         return vehicleDAO.findByID(id);
-    }    
+    }
+
+    public List<Trip> getAllLastTrips(List<Vehicle> vehicleList){
+        return locationCassandraDAO.getLastTripsForVehicles(vehicleList);
+    }
+
+    public Vehicle findByName(String name) {
+        return vehicleDAO.findByName(getAccountID(),name);
+    }
 
     public Vehicle findByVIN(String vin) {
         return vehicleDAO.findByVIN(vin);
@@ -90,10 +103,19 @@ public class VehicleDAOAdapter extends BaseDAOAdapter<Vehicle> {
 
     public Score getScore(Integer vehicleID, Duration duration) {
         return vehicleReportDAO.getScore(vehicleID, duration);
-    }    
+    }
+
+    public Score getScore(Integer vehicleID, CustomDuration customDuration) {
+        return vehicleReportDAO.getScore(vehicleID, customDuration);
+    }
+
 
     public List<Trend> getTrend(Integer vehicleID, Duration duration) {
         return vehicleReportDAO.getTrend(vehicleID, duration);
+    }
+
+    public List<Trend> getTrend(Integer vehicleID, CustomDuration customDuration) {
+        return vehicleReportDAO.getTrend(vehicleID, customDuration);
     }
     
     public List<Trip> getTrips(Integer vehicleID, Date startDate, Date endDate) {
@@ -147,7 +169,15 @@ public class VehicleDAOAdapter extends BaseDAOAdapter<Vehicle> {
 		this.vehicleReportDAO = vehicleReportDAO;
 	}
 
-//	public ConfiguratorDAO getConfiguratorDAO() {
+    public LocationCassandraDAO getLocationCassandraDAO() {
+        return locationCassandraDAO;
+    }
+
+    public void setLocationCassandraDAO(LocationCassandraDAO locationCassandraDAO) {
+        this.locationCassandraDAO = locationCassandraDAO;
+    }
+
+    //	public ConfiguratorDAO getConfiguratorDAO() {
 //		return configuratorDAO;
 //	}
 //

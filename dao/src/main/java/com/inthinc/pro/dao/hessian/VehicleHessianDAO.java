@@ -99,6 +99,11 @@ public class VehicleHessianDAO extends GenericHessianDAO<Vehicle, Integer> imple
     }
 
     @Override
+    public List<Trip> getLastVehicleTripsByGrpIDDeep(Integer groupID) {
+        return  getMapper().convertToModelObject(getSiloService().getLastVehicleTripsByGrpIDDeep(groupID), Trip.class);
+    }
+
+    @Override
     public Vehicle findByKey(String key) {
         return findByVIN(key);
     }
@@ -120,6 +125,15 @@ public class VehicleHessianDAO extends GenericHessianDAO<Vehicle, Integer> imple
     public Vehicle findByDriverID(Integer driverID) {
         try {
             return getMapper().convertToModelObject(getSiloService().getVehicleByDriverID(driverID), Vehicle.class);
+        } catch (EmptyResultSetException e) {
+            return null;
+        }
+    }
+
+    @Override
+    public Vehicle findByName(Integer acctID, String name) {
+        try {
+            return getMapper().convertToModelObject(getSiloService().getVehicleByName(acctID,name), Vehicle.class);
         } catch (EmptyResultSetException e) {
             return null;
         }

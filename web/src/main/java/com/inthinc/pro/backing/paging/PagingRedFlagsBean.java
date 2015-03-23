@@ -8,6 +8,7 @@ import java.util.Map;
 
 import javax.faces.model.SelectItem;
 
+import com.inthinc.pro.model.event.EventSubCategory;
 import org.ajax4jsf.model.KeepAlive;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTimeZone;
@@ -54,6 +55,7 @@ public class PagingRedFlagsBean extends BasePagingNotificationsBean<RedFlag> {
         CATEGORIES.add(EventCategory.HOS);
         CATEGORIES.add(EventCategory.TEXT);
         CATEGORIES.add(EventCategory.DVIR);
+        CATEGORIES.add(EventCategory.MAINTENANCE);
         
 	}
 

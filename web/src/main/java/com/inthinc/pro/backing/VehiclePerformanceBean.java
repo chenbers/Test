@@ -132,7 +132,8 @@ public class VehiclePerformanceBean extends BasePerformanceBean
             types.add(NoteType.IDLE);
             types.add(NoteType.UNPLUGGED);
             types.add(NoteType.UNPLUGGED_ASLEEP);
-            
+            types.add(NoteType.BACKING);
+
             List<Event> violationEvents = eventDAO.getEventsForVehicle(getVehicle().getVehicleID(), start, end, types,getShowExcludedEvents());
             violationEventsMap = new LinkedHashMap<Long,Event>();
 
@@ -641,9 +642,7 @@ public class VehiclePerformanceBean extends BasePerformanceBean
 
     public DeviceBean getDeviceBean() {
         logger.debug("DeviceBean getDeviceBean()");
-        if(null == deviceBean.getDeviceID()){
-            deviceBean.loadDeviceBean(getVehicle());
-        }
+        deviceBean.loadDeviceBean(getVehicle());
         return deviceBean;
     }
 

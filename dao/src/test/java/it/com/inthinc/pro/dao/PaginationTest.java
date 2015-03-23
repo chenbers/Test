@@ -5,6 +5,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import it.com.inthinc.pro.dao.model.GroupData;
 import it.com.inthinc.pro.dao.model.ITData;
+import it.config.ITDataSource;
 import it.config.IntegrationConfig;
 import it.config.ReportTestConst;
 
@@ -21,12 +22,21 @@ import org.junit.Test;
 
 import com.inthinc.pro.dao.EventDAO;
 import com.inthinc.pro.dao.hessian.DeviceHessianDAO;
+import com.inthinc.pro.dao.hessian.DriverHessianDAO;
 import com.inthinc.pro.dao.hessian.EventHessianDAO;
+import com.inthinc.pro.dao.hessian.GroupHessianDAO;
+import com.inthinc.pro.dao.hessian.PersonHessianDAO;
+import com.inthinc.pro.dao.hessian.RedFlagAlertHessianDAO;
 import com.inthinc.pro.dao.hessian.RedFlagHessianDAO;
 import com.inthinc.pro.dao.hessian.StateHessianDAO;
+import com.inthinc.pro.dao.hessian.VehicleHessianDAO;
+import com.inthinc.pro.dao.hessian.ZoneHessianDAO;
 import com.inthinc.pro.dao.hessian.proserver.SiloService;
 import com.inthinc.pro.dao.hessian.proserver.SiloServiceCreator;
+import com.inthinc.pro.dao.jdbc.AlertMessageJDBCDAO;
 import com.inthinc.pro.dao.util.DateUtil;
+import com.inthinc.pro.map.GeonamesAddressLookup;
+import com.inthinc.pro.model.AlertSentStatus;
 import com.inthinc.pro.model.RedFlag;
 import com.inthinc.pro.model.app.States;
 import com.inthinc.pro.model.event.Event;
@@ -53,7 +63,7 @@ public class PaginationTest {
     	EXPECTED_EVENT_COUNTS = new HashMap<EventCategory, Integer[]> ();
     	// events in team 0 (GOOD) are from the unknown driver
     	EXPECTED_EVENT_COUNTS.put(EventCategory.VIOLATION, new Integer[] {Integer.valueOf(3), Integer.valueOf(3), Integer.valueOf(16), Integer.valueOf(28)});
-    	EXPECTED_EVENT_COUNTS.put(EventCategory.WARNING, new Integer[] {Integer.valueOf(9), Integer.valueOf(7), Integer.valueOf(11), Integer.valueOf(39)});
+    	EXPECTED_EVENT_COUNTS.put(EventCategory.WARNING, new Integer[] {Integer.valueOf(9), Integer.valueOf(7), Integer.valueOf(12), Integer.valueOf(40)});
     	EXPECTED_EVENT_COUNTS.put(EventCategory.EMERGENCY, new Integer[] {Integer.valueOf(0), Integer.valueOf(0), Integer.valueOf(1), Integer.valueOf(10)});
     	
     }
@@ -108,6 +118,7 @@ public class PaginationTest {
 
         DeviceHessianDAO deviceDAO = new DeviceHessianDAO();
         deviceDAO.setSiloService(siloService);
+       
     }
 
     @Test
@@ -455,7 +466,14 @@ public class PaginationTest {
 	    		pageParams.setEndRow(3);
 	    		redFlagList = redFlagDAO.getRedFlagPage(team.group.getGroupID(), startDate, endDate,  EventDAO.INCLUDE_FORGIVEN, pageParams);
 	    		assertEquals("Unexpected partial event list count for team " + teamIdx, 3, redFlagList.size());
+    			AlertMessageJDBCDAO alertMessageDAO = new AlertMessageJDBCDAO();
+    	        ((AlertMessageJDBCDAO)alertMessageDAO).setDataSource(new ITDataSource().getRealDataSource());
+    	        alertMessageDAO.fillInRedFlagMessageInfo(redFlagList);
+    	        for(RedFlag rf:redFlagList){
+    	        	assertEquals("status should be 'sent' " ,AlertSentStatus.SENT.getCode(), rf.getSent().getCode());
+    	        }
     		}
+
     	}
 	}
 

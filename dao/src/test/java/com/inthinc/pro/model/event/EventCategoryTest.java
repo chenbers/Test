@@ -12,8 +12,8 @@ import org.junit.Test;
 public class EventCategoryTest {
 
     Integer[] expectedNoteInCatCounts = {
-            11,
-            21,
+            14,
+            22,
             0,
             11,
             2,
@@ -21,7 +21,8 @@ public class EventCategoryTest {
             4,
             4,
             5,
-            26
+            2,
+            28
     };
     
     @Test
@@ -50,15 +51,21 @@ public class EventCategoryTest {
         EventType eventType = NoteType.HOS_CHANGE_STATE_NO_GPS_LOCK.getEventType();
         assertEquals(EventType.DVIR, eventType);
     }
+    @Test
+    public void maintenanceEventType(){
+        EventType eventType = NoteType.IGNITION_OFF.getEventType();
+        assertEquals(EventType.UNKNOWN_MAINTENANCE,eventType);
+    }
 
     Integer[] expectedTypeInCatCounts = {
             4,  //  DRIVER
             5,  //  DVIR
     		4,	//  EMERGENCY
     		2,	//  HOS
-    		2,	//  NONE
+            // 10, //   MAINTENANCE // all maint events are violations
+            10,	//  NONE
     		1,	//  TEXT
-    		10,	//  VIOLATION
+    		23,	//  VIOLATION
     		20,	//  WARNING
     		2	//  ZONE
     };
@@ -69,6 +76,9 @@ public class EventCategoryTest {
     	Integer count = 0;
     	for(EventType type :EventType.values()) {
     		EventCategory cat = EventCategory.getCategoryForEventType(type);
+            if (cat == EventCategory.NONE) {
+                System.out.println(cat + " " + type);
+            }
 
             if (!map.containsKey(cat.toString())) {
                 map.put(cat.toString(), new HashMap<Integer, EventType>());
@@ -79,7 +89,7 @@ public class EventCategoryTest {
     	int i = 0;
     	for(String cat: map.keySet()){
     		System.out.println(map.get(cat).size()+" "+cat);
-    		assertEquals(cat, expectedTypeInCatCounts[i++].intValue(), map.get(cat).size());
+            assertEquals(cat, expectedTypeInCatCounts[i++].intValue(), map.get(cat).size());
     	}
     }
 }

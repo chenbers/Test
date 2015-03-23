@@ -44,6 +44,7 @@ public class TripsBean extends BaseBean {
     @SuppressWarnings("unused")
     private static final Logger logger = Logger.getLogger(TripsBean.class);
     private static final long THIRTY_DAYS = 30L * 24L * 60L * 60L * 1000L;
+    private static final long ONE_YEAR = 365L * 24L * 60L * 60L * 1000L;
     private static final long ONE_SECOND = 1000L;
     
     private DriverDAO driverDAO;
@@ -75,7 +76,7 @@ public class TripsBean extends BaseBean {
     private IdentifiableEntityBean identifiableEntityBean;
     private GroupTreeNodeImpl groupTreeNodeImpl;
     private Map<Integer, Driver> tripsDrivers = new HashMap<Integer, Driver>();
-    private String dateStatus = MessageUtil.getMessageString("trip_valid_date_range",getLocale());
+    private String dateStatus = "";
     private LatLng lastLocation;
     private String timeFrameString = "";
     
@@ -166,6 +167,8 @@ public class TripsBean extends BaseBean {
                 violationEventTypeList.addAll(EventSubCategory.SPEED.getNoteTypesInSubCategory());
                 violationEventTypeList.add(NoteType.SEATBELT);
                 violationEventTypeList.add(NoteType.NO_DRIVER);
+                violationEventTypeList.add(NoteType.SAT_EVENT_RF_KILL);
+                violationEventTypeList.add(NoteType.BACKING);
                 violationEventTypeList.addAll(EventSubCategory.DRIVING_STYLE.getNoteTypesInSubCategory());
                 List<NoteType> idleTypes = new ArrayList<NoteType>();
                 idleTypes.add(NoteType.IDLE);
@@ -218,6 +221,7 @@ public class TripsBean extends BaseBean {
             violationEventTypeList.addAll(EventSubCategory.SPEED.getNoteTypesInSubCategory());
             violationEventTypeList.add(NoteType.SEATBELT);
             violationEventTypeList.add(NoteType.NO_DRIVER);
+            violationEventTypeList.add(NoteType.BACKING);
             violationEventTypeList.addAll(EventSubCategory.DRIVING_STYLE.getNoteTypesInSubCategory());
             List<NoteType> idleTypes = new ArrayList<NoteType>();
             idleTypes.add(NoteType.IDLE);
@@ -657,13 +661,13 @@ public class TripsBean extends BaseBean {
             return false;
             
         // Start date more than 30 days in the past from today    
-        } else if ( ((new Date()).getTime()-startDate.getTime()) > THIRTY_DAYS ) {
-            setDateStatus(MessageUtil.getMessageString("trip_start_more_than_thirty",getLocale()));            
+        } else if ( ((new Date()).getTime()-startDate.getTime()) > ONE_YEAR ) {
+            setDateStatus(MessageUtil.getMessageString("trip_start_more_than_year",getLocale()));            
             return false;
             
         // Winner!
         } else {
-            setDateStatus(MessageUtil.getMessageString("trip_valid_date_range",getLocale()));            
+            setDateStatus("");            
             return true;
         }        
     }

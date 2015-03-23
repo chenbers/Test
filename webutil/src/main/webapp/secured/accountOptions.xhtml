@@ -82,6 +82,38 @@
 							</h:selectOneMenu>
                         </td>                              	                           	
 					</tr>
+
+                    <tr>
+                        <td style="vertical-align: middle;"><h:outputText value="Maintenance: " /></td>
+                        <td>
+                            <h:selectOneMenu id="editAccount-maintenance" value="#{accountOptionsBean.account.props.maintenanceEnabled}">
+                                <f:selectItem itemLabel="Disabled" itemValue="false"/>
+                                <f:selectItem itemLabel="Enabled" itemValue="true"/>
+                            </h:selectOneMenu>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td style="vertical-align: middle;"><h:outputText value="Weatherford violations report: " /></td>
+                        <td>
+                            <h:selectOneMenu id="editAccount-weatherford" value="#{accountOptionsBean.account.props.weatherfordViolationsReportEnabled}">
+                                <f:selectItem itemLabel="Disabled" itemValue="false"/>
+                                <f:selectItem itemLabel="Enabled" itemValue="true"/>
+                            </h:selectOneMenu>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td style="vertical-align: middle;"><h:outputText value="Redirect to Vehicle Page: " /></td>
+                        <td>
+                            <h:selectOneMenu id="editAccount-redirect-assets" value="#{accountOptionsBean.account.props.redirectVehiclesAssets}">
+                                <f:selectItem itemLabel="None" itemValue="NONE"/>
+                                <f:selectItem itemLabel="Admin>Vehicles Page" itemValue="PORTAL"/>
+                                <f:selectItem itemLabel="Assets>Vehicles Page" itemValue="ASSETS"/>
+                            </h:selectOneMenu>
+                        </td>
+                    </tr>
+
 					<tr>
                     	<td style="vertical-align: middle;"><h:outputText value="Driving Time Violation Reports: " /></td>
                         <td>
@@ -135,6 +167,15 @@
 							</h:selectOneMenu>
                         </td>                              	                           	
 					</tr>
+                    <tr>
+                        <td style="vertical-align: middle;"><h:outputText value="Speed-By-Street Access: " /></td>
+                        <td>
+                            <h:selectOneMenu id="editAccount-sbs" value="#{accountOptionsBean.account.props.sbsAccessEnabled}">
+                                <f:selectItem itemLabel="Disabled" itemValue="false"/>
+                                <f:selectItem itemLabel="Enabled" itemValue="true"/>
+                            </h:selectOneMenu>
+                        </td>
+                    </tr>
 					<tr>
 						<td colspan="2">
 			                <a4j:commandButton id="save" value="Save" action="#{accountOptionsBean.saveAction}" rendered="#{accountOptionsBean.account != null}" reRender="optionsForm"/>

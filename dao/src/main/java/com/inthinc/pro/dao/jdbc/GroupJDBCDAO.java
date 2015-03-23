@@ -7,6 +7,7 @@ import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.GroupStatus;
 import com.inthinc.pro.model.GroupType;
 import com.mysql.jdbc.Statement;
+
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -14,6 +15,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.simple.ParameterizedRowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
+import org.springframework.jdbc.core.simple.SimpleJdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 
@@ -133,8 +135,10 @@ public class GroupJDBCDAO extends SimpleJdbcDaoSupport implements GroupDAO {
         params.put("acctID", acctID);
 
         StringBuilder groupSelectAcct = new StringBuilder(GET_GROUP_ACCT);
+        
+        SimpleJdbcTemplate template = getSimpleJdbcTemplate();
 
-        List<Group> groupAcctID = getSimpleJdbcTemplate().query(groupSelectAcct.toString(), groupParameterizedRow, params);
+        List<Group> groupAcctID = template.query(groupSelectAcct.toString(), groupParameterizedRow, params);
         return groupAcctID;
     }
 

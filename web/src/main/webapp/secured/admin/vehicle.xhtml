@@ -27,7 +27,12 @@
   </ui:define>
   
   <ui:define name="content">
-
+  <script type="text/javascript">
+      var isAssetsRedirect = '#{vehiclesBean.redirectVehiclesAssetsValue}';
+      if(isAssetsRedirect == 'ASSETS'){
+          window.location.href='/assets/vehicles';
+      }
+  </script>
     <table width="920" border="0" cellspacing="0" cellpadding="0" align="center" style="margin: 0 auto 0 auto;">
       <tr>
         <td valign="top" width="130">
@@ -111,7 +116,7 @@
                               </tr>
                               <tr>
                                 <td width="100"><h:outputText value="#{messages.editVehicle_odometer}" /></td>
-                                <td><h:outputText value="#{vehiclesBean.item.odometer}" converter="MilesToKilometersConverter"/></td>
+                                <td><h:outputText value="#{vehiclesBean.item.odometerAndMaxVehicleEndingOdometer}" converter="MilesToKilometersConverter"/></td>
                               </tr>                              
                               <ui:include src="../../includes/#{vehiclesBean.item.productTypeDir}/properties.xhtml"/>
                             </table>
@@ -164,6 +169,10 @@
                     <tr>
                       <td width="100"><h:outputText value="#{messages.organization_assignedDevice}:" /></td>
                       <td><h:outputText value="#{vehiclesBean.item.device.name}" /></td>
+                    </tr>
+                    <tr>
+                      <td width="100"><h:outputText value="#{messages.editVehicle_glcode}" /></td>
+                      <td><h:outputText value="#{vehiclesBean.item.glcode}" /></td>
                     </tr>
                   </table>
 

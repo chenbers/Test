@@ -1054,6 +1054,7 @@ public class NonTranslated {
         nonTranslatedList = new ArrayList<String>();
         nonTranslatedList.add("report.date");
         nonTranslated_fr.put("/reports/src/main/resources/com/inthinc/pro/reports/jasper/performance/i18n/driverCoachingReport", nonTranslatedList);
+        nonTranslated_fr.put("/reports/src/main/resources/com/inthinc/pro/reports/jasper/performance/i18n/driverCoachingScoreReport", nonTranslatedList);
 
         nonTranslatedList = new ArrayList<String>();
         
@@ -1087,6 +1088,7 @@ public class NonTranslated {
         nonTranslatedList.add("Delay.MINUTES15");
         nonTranslatedList.add("Delay.MINUTES30");
         nonTranslatedList.add("EventSubCategory.FATIGUE");
+        nonTranslatedList.add("EventSubCategory.CONDITIONAL");
         nonTranslatedList.add("EventSubCategory.INSTALLATION");
         nonTranslatedList.add("EventSubCategory.WIRELINE");
         nonTranslatedList.add("EventSubCategory.ZONES");
@@ -1619,6 +1621,7 @@ public class NonTranslated {
             nonTranslatedList = new ArrayList<String>();
             nonTranslatedList.add("report.date");
             nonTranslated_fr_CA.put("/reports/src/main/resources/com/inthinc/pro/reports/jasper/performance/i18n/driverCoachingReport", nonTranslatedList);
+            nonTranslated_fr_CA.put("/reports/src/main/resources/com/inthinc/pro/reports/jasper/performance/i18n/driverCoachingScoreReport", nonTranslatedList);
 
             nonTranslatedList = new ArrayList<String>();
             nonTranslatedList.add("dateFormat");
@@ -1653,6 +1656,7 @@ public class NonTranslated {
             nonTranslatedList.add("Delay.MINUTES30");
             nonTranslatedList.add("ENGLISH_MILES");
             nonTranslatedList.add("EventSubCategory.FATIGUE");
+            nonTranslatedList.add("EventSubCategory.CONDITIONAL");
             nonTranslatedList.add("EventSubCategory.INSTALLATION");
             nonTranslatedList.add("EventSubCategory.ZONES");
             nonTranslatedList.add("FuelEfficiencyType.KMPL_mpg");
