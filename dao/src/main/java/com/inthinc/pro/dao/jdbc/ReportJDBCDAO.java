@@ -454,7 +454,7 @@ public class ReportJDBCDAO extends SimpleJdbcDaoSupport implements ReportDAO {
             vehicleReportItem.setSpeedScore(rs.getInt("vp.speedScore") == 0 ? null : rs.getInt("vp.speedScore"));
             vehicleReportItem.setOverallScore(rs.getInt("vp.overallScore") == 0 ? null : rs.getInt("vp.overallScore"));
             vehicleReportItem.setMilesDriven(rs.getInt("vp.milesDriven"));
-            vehicleReportItem.setOdometer(rs.getInt("vp.odometer"));
+            vehicleReportItem.setOdometer(getValidIntOrNullFromRS(rs, "vp.odometer"));
             vehicleReportItem.setVehicleID(rs.getInt("vp.vehicleID"));
             vehicleReportItem.setVehicleName(rs.getString("vp.vehicleName"));
             vehicleReportItem.setVehicleYMM(rs.getString("vp.vehicleYMM"));
@@ -699,6 +699,15 @@ public class ReportJDBCDAO extends SimpleJdbcDaoSupport implements ReportDAO {
     private Integer getIntOrNullFromRS(ResultSet rs, String columnName) throws SQLException {
         return rs.getObject(columnName) == null ? null : (int) rs.getLong(columnName);
     }
+    
+    private Integer getValidIntOrNullFromRS(ResultSet rs, String columnName) {
+        try {
+            return rs.getObject(columnName) == null ? null : rs.getInt(columnName);
+        } catch (SQLException e) {
+            return null;
+        }
+    }
+    
     public DriverPerformanceMapper getDriverPerformanceMapper() {
         return driverPerformanceMapper;
     }
