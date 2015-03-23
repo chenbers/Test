@@ -91,7 +91,12 @@ public class DeviceJDBCDAO extends SimpleJdbcDaoSupport implements DeviceDAO{
             device.setName(getStringOrNullFromRS(rs, "name"));
             device.setSim(getStringOrNullFromRS(rs, "sim"));
             device.setPhone(getStringOrNullFromRS(rs, "phone"));
-            device.setActivated(getDateOrNullFromRS(rs, "activated"));
+            
+            Date activated = getDateTimeOrNullFromRS(rs, "activated");
+            device.setActivated(activated != null ? new DateTime(activated).toDate() : null);
+            Date modified = getDateTimeOrNullFromRS(rs, "modified");
+            device.setModified(modified != null ? new DateTime(modified).toDate() : null);
+            
             device.setImei(getStringOrNullFromRS(rs, "imei"));
             device.setSerialNum(getStringOrNullFromRS(rs, "serialNum"));
             device.setBaseID(getIntOrNullFromRS(rs, "baseID"));
@@ -118,6 +123,10 @@ public class DeviceJDBCDAO extends SimpleJdbcDaoSupport implements DeviceDAO{
 
     private Date getDateOrNullFromRS(ResultSet rs, String columnName) throws SQLException {
         return rs.getObject(columnName) == null ? null : rs.getDate(columnName);
+    }
+    
+    private Date getDateTimeOrNullFromRS(ResultSet rs, String columnName) throws SQLException {
+        return rs.getObject(columnName) == null ? null : rs.getTimestamp(columnName);
     }
 
 
@@ -428,13 +437,22 @@ public class DeviceJDBCDAO extends SimpleJdbcDaoSupport implements DeviceDAO{
 
             ForwardCommand fwdCommand = new ForwardCommand();
             fwdCommand.setFwdID(rs.getInt("fwdID"));
+            fwdCommand.setDeviceID(rs.getInt("deviceID"));
             fwdCommand.setCmd(rs.getInt("fwdCmd"));
+            
+            // assign fwdInt if fwdInt != null, fwdStr otherwise
+            fwdCommand.setData(rs.getObject("fwdInt") != null ? rs.getInt("fwdInt") : (rs.getObject("fwdStr") != null ? rs.getString("fwdStr") : null));            
             fwdCommand.setStatus(rs.getObject("status") == null ? null : ForwardCommandStatus.valueOf(rs.getInt("status")));
             fwdCommand.setPersonID(rs.getObject("personID") == null ? null : rs.getInt("personID"));
             fwdCommand.setDriverID(rs.getObject("driverID") == null ? null : rs.getInt("driverID"));
             fwdCommand.setVehicleID(rs.getObject("vehicleID") == null ? null : rs.getInt("vehicleID"));
-            fwdCommand.setCreated(rs.getObject("created") == null ? null : rs.getDate("created"));
-            fwdCommand.setModified(rs.getObject("modified") == null ? null : rs.getDate("modified"));
+            
+            Date created = getDateTimeOrNullFromRS(rs, "created");
+            fwdCommand.setCreated(created != null ? new DateTime(created).toDate() : null);
+            Date modified = getDateTimeOrNullFromRS(rs, "modified");
+            fwdCommand.setModified(modified != null ? new DateTime(modified).toDate() : null);
+
+            fwdCommand.setTries(rs.getInt("tries"));
 
             return fwdCommand;
         }
