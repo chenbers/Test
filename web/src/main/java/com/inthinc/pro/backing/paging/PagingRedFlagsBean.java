@@ -56,7 +56,8 @@ public class PagingRedFlagsBean extends BasePagingNotificationsBean<RedFlag> {
         CATEGORIES.add(EventCategory.TEXT);
         CATEGORIES.add(EventCategory.DVIR);
         CATEGORIES.add(EventCategory.MAINTENANCE);
-        
+        CATEGORIES.add(EventCategory.TWO_HOURS_BREAK);
+
 	}
 
 	@Override

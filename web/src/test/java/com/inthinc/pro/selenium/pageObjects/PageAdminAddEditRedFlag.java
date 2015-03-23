@@ -263,6 +263,10 @@ public class PageAdminAddEditRedFlag extends AdminBar {
             return new Text(AdminAddEditRedFlagEnum.WIRELINE_MICROSLEEP);
         }
 
+        public Text twoHoursBreak(){
+            return new Text(AdminAddEditRedFlagEnum.TWO_HOURS_BREAK);
+        }
+
         public Text labelTextMessage(){
             return new Text(AdminAddEditRedFlagEnum.TEXT_MESSAGE);
         }
