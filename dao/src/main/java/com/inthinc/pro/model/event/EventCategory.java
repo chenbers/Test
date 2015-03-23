@@ -26,8 +26,9 @@ public enum EventCategory implements BaseEnum
     DRIVER_LOGIN(10, "DRIVER", EnumSet.of(EventSubCategory.DRIVER)),
     DVIR(11,"DVIR", EnumSet.of(EventSubCategory.DVIR)),
     MAINTENANCE(12,"MAINTENANCE", EnumSet.of(EventSubCategory.CONDITIONAL, EventSubCategory.PREVENTATIVE_MAINTENANCE,EventSubCategory.IGNITION_OFF)),
+    DIAGNOSTICS(13, "DIAGNOSTICS", EnumSet.of(EventSubCategory.VEHICLE, EventSubCategory.WIRELINE, EventSubCategory.INSTALLATION, EventSubCategory.DVIR, EventSubCategory.TRAILER)),
+    TWO_HOURS_BREAK(14, "TWO_HOUR_BREAK", EnumSet.of(EventSubCategory.TWO_HOURS_BREAK));
 
-    DIAGNOSTICS(13, "DIAGNOSTICS", EnumSet.of(EventSubCategory.VEHICLE, EventSubCategory.WIRELINE, EventSubCategory.INSTALLATION, EventSubCategory.DVIR, EventSubCategory.TRAILER));
     private String description;
     private int code;
     private Set<EventSubCategory> subCategorySet;

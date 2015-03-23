@@ -72,7 +72,8 @@ public enum AlertMessageType implements BaseEnum
     ATTR_AMBER_WARNING(59),
     ATTR_PROTECT(60),
     ATTR_ODOMETER(61),
-    ALERT_FIRST_MOVE_FORWARD(62);
+    ALERT_FIRST_MOVE_FORWARD(62),
+    ALERT_TYPE_TWO_HOURS_BREAK(63);
     
     private int code;
 

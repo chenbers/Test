@@ -480,6 +480,7 @@ public enum NoteType implements BaseEnum {
     STRIPPED_ACKNOWLEDGE(254),
     
     STRIPPED_UPPER_LIMIT(255),
+    TWO_HOURS_BREAK(256, EventType.TWO_HOURS_BREAK),
     
     MAX_ID(300),
     ;
