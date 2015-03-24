@@ -153,6 +153,9 @@ public class PayrollData implements Comparable<PayrollData>
             if (cmp == 0) {
             	if((this.getEmployeeID()!=null)&&(o.getEmployeeID()!=null)) {
             	    cmp=this.getEmployeeID().compareTo(o.getEmployeeID());
+                    if (cmp == 0){
+                        cmp = this.getDay().compareTo(o.getDay());
+                    }
             	}
             }
         }
