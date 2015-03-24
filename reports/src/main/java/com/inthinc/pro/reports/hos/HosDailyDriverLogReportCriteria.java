@@ -295,8 +295,8 @@ public class HosDailyDriverLogReportCriteria extends ReportCriteria {
 
         List<HOSRec> correctedRecList = HOSUtil.filterCorrectedList(hosRecordList, endDate);
         List<HOSRec> originalRecList = HOSUtil.filterOriginalList(hosRecordList, endDate);
-        HOSAdjustedList adjustedList = HOSUtil.getAdjustedListFromLogList(hosRecordList, endDate);
-        HOSAdjustedList originalAdjustedList = HOSUtil.getOriginalAdjustedListFromLogList(hosRecordList, endDate);
+        HOSAdjustedList adjustedList = HOSUtil.getAdjustedListFromLogList(hosRecordList, endDate, false);
+        HOSAdjustedList originalAdjustedList = HOSUtil.getOriginalAdjustedListFromLogList(hosRecordList, endDate, false);
 
         List<HOSRec> hosRecapList = HOSUtil.getRecListFromLogList(hosRecordList, endDate, driver.getDot() != null && driver.getDot() != RuleSetType.NON_DOT);
         HOSRules rules = RuleSetFactory.getRulesForRuleSetType(driverRuleSetType);

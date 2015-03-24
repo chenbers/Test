@@ -30,9 +30,9 @@ public class HOSUtil {
     private static final Logger logger = Logger.getLogger(HOSUtil.class);
 
     
-    public static HOSAdjustedList getAdjustedListFromLogList(List<HOSRecord> hosRecordList, Date endDate)
+    public static HOSAdjustedList getAdjustedListFromLogList(List<HOSRecord> hosRecordList, Date endDate, boolean setAltSleeperToSleeper)
     {
-        return new HOSAdjustedList(filterCorrectedList(hosRecordList, endDate), endDate);
+        return new HOSAdjustedList(filterCorrectedList(hosRecordList, endDate), endDate, setAltSleeperToSleeper);
     }
     public static List<HOSRec> filterCorrectedList(List<HOSRecord> hosRecordList, Date endDate)
     {
@@ -58,9 +58,9 @@ public class HOSUtil {
         return recList;
     }
 
-    public static HOSAdjustedList getOriginalAdjustedListFromLogList(List<HOSRecord> hosRecordList, Date endDate)
+    public static HOSAdjustedList getOriginalAdjustedListFromLogList(List<HOSRecord> hosRecordList, Date endDate, boolean setAltSleeperToSleeper)
     {
-        return new HOSAdjustedList(filterOriginalList(hosRecordList, endDate), endDate);
+        return new HOSAdjustedList(filterOriginalList(hosRecordList, endDate), endDate, setAltSleeperToSleeper);
     }
     public static List<HOSRec> filterOriginalList(List<HOSRecord> hosRecordList, Date endDate)
     {
