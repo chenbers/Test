@@ -110,7 +110,7 @@ public class DeviceJDBCDAOTest extends SimpleJdbcDaoSupport {
 
         GroupData team = itData.teamGroupData.get(0);
         Integer deviceID = team.device.getDeviceID();
-        ForwardCommandStatus status = ForwardCommandStatus.STATUS_QUEUED;
+        ForwardCommandStatus status = ForwardCommandStatus.STATUS_SENT;
 
         List<ForwardCommand> fwdList = deviceJDBCDAO.getForwardCommands(deviceID, status);
 
@@ -129,13 +129,6 @@ public class DeviceJDBCDAOTest extends SimpleJdbcDaoSupport {
         Device findByID = deviceJDBCDAO.findByID(deviceID);
 
         assertNotNull(findByID);
-        assertEquals("960280302116416", findByID.getImei());
-        assertEquals("9602807013601337640", findByID.getSim());
-        assertEquals("9602832318", findByID.getSerialNum());
-        assertEquals("9602883992", findByID.getPhone());
-        assertEquals("696d6acbc199d607a5704642c67f4d86", findByID.getEmuMd5());
-        assertEquals("GOODDevice", findByID.getName());
-
     }
 
     @Test
