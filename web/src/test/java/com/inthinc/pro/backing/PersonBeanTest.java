@@ -1,6 +1,9 @@
 package com.inthinc.pro.backing;
 
+import java.util.List;
 import java.util.TimeZone;
+
+import javax.faces.model.SelectItem;
 
 import org.junit.Ignore;
 
@@ -9,7 +12,7 @@ import com.inthinc.pro.model.Gender;
 import org.junit.Test;
 
 // marking as ignore since won't work with new pagination stuff
-@Ignore
+//@Ignore
 public class PersonBeanTest extends BaseAdminBeanTest<PersonBean.PersonView>
 {
     private final String OLD_EMP_ID = "13_char_empId";
@@ -50,6 +53,24 @@ public class PersonBeanTest extends BaseAdminBeanTest<PersonBean.PersonView>
         return new String[] { "first", "empid" };
     }
 
+    @Test
+    public void getDotTypes_has15Hour_includes15Hour() {
+        PersonBean personBean = getAdminBean();
+        personBean.getAccount().getProps().setMaintenanceEnabled("true");
+        PersonView personView = personBean.getItem();
+        List<SelectItem> dotTypes = personBean.getDotTypes();
+        for(SelectItem item: dotTypes) {
+            System.out.println("descr: "+item.getDescription());
+            System.out.println("label: "+item.getLabel());
+            System.out.println("value: "+item.getValue());
+        }
+        
+    }
+    
+    public void getDotTypes_no15Hour_no15Hour() {
+        PersonBean personBean = getAdminBean();
+        PersonView personView = personBean.getItem();
+    }
     @Test
     public void testCorrectLength() {
         PersonBean personBean = getAdminBean();
