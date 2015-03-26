@@ -461,6 +461,7 @@ public enum NoteType implements BaseEnum {
     DEVICE_MODEM_PAIRING(236),
     TRAILER_PROGRAMMED(237, TrailerProgrammedEvent.class),
     MAINTENANCE_EVENTS(238, MaintenanceEvent.class),
+    TWO_HOURS_BREAK(241, FifteenMinuteBreakNotTakenEvent.class),
 
     // new notifications without header information - not really a real notification.
     // used primarily for background communication
@@ -480,7 +481,6 @@ public enum NoteType implements BaseEnum {
     STRIPPED_ACKNOWLEDGE(254),
     
     STRIPPED_UPPER_LIMIT(255),
-    TWO_HOURS_BREAK(256, EventType.TWO_HOURS_BREAK), //TODO add note type class here when 2 hour note is available
     
     MAX_ID(300),
     ;
