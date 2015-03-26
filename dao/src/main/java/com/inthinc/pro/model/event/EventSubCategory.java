@@ -78,7 +78,10 @@ public enum EventSubCategory implements BaseEnum
     PREVENTATIVE_MAINTENANCE(18,  EnumSet.of(EventType.ATTR_ENGINE_HOURS, EventType.ODOMETER), EnumSet.of(AlertMessageType.ATTR_ENGINE_HOURS, AlertMessageType.ATTR_ODOMETER)),
 //    NOTIFICATION_MAINTENANCE(19,EnumSet.of(EventType.RED_STOP,EventType.AMBER_WARNING,EventType.PROTECT),
 //    EnumSet.of(AlertMessageType.ATTR_RED_STOP,AlertMessageType.ATTR_AMBER_WARNING,AlertMessageType.ATTR_PROTECT));
-    FIRST_MOVE_FORWARD(20, EnumSet.of(EventType.FIRST_MOVE_FORWARD), EnumSet.of(AlertMessageType.ALERT_FIRST_MOVE_FORWARD));
+    FIRST_MOVE_FORWARD(20, EnumSet.of(EventType.FIRST_MOVE_FORWARD), EnumSet.of(AlertMessageType.ALERT_FIRST_MOVE_FORWARD)),
+    TWO_HOURS_BREAK(21,
+            EnumSet.of(EventType.DAILY_MAX_DRIVING_LIMIT),
+            EnumSet.of(AlertMessageType.ALERT_TYPE_DAILY_MAX_DRIVING_LIMIT));
     
     private int code;
     private Set<EventType> eventTypeSet;

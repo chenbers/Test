@@ -736,6 +736,9 @@ public class AlertMessageJDBCDAO extends GenericJDBCDAO implements AlertMessageD
                 case ALERT_TYPE_DVIR_REPAIR:
                     addDVIRRepairAttributes(event);
                     break;
+                case ALERT_TYPE_DAILY_MAX_DRIVING_LIMIT:
+                    //TODO when event class is avaiblable, cast and add data here
+                    break;
                 default:
                     addAddress(event);
             }

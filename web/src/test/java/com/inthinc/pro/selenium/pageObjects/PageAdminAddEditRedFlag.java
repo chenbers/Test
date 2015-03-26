@@ -262,6 +262,10 @@ public class PageAdminAddEditRedFlag extends AdminBar {
         public Text wirelineMicrosleep(){
             return new Text(AdminAddEditRedFlagEnum.WIRELINE_MICROSLEEP);
         }
+        
+        public Text dailyMaxDriving(){
+            return new Text(AdminAddEditRedFlagEnum.DAILY_MAX_DRIVING);
+        }
 
         public Text labelTextMessage(){
             return new Text(AdminAddEditRedFlagEnum.TEXT_MESSAGE);

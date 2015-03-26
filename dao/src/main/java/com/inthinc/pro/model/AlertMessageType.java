@@ -72,7 +72,8 @@ public enum AlertMessageType implements BaseEnum
     ATTR_AMBER_WARNING(59),
     ATTR_PROTECT(60),
     ATTR_ODOMETER(61),
-    ALERT_FIRST_MOVE_FORWARD(62);
+    ALERT_FIRST_MOVE_FORWARD(62),
+    ALERT_TYPE_DAILY_MAX_DRIVING_LIMIT(64);
     
     private int code;
 
@@ -179,7 +180,8 @@ public enum AlertMessageType implements BaseEnum
                             ALERT_TYPE_ZONES_CURRENT,
                             ALERT_TYPE_NO_INTERNAL_THUMB_DRIVE,
                             ALERT_TYPE_WITNESS_HEARTBEAT_VIOLATION,
-                            ALERT_TYPE_IDLING);        
+                            ALERT_TYPE_IDLING,
+                            ALERT_TYPE_DAILY_MAX_DRIVING_LIMIT);        
     }
     @Override
     public String toString()

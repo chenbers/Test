@@ -167,6 +167,9 @@ public class EzCrmMessageData {
                                     preParams = getLineParams(18, 1);
                                     lineParams = LocalizedMessage.getStringWithValues("EzCrm."+alertMessageType.toString(), locale, preParams).split(";");
                                     break;
+                                case ALERT_TYPE_DAILY_MAX_DRIVING_LIMIT:
+                                    preParams = getLineParams(18, 7);
+                                    lineParams = LocalizedMessage.getStringWithValues("EzCrm."+alertMessageType.toString(), locale, preParams).split(";");
                                 default:
                                     lineParams = LocalizedMessage.getString("EzCrm."+alertMessageType.toString(), locale).split(";");
                             }

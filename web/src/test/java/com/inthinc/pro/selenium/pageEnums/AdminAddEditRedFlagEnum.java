@@ -132,6 +132,8 @@ public enum AdminAddEditRedFlagEnum implements SeleniumEnums {
     FATIGUE_MICROSLEEP("Driver in microsleep", "//span[@id='edit-form:editRedFlag-fatigue']/table/tbody/tr[2]/td"),
     
     WIRELINE_MICROSLEEP("Driver in microsleep", "//span[@id='edit-form:editRedFlag-wireline']/table/tbody/tr[2]/td"),
+
+    DAILY_MAX_DRIVING("Daily max driving", "//span[@id='edit-form:editRedFlag-break']/table/tbody/tr[2]/td"),
     
     INSTALLATION_NEW(null, "edit-form:installSelected"),
     INSTALLATION_NEW_LABEL("New Installation", "//input[@id='edit-form:installSelected']/.."),

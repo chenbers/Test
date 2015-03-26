@@ -85,7 +85,8 @@ public enum EventType implements BaseEnum {
     ODOMETER(70,MaintenanceEventType.ODOMETER),
     UNKNOWN_CHECK_ENGINE_LAMP(71, IgnitionOffEventType.UNKNOWN_CHECK_ENGINE_LAMP),
     UNKNOWN_MAINTENANCE(72, MaintenanceEventType.UNKNOWN_MAINTENANCE),
-    PREVENTATIVE_MESSAGE_ODOMETER(73, MaintenanceEventType.ODOMETER);
+    PREVENTATIVE_MESSAGE_ODOMETER(73, MaintenanceEventType.ODOMETER),
+    DAILY_MAX_DRIVING_LIMIT(75);
 
 
 
