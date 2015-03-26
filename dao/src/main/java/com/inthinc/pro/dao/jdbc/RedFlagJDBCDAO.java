@@ -60,13 +60,15 @@ import java.util.TimeZone;
  * RedFlag DAO.
  */
 public class RedFlagJDBCDAO extends SimpleJdbcDaoSupport implements RedFlagDAO {
-    private static String RED_FLAG_QUERY = "SELECT cn.attribs, cnv.noteID,cnv.driverID,cnv.vehicleID,cnv.type,cnv.aggType,cnv.time," +
+    private static String RED_FLAG_BASE_QUERY = "SELECT cn.attribs, cnv.noteID,cnv.driverID,cnv.vehicleID,cnv.type,cnv.aggType,cnv.time," +
             " cnv.speed, cnv.flags, cnv.latitude, cnv.longitude, cnv.topSpeed, cnv.avgSpeed, cnv.speedLimit, cnv.status," +
             " cnv.distance, cnv.deltaX, cnv.deltaY, cnv.deltaZ, cnv.forgiven, cnv.flagged, cnv.level, cnv.sent, cnv.idleLo, cnv.idleHi, cnv.zoneID, cnv.textId," +
             " cnv.textMsg, cnv.hazmatFlag, cnv.serviceId, cnv.trailerId, cnv.trailerIdOld, cnv.inspectionType, cnv.vehicleSafeToOperate, cnv.duration, cnv.groupID," +
             " cnv.driverGroupID, cnv.vehicleGroupID, cnv.personID, cnv.driverName, cnv.groupName, cnv.vehicleName, cnv.tzID, cnv.tzName  FROM cachedNoteView cnv, cachedNote cn " +
-            " WHERE cnv.noteID = cn.noteID and cnv.groupId in (select groupID from groups where groupPath like :groupID) and cnv.flagged=1 and cnv.time between :startDate and :endDate ";
+            " WHERE cnv.noteID = cn.noteID ";
+    private static String RED_FLAG_QUERY = RED_FLAG_BASE_QUERY+ " and cnv.groupId in (select groupID from groups where groupPath like :groupID) and cnv.flagged=1 and cnv.time between :startDate and :endDate ";
     private static String RED_FLAG_QUERY_COUNT = "SELECT count(*) as nr FROM cachedNoteView WHERE groupId in (select groupID from groups where groupPath like :groupID) and flagged=1 and time between :startDate and :endDate ";
+    private static String RED_FLAG_SINGLE_QUERY = RED_FLAG_BASE_QUERY + " and cnv.noteID = :noteID ";
 
     private static final Map<String, String> pagedColumnMapRedFlag = new HashMap<String, String>();
 
@@ -435,6 +437,13 @@ public class RedFlagJDBCDAO extends SimpleJdbcDaoSupport implements RedFlagDAO {
 
         return redFlagList;
     }
+
+    public RedFlag findByID(Long noteID) {
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("noteID", noteID);
+        return getSimpleJdbcTemplate().queryForObject(RED_FLAG_SINGLE_QUERY, redFlagParameterizedRowMapper, params);
+    }
+
 
     private TableFilterField treatCustomFilters(TableFilterField filter) {
 

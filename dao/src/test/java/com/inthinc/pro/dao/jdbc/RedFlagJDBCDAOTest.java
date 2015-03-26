@@ -34,6 +34,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.TimeZone;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 public class RedFlagJDBCDAOTest extends BaseJDBCTest {
@@ -195,6 +196,34 @@ public class RedFlagJDBCDAOTest extends BaseJDBCTest {
 
                 Assert.assertEquals("Different red flags for index: " + i, hessianRedFlag, jdbcRedFlag);
             }
+        }
+    }
+
+    @Test
+    public void compareWithIndividualTest() {
+        RedFlagJDBCDAO redFlagJDBCDAO = new RedFlagJDBCDAO();
+        DataSource dataSource = new ITDataSource().getRealDataSource();
+        redFlagJDBCDAO.setDataSource(dataSource);
+
+        // no filters
+        for (int teamIdx = ITData.GOOD; teamIdx <= ITData.BAD; teamIdx++) {
+            GroupData team = itData.teamGroupData.get(teamIdx);
+            Integer redFlagCountJdbc = redFlagJDBCDAO.getRedFlagCount(goodGroupID, startDate.toDate(), endDate.toDate(), 0, null);
+            assertTrue(redFlagCountJdbc > 0);
+            PageParams pageParams = new PageParams();
+            pageParams.setStartRow(0);
+            pageParams.setEndRow(redFlagCountJdbc - 1);
+            List<RedFlag> redFlagListJdbc = redFlagJDBCDAO.getRedFlagPage(goodGroupID, startDate.toDate(), endDate.toDate(), 0, pageParams);
+            assertTrue(!redFlagListJdbc.isEmpty());
+
+
+            for (RedFlag redFlag: redFlagListJdbc){
+                if (redFlag.getEvent() != null && redFlag.getEvent().getNoteID() != null && redFlag.getEvent().getNoteID() != 0) {
+                    RedFlag rf = redFlagJDBCDAO.findByID(redFlag.getEvent().getNoteID());
+                    assertEquals(new RedFlagView(redFlag), new RedFlagView(rf));
+                }
+            }
+
         }
     }
 }
