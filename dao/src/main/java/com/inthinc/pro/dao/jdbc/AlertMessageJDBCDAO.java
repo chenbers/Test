@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -15,7 +16,11 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.TimeZone;
 
+import com.inthinc.pro.aggregation.model.Note;
+import com.inthinc.pro.dao.LocationDAO;
+import com.inthinc.pro.model.Trip;
 import com.inthinc.pro.model.event.FifteenMinuteBreakNotTakenEvent;
+import com.inthinc.pro.model.event.NoteType;
 import org.apache.log4j.Logger;
 
 import com.inthinc.pro.ProDAOException;
@@ -54,6 +59,14 @@ import com.inthinc.pro.model.event.EventAttr;
 import com.inthinc.pro.model.event.IdleEvent;
 import com.inthinc.pro.model.event.SpeedingEvent;
 import com.inthinc.pro.model.event.VersionEvent;
+import org.joda.time.DateTime;
+import org.joda.time.Duration;
+import org.joda.time.Interval;
+import org.joda.time.format.DateTimeFormatterBuilder;
+import org.joda.time.format.PeriodFormatter;
+import org.joda.time.format.PeriodFormatterBuilder;
+
+import javax.swing.text.DateFormatter;
 
 public class AlertMessageJDBCDAO extends GenericJDBCDAO implements AlertMessageDAO {
 
@@ -67,6 +80,7 @@ public class AlertMessageJDBCDAO extends GenericJDBCDAO implements AlertMessageD
     private ZoneDAO zoneDAO;
     private GroupDAO groupDAO;
     private AddressLookup addressLookup;
+    private LocationDAO locationDAO;
     // private FormsDAO formsDAO;
     private String formSubmissionsURL;
 
@@ -564,6 +578,14 @@ public class AlertMessageJDBCDAO extends GenericJDBCDAO implements AlertMessageD
         this.deviceDAO = deviceDAO;
     }
 
+    public LocationDAO getLocationDAO() {
+        return locationDAO;
+    }
+
+    public void setLocationDAO(LocationDAO locationDAO) {
+        this.locationDAO = locationDAO;
+    }
+
     private static final String FETCH_RED_FLAG_MESSAGE_INFO_PREFIX = "SELECT noteID, msgID, status FROM message WHERE noteID IN (";
     private static final String FETCH_RED_FLAG_MESSAGE_INFO_SUFFIX = ") order by noteID";
 
@@ -778,17 +800,183 @@ public class AlertMessageJDBCDAO extends GenericJDBCDAO implements AlertMessageD
             Number speedLimit = MeasurementConversionUtil.convertSpeed(event.getSpeedLimit(), measurementType);
             parameterList.add(String.valueOf(speedLimit));
         }
-        
-        private void addTwoHoursBreakAttributes(FifteenMinuteBreakNotTakenEvent event){
-           //TODO add event params.
-            parameterList.add("0");
-            parameterList.add("0");
-            parameterList.add("0");
-            parameterList.add("");
-            parameterList.add("");
-            parameterList.add("");
-            parameterList.add("");
-;        }
+
+        private void addTwoHoursBreakAttributes(FifteenMinuteBreakNotTakenEvent event) {
+            DateTime dateStart = new DateTime().withTime(0, 0, 0, 0);
+            DateTime dateEnd = dateStart.withTime(23, 59, 59, 999);
+
+            SimpleDateFormat sdf = new SimpleDateFormat("MM.dd.yyyy hh24:mm");
+            PeriodFormatter dateFormat = new PeriodFormatterBuilder()
+                    .appendHours().minimumPrintedDigits(2)
+                    .appendSeparator(":")
+                    .appendMinutes().minimumPrintedDigits(2)
+                    .appendSeparator(":")
+                    .appendSeconds().minimumPrintedDigits(2)
+                    .toFormatter();
+
+            Long drivingTime = 0l;
+            Long stoppedTime = 0l;
+            DateTime lastNoteDateTime = null;
+            Duration duration = null;
+            DateTime firstDrive = null;
+
+            List<Event> events = eventDAO.getEventsForDriver(event.getDriverID(), dateStart.toDate(), dateEnd.toDate(), Arrays.asList(NoteType.values()), 0);
+            for (Event ev : events) {
+
+                // add times
+                if (lastNoteDateTime != null) {
+                    switch (ev.getType()) {
+                        case TRIP_START:
+                        case TRIP_INPROGRESS:
+                        case NOTEEVENT:
+                        case SPEEDING:
+                        case ACCELERATION:
+                        case DECELERATION:
+                        case ON_ROAD:
+                        case OFF_ROAD:
+                        case SPEEDING_EX:
+                        case SPEEDING_EX2:
+                        case SPEEDING_EX3:
+                        case WSZONES_ARRIVAL:
+                        case WSZONES_DEPARTURE:
+                        case WSZONES_ARRIVAL_EX:
+                        case WSZONES_DEPARTURE_EX:
+                        case VERTICAL_EVENT:
+                        case VERTICAL_EVENT_SECONDARY:
+                        case SPEEDING_EX4:
+                        case SPEEDING_LOG4:
+                        case SPEEDING_AV:
+                        case START_SPEEDING:
+                        case COACHING_SPEEDING:
+                        case BACKING:
+                        case FULLEVENT:
+                        case ROLLOVER:
+                        case START_MOTION:
+                        case STOP_MOTION:
+                        case PARKING_BRAKE:
+                        case LOCATION:
+                        case LOCATION_DEBUG:
+                            // DRIVING
+                            DateTime evTime = new DateTime(ev.getTime());
+                            duration = new Duration(lastNoteDateTime, new DateTime(ev.getTime()));
+                            drivingTime += duration.getMillis();
+
+                            // first drive
+                            if (firstDrive == null || evTime.isBefore(firstDrive))
+                                firstDrive = evTime;
+                        case IDLE:
+                        case IGNITION_ON:
+                        case POWER_ON:
+                        case IGNITION_OFF:
+                        case POWER_INTERRUPTED:
+                            // STOPPED
+                            duration = new Duration(lastNoteDateTime, new DateTime(ev.getTime()));
+                            stoppedTime += duration.getMillis();
+                        default:
+                            continue;
+                    }
+                }
+                lastNoteDateTime = new DateTime(ev.getTime());
+            }
+
+            // total drive time
+            duration = new Duration(drivingTime);
+            parameterList.add(dateFormat.print(duration.toPeriod()));
+
+            // total stop time
+            duration = new Duration(stoppedTime);
+            parameterList.add(dateFormat.print(duration.toPeriod()));
+
+            // expected stop time
+            parameterList.add("00:15");
+
+            // first drive time
+            if (firstDrive != null)
+                parameterList.add(sdf.format(firstDrive.toDate()));
+            else
+                parameterList.add("");
+
+
+            // trips
+            List<Trip> trips = locationDAO.getTripsForDriver(event.getDriverID(), dateStart.toDate(), dateEnd.toDate());
+            if (trips != null && !trips.isEmpty()) {
+
+                Trip firstTrip = trips.get(0);
+                DateTime firstTripLastDriveTime = getLastDriveTimeForTrip(firstTrip);
+
+                // last driving time first trip
+                if (firstTripLastDriveTime != null)
+                    parameterList.add(sdf.format(firstTripLastDriveTime.toDate()));
+                else
+                    parameterList.add("");
+
+
+                Trip lastTrip = trips.get(trips.size() - 1);
+                DateTime lastTripLastDriveTime = getLastDriveTimeForTrip(lastTrip);
+
+                // last driving time last trip
+                if (lastTripLastDriveTime != null)
+                    parameterList.add(sdf.format(lastTripLastDriveTime.toDate()));
+                else
+                    parameterList.add("");
+
+            }
+
+            // violation start time
+            if (event.getStartTime() != null)
+                parameterList.add(event.getStartTime());
+            else
+                parameterList.add("");
+        }
+
+        private DateTime getLastDriveTimeForTrip(Trip trip) {
+            DateTime lastNoteDateTime = null;
+            if (trip != null) {
+                for (Event ev : trip.getEvents()) {
+                    switch (ev.getType()) {
+                        case TRIP_START:
+                        case TRIP_INPROGRESS:
+                        case NOTEEVENT:
+                        case SPEEDING:
+                        case ACCELERATION:
+                        case DECELERATION:
+                        case ON_ROAD:
+                        case OFF_ROAD:
+                        case SPEEDING_EX:
+                        case SPEEDING_EX2:
+                        case SPEEDING_EX3:
+                        case WSZONES_ARRIVAL:
+                        case WSZONES_DEPARTURE:
+                        case WSZONES_ARRIVAL_EX:
+                        case WSZONES_DEPARTURE_EX:
+                        case VERTICAL_EVENT:
+                        case VERTICAL_EVENT_SECONDARY:
+                        case SPEEDING_EX4:
+                        case SPEEDING_LOG4:
+                        case SPEEDING_AV:
+                        case START_SPEEDING:
+                        case COACHING_SPEEDING:
+                        case BACKING:
+                        case FULLEVENT:
+                        case ROLLOVER:
+                        case START_MOTION:
+                        case STOP_MOTION:
+                        case PARKING_BRAKE:
+                        case LOCATION:
+                        case LOCATION_DEBUG:
+                            // DRIVING
+                            DateTime evTime = new DateTime(ev.getTime());
+
+                            // last drive
+                            if (lastNoteDateTime == null || evTime.isAfter(lastNoteDateTime))
+                                lastNoteDateTime = evTime;
+                    }
+                }
+
+            }
+            return lastNoteDateTime;
+        }
+
 
         private void addDVIRRepairAttributes(Event event){
             String mechanicID = event.getAttrMap().get(EventAttr.ATTR_DVIR_MECHANIC_ID_STR.toString()) == null ? "" : String.valueOf(event.getAttrMap().get(EventAttr.ATTR_DVIR_MECHANIC_ID_STR.toString()));
