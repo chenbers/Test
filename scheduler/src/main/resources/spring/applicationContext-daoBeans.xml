@@ -31,7 +31,7 @@
     <bean id="eventDAO" class="com.inthinc.pro.dao.hessian.EventHessianDAO" parent="genericDAO"></bean>
     <bean id="reportScheduleDAO" class="com.inthinc.pro.dao.hessian.ReportScheduleHessianDAO" parent="genericDAO"></bean>
     <bean id="userDAO" class="com.inthinc.pro.dao.hessian.UserHessianDAO" parent="genericDAO"></bean>
-    <bean id="deviceDAO" class="com.inthinc.pro.dao.hessian.DeviceHessianDAO" parent="genericDAO"></bean>
+    <bean id="deviceDAO" class="com.inthinc.pro.dao.jdbc.DeviceJDBCDAO"></bean>
     <bean id="deviceSensitivityMapping" class="com.inthinc.pro.model.app.DeviceSensitivityMapping" init-method="init">
 		<property name="deviceDAO" ref="deviceDAO"></property>
     </bean>

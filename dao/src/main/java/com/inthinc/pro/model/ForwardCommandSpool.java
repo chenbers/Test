@@ -25,6 +25,9 @@ public class ForwardCommandSpool extends BaseEntity {
     private Date modified;
     ForwardCommandStatus status;
     IridiumFCStatus iridiumStatus;
+    private Integer personID;
+    private Integer driverID;
+    private Integer vehicleID;
     
 
     public ForwardCommandSpool() 
@@ -191,6 +194,30 @@ public class ForwardCommandSpool extends BaseEntity {
 
     public void setIridiumStatus(IridiumFCStatus iridiumStatus) {
         this.iridiumStatus = iridiumStatus;
+    }
+
+    public Integer getPersonID() {
+        return personID;
+    }
+
+    public void setPersonID(Integer personID) {
+        this.personID = personID;
+    }
+
+    public Integer getDriverID() {
+        return driverID;
+    }
+
+    public void setDriverID(Integer driverID) {
+        this.driverID = driverID;
+    }
+
+    public Integer getVehicleID() {
+        return vehicleID;
+    }
+
+    public void setVehicleID(Integer vehicleID) {
+        this.vehicleID = vehicleID;
     }
 
     @Override
