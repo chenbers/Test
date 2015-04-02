@@ -30,11 +30,11 @@ public class HOSUtil {
     private static final Logger logger = Logger.getLogger(HOSUtil.class);
 
     
-    public static HOSAdjustedList getAdjustedListFromLogList(List<HOSRecord> hosRecordList, Date endDate)
+    public static HOSAdjustedList getAdjustedListFromLogList(List<HOSRecord> hosRecordList, Date endDate, boolean setAltSleeperToSleeper)
     {
-        return new HOSAdjustedList(filterCorrectedList(hosRecordList, endDate), endDate);
+        return new HOSAdjustedList(filterCorrectedList(hosRecordList, endDate, setAltSleeperToSleeper), endDate, setAltSleeperToSleeper);
     }
-    public static List<HOSRec> filterCorrectedList(List<HOSRecord> hosRecordList, Date endDate)
+    public static List<HOSRec> filterCorrectedList(List<HOSRecord> hosRecordList, Date endDate, boolean setAltSleeperToSleeper)
     {
         List<HOSRec> recList = new ArrayList<HOSRec>(); 
         for (HOSRecord hosRec : hosRecordList) {
@@ -52,17 +52,17 @@ public class HOSUtil {
             DebugUtil.dumpLogs(recList);
         
             HOSRules rules = RuleSetFactory.getRulesForRuleSetType(ruleSetType);
-            recList = rules.adjustStatuses(recList, endDate);
+            recList = rules.adjustStatuses(recList, endDate, setAltSleeperToSleeper);
         }
 
         return recList;
     }
 
-    public static HOSAdjustedList getOriginalAdjustedListFromLogList(List<HOSRecord> hosRecordList, Date endDate)
+    public static HOSAdjustedList getOriginalAdjustedListFromLogList(List<HOSRecord> hosRecordList, Date endDate, boolean setAltSleeperToSleeper)
     {
-        return new HOSAdjustedList(filterOriginalList(hosRecordList, endDate), endDate);
+        return new HOSAdjustedList(filterOriginalList(hosRecordList, endDate, setAltSleeperToSleeper), endDate, setAltSleeperToSleeper);
     }
-    public static List<HOSRec> filterOriginalList(List<HOSRecord> hosRecordList, Date endDate)
+    public static List<HOSRec> filterOriginalList(List<HOSRecord> hosRecordList, Date endDate, boolean setAltSleeperToSleeper)
     {
         List<HOSRec> recList = new ArrayList<HOSRec>(); //HOSUtil.getRecListFromLogList(hosRecordList, endDate, driver.getDot() != null && driver.getDot() != RuleSetType.NON_DOT);
         for (HOSRecord hosRec : hosRecordList) {
@@ -86,7 +86,7 @@ public class HOSUtil {
             DebugUtil.dumpLogs(recList);
         
             HOSRules rules = RuleSetFactory.getRulesForRuleSetType(ruleSetType);
-            recList = rules.adjustStatuses(recList, endDate);
+            recList = rules.adjustStatuses(recList, endDate, setAltSleeperToSleeper);
         }
 
         return recList;
