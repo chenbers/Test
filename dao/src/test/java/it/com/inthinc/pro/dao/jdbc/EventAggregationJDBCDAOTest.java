@@ -35,15 +35,15 @@ public class EventAggregationJDBCDAOTest extends BaseJDBCTest {
     // Set the interval day to the day after the generator is run (UTC).
     // TEST_ACCOUNT_ID and EXPECTED_VALID_COUNT will need to be adjusted to reflect the new data set.
     private static Integer TEST_ACCOUNT_ID = 2;
-    private static Integer EXPECTED_VALID_COUNT = 240;
+    private static Integer EXPECTED_VALID_COUNT = 1;
     private static Boolean dontIncludeUnassignedDevice =true;
     private static Boolean activeInterval=true;
     
     
     private static List<Integer> testGroupList;
 
-    private static DateTime SEP_12_2013 = new DateTime(1378944000000l);// 1375401600000l);
-    private static Interval VALID_TEST_INTERVAL = new Interval(SEP_12_2013, SEP_12_2013.plusDays(1)); 
+    private static DateTime SEP_11_2014 = new DateTime().withMonthOfYear(9).withYear(2014).withDayOfMonth(11);// 1375401600000l);
+    private static Interval VALID_TEST_INTERVAL = new Interval(SEP_11_2014, SEP_11_2014.plusDays(2));
     
     
     private static SiloService siloService;
@@ -104,8 +104,8 @@ public class EventAggregationJDBCDAOTest extends BaseJDBCTest {
         assertEquals("expected count", EXPECTED_VALID_COUNT.intValue(), lastEventList.size());
         
         for (LastReportedEvent event : lastEventList) {
-            assertTrue("last date invalid for query interval", new DateTime(event.getTime()).isBefore(SEP_12_2013));
-            
+            assertTrue("last date invalid for query interval", new DateTime(event.getTime()).isAfter(SEP_11_2014));
+            assertTrue("last date invalid for query interval", new DateTime(event.getTime()).isBefore(SEP_11_2014.plusDays(2)));
         }
 
     }
