@@ -234,8 +234,8 @@ public class EventAggregationJDBCDAO extends SimpleJdbcDaoSupport implements Eve
     private static final String SELECT_LAST_NOTE_FOR_VEHICLE = "SELECT v.vehicleID,v.name as 'vehicleName',d.deviceID,d.name as 'deviceName',d.serialNum,max(l.time) AS 'noteTime',l.noteType AS 'noteType',g.groupID,g.name as 'groupName',(DATEDIFF(l.time,CURDATE()) * -1) as 'daysSince' "
                     + "FROM vehicle v "
                     + "INNER JOIN groupVehicleFlat gv ON gv.vehicleID = v.vehicleID AND gv.groupID=v.groupID INNER JOIN groups g ON g.groupID = gv.groupID "
-                    + "INNER JOIN (select max(time) maxTime  from lastLocVehicle _l group by deviceID) dmax "
-                    + "INNER JOIN lastLocVehicle l on l.vehicleID = v.vehicleID and dmax.maxTime = l.time "
+                    + "INNER JOIN (select max(time) maxTime  from noteMaxTimes _l group by deviceID) dmax "
+                    + "INNER JOIN noteMaxTimes l on l.vehicleID = v.vehicleID and dmax.maxTime = l.time "
                     + "INNER JOIN device d ON d.deviceID = l.deviceID "
                     + "where v.vehicleID in (select vehicleID from vehicle where groupID in (:groupList)) ";
     private static final String SELECT_BETWEEN_TWO_DATES = " and l.time between :startDate and :endDate group by vehicleID order by vehicleName";
