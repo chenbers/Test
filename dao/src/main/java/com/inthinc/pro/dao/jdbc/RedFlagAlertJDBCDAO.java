@@ -214,10 +214,10 @@ public class RedFlagAlertJDBCDAO extends SimpleJdbcDaoSupport implements RedFlag
 
             String ss = getStringOrNullFromRS(rs, "speedSettings");
             if (ss == null || ss.trim().isEmpty()) {
-                redFlagAlert.setSpeedSettings(null);
+                redFlagAlert.setSpeedSettings(new Integer[SpeedingConstants.INSTANCE.NUM_SPEEDS]);
             } else if (!ss.contains(MAX_SPEED_MARKER)) {
                 String[] sss = ss.split(" ");
-                Integer[] speedSettings = new Integer[sss.length];
+                Integer[] speedSettings = new Integer[SpeedingConstants.INSTANCE.NUM_SPEEDS];
                 for (int i = 0; i < sss.length; i++) {
                     if (!sss[i].trim().isEmpty()) {
                         speedSettings[i] = Integer.parseInt(sss[i]);
