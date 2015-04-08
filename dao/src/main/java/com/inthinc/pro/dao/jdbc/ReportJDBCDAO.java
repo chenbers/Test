@@ -103,7 +103,8 @@ public class ReportJDBCDAO extends SimpleJdbcDaoSupport implements ReportDAO {
             " (BIT_OR(agg.emuFeatureMask) & 4 != 0) as hasRPM," +
             " d.status" +
             " FROM driverInfo di LEFT JOIN driver d ON (d.driverID = di.driverID) LEFT JOIN agg on agg.driverID=di.driverID WHERE" +
-            " di.groupId in (select g.groupID from groups g where g.groupPath like :groupID) AND agg.aggDate between :intervalStart AND :intervalEnd";
+    		" di.groupId in (select g.groupID from groups g where g.groupPath like :groupID) AND agg.aggDate between :intervalStart AND :intervalEnd";
+
 
     private static final Map<String, String> pagedColumnMapIdleReport = new HashMap<String, String>();
 
@@ -265,6 +266,7 @@ public class ReportJDBCDAO extends SimpleJdbcDaoSupport implements ReportDAO {
         return deviceReportPageItemList;
     }
 
+    private final static String SELECT_IDLING_QUERY_COUNT = "select count(distinct a.driverID) as nr FROM agg a, groups g, driverInfo d where a.driverID=d.driverID AND d.groupID=g.groupID AND a.aggDate between :intervalStart and :intervalEnd and g.groupPath like :groupID";
     @Override
     public Integer getIdlingReportCount(Integer groupID, Interval interval, List<TableFilterField> filters) {
         Map<String, Object> params = new HashMap<String, Object>();
@@ -272,11 +274,9 @@ public class ReportJDBCDAO extends SimpleJdbcDaoSupport implements ReportDAO {
         params.put("intervalStart", dbFormat.format(interval.getStart().toDate()));
         params.put("intervalEnd", dbFormat.format(interval.getEnd().toDate()));
 
-        StringBuilder idlingReportCountSelect = new StringBuilder(addIdlingFilter(filters, SELECT_IDLING_DRIVERS, params, pagedColumnMapIdleReport));
-        String idlingHaving = new String(addIdlingHaving(filters, params, pagedColumnMapIdleReport));
-        String idlingQueryCount = "SELECT count(*) as nr from (" + idlingReportCountSelect.toString() + " GROUP BY di.driverID " + idlingHaving + " ORDER BY driverName asc ) as x;";
+        String idlingReportCountSelect = addIdlingCountFilter(filters, SELECT_IDLING_QUERY_COUNT, params, pagedColumnMapIdleReport);
 
-        List<Integer> cntDevice = getSimpleJdbcTemplate().query(idlingQueryCount, idlingReportRowMapperCount, params);
+        List<Integer> cntDevice = getSimpleJdbcTemplate().query(idlingReportCountSelect.toString(), idlingReportRowMapperCount, params);
         Integer cnt = 0;
         if (cntDevice != null && !cntDevice.isEmpty())
             cnt = cntDevice.get(0);
@@ -315,6 +315,7 @@ public class ReportJDBCDAO extends SimpleJdbcDaoSupport implements ReportDAO {
         return idlingReportItemList;
     }
 
+    private final static String IDLING_VEHICLE_QUERY_COUNT = "select count(distinct a.vehicleID) as nr FROM agg a, groups g, driverInfo d, vehicle v where a.driverID=d.driverID and a.vehicleID=v.vehicleID and v.groupID=g.groupID and a.aggDate between :intervalStart and :intervalEnd and g.groupPath like :groupID";
     @Override
     public Integer getIdlingVehicleReportCount(Integer groupID, Interval interval, List<TableFilterField> filters) {
         Map<String, Object> params = new HashMap<String, Object>();
@@ -322,10 +323,9 @@ public class ReportJDBCDAO extends SimpleJdbcDaoSupport implements ReportDAO {
         params.put("intervalStart", dbFormat.format(interval.getStart().toDate()));
         params.put("intervalEnd", dbFormat.format(interval.getEnd().toDate()));
 
-        StringBuilder idlingVehicleReportCountSelect = new StringBuilder(addIdlingFilter(filters, SELECT_IDLING_VEHICLES, params, pagedColumnMapIdleVehicleReport));
-        String idlingVehicleQueryCount = "SELECT count(*) as nr from (" + idlingVehicleReportCountSelect.toString() + " GROUP BY agg.vehicleID ORDER BY vehicleName asc) as x";
-
-        List<Integer> cntDevice = getSimpleJdbcTemplate().query(idlingVehicleQueryCount, idlingVehicleRowMapperCount, params);
+        String idlingVehicleReportCountSelect = addIdlingCountFilter(filters, IDLING_VEHICLE_QUERY_COUNT, params, pagedColumnMapIdleVehicleReport);
+        
+        List<Integer> cntDevice = getSimpleJdbcTemplate().query(idlingVehicleReportCountSelect, idlingVehicleRowMapperCount, params);
         Integer cnt = 0;
         if (cntDevice != null && !cntDevice.isEmpty())
             cnt = cntDevice.get(0);
@@ -362,50 +362,32 @@ public class ReportJDBCDAO extends SimpleJdbcDaoSupport implements ReportDAO {
 
     @Override
     public Integer getIdlingVehicleReportSupportsIdleStatsCount(Integer groupID, Interval interval, List<TableFilterField> filters) {
-        if (filters == null)
-            filters = new ArrayList<TableFilterField>();
-        List<TableFilterField> reportFilters = new ArrayList<TableFilterField>();
-        for (TableFilterField filter : filters)
-            reportFilters.add(filter);
-        reportFilters.add(new TableFilterField("hasRPM", Integer.valueOf(1)));
+    	return 0;
+    	//BMiller commented out 2015-03-02  Extra query with results that don't appear to be used. 
+/*    	if (filters == null) filters = new ArrayList<TableFilterField>();
+        
+        ArrayList<TableFilterField> tmpFilters = new ArrayList<TableFilterField>();
+        
+        tmpFilters.add(new TableFilterField("hasRPM", Integer.valueOf(1)));
+        tmpFilters.addAll(filters);
 
-        Map<String, Object> params = new HashMap<String, Object>();
-        params.put("groupID", "%/" + groupID + "/%");
-        params.put("intervalStart", dbFormat.format(interval.getStart().toDate()));
-        params.put("intervalEnd", dbFormat.format(interval.getEnd().toDate()));
-
-
-        StringBuilder idlingVehicleReportCountSelect = new StringBuilder(addIdlingFilter(reportFilters, SELECT_IDLING_VEHICLES, params, pagedColumnMapIdleVehicleReport));
-        String idlingVehicleQueryCount = "SELECT count(*) as nr from (" + idlingVehicleReportCountSelect.toString() + " GROUP BY vi.vehicleID) as x";
-
-        List<Integer> cntDevice = getSimpleJdbcTemplate().query(idlingVehicleQueryCount, idlingVehicleRowMapperCount, params);
-        Integer cnt = 0;
-        if (cntDevice != null && !cntDevice.isEmpty())
-            cnt = cntDevice.get(0);
-        return cnt;
+        return getIdlingVehicleReportCount(groupID, interval, tmpFilters);
+*/
     }
 
     @Override
     public Integer getIdlingReportSupportsIdleStatsCount(Integer groupID, Interval interval, List<TableFilterField> filters) {
-        if (filters == null) filters = new ArrayList<TableFilterField>();
-        List<TableFilterField> reportFilters = new ArrayList<TableFilterField>();
-        for (TableFilterField filter : filters)
-            reportFilters.add(filter);
-        reportFilters.add(new TableFilterField("hasRPM", Integer.valueOf(1)));
+    	return 0;
+    	//BMiller commented out 2015-03-02  Extra query with results that don't appear to be used. 
+/*    	if (filters == null) filters = new ArrayList<TableFilterField>();
+        
+        ArrayList<TableFilterField> tmpFilters = new ArrayList<TableFilterField>();
+        
+        tmpFilters.add(new TableFilterField("hasRPM", Integer.valueOf(1)));
+        tmpFilters.addAll(filters);
 
-        Map<String, Object> params = new HashMap<String, Object>();
-        params.put("groupID", "%/" + groupID + "/%");
-        params.put("intervalStart", dbFormat.format(interval.getStart().toDate()));
-        params.put("intervalEnd", dbFormat.format(interval.getEnd().toDate()));
-
-        StringBuilder idlingReportSupportsCountSelect = new StringBuilder(addIdlingFilter(reportFilters, SELECT_IDLING_DRIVERS, params, pagedColumnMapIdleReport));
-        String idlingSupportsQueryCount = "SELECT count(*) as nr from (" + idlingReportSupportsCountSelect.toString() + ") as x;";
-
-        List<Integer> cntDevice = getSimpleJdbcTemplate().query(idlingSupportsQueryCount, idlingReportRowMapperCount, params);
-        Integer cnt = 0;
-        if (cntDevice != null && !cntDevice.isEmpty())
-            cnt = cntDevice.get(0);
-        return cnt;
+        return getIdlingReportCount(groupID, interval, tmpFilters);
+*/       
     }
 
     @Override
@@ -472,7 +454,7 @@ public class ReportJDBCDAO extends SimpleJdbcDaoSupport implements ReportDAO {
             vehicleReportItem.setSpeedScore(rs.getInt("vp.speedScore") == 0 ? null : rs.getInt("vp.speedScore"));
             vehicleReportItem.setOverallScore(rs.getInt("vp.overallScore") == 0 ? null : rs.getInt("vp.overallScore"));
             vehicleReportItem.setMilesDriven(rs.getInt("vp.milesDriven"));
-            vehicleReportItem.setOdometer(rs.getInt("vp.odometer"));
+            vehicleReportItem.setOdometer(getValidIntOrNullFromRS(rs, "vp.odometer"));
             vehicleReportItem.setVehicleID(rs.getInt("vp.vehicleID"));
             vehicleReportItem.setVehicleName(rs.getString("vp.vehicleName"));
             vehicleReportItem.setVehicleYMM(rs.getString("vp.vehicleYMM"));
@@ -568,6 +550,38 @@ public class ReportJDBCDAO extends SimpleJdbcDaoSupport implements ReportDAO {
                 }
 
 
+            }
+            queryStr = queryStr + countFilter.toString();
+        }
+        return queryStr;
+    }
+
+    //IDLING FILTERS
+    private String addIdlingCountFilter(final List<TableFilterField> filters, String queryStr, Map<String, Object> params, Map<String, String> pagedIdleColumnMap) {
+        if (filters != null && !filters.isEmpty()) {
+            StringBuilder countFilter = new StringBuilder();
+            for (TableFilterField filter : filters) {
+                filter = treatCustomFilters(filter);
+                String paramName = "filter_" + filter.getField();
+                Range range = new Range();
+                if (filter.getField().equals("hasRPM")) {
+                    if (filter.getFilter().toString().equals("1")) {
+                        countFilter.append(" AND (a.emuFeatureMask & 4) != 0");
+                    } else {
+                        countFilter.append(" AND (a.emuFeatureMask & 4) = 0");
+                    }
+                } else if (filter.getField() != null && pagedIdleColumnMap.containsKey(filter.getField()) && filter.getFilter() != null) {
+                    if (filter.getFilter().toString().isEmpty())
+                        continue;
+                    if ("groupName".equals(filter.getField()))
+                        countFilter.append(" AND g.name LIKE :" + paramName);
+                    if ("driverName".equals(filter.getField()))
+                        countFilter.append(" AND d.driverName LIKE :" + paramName);
+                    if ("vehicleName".equals(filter.getField()))
+                        countFilter.append(" AND v.name LIKE :" + paramName);
+                                     
+                    params.put(paramName, "%" + filter.getFilter().toString() + "%");
+                }
             }
             queryStr = queryStr + countFilter.toString();
         }
@@ -685,6 +699,15 @@ public class ReportJDBCDAO extends SimpleJdbcDaoSupport implements ReportDAO {
     private Integer getIntOrNullFromRS(ResultSet rs, String columnName) throws SQLException {
         return rs.getObject(columnName) == null ? null : (int) rs.getLong(columnName);
     }
+    
+    private Integer getValidIntOrNullFromRS(ResultSet rs, String columnName) {
+        try {
+            return rs.getObject(columnName) == null ? null : rs.getInt(columnName);
+        } catch (SQLException e) {
+            return null;
+        }
+    }
+    
     public DriverPerformanceMapper getDriverPerformanceMapper() {
         return driverPerformanceMapper;
     }

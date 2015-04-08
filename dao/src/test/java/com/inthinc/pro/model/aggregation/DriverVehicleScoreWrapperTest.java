@@ -275,5 +275,19 @@ public class DriverVehicleScoreWrapperTest {
         assertTrue(normalwrapper.compareTo(normalBefore) > 0);
         assertTrue(normalwrapper.compareTo(normalEqual) == 0);
     }
+
+    @Test
+    public void testDoubleIntValues() {
+        DriverVehicleScoreWrapper wrapper = makeDriverVehicleScoreWrapper(4);
+        wrapper.getScore().setIdleHi(new Integer(10));
+        wrapper.getScore().setIdleLo(new Integer(11));
+        wrapper.getScore().setDriveTime(new Integer(12));
+        wrapper.getScore().setBackingTime(new Integer(13));
+
+        assertTrue(wrapper.getScore().getIdleHi() instanceof java.lang.Long);
+        assertTrue(wrapper.getScore().getIdleLo() instanceof java.lang.Long);
+        assertTrue(wrapper.getScore().getDriveTime() instanceof java.lang.Long);
+        assertTrue(wrapper.getScore().getBackingTime() instanceof java.lang.Long);
+    }
     
 }

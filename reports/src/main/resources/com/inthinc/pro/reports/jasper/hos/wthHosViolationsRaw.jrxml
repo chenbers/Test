@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="hosViolations" pageWidth="935" pageHeight="595" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="935" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" resourceBundle="i18n/hosViolations" uuid="c709c882-5555-462a-9dbc-493e00542ca2">
-	<property name="ireport.zoom" value="6.727499949325715"/>
-	<property name="ireport.x" value="3543"/>
+	<property name="ireport.zoom" value="2.593742460100043"/>
+	<property name="ireport.x" value="157"/>
 	<property name="ireport.y" value="0"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
@@ -137,7 +137,7 @@ $F{onDutyHours70}.intValue()+$F{thirtyMinuteBreak}.intValue()]]></textFieldExpre
 				<textElement textAlignment="Center">
 					<font isBold="false"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$R{column.6.metric}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$R{column.6.nostar.metric}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0" isBlankWhenNull="false">
 				<reportElement key="textField" x="730" y="0" width="100" height="19" isPrintWhenDetailOverflows="true" uuid="b7dce702-7e36-4fe3-926d-8f2f12116a16">
@@ -146,14 +146,14 @@ $F{onDutyHours70}.intValue()+$F{thirtyMinuteBreak}.intValue()]]></textFieldExpre
 				<textElement textAlignment="Center">
 					<font isBold="false"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$R{column.6.english}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$R{column.6.nostar.english}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="false">
 				<reportElement key="textField" x="474" y="0" width="60" height="19" isPrintWhenDetailOverflows="true" uuid="bb046a49-fa08-4bb0-8889-f8b9a908b7ba"/>
 				<textElement textAlignment="Center">
 					<font isBold="false"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$R{column.2}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$R{column.2.nostar}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="false">
 				<reportElement key="textField" x="354" y="0" width="60" height="19" isPrintWhenDetailOverflows="true" uuid="7ba8bab7-c238-4d28-b596-b778309ba539"/>
@@ -185,7 +185,7 @@ $F{onDutyHours70}.intValue()+$F{thirtyMinuteBreak}.intValue()]]></textFieldExpre
 				<textElement textAlignment="Center">
 					<font isBold="false"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$R{column.7}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$R{column.7.nostar}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="false">
 				<reportElement key="textField" x="174" y="0" width="60" height="19" isPrintWhenDetailOverflows="true" uuid="a3c0b5e7-7386-42bd-bbbc-77f3b0e41b55"/>

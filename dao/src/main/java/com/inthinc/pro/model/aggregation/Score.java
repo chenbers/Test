@@ -308,6 +308,9 @@ public class Score {
     }
 
     public Number getDriveTime() {
+        if (driveTime != null && driveTime instanceof java.lang.Integer){
+            driveTime = (long) driveTime.intValue();
+        }
         return driveTime;
     }
 
@@ -348,6 +351,9 @@ public class Score {
     }
 
     public Number getIdleHi() {
+        if (idleHi != null && idleHi instanceof java.lang.Integer){
+            idleHi = (long) idleHi.intValue();
+        }
         return idleHi;
     }
 
@@ -364,6 +370,9 @@ public class Score {
     }
 
     public Number getIdleLo() {
+        if (idleLo != null && idleLo instanceof java.lang.Integer){
+            idleLo = (long) idleLo.intValue();
+        }
         return idleLo;
     }
 
@@ -880,6 +889,9 @@ public class Score {
     }
 
     public Number getBackingTime() {
+        if (backingTime != null && backingTime instanceof java.lang.Integer){
+            backingTime = (long) backingTime.intValue();
+        }
         return backingTime;
     }
 
