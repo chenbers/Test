@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="hosViolations" pageWidth="842" pageHeight="595" orientation="Landscape" whenNoDataType="NoDataSection" columnWidth="782" leftMargin="30" rightMargin="30" topMargin="20" bottomMargin="20" resourceBundle="i18n/hosViolations" uuid="de056cfc-c88a-4a98-b1fc-790894c6f49d">
 	<property name="ireport.zoom" value="1.610510000000033"/>
-	<property name="ireport.x" value="217"/>
+	<property name="ireport.x" value="158"/>
 	<property name="ireport.y" value="0"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
@@ -22,6 +22,7 @@
 	<parameter name="REPORT_DATE_AS_STRING" class="java.lang.String" isForPrompting="false"/>
 	<parameter name="REPORT_LOGO_IMG" class="java.awt.Image" isForPrompting="false"/>
 	<parameter name="USE_METRIC" class="java.lang.Boolean" isForPrompting="false"/>
+	<parameter name="REPORT_NUM_DAYS" class="java.lang.Integer" isForPrompting="false"/>
 	<queryString language="SQL">
 		<![CDATA[exec report_jasper_hosViolations  $P{REPORT_START_DATE}, $P{REPORT_END_DATE}]]>
 	</queryString>
@@ -165,7 +166,7 @@ $F{onDutyHours70}.intValue()+$F{thirtyMinuteBreak}.intValue()]]></textFieldExpre
 					<textFieldExpression><![CDATA[($F{driverCnt}!=null && $F{driverCnt}.intValue() != 0) ? new Double((double)(
 $F{hourDriving11}.intValue()+$F{onDutyHours14}.intValue()+
 $F{onDutyHours70}.intValue()+$F{thirtyMinuteBreak}.intValue()
-) / (double)$F{driverCnt}.intValue()) : new Double(0.0)]]></textFieldExpression>
+) / (double)($F{driverCnt}.intValue()*$P{REPORT_NUM_DAYS})) : new Double(0.0)]]></textFieldExpression>
 				</textField>
 				<textField isBlankWhenNull="false">
 					<reportElement key="textField" style="Details1" x="470" y="4" width="60" height="19" isPrintWhenDetailOverflows="true" uuid="974e27b0-1f09-441c-a8b8-009a38fbff94"/>
@@ -684,7 +685,7 @@ $V{SUM_70}.intValue()+$V{SUM_30}.intValue()]]></textFieldExpression>
 				<textFieldExpression><![CDATA[($V{SUM_driverCnt_1}!=null && $V{SUM_driverCnt_1}.intValue() != 0) ? new Double((double)(
 $V{SUM_11}.intValue()+$V{SUM_14}.intValue()+
 $V{SUM_70}.intValue()+$V{SUM_30}.intValue()
-) / (double)$V{SUM_driverCnt_1}.intValue()) : new Double(0.0)]]></textFieldExpression>
+) / ((double)$V{SUM_driverCnt_1}.intValue() * $P{REPORT_NUM_DAYS})) : new Double(0.0)]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="false">
 				<reportElement key="textField-78" style="ColumnHeader" mode="Transparent" x="2" y="24" width="118" height="19" backcolor="#CCCCCC" uuid="e4e8dff5-1338-47f2-857b-13c177c63b1b"/>
