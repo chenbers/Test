@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -16,6 +17,11 @@ import java.util.Map;
 import java.util.TimeZone;
 
 import org.apache.log4j.Logger;
+import org.joda.time.DateTime;
+import org.joda.time.Hours;
+import org.joda.time.Interval;
+import org.joda.time.Minutes;
+import org.joda.time.Period;
 
 import com.inthinc.pro.ProDAOException;
 import com.inthinc.pro.comm.parser.attrib.Attrib;
@@ -51,6 +57,7 @@ import com.inthinc.pro.model.Zone;
 import com.inthinc.pro.model.event.Event;
 import com.inthinc.pro.model.event.EventAttr;
 import com.inthinc.pro.model.event.IdleEvent;
+import com.inthinc.pro.model.event.NoteType;
 import com.inthinc.pro.model.event.SpeedingEvent;
 import com.inthinc.pro.model.event.VersionEvent;
 
@@ -737,7 +744,7 @@ public class AlertMessageJDBCDAO extends GenericJDBCDAO implements AlertMessageD
                     addDVIRRepairAttributes(event);
                     break;
                 case ALERT_TYPE_DAILY_MAX_DRIVING_LIMIT:
-                    //TODO when event class is avaiblable, cast and add data here
+                    addDayliMaxDrivingLimitData(event);
                     break;
                 default:
                     addAddress(event);
@@ -791,6 +798,72 @@ public class AlertMessageJDBCDAO extends GenericJDBCDAO implements AlertMessageD
             parameterList.add(formDefID);
             parameterList.add(submissionTime)
 ;        }
+        
+        private void addDayliMaxDrivingLimitData(Event event) {            
+            DateTime shiftStart = new DateTime().withTime(0, 0, 0, 0);
+            DateTime shiftEnd = shiftStart.withTime(23, 59, 59, 999);
+            
+            Device device = deviceDAO.findByID(event.getDeviceID());
+            
+            List<Event> foundEvents = eventDAO.getEventsForDriver(event.getDriverID(), shiftStart.toDate(), shiftEnd.toDate(),
+                            Arrays.asList(NoteType.START_MOTION, NoteType.STOP_MOTION, NoteType.HOS_NO_HOURS), 0);
+            
+            Date lastDrivingTimeFirstTrip = null;
+            Date lastDrivingTimeLastTrip = null;
+            Date violationStartTime = null;
+            
+            List<Date> starts = new ArrayList<Date>();
+            List<Date> stops = new ArrayList<Date>();
+            
+            for (Event foundEvent : foundEvents) {
+                if (event.getDriverID() == foundEvent.getDriverID()) {
+                    if (NoteType.STOP_MOTION.equals(foundEvent.getType())) {
+                        if (lastDrivingTimeFirstTrip == null || foundEvent.getTime().before(lastDrivingTimeFirstTrip)) {
+                            lastDrivingTimeFirstTrip = foundEvent.getTime();
+                        }
+                        if (lastDrivingTimeLastTrip == null || foundEvent.getTime().after(lastDrivingTimeLastTrip)) {
+                            lastDrivingTimeLastTrip = foundEvent.getTime();
+                        }
+                        stops.add(foundEvent.getTime());
+                    } else if (NoteType.START_MOTION.equals(foundEvent.getType())) {
+                        starts.add(foundEvent.getTime());                        
+                    } else if (NoteType.HOS_NO_HOURS.equals(foundEvent.getType())) {
+                        if (violationStartTime == null || foundEvent.getTime().before(violationStartTime)) {
+                            violationStartTime = foundEvent.getTime();
+                        }
+                    }
+                }
+            }
+            
+            Long totalDrivingTime = (long) 0;
+            Integer totalStopTime = 0;
+            Period period = null;
+            
+            if (device.isWaySmart()) {
+             
+            // totalDrivingTime calculation for TiwiPro devices
+            } else {
+                if (starts.size() != stops.size()) {
+                    totalDrivingTime = null;
+                    totalStopTime = null;
+                } else {
+                    for (int i = 0; i < starts.size(); i++) {
+                        DateTime start = new DateTime(starts.get(i));
+                        DateTime stop = new DateTime(stops.get(i));
+                        totalDrivingTime += stop.getMillis() - start.getMillis();
+                    }
+                    period = new Period(totalDrivingTime);
+                }
+            }
+            
+            parameterList.add(period != null ? period.toString() : null); //totalDrivingTime
+            parameterList.add(totalStopTime.toString());
+            parameterList.add(null); //expectedStopDuration
+            parameterList.add(shiftStart.toString()); //firstDrivingTime, should always be the beginning of the shift
+            parameterList.add(lastDrivingTimeFirstTrip.toString());
+            parameterList.add(lastDrivingTimeLastTrip.toString());
+            parameterList.add(violationStartTime.toString());          
+        }
 
         public List<String> getParameterList() {
             return parameterList;
@@ -1056,6 +1129,9 @@ public class AlertMessageJDBCDAO extends GenericJDBCDAO implements AlertMessageD
                         parameterList.add(totalIdle.toString());
                     }
                     break;
+                case ALERT_TYPE_DAILY_MAX_DRIVING_LIMIT:
+                    addDayliMaxDrivingLimitData(event);
+                    break;
                 default:
 }
         }
@@ -1082,6 +1158,24 @@ public class AlertMessageJDBCDAO extends GenericJDBCDAO implements AlertMessageD
 
             Number speedLimit = MeasurementConversionUtil.convertSpeed(event.getSpeedLimit(), personMeasurementType);
             parameterList.add(String.valueOf(speedLimit));
+        }
+        
+        private void addDayliMaxDrivingLimitData(Event event) {
+            String totalDrivingTime = "12";
+            String totalStopTime = "1";
+            String expectedStopDuration = null;
+            String firstDrivingTime = "11:11:11";
+            String lastDrivingTimeFirstTrip = "12:12:12";
+            String lastDrivingTimeLastTrip = "12:12:55";
+            String violationStartTime = "10:10:10";
+            
+            parameterList.add(totalDrivingTime);
+            parameterList.add(totalStopTime);
+            parameterList.add(expectedStopDuration);
+            parameterList.add(firstDrivingTime);
+            parameterList.add(lastDrivingTimeFirstTrip);
+            parameterList.add(lastDrivingTimeLastTrip);
+            parameterList.add(violationStartTime);          
         }
         
         public List<String> getParameterList() {

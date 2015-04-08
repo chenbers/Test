@@ -1396,5 +1396,55 @@ public class AlertMessageJDBCDAOTest {
         assertEquals(result.get(17), "0");
         assertEquals(result.get(18), "3400");
     }
+    
+    @Test
+    public final void testGetEzCrmParameterListALERT_TYPE_DAILY_MAX_DRIVING_LIMIT() {
+        
+        // Methods that may be called in the execution of the method we're testing
+        expectExCrm(AlertMessageType.ALERT_TYPE_DAILY_MAX_DRIVING_LIMIT);
+
+        // Instantiate our parent class (necessary before instantiating nested class)
+        AlertMessageJDBCDAO alertMessageJDBCDAO = new AlertMessageJDBCDAO();
+        
+        // Set the mocked version objects
+        alertMessageJDBCDAO.setGroupDAO(mockGroupDAO);
+        alertMessageJDBCDAO.setVehicleDAO(mockVehicleDAO);
+        alertMessageJDBCDAO.setAddressLookup(mockAddressLookup);
+        alertMessageJDBCDAO.setZoneDAO(mockZoneDAO);
+        
+        // Instantiate the class we're testing
+        AlertMessageJDBCDAO.EzCrmParameterList parameterList = alertMessageJDBCDAO.new EzCrmParameterList();
+        
+        parameterList.setLocal(Locale.getDefault());
+        parameterList.setMeasurementType(MeasurementType.ENGLISH);
+        parameterList.setEvent(mockEventIdle);
+        parameterList.setAlertMessage(mockAlertMessage);
+        parameterList.setPerson(mockPerson);
+        parameterList.setDriver(mockDriver);
+        
+        // Run the method  //Deencapsulation.invoke(parameterList, "getDriverOrgStructure", mockDriver);
+        List<String> result = parameterList.getParameterListTest();
+        
+        // Test the result
+        int i = 0;
+        for (String s : result) {
+            System.out.println("["+i+"] "+s);
+            ++i;
+        }
+        assertEquals(result.size(), 25);
+        assertEquals(result.get(2), "0");
+        assertEquals(result.get(7), "my Big Truck");
+        assertEquals(result.get(10), "Ford");
+        assertEquals(result.get(14), "Salt Lake City, Utah");
+        assertEquals(result.get(17), "0");
+        
+        assertEquals("12", result.get(18));
+        assertEquals("1", result.get(19));
+        assertEquals(null, result.get(20));
+        assertEquals("11:11:11", result.get(21));
+        assertEquals("12:12:12", result.get(22));
+        assertEquals("12:12:55", result.get(23));
+        assertEquals("10:10:10", result.get(24));
+    }
 
 }
