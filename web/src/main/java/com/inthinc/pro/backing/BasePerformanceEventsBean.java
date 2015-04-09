@@ -34,8 +34,10 @@ public abstract class BasePerformanceEventsBean extends BasePerformanceBean {
 	protected Map<String, List<EventReportItem>> eventsListsMap;
 	
 	protected String scoreTitle;
-  
-	protected static DateFormat dateFormatter;
+    private String            reason;
+    private Long            forgivenByUserID;
+
+    protected static DateFormat dateFormatter;
 	
 	protected abstract void initTrends();
 	protected abstract void initScores();
@@ -177,11 +179,12 @@ public abstract class BasePerformanceEventsBean extends BasePerformanceBean {
    	}
     public synchronized void excludeEventAction()
     {
-        Integer result = eventDAO.forgive(getDriver().getDriverID(), clearItem.getEvent().getNoteID(), 0l, "");
+        Integer result = eventDAO.forgive(getDriver().getDriverID(), clearItem.getEvent().getNoteID(), getForgivenByUserID(), getReason());
         if(result.intValue() >= 1)
             {
         		initEvents();
 	            tableStatsBean.updateSize(getEventsListsMap().get(selectedBreakdown).size());
+                resetReason();
             }
     }
    
@@ -244,5 +247,27 @@ public abstract class BasePerformanceEventsBean extends BasePerformanceBean {
     }
     public void setScoreTitle(String scoreTitle) {
         this.scoreTitle = scoreTitle;
-    }    
+    }
+
+
+    public Long getForgivenByUserID() {
+        return forgivenByUserID;
+    }
+
+    public void setForgivenByUserID(Long forgivenByUserID) {
+        this.forgivenByUserID = forgivenByUserID;
+    }
+
+    public void resetReason(){
+        this.reason = "";
+    }
+
+    public String getReason() {
+        return reason;
+    }
+
+    public void setReason(String reason) {
+        this.reason = reason;
+        this.forgivenByUserID = getUser().getUserID().longValue();
+    }
 }

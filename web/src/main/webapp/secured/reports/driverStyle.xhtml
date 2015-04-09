@@ -565,7 +565,7 @@ var firstLoad = new Boolean(true);
 				
 
  <!-- START FORGIVE MODAL -->
-<rich:modalPanel id="clearEventPanel" headerClass="popupHeader" controlsClass="popupControls" width="500" height="200" resizeable="false">
+<rich:modalPanel id="clearEventPanel" headerClass="popupHeader" controlsClass="popupControls" width="500" height="240" resizeable="false">
 <t:saveState value="#{driverStyleBean.clearItem}" />
       <f:facet name="header">
         <h:outputText value="#{messages.button_forgive}" />
@@ -584,16 +584,24 @@ var firstLoad = new Boolean(true);
       		<h:outputText value="#{driverStyleBean.clearItem.event.time}">
       			<f:convertDateTime pattern="#{messages.dateTimeFormat}" timeZone="#{driverStyleBean.driver.person.timeZone}" />
 			</h:outputText>
+
+            <br />
+            <br />
+            <rich:message for="excludeReason" id="invalidExcludeReason" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg"/>
+            <h:outputLabel for = "excludeReason" value="#{messages.excludeReason}" style="width:20%"/>
+            <h:inputText value="#{driverStyleBean.reason}" id="excludeReason" maxlength="50" size="35" required="true" requiredMessage="#{messages.required}"/>
+            <br />
+            <h:outputText value="#{messages.excludeInfo}"/>
       	</h:panelGroup>
 	
         <div class="popupactions">
-          <button id="driverStyleNo" type="submit" class="left" onclick="Richfaces.hideModalPanel('clearEventPanel'); return false;"><span class="no"><h:outputText value="#{messages.button_no}" /></span></button>
-          <a4j:commandLink id="driverStyleConfirm" action="#{driverStyleBean.excludeEventAction}"         				
-          				   oncomplete="Richfaces.hideModalPanel('clearEventPanel');"
-                			onkeypress="if (event &amp;&amp; event.keyCode == 13) return false; return true;" styleClass="left"
+          <button id="driverStyleNo" type="submit" class="left"  onclick="Richfaces.hideModalPanel('clearEventPanel'); return false;"><span class="no" style="position:inherit;"><h:outputText value="#{messages.button_no}" /></span></button>
+          <a4j:commandLink id="driverStyleConfirm" action="#{driverStyleBean.excludeEventAction}"
+                           oncomplete="if (document.getElementById('driverStyleClearItemForm:excludeReason').getValue()!=='') {Richfaces.hideModalPanel('clearEventPanel');}"
+                           onkeypress="if (event &amp;&amp; event.keyCode == 13) return false; return true;" styleClass="left"
                 			eventsQueue="driverStyleEventTable" reRender="notificationsTable,tableStats,scrollerBottom">
 	          				<button type="submit" class="left">
-	          					<span class="yes">
+	          					<span class="yes" style="position:inherit;">
 	          						<h:outputText value="#{messages.button_yes}" />
 	          					</span>
 	          				</button>
