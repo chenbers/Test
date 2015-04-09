@@ -151,17 +151,21 @@ public class PayrollData implements Comparable<PayrollData>
         if (cmp == 0) {
             cmp = driverName.compareTo(o.getDriverName());
             if (cmp == 0) {
-            	if((this.getEmployeeID()!=null)&&(o.getEmployeeID()!=null)) {
-            	    cmp=this.getEmployeeID().compareTo(o.getEmployeeID());
-                    if (cmp == 0){
-                        cmp = this.getDay().compareTo(o.getDay());
-                    }
-            	}
+                if ((this.getEmployeeID() != null) && (o.getEmployeeID() != null)) {
+                    cmp = this.getEmployeeID().compareTo(o.getEmployeeID());
+                } else if ((this.getEmployeeID() != null) && (o.getEmployeeID() == null)) {
+                    cmp = 1;
+                } else if ((this.getEmployeeID() == null) && (o.getEmployeeID() != null)) {
+                    cmp = -1;
+                }
+                if (cmp == 0) {
+                    cmp = this.getDay().compareTo(o.getDay());
+                }
             }
         }
-        
         return cmp;
     }
+    
     public DateTime getDateTime() {
         return dateTime;
     }
