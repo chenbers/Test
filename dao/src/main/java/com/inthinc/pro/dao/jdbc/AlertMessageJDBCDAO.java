@@ -1050,7 +1050,7 @@ public class AlertMessageJDBCDAO extends GenericJDBCDAO implements AlertMessageD
                     break;
                 case ALERT_TYPE_IDLING: // add {Total idling Time}
                     {
-                        Integer totalIdle = ((IdleEvent) event).getTotalIdling();
+                        Integer totalIdle = ((IdleEvent) event).getTotalIdling() / 60;
                         parameterList.add(totalIdle.toString());
                     }
                     break;
