@@ -145,7 +145,7 @@ public class DotHoursRemainingReportCriteria extends GroupListReportCriteria imp
            }
            
            String dayStr = dayFormatter.print(day);
-           DateTime utcDay = dayFormatter.withZone(DateTimeZone.UTC).parseDateTime(dayStr);
+           DateTime utcDay = dayFormatter.parseDateTime(dayStr);
            dataList.add(new DotHoursRemaining(groupName, 
                    driver.getDriverID(), driver.getPerson().getFullNameLastFirst(),  driver.getDot(),
                    minutesRemaining, cumulativeMinutesRemaining,
