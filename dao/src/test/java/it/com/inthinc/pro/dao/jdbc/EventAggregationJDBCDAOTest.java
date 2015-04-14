@@ -24,8 +24,6 @@ import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.GroupType;
 import com.inthinc.pro.model.event.LastReportedEvent;
 
-// set to Ignore for running on QA.
-//@Ignore
 public class EventAggregationJDBCDAOTest extends BaseJDBCTest {
     
     // In case the test date is destroyed, regen as follows:
