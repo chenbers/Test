@@ -441,12 +441,12 @@ public class AlertMessagesParameterListTest {
         assertEquals("driver group should be 3 element and should be 1", "1", alertParameterList.get(2));
         assertEquals("vehicle name should be 4 element and should be vehicle1", "vehicle1", alertParameterList.get(3));
         
-        assertEquals("totalDrivingTime should be 4 element and should be 12", "12", alertParameterList.get(4));
-        assertEquals("totalStopTime should be 5 element and should be 1", "1", alertParameterList.get(5));
+        assertEquals("totalDrivingTime should be 4 element and should be 10", "10", alertParameterList.get(4));
+        assertNull("totalStopTime should be 5 element and should be null", alertParameterList.get(5));
         assertNull("expectedStopDuration should be 6 element and should be null", alertParameterList.get(6));
-        assertEquals("firstDrivingTime should be 7 element and should be 11:11:11", "11:11:11", alertParameterList.get(7));
-        assertEquals("lastDrivingTimeFirstTrip should be 8 element and should be 12:12:12", "12:12:12", alertParameterList.get(8));
-        assertEquals("lastDrivingTimeLastTrip should be 9 element and should be 12:12:55", "12:12:55", alertParameterList.get(9));
-        assertEquals("violationStartTime should be 10 element and should be 10:10:10", "10:10:10", alertParameterList.get(10));
+        assertNull("firstDrivingTime should be 7 element and should be null", alertParameterList.get(7));
+        assertNull("lastDrivingTimeFirstTrip should be 8 element and should be null", alertParameterList.get(8));
+        assertEquals("lastDrivingTimeLastTrip should be 9 element and should be 12:12:55", event.getTime().toString(), alertParameterList.get(9));
+        assertEquals("violationStartTime should be 10 element and should be 10:10:10", event.getTime().toString(), alertParameterList.get(10));
     }
 }

@@ -1438,13 +1438,13 @@ public class AlertMessageJDBCDAOTest {
         assertEquals(result.get(14), "Salt Lake City, Utah");
         assertEquals(result.get(17), "0");
         
-        assertEquals("12", result.get(18));
-        assertEquals("1", result.get(19));
+        assertEquals("10", result.get(18));
+        assertEquals(null, result.get(19));
         assertEquals(null, result.get(20));
-        assertEquals("11:11:11", result.get(21));
-        assertEquals("12:12:12", result.get(22));
-        assertEquals("12:12:55", result.get(23));
-        assertEquals("10:10:10", result.get(24));
+        assertEquals(null, result.get(21));
+        assertEquals(null, result.get(22));
+        assertEquals(mockEventIdle.getTime().toString(), result.get(23));
+        assertEquals(mockEventIdle.getTime().toString(), result.get(24));
     }
 
 }

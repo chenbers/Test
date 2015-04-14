@@ -799,68 +799,21 @@ public class AlertMessageJDBCDAO extends GenericJDBCDAO implements AlertMessageD
             parameterList.add(submissionTime)
 ;        }
         
-        private void addDayliMaxDrivingLimitData(Event event) {            
-            DateTime shiftStart = new DateTime().withTime(0, 0, 0, 0);
-            DateTime shiftEnd = shiftStart.withTime(23, 59, 59, 999);
+        private void addDayliMaxDrivingLimitData(Event event) {
+            String totalStopTime = null;
+            String expectedStopDuration = null;
+            String firstDrivingTime = null;
+            String lastDrivingTimeFirstTrip = null;
             
-            Device device = deviceDAO.findByID(event.getDeviceID());
+            String totalDrivingTime = "10";            
+            Date violationStartTime = event.getTime();
+            Date lastDrivingTimeLastTrip = violationStartTime;
             
-            List<Event> foundEvents = eventDAO.getEventsForDriver(event.getDriverID(), shiftStart.toDate(), shiftEnd.toDate(),
-                            Arrays.asList(NoteType.START_MOTION, NoteType.STOP_MOTION, NoteType.HOS_NO_HOURS), 0);
-            
-            Date lastDrivingTimeFirstTrip = null;
-            Date lastDrivingTimeLastTrip = null;
-            Date violationStartTime = null;
-            
-            List<Date> starts = new ArrayList<Date>();
-            List<Date> stops = new ArrayList<Date>();
-            
-            for (Event foundEvent : foundEvents) {
-                if (event.getDriverID() == foundEvent.getDriverID()) {
-                    if (NoteType.STOP_MOTION.equals(foundEvent.getType())) {
-                        if (lastDrivingTimeFirstTrip == null || foundEvent.getTime().before(lastDrivingTimeFirstTrip)) {
-                            lastDrivingTimeFirstTrip = foundEvent.getTime();
-                        }
-                        if (lastDrivingTimeLastTrip == null || foundEvent.getTime().after(lastDrivingTimeLastTrip)) {
-                            lastDrivingTimeLastTrip = foundEvent.getTime();
-                        }
-                        stops.add(foundEvent.getTime());
-                    } else if (NoteType.START_MOTION.equals(foundEvent.getType())) {
-                        starts.add(foundEvent.getTime());                        
-                    } else if (NoteType.HOS_NO_HOURS.equals(foundEvent.getType())) {
-                        if (violationStartTime == null || foundEvent.getTime().before(violationStartTime)) {
-                            violationStartTime = foundEvent.getTime();
-                        }
-                    }
-                }
-            }
-            
-            Long totalDrivingTime = (long) 0;
-            Integer totalStopTime = 0;
-            Period period = null;
-            
-            if (device.isWaySmart()) {
-             
-            // totalDrivingTime calculation for TiwiPro devices
-            } else {
-                if (starts.size() != stops.size()) {
-                    totalDrivingTime = null;
-                    totalStopTime = null;
-                } else {
-                    for (int i = 0; i < starts.size(); i++) {
-                        DateTime start = new DateTime(starts.get(i));
-                        DateTime stop = new DateTime(stops.get(i));
-                        totalDrivingTime += stop.getMillis() - start.getMillis();
-                    }
-                    period = new Period(totalDrivingTime);
-                }
-            }
-            
-            parameterList.add(period != null ? period.toString() : null); //totalDrivingTime
-            parameterList.add(totalStopTime.toString());
-            parameterList.add(null); //expectedStopDuration
-            parameterList.add(shiftStart.toString()); //firstDrivingTime, should always be the beginning of the shift
-            parameterList.add(lastDrivingTimeFirstTrip.toString());
+            parameterList.add(totalDrivingTime);
+            parameterList.add(totalStopTime);
+            parameterList.add(expectedStopDuration);
+            parameterList.add(firstDrivingTime);
+            parameterList.add(lastDrivingTimeFirstTrip);
             parameterList.add(lastDrivingTimeLastTrip.toString());
             parameterList.add(violationStartTime.toString());          
         }
@@ -1161,21 +1114,22 @@ public class AlertMessageJDBCDAO extends GenericJDBCDAO implements AlertMessageD
         }
         
         private void addDayliMaxDrivingLimitData(Event event) {
-            String totalDrivingTime = "12";
-            String totalStopTime = "1";
+            String totalStopTime = null;
             String expectedStopDuration = null;
-            String firstDrivingTime = "11:11:11";
-            String lastDrivingTimeFirstTrip = "12:12:12";
-            String lastDrivingTimeLastTrip = "12:12:55";
-            String violationStartTime = "10:10:10";
+            String firstDrivingTime = null;
+            String lastDrivingTimeFirstTrip = null;
+            
+            String totalDrivingTime = "10";            
+            Date violationStartTime = event.getTime();
+            Date lastDrivingTimeLastTrip = violationStartTime;
             
             parameterList.add(totalDrivingTime);
             parameterList.add(totalStopTime);
             parameterList.add(expectedStopDuration);
             parameterList.add(firstDrivingTime);
             parameterList.add(lastDrivingTimeFirstTrip);
-            parameterList.add(lastDrivingTimeLastTrip);
-            parameterList.add(violationStartTime);          
+            parameterList.add(lastDrivingTimeLastTrip.toString());
+            parameterList.add(violationStartTime.toString());          
         }
         
         public List<String> getParameterList() {
