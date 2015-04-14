@@ -29,18 +29,26 @@ public class EventAggregationJDBCDAO extends SimpleJdbcDaoSupport implements Eve
     protected static final boolean INACTIVE_DRIVERS_DEFAULT = false;
     protected static final boolean ZERO_MILES_DRIVERS_DEFAULT = false;
     private DriverDAO driverDAO;
-
-    private static final String CACHED_NOTE_AND_FORGIVEN_SUBSELECT = "(select c.*, f.reason from cachedNoteView c left outer join forgiven f on c.noteID = f.noteID) cnv";
     
     /* Query to return the total number of forgiven events for a single driver by event type */
-    private static final String SELECT_FORGIVEN_EVENT_TOTALS = "SELECT cnv.driverID AS 'driverId', cnv.driverName AS 'driverName', cnv.type AS 'type',cnv.aggType as 'aggType',g.groupID as 'groupID', g.name AS 'groupName', count(noteID) AS 'eventCount', trim(GROUP_CONCAT(cnv.reason SEPARATOR '; ')) AS reason, "
-                    +
-                    // "(SELECT count(*) FROM cachedNoteView cnv1 WHERE cnv1.driverID = cnv.driverID AND cnv1.type = cnv.type AND (cnv1.aggType = cnv.aggType OR cnv1.aggType is null) AND forgiven = 1 AND cnv1.time BETWEEN :startDate AND :endDate) AS 'eventCountForgiven' "
-                    // +
-                    "SUM(cnv.forgiven=1)  AS 'eventCountForgiven' "
-                    + // Another way of getting a filtered count cvn.forgiven=1 returns 1 which means true and we can count that.
-                    "FROM "+CACHED_NOTE_AND_FORGIVEN_SUBSELECT+"  INNER JOIN groups g ON g.groupID = cnv.driverGroupID "
-                    + "WHERE cnv.driverGroupID IN (:groupList) AND cnv.time BETWEEN :startDate AND :endDate GROUP BY cnv.driverID,cnv.type,cnv.aggType";
+    private static final String SELECT_FORGIVEN_EVENT_TOTALS = "" 
+                    +"SELECT cnv.driverID AS 'driverId' "
+                    +"  ,i.driverName AS 'driverName' "
+                    +"  ,cnv.type AS 'type' "
+                    +"  ,getAggType(`cnv`.`type`,`cnv`.`attribs`,`cnv`.`deltaX`,`cnv`.`deltaY`,`cnv`.`deltaZ`) as 'aggType' "
+                    +"  ,g.groupID as 'groupID' "
+                    +"  ,g.name AS 'groupName' "
+                    +"  ,count(cnv.noteID) AS 'eventCount' "
+                    +"  ,trim(GROUP_CONCAT(f.reason SEPARATOR '; ')) AS reason "
+                    +"  ,SUM(case when f.noteID is not null then 1 else 0 end) AS 'eventCountForgiven' " 
+                    +"FROM groups g  "
+                    +"  join driver d on d.groupID = g.groupID and d.status != 3 "
+                    +"  join cachedNoteInfo i on i.driverID = d.driverID "
+                    +"  join cachedNote cnv on cnv.driverID = d.driverID  "
+                    +"  left join forgiven f on f.noteID = cnv.noteID "
+                    +"WHERE g.groupID IN (:groupList)  "
+                    +"  AND cnv.time BETWEEN :startDate AND :endDate " 
+                    +"GROUP BY cnv.driverID ,cnv.type ,getAggType(`cnv`.`type`,`cnv`.`attribs`,`cnv`.`deltaX`,`cnv`.`deltaY`,`cnv`.`deltaZ`)";
     
     public List<DriverForgivenEventTotal> findDriverForgivenEventTotalsByGroups(List<Integer> groupIDs, Interval interval) {
         return findDriverForgivenEventTotalsByGroups(groupIDs, interval, INACTIVE_DRIVERS_DEFAULT, ZERO_MILES_DRIVERS_DEFAULT);
