@@ -802,6 +802,9 @@ public class AlertMessageJDBCDAO extends GenericJDBCDAO implements AlertMessageD
         }
 
         private void addTwoHoursBreakAttributes(FifteenMinuteBreakNotTakenEvent event) {
+            parameterList.add("Event detail line 1 not printed");
+            parameterList.add("Event detail line 2 not printed");
+
             DateTime dateStart = new DateTime().withTime(0, 0, 0, 0);
             DateTime dateEnd = dateStart.withTime(23, 59, 59, 999);
 
@@ -920,6 +923,9 @@ public class AlertMessageJDBCDAO extends GenericJDBCDAO implements AlertMessageD
                 else
                     parameterList.add("");
 
+            }else{
+                parameterList.add("");
+                parameterList.add("");
             }
 
             // violation start time
@@ -1258,6 +1264,11 @@ public class AlertMessageJDBCDAO extends GenericJDBCDAO implements AlertMessageD
                         parameterList.add(totalIdle.toString());
                     }
                     break;
+                case ALERT_TYPE_TWO_HOURS_BREAK:
+                    if (!(event instanceof FifteenMinuteBreakNotTakenEvent))
+                        break;
+                    addTwoHoursBreakAttributes((FifteenMinuteBreakNotTakenEvent)event);
+                    break;
                 default:
 }
         }
@@ -1285,7 +1296,13 @@ public class AlertMessageJDBCDAO extends GenericJDBCDAO implements AlertMessageD
             Number speedLimit = MeasurementConversionUtil.convertSpeed(event.getSpeedLimit(), personMeasurementType);
             parameterList.add(String.valueOf(speedLimit));
         }
-        
+
+        private void addTwoHoursBreakAttributes(FifteenMinuteBreakNotTakenEvent event) {
+            parameterList.add(event.getDriverName() != null ? event.getDriverName() : "");
+            parameterList.add(event.getVehicleName() != null ? event.getVehicleName() : "");
+            parameterList.add(event.getAddressStr() != null ? event.getAddressStr() : "");
+        }
+
         public List<String> getParameterList() {
             return parameterList;
         }

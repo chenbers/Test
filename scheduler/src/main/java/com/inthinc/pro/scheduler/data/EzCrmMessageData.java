@@ -167,9 +167,6 @@ public class EzCrmMessageData {
                                     preParams = getLineParams(18, 1);
                                     lineParams = LocalizedMessage.getStringWithValues("EzCrm."+alertMessageType.toString(), locale, preParams).split(";");
                                     break;
-                                case ALERT_TYPE_TWO_HOURS_BREAK:
-                                    preParams = getLineParams(18, 7);
-                                    lineParams = LocalizedMessage.getStringWithValues("EzCrm."+alertMessageType.toString(), locale, preParams).split(";");
                                 default:
                                     lineParams = LocalizedMessage.getString("EzCrm."+alertMessageType.toString(), locale).split(";");
                             }
@@ -210,6 +207,15 @@ public class EzCrmMessageData {
                             text = LocalizedMessage.getStringWithValues(type.toString(), locale, lineParams);
                         }
                         break;
+                    case EZCRM_DATA_TYPE_DRIVING:{
+                        if (ezParamList.size() >= 20) {
+                            String[] params = getLineParams(20, 7);
+                            text = LocalizedMessage.getStringWithValues("EzCrm.Driving", locale, params);
+                        }else{
+                            text = "";
+                        }
+                        break;
+                    }
                     default:
                         {
                             text = new String("");

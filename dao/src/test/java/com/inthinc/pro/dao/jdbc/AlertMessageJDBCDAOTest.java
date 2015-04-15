@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
 
+import com.inthinc.pro.model.event.FifteenMinuteBreakNotTakenEvent;
 import mockit.Deencapsulation;
 import mockit.Expectations;
 import mockit.Mocked;
@@ -54,6 +55,7 @@ public class AlertMessageJDBCDAOTest {
     @Mocked GroupHierarchy mockGroupHierarchy;
     @Mocked Event mockEvent;
     @Mocked SpeedingEvent mockEventSpeed;
+    @Mocked FifteenMinuteBreakNotTakenEvent mockFifteenMinuteBreakNotTakenEvent;
     @Mocked IdleEvent mockEventIdle;
     @Mocked Vehicle mockVehicle;
     @Mocked VehicleDAO mockVehicleDAO;
@@ -146,7 +148,20 @@ public class AlertMessageJDBCDAOTest {
             mockEvent.getLatitude(); result = 41.234;
             mockEvent.getLongitude(); result = -111.8902;
             mockEvent.getAttrByType(EventAttr.UP_TO_DATE_STATUS); result = "2";
-            
+
+            mockFifteenMinuteBreakNotTakenEvent.getDriverID(); result = 1;
+            mockFifteenMinuteBreakNotTakenEvent.getTime(); result = new Date();
+            mockFifteenMinuteBreakNotTakenEvent.getVehicleID(); result = 1;
+            mockFifteenMinuteBreakNotTakenEvent.getDeviceID(); result = 1;
+            mockFifteenMinuteBreakNotTakenEvent.getOdometer(); result = 54000;
+            mockFifteenMinuteBreakNotTakenEvent.getSpeed(); result = 75;
+            mockFifteenMinuteBreakNotTakenEvent.getLatitude(); result = 41.234;
+            mockFifteenMinuteBreakNotTakenEvent.getLongitude(); result = -111.8902;
+            mockFifteenMinuteBreakNotTakenEvent.getAttrByType(EventAttr.UP_TO_DATE_STATUS); result = "2";
+            mockFifteenMinuteBreakNotTakenEvent.getDriverName(); result="test1";
+            mockFifteenMinuteBreakNotTakenEvent.getVehicleName(); result="test2";
+            mockFifteenMinuteBreakNotTakenEvent.getAddressStr(); result="test3";
+
             mockEventIdle.getDriverID(); result = 1;
             mockEventIdle.getTime(); result = new Date();
             mockEventIdle.getVehicleID(); result = 1;
@@ -1395,6 +1410,51 @@ public class AlertMessageJDBCDAOTest {
         assertEquals(result.get(14), "Salt Lake City, Utah");
         assertEquals(result.get(17), "0");
         assertEquals("56", result.get(18));
+    }
+
+    @Test
+    public final void testGetEzCrmParameterListALERT_TYPE_TWO_HOURS_BREAK() {
+
+        // Methods that may be called in the execution of the method we're testing
+        expectExCrm(AlertMessageType.ALERT_TYPE_TWO_HOURS_BREAK);
+
+        // Instantiate our parent class (necessary before instantiating nested class)
+        AlertMessageJDBCDAO alertMessageJDBCDAO = new AlertMessageJDBCDAO();
+
+        // Set the mocked version objects
+        alertMessageJDBCDAO.setGroupDAO(mockGroupDAO);
+        alertMessageJDBCDAO.setVehicleDAO(mockVehicleDAO);
+        alertMessageJDBCDAO.setAddressLookup(mockAddressLookup);
+        alertMessageJDBCDAO.setZoneDAO(mockZoneDAO);
+
+        // Instantiate the class we're testing
+        AlertMessageJDBCDAO.EzCrmParameterList parameterList = alertMessageJDBCDAO.new EzCrmParameterList();
+
+        parameterList.setLocal(Locale.getDefault());
+        parameterList.setMeasurementType(MeasurementType.ENGLISH);
+        parameterList.setEvent(mockFifteenMinuteBreakNotTakenEvent);
+        parameterList.setAlertMessage(mockAlertMessage);
+        parameterList.setPerson(mockPerson);
+        parameterList.setDriver(mockDriver);
+
+        // Run the method  //Deencapsulation.invoke(parameterList, "getDriverOrgStructure", mockDriver);
+        List<String> result = parameterList.getParameterListTest();
+
+        // Test the result
+        int i = 0;
+        for (String s : result) {
+            System.out.println("["+i+"] "+s);
+            ++i;
+        }
+        assertEquals(result.size(), 21);
+        assertEquals(result.get(2), "0");
+        assertEquals(result.get(7), "my Big Truck");
+        assertEquals(result.get(10), "Ford");
+        assertEquals(result.get(14), "Salt Lake City, Utah");
+        assertEquals(result.get(17), "0");
+        assertEquals(result.get(18), "test1");
+        assertEquals(result.get(19), "test2");
+        assertEquals(result.get(20), "test3");
     }
 
 }

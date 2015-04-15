@@ -21,7 +21,8 @@ public enum RedFlagEzCrmDataType implements BaseEnum
     EZCRM_DATA_TYPE_EVENT(6),
     EZCRM_DATA_TYPE_LOCATION(7),
     EZCRM_DATA_TYPE_ODOMETER(8),
-    EZCRM_DATA_TYPE_SPEED(9);
+    EZCRM_DATA_TYPE_SPEED(9),
+    EZCRM_DATA_TYPE_DRIVING(10);
     
     private int code;
 

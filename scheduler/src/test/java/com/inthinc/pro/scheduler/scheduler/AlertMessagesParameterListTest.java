@@ -5,11 +5,16 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
 
+import com.inthinc.pro.dao.LocationDAO;
+import com.inthinc.pro.model.Group;
+import com.inthinc.pro.model.Trip;
+import com.inthinc.pro.model.event.FifteenMinuteBreakNotTakenEvent;
 import mockit.Cascading;
 import mockit.Expectations;
 import mockit.Mocked;
@@ -19,6 +24,7 @@ import org.junit.Test;
 
 import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.dao.EventDAO;
+import com.inthinc.pro.dao.GroupDAO;
 import com.inthinc.pro.dao.PersonDAO;
 import com.inthinc.pro.dao.VehicleDAO;
 import com.inthinc.pro.dao.ZoneDAO;
@@ -28,6 +34,7 @@ import com.inthinc.pro.map.AddressLookup;
 import com.inthinc.pro.model.AlertMessage;
 import com.inthinc.pro.model.AlertMessageType;
 import com.inthinc.pro.model.Driver;
+import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.LatLng;
 import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.model.Person;
@@ -52,6 +59,8 @@ public class AlertMessagesParameterListTest {
     @Mocked private PersonDAO personDAO;
     @Mocked private VehicleDAO vehicleDAO;
     @Mocked private DriverDAO driverDAO;
+    @Mocked private GroupDAO groupDAO;
+    @Mocked private LocationDAO locationDAO;
     @Mocked private ZoneDAO zoneDAO;
     @Mocked private AddressLookup addressLookup;
     private AlertMessageJDBCDAO alertMessageJDBCDAO;
@@ -60,6 +69,8 @@ public class AlertMessagesParameterListTest {
     public void setup(){
         alertMessageJDBCDAO = new AlertMessageJDBCDAO();
         alertMessageJDBCDAO.setDriverDAO(driverDAO);
+        alertMessageJDBCDAO.setGroupDAO(groupDAO);
+        alertMessageJDBCDAO.setLocationDAO(locationDAO);
         alertMessageJDBCDAO.setEventDAO(eventDAO);
         alertMessageJDBCDAO.setPersonDAO(personDAO);
         alertMessageJDBCDAO.setVehicleDAO(vehicleDAO);
@@ -388,4 +399,63 @@ public class AlertMessagesParameterListTest {
         assertEquals("address should be fourth element and should be Salt Lake City, Utah", alertParameterList.get(3),"Salt Lake City, Utah");
         assertEquals("status should be fifth element and should be VersionState.NOT_UPDATED", alertParameterList.get(4),"VersionState.NOT_UPDATED");
             }
+
+
+
+    @Test
+    public void testTwoHourViolationParamList() {
+        ParameterList parameterList = alertMessageJDBCDAO.new ParameterList();
+        assertNotNull(parameterList);
+
+        event = new FifteenMinuteBreakNotTakenEvent();
+        event.setDriverID(1);
+        event.setTime(new Date(1345234248691L));
+        event.setVehicleID(1);
+        event.setLatitude(0D);
+        event.setLongitude(0D);
+
+        new Expectations() {
+            {
+                driverDAO.findByID(1);
+                result = driver;
+                driver.getPerson();
+                result = person;
+                driver.getPerson().getTimeZone();
+                result = TimeZone.getTimeZone("GMT");
+                driver.getPerson();
+                result = person;
+                driver.getPerson().getFullName();
+                result = "Jacquie Howard";
+                driver.getPerson();
+                result = person;
+                driver.getPerson();
+                result = person;
+                groupDAO.getGroupsByAcctID(anyInt);
+                List<Group> groups = new ArrayList<Group>();
+                groups.add(new Group(1, 1, "1", 0));
+                result = groups;
+                driver.getGroupID();
+                result = 1;
+                vehicleDAO.findByID(1);
+                result = vehicle;
+                locationDAO.getTripsForDriver(1, (Date) any, (Date) any);
+                result = new ArrayList<Trip>();
+            }
+        };
+
+        List<String> alertParameterList = parameterList.getParameterList(event, MeasurementType.ENGLISH, AlertMessageType.ALERT_TYPE_TWO_HOURS_BREAK, Locale.getDefault(), 2);
+        assertTrue(alertParameterList.size() == 13);
+        assertEquals("date should be 1 element and should be Aug 17, 2012 8:10 PM (GMT)", "Aug 17, 2012 8:10 PM (GMT)", alertParameterList.get(0));
+        assertEquals("driver name should be 2 element and should be Jacquie Howard", "Jacquie Howard", alertParameterList.get(1));
+        assertEquals("driver group should be 3 element and should be 1", "1", alertParameterList.get(2));
+        assertEquals("vehicle name should be 4 element and should be vehicle1", "vehicle1", alertParameterList.get(3));
+
+        assertEquals("totalDrivingTime should be 6 element and should be 00", "00", alertParameterList.get(6));
+        assertEquals("totalStopTime should be 7 element and should be 00", "00", alertParameterList.get(7));
+        assertEquals("expectedStopDuration should be 8 element and should be 00:15", "00:15", alertParameterList.get(8));
+        assertEquals("firstDrivingTime should be 9 element and should be empty", "", alertParameterList.get(9));
+        assertEquals("lastDrivingTimeFirstTrip should be 10 element and should be empty","", alertParameterList.get(10));
+        assertEquals("lastDrivingTimeLastTrip should be 11 element and should be empty","", alertParameterList.get(11));
+        assertEquals("violationStartTime should be 12 element and should be empty","", alertParameterList.get(12));
+    }
 }
