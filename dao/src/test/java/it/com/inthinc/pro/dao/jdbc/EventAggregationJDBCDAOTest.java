@@ -24,8 +24,6 @@ import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.GroupType;
 import com.inthinc.pro.model.event.LastReportedEvent;
 
-// set to Ignore for running on QA.
-@Ignore
 public class EventAggregationJDBCDAOTest extends BaseJDBCTest {
     
     // In case the test date is destroyed, regen as follows:
@@ -34,15 +32,15 @@ public class EventAggregationJDBCDAOTest extends BaseJDBCTest {
     // this generates an account with a bunch of devices, vehicles, drivers and a trip for each device/vehicle
     // Set the interval day to the day after the generator is run (UTC).
     // TEST_ACCOUNT_ID and EXPECTED_VALID_COUNT will need to be adjusted to reflect the new data set.
-    private static Integer TEST_ACCOUNT_ID = 2;
-    private static Integer EXPECTED_VALID_COUNT = 240;
     private static Boolean dontIncludeUnassignedDevice =true;
     private static Boolean activeInterval=true;
+    private static Integer TEST_ACCOUNT_ID = 979;
+    private static Integer EXPECTED_VALID_COUNT = 366;
     
     
     private static List<Integer> testGroupList;
 
-    private static DateTime SEP_12_2013 = new DateTime(1378944000000l);// 1375401600000l);
+    private static DateTime SEP_12_2013 = new DateTime(1428969600000l);// 1375401600000l);
     private static Interval VALID_TEST_INTERVAL = new Interval(SEP_12_2013, SEP_12_2013.plusDays(1)); 
     
     
