@@ -1,7 +1,10 @@
 package com.inthinc.pro.reports.hos;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -16,6 +19,7 @@ import com.inthinc.pro.reports.hos.model.WthHosViolationsSummary;
 import org.joda.time.DateMidnight;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
+import org.joda.time.Days;
 import org.joda.time.Interval;
 import org.junit.Test;
 
@@ -367,6 +371,14 @@ public class ViolationsReportCriteriaTest extends BaseUnitTest {
                     violationsTestData.groupMileageList, violationsTestData.groupNoDriverMileageList);
             List<WthHosViolationsSummary> dataList = criteria.getMainDataset();
             assertEquals(testCaseName[testCaseCnt] + " number of records", hosViolationsExpectedData[testCaseCnt].length, dataList.size());
+
+            // test day count is correct
+            assertNotNull(criteria.getPramMap());
+            assertFalse(criteria.getPramMap().isEmpty());
+            assertNotNull(criteria.getParameter("REPORT_NUM_DAYS"));
+            Integer numDays = (Integer) criteria.getParameter("REPORT_NUM_DAYS");
+            assertEquals(Days.daysBetween(violationsTestData.interval.getStart().toDateMidnight(), violationsTestData.interval.getEnd().toDateMidnight()).getDays(), numDays.intValue());
+
             int eCnt = 0;
             for (WthHosViolationsSummary s : dataList) {
                 WthHosViolationsSummary expected = wthHosViolationsExpectedData[testCaseCnt][eCnt++];

@@ -125,6 +125,9 @@ public class HessianTCPProxy implements InvocationHandler
         _factory = factory;
         this.hostName = hostName;
         this.port = port;
+        
+        log.info("HessianTCPProxy host: " + hostName + " port:" + port);
+
     }
 
     /**
@@ -221,6 +224,8 @@ public class HessianTCPProxy implements InvocationHandler
 
     protected Socket sendRequest(String methodName, Object[] args) throws IOException
     {
+        log.info("HessianTCPProxy.sendRequest host: " + hostName + " " + InetAddress.getByName(hostName) + " port:" + port);
+
         Socket socket = null;
         socket = new Socket(InetAddress.getByName(hostName), port);
 

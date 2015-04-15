@@ -24,6 +24,7 @@ import com.inthinc.pro.reports.util.DateTimeUtil;
 import com.inthinc.pro.reports.util.MessageUtil;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
+import org.joda.time.Days;
 import org.joda.time.Interval;
 import org.joda.time.LocalDate;
 
@@ -176,6 +177,10 @@ public class WthHosViolationsSummaryReportCriteria extends ViolationsSummaryRepo
 
         addParameter("REPORT_START_DATE", dateTimeFormatter.print(interval.getStart()));
         addParameter("REPORT_END_DATE", dateTimeFormatter.print(interval.getEnd()));
+
+        // add number of days to report parameters
+        Integer reportNumberOfDays = Days.daysBetween(interval.getStart().toDateMidnight(), interval.getEnd().toDateMidnight()).getDays();
+        addParameter("REPORT_NUM_DAYS", reportNumberOfDays);
     }
 
     @Override

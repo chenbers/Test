@@ -34,6 +34,7 @@ import com.inthinc.pro.reports.hos.testData.HosRecordDataSet;
 import com.inthinc.pro.reports.impl.ReportCriteriaServiceImplTest;
 import com.inthinc.pro.reports.performance.model.PayrollData;
 import com.inthinc.pro.reports.tabular.Result;
+import org.springframework.test.AssertThrows;
 
 public class PayrollCriteriaTest extends BaseUnitTest {
 
@@ -513,6 +514,26 @@ public class PayrollCriteriaTest extends BaseUnitTest {
         new HOSRecord(10, getUTCDate("11/11/2011 04:00:00", centralTimeZone), centralTimeZone, HOSStatus.OFF_DUTY),  
 };
 
+    @Test
+    public void testByTimeSort(){
+        PayrollData pd1 = new PayrollData("test_group1", "test", 1, "test", "emp1",
+                new DateTime().withDayOfMonth(4).toDate(), HOSStatus.BOUNDARY_CHANGE, 1);
+
+        PayrollData pd2 = new PayrollData("test_group1", "test", 1, "test", "emp1",
+                new DateTime().withDayOfMonth(2).toDate(), HOSStatus.BOUNDARY_CHANGE, 1);
+
+        PayrollData pd3 = new PayrollData("test_group1", "test", 1, "test", "emp1",
+                new DateTime().withDayOfMonth(3).toDate(), HOSStatus.BOUNDARY_CHANGE, 1);
+
+
+        List<PayrollData> payrollDatas = Arrays.asList(pd1,pd2,pd3);
+        Collections.sort(payrollDatas);
+
+        assertEquals(2, new DateTime(payrollDatas.get(0).getDay()).getDayOfMonth());
+        assertEquals(3, new DateTime(payrollDatas.get(1).getDay()).getDayOfMonth());
+        assertEquals(4, new DateTime(payrollDatas.get(2).getDay()).getDayOfMonth());
+    }
+
     @Test 
     public void daylightSavings() {
         runTest("dst", dstRecs, dstExpectedMin, dstExpectedCompMin, dstExpectedTabularData, dstExpectedSummTabularData);
@@ -661,14 +682,14 @@ public class PayrollCriteriaTest extends BaseUnitTest {
   public void testDayListDE8159() {
       
       PayrollReportCompensatedHoursCriteria criteria = new PayrollReportCompensatedHoursCriteria(Locale.US);
-      HosRecordDataSet testData = initTestData(10, tzRecs, "11/10/2011 00:00:00", "11/11/2011 23:59:59");
+      HosRecordDataSet testData = initTestData(10, tzRecs, "11/09/2011 23:59:5900:00:00", "11/11/2011 00:00:00");
       for (Driver driver : testData.driverHOSRecordMap.keySet())
           driver.getPerson().setTimeZone(centralTimeZone);
       criteria.initDataSet(testData.interval, testData.account, testData.getGroupHierarchy(), testData.driverHOSRecordMap);
       dump("de8159", 1, criteria, FormatType.PDF);
       
       PayrollData secondDay = ((List<PayrollData>)criteria.getMainDataset()).get(0);
-      assertEquals("expected day", "11/11/2011", secondDay.getDayStr());
+      assertEquals("expected day", "11/09/2011", secondDay.getDayStr());
       assertEquals("expected time", 240, secondDay.getTotalAdjustedMinutes());
       
       

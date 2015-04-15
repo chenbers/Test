@@ -1394,7 +1394,7 @@ public class AlertMessageJDBCDAOTest {
         assertEquals(result.get(10), "Ford");
         assertEquals(result.get(14), "Salt Lake City, Utah");
         assertEquals(result.get(17), "0");
-        assertEquals(result.get(18), "3400");
+        assertEquals("56", result.get(18));
     }
 
 }
