@@ -24,5 +24,11 @@ public class PayrollDataTest {
 		 assertTrue("",item1.compareTo(item3)<0);
 		 //compare groups
 		 assertTrue("",item1.compareTo(item4)<0);
-       	}
+        PayrollData item5 = new PayrollData("group1", "address", 1, "Wow,Bar", null, new Date(), HOSStatus.ON_DUTY, 20);
+        PayrollData item6 = new PayrollData("group1", "address", 1, "Wow,Bar", null, new Date(), HOSStatus.ON_DUTY, 20);
+        assertTrue("", item5.compareTo(item6) == 0);
+        item6 = new PayrollData("group1", "address", 1, "Wow,Bar", "CRYSTALJ", new Date(), HOSStatus.ON_DUTY, 20);
+        assertTrue("", item5.compareTo(item6) < 0);
+        assertTrue("", item6.compareTo(item5) > 0);
+    }
 }
