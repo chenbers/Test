@@ -830,4 +830,6 @@
 
   <bean id="timeZonesBean" class="com.inthinc.pro.backing.TimeZonesBean" scope="session" init-method="initBean"/>
 
+  <bean id="serverInfoBean" class="com.inthinc.pro.backing.ServerInfoBean" scope="session"/>
+
 </beans>
