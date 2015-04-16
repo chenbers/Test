@@ -1439,10 +1439,10 @@ public class AlertMessageJDBCDAOTest {
         assertEquals(result.get(17), "0");
         
         assertEquals("10", result.get(18));
-        assertEquals(null, result.get(19));
-        assertEquals(null, result.get(20));
-        assertEquals(null, result.get(21));
-        assertEquals(null, result.get(22));
+        assertEquals("null", result.get(19));
+        assertEquals("null", result.get(20));
+        assertEquals("null", result.get(21));
+        assertEquals("null", result.get(22));
         assertEquals(mockEventIdle.getTime().toString(), result.get(23));
         assertEquals(mockEventIdle.getTime().toString(), result.get(24));
     }

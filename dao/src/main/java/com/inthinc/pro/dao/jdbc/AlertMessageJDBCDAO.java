@@ -75,6 +75,7 @@ public class AlertMessageJDBCDAO extends GenericJDBCDAO implements AlertMessageD
     private AddressLookup addressLookup;
     // private FormsDAO formsDAO;
     private String formSubmissionsURL;
+    private static final int PROPERTY_HOS_DRIVING_MAX_HOURS_PER_DAY = 10;
 
     // message status
     // 1 new
@@ -744,6 +745,7 @@ public class AlertMessageJDBCDAO extends GenericJDBCDAO implements AlertMessageD
                     addDVIRRepairAttributes(event);
                     break;
                 case ALERT_TYPE_DAILY_MAX_DRIVING_LIMIT:
+                    addAddress(event);
                     addDayliMaxDrivingLimitData(event);
                     break;
                 default:
@@ -800,12 +802,12 @@ public class AlertMessageJDBCDAO extends GenericJDBCDAO implements AlertMessageD
 ;        }
         
         private void addDayliMaxDrivingLimitData(Event event) {
-            String totalStopTime = null;
-            String expectedStopDuration = null;
-            String firstDrivingTime = null;
-            String lastDrivingTimeFirstTrip = null;
+            String totalStopTime = "null";
+            String expectedStopDuration = "null";
+            String firstDrivingTime = "null";
+            String lastDrivingTimeFirstTrip = "null";
             
-            String totalDrivingTime = "10";            
+            String totalDrivingTime = "" + PROPERTY_HOS_DRIVING_MAX_HOURS_PER_DAY;
             Date violationStartTime = event.getTime();
             Date lastDrivingTimeLastTrip = violationStartTime;
             
@@ -815,7 +817,7 @@ public class AlertMessageJDBCDAO extends GenericJDBCDAO implements AlertMessageD
             parameterList.add(firstDrivingTime);
             parameterList.add(lastDrivingTimeFirstTrip);
             parameterList.add(lastDrivingTimeLastTrip.toString());
-            parameterList.add(violationStartTime.toString());          
+            parameterList.add(violationStartTime.toString());
         }
 
         public List<String> getParameterList() {
@@ -1114,12 +1116,12 @@ public class AlertMessageJDBCDAO extends GenericJDBCDAO implements AlertMessageD
         }
         
         private void addDayliMaxDrivingLimitData(Event event) {
-            String totalStopTime = null;
-            String expectedStopDuration = null;
-            String firstDrivingTime = null;
-            String lastDrivingTimeFirstTrip = null;
+            String totalStopTime = "null";
+            String expectedStopDuration = "null";
+            String firstDrivingTime = "null";
+            String lastDrivingTimeFirstTrip = "null";
             
-            String totalDrivingTime = "10";            
+            String totalDrivingTime = "" + PROPERTY_HOS_DRIVING_MAX_HOURS_PER_DAY;
             Date violationStartTime = event.getTime();
             Date lastDrivingTimeLastTrip = violationStartTime;
             
@@ -1129,7 +1131,7 @@ public class AlertMessageJDBCDAO extends GenericJDBCDAO implements AlertMessageD
             parameterList.add(firstDrivingTime);
             parameterList.add(lastDrivingTimeFirstTrip);
             parameterList.add(lastDrivingTimeLastTrip.toString());
-            parameterList.add(violationStartTime.toString());          
+            parameterList.add(violationStartTime.toString());
         }
         
         public List<String> getParameterList() {

@@ -168,8 +168,14 @@ public class EzCrmMessageData {
                                     lineParams = LocalizedMessage.getStringWithValues("EzCrm."+alertMessageType.toString(), locale, preParams).split(";");
                                     break;
                                 case ALERT_TYPE_DAILY_MAX_DRIVING_LIMIT:
-                                    preParams = getLineParams(18, 7);
+                                    String[] stat1 = getLineParams(6, 2);
+                                    String[] stat2 = getLineParams(14, 1);
+                                    preParams = new String[3];
+                                    preParams[0] = stat1[0];
+                                    preParams[1] = stat1[1];
+                                    preParams[2] = stat2[0];
                                     lineParams = LocalizedMessage.getStringWithValues("EzCrm."+alertMessageType.toString(), locale, preParams).split(";");
+                                    break;
                                 default:
                                     lineParams = LocalizedMessage.getString("EzCrm."+alertMessageType.toString(), locale).split(";");
                             }
@@ -210,6 +216,15 @@ public class EzCrmMessageData {
                             text = LocalizedMessage.getStringWithValues(type.toString(), locale, lineParams);
                         }
                         break;
+                    case EZCRM_DATA_TYPE_DRIVING: {
+                        if (ezParamList.size() >= 20) {
+                            String[] params = getLineParams(18, 7);
+                            text = LocalizedMessage.getStringWithValues("EzCrm.Driving", locale, params);
+                        } else {
+                            text = "";
+                        }
+                        break;
+                    }
                     default:
                         {
                             text = new String("");

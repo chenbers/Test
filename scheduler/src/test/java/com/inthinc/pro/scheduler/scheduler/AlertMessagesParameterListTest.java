@@ -36,7 +36,6 @@ import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.model.Person;
 import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.model.Zone;
-import com.inthinc.pro.model.event.DailyMaxDrivingLimitEvent;
 import com.inthinc.pro.model.event.Event;
 import com.inthinc.pro.model.event.IdleEvent;
 import com.inthinc.pro.model.event.SpeedingEvent;
@@ -400,12 +399,11 @@ public class AlertMessagesParameterListTest {
         ParameterList parameterList = alertMessageJDBCDAO.new ParameterList();
         assertNotNull(parameterList);
         
-        event = new DailyMaxDrivingLimitEvent();
         event.setDriverID(1);
         event.setTime(new Date(1345234248691L));
         event.setVehicleID(1);
-        event.setLatitude(0D);
-        event.setLongitude(0D);
+        event.setLatitude(10D);
+        event.setLongitude(10D);
         
         new Expectations() {
             {                
@@ -431,22 +429,24 @@ public class AlertMessagesParameterListTest {
                 result = 1;
                 vehicleDAO.findByID(1);
                 result = vehicle;
+                addressLookup.getAddressOrLatLng((LatLng) any);result="Salt Lake City, Utah";
             }
         };
         
         List<String> alertParameterList = parameterList.getParameterList(event, MeasurementType.ENGLISH, AlertMessageType.ALERT_TYPE_DAILY_MAX_DRIVING_LIMIT, Locale.getDefault(), 2);
-        assertTrue(alertParameterList.size() == 11);
-        assertEquals("date should be 1 element and should be Aug 17, 2012 8:10 PM (GMT)", "Aug 17, 2012 8:10 PM (GMT)", alertParameterList.get(0));
-        assertEquals("driver name should be 2 element and should be Jacquie Howard", "Jacquie Howard", alertParameterList.get(1));
-        assertEquals("driver group should be 3 element and should be 1", "1", alertParameterList.get(2));
-        assertEquals("vehicle name should be 4 element and should be vehicle1", "vehicle1", alertParameterList.get(3));
+        assertTrue(alertParameterList.size() == 12);
+        assertEquals("date should be 0 element and should be Aug 17, 2012 8:10 PM (GMT)", "Aug 17, 2012 8:10 PM (GMT)", alertParameterList.get(0));
+        assertEquals("driver name should be 1 element and should be Jacquie Howard", "Jacquie Howard", alertParameterList.get(1));
+        assertEquals("driver group should be 2 element and should be 1", "1", alertParameterList.get(2));
+        assertEquals("vehicle name should be 3 element and should be vehicle1", "vehicle1", alertParameterList.get(3));
+        assertEquals("address should be 4 element and should be Salt Lake City, Utah", alertParameterList.get(4),"Salt Lake City, Utah");
         
-        assertEquals("totalDrivingTime should be 4 element and should be 10", "10", alertParameterList.get(4));
-        assertNull("totalStopTime should be 5 element and should be null", alertParameterList.get(5));
-        assertNull("expectedStopDuration should be 6 element and should be null", alertParameterList.get(6));
-        assertNull("firstDrivingTime should be 7 element and should be null", alertParameterList.get(7));
-        assertNull("lastDrivingTimeFirstTrip should be 8 element and should be null", alertParameterList.get(8));
-        assertEquals("lastDrivingTimeLastTrip should be 9 element and should be 12:12:55", event.getTime().toString(), alertParameterList.get(9));
-        assertEquals("violationStartTime should be 10 element and should be 10:10:10", event.getTime().toString(), alertParameterList.get(10));
+        assertEquals("totalDrivingTime should be 5 element and should be 10", "10", alertParameterList.get(5));
+        assertEquals("totalStopTime should be 6 element and should be \"null\"", "null", alertParameterList.get(6));
+        assertEquals("expectedStopDuration should be 7 element and should be \"null\"", "null", alertParameterList.get(7));
+        assertEquals("firstDrivingTime should be 8 element and should be \"null\"", "null", alertParameterList.get(8));
+        assertEquals("lastDrivingTimeFirstTrip should be 9 element and should be \"null\"", "null", alertParameterList.get(9));
+        assertEquals("lastDrivingTimeLastTrip should be 10 element and should be 12:12:55", event.getTime().toString(), alertParameterList.get(10));
+        assertEquals("violationStartTime should be 11 element and should be 10:10:10", event.getTime().toString(), alertParameterList.get(11));
     }
 }
