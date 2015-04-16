@@ -33,9 +33,12 @@
 		 		<h:outputText value="&#160;#{messages.footer_copyrightCompanyName}" escape="false"/>
 		 	</li>
 			<li class="last version_info">
-			  	   <h:outputFormat id="version" value="#{messages.footer_version}" style="color:gray;" >
-						<f:param value="#{versionBean.version}"/>
-	   				</h:outputFormat>
+                <h:outputFormat id="version" value="#{messages.footer_version}" style="color:gray;" >
+                    <f:param value="#{versionBean.version}"/>
+                </h:outputFormat>
+                <h:outputFormat id="hostname" value="#{messages.footer_hostname}" style="color:gray;" >
+                    <f:param value="#{serverInfoBean.hostname}"/>
+                </h:outputFormat>
 			</li>
 		</ul>
 	  </a4j:form>
