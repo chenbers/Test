@@ -217,7 +217,7 @@ public class EzCrmMessageData {
                         }
                         break;
                     case EZCRM_DATA_TYPE_DRIVING: {
-                        if (ezParamList.size() >= 20) {
+                        if (alertMessageType == AlertMessageType.ALERT_TYPE_DAILY_MAX_DRIVING_LIMIT) {
                             String[] params = getLineParams(18, 7);
                             text = LocalizedMessage.getStringWithValues("EzCrm.Driving", locale, params);
                         } else {

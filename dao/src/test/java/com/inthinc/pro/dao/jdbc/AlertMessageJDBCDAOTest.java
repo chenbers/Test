@@ -1417,7 +1417,7 @@ public class AlertMessageJDBCDAOTest {
         
         parameterList.setLocal(Locale.getDefault());
         parameterList.setMeasurementType(MeasurementType.ENGLISH);
-        parameterList.setEvent(mockEventIdle);
+        parameterList.setEvent(mockEvent);
         parameterList.setAlertMessage(mockAlertMessage);
         parameterList.setPerson(mockPerson);
         parameterList.setDriver(mockDriver);
@@ -1443,8 +1443,8 @@ public class AlertMessageJDBCDAOTest {
         assertEquals("null", result.get(20));
         assertEquals("null", result.get(21));
         assertEquals("null", result.get(22));
-        assertEquals(mockEventIdle.getTime().toString(), result.get(23));
-        assertEquals(mockEventIdle.getTime().toString(), result.get(24));
+        assertEquals(mockEvent.getTime().toString(), result.get(23));
+        assertEquals(mockEvent.getTime().toString(), result.get(24));
     }
 
 }

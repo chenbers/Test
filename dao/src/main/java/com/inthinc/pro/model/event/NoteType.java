@@ -462,7 +462,6 @@ public enum NoteType implements BaseEnum {
     TRAILER_PROGRAMMED(237, TrailerProgrammedEvent.class),
     MAINTENANCE_EVENTS(238, MaintenanceEvent.class),
     
-//    DAILY_MAX_DRIVING_LIMIT(242, DailyMaxDrivingLimitEvent.class),
     DAILY_MAX_DRIVING_LIMIT(242, EventType.DAILY_MAX_DRIVING_LIMIT),
 
     // new notifications without header information - not really a real notification.
