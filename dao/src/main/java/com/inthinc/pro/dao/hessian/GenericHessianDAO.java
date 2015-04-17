@@ -59,6 +59,15 @@ public abstract class GenericHessianDAO<T, ID> implements GenericDAO<T, ID>, Ser
         populateColumnMap();
         populateCRUDMethods();
     }
+    
+    /**
+     * NOTE dataSource is not used by hessian daos, this was added to ease the transition to JDBC dao's
+     * @param unusedDataSource
+     */
+    public void setDataSource(Object unusedDataSource) {
+        logger.warn("[???]HessianDAO.setDataSource("+unusedDataSource+") was called; (hessianDao's do not need/use this property");
+        //do nothing
+    }
 
     private void populateConverterMaps() {
         for (Method method : this.getClass().getDeclaredMethods()) {

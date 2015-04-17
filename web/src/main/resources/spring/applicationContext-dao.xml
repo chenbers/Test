@@ -75,9 +75,6 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
     <bean id="vehicleDAO" class="com.inthinc.pro.dao.hessian.VehicleHessianDAO" />
     <bean id="vehicleJDBCDAO" class="com.inthinc.pro.dao.jdbc.VehicleJDBCDAO" />
     <bean id="deviceDAO" class="com.inthinc.pro.dao.jdbc.DeviceJDBCDAO" />
-    <bean id="deviceJDBCDAO" class="com.inthinc.pro.dao.jdbc.DeviceJDBCDAO" >
-        <property name="dataSource" ref="dataSource" />
-    </bean>
     <bean id="driverDAO" class="com.inthinc.pro.dao.hessian.DriverHessianDAO"></bean>
     <bean id="driverJDBCDAO" class="com.inthinc.pro.dao.jdbc.DriverJDBCDAO" />
     <bean id="redFlagDAO" class="com.inthinc.pro.dao.jdbc.RedFlagJDBCDAO">

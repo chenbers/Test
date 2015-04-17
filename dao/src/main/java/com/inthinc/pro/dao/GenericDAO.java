@@ -6,5 +6,4 @@ public interface GenericDAO<T, ID> {
   ID create(ID id, T entity);
   Integer update(T entity);
   Integer deleteByID(ID id);
-  
 }
