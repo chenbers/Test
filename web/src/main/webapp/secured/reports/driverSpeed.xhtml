@@ -654,7 +654,7 @@ var firstLoad = new Boolean(true);
             <br />
             <rich:message for="excludeReason" id="invalidExcludeReason" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg"/>
             <h:outputLabel for = "excludeReason" value="#{messages.excludeReason}" style="width:20%"/>
-            <h:inputText value="#{driverSpeedBean.reason}" id="excludeReason" maxlength="50" size="35" required="true" requiredMessage="#{messages.required}"/>
+            <h:inputText value="#{driverSpeedBean.reason}" id="excludeReason" maxlength="50" size="35" required="false" requiredMessage="#{messages.required}"/>
             <br />
             <h:outputText value="#{messages.excludeInfo}"/>
       	</h:panelGroup>
@@ -663,7 +663,7 @@ var firstLoad = new Boolean(true);
           <button id="driverSpeedNo" type="submit" class="left" onclick="Richfaces.hideModalPanel('clearEventPanel'); return false;"><span class="no" style="position:inherit;"><h:outputText value="#{messages.button_no}" /></span></button>
           
           <a4j:commandLink id="driverSpeedConfirm" action="#{driverSpeedBean.excludeEventAction}"
-                            oncomplete="if (document.getElementById('clearItemForm:excludeReason').getValue()!=='') {Richfaces.hideModalPanel('clearEventPanel');}"
+                            oncomplete="Richfaces.hideModalPanel('clearEventPanel');"
                 			onkeypress="if (event &amp;&amp; event.keyCode == 13) return false; return true;" styleClass="left"
                 			eventsQueue="driverSpeedForm" reRender="notificationsTable,tableStats,scrollerBottom">
 	          				<button type="submit" class="left">
