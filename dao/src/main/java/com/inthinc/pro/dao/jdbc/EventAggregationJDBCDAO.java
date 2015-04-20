@@ -111,11 +111,13 @@ public class EventAggregationJDBCDAO extends SimpleJdbcDaoSupport implements Eve
                     }
 
                     String reason  = rs.getString("reason");
-                    if (reason != null && reason.trim().isEmpty()){
-                        reason = null;
-                    }else{
-                        reason = reason.trim();
+                    if (reason != null){
+                        if (reason.trim().isEmpty())
+                            reason = null;
+                        else
+                            reason = reason.trim();
                     }
+
                     driverForgivenData.setReason(reason);
 
                     drList.add(driverForgivenData);
