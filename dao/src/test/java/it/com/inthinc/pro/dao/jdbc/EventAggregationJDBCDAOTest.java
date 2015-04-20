@@ -3,12 +3,15 @@ package it.com.inthinc.pro.dao.jdbc;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+import com.inthinc.pro.model.aggregation.DriverEventIndex;
+import com.inthinc.pro.model.aggregation.DriverForgivenData;
 import com.inthinc.pro.model.aggregation.DriverForgivenEventTotal;
 import it.config.ITDataSource;
 import it.config.IntegrationConfig;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.joda.time.DateTime;
 import org.joda.time.Interval;
@@ -121,6 +124,27 @@ public class EventAggregationJDBCDAOTest extends BaseJDBCTest {
             for (DriverForgivenEventTotal df: dfetList){
                 if (df.getReasons() != null && !df.getReasons().trim().isEmpty()){
                     found ++;
+                }
+            }
+        }
+    }
+
+    @Test
+    public void testGetForgiveDataOnly(){
+        // first, get the data
+        EventAggregationJDBCDAO eventAggregationJDBCDAO = new EventAggregationJDBCDAO();
+        eventAggregationJDBCDAO.setDataSource(new ITDataSource().getRealDataSource());
+        Map<DriverEventIndex, List<DriverForgivenData>> dfMap = eventAggregationJDBCDAO.findDriverForgivenDataByGroups(testGroupList, VALID_TEST_INTERVAL, true, true);
+
+        // then test correct id mapping
+        int found = 0;
+        if (!dfMap.isEmpty()){
+            for (Map.Entry<DriverEventIndex, List<DriverForgivenData>> dfEntry: dfMap.entrySet()){
+                DriverEventIndex dfIndex =dfEntry.getKey();
+                List<DriverForgivenData> dfData = dfEntry.getValue();
+
+                for (DriverForgivenData df: dfData){
+                    assertEquals(dfIndex.getDriverID(),df.getDriverID());
                 }
             }
         }
