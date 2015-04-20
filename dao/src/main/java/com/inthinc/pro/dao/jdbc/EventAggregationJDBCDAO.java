@@ -5,12 +5,11 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
+import com.inthinc.pro.model.aggregation.DriverEventIndex;
 import com.inthinc.pro.model.aggregation.DriverForgivenData;
 import org.joda.time.Interval;
 import org.springframework.jdbc.core.simple.ParameterizedRowMapper;
@@ -72,15 +71,15 @@ public class EventAggregationJDBCDAO extends SimpleJdbcDaoSupport implements Eve
     }
 
     @Override
-    public Map<Object[],List<DriverForgivenData>> findDriverForgivenDataByNoteIDs(List<Integer> groupIDs, final Interval interval, final boolean includeInactiveDrivers,
-                                                                    final boolean includeZeroMilesDrivers) {
+    public Map<DriverEventIndex,List<DriverForgivenData>> findDriverForgivenDataByGroups(List<Integer> groupIDs, final Interval interval, final boolean includeInactiveDrivers,
+                                                                                 final boolean includeZeroMilesDrivers) {
         String allEventForgiven = SELECT_ALL_EVENT_FORGIVEN;
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("groupList", groupIDs);
         params.put("endDate", interval.getEnd().toDate());
         params.put("startDate", interval.getStart().toDate());
 
-        final Map<Object[], List<DriverForgivenData>> retMap = new HashMap<Object[], List<DriverForgivenData>>();
+        final Map<DriverEventIndex, List<DriverForgivenData>> retMap = new HashMap<DriverEventIndex, List<DriverForgivenData>>();
 
         getSimpleJdbcTemplate().query(allEventForgiven, new ParameterizedRowMapper<DriverForgivenData>() {
             @Override
@@ -91,9 +90,7 @@ public class EventAggregationJDBCDAO extends SimpleJdbcDaoSupport implements Eve
                     eventType = NoteType.valueOf(rs.getInt("type")).getEventType(rs.getInt("aggType"));
                 }
                 // Create a key to group the aggregation amounts by
-                Object[] mapId = new Object[3];
-                mapId[0] = rs.getInt("driverID");
-                mapId[1] = eventType;
+                DriverEventIndex mapId = new DriverEventIndex(rs.getInt("driverID"),eventType);
 
                 List<DriverForgivenData> drList = retMap.get(mapId);
                 if (drList == null){
@@ -154,7 +151,7 @@ public class EventAggregationJDBCDAO extends SimpleJdbcDaoSupport implements Eve
         /*
          * Create a map to allow us to aggregate the totals by grouping by EventType.java which is unknown to the database. Otherwise, we would allow the database to group by.
          */
-        final Map<Object[], DriverForgivenEventTotal> driverForgivenEventTotalMap = new LinkedHashMap<Object[], DriverForgivenEventTotal>();
+        final Map<DriverEventIndex, DriverForgivenEventTotal> driverForgivenEventTotalMap = new LinkedHashMap<DriverEventIndex, DriverForgivenEventTotal>();
         getSimpleJdbcTemplate().query(allEventTotals, new ParameterizedRowMapper<DriverForgivenEventTotal>() {
             @Override
             public DriverForgivenEventTotal mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -164,9 +161,7 @@ public class EventAggregationJDBCDAO extends SimpleJdbcDaoSupport implements Eve
                     eventType = NoteType.valueOf(rs.getInt("type")).getEventType(rs.getInt("aggType"));
                 }
                 // Create a key to group the aggregation amounts by
-                Object[] mapId = new Object[3];
-                mapId[0] = rs.getInt("driverID");
-                mapId[1] = eventType;
+                DriverEventIndex mapId = new DriverEventIndex(rs.getInt("driverID"), eventType);
 
                 DriverForgivenEventTotal driverForgivenEventTotal = null;
                 if (driverForgivenEventTotalMap.get(mapId) != null) {
@@ -211,23 +206,13 @@ public class EventAggregationJDBCDAO extends SimpleJdbcDaoSupport implements Eve
         if (!driverForgivenEventTotalMap.isEmpty()) {
 
             // find forgiven data
-            Map<Object[],List<DriverForgivenData>> forgivenDataMap = findDriverForgivenDataByNoteIDs(groupIDs,interval,includeInactiveDrivers,includeZeroMilesDrivers);
-
-            // remove events without forgiven from main datamap
-            List<Object[]> removedKeys = new ArrayList<Object[]>();
-            for (Object[] dftKey : driverForgivenEventTotalMap.keySet()){
-                if (!forgivenDataMap.containsKey(dftKey))
-                    removedKeys.add(dftKey);
-            }
-
-            for (Object[] key: removedKeys)
-                driverForgivenEventTotalMap.remove(key);
+            Map<DriverEventIndex,List<DriverForgivenData>> forgivenDataMap = findDriverForgivenDataByGroups(groupIDs, interval, includeInactiveDrivers, includeZeroMilesDrivers);
 
             // for each main dataset
-            for (Map.Entry<Object[], DriverForgivenEventTotal> dftEntry : driverForgivenEventTotalMap.entrySet()){
+            for (Map.Entry<DriverEventIndex, DriverForgivenEventTotal> dftEntry : driverForgivenEventTotalMap.entrySet()){
                 DriverForgivenEventTotal dft = dftEntry.getValue();
                 Integer driverID = dft.getDriverID();
-                Object[] mapId = dftEntry.getKey();
+                DriverEventIndex mapId = dftEntry.getKey();
 
                 dft.setEventCountForgiven(0);
                 dft.setReasons("");
@@ -261,6 +246,19 @@ public class EventAggregationJDBCDAO extends SimpleJdbcDaoSupport implements Eve
                 }
             }
         }
+
+        // remove events without forgiven from main datamap
+        List<DriverEventIndex> removedKeys = new ArrayList<DriverEventIndex>();
+        for (Map.Entry<DriverEventIndex, DriverForgivenEventTotal> dftEntry : driverForgivenEventTotalMap.entrySet()){
+            DriverForgivenEventTotal value = dftEntry.getValue();
+            if (value.getEventCountForgiven()<=0){
+                removedKeys.add(dftEntry.getKey());
+            }
+        }
+
+        for (DriverEventIndex key: removedKeys)
+            driverForgivenEventTotalMap.remove(key);
+
 
         return Arrays.asList(driverForgivenEventTotalMap.values().toArray(new DriverForgivenEventTotal[0]));
     }

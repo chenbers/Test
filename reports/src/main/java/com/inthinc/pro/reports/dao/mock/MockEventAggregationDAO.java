@@ -4,6 +4,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
+import com.inthinc.pro.model.aggregation.DriverEventIndex;
 import com.inthinc.pro.model.aggregation.DriverForgivenData;
 import org.joda.time.Interval;
 
@@ -29,7 +30,7 @@ public class MockEventAggregationDAO implements EventAggregationDAO{
     }
 
     @Override
-    public Map<Object[], List<DriverForgivenData>> findDriverForgivenDataByNoteIDs(List<Integer> groupIDs, Interval interval, boolean includeInactiveDrivers, boolean includeZeroMilesDrivers) {
+    public Map<DriverEventIndex, List<DriverForgivenData>> findDriverForgivenDataByGroups(List<Integer> groupIDs, Interval interval, boolean includeInactiveDrivers, boolean includeZeroMilesDrivers) {
         return Collections.emptyMap();
     }
 

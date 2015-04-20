@@ -3,6 +3,7 @@ package com.inthinc.pro.dao;
 import java.util.List;
 import java.util.Map;
 
+import com.inthinc.pro.model.aggregation.DriverEventIndex;
 import com.inthinc.pro.model.aggregation.DriverForgivenData;
 import org.joda.time.Interval;
 
@@ -37,8 +38,8 @@ public interface EventAggregationDAO {
      */
     public List<DriverForgivenEventTotal> findDriverForgivenEventTotalsByGroups(List<Integer> groupIds,Interval interval, boolean includeInactiveDrivers, boolean includeZeroMilesDrivers);
 
-    public Map<Object[],List<DriverForgivenData>> findDriverForgivenDataByNoteIDs(List<Integer> groupIDs, final Interval interval, final boolean includeInactiveDrivers,
-                                                                    final boolean includeZeroMilesDrivers);
+    public Map<DriverEventIndex,List<DriverForgivenData>> findDriverForgivenDataByGroups(List<Integer> groupIDs, final Interval interval, final boolean includeInactiveDrivers,
+                                                                                 final boolean includeZeroMilesDrivers);
 
     /**
      * Returns the last event that was sent in for devices currently assigned to vehicles for the groups.
