@@ -135,7 +135,7 @@ public class AlertMessageJDBCDAOTest {
             mockEventSpeed.getVehicleID(); result = 1;
             mockEventSpeed.getDeviceID(); result = 1;
             mockEventSpeed.getOdometer(); result = 54000;
-            mockEventSpeed.getSpeed(); result = 75;
+            mockEventSpeed.getSpeed(); result = speed;
             mockEventSpeed.getLatitude(); result = 41.234;
             mockEventSpeed.getLongitude(); result = -111.8902;
             mockEventSpeed.getTopSpeed(); result = 75;
@@ -146,7 +146,7 @@ public class AlertMessageJDBCDAOTest {
             mockEvent.getVehicleID(); result = 1;
             mockEvent.getDeviceID(); result = 1;
             mockEvent.getOdometer(); result = 54000;
-            mockEvent.getSpeed(); result = 75;
+            mockEvent.getSpeed(); result = speed;
             mockEvent.getLatitude(); result = 41.234;
             mockEvent.getLongitude(); result = -111.8902;
             mockEvent.getAttrByType(EventAttr.UP_TO_DATE_STATUS); result = "2";
@@ -1403,7 +1403,7 @@ public class AlertMessageJDBCDAOTest {
 
 
     @Test
-    public final void testSpeedConversion() {
+    public final void testNoSpeedConversion() {
         expectExCrm(AlertMessageType.ALERT_TYPE_SPEEDING, MeasurementType.ENGLISH, 100);
 
         // Instantiate our parent class (necessary before instantiating nested class)
@@ -1435,5 +1435,40 @@ public class AlertMessageJDBCDAOTest {
             ++i;
         }
         assertEquals("100", result.get(16));
+    }
+
+    @Test
+    public final void testKMSpeedConversion() {
+        expectExCrm(AlertMessageType.ALERT_TYPE_SPEEDING, MeasurementType.METRIC, 100);
+
+        // Instantiate our parent class (necessary before instantiating nested class)
+        AlertMessageJDBCDAO alertMessageJDBCDAO = new AlertMessageJDBCDAO();
+
+        // Set the mocked version objects
+        alertMessageJDBCDAO.setGroupDAO(mockGroupDAO);
+        alertMessageJDBCDAO.setVehicleDAO(mockVehicleDAO);
+        alertMessageJDBCDAO.setAddressLookup(mockAddressLookup);
+        alertMessageJDBCDAO.setZoneDAO(mockZoneDAO);
+
+        // Instantiate the class we're testing
+        AlertMessageJDBCDAO.EzCrmParameterList parameterList = alertMessageJDBCDAO.new EzCrmParameterList();
+
+        parameterList.setLocal(Locale.getDefault());
+        parameterList.setMeasurementType(MeasurementType.ENGLISH);
+        parameterList.setEvent(mockEventSpeed);
+        parameterList.setAlertMessage(mockAlertMessage);
+        parameterList.setPerson(mockPerson);
+        parameterList.setDriver(mockDriver);
+
+        // Run the method  //Deencapsulation.invoke(parameterList, "getDriverOrgStructure", mockDriver);
+        List<String> result = parameterList.getParameterListTest();
+
+        // Test the result
+        int i = 0;
+        for (String s : result) {
+            System.out.println("["+i+"] "+s);
+            ++i;
+        }
+        assertEquals("160", result.get(16));
     }
 }
