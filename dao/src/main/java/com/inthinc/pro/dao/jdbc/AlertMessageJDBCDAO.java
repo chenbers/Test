@@ -987,10 +987,13 @@ public class AlertMessageJDBCDAO extends GenericJDBCDAO implements AlertMessageD
         }
 
         private void addSpeed(Event event) {
-            String tmp = new String();
             //#16 {SPEED} - fmt: NN (KPH | MPH)
-            tmp = String.format("%d", event.getSpeed());
-            parameterList.add(tmp);
+            Integer speed = event.getSpeed();
+            if (speed != null && personMeasurementType == MeasurementType.METRIC){
+                speed = MeasurementConversionUtil.convertSpeed(speed, personMeasurementType).intValue();
+            }
+
+            parameterList.add(String.format("%d", speed));
         }
 
         private void addEventParams(Event event, AlertMessage alertMessage) {
