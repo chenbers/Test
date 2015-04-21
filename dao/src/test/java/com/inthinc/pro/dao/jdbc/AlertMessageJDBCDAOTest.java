@@ -118,8 +118,12 @@ public class AlertMessageJDBCDAOTest {
         assertEquals(result, "");
         
     }
-    
-    private Expectations expectExCrm(final AlertMessageType alertType) {
+
+    private Expectations  expectExCrm(final AlertMessageType alertType){
+       return expectExCrm(alertType, MeasurementType.ENGLISH, 75);
+    }
+
+    private Expectations expectExCrm(final AlertMessageType alertType, final MeasurementType measurementType, final Integer speed) {
         return new NonStrictExpectations() {{
             mockAlertMessage.getAlertMessageType(); result = alertType;
             mockAlertMessage.getName(); result = "my Red Flag Alert";
@@ -152,7 +156,7 @@ public class AlertMessageJDBCDAOTest {
             mockEventIdle.getVehicleID(); result = 1;
             mockEventIdle.getDeviceID(); result = 1;
             mockEventIdle.getOdometer(); result = 54000;
-            mockEventIdle.getSpeed(); result = 75;
+            mockEventIdle.getSpeed(); result = speed;
             mockEventIdle.getLatitude(); result = 41.234;
             mockEventIdle.getLongitude(); result = -111.8902;
             mockEventIdle.getTotalIdling(); result = 3400;
@@ -162,7 +166,7 @@ public class AlertMessageJDBCDAOTest {
             
             mockPerson.getAcctID(); result = 1;
             mockPerson.getEmpid(); result = "4242";
-            mockPerson.getMeasurementType(); result = MeasurementType.ENGLISH;
+            mockPerson.getMeasurementType(); result = measurementType;
             mockPerson.getTimeZone(); result = TimeZone.getDefault();
             mockPerson.getFullName(); result= "Jonathan Wood";
             
@@ -1356,7 +1360,7 @@ public class AlertMessageJDBCDAOTest {
 
     @Test
     public final void testGetEzCrmParameterListALERT_TYPE_IDLING() {
-        
+
         // Methods that may be called in the execution of the method we're testing
         expectExCrm(AlertMessageType.ALERT_TYPE_IDLING);
 
@@ -1397,4 +1401,39 @@ public class AlertMessageJDBCDAOTest {
         assertEquals("56", result.get(18));
     }
 
+
+    @Test
+    public final void testSpeedConversion() {
+        expectExCrm(AlertMessageType.ALERT_TYPE_SPEEDING, MeasurementType.ENGLISH, 100);
+
+        // Instantiate our parent class (necessary before instantiating nested class)
+        AlertMessageJDBCDAO alertMessageJDBCDAO = new AlertMessageJDBCDAO();
+
+        // Set the mocked version objects
+        alertMessageJDBCDAO.setGroupDAO(mockGroupDAO);
+        alertMessageJDBCDAO.setVehicleDAO(mockVehicleDAO);
+        alertMessageJDBCDAO.setAddressLookup(mockAddressLookup);
+        alertMessageJDBCDAO.setZoneDAO(mockZoneDAO);
+
+        // Instantiate the class we're testing
+        AlertMessageJDBCDAO.EzCrmParameterList parameterList = alertMessageJDBCDAO.new EzCrmParameterList();
+
+        parameterList.setLocal(Locale.getDefault());
+        parameterList.setMeasurementType(MeasurementType.ENGLISH);
+        parameterList.setEvent(mockEventSpeed);
+        parameterList.setAlertMessage(mockAlertMessage);
+        parameterList.setPerson(mockPerson);
+        parameterList.setDriver(mockDriver);
+
+        // Run the method  //Deencapsulation.invoke(parameterList, "getDriverOrgStructure", mockDriver);
+        List<String> result = parameterList.getParameterListTest();
+
+        // Test the result
+        int i = 0;
+        for (String s : result) {
+            System.out.println("["+i+"] "+s);
+            ++i;
+        }
+        assertEquals("100", result.get(16));
+    }
 }
