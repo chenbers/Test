@@ -1454,7 +1454,7 @@ public class AlertMessageJDBCDAOTest {
         AlertMessageJDBCDAO.EzCrmParameterList parameterList = alertMessageJDBCDAO.new EzCrmParameterList();
 
         parameterList.setLocal(Locale.getDefault());
-        parameterList.setMeasurementType(MeasurementType.ENGLISH);
+        parameterList.setMeasurementType(MeasurementType.METRIC);
         parameterList.setEvent(mockEventSpeed);
         parameterList.setAlertMessage(mockAlertMessage);
         parameterList.setPerson(mockPerson);
@@ -1469,6 +1469,6 @@ public class AlertMessageJDBCDAOTest {
             System.out.println("["+i+"] "+s);
             ++i;
         }
-        assertEquals("160", result.get(16));
+        assertEquals("161", result.get(16));
     }
 }
