@@ -139,6 +139,14 @@ public class HOSJDBCDAO extends NamedParameterJdbcDaoSupport implements HOSDAO {
             "AND h.status NOT IN (31,39,47,48) ";
     private final static String DRIVER_STATUS_ONLY_FILTERED_SQL = DATE_DRIVER_FILTERED_SQL + 
             "AND h.status IN (0,1,2,3,4,7,8,24,29,30,32) ";
+
+    private final static String DATE_DRIVER_FILTERED_SQL_GROUPS = SELECT_SQL +
+            "AND h.deletedFlag = 0 AND d.groupID in (:groupIDs) " +
+            "AND h.logTime BETWEEN :startTime AND :endTime " +
+            "AND h.status NOT IN (31,39,47,48) ";
+    private final static String DRIVER_STATUS_ONLY_FILTERED_SQL_GRUPS = DATE_DRIVER_FILTERED_SQL +
+            "AND h.status IN (0,1,2,3,4,7,8,24,29,30,32) ";
+
     @Override
     public List<HOSRecord> getHOSRecords(Integer driverID, Interval interval, Boolean driverStatusOnly) {
         interval = getAdjustedInterval(driverID, interval);
@@ -151,6 +159,31 @@ public class HOSJDBCDAO extends NamedParameterJdbcDaoSupport implements HOSDAO {
         params.put("endTime", getDateString(interval.getEnd().toDate()));
 
         return getNamedParameterJdbcTemplate().query(sql, params, new HOSRecordRowMapper());
+    }
+
+    @Override
+    public Map<Integer, List<HOSRecord>> getHOSRecordsForGroups(List<Integer> groupIDs, Interval interval, Boolean driverStatusOnly) {
+        interval = getAdjustedInterval(groupIDs, interval);
+
+        String sql = driverStatusOnly ? DRIVER_STATUS_ONLY_FILTERED_SQL_GRUPS : DATE_DRIVER_FILTERED_SQL_GROUPS;
+        sql += "ORDER BY h.logTime DESC";
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("groupIDs", groupIDs);
+        params.put("startTime", getDateString(interval.getStart().toDate()));
+        params.put("endTime", getDateString(interval.getEnd().toDate()));
+
+        List<HOSRecord> hosList = getNamedParameterJdbcTemplate().query(sql, params, new HOSRecordRowMapper());
+        Map<Integer, List<HOSRecord>> hosMap = new HashMap<Integer, List<HOSRecord>>();
+
+        for (HOSRecord hosRecord: hosList){
+            List<HOSRecord> currentList = hosMap.get(hosRecord.getDriverID());
+            if (currentList == null)
+                currentList = new ArrayList<HOSRecord>();
+
+            currentList.add(hosRecord);
+            hosMap.put(hosRecord.getDriverID(), currentList);
+        }
+        return hosMap;
     }
 
     @Override
@@ -183,6 +216,19 @@ public class HOSJDBCDAO extends NamedParameterJdbcDaoSupport implements HOSDAO {
             "AND d.personID = p.personID AND d.driverId = ol.driverId and ol.occupantFlag > 0 " +
             "ORDER BY ol.loginTime";
 
+    private final static String SELECT_OCCUPANT_LOGS_FOR_GROUPS = "SELECT  ol.driverID, CONCAT(p.first, ' ', p.last) AS driverName, ol.vehicleID, " +
+            "ol.loginTime, COALESCE(ol.logoutTime, UTC_TIMESTAMP()) AS logoutTime," +
+            "ol.serviceId, ol.trailerId " +
+            "FROM hosvehiclelogin ol, person p, driver d, " +
+            /*Grab vehicle, interval records for driver*/
+            "(SELECT hvl.vehicleID, loginTime, COALESCE(logoutTime, UTC_TIMESTAMP()) AS logoutTime FROM hosvehiclelogin hvl, vehicle v WHERE hvl.driverId = driverID AND v.vehicleID=hvl.vehicleID AND ((loginTime BETWEEN :startTime AND :endTime) OR (COALESCE(logoutTime, UTC_TIMESTAMP())  BETWEEN :startTime AND :endTime) OR (loginTime <= :startTime AND COALESCE(logoutTime, UTC_TIMESTAMP()) >= :endTime))) dl " +
+            "WHERE 1=1 " +
+            /*Grab records that fall into time interval of driver records*/
+            "AND ol.vehicleId = dl.vehicleID " +
+            "AND ((ol.loginTime > dl.loginTime AND ol.loginTime < dl.logoutTime) OR (COALESCE(ol.logoutTime, UTC_TIMESTAMP()) > dl.loginTime AND COALESCE(ol.logoutTime, UTC_TIMESTAMP()) < dl.logoutTime) OR (ol.loginTime < dl.loginTime AND COALESCE(ol.logoutTime, UTC_TIMESTAMP()) > dl.logoutTime)) " +
+            "AND d.personID = p.personID AND d.driverId = ol.driverId and ol.occupantFlag > 0 and d.groupID in (:groupIDs) " +
+            "ORDER BY ol.loginTime";
+
 
     @Override
     public List<HOSOccupantLog> getHOSOccupantLogs(Integer driverID, Interval interval) {
@@ -207,7 +253,44 @@ public class HOSJDBCDAO extends NamedParameterJdbcDaoSupport implements HOSDAO {
 
         });
     }
-    
+
+    @Override
+    public Map<Integer, List<HOSOccupantLog>> getHOSOccupantLogsForGroups(List<Integer> groupIDs, Interval interval) {
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("groupIDs", groupIDs);
+        params.put("startTime", getDateString(interval.getStart().toDate()));
+        params.put("endTime", getDateString(interval.getEnd().toDate()));
+        List<HOSOccupantLog> logList = getNamedParameterJdbcTemplate().query(SELECT_OCCUPANT_LOGS_FOR_GROUPS, params, new ParameterizedRowMapper<HOSOccupantLog>() {
+
+            @Override
+            public HOSOccupantLog mapRow(ResultSet resultSet, int rowNum) throws SQLException {
+                HOSOccupantLog hosOccupantLog = new HOSOccupantLog();
+                hosOccupantLog.setDriverID(resultSet.getInt("driverID"));
+                hosOccupantLog.setDriverName(resultSet.getString("driverName"));
+                hosOccupantLog.setVehicleID(resultSet.getInt("vehicleID"));
+                hosOccupantLog.setLogTime(getDateFromString(resultSet.getString("loginTime")));
+                hosOccupantLog.setEndTime(getDateFromString(resultSet.getString("logoutTime")));
+                hosOccupantLog.setServiceID(resultSet.getString("serviceId"));
+                hosOccupantLog.setTrailerID(resultSet.getString("trailerId"));
+                return hosOccupantLog;
+            }
+
+        });
+
+        Map<Integer, List<HOSOccupantLog>> logMap = new HashMap<Integer, List<HOSOccupantLog>>();
+        for (HOSOccupantLog log: logList){
+            List<HOSOccupantLog> existingList = logMap.get((Integer)log.getDriverID());
+            if (existingList == null)
+                existingList = new ArrayList<HOSOccupantLog>();
+
+            existingList.add(log);
+            logMap.put((Integer)log.getDriverID(), existingList);
+        }
+
+
+        return logMap;
+    }
+
     private final static String GROUP_MILEAGE_SQL = "SELECT v.groupID, sum(odometer6) AS distance FROM agg a, vehicle v, groupVehicleFlat g " +
             "WHERE a.vehicleID = v.vehicleID  AND g.vehicleID = v.vehicleID AND g.groupID = :groupID AND a.aggDate between :startTime and :endTime "+
             "AND ((not :noDriver AND a.driverID != :unknownDriverID) OR (:noDriver AND a.driverID = :unknownDriverID)) " +
@@ -1062,7 +1145,10 @@ public class HOSJDBCDAO extends NamedParameterJdbcDaoSupport implements HOSDAO {
         return getNamedParameterJdbcTemplate().update(INSERT_CHANGE_LOG_SQL, params);
     }
 
-    private final static String PREVIOUS_LOG_STARTTIME_SQL = "SELECT logTime FROM hoslog WHERE driverID = :driverID AND logTime < :startTime AND status IN (0,1,2,3,4,7,8,24,29,30,32) ORDER by logtime desc LIMIT 1";    
+    private final static String PREVIOUS_LOG_STARTTIME_SQL = "SELECT logTime FROM hoslog WHERE driverID = :driverID AND logTime < :startTime AND status IN (0,1,2,3,4,7,8,24,29,30,32) ORDER by logtime desc LIMIT 1";
+
+    private final static String PREVIOUS_LOG_STARTTIME_SQL_GROUPS = "SELECT h.logTime FROM hoslog h, driver d WHERE h.driverID = d.driverID and d.groupID in (:groupIDs)  AND h.logTime < :startTime AND h.status IN (0,1,2,3,4,7,8,24,29,30,32) ORDER by h.logtime desc LIMIT 1";
+
 
     private Interval getAdjustedInterval(Integer driverID, Interval interval) {
         // this is necessary to insure that a record that overlaps interval start is included in the query
@@ -1070,6 +1156,19 @@ public class HOSJDBCDAO extends NamedParameterJdbcDaoSupport implements HOSDAO {
         params.put("driverID", driverID);
         params.put("startTime", getDateString(interval.getStart().toDate()));
         String previousLogDate = queryForNullableObject(PREVIOUS_LOG_STARTTIME_SQL, String.class, params);
+        if (previousLogDate == null) {
+            return interval;
+        }
+        return new Interval(new DateTime(getDateFromString(previousLogDate), DateTimeZone.UTC), interval.getEnd().withZone(DateTimeZone.UTC));
+    }
+
+
+    private Interval getAdjustedInterval(List<Integer> groupIDs, Interval interval) {
+        // this is necessary to insure that a record that overlaps interval start is included in the query
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("groupIDs", groupIDs);
+        params.put("startTime", getDateString(interval.getStart().toDate()));
+        String previousLogDate = queryForNullableObject(PREVIOUS_LOG_STARTTIME_SQL_GROUPS, String.class, params);
         if (previousLogDate == null) {
             return interval;
         }

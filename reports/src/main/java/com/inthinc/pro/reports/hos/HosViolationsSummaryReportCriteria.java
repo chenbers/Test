@@ -47,16 +47,21 @@ public class HosViolationsSummaryReportCriteria extends ViolationsSummaryReportC
     }
     public void init(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, Interval interval) {
         List<Group> reportGroupList = getReportGroupList(groupIDList, accountGroupHierarchy);
+        List<Integer> allGroupIDs = new ArrayList<Integer>();
+        for (Group grup: reportGroupList){
+            allGroupIDs.add(grup.getGroupID());
+        }
+
         List<Driver> driverList = getReportDriverList(reportGroupList);
         Map<Driver, List<HOSRecord>> driverHOSRecordMap = new HashMap<Driver, List<HOSRecord>> ();
+        Map<Integer, List<HOSRecord>> hosRecordMap = hosDAO.getHOSRecordsForGroups(allGroupIDs, interval, false);
+
         for (Driver driver : driverList) {
             if(includeDriver(getDriverDAO(), driver.getDriverID(), interval)){
                 if (driver.getDot() == null)
                     continue;
                 
-                DateTimeZone dateTimeZone = DateTimeZone.forTimeZone(driver.getPerson().getTimeZone());
-                Interval queryInterval = DateTimeUtil.getExpandedInterval(interval, dateTimeZone, RuleSetFactory.getDaysBackForRuleSetType(driver.getDot()), RuleSetFactory.getDaysForwardForRuleSetType(driver.getDot()));
-                driverHOSRecordMap.put(driver, hosDAO.getHOSRecords(driver.getDriverID(), queryInterval, false));
+                driverHOSRecordMap.put(driver, hosRecordMap.get(driver.getDriverID()));
             }
         }
         

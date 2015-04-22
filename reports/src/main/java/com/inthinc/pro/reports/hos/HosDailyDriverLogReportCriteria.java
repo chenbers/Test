@@ -140,6 +140,10 @@ public class HosDailyDriverLogReportCriteria extends ReportCriteria {
     public void init(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, Interval interval) {
         List<Group> reportGroupList = getReportGroupList(groupIDList, accountGroupHierarchy);
         List<Driver> reportDriverList = getReportDriverList(reportGroupList);
+        List<Integer> allGroupIDs = new ArrayList<Integer>();
+        for (Group grup: reportGroupList){
+            allGroupIDs.add(grup.getGroupID());
+        }
 
         Collections.sort(reportDriverList, new Comparator<Driver>() {
             @Override
@@ -170,8 +174,10 @@ public class HosDailyDriverLogReportCriteria extends ReportCriteria {
         Account account = null;
         List<ReportCriteria> groupCriteriaList = new ArrayList<ReportCriteria>();
 
-        Interval expandedInterval = DateTimeUtil.getExpandedInterval(interval, DateTimeZone.UTC, MAX_RULESET_DAYSBACK, 7); 
-        
+        Interval expandedInterval = DateTimeUtil.getExpandedInterval(interval, DateTimeZone.UTC, MAX_RULESET_DAYSBACK, 7);
+        Map<Integer, List<HOSOccupantLog>> occupantLogMap = hosDAO.getHOSOccupantLogsForGroups(allGroupIDs, expandedInterval);
+        Map<Integer, List<HOSRecord>> hosRecordMap = hosDAO.getHOSRecordsForGroups(allGroupIDs, expandedInterval, false);
+
         for (Driver driver : reportDriverList) {
             if (account == null) {
                 account = fetchAccount(driver.getPerson().getAcctID());
@@ -180,7 +186,7 @@ public class HosDailyDriverLogReportCriteria extends ReportCriteria {
             initMainOfficeInfo(accountGroupHierarchy, account, driver.getGroupID());
             Address terminalAddress = getTerminalAddress(accountGroupHierarchy, driver);
             Integer driverID = driver.getDriverID();
-            initDriverCriteria(accountGroupHierarchy, driverID, interval, expandedInterval, driver, account, terminalAddress);
+            initDriverCriteria(accountGroupHierarchy, occupantLogMap, hosRecordMap, driverID, interval, expandedInterval, driver, account, terminalAddress);
             groupCriteriaList.addAll(criteriaList);
         }
 
@@ -246,6 +252,16 @@ public class HosDailyDriverLogReportCriteria extends ReportCriteria {
         List<HOSOccupantLog> hosOccupantLogList = hosDAO.getHOSOccupantLogs(driverID, expandedInterval);
         initCriteriaList(interval, expandedInterval, hosRecordList, null, hosOccupantLogList, driver, account, terminalAddress);
     }
+
+    private void initDriverCriteria(GroupHierarchy accountGroupHierarchy, Map<Integer, List<HOSOccupantLog>> occupantLogMap, Map<Integer, List<HOSRecord>> hosRecordMap, Integer driverID,
+                                    Interval interval, Interval expandedInterval,
+                                    Driver driver, Account account,
+                                    Address terminalAddress) {
+        List<HOSRecord> hosRecordList = hosRecordMap.get(driverID);
+        List<HOSOccupantLog> hosOccupantLogList = occupantLogMap.get(driverID);
+        initCriteriaList(interval, expandedInterval, hosRecordList, null, hosOccupantLogList, driver, account, terminalAddress);
+    }
+
 
     protected List<Driver> getReportDriverList(List<Group> reportGroupList){
         return getReportDriverList(reportGroupList, getIncludeInactiveDrivers(), getHosDriversOnly());

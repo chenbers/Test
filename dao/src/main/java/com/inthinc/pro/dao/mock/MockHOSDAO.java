@@ -255,6 +255,11 @@ public class MockHOSDAO implements HOSDAO, GenericDAO<HOSRecord, Long> {
         return filter(getMockHOSRecords(), driverID, interval);
     }
 
+    @Override
+    public Map<Integer, List<HOSRecord>> getHOSRecordsForGroups(List<Integer> groupIDs, Interval interval, Boolean driverStatusOnly) {
+        return null;
+    }
+
     private List<HOSRecord> filter(List<HOSRecord> mockHOSRecords, Integer driverID, Interval interval) {
         List<HOSRecord> filteredList = new ArrayList<HOSRecord>();
         if (interval != null) {
@@ -456,6 +461,11 @@ public class MockHOSDAO implements HOSDAO, GenericDAO<HOSRecord, Long> {
     @Override
     public List<HOSRecord> getHOSRecordAtSummaryTime(Integer driverID, Integer vehicleID, Date summaryTime, Date startTime, Date endTime) {
         // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public Map<Integer, List<HOSOccupantLog>> getHOSOccupantLogsForGroups(List<Integer> groupIDs, Interval interval) {
         return null;
     }
 }
