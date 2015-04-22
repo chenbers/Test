@@ -23,6 +23,7 @@ public class PagingSafetyEventsBean extends PagingEventsBean {
 	static {
 		CATEGORIES = new ArrayList<EventCategory>();
 		CATEGORIES.add(EventCategory.VIOLATION);
+		CATEGORIES.add(EventCategory.TWO_HOURS_BREAK);
 	}
 
 	@Override
