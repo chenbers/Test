@@ -58,6 +58,8 @@ public class AutoAnnotationBuilder extends AnnotationBuilder {
         if (embedder == null){
             embedder = new AutoEmbedder(pageList);
             embedder.useExecutorService(MoreExecutors.newDirectExecutorService());
+            //embedder.useExecutorService(MoreExecutors.sameThreadExecutor());
+
             embedder.useConfiguration(buildConfiguration());
             embedder.useStepsFactory(buildStepsFactory(buildConfiguration()));
         }

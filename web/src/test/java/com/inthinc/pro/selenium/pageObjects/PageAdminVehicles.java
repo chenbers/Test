@@ -52,7 +52,8 @@ public class PageAdminVehicles extends AdminTables {
 //        public DropDown filterByProductType()			{return new DropDown(AdminVehiclesEnum.PRODUCT);}
         public DropDown product()						{return new DropDown(AdminVehiclesEnum.PRODUCT);}
 //        public DropDown filterByProductType()			{return new DHXDropDown(AdminVehiclesEnum.PRODUCT2, enums);}
-        public DropDown filterByZoneType()				{return new DropDown(AdminVehiclesEnum.ZONE_TYPE);}
+//chenbers        public DropDown filterByZoneType()				{return new DropDown(AdminVehiclesEnum.ZONE_TYPE);}
+        public DropDown ZoneType()				{return new DropDown(AdminVehiclesEnum.ZONE_TYPE);}
         public DropDown filterByStatus()				{return new DropDown(AdminVehiclesEnum.STATUS);}
     }
 

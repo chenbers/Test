@@ -77,11 +77,10 @@ Given I am on the Login page
 Then I validate the User Name textfield is present
 And I validate the Password textfield is present
 And I validate the Login button is present
-And I validate the Legal Notice link is present
-And I validate the Privacy Policy link is present
-And I validate the Forgot Username Or Password link is present
-And I validate the Logo text is present
+And I validate the ForgotUsernameOrPassword link is present
 And I validate the Copyright text is present
+And I validate the Privacy link is present
+And I validate the Terms Of Service link is present
 
 Scenario: TC1251 - Log In - User Name Incorrect Case Error
 Given I am on the Login page

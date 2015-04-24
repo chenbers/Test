@@ -9,8 +9,8 @@ public enum FormsManageEnum implements SeleniumEnums {
     //No longer on page SEARCH_HEADER("Search:", "//div[@id='staging-forms-table_filter']"),
     //No longer on page FORMS_HEADER("Forms", "//label[@for='formSelection']"),
     
-    NEW_FORM_BUTTON(null, "//i[@class='icon-plus icon-large']"),
-    
+    //NEW_FORM_BUTTON(null, "//i[@class='icon-plus icon-large']"),
+    NEW_FORM_BUTTON(null, "//a[@href='/forms/build'[@class='btn btn-inthinc[@pull-left']"),
     RECORDS_DROPDOWN("records per page", "//select[@name='staging-forms-table_length']"),
     SEARCH_TEXTFIELD(null, "//div[@id='staging-forms-table_filter']/label/input"),
     

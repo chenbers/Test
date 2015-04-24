@@ -94,7 +94,6 @@ public class PageAdminAddEditVehicle extends AdminBar {
 		public TextField notifyOnHardBump() 	{return new TextField(AdminVehicleEditEnum.TXTFIELD_HARD_BUMP);}
 		public TextField notifyOnUnsafeTurn() 	{return new TextField(AdminVehicleEditEnum.TXTFIELD_UNSAFE_TURN);}
 		public TextField notifyOnIdlingTimeout(){return new TextField(AdminVehicleEditEnum.TXTFIELD_IDLING_THRESHOLD);}
-		
 		public TextField VIN()				{return new TextField(AdminVehicleEditEnum.TXTFIELD_VIN);        }
         public TextField make()				{return new TextField(AdminVehicleEditEnum.TXTFIELD_MAKE);       }
         public TextField model()			{return new TextField(AdminVehicleEditEnum.TXTFIELD_MODEL);      }

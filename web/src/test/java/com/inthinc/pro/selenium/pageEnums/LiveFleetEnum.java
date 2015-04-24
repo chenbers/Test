@@ -20,9 +20,9 @@ public enum LiveFleetEnum implements SeleniumEnums {
     TEXT_POSITION_NEED_INDEX(null, "dispatchForm:driversDataTable:###:position"),
     
     BUTTON_REFRESH(null, "//img[@title='Refresh']"),
-    
-    MAP_MARKER(null, "//div[@class='gmnoprint' and @title]"),
-
+    //chenbers
+    //MAP_MARKER(null, "//div[@class='gmnoprint' and @title]"),
+    MAP_MARKER(null, "//id='liveFleetVehicleBubbles:mapMarkers'"),
     HEADER_BOX_LIVE_FLEET("Live Fleet", "//div[@id='defaultMessage']/h2"),
     LINK_LIVE_FLEET_REFRESH(null, "//img[@alt='Refresh']"),
     TEXTFIELD_LIVE_FLEET_FIND_ADDRESS(null, "liveFleetAddressTextBox"),

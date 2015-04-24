@@ -86,6 +86,14 @@ public class PageLogin extends Masthead {
     	public TextLink forgotUsernameOrPassword(){
     		return new TextLink(LoginEnum.FORGOT_USERNAME_LINK);
     	}
+    	public TextLink termsOfService(){
+    		return new TextLink(LoginEnum.TERMS_OF_SERVICE_LINK);
+    	}
+    	public TextLink privacy(){
+    		return new TextLink(LoginEnum.PRIVACY_POLICY_LINK);
+    	}
+    	
+
     }
     
     @Override

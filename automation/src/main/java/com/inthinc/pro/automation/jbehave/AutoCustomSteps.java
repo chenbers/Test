@@ -151,7 +151,9 @@ public class AutoCustomSteps {
     @Composite(steps = {
             "Given I am using as the default user for my user",
             "Given I log in"})
-    public void givenIAmLoggedIn(){}
+    public void givenIAmLoggedIn(){
+    	System.out.println("chenbers debug 1....");
+    }
 
 
     @Given("I am logged in $params")
@@ -159,6 +161,7 @@ public class AutoCustomSteps {
             "Given I am using <params> for my user",
             "Given I log in"})
     public void givenIAmLoggedInAs(@Named("params")String params){
+    	System.out.println("chenbers debug 2....");
     }
 
     @Given("I log in")
@@ -184,6 +187,7 @@ public class AutoCustomSteps {
         if (loginUser.get() != null){
             changeUserNameAndPassword(loginUser.get().getUsername(), apb.getPassword());
         }
+        System.out.println("Chenbers I go back to the default user: " + loginUser.get().getUsername() +" and "+ apb.getPassword());
     }
     
     @Given("I bookmark the page")
@@ -214,13 +218,16 @@ public class AutoCustomSteps {
         } else {
             return;
         }
-        
+        //System.out.println("Chenbers 1:" +  loginUser.get().getUsername());
+        System.out.println("Chenbers :I am using $params for my user " + users.get(0) +" and " + apb.getPassword());
+        System.out.println("Chenbers :I am using $params for my user " + users.get(1) +" and " + apb.getPassword());
         rest.set(new RestCommands(users.get(0), apb.getPassword()));
         loginUser.set(rest.get().getObject(User.class, users.get(1)));
         loginUser.get().setPerson(rest.get().getObject(Person.class, loginUser.get().getPersonID()));
         loginAccount.set(rest.get().getObject(Account.class, null));
 
         changeUserNameAndPassword(loginUser.get().getUsername(), apb.getPassword());
+    
     }
     
     @Then("I verify $lookfor is on the page")

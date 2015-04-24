@@ -45,8 +45,8 @@ public enum AdminVehicleEditEnum implements SeleniumEnums {
     TXTFIELD_ZERO_TO_25(null						, "//input[@id='edit-form:speed0Input']"),
     TXTFIELD_26_TO_50(null							, "//input[@id='edit-form:speed5Input']"),
     TXTFIELD_51_TO_75(null							, "//input[@id='edit-form:speed10Input']"),
-    TXTFIELD_MAX_SPEED(null							, "//input[@id='edit-form:editVehicle_maxSpeedInput']"),
-
+   //chenbers TXTFIELD_MAX_SPEED(null							, "//input[@id='edit-form:editVehicle_maxSpeedInput']"),
+    TXTFIELD_MAX_SPEED(null							, "//input[@id='edit-form:speedLimitInput']"),
     LABEL_AUTOLOGOFF("Auto Log Off:"				, "//table[@id='edit-form:editVehicle-autoLogoff']/../../td[1]"),
     LABEL_ASSIGN_DRIVER("Assigned Driver:"			, "//span[@id='edit-form:driverID']/../../td[1]"),
 

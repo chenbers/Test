@@ -75,6 +75,7 @@ public enum AdminVehicleDetailsEnum implements SeleniumEnums {
     TXTFIELD_VIN(null          ,"edit-form:editVehicle-vin"),
     TXTFIELD_MAKE(""           ,"edit-form:editVehicle-make"),
     TXTFIELD_MODEL(""          ,"edit-form:editVehicle-model"),
+    TXTFIELD_YEAR(""           ,"edit-form:editVehicle-year"),
     TXTFIELD_COLOR(""          ,"edit-form:editVehicle-color"),
     TXTFIELD_WEIGHT(""         ,"edit-form:editVehicle-weight"),
     TXTFIELD_LICENCE(""        ,"edit-form:editVehicle-license"),
@@ -86,8 +87,10 @@ public enum AdminVehicleDetailsEnum implements SeleniumEnums {
     DROPDOWN_YEAR(""           ,"edit-form:editVehicle-year"),
     DROPDOWN_STATE(""          ,"edit-form:editVehicle-state"),
     DROPDOWN_STATUS(""         ,"edit-form:editVehicle-status"),
-    DROPDOWN_ZONE(null         ,"//*[@id='edit-form:editVehicle-type']"),
-    DROPDOWN_DOT(null 		   ,"//*[@id='edit-form:editVehicle-DOT']"),
+    DROPDOWN_ZONE(null         ,"edit-form:editVehicle-type"),
+    DROPDOWN_DOT(null 		   ,"edit-form:editVehicle-DOT"),
+    //DROPDOWN_ZONE(null         ,"//*[@id='edit-form:editVehicle-type']"),
+    //DROPDOWN_DOT(null 		   ,"//*[@id='edit-form:editVehicle-DOT']"),
     
     DHXDROP_TEAM(""            ,"edit-form:editVehicle-groupID"),
 

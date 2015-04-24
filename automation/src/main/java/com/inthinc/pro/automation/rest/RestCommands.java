@@ -112,6 +112,7 @@ public class RestCommands {
     public <T extends BaseEntity> T getObject(Class<T> type, Object id){
         String name = type.getSimpleName().toLowerCase();
         GetMethod get = new GetMethod(baseUrl + name + (id==null ? "" : "/" + id));
+        System.out.println("Chenbers debug:"+ name + " and " + get);
         try {
             return ObjectConverter.convertXMLToObject(http.httpRequest(get), name, type);
         } catch (AutoHTTPException e) {

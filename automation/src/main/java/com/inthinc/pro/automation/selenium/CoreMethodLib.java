@@ -48,7 +48,9 @@ import com.thoughtworks.selenium.webdriven.WebDriverBackedSelenium;
  */
 public class CoreMethodLib extends WebDriverBackedSelenium implements CoreMethodInterface {
 
-    public static Integer PAGE_TIMEOUT = 7000;// 30000;
+    //chenbers 
+	//public static Integer PAGE_TIMEOUT = 7000;// 30000;
+	public static Integer PAGE_TIMEOUT = 30000;// 30000;
     private ErrorCatcher errors;
     private SeleniumEnumWrapper myEnum;
     private final Browsers browser;

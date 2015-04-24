@@ -27,6 +27,7 @@ public class AutoMethodParser {
 
     public static Object[] getParameters(String stepAsString, Method method) throws NoSuchMethodException {
         try {
+        	System.out.println("chenbers AutoMethodParser debug:" + stepAsString);
             Class<?>[] parameters = method.getParameterTypes();
             Object[] passParameters = new Object[parameters.length];
 

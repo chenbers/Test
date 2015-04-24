@@ -8,6 +8,7 @@ import com.thoughtworks.selenium.DefaultSelenium;
 public class MapMarkerSteps {
 	
 	PageLiveFleet liveFleet = new PageLiveFleet();
+
 	
 	@When("I wait")
 	public void whenIWait() throws InterruptedException {
@@ -18,4 +19,5 @@ public class MapMarkerSteps {
 	public void whenIEvaluateJavascript(DefaultSelenium selenium) {
 		selenium.getEval("optimization : false;");
 	}
+	
 }
