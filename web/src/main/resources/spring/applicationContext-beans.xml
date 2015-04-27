@@ -830,6 +830,8 @@
 
   <bean id="timeZonesBean" class="com.inthinc.pro.backing.TimeZonesBean" scope="session" init-method="initBean"/>
 
-  <bean id="serverInfoBean" class="com.inthinc.pro.backing.ServerInfoBean" scope="session"/>
+  <bean id="serverInfoBean" class="com.inthinc.pro.backing.ServerInfoBean" scope="session">
+    <property name="hostname" value="${webnode.hostname}" />
+  </bean>
 
 </beans>
