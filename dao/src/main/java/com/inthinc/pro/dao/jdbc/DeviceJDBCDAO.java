@@ -36,7 +36,7 @@ public class DeviceJDBCDAO extends SimpleJdbcDaoSupport implements DeviceDAO{
     private static final String DEVICE_SUFFIX = "FROM (select d.*, vdd.vehicleID, veh.name vehicleName from device d " +
             " LEFT OUTER JOIN vddlog vdd ON (d.deviceID = vdd.deviceID and vdd.stop is null)" +
             " LEFT OUTER JOIN vehicle veh on (veh.vehicleID = vdd.vehicleID)" +
-            " ) d where d.deviceID = :deviceID ";
+            " ORDER BY vdd.start DESC) d where d.deviceID = :deviceID LIMIT 1 ";
 
     private static final String DEVICE_SECOND = "FROM (select d.*, vdd.vehicleID, veh.name vehicleName from device d " +
             " LEFT OUTER JOIN vddlog vdd ON (d.deviceID = vdd.deviceID and vdd.stop is null)" +
