@@ -173,10 +173,8 @@ class DeviceView implements Comparable<DeviceView> {
         DeviceView that = (DeviceView) o;
 
         if (accountID != null ? !accountID.equals(that.accountID) : that.accountID != null) return false;
-        if (activated != null ? !activated.equals(that.activated) : that.activated != null) return false;
         if (altIMEI != null ? !altIMEI.equals(that.altIMEI) : that.altIMEI != null) return false;
         if (baseID != null ? !baseID.equals(that.baseID) : that.baseID != null) return false;
-        if (creatd != null ? !creatd.equals(that.creatd) : that.creatd != null) return false;
         if (deviceID != null ? !deviceID.equals(that.deviceID) : that.deviceID != null) return false;
         if (emuMD5 != null ? !emuMD5.equals(that.emuMD5) : that.emuMD5 != null) return false;
         if (firmwareVersion != null ? !firmwareVersion.equals(that.firmwareVersion) : that.firmwareVersion != null)
@@ -184,14 +182,11 @@ class DeviceView implements Comparable<DeviceView> {
         if (glCode != null ? !glCode.equals(that.glCode) : that.glCode != null) return false;
         if (imei != null ? !imei.equals(that.imei) : that.imei != null) return false;
         if (mcmID != null ? !mcmID.equals(that.mcmID) : that.mcmID != null) return false;
-        if (modified != null ? !modified.equals(that.modified) : that.modified != null) return false;
         if (name != null ? !name.equals(that.name) : that.name != null) return false;
         if (phone != null ? !phone.equals(that.phone) : that.phone != null) return false;
         if (productVer != null ? !productVer.equals(that.productVer) : that.productVer != null) return false;
         if (serialNum != null ? !serialNum.equals(that.serialNum) : that.serialNum != null) return false;
         if (sim != null ? !sim.equals(that.sim) : that.sim != null) return false;
-        if (vehicleID != null ? !vehicleID.equals(that.vehicleID) : that.vehicleID != null) return false;
-        if (vehicleName != null ? !vehicleName.equals(that.vehicleName) : that.vehicleName != null) return false;
         if (witnessVersion != null ? !witnessVersion.equals(that.witnessVersion) : that.witnessVersion != null)
             return false;
 
@@ -201,7 +196,6 @@ class DeviceView implements Comparable<DeviceView> {
     @Override
     public int hashCode() {
         int result = accountID != null ? accountID.hashCode() : 0;
-        result = 31 * result + (activated != null ? activated.hashCode() : 0);
         result = 31 * result + (altIMEI != null ? altIMEI.hashCode() : 0);
         result = 31 * result + (baseID != null ? baseID.hashCode() : 0);
         result = 31 * result + (deviceID != null ? deviceID.hashCode() : 0);
@@ -215,11 +209,7 @@ class DeviceView implements Comparable<DeviceView> {
         result = 31 * result + (productVer != null ? productVer.hashCode() : 0);
         result = 31 * result + (serialNum != null ? serialNum.hashCode() : 0);
         result = 31 * result + (sim != null ? sim.hashCode() : 0);
-        result = 31 * result + (vehicleID != null ? vehicleID.hashCode() : 0);
-        result = 31 * result + (vehicleName != null ? vehicleName.hashCode() : 0);
         result = 31 * result + (witnessVersion != null ? witnessVersion.hashCode() : 0);
-        result = 31 * result + (creatd != null ? creatd.hashCode() : 0);
-        result = 31 * result + (modified != null ? modified.hashCode() : 0);
         return result;
     }
 
@@ -243,7 +233,6 @@ class DeviceView implements Comparable<DeviceView> {
     public String toString() {
         return "DeviceView {" +
                 "\n accountID=" + accountID +
-                "\n, activated=" + activated +
                 "\n, altIMEI='" + altIMEI + '\'' +
                 "\n, baseID=" + baseID +
                 "\n, deviceID=" + deviceID +
@@ -257,11 +246,7 @@ class DeviceView implements Comparable<DeviceView> {
                 "\n, productVer=" + productVer +
                 "\n, serialNum='" + serialNum + '\'' +
                 "\n, sim='" + sim + '\'' +
-                "\n, vehicleID=" + vehicleID +
-                "\n, vehicleName='" + vehicleName + '\'' +
                 "\n, witnessVersion=" + witnessVersion +
-                "\n, creatd=" + creatd +
-                "\n, modified=" + modified +
                 "\n }";
     }
 
