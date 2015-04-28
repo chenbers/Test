@@ -41,13 +41,13 @@ public class DeviceJDBCDAO extends SimpleJdbcDaoSupport implements DeviceDAO{
     private static final String DEVICE_SECOND = "FROM (select d.*, vdd.vehicleID, veh.name vehicleName from device d " +
             " LEFT OUTER JOIN vddlog vdd ON (d.deviceID = vdd.deviceID and vdd.stop is null)" +
             " LEFT OUTER JOIN vehicle veh on (veh.vehicleID = vdd.vehicleID)" +
-            " ORDER BY vdd.start DESC) d LIMIT 1 ";
+            " ORDER BY vdd.start DESC) d ";
 
-    private static final String GET_DEVICE_IN = "select " + DEVICE_COLUMNS_STRING + " " + DEVICE_SECOND + "where d.acctID=:acctID" ;
+    private static final String GET_DEVICE_IN = "select " + DEVICE_COLUMNS_STRING + " " + DEVICE_SECOND + "where d.acctID=:acctID  LIMIT 1" ;
 
-    private static final String FIND_BY_IMEI = "select " + DEVICE_COLUMNS_STRING + " " + DEVICE_SECOND + "where imei like :imei";
+    private static final String FIND_BY_IMEI = "select " + DEVICE_COLUMNS_STRING + " " + DEVICE_SECOND + "where imei like :imei  LIMIT 1";
 
-    private static final String FIND_BY_SERIALNUM = "select " + DEVICE_COLUMNS_STRING + " " + DEVICE_SECOND + " where serialNum like :serialNum";
+    private static final String FIND_BY_SERIALNUM = "select " + DEVICE_COLUMNS_STRING + " " + DEVICE_SECOND + " where serialNum like :serialNum  LIMIT 1";
 
     private static final String INSERT_DEVICE = "INSERT INTO device" +
                     "(acctID, baseID, status, productVer, firmVer, witnessVer, serialNum, name, imei, mcmid, altImei, sim, phone, emuMd5, modified)" +
