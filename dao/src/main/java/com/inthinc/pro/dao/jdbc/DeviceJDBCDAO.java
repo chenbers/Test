@@ -41,7 +41,7 @@ public class DeviceJDBCDAO extends SimpleJdbcDaoSupport implements DeviceDAO{
     private static final String DEVICE_SECOND = "FROM (select d.*, vdd.vehicleID, veh.name vehicleName from device d " +
             " LEFT OUTER JOIN vddlog vdd ON (d.deviceID = vdd.deviceID and vdd.stop is null)" +
             " LEFT OUTER JOIN vehicle veh on (veh.vehicleID = vdd.vehicleID)" +
-            " ) d ";
+            " ORDER BY vdd.start DESC) d LIMIT 1 ";
 
     private static final String GET_DEVICE_IN = "select " + DEVICE_COLUMNS_STRING + " " + DEVICE_SECOND + "where d.acctID=:acctID" ;
 
