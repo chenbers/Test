@@ -28,6 +28,7 @@ public enum ProductType implements BaseEnum, FilterableEnum {
     WAYSMART(2, 2, "waySmart", 2), //xx10
 //    TIWIPRO_R71(4, 3, ProductName.TIWIPRO),
     TIWIPRO(16, 1, "tiwiPro", 3, 5, 7), //xxx1
+    XIRGO(8, 8, "xirgo", 8),
     WS850(2048, 4, "WS850", 12), //x100
 
     ;
