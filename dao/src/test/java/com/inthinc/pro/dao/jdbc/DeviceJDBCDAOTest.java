@@ -112,8 +112,24 @@ public class DeviceJDBCDAOTest extends BaseJDBCTest {
             Integer deviceID = entry.getKey();
             DeviceView jdbcDevice = entry.getValue();
             DeviceView hessianDevice = hessianViewMap.get(deviceID);
-
             Assert.assertEquals("Different device for deviceID: " + deviceID, hessianDevice, jdbcDevice);
+
+            DeviceView byIdJdbc = new DeviceView(deviceJDBCDAO.findByID(deviceID));
+            Assert.assertEquals("By id differences for deviceID: " + deviceID, hessianDevice, byIdJdbc);
+
+            if (jdbcDevice.getImei() != null) {
+                Device device = deviceJDBCDAO.findByIMEI(jdbcDevice.getImei());
+                assertNotNull(device);
+                DeviceView byImeiJdbc = new DeviceView(device);
+                Assert.assertEquals("By imei differences for deviceID: " + deviceID, hessianDevice, byImeiJdbc);
+            }
+
+            if (jdbcDevice.getSerialNum() != null) {
+                Device device = deviceJDBCDAO.findBySerialNum(jdbcDevice.getSerialNum());
+                assertNotNull(device);
+                DeviceView bySerialNumJdbc = new DeviceView(device);
+                Assert.assertEquals("By serial num differences for deviceID: " + deviceID, hessianDevice, bySerialNumJdbc);
+            }
         }
     }
 }
