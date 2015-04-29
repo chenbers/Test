@@ -45,7 +45,7 @@ public class EventAggregationJDBCDAO extends SimpleJdbcDaoSupport implements Eve
                     +"FROM groups g  "
                     +"  join driver d on d.groupID = g.groupID and d.status != 3 "
                     +"  join cachedNoteInfo i on i.driverID = d.driverID "
-                    +"  join cachedNote cnv on cnv.driverID = d.driverID  "
+                    +"  join cachedNote cnv on cnv.driverID = d.driverID and cnv.forgiven = 1 "
                     +"WHERE g.groupID IN (:groupList)  "
                     +"  AND cnv.time BETWEEN :startDate AND :endDate " 
                     +"GROUP BY cnv.driverID ,cnv.type ,getAggType(`cnv`.`type`,`cnv`.`attribs`,`cnv`.`deltaX`,`cnv`.`deltaY`,`cnv`.`deltaZ`)";
@@ -60,7 +60,7 @@ public class EventAggregationJDBCDAO extends SimpleJdbcDaoSupport implements Eve
             +" ,f.reason AS 'reason'"
             +"FROM groups g  "
             +"  join driver d on d.groupID = g.groupID and d.status != 3 "
-            +"  join cachedNote cnv on cnv.driverID = d.driverID "
+            +"  join cachedNote cnv on cnv.driverID = d.driverID and cnv.forgiven = 1 "
             +"  join forgiven f on cnv.noteID = f.noteID "
             +"WHERE g.groupID IN (:groupList)  "
             +"  AND cnv.time BETWEEN :startDate AND :endDate "
