@@ -39,6 +39,7 @@ import com.inthinc.pro.model.hos.HOSOccupantHistory;
 import com.inthinc.pro.model.hos.HOSOccupantInfo;
 import com.inthinc.pro.model.hos.HOSRecord;
 import com.inthinc.pro.model.hos.HOSVehicleMileage;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 // This is the old version that uses mostly stored procs.  Leaving the class for reference.
 @Deprecated
@@ -283,6 +284,11 @@ public class HOSJDBCDAOsp extends GenericJDBCDAO implements HOSDAO {
     }
 
     @Override
+    public Map<Integer, List<HOSOccupantLog>> getHOSOccupantLogsForGroups(List<Integer> groupIDs, Interval interval) {
+        throw new NotImplementedException();
+    }
+
+    @Override
     public List<HOSRecord> getHOSRecords(Integer driverID, Interval interval, Boolean driverStatusOnly)  {
 
         Connection conn = null;
@@ -360,7 +366,12 @@ public class HOSJDBCDAOsp extends GenericJDBCDAO implements HOSDAO {
 
         return recordList;
     }
-    
+
+    @Override
+    public Map<Integer, List<HOSRecord>> getHOSRecordsForGroups(List<Integer> groupIDs, Interval interval, Boolean driverStatusOnly) {
+        return null;
+    }
+
     @Override
     public List<HOSRecord> getRecordsForVehicle(Integer vehicleID, Interval interval, Boolean driverStatusOnly)  {
 
