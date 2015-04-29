@@ -27,6 +27,8 @@ import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.GroupType;
 import com.inthinc.pro.model.event.LastReportedEvent;
 
+// set to Ignore for running on QA.
+@Ignore
 public class EventAggregationJDBCDAOTest extends BaseJDBCTest {
     
     // In case the test date is destroyed, regen as follows:
@@ -35,15 +37,15 @@ public class EventAggregationJDBCDAOTest extends BaseJDBCTest {
     // this generates an account with a bunch of devices, vehicles, drivers and a trip for each device/vehicle
     // Set the interval day to the day after the generator is run (UTC).
     // TEST_ACCOUNT_ID and EXPECTED_VALID_COUNT will need to be adjusted to reflect the new data set.
+    private static Integer TEST_ACCOUNT_ID = 791;
+    private static Integer EXPECTED_VALID_COUNT = 240;
     private static Boolean dontIncludeUnassignedDevice =true;
     private static Boolean activeInterval=true;
-    private static Integer TEST_ACCOUNT_ID = 979;
-    private static Integer EXPECTED_VALID_COUNT = 366;
     
     
     private static List<Integer> testGroupList;
 
-    private static DateTime SEP_12_2013 = new DateTime(1428969600000l);// 1375401600000l);
+    private static DateTime SEP_12_2013 = new DateTime(1378944000000l);// 1375401600000l);
     private static Interval VALID_TEST_INTERVAL = new Interval(SEP_12_2013, SEP_12_2013.plusDays(1)); 
     
     
@@ -111,42 +113,4 @@ public class EventAggregationJDBCDAOTest extends BaseJDBCTest {
 
     }
 
-    @Test
-    public void testReasonColumnInSelect() {
-        // first, get the data
-        EventAggregationJDBCDAO eventAggregationJDBCDAO = new EventAggregationJDBCDAO();
-        eventAggregationJDBCDAO.setDataSource(new ITDataSource().getRealDataSource());
-        List<DriverForgivenEventTotal> dfetList = eventAggregationJDBCDAO.findDriverForgivenEventTotalsByGroups(testGroupList, VALID_TEST_INTERVAL, true, true);
-
-        // then count the number of reasons found
-        int found = 0;
-        if (dfetList != null && !dfetList.isEmpty()){
-            for (DriverForgivenEventTotal df: dfetList){
-                if (df.getReasons() != null && !df.getReasons().trim().isEmpty()){
-                    found ++;
-                }
-            }
-        }
-    }
-
-    @Test
-    public void testGetForgiveDataOnly(){
-        // first, get the data
-        EventAggregationJDBCDAO eventAggregationJDBCDAO = new EventAggregationJDBCDAO();
-        eventAggregationJDBCDAO.setDataSource(new ITDataSource().getRealDataSource());
-        Map<DriverEventIndex, List<DriverForgivenData>> dfMap = eventAggregationJDBCDAO.findDriverForgivenDataByGroups(testGroupList, VALID_TEST_INTERVAL, true, true);
-
-        // then test correct id mapping
-        int found = 0;
-        if (!dfMap.isEmpty()){
-            for (Map.Entry<DriverEventIndex, List<DriverForgivenData>> dfEntry: dfMap.entrySet()){
-                DriverEventIndex dfIndex =dfEntry.getKey();
-                List<DriverForgivenData> dfData = dfEntry.getValue();
-
-                for (DriverForgivenData df: dfData){
-                    assertEquals(dfIndex.getDriverID(),df.getDriverID());
-                }
-            }
-        }
-    }
 }

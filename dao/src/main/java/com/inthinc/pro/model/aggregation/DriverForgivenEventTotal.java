@@ -28,8 +28,6 @@ public class DriverForgivenEventTotal {
     
     private Double percentForgiven;
 
-    private String reasons;
-
     public Integer getDriverID() {
         return driverID;
     }
@@ -92,13 +90,5 @@ public class DriverForgivenEventTotal {
     
     public void setPercentForgiven(Double percentForgiven) {
         this.percentForgiven = percentForgiven;
-    }
-
-    public String getReasons() {
-        return reasons;
-    }
-
-    public void setReasons(String reasons) {
-        this.reasons = reasons;
     }
 }
