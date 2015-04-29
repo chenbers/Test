@@ -212,6 +212,11 @@ public class BaseDriveTimeUnitTest extends BasePerformanceUnitTest {
         }
 
         @Override
+        public Map<Integer, List<HOSRecord>> getHOSRecordsForGroups(List<Integer> groupIDs, Interval interval, Boolean driverStatusOnly) {
+            return null;
+        }
+
+        @Override
         public List<HOSRecord> getHOSRecordsFilteredByInterval(Integer driverID, Interval interval, Boolean driverStatusOnly) {
             // TODO Auto-generated method stub
             return null;
@@ -220,6 +225,11 @@ public class BaseDriveTimeUnitTest extends BasePerformanceUnitTest {
         @Override
         public List<HOSOccupantLog> getHOSOccupantLogs(Integer driverID, Interval interval) {
             // TODO Auto-generated method stub
+            return null;
+        }
+
+        @Override
+        public Map<Integer, List<HOSOccupantLog>> getHOSOccupantLogsForGroups(List<Integer> groupIDs, Interval interval) {
             return null;
         }
 
