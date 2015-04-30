@@ -21,6 +21,8 @@ import com.inthinc.pro.model.pagination.FilterableEnum;
  * <code>Waysmart</code> uses the second bit, <code>0xXX10</code>, and has versions 2, 6, 10, 14, etc.<br />
  * <br />
  * <code>WS850</code> uses the third big, <code>0xX100</code>, and has versions 4, 12, 20, 28, etc.
+ * <br />
+ * <code>Xirgo</code> uses the fourth bit, <code>0x1000</code>, and has versions 8, 24, 40, 56, etc.
  */
 public enum ProductType implements BaseEnum, FilterableEnum {
     UNKNOWN(0, 0, "Unknown"),
@@ -28,6 +30,7 @@ public enum ProductType implements BaseEnum, FilterableEnum {
     WAYSMART(2, 2, "waySmart", 2), //xx10
 //    TIWIPRO_R71(4, 3, ProductName.TIWIPRO),
     TIWIPRO(16, 1, "tiwiPro", 3, 5, 7), //xxx1
+    XIRGO(8, 8, "xirgo", 8), //1000
     WS850(2048, 4, "WS850", 12), //x100
 
     ;

@@ -3,6 +3,8 @@ package com.inthinc.pro.reports.hos;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -13,6 +15,7 @@ import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
+import org.junit.Assert;
 import org.junit.Test;
 
 import com.inthinc.hos.model.HOSStatus;
@@ -272,6 +275,26 @@ public class DotHoursRemainingReportCriteriaTest extends BaseUnitTest {
             int ecnt = 0;
             for (DotHoursRemaining data : dataList) {
                 DotHoursRemaining expectedData = dotHoursRemainingExpectedData[testCaseCnt][ecnt];
+                
+                Date dateStr = null;
+                try {
+                    dateStr = new SimpleDateFormat("MM/dd/yy").parse(data.getDay());
+                } catch (ParseException e) {
+                    Assert.fail("Day parsing error: " + e.getMessage());
+                }
+                
+                DateTime day = new DateTime(dateStr);
+                DateTime dayDate = new DateTime(data.getDayDate());
+                
+                assertEquals(testCaseName[testCaseCnt] + " " + ecnt + " dayDateYear", day.getYear(), dayDate.getYear());
+                assertEquals(testCaseName[testCaseCnt] + " " + ecnt + " dayDateMonth", day.getMonthOfYear(), dayDate.getMonthOfYear());
+                assertEquals(testCaseName[testCaseCnt] + " " + ecnt + " dayDateDay", day.getDayOfMonth(), dayDate.getDayOfMonth());
+                
+                assertEquals(testCaseName[testCaseCnt] + " " + ecnt + " dayDateHours", 0, dayDate.getHourOfDay());
+                assertEquals(testCaseName[testCaseCnt] + " " + ecnt + " dayDateMinutes", 0, dayDate.getMinuteOfHour());
+                assertEquals(testCaseName[testCaseCnt] + " " + ecnt + " dayDateSeconds", 0, dayDate.getSecondOfMinute());
+                assertEquals(testCaseName[testCaseCnt] + " " + ecnt + " dayDateMillis", 0, dayDate.getMillisOfSecond());
+                
                 assertEquals(testCaseName[testCaseCnt] + " " + ecnt + " day", expectedData.getDay(), data.getDay());
                 assertEquals(testCaseName[testCaseCnt] + " " + ecnt + " driverName", expectedData.getDriverName(), data.getDriverName());
                 assertEquals(testCaseName[testCaseCnt] + " " + ecnt + " dotType", expectedData.getDotType(), data.getDotType());
