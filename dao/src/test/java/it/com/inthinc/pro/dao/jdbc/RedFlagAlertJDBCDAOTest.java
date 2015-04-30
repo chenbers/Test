@@ -1,21 +1,26 @@
 package it.com.inthinc.pro.dao.jdbc;
 
 
-import com.inthinc.pro.dao.GroupDAO;
+import com.inthinc.pro.dao.hessian.RedFlagAlertHessianDAO;
 import com.inthinc.pro.dao.hessian.proserver.SiloService;
 import com.inthinc.pro.dao.hessian.proserver.SiloServiceCreator;
 import com.inthinc.pro.dao.jdbc.RedFlagAlertJDBCDAO;
 import com.inthinc.pro.model.*;
+
 import it.com.inthinc.pro.dao.model.GroupData;
 import it.com.inthinc.pro.dao.model.ITData;
 import it.config.ITDataSource;
 import it.config.IntegrationConfig;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
 
 import javax.sql.DataSource;
+
 import java.io.InputStream;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -27,7 +32,8 @@ public class RedFlagAlertJDBCDAOTest extends SimpleJdbcDaoSupport {
 
     private static SiloService siloService;
     private static final String XML_DATA_FILE = "AlertTest.xml";
-    private static ITData itData = new ITData();
+    private static ITData itData = new ITData();    
+    private RedFlagAlertHessianDAO redFlagAlertHessianDAO;
 
 
     @Before
@@ -46,7 +52,9 @@ public class RedFlagAlertJDBCDAOTest extends SimpleJdbcDaoSupport {
         if (!itData.parseTestData(stream, siloService, true, true, true)) {
             throw new Exception("Error parsing Test data xml file");
         }
-
+        
+        redFlagAlertHessianDAO = new RedFlagAlertHessianDAO();
+        redFlagAlertHessianDAO.setSiloService(new SiloServiceCreator(host, port).getService());
     }
 
     private static void initApp() throws Exception {
@@ -62,9 +70,15 @@ public class RedFlagAlertJDBCDAOTest extends SimpleJdbcDaoSupport {
         Integer acctID = team.getAccountID();
 
         List<RedFlagAlert> redFlagAlertList = redFlagAlertJDBCDAO.getRedFlagAlerts(acctID);
+        List<RedFlagAlert> redFlagAlertListHessian = redFlagAlertHessianDAO.getRedFlagAlerts(acctID);
 
         assertTrue(redFlagAlertList.size() > 0);
-
+        assertTrue(redFlagAlertListHessian.size() > 0);
+        assertEquals(redFlagAlertListHessian.size(), redFlagAlertList.size());        
+        
+        compare(redFlagAlertList, redFlagAlertListHessian);
+        checkNotDeleted(redFlagAlertList);
+        checkNotDeleted(redFlagAlertListHessian);
     }
 
     @Test
@@ -77,9 +91,15 @@ public class RedFlagAlertJDBCDAOTest extends SimpleJdbcDaoSupport {
         Integer userID = team.getUserID();
 
         List<RedFlagAlert> redFlagAlertListUser = redFlagAlertJDBCDAO.getRedFlagAlertsByUserID(userID);
+        List<RedFlagAlert> redFlagAlertListUserHessian = redFlagAlertHessianDAO.getRedFlagAlertsByUserID(userID);
 
         assertTrue(redFlagAlertListUser.size() > 0);
-
+        assertTrue(redFlagAlertListUserHessian.size() > 0);
+        assertEquals(redFlagAlertListUserHessian.size(), redFlagAlertListUser.size());
+        
+        compare(redFlagAlertListUser, redFlagAlertListUserHessian);
+        checkNotDeleted(redFlagAlertListUser);
+        checkNotDeleted(redFlagAlertListUserHessian);
     }
 
     @Test
@@ -92,9 +112,12 @@ public class RedFlagAlertJDBCDAOTest extends SimpleJdbcDaoSupport {
         Integer alertID = team.getAlertID();
 
         RedFlagAlert rf = redFlagAlertJDBCDAO.findByID(alertID);
-
         assertNotNull(rf);
-
+        
+        RedFlagAlert rfHes = redFlagAlertHessianDAO.findByID(alertID);
+        assertNotNull(rfHes);
+        
+        compare(rf, rfHes);
     }
 
     @Test
@@ -107,9 +130,13 @@ public class RedFlagAlertJDBCDAOTest extends SimpleJdbcDaoSupport {
         Integer groupID = team.group.getGroupID();
 
         List<RedFlagAlert> redflagByGroup = redFlagAlertJDBCDAO.getAlertsByTeamGroupID(groupID);
+        List<RedFlagAlert> redflagByGroupHessian = redFlagAlertHessianDAO.getAlertsByTeamGroupID(groupID); //hessian returns empty list for some reason
 
         assertNotNull(redflagByGroup);
-
+        assertNotNull(redflagByGroupHessian);
+        
+        assertTrue(redflagByGroup.size() > 0);
+        checkNotDeleted(redflagByGroup);
     }
 
     @Test
@@ -122,9 +149,15 @@ public class RedFlagAlertJDBCDAOTest extends SimpleJdbcDaoSupport {
         Integer userID = team.getUserID();
 
         List<RedFlagAlert> redFlagAlertListUserD = redFlagAlertJDBCDAO.getRedFlagAlertsByUserIDDeep(userID);
+        List<RedFlagAlert> redFlagAlertListUserDHessian = redFlagAlertHessianDAO.getRedFlagAlertsByUserIDDeep(userID);
 
         assertTrue(redFlagAlertListUserD.size() > 0);
-
+        assertTrue(redFlagAlertListUserDHessian.size() > 0);
+        assertEquals(redFlagAlertListUserD.size(), redFlagAlertListUserDHessian.size());
+        
+        compare(redFlagAlertListUserD, redFlagAlertListUserDHessian);
+        checkNotDeleted(redFlagAlertListUserD);
+        checkNotDeleted(redFlagAlertListUserDHessian);
     }
 
     @Test
@@ -212,8 +245,19 @@ public class RedFlagAlertJDBCDAOTest extends SimpleJdbcDaoSupport {
 
         //now delete
         redFlagAlertJDBCDAO.deleteByID(alertID);
-
-
+        
+        RedFlagAlert rfFindAfterDelete = redFlagAlertJDBCDAO.findByID(alertID);
+        RedFlagAlert rfFindAfterDeleteHessian = redFlagAlertHessianDAO.findByID(alertID);
+        assertEquals(Status.DELETED, rfFindAfterDelete.getStatus());        
+        compare(rfFindAfterDelete, rfFindAfterDeleteHessian);
+        
+        alertID = redFlagAlertJDBCDAO.create(rfCreate.getAccountID(), rfCreate);
+        redFlagAlertHessianDAO.deleteByID(alertID);
+        
+        rfFindAfterDelete = redFlagAlertJDBCDAO.findByID(alertID);
+        rfFindAfterDeleteHessian = redFlagAlertHessianDAO.findByID(alertID);
+        assertEquals(Status.DELETED, rfFindAfterDelete.getStatus());        
+        compare(rfFindAfterDelete, rfFindAfterDeleteHessian);
     }
 
         @Test
@@ -252,6 +296,61 @@ public class RedFlagAlertJDBCDAOTest extends SimpleJdbcDaoSupport {
             redFlagAlertJDBCDAO.deleteRedFlagAlertGroupById(grID);
 
 
+        }
+        
+        private void compare(RedFlagAlert jdbc, RedFlagAlert hessian) {
+            assertEquals(hessian.getAlertID(), jdbc.getAlertID());
+            assertEquals(hessian.getAccountID(), jdbc.getAccountID());
+            assertEquals(hessian.getUserID(), jdbc.getUserID());
+            assertEquals(hessian.getName(), jdbc.getName());
+            assertEquals(hessian.getDescription(), jdbc.getDescription());
+            assertEquals(hessian.getStartTOD(), jdbc.getStartTOD());
+            assertEquals(hessian.getStopTOD(), jdbc.getStopTOD());
+            assertEquals(hessian.getDayOfWeek(), jdbc.getDayOfWeek());
+            assertEquals(hessian.getGroupIDs(), jdbc.getGroupIDs());
+            assertEquals(hessian.getDriverIDs(), jdbc.getDriverIDs());
+            assertEquals(hessian.getVehicleIDs(), jdbc.getVehicleIDs());
+            assertEquals(hessian.getVehicleTypes(), jdbc.getVehicleTypes());
+            assertEquals(hessian.getNotifyPersonIDs(), jdbc.getNotifyPersonIDs());
+            assertEquals(hessian.getNotifyManagers(), jdbc.getNotifyManagers());
+            assertEquals(hessian.getStatus(), jdbc.getStatus());
+            assertEquals(hessian.getEscalationList().size(), jdbc.getEscalationList().size());
+            assertEquals(hessian.getMaxEscalationTries(), jdbc.getMaxEscalationTries());
+            assertEquals(hessian.getMaxEscalationTryTime(), jdbc.getMaxEscalationTryTime());
+            assertEquals(hessian.getEscalationTimeBetweenRetries(), jdbc.getEscalationTimeBetweenRetries());
+            assertEquals(hessian.getSeverityLevel(), jdbc.getSeverityLevel());
+            assertEquals(hessian.getTypes(), jdbc.getTypes());
+            assertTrue(Arrays.equals(hessian.getSpeedSettings(), jdbc.getSpeedSettings()));
+            assertEquals(hessian.getHardAcceleration(), jdbc.getHardAcceleration());
+            assertEquals(hessian.getHardBrake(), jdbc.getHardBrake());
+            assertEquals(hessian.getHardTurn(), jdbc.getHardTurn());
+            assertEquals(hessian.getHardVertical(), jdbc.getHardVertical());
+            assertEquals(hessian.getSatellite(), jdbc.getSatellite());
+            assertEquals(hessian.getZoneID(), jdbc.getZoneID());
+            assertEquals(hessian.getIdlingThreshold(), jdbc.getIdlingThreshold());
+            assertEquals(hessian.getUseMaxSpeed(), jdbc.getUseMaxSpeed());
+            assertEquals(hessian.getMaxSpeed(), jdbc.getMaxSpeed());            
+        }
+        
+        private void compare(List<RedFlagAlert> redFlagAlertList, List<RedFlagAlert> redFlagAlertListHessian) {
+            Collections.sort(redFlagAlertList);
+            Collections.sort(redFlagAlertListHessian);
+            
+            for (int i = 0; i < redFlagAlertList.size(); i++) {
+                RedFlagAlert jdbc = redFlagAlertList.get(i);
+                RedFlagAlert hessian = redFlagAlertListHessian.get(i);
+                compare(jdbc, hessian);
+            }
+        }
+        
+        private void checkNotDeleted(RedFlagAlert redFlagAlert) {
+            assertTrue(!redFlagAlert.getStatus().equals(Status.DELETED));
+        }
+        
+        private void checkNotDeleted(List<RedFlagAlert> redFlagAlertList) {            
+            for (RedFlagAlert redFlagAlert : redFlagAlertList) {
+                checkNotDeleted(redFlagAlert);
+            }            
         }
 
 

@@ -25,12 +25,12 @@ import java.util.Date;
 public class RedFlagAlertJDBCDAO extends SimpleJdbcDaoSupport implements RedFlagAlertDAO {
 
     private static final String RED_FLAG_ALERT = "select * from alert";
-    private static final String FIND_ALERT_BY_ID = RED_FLAG_ALERT + " where alertID=:alertID and status <> 3";
-    private static final String GET_BY_ACCTID = RED_FLAG_ALERT + " where acctID=:acctID and status <> 3";
-    private static final String GET_BY_USERID = RED_FLAG_ALERT + " where userID=:userID and status <> 3";
-    private static final String GET_BY_USERID_DEEP = "SELECT * FROM alert a JOIN user u WHERE a.userID=u.userID AND u.userID= :userID AND a.status<>3";
-    private static final String GET_BY_GROUPID = "SELECT * FROM alert a JOIN alertGroup g WHERE a.alertID=g.alertID AND g.groupID= :groupID AND a.status<>3";
-    private static final String DEL_BY_ID = "DELETE FROM alert WHERE alertID = ?";
+    private static final String FIND_ALERT_BY_ID = RED_FLAG_ALERT + " where alertID=:alertID";
+    private static final String GET_BY_ACCTID = RED_FLAG_ALERT + " where acctID=:acctID  and status <> 3";
+    private static final String GET_BY_USERID = RED_FLAG_ALERT + " where userID=:userID  and status <> 3";
+    private static final String GET_BY_USERID_DEEP = "SELECT * FROM alert a JOIN user u WHERE a.userID=u.userID AND u.userID= :userID  and a.status <> 3";
+    private static final String GET_BY_GROUPID = "SELECT * FROM alert a JOIN alertGroup g WHERE a.alertID=g.alertID AND g.groupID= :groupID  and a.status <> 3";
+    private static final String DEL_BY_ID = "UPDATE alert SET modified=UTC_TIMESTAMP(), status=3 WHERE alertID = ?";
     private static final String DELETE_BY_ZONE_ID = "UPDATE alert SET modified=UTC_TIMESTAMP(), status=3 WHERE zoneID=:zoneID and (alertTypeMask & 0x18) != 1";
 
     //AlertGroup
