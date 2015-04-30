@@ -7,6 +7,7 @@ import java.util.List;
 
 import javax.faces.model.SelectItem;
 
+import com.inthinc.hos.model.RuleSetType;
 import com.inthinc.pro.dao.AccountDAO;
 import com.inthinc.pro.model.Account;
 import com.inthinc.pro.model.AccountHOSType;
@@ -53,6 +54,12 @@ public class AccountOptionsBean extends BaseBean {
         selectItemList.add(new SelectItem(PreferenceLevelOption.NONE.getCode().toString(), "None"));
         selectItemList.add(new SelectItem(PreferenceLevelOption.WARN.getCode().toString(), "Warn"));
         selectItemList.add(new SelectItem(PreferenceLevelOption.REQUIRE.getCode().toString(), "Require"));
+        return selectItemList;
+    }
+    public List<SelectItem> getTexasOilRuleOptions() {
+        List<SelectItem> selectItemList = new ArrayList<SelectItem>();
+        selectItemList.add(new SelectItem(RuleSetType.TEXAS.getCode().toString(), "Texas Oil 7"));
+        selectItemList.add(new SelectItem(RuleSetType.TEXAS_DOD15_7DAY.getCode().toString(), "Texas Oil 7 (15-hr. DR/ODND)"));
         return selectItemList;
     }
     public List<SelectItem> getHOSTypes() {
