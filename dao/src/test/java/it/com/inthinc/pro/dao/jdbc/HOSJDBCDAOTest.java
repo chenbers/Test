@@ -17,6 +17,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -490,6 +491,58 @@ public class HOSJDBCDAOTest extends BaseJDBCTest{
         assertEquals("vehicleID", testVehicle.getVehicleID(), rec.getVehicleID());
         assertTrue("returned day day is within interval", queryInterval.contains(rec.getLogTime().getTime()) || queryInterval.contains(rec.getEndTime().getTime()));
         
+    }
+
+    @Test
+    public void groupHosOccupantLogsTest() {
+        GroupData testGroupData = itData.teamGroupData.get(ITData.INTERMEDIATE);
+        GroupData testOccupantGroupData = itData.teamGroupData.get(ITData.GOOD);
+        Driver testDriver = fetchDriver(testGroupData.driver.getDriverID());
+        Vehicle testVehicle = testGroupData.vehicle;
+        Driver testOccupant = fetchDriver(testOccupantGroupData.driver.getDriverID());
+
+        DateTimeZone driverTZ = DateTimeZone.forTimeZone(ReportTestConst.timeZone);
+        Date genDataStartDate = new Date(itData.startDateInSec*1000l);
+        DateTime dayStartDriverTZ= new DateMidnight(genDataStartDate, driverTZ).toDateTime();
+
+        Interval queryInterval = new Interval(new DateMidnight(genDataStartDate, driverTZ), new DateMidnight(dayStartDriverTZ.plusDays(1),  driverTZ));
+
+        Map<Integer, List<HOSOccupantLog>> occupantLogRecords = hosDAO.getHOSOccupantLogsForGroups(Arrays.asList(testDriver.getGroupID()), queryInterval);
+
+        for (Map.Entry<Integer, List<HOSOccupantLog>> entry: occupantLogRecords.entrySet()){
+            List<HOSOccupantLog> ocLog = hosDAO.getHOSOccupantLogs(entry.getKey(), queryInterval);
+            assertFalse(ocLog.isEmpty());
+            assertFalse(entry.getValue().isEmpty());
+            assertEquals(ocLog.get(0).getVehicleID(), entry.getValue().get(0).getVehicleID());
+            assertEquals(ocLog.get(0).getDriverID(), entry.getValue().get(0).getDriverID());
+        }
+    }
+
+    @Test
+    public void groupHosRecordListTest() {
+        GroupData testGroupData = itData.teamGroupData.get(ITData.INTERMEDIATE);
+        GroupData testOccupantGroupData = itData.teamGroupData.get(ITData.GOOD);
+        Driver testDriver = fetchDriver(testGroupData.driver.getDriverID());
+        Vehicle testVehicle = testGroupData.vehicle;
+        Driver testOccupant = fetchDriver(testOccupantGroupData.driver.getDriverID());
+
+        DateTimeZone driverTZ = DateTimeZone.forTimeZone(ReportTestConst.timeZone);
+        Date genDataStartDate = new Date(itData.startDateInSec*1000l);
+        DateTime dayStartDriverTZ= new DateMidnight(genDataStartDate, driverTZ).toDateTime();
+
+        Interval queryInterval = new Interval(new DateMidnight(genDataStartDate, driverTZ), new DateMidnight(dayStartDriverTZ.plusDays(1),  driverTZ));
+
+        Map<Integer, List<HOSRecord>> records = hosDAO.getHOSRecordsForGroups(Arrays.asList(testDriver.getGroupID()), queryInterval, false);
+
+        for (Map.Entry<Integer, List<HOSRecord>> entry: records.entrySet()){
+            List<HOSRecord> ocRec = hosDAO.getHOSRecords(entry.getKey(), queryInterval, false);
+            assertFalse(ocRec.isEmpty());
+            assertFalse(entry.getValue().isEmpty());
+            assertEquals(ocRec.get(0).getVehicleID(), entry.getValue().get(0).getVehicleID());
+            assertEquals(ocRec.get(0).getDriverID(), entry.getValue().get(0).getDriverID());
+            assertEquals(ocRec.get(0).getDeviceID(), entry.getValue().get(0).getDeviceID());
+            assertEquals(ocRec.get(0).getHosLogID(), entry.getValue().get(0).getHosLogID());
+        }
     }
 
     private HOSRecord createEditedApprovedByRecord(HOSDAO hosDAO, Driver driver, Date hosRecordDate, Integer vehicleID, HOSStatus status,Float truckGallons, Float trailerGallons) {
