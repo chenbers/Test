@@ -693,7 +693,7 @@ public class LocationCassandraDAO extends GenericCassandraDAO implements Locatio
                 trip.setQuality(TripQuality.UNKNOWN);
                 Device device = deviceDAO.findByID(vehicle.getDeviceID());
 
-                if (device.isWaySmart()){
+                if (device.isAbsoluteOdometer()){
                     int startOdometer = trip.getMileage();
                     int endOdometer = lastLocation.getOdometer();
                     trip.setMileage((endOdometer-startOdometer) > 0 ? (endOdometer-startOdometer) : 0);

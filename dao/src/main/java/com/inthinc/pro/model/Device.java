@@ -225,6 +225,10 @@ public class Device extends BaseEntity implements HasAccountId
         return ProductType.WAYSMART.equals(this.productVersion) || ProductType.WS850.equals(this.productVersion);
     }
 
+    public boolean isAbsoluteOdometer() {
+        return ProductType.WAYSMART.equals(this.productVersion) || ProductType.WS850.equals(this.productVersion) || ProductType.XIRGO.equals(this.productVersion);
+    }
+
     public ProductType getProductVersion() {
         return productVersion;
     }
