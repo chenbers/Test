@@ -302,6 +302,10 @@ public class BaseBean implements Serializable {
         String weatherfordVilationsReportEnabled = getProUser().getAccountAttributes().getWeatherfordViolationsReportEnabled();
         return (weatherfordVilationsReportEnabled == null || weatherfordVilationsReportEnabled.equals("false")) ? false : true;
     }
+
+    public String getTexasOilRule(){
+        return getProUser().getAccountAttributes().getTexasOilRule();
+    }
     
     public boolean isAccountRedirectVehicleAdmin() {
         return getProUser().getAccountAttributes().getRedirectVehiclesAssets().equals("ASSETS");

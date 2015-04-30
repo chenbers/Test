@@ -120,6 +120,7 @@ public class AccountOptionsBean extends BaseBean {
                                 " , Password Expire is "+(account.getProps().getPasswordExpire()) +
                                 " , Password Strength is "+(account.getProps().getPasswordStrength()) +
                                 " , Password Change Required is "+(account.getProps().getPasswordChange())+
+                                " , Texas oil rule is "+(account.getProps().getTexasOilRule())+
                                 " and Speed-By-Street access is " + (account.hasSbsAccessEnabled() ? "Enabled" : "Disabled") +
                                 " for Account: " + account.getAcctName());
         }

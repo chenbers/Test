@@ -277,6 +277,14 @@ public class Account extends BaseEntity implements Comparable<Account>, HasAccou
 
     }
 
+    public String getTexasOilRule() {
+        AccountAttributes options = getProps();
+        if (options == null)
+            return null;
+
+        return options.getTexasOilRule();
+    }
+
     public String getRedirectVehiclesAssetsValue() {
         AccountAttributes options = getProps();
         if (options == null)
