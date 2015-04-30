@@ -58,6 +58,7 @@ public class AccountOptionsBean extends BaseBean {
     }
     public List<SelectItem> getTexasOilRuleOptions() {
         List<SelectItem> selectItemList = new ArrayList<SelectItem>();
+        selectItemList.add(new SelectItem(null, "None"));
         selectItemList.add(new SelectItem(RuleSetType.TEXAS.getCode().toString(), "Texas Oil 7"));
         selectItemList.add(new SelectItem(RuleSetType.TEXAS_DOD15_7DAY.getCode().toString(), "Texas Oil 7 (15-hr. DR/ODND)"));
         return selectItemList;
