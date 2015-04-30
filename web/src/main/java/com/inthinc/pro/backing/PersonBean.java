@@ -1434,6 +1434,45 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
 
     }
 
+
+    /**
+     * Returns dot types filtered by account options such as texas oil rule.
+     * @return dot types
+     */
+    public List<SelectItem> getDotTypesFiltered() {
+        RuleSetType disabledTexasOilRule = getDisableTexasOilRule();
+
+        List<SelectItem> selectItemList = new ArrayList<SelectItem>();
+        for (RuleSetType ruleSetType : EnumSet.allOf(RuleSetType.class)) {
+            if(ruleSetType != RuleSetType.SLB_INTERNAL && !ruleSetType.isDeprecated() && (disabledTexasOilRule == null || ruleSetType != disabledTexasOilRule) )
+                selectItemList.add(new SelectItem(ruleSetType,MessageUtil.getMessageString(ruleSetType.toString())));
+        }
+
+        return selectItemList;
+    }
+
+    /**
+     * Returns the texas oil rule disabled at the account options level.
+     *
+     * @return disbled rule
+     */
+    private RuleSetType getDisableTexasOilRule(){
+        RuleSetType disabled = null;
+        String strCode = getTexasOilRule();
+        if (strCode != null){
+            Integer code = Integer.valueOf(strCode);
+            RuleSetType enabled = RuleSetType.valueOf(code);
+            if (enabled != null) {
+                if (enabled.equals(RuleSetType.TEXAS))
+                    disabled = RuleSetType.TEXAS_DOD15_7DAY;
+                else
+                    disabled = RuleSetType.TEXAS;
+            }
+        }
+
+        return disabled;
+    }
+
     public void measurementTypeChosenAction(){
     	
     	fuelEfficiencyBean.init(getItem().getMeasurementType());
