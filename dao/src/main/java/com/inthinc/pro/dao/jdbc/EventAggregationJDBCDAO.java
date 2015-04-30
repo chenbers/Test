@@ -80,20 +80,11 @@ public class EventAggregationJDBCDAO extends SimpleJdbcDaoSupport implements Eve
                     mapId[0] = rs.getInt("driverID");
                     mapId[1] = eventType;
 
-                    String newReason = rs.getString("reason");
-
                     DriverForgivenEventTotal driverForgivenEventTotal = null;
                     if (driverForgivenEventTotalMap.get(mapId) != null) {
                         driverForgivenEventTotal = driverForgivenEventTotalMap.get(mapId);
                         driverForgivenEventTotal.setEventCount(driverForgivenEventTotal.getEventCount() + rs.getInt("eventCount"));
                         driverForgivenEventTotal.setEventCountForgiven(driverForgivenEventTotal.getEventCountForgiven() + rs.getInt("eventCountForgiven"));
-                        if (newReason != null && !newReason.trim().isEmpty()){
-                            if (driverForgivenEventTotal.getReasons() == null || driverForgivenEventTotal.getReasons().trim().isEmpty()){
-                                driverForgivenEventTotal.setReasons(newReason);
-                            }else{
-                                driverForgivenEventTotal.setReasons(driverForgivenEventTotal.getReasons() + "; " + newReason);
-                            }
-                        }
                     } else {
                         Driver driver = driverDAO.findByID(rs.getInt("driverID"));
                         
@@ -120,8 +111,6 @@ public class EventAggregationJDBCDAO extends SimpleJdbcDaoSupport implements Eve
                             driverForgivenEventTotal.setEventType(eventType);
                             driverForgivenEventTotalMap.put(mapId, driverForgivenEventTotal);
 
-                            if (newReason != null && !newReason.trim().isEmpty())
-                                driverForgivenEventTotal.setReasons(newReason);
                         } else {
                             System.out.println(rs.getString("driverName") + " this record was returned via SQL, but filtered out in java");
                             return null;
