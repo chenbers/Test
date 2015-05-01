@@ -2,15 +2,12 @@ package com.inthinc.pro.dao.jdbc;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.inthinc.pro.model.aggregation.DriverEventIndex;
-import com.inthinc.pro.model.aggregation.DriverForgivenData;
 import org.joda.time.Interval;
 import org.springframework.jdbc.core.simple.ParameterizedRowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
@@ -46,78 +43,16 @@ public class EventAggregationJDBCDAO extends SimpleJdbcDaoSupport implements Eve
     public List<DriverForgivenEventTotal> findDriverForgivenEventTotalsByGroups(List<Integer> groupIDs, Interval interval) {
         return findDriverForgivenEventTotalsByGroups(groupIDs, interval, INACTIVE_DRIVERS_DEFAULT, ZERO_MILES_DRIVERS_DEFAULT);
     }
-
-    @Override
-    public Map<DriverEventIndex,List<DriverForgivenData>> findDriverForgivenDataByGroups(List<Integer> groupIDs, final Interval interval, final boolean includeInactiveDrivers,
-                                                                                 final boolean includeZeroMilesDrivers) {
-        String allEventForgiven = SELECT_ALL_EVENT_FORGIVEN;
-        Map<String, Object> params = new HashMap<String, Object>();
-        params.put("groupList", groupIDs);
-        params.put("endDate", interval.getEnd().toDate());
-        params.put("startDate", interval.getStart().toDate());
-
-        final Map<DriverEventIndex, List<DriverForgivenData>> retMap = new HashMap<DriverEventIndex, List<DriverForgivenData>>();
-
-        getSimpleJdbcTemplate().query(allEventForgiven, new ParameterizedRowMapper<DriverForgivenData>() {
-            @Override
-            public DriverForgivenData mapRow(ResultSet rs, int rowNum) throws SQLException {
-                EventType eventType = EventType.UNKNOWN;
-
-                if (NoteType.valueOf(rs.getInt("type")) != null) {
-                    eventType = NoteType.valueOf(rs.getInt("type")).getEventType(rs.getInt("aggType"));
-                }
-                // Create a key to group the aggregation amounts by
-                DriverEventIndex mapId = new DriverEventIndex(rs.getInt("driverID"),eventType);
-
-                List<DriverForgivenData> drList = retMap.get(mapId);
-                if (drList == null){
-                    drList = new ArrayList<DriverForgivenData>();
-                }
-
-                DriverForgivenData driverForgivenData = new DriverForgivenData();
-
-                // this should never be false
-                if (rs.getObject("noteID") != null){
-                    driverForgivenData.setNoteID(rs.getLong("noteID"));
-
-                    if (rs.getObject("forgivenByUserID") != null){
-                        driverForgivenData.setForgivenByUserID(rs.getInt("forgivenByUserID"));
-                    }
-                    if (rs.getObject("driverID") != null){
-                        driverForgivenData.setDriverID(rs.getInt("driverID"));
-                    }
-
-                    String reason  = rs.getString("reason");
-                    if (reason != null){
-                        if (reason.trim().isEmpty())
-                            reason = null;
-                        else
-                            reason = reason.trim();
-                    }
-
-                    driverForgivenData.setReason(reason);
-
-                    drList.add(driverForgivenData);
-                }
-                retMap.put(mapId, drList);
-
-                return  driverForgivenData;
-            }
-        }, params);
-
-        return retMap;
-    }
-
+    
     /*
-         * (non-Javadoc)
-         *
-         * @see com.inthinc.pro.dao.EventAggregationDAO#findDriverForgivenEventTotalsByGroups(java.util.List, org.joda.time.Interval)
-         */
+     * (non-Javadoc)
+     * 
+     * @see com.inthinc.pro.dao.EventAggregationDAO#findDriverForgivenEventTotalsByGroups(java.util.List, org.joda.time.Interval)
+     */
     @Override
     public List<DriverForgivenEventTotal> findDriverForgivenEventTotalsByGroups(List<Integer> groupIDs, final Interval interval, final boolean includeInactiveDrivers,
                     final boolean includeZeroMilesDrivers) {
-
-        String allEventTotals = SELECT_ALL_EVENT_TOTALS;
+        String forgivenEventTotals = SELECT_FORGIVEN_EVENT_TOTALS;
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("groupList", groupIDs);
         params.put("endDate", interval.getEnd().toDate());
@@ -130,115 +65,68 @@ public class EventAggregationJDBCDAO extends SimpleJdbcDaoSupport implements Eve
         /*
          * Create a map to allow us to aggregate the totals by grouping by EventType.java which is unknown to the database. Otherwise, we would allow the database to group by.
          */
-        final Map<DriverEventIndex, DriverForgivenEventTotal> driverForgivenEventTotalMap = new LinkedHashMap<DriverEventIndex, DriverForgivenEventTotal>();
-        getSimpleJdbcTemplate().query(allEventTotals, new ParameterizedRowMapper<DriverForgivenEventTotal>() {
+        final Map<Object[], DriverForgivenEventTotal> driverForgivenEventTotalMap = new LinkedHashMap<Object[], DriverForgivenEventTotal>();
+        getSimpleJdbcTemplate().query(forgivenEventTotals, new ParameterizedRowMapper<DriverForgivenEventTotal>() {
             @Override
             public DriverForgivenEventTotal mapRow(ResultSet rs, int rowNum) throws SQLException {
-                               EventType eventType = EventType.UNKNOWN;
-
-                if (NoteType.valueOf(rs.getInt("type")) != null) {
-                    eventType = NoteType.valueOf(rs.getInt("type")).getEventType(rs.getInt("aggType"));
-                }
-                // Create a key to group the aggregation amounts by
-                DriverEventIndex mapId = new DriverEventIndex(rs.getInt("driverID"), eventType);
-
-                DriverForgivenEventTotal driverForgivenEventTotal = null;
-                if (driverForgivenEventTotalMap.get(mapId) != null) {
-                    driverForgivenEventTotal = driverForgivenEventTotalMap.get(mapId);
-                    driverForgivenEventTotal.setEventCount(driverForgivenEventTotal.getEventCount() + rs.getInt("eventCount"));
-                } else {
-                    Driver driver = driverDAO.findByID(rs.getInt("driverID"));
-
-                    List<Trip> trips = driverDAO.getTrips(driver.getDriverID(), interval);
-                    Integer totalMiles = 0;
-                    for (Trip trip : trips) {
-                        totalMiles += trip.getMileage();
+                /* Check to ensure that the forgiven count is greater than 0 */
+                if (rs.getInt("eventCountForgiven") > 0) {
+                    EventType eventType = EventType.UNKNOWN;
+                    if (NoteType.valueOf(rs.getInt("type")) != null) {
+                        eventType = NoteType.valueOf(rs.getInt("type")).getEventType(rs.getInt("aggType"));
                     }
+                    // Create a key to group the aggregation amounts by
+                    Object[] mapId = new Object[3];
+                    mapId[0] = rs.getInt("driverID");
+                    mapId[1] = eventType;
 
-                    boolean includeThisInactiveDriver = (includeInactiveDrivers && totalMiles != 0);
-                    boolean includeThisZeroMilesDriver = (includeZeroMilesDrivers && driver.getStatus().equals(Status.ACTIVE));
-                    if ((driver.getStatus().equals(Status.ACTIVE) && totalMiles != 0) || (includeInactiveDrivers && includeZeroMilesDrivers) || includeThisInactiveDriver
-                                    || includeThisZeroMilesDriver) {
-                        System.out.println("INCLUDING: fullName: " + driver.getPerson().getFullName());
-                        System.out.println("status: " + driver.getStatus());
-                        System.out.println("totalMiles: " + totalMiles);
-                        driverForgivenEventTotal = new DriverForgivenEventTotal();
-                        driverForgivenEventTotal.setDriverID(rs.getInt("driverID"));
-                        driverForgivenEventTotal.setDriverName(rs.getString("driverName"));
-                        driverForgivenEventTotal.setGroupID(rs.getInt("groupID"));
-                        driverForgivenEventTotal.setGroupName(rs.getString("groupName"));
-                        driverForgivenEventTotal.setEventCount(rs.getInt("eventCount"));
-                        driverForgivenEventTotal.setEventType(eventType);
-                        driverForgivenEventTotalMap.put(mapId, driverForgivenEventTotal);
+                    DriverForgivenEventTotal driverForgivenEventTotal = null;
+                    if (driverForgivenEventTotalMap.get(mapId) != null) {
+                        driverForgivenEventTotal = driverForgivenEventTotalMap.get(mapId);
+                        driverForgivenEventTotal.setEventCount(driverForgivenEventTotal.getEventCount() + rs.getInt("eventCount"));
+                        driverForgivenEventTotal.setEventCountForgiven(driverForgivenEventTotal.getEventCountForgiven() + rs.getInt("eventCountForgiven"));
                     } else {
-                        System.out.println(rs.getString("driverName") + " this record was returned via SQL, but filtered out in java");
-                        return null;
+                        Driver driver = driverDAO.findByID(rs.getInt("driverID"));
+                        
+                        List<Trip> trips = driverDAO.getTrips(driver.getDriverID(), interval);
+                        Integer totalMiles = 0;
+                        for (Trip trip : trips) {
+                            totalMiles += trip.getMileage();
+                        }
+                        
+                        boolean includeThisInactiveDriver = (includeInactiveDrivers && totalMiles != 0);
+                        boolean includeThisZeroMilesDriver = (includeZeroMilesDrivers && driver.getStatus().equals(Status.ACTIVE));
+                        if ((driver.getStatus().equals(Status.ACTIVE) && totalMiles != 0) || (includeInactiveDrivers && includeZeroMilesDrivers) || includeThisInactiveDriver
+                                        || includeThisZeroMilesDriver) {
+                            System.out.println("INCLUDING: fullName: " + driver.getPerson().getFullName());
+                            System.out.println("status: " + driver.getStatus());
+                            System.out.println("totalMiles: " + totalMiles);
+                            driverForgivenEventTotal = new DriverForgivenEventTotal();
+                            driverForgivenEventTotal.setDriverID(rs.getInt("driverID"));
+                            driverForgivenEventTotal.setDriverName(rs.getString("driverName"));
+                            driverForgivenEventTotal.setGroupID(rs.getInt("groupID"));
+                            driverForgivenEventTotal.setGroupName(rs.getString("groupName"));
+                            driverForgivenEventTotal.setEventCount(rs.getInt("eventCount"));
+                            driverForgivenEventTotal.setEventCountForgiven(rs.getInt("eventCountForgiven"));
+                            driverForgivenEventTotal.setEventType(eventType);
+                            driverForgivenEventTotalMap.put(mapId, driverForgivenEventTotal);
+
+                        } else {
+                            System.out.println(rs.getString("driverName") + " this record was returned via SQL, but filtered out in java");
+                            return null;
+                        }
                     }
+                    double percentForgiven = 0.0D;
+                    double totalEvents = driverForgivenEventTotal.getEventCount();
+                    double totalEventsForgiven = driverForgivenEventTotal.getEventCountForgiven();
+                    percentForgiven = totalEventsForgiven / totalEvents;
+                    driverForgivenEventTotal.setPercentForgiven(percentForgiven);
+                    return driverForgivenEventTotal;
+                } else {
+                    return null;
                 }
-                return driverForgivenEventTotal;
             }
         }, params);
-
-
-
-        // if the initial dataset is not empty
-        if (!driverForgivenEventTotalMap.isEmpty()) {
-
-            // find forgiven data
-            Map<DriverEventIndex,List<DriverForgivenData>> forgivenDataMap = findDriverForgivenDataByGroups(groupIDs, interval, includeInactiveDrivers, includeZeroMilesDrivers);
-
-            // for each main dataset
-            for (Map.Entry<DriverEventIndex, DriverForgivenEventTotal> dftEntry : driverForgivenEventTotalMap.entrySet()){
-                DriverForgivenEventTotal dft = dftEntry.getValue();
-                Integer driverID = dft.getDriverID();
-                DriverEventIndex mapId = dftEntry.getKey();
-
-                dft.setEventCountForgiven(0);
-                dft.setReasons("");
-
-                // if it's possible to have forgiven data
-                if (mapId != null && driverID != null) {
-                    List<DriverForgivenData> driverForgivenData = forgivenDataMap.get(mapId);
-
-                    // if we found forgiven data
-                    if (driverForgivenData != null) {
-                        for (DriverForgivenData df : driverForgivenData) {
-                            dft.setEventCountForgiven(dft.getEventCountForgiven() + 1);
-                            if (df.getReason() != null && !df.getReason().trim().isEmpty()) {
-                                if (dft.getReasons() != null && !dft.getReasons().isEmpty()) {
-                                    dft.setReasons(dft.getReasons() + "; " + df.getReason());
-                                } else {
-                                    dft.setReasons(df.getReason());
-                                }
-                            }
-                        }
-
-                        // calculate percent
-                        double percentForgiven = 0.0D;
-                        double totalEvents = dft.getEventCount();
-                        double totalEventsForgiven = dft.getEventCountForgiven();
-                        percentForgiven = totalEventsForgiven / totalEvents;
-                        dft.setPercentForgiven(percentForgiven);
-                    }else{
-                        dft.setPercentForgiven(0d);
-                    }
-                }
-            }
-        }
-
-        // remove events without forgiven from main datamap
-        List<DriverEventIndex> removedKeys = new ArrayList<DriverEventIndex>();
-        for (Map.Entry<DriverEventIndex, DriverForgivenEventTotal> dftEntry : driverForgivenEventTotalMap.entrySet()){
-            DriverForgivenEventTotal value = dftEntry.getValue();
-            if (value.getEventCountForgiven()<=0){
-                removedKeys.add(dftEntry.getKey());
-            }
-        }
-
-        for (DriverEventIndex key: removedKeys)
-            driverForgivenEventTotalMap.remove(key);
-
-
         return Arrays.asList(driverForgivenEventTotalMap.values().toArray(new DriverForgivenEventTotal[0]));
     }
     

@@ -2,16 +2,11 @@ package it.com.inthinc.pro.dao.jdbc;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-
-import com.inthinc.pro.model.aggregation.DriverEventIndex;
-import com.inthinc.pro.model.aggregation.DriverForgivenData;
-import com.inthinc.pro.model.aggregation.DriverForgivenEventTotal;
 import it.config.ITDataSource;
 import it.config.IntegrationConfig;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import org.joda.time.DateTime;
 import org.joda.time.Interval;
