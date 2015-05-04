@@ -4,6 +4,8 @@ import java.math.BigDecimal;
 import java.security.InvalidKeyException;
 import java.text.DecimalFormat;
 
+import org.apache.log4j.Logger;
+
 import com.google.code.geocoder.Geocoder;
 import com.google.code.geocoder.GeocoderRequestBuilder;
 import com.google.code.geocoder.model.GeocodeResponse;
@@ -23,6 +25,7 @@ public class GoogleAddressLookup extends AddressLookup {
     
     private static String CLIENT_ID = "gme-inthinc";
     private static String CLIENT_KEY ="75DvrHN4--GCuiYpLF3JifZGIx4=";
+    private static final Logger logger = Logger.getLogger(GoogleAddressLookup.class);
 	
     private MeasurementType measurementType = MeasurementType.ENGLISH;
     private boolean debugMode = true;
