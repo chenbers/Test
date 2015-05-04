@@ -22,6 +22,7 @@ import com.inthinc.pro.model.event.EventType;
 import com.inthinc.pro.model.event.LastReportedEvent;
 import com.inthinc.pro.model.event.NoteType;
 
+
 /**
  * Modified for de9040 for queries for never assigned vehicles and last note for vehicle By adding relation between groupVehicleFlat and vehicle by groupId.
  */
