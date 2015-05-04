@@ -29,7 +29,6 @@ public class EventAggregationJDBCDAO extends SimpleJdbcDaoSupport implements Eve
     protected static final boolean INACTIVE_DRIVERS_DEFAULT = false;
     protected static final boolean ZERO_MILES_DRIVERS_DEFAULT = false;
     private DriverDAO driverDAO;
-
     
     /* Query to return the total number of forgiven events for a single driver by event type */
     private static final String SELECT_FORGIVEN_EVENT_TOTALS = "SELECT cnv.driverID AS 'driverId', cnv.driverName AS 'driverName', cnv.type AS 'type',cnv.aggType as 'aggType',g.groupID as 'groupID', g.name AS 'groupName', count(noteID) AS 'eventCount', "
@@ -80,21 +79,12 @@ public class EventAggregationJDBCDAO extends SimpleJdbcDaoSupport implements Eve
                     Object[] mapId = new Object[3];
                     mapId[0] = rs.getInt("driverID");
                     mapId[1] = eventType;
-
-                    String newReason = rs.getString("reason");
-
+                    
                     DriverForgivenEventTotal driverForgivenEventTotal = null;
                     if (driverForgivenEventTotalMap.get(mapId) != null) {
                         driverForgivenEventTotal = driverForgivenEventTotalMap.get(mapId);
                         driverForgivenEventTotal.setEventCount(driverForgivenEventTotal.getEventCount() + rs.getInt("eventCount"));
                         driverForgivenEventTotal.setEventCountForgiven(driverForgivenEventTotal.getEventCountForgiven() + rs.getInt("eventCountForgiven"));
-                        if (newReason != null && !newReason.trim().isEmpty()){
-                            if (driverForgivenEventTotal.getReasons() == null || driverForgivenEventTotal.getReasons().trim().isEmpty()){
-                                driverForgivenEventTotal.setReasons(newReason);
-                            }else{
-                                driverForgivenEventTotal.setReasons(driverForgivenEventTotal.getReasons() + "; " + newReason);
-                            }
-                        }
                     } else {
                         Driver driver = driverDAO.findByID(rs.getInt("driverID"));
                         
@@ -120,9 +110,6 @@ public class EventAggregationJDBCDAO extends SimpleJdbcDaoSupport implements Eve
                             driverForgivenEventTotal.setEventCountForgiven(rs.getInt("eventCountForgiven"));
                             driverForgivenEventTotal.setEventType(eventType);
                             driverForgivenEventTotalMap.put(mapId, driverForgivenEventTotal);
-
-                            if (newReason != null && !newReason.trim().isEmpty())
-                                driverForgivenEventTotal.setReasons(newReason);
                         } else {
                             System.out.println(rs.getString("driverName") + " this record was returned via SQL, but filtered out in java");
                             return null;
