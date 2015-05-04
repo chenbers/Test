@@ -2,8 +2,6 @@ package it.com.inthinc.pro.dao.jdbc;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-
-import com.inthinc.pro.model.aggregation.DriverForgivenEventTotal;
 import it.config.ITDataSource;
 import it.config.IntegrationConfig;
 
