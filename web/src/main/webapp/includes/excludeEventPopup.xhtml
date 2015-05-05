@@ -34,7 +34,7 @@
                 <br />
                 <rich:message for="excludeReason" id="invalidExcludeReason" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg"/>
                 <h:outputLabel for = "excludeReason" value="#{messages.excludeReason}" style="width:20%"/>
-                <h:inputText value="#{bean.reason}" id="excludeReason" maxlength="50" size="35" required="true" requiredMessage="#{messages.required}"/>
+                <h:inputText value="#{bean.reason}" id="excludeReason" maxlength="50" size="35" required="false" requiredMessage="#{messages.required}"/>
                 <br />
                 <h:outputText value="#{messages.excludeInfo}"/>
             </h:panelGroup>
@@ -45,7 +45,7 @@
             <div class="popupactions">
             <button id="#{context}_no" type="submit" class="left" onclick="Richfaces.hideModalPanel('clear#{context}Panel'); return false;"><span class="no"><h:outputText
                 value="#{messages.button_no}" /></span></button>
-            <a4j:commandButton id="#{context}_yes" action="#{bean.excludeEventAction}" oncomplete="if (document.getElementById('#{context}_clearItemForm:excludeReason').getValue()!=='') {Richfaces.hideModalPanel('clear#{context}Panel'); initializeTable();}"
+            <a4j:commandButton id="#{context}_yes" action="#{bean.excludeEventAction}" oncomplete="Richfaces.hideModalPanel('clear#{context}Panel'); initializeTable();"
                 onkeypress="if (event &amp;&amp; event.keyCode == 13) return false; return true;" reRender="#{clearRerender}" styleClass="left"
                 eventsQueue="#{context}-form" >
                 <span class="yes"> <h:outputText value="#{messages.button_yes}" /> </span>
