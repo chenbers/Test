@@ -31,15 +31,23 @@ public class EventAggregationJDBCDAO extends SimpleJdbcDaoSupport implements Eve
     private DriverDAO driverDAO;
     
     /* Query to return the total number of forgiven events for a single driver by event type */
-    private static final String SELECT_FORGIVEN_EVENT_TOTALS = "SELECT cnv.driverID AS 'driverId', cnv.driverName AS 'driverName', cnv.type AS 'type',cnv.aggType as 'aggType',g.groupID as 'groupID', g.name AS 'groupName', count(noteID) AS 'eventCount', "
-                    +
-                    // "(SELECT count(*) FROM cachedNoteView cnv1 WHERE cnv1.driverID = cnv.driverID AND cnv1.type = cnv.type AND (cnv1.aggType = cnv.aggType OR cnv1.aggType is null) AND forgiven = 1 AND cnv1.time BETWEEN :startDate AND :endDate) AS 'eventCountForgiven' "
-                    // +
-                    "SUM(cnv.forgiven=1)  AS 'eventCountForgiven' "
-                    + // Another way of getting a filtered count cvn.forgiven=1 returns 1 which means true and we can count that.
-                    "FROM cachedNoteView cnv  INNER JOIN groups g ON g.groupID = cnv.driverGroupID "
-                    + "WHERE cnv.driverGroupID IN (:groupList) AND cnv.time BETWEEN :startDate AND :endDate GROUP BY cnv.driverID,cnv.type,cnv.aggType";
-    
+    private static final String SELECT_FORGIVEN_EVENT_TOTALS = ""
+            +"SELECT cnv.driverID AS 'driverId' "
+            +"  ,i.driverName AS 'driverName' "
+            +"  ,cnv.type AS 'type' "
+            +"  ,getAggType(`cnv`.`type`,`cnv`.`attribs`,`cnv`.`deltaX`,`cnv`.`deltaY`,`cnv`.`deltaZ`) as 'aggType' "
+            +"  ,g.groupID as 'groupID' "
+            +"  ,g.name AS 'groupName' "
+            +"  ,count(cnv.noteID) AS 'eventCount' "
+            +"  ,SUM(coalesce(cnv.forgiven,0)) AS 'eventCountForgiven' "
+            +"FROM groups g  "
+            +"  join driver d on d.groupID = g.groupID and d.status != 3 "
+            +"  join cachedNoteInfo i on i.driverID = d.driverID "
+            +"  join cachedNote cnv on cnv.driverID = d.driverID  "
+            +"WHERE g.groupID IN (:groupList)  "
+            +"  AND cnv.time BETWEEN :startDate AND :endDate "
+            +"GROUP BY cnv.driverID ,cnv.type ,getAggType(`cnv`.`type`,`cnv`.`attribs`,`cnv`.`deltaX`,`cnv`.`deltaY`,`cnv`.`deltaZ`)";
+
     public List<DriverForgivenEventTotal> findDriverForgivenEventTotalsByGroups(List<Integer> groupIDs, Interval interval) {
         return findDriverForgivenEventTotalsByGroups(groupIDs, interval, INACTIVE_DRIVERS_DEFAULT, ZERO_MILES_DRIVERS_DEFAULT);
     }
@@ -57,11 +65,7 @@ public class EventAggregationJDBCDAO extends SimpleJdbcDaoSupport implements Eve
         params.put("groupList", groupIDs);
         params.put("endDate", interval.getEnd().toDate());
         params.put("startDate", interval.getStart().toDate());
-        // if(logger.isTraceEnabled()){
-        // logger.trace("Executing query for findDriverForgivenEventTotalsByGroups()");
-        // logger.trace(String.format("Executing query: %s", forgivenEventTotals));
-        // logger.trace(String.format("Query parameters: %s", params));
-        // }
+
         /*
          * Create a map to allow us to aggregate the totals by grouping by EventType.java which is unknown to the database. Otherwise, we would allow the database to group by.
          */
@@ -87,13 +91,13 @@ public class EventAggregationJDBCDAO extends SimpleJdbcDaoSupport implements Eve
                         driverForgivenEventTotal.setEventCountForgiven(driverForgivenEventTotal.getEventCountForgiven() + rs.getInt("eventCountForgiven"));
                     } else {
                         Driver driver = driverDAO.findByID(rs.getInt("driverID"));
-                        
+
                         List<Trip> trips = driverDAO.getTrips(driver.getDriverID(), interval);
                         Integer totalMiles = 0;
                         for (Trip trip : trips) {
                             totalMiles += trip.getMileage();
                         }
-                        
+
                         boolean includeThisInactiveDriver = (includeInactiveDrivers && totalMiles != 0);
                         boolean includeThisZeroMilesDriver = (includeZeroMilesDrivers && driver.getStatus().equals(Status.ACTIVE));
                         if ((driver.getStatus().equals(Status.ACTIVE) && totalMiles != 0) || (includeInactiveDrivers && includeZeroMilesDrivers) || includeThisInactiveDriver
@@ -121,7 +125,7 @@ public class EventAggregationJDBCDAO extends SimpleJdbcDaoSupport implements Eve
                     double totalEventsForgiven = driverForgivenEventTotal.getEventCountForgiven();
                     percentForgiven = totalEventsForgiven / totalEvents;
                     driverForgivenEventTotal.setPercentForgiven(percentForgiven);
-                    return driverForgivenEventTotal;
+                return driverForgivenEventTotal;
                 } else {
                     return null;
                 }
