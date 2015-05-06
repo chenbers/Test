@@ -302,7 +302,7 @@ public class RedFlagJDBCDAO extends SimpleJdbcDaoSupport implements RedFlagDAO {
                     if (attrMap.containsKey(EventAttr.LOW_IDLE)){
                         idleEvent.setLowIdle((Integer) attrMap.get(EventAttr.LOW_IDLE));
                     } else {
-                        idleEvent.setLowIdle(rs.getInt("cnv.idleLow"));
+                        idleEvent.setLowIdle(rs.getInt("cnv.idleLo"));
                     }
 
                     event = (Event) idleEvent;
