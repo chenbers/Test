@@ -293,11 +293,17 @@ public class RedFlagJDBCDAO extends SimpleJdbcDaoSupport implements RedFlagDAO {
                 } else if (clazz.equals(IdleEvent.class)) {
                     IdleEvent idleEvent = new IdleEvent();
 
-                    if (attrMap.containsKey(EventAttr.HIGH_IDLE))
+                    if (attrMap.containsKey(EventAttr.HIGH_IDLE)){
                         idleEvent.setHighIdle((Integer) attrMap.get(EventAttr.HIGH_IDLE));
+                    } else {
+                        idleEvent.setHighIdle(rs.getInt("cnv.idleHi"));
+                    }
 
-                    if (attrMap.containsKey(EventAttr.LOW_IDLE))
+                    if (attrMap.containsKey(EventAttr.LOW_IDLE)){
                         idleEvent.setLowIdle((Integer) attrMap.get(EventAttr.LOW_IDLE));
+                    } else {
+                        idleEvent.setLowIdle(rs.getInt("cnv.idleLow"));
+                    }
 
                     event = (Event) idleEvent;
                 } else if (clazz.equals(BackingMultipleEvent.class)) {
