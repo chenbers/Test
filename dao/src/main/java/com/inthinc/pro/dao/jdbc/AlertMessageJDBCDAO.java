@@ -570,6 +570,7 @@ public class AlertMessageJDBCDAO extends GenericJDBCDAO implements AlertMessageD
 	public void fillInRedFlagMessageInfo(List<RedFlag> redFlagList) {
 		Map<Long, RedFlag> redFlagMap = new HashMap<Long, RedFlag>();
 		StringBuffer noteIDList = new StringBuffer();
+        if(redFlagList.isEmpty()) return;
 		for (RedFlag redFlag : redFlagList) {
 			redFlag.setMsgIDList(new ArrayList<Integer>());
 			if (noteIDList.length() > 0)
