@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="driverExcludedViolationsReport" pageWidth="1200" pageHeight="612" orientation="Landscape" columnWidth="1200" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="b8380115-a953-44a1-8973-9dd19bcf0dcb">
+	<property name="ireport.zoom" value="0.826446280991737"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<field name="driverForgivenEventTotal.driverName" class="java.lang.String"/>
+	<field name="driverForgivenEventTotal.groupName" class="java.lang.String"/>
+	<field name="driverForgivenEventTotal.eventType" class="java.lang.Object"/>
+	<field name="driverForgivenEventTotal.eventCount" class="java.lang.Integer"/>
+	<field name="driverForgivenEventTotal.eventCountForgiven" class="java.lang.Integer"/>
+	<field name="driverForgivenEventTotal.percentForgiven" class="java.lang.Double"/>
+	<field name="groupPath" class="java.lang.String"/>
+	<field name="driverForgivenEventTotal.groupID" class="java.lang.Integer"/>
+	<field name="driverForgivenEventTotal.reasons" class="java.lang.String"/>
+	<columnHeader>
+		<band height="19">
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField-14" positionType="FixRelativeToBottom" mode="Transparent" x="419" y="0" width="100" height="17" forecolor="#000000" uuid="97fed644-0c21-4cba-b321-53424400827d"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="10" isBold="false" pdfFontName="Helvetica"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$R{column.4}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField-14" positionType="FixRelativeToBottom" mode="Transparent" x="319" y="0" width="100" height="17" forecolor="#000000" uuid="1dc3ef69-1d1b-4ac2-8f30-ea9ff0fec3c1"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="10" isBold="false" pdfFontName="Helvetica"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$R{column.3}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField-14" positionType="FixRelativeToBottom" mode="Transparent" x="182" y="0" width="137" height="17" forecolor="#000000" uuid="07993681-7414-4591-ab86-fd03ce525aa5"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="10" isBold="false" pdfFontName="Helvetica"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$R{column.2}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField-14" positionType="FixRelativeToBottom" mode="Transparent" x="519" y="0" width="100" height="17" forecolor="#000000" uuid="d4abe4b2-03c7-4332-88ae-74683dd135b4"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="10" isBold="false" pdfFontName="Helvetica"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$R{column.5}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField-14" positionType="FixRelativeToBottom" mode="Transparent" x="91" y="0" width="91" height="17" forecolor="#000000" uuid="8579b9f9-f943-44bb-8bc7-116e3e1224ad"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="10" isBold="false" pdfFontName="Helvetica"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$R{column.1}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField-14" positionType="FixRelativeToBottom" mode="Transparent" x="0" y="0" width="91" height="17" forecolor="#000000" uuid="9b42b630-ac52-4fb5-9cd9-67f30637d6e8"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="10" isBold="false" pdfFontName="Helvetica"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$R{group.name}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="false">
+				<reportElement key="textField-14" positionType="FixRelativeToBottom" mode="Transparent" x="619" y="0" width="581" height="17" forecolor="#000000" uuid="4ad7fda8-b9be-429e-aa8b-ea3c2cb66258"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="10" isBold="false" pdfFontName="Helvetica"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$R{column.6}]]></textFieldExpression>
+			</textField>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="18">
+			<textField>
+				<reportElement mode="Transparent" x="91" y="0" width="91" height="18" uuid="2fe5eba4-8fdd-447b-b8cb-4f970a5708d5"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{driverForgivenEventTotal.driverName}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement mode="Transparent" x="182" y="0" width="137" height="18" uuid="ca398e71-635d-42ab-9987-df5e73872a49"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[str($F{driverForgivenEventTotal.eventType}.toString())]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement mode="Transparent" x="319" y="0" width="100" height="18" uuid="7ec07726-9610-4d25-8440-85e1a2eb68fa"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{driverForgivenEventTotal.eventCount}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement mode="Transparent" x="519" y="0" width="100" height="18" uuid="abe97b57-4137-4e8c-939d-d42967dc6e57"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[com.inthinc.pro.reports.converter.PercentConverter.doubleToString($F{driverForgivenEventTotal.percentForgiven},$P{REPORT_LOCALE})]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement mode="Transparent" x="419" y="0" width="100" height="18" uuid="eb1073c0-956d-49ff-a1a4-9957ae5ff91f"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{driverForgivenEventTotal.eventCountForgiven}]]></textFieldExpression>
+			</textField>
+			<textField pattern="" isBlankWhenNull="true">
+				<reportElement key="textField" mode="Opaque" x="0" y="0" width="91" height="18" forecolor="#000000" backcolor="#FFFFFF" uuid="399aa24a-05d5-4450-93d0-b918bff288e5"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="10" isBold="false" pdfFontName="Helvetica"/>
+				</textElement>
+				<textFieldExpression><![CDATA["  " + ($F{groupPath} == null?"":$F{groupPath})]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement mode="Transparent" x="619" y="0" width="581" height="18" uuid="3b983a9c-3794-4251-98df-c85d3876386d"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{driverForgivenEventTotal.reasons}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>
