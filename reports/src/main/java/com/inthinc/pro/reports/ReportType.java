@@ -97,6 +97,8 @@ public enum ReportType
 
     //DEVON ENERGY CORP
     DRIVER_EXCLUDED_VIOLATIONS("Driver Excluded Violations","driverExcludedViolationsReport.jrxml","driverExcludedViolationsReportRaw.jrxml","performance","com.inthinc.pro.reports.jasper.performance.i18n.driverExcludedViolationsReport"),
+    DRIVER_EXCLUDED_VIOLATIONS_DETAIL("Driver Excluded Violations Detail","driverExcludedViolationsDetailReport.jrxml","driverExcludedViolationsDetailReportRaw.jrxml","performance","com.inthinc.pro.reports.jasper.performance.i18n.driverExcludedViolationsDetailReport"),
+
     DRIVER_COACHING("Driver Coaching Report","driverCoachingReport.jrxml","driverCoachingReport.jrxml", "performance","com.inthinc.pro.reports.jasper.performance.i18n.driverCoachingReport", null, false),
     DRIVER_COACHING_SCORE("Driver Coaching and Score Report","driverCoachingScoreReport.jrxml","driverCoachingScoreReport.jrxml", "performance","com.inthinc.pro.reports.jasper.performance.i18n.driverCoachingScoreReport", null, false),
     //FORMS
