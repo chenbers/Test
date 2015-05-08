@@ -1,8 +1,10 @@
 package it.com.inthinc.pro.dao.jdbc;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
+import com.inthinc.pro.model.aggregation.DriverForgivenEvent;
 import com.inthinc.pro.model.aggregation.DriverForgivenEventTotal;
 import it.config.ITDataSource;
 import it.config.IntegrationConfig;
@@ -80,7 +82,7 @@ public class EventAggregationJDBCDAOTest extends BaseJDBCTest {
         eventAggregationJDBCDAO.setDataSource(new ITDataSource().getRealDataSource());
 
         List<LastReportedEvent> lastEventListOld = eventAggregationJDBCDAO.findRecentEventByDevice(testGroupList, VALID_TEST_INTERVAL);
-        List<LastReportedEvent> lastEventListNew = eventAggregationJDBCDAO.findLastEventForVehicles(testGroupList, VALID_TEST_INTERVAL,dontIncludeUnassignedDevice,activeInterval);
+        List<LastReportedEvent> lastEventListNew = eventAggregationJDBCDAO.findLastEventForVehicles(testGroupList, VALID_TEST_INTERVAL, dontIncludeUnassignedDevice, activeInterval);
         
         assertEquals("old method of fetching matches new", lastEventListOld.size(), lastEventListNew.size());
         
@@ -100,7 +102,7 @@ public class EventAggregationJDBCDAOTest extends BaseJDBCTest {
         EventAggregationJDBCDAO eventAggregationJDBCDAO = new EventAggregationJDBCDAO();
         eventAggregationJDBCDAO.setDataSource(new ITDataSource().getRealDataSource());
         
-        List<LastReportedEvent> lastEventList= eventAggregationJDBCDAO.findLastEventForVehicles(testGroupList, VALID_TEST_INTERVAL,dontIncludeUnassignedDevice,activeInterval);
+        List<LastReportedEvent> lastEventList= eventAggregationJDBCDAO.findLastEventForVehicles(testGroupList, VALID_TEST_INTERVAL, dontIncludeUnassignedDevice, activeInterval);
         assertEquals("expected count", EXPECTED_VALID_COUNT.intValue(), lastEventList.size());
         
         for (LastReportedEvent event : lastEventList) {
@@ -125,6 +127,26 @@ public class EventAggregationJDBCDAOTest extends BaseJDBCTest {
                     found ++;
                 }
             }
+        }
+    }
+
+    @Test
+    public void testEventOnlySelect() {
+        // first, get the data
+        EventAggregationJDBCDAO eventAggregationJDBCDAO = new EventAggregationJDBCDAO();
+        eventAggregationJDBCDAO.setDataSource(new ITDataSource().getRealDataSource());
+        List<DriverForgivenEvent> dfetList = eventAggregationJDBCDAO.findDriverForgivenEventsByGroups(testGroupList, VALID_TEST_INTERVAL, true, true);
+        assertNotNull(dfetList);
+
+        for (DriverForgivenEvent df: dfetList){
+            if (df.getDateTime() != null)
+                assertNotNull(df.getDateTimeStr());
+
+            if (df.getGroupID() != null)
+                assertNotNull(df.getGroupName());
+
+            if (df.getDriverID() != null)
+               assertNotNull(df.getDriverName());
         }
     }
 }

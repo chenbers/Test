@@ -1583,7 +1583,7 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
     public ReportCriteria getDriverExcludedViolationDetailCriteria(GroupHierarchy accountGroupHierarchy, Integer groupID, Interval interval, Locale locale, DateTimeZone timeZone, boolean includeInactiveDrivers, boolean includeZeroMilesDrivers) {
         // Load the group id list for the parent group and it's children
         List<Integer> groupIDs = accountGroupHierarchy.getGroupIDList(groupID);
-        DriverExcludedViolationsCriteria.Builder builder = new DriverExcludedViolationsCriteria.Builder(accountGroupHierarchy, eventAggregationDAO, groupDAO, driverDAO, groupIDs, interval, includeInactiveDrivers, includeZeroMilesDrivers);
+        DriverExcludedViolationsDetailCriteria.Builder builder = new DriverExcludedViolationsDetailCriteria.Builder(accountGroupHierarchy, eventAggregationDAO, groupDAO, driverDAO, groupIDs, interval, includeInactiveDrivers, includeZeroMilesDrivers);
         builder.setLocale(locale);
         builder.setDateTimeZone(timeZone);
         return builder.build();

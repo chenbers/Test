@@ -3,6 +3,7 @@ package com.inthinc.pro.reports.dao.mock;
 import java.util.Collections;
 import java.util.List;
 
+import com.inthinc.pro.model.aggregation.DriverForgivenEvent;
 import org.joda.time.Interval;
 
 import com.inthinc.pro.dao.EventAggregationDAO;
@@ -15,7 +16,12 @@ public class MockEventAggregationDAO implements EventAggregationDAO{
     public List<DriverForgivenEventTotal> findDriverForgivenEventTotalsByGroups(List<Integer> groupIds, Interval interval) {
         return Collections.emptyList();
     }
-    
+
+    @Override
+    public List<DriverForgivenEvent> findDriverForgivenEventsByGroups(List<Integer> groupIds, Interval interval) {
+        return Collections.emptyList();
+    }
+
     @Override
     public List<LastReportedEvent> findRecentEventByDevice(List<Integer> groupIds, Interval interval) {
         return Collections.emptyList();
@@ -23,6 +29,11 @@ public class MockEventAggregationDAO implements EventAggregationDAO{
 
     @Override
     public List<DriverForgivenEventTotal> findDriverForgivenEventTotalsByGroups(List<Integer> groupIds, Interval interval, boolean includeInactiveDrivers, boolean includeZeroMilesDrivers) {
+        return Collections.emptyList();
+    }
+
+    @Override
+    public List<DriverForgivenEvent> findDriverForgivenEventsByGroups(List<Integer> groupIds, Interval interval, boolean includeInactiveDrivers, boolean includeZeroMilesDrivers) {
         return Collections.emptyList();
     }
 

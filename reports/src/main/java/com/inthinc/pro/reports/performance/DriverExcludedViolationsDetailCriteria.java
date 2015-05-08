@@ -4,7 +4,7 @@ import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.dao.EventAggregationDAO;
 import com.inthinc.pro.dao.GroupDAO;
 import com.inthinc.pro.model.GroupHierarchy;
-import com.inthinc.pro.model.aggregation.DriverForgivenEventTotal;
+import com.inthinc.pro.model.aggregation.DriverForgivenEvent;
 import com.inthinc.pro.reports.ReportCriteria;
 import com.inthinc.pro.reports.ReportType;
 import org.apache.log4j.Logger;
@@ -13,6 +13,7 @@ import org.joda.time.Interval;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -104,19 +105,19 @@ public class DriverExcludedViolationsDetailCriteria extends ReportCriteria{
                 this.locale = Locale.US;
             }
 
-            List<DriverForgivenEventTotal> driverForgivenEventTotals = eventAggregationDAO.findDriverForgivenEventTotalsByGroups(groupIDs, interval, includeInactiveDrivers, includeZeroMilesDrivers);
-            logger.debug(String.format("Building DriverExcludedViolationsCriteria with groupIDs: %s", groupIDs));
+            List<DriverForgivenEvent> driverForgivenEvents = eventAggregationDAO.findDriverForgivenEventsByGroups(groupIDs, interval, includeInactiveDrivers, includeZeroMilesDrivers);
+            logger.debug(String.format("Building DriverExcludedViolationsDetailCriteria with groupIDs: %s", groupIDs));
             DriverExcludedViolationsDetailCriteria driverExcludedViolationsCriteria = new DriverExcludedViolationsDetailCriteria(locale);
 
             driverExcludedViolationsCriteria.addReportStartEndDateParams(interval);
 
-            List<DriverForgivenEventTotalWrapper> driverForgivenEventTotalWrappers = new ArrayList<DriverExcludedViolationsDetailCriteria.DriverForgivenEventTotalWrapper>();
-            for(DriverForgivenEventTotal driverForgivenEventTotal:driverForgivenEventTotals){
-                DriverForgivenEventTotalWrapper driverForgivenEventTotalWrapper = new DriverForgivenEventTotalWrapper(driverForgivenEventTotal, groupHierarchy.getFullGroupName(driverForgivenEventTotal.getGroupID()));
-                driverForgivenEventTotalWrappers.add(driverForgivenEventTotalWrapper);
+            List<DriverForgivenEventWrapper> driverForgivenEventWrappers = new ArrayList<DriverExcludedViolationsDetailCriteria.DriverForgivenEventWrapper>();
+            for(DriverForgivenEvent driverForgivenEvent:driverForgivenEvents){
+                DriverForgivenEventWrapper driverForgivenEventWrapper = new DriverForgivenEventWrapper(driverForgivenEvent, groupHierarchy.getFullGroupName(driverForgivenEvent.getGroupID()));
+                driverForgivenEventWrappers.add(driverForgivenEventWrapper);
             }
-            Collections.sort(driverForgivenEventTotalWrappers);
-            driverExcludedViolationsCriteria.setMainDataset(driverForgivenEventTotalWrappers);
+            Collections.sort(driverForgivenEventWrappers);
+            driverExcludedViolationsCriteria.setMainDataset(driverForgivenEventWrappers);
             
             return driverExcludedViolationsCriteria;
         }
@@ -138,14 +139,14 @@ public class DriverExcludedViolationsDetailCriteria extends ReportCriteria{
         }
     }
     
-    public static class DriverForgivenEventTotalWrapper  implements Comparable<DriverForgivenEventTotalWrapper>{
+    public static class DriverForgivenEventWrapper  implements Comparable<DriverForgivenEventWrapper>{
         
         private String groupPath;
         
-        private DriverForgivenEventTotal driverForgivenEventTotal;
+        private DriverForgivenEvent driverForgivenEvent;
         
-        public DriverForgivenEventTotalWrapper(DriverForgivenEventTotal driverForgivenEventTotal,String groupPath) {
-            this.driverForgivenEventTotal = driverForgivenEventTotal;
+        public DriverForgivenEventWrapper(DriverForgivenEvent driverForgivenEvent,String groupPath) {
+            this.driverForgivenEvent = driverForgivenEvent;
             this.groupPath = groupPath;
         }
 
@@ -157,17 +158,33 @@ public class DriverExcludedViolationsDetailCriteria extends ReportCriteria{
             this.groupPath = groupPath;
         }
 
-        public DriverForgivenEventTotal getDriverForgivenEventTotal() {
-            return driverForgivenEventTotal;
+        public DriverForgivenEvent getDriverForgivenEvent() {
+            return driverForgivenEvent;
         }
 
-        public void setDriverForgivenEventTotal(DriverForgivenEventTotal driverForgivenEventTotal) {
-            this.driverForgivenEventTotal = driverForgivenEventTotal;
+        public void setDriverForgivenEvent(DriverForgivenEvent driverForgivenEvent) {
+            this.driverForgivenEvent = driverForgivenEvent;
         }
         
         @Override
-        public int compareTo(DriverForgivenEventTotalWrapper arg0) {
-            return this.getGroupPath().compareTo(arg0.getGroupPath());
+        public int compareTo(DriverForgivenEventWrapper that) {
+            int ret = this.getGroupPath().compareTo(that.getGroupPath());
+            if (ret == 0) {
+                String thisName = this.getDriverForgivenEvent().getDriverName();
+                String thatName = that.getDriverForgivenEvent().getDriverName();
+
+                if (thisName!= null && thatName != null)
+                    ret = thisName.compareTo(thatName);
+
+                if (ret == 0){
+                    Date thisDate = this.getDriverForgivenEvent().getDateTime();
+                    Date thatDate = that.getDriverForgivenEvent().getDateTime();
+                    if (thisDate!= null && thatDate != null)
+                        ret = thisDate.compareTo(thatDate);
+
+                }
+            }
+            return ret;
         }
     }
 }
