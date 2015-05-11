@@ -144,7 +144,7 @@ public class HOSJDBCDAO extends NamedParameterJdbcDaoSupport implements HOSDAO {
             "AND h.deletedFlag = 0 AND d.groupID in (:groupIDs) " +
             "AND h.logTime BETWEEN :startTime AND :endTime " +
             "AND h.status NOT IN (31,39,47,48) ";
-    private final static String DRIVER_STATUS_ONLY_FILTERED_SQL_GRUPS = DATE_DRIVER_FILTERED_SQL +
+    private final static String DRIVER_STATUS_ONLY_FILTERED_SQL_GRUPS = DATE_DRIVER_FILTERED_SQL_GROUPS +
             "AND h.status IN (0,1,2,3,4,7,8,24,29,30,32) ";
 
     @Override
