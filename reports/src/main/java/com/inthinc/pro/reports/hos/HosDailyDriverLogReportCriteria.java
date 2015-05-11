@@ -175,8 +175,8 @@ public class HosDailyDriverLogReportCriteria extends ReportCriteria {
         List<ReportCriteria> groupCriteriaList = new ArrayList<ReportCriteria>();
 
         Interval expandedInterval = DateTimeUtil.getExpandedInterval(interval, DateTimeZone.UTC, MAX_RULESET_DAYSBACK, 7);
-        Map<Integer, List<HOSOccupantLog>> occupantLogMap = hosDAO.getHOSOccupantLogsForGroups(allGroupIDs, expandedInterval);
         Map<Integer, List<HOSRecord>> hosRecordMap = hosDAO.getHOSRecordsForGroups(allGroupIDs, expandedInterval, false);
+        Map<Integer, List<HOSOccupantLog>> occupantLogMap = hosDAO.getHOSOccupantLogsForGroups(allGroupIDs, expandedInterval);
 
         for (Driver driver : reportDriverList) {
             if (account == null) {
