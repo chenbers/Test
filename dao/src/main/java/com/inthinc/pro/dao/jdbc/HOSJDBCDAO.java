@@ -57,6 +57,60 @@ public class HOSJDBCDAO extends NamedParameterJdbcDaoSupport implements HOSDAO {
             "FROM hoslog h LEFT JOIN vehicle v ON (h.vehicleID = v.vehicleID) LEFT JOIN hoslog_changelog cl ON  (h.hosLogID = cl.hosLogID), person p, driver d, timezone tz " +
             "WHERE h.tzID = tz.tzID AND d.driverID = h.driverID AND p.personID = d.personID ";
 
+    private final static String SELECT_GRP_SQL = "SELECT h.hosLogID, " +
+            "       h.driverID, " +
+            "       h.vehicleID, " +
+            "       concat(h.logTime, 'FORCESTRING') logTime, " +
+            "       tz.tzName, " +
+            "       h.status, " +
+            "       h.driverDOTType, " +
+            "       h.vehicleIsDOTFlag, " +
+            "       h.vehicleOdometer, " +
+            "       h.origin, " +
+            "       coalesce(h.trailerID, '') AS trailerID, " +
+            "       coalesce(h.serviceID, '') AS serviceID, " +
+            "       h.latitude, " +
+            "       h.longitude, " +
+            "       coalesce(h.location, '') AS location, " +
+            "       coalesce(cl.location, '') AS originalLocation, " +
+            "       h.deletedFlag, " +
+            "       h.editedFlag, " +
+            "       h.editCount, " +
+            "       h.editUserName, " +
+            "       h.truckGallons, " +
+            "       h.trailerGallons, " +
+            "       coalesce(h.tripReportFlag, 0) AS tripReportFlag, " +
+            "       coalesce(h.tripInspectionFlag, 0) tripInspectionFlag, " +
+            "       coalesce(v.name, '') AS vehicleName, " +
+            "       cl.logTime AS originalLogTime, " +
+            "       coalesce(v.license, '') as vehicleLicense, " +
+            "       p.empid, " +
+            "       h.editUserID, " +
+            "       IF((SELECT count(*) " +
+            "             FROM hosvehiclelogin " +
+            "            WHERE vehicleID = h.vehicleID " +
+            "              AND driverID != h.driverID " +
+            "              AND h.logTime BETWEEN loginTime AND " +
+            "                  coalesce(logoutTime, now())) > 0, " +
+            "          0, " +
+            "          1) 'singleDriver', " +
+            "       cl.status as originalStatus, " +
+            "       h.mobileUnitId, " +
+            "       h.inspectionType, " +
+            "       h.reason, " +
+            "       h.approvedBy, " +
+            "       h.editor, " +
+            "       h.timeStamp " +
+            " FROM hoslog h " +
+            "  LEFT JOIN hoslog_changelog cl " +
+            "    ON h.hosLogID = cl.hosLogID " +
+            "  LEFT JOIN vehicle v " +
+            "    ON cl.vehicleID = v.vehicleID " +
+            "  JOIN driver d on d.driverID = cl.driverID " +
+            "  JOIN person p on p.personID = d.personID " +
+            "  JOIN timezone tz on h.tzID = tz.tzID " +
+            " WHERE 1=1    ";
+
     private final static String SELECT_SIMPLE_SQL = "SELECT h.hosLogID, h.driverID, h.vehicleID, h.logTime, "+ 
             "tz.tzName, h.status, h.driverDOTType, h.vehicleIsDOTFlag, h.vehicleOdometer, h.origin, coalesce(h.trailerID, '') AS trailerID, coalesce(h.serviceID, '') AS serviceID, "+
             "h.latitude, h.longitude, coalesce(h.location, '') AS location, '' AS originalLocation, " +
@@ -140,7 +194,7 @@ public class HOSJDBCDAO extends NamedParameterJdbcDaoSupport implements HOSDAO {
     private final static String DRIVER_STATUS_ONLY_FILTERED_SQL = DATE_DRIVER_FILTERED_SQL + 
             "AND h.status IN (0,1,2,3,4,7,8,24,29,30,32) ";
 
-    private final static String DATE_DRIVER_FILTERED_SQL_GROUPS = SELECT_SQL +
+    private final static String DATE_DRIVER_FILTERED_SQL_GROUPS = SELECT_GRP_SQL +
             "AND h.deletedFlag = 0 AND d.groupID in (:groupIDs) " +
             "AND h.logTime BETWEEN :startTime AND :endTime " +
             "AND h.status NOT IN (31,39,47,48) ";
@@ -216,18 +270,39 @@ public class HOSJDBCDAO extends NamedParameterJdbcDaoSupport implements HOSDAO {
             "AND d.personID = p.personID AND d.driverId = ol.driverId and ol.occupantFlag > 0 " +
             "ORDER BY ol.loginTime";
 
-    private final static String SELECT_OCCUPANT_LOGS_FOR_GROUPS = "SELECT  ol.driverID, CONCAT(p.first, ' ', p.last) AS driverName, ol.vehicleID, " +
-            "ol.loginTime, COALESCE(ol.logoutTime, UTC_TIMESTAMP()) AS logoutTime," +
-            "ol.serviceId, ol.trailerId " +
-            "FROM hosvehiclelogin ol, person p, driver d, " +
-            /*Grab vehicle, interval records for driver*/
-            "(SELECT hvl.vehicleID, loginTime, COALESCE(logoutTime, UTC_TIMESTAMP()) AS logoutTime FROM hosvehiclelogin hvl, vehicle v WHERE hvl.driverId = driverID AND v.vehicleID=hvl.vehicleID AND ((loginTime BETWEEN :startTime AND :endTime) OR (COALESCE(logoutTime, UTC_TIMESTAMP())  BETWEEN :startTime AND :endTime) OR (loginTime <= :startTime AND COALESCE(logoutTime, UTC_TIMESTAMP()) >= :endTime))) dl " +
-            "WHERE 1=1 " +
-            /*Grab records that fall into time interval of driver records*/
-            "AND ol.vehicleId = dl.vehicleID " +
-            "AND ((ol.loginTime > dl.loginTime AND ol.loginTime < dl.logoutTime) OR (COALESCE(ol.logoutTime, UTC_TIMESTAMP()) > dl.loginTime AND COALESCE(ol.logoutTime, UTC_TIMESTAMP()) < dl.logoutTime) OR (ol.loginTime < dl.loginTime AND COALESCE(ol.logoutTime, UTC_TIMESTAMP()) > dl.logoutTime)) " +
-            "AND d.personID = p.personID AND d.driverId = ol.driverId and ol.occupantFlag > 0 and d.groupID in (:groupIDs) " +
-            "ORDER BY ol.loginTime";
+    private final static String SELECT_OCCUPANT_LOGS_FOR_GROUPS = "" +
+            "SELECT ol.driverID, " +
+            "       CONCAT(p.first, ' ', p.last) AS driverName, " +
+            "       ol.vehicleID, " +
+            "       ol.loginTime, " +
+            "       COALESCE(ol.logoutTime, UTC_TIMESTAMP()) AS logoutTime, " +
+            "       ol.serviceId, " +
+            "       ol.trailerId, " +
+            "       hvl.vehicleID, " +
+            "       hvl.loginTime, " +
+            "       COALESCE(hvl.logoutTime, UTC_TIMESTAMP()) AS logoutTime " +
+            "  FROM hosvehiclelogin ol " +
+            "  join driver d " +
+            "    on d.driverId = ol.driverId " +
+            "  join person p " +
+            "    on d.personID = p.personID " +
+            "  join hosvehiclelogin hvl " +
+            "    on hvl.vehicleID = ol.vehicleID " +
+            "  join vehicle v " +
+            "    on hvl.vehicleID = v.vehicleID " +
+            "   AND ((hvl.loginTime BETWEEN :startTime AND :endTime) OR " +
+            "       (COALESCE(hvl.logoutTime, UTC_TIMESTAMP()) BETWEEN :startTime AND " +
+            "       :endTime) OR " +
+            "       (hvl.loginTime <= :startTime AND " +
+            "       COALESCE(hvl.logoutTime, UTC_TIMESTAMP()) >= :endTime)) " +
+            " WHERE 1 = 1 " +
+            " and d.groupID in (:groupIDs) " +
+            "   AND ((ol.loginTime > hvl.loginTime AND ol.loginTime < hvl.logoutTime) OR " +
+            "       (COALESCE(ol.logoutTime, UTC_TIMESTAMP()) > hvl.loginTime AND " +
+            "       COALESCE(ol.logoutTime, UTC_TIMESTAMP()) < hvl.logoutTime) OR " +
+            "       (ol.loginTime < hvl.loginTime AND " +
+            "       COALESCE(ol.logoutTime, UTC_TIMESTAMP()) > hvl.logoutTime)) " +
+            "   and ol.occupantFlag > 0";
 
 
     @Override
