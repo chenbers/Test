@@ -113,24 +113,6 @@ public class EventAggregationJDBCDAOTest extends BaseJDBCTest {
     }
 
     @Test
-    public void testReasonColumnInSelect() {
-        // first, get the data
-        EventAggregationJDBCDAO eventAggregationJDBCDAO = new EventAggregationJDBCDAO();
-        eventAggregationJDBCDAO.setDataSource(new ITDataSource().getRealDataSource());
-        List<DriverForgivenEventTotal> dfetList = eventAggregationJDBCDAO.findDriverForgivenEventTotalsByGroups(testGroupList, VALID_TEST_INTERVAL, true, true);
-
-        // then count the number of reasons found
-        int found = 0;
-        if (dfetList != null && !dfetList.isEmpty()){
-            for (DriverForgivenEventTotal df: dfetList){
-                if (df.getReasons() != null && !df.getReasons().trim().isEmpty()){
-                    found ++;
-                }
-            }
-        }
-    }
-
-    @Test
     public void testEventOnlySelect() {
         // first, get the data
         EventAggregationJDBCDAO eventAggregationJDBCDAO = new EventAggregationJDBCDAO();
