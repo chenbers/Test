@@ -112,9 +112,11 @@ public class DriverExcludedViolationsDetailCriteria extends ReportCriteria{
             driverExcludedViolationsCriteria.addReportStartEndDateParams(interval);
 
             List<DriverForgivenEventWrapper> driverForgivenEventWrappers = new ArrayList<DriverExcludedViolationsDetailCriteria.DriverForgivenEventWrapper>();
-            for(DriverForgivenEvent driverForgivenEvent:driverForgivenEvents){
-                DriverForgivenEventWrapper driverForgivenEventWrapper = new DriverForgivenEventWrapper(driverForgivenEvent, groupHierarchy.getFullGroupName(driverForgivenEvent.getGroupID()));
-                driverForgivenEventWrappers.add(driverForgivenEventWrapper);
+            for(DriverForgivenEvent driverForgivenEvent: driverForgivenEvents){
+                if (driverForgivenEvent != null) {
+                    DriverForgivenEventWrapper driverForgivenEventWrapper = new DriverForgivenEventWrapper(driverForgivenEvent, groupHierarchy.getFullGroupName(driverForgivenEvent.getGroupID()));
+                    driverForgivenEventWrappers.add(driverForgivenEventWrapper);
+                }
             }
             Collections.sort(driverForgivenEventWrappers);
             driverExcludedViolationsCriteria.setMainDataset(driverForgivenEventWrappers);

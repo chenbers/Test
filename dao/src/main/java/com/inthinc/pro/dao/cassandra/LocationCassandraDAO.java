@@ -46,6 +46,7 @@ import com.inthinc.pro.model.TripStatus;
 import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.model.event.Event;
 import com.inthinc.pro.model.event.IdleEvent;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 @SuppressWarnings("serial")
 public class LocationCassandraDAO extends GenericCassandraDAO implements LocationDAO {
@@ -293,6 +294,11 @@ public class LocationCassandraDAO extends GenericCassandraDAO implements Locatio
     public List<Trip> getTripsForDriver(Integer driverID, Date startDate, Date endDate) {
         logger.debug("LocationCassandraDAO getTripsForDriver() driverID = " + driverID);
         return fetchTripsForAsset(driverID, (int) DateUtil.convertDateToSeconds(startDate), (int) DateUtil.convertDateToSeconds(endDate), true, false);
+    }
+
+    @Override
+    public Integer getTripMileageCountForDriver(Integer driverID, Date startDate, Date endDate) {
+        throw new NotImplementedException();
     }
 
     @Override

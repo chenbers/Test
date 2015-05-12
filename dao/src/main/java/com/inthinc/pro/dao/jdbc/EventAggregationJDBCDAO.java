@@ -2,6 +2,7 @@ package com.inthinc.pro.dao.jdbc;
 
 import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.dao.EventAggregationDAO;
+import com.inthinc.pro.dao.LocationDAO;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Person;
 import com.inthinc.pro.model.Status;
@@ -33,6 +34,7 @@ public class EventAggregationJDBCDAO extends SimpleJdbcDaoSupport implements Eve
     protected static final boolean INACTIVE_DRIVERS_DEFAULT = false;
     protected static final boolean ZERO_MILES_DRIVERS_DEFAULT = false;
     private DriverDAO driverDAO;
+    private LocationDAO locationDAO;
     
     /* Query to return the total number of forgiven events for a single driver by event type */
     private static final String SELECT_FORGIVEN_EVENT_TOTALS = "SELECT cnv.driverID AS 'driverId', cnv.driverName AS 'driverName', cnv.type AS 'type',cnv.aggType as 'aggType',g.groupID as 'groupID', g.name AS 'groupName', count(noteID) AS 'eventCount', "
@@ -177,7 +179,7 @@ public class EventAggregationJDBCDAO extends SimpleJdbcDaoSupport implements Eve
 
         // holds already found driver info from driverDao
         final Map<Integer, Driver> driverInfoCache = new HashMap<Integer, Driver>();
-        final Map<Integer, List<Trip>> driverTripCache = new HashMap<Integer, List<Trip>>();
+        final Map<Integer, Integer> driverTripMileageCache = new HashMap<Integer, Integer>();
 
         return getSimpleJdbcTemplate().query(forgivenEvents, new ParameterizedRowMapper<DriverForgivenEvent>() {
             @Override
@@ -195,21 +197,18 @@ public class EventAggregationJDBCDAO extends SimpleJdbcDaoSupport implements Eve
                         driverInfoCache.put(driver.getDriverID(), driver);
                 }
 
-                List<Trip> trips = driverTripCache.get(rs.getInt("driverID"));
-                if (trips == null){
-                    trips = driverDAO.getTrips(rs.getInt("driverID"), interval);
-                    if (trips != null)
-                        driverTripCache.put(rs.getInt("driverID"), trips);
+                Integer driverTripMileage = driverTripMileageCache.get(rs.getInt("driverID"));
+                if (driverTripMileage == null){
+                    driverTripMileage = locationDAO.getTripMileageCountForDriver(rs.getInt("driverID"), interval.getStart().toDate(), interval.getEnd().toDate());
+                    driverTripMileageCache.put(rs.getInt("driverID"),driverTripMileage);
                 }
 
-                Integer totalMiles = 0;
-                for (Trip trip : trips) {
-                    totalMiles += trip.getMileage();
-                }
+                if (driverTripMileage == null)
+                    driverTripMileage = 0;
 
-                boolean includeThisInactiveDriver = (includeInactiveDrivers && totalMiles != 0);
+                boolean includeThisInactiveDriver = (includeInactiveDrivers && driverTripMileage != 0);
                 boolean includeThisZeroMilesDriver = (includeZeroMilesDrivers && driver != null && driver.getStatus().equals(Status.ACTIVE));
-                if ((driver != null && driver.getStatus().equals(Status.ACTIVE) && totalMiles != 0) || (includeInactiveDrivers && includeZeroMilesDrivers) || includeThisInactiveDriver
+                if ((driver != null && driver.getStatus().equals(Status.ACTIVE) && driverTripMileage != 0) || (includeInactiveDrivers && includeZeroMilesDrivers) || includeThisInactiveDriver
                         || includeThisZeroMilesDriver) {
                     Person person = driver.getPerson();
                     String personName = "";
@@ -217,7 +216,7 @@ public class EventAggregationJDBCDAO extends SimpleJdbcDaoSupport implements Eve
                         personName = person.getFullName();
                     System.out.println("INCLUDING: fullName: " + personName);
                     System.out.println("status: " + driver.getStatus());
-                    System.out.println("totalMiles: " + totalMiles);
+                    System.out.println("totalMiles: " + driverTripMileage);
 
                     dfe.setDriverID(rs.getInt("driverID"));
                     dfe.setDriverName(rs.getString("driverName"));
@@ -421,5 +420,13 @@ public class EventAggregationJDBCDAO extends SimpleJdbcDaoSupport implements Eve
     
     public void setDriverDAO(DriverDAO driverDAO) {
         this.driverDAO = driverDAO;
+    }
+
+    public LocationDAO getLocationDAO() {
+        return locationDAO;
+    }
+
+    public void setLocationDAO(LocationDAO locationDAO) {
+        this.locationDAO = locationDAO;
     }
 }
