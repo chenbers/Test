@@ -19,42 +19,7 @@ public class PhoneAlertJob extends BaseAlertJob
     
     protected void executeInternal(JobExecutionContext ctx) throws JobExecutionException
     {
-        logger.info("PhoneAlertJob: START");
-        List<AlertMessageBuilder> messageList = getMessageBuilders(AlertMessageDeliveryType.PHONE);
-        
-        if (messageList.isEmpty()) return;
-        
-        //send all messages for one person the same thread so they don't get calls piling up
-        //First sort by address
-        unformatPhoneNumbers(messageList);
-        Collections.sort(messageList);
-        
-        List<AlertMessageBuilder> userList =  new ArrayList<AlertMessageBuilder>();
-        String currentAddress = messageList.get(0).getAddress();
-        for (AlertMessageBuilder message : messageList)
-        {
-            if (message == null) continue;
-            
-            String text = LocalizedMessage.getStringWithValues(message.getAlertMessageType().toString(),message.getLocale(),(String[])message.getParamterList().toArray(new String[message.getParamterList().size()]));
-            logger.info("PHONE Message: " + message.getAddress() + " " + text);
-            
-            if (message.getAddress().equalsIgnoreCase(currentAddress)){
-                userList.add(message);
-            }
-            else {
-                //dispatch this list
-                dispatchList(userList);
-                //set to get next batch
-                userList = new ArrayList<AlertMessageBuilder>();
-                currentAddress = message.getAddress();
-                userList.add(message);
-            }
-        }
-        //Send last list
-        if (!userList.isEmpty()){
-            dispatchList(userList);
-        }
-        logger.info("PhoneAlertJob: END");
+        logger.error("BaseAlertJob: THROWAWAY BUILD DOES NOT SEND ALERTS");
     }
     private void unformatPhoneNumbers(List<AlertMessageBuilder> messageList){
         for (AlertMessageBuilder message : messageList){

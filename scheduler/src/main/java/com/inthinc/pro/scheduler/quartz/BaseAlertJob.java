@@ -1,5 +1,6 @@
 package com.inthinc.pro.scheduler.quartz;
 
+import java.util.Collections;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -37,7 +38,8 @@ public class BaseAlertJob extends QuartzJobBean
     {
         try
         {
-            return alertMessageDAO.getMessages(messageType);
+            logger.error("BaseAlertJob: THROWAWAY BUILD DOES NOT SEND ALERTS");
+            return Collections.emptyList();
         }
         catch (Exception e)
         {
@@ -51,7 +53,8 @@ public class BaseAlertJob extends QuartzJobBean
     {
         try
         {
-            return alertMessageDAO.getMessageBuilders(messageType);
+            logger.error("BaseAlertJob: THROWAWAY BUILD DOES NOT SEND ALERTS");
+            return Collections.emptyList();
         }
         catch (Exception e)
         {

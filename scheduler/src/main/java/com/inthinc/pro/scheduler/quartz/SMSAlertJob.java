@@ -1,5 +1,6 @@
 package com.inthinc.pro.scheduler.quartz;
 
+import java.util.Collections;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -16,17 +17,7 @@ public class SMSAlertJob extends BaseAlertJob
 
     protected void executeInternal(JobExecutionContext ctx) throws JobExecutionException
     {
-        logger.info("SMSAlertJob: START");
-        List<AlertMessageBuilder> messageList = getMessageBuilders(AlertMessageDeliveryType.TEXT_MESSAGE);
-
-        for (AlertMessageBuilder message : messageList)
-        {
-            logger.info("MessageID: " + message.getMessageID() + " Emailed to: " + message.getAddress());
-            String text = LocalizedMessage.getStringWithValues(message.getAlertMessageType().toString(),message.getLocale(),(String[])message.getParamterList().toArray(new String[message.getParamterList().size()]));
-            getMailDispatcher().send(message.getAddress(), getSubject(message),text);
-            getAlertMessageDAO().acknowledgeMessage(message.getMessageID());
-        }
-        logger.info("SMSAlertJob: END");
+        logger.error("BaseAlertJob: THROWAWAY BUILD DOES NOT SEND ALERTS");
 
     }
 
