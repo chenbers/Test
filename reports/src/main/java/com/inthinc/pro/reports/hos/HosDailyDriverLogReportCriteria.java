@@ -59,6 +59,8 @@ import java.io.IOException;
 import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
@@ -68,6 +70,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.ResourceBundle;
+import java.util.Set;
 import java.util.TimeZone;
 
 public class HosDailyDriverLogReportCriteria extends ReportCriteria {
@@ -104,7 +107,9 @@ public class HosDailyDriverLogReportCriteria extends ReportCriteria {
     
     private Date currentDateTime;
     private DateTimeZone userDateTimeZone;
-    
+
+    private Map<Integer, User> userCache;
+
     public Date getCurrentDateTime() {
         if (currentDateTime == null) {
             return new Date();
@@ -125,6 +130,7 @@ public class HosDailyDriverLogReportCriteria extends ReportCriteria {
         this.setIncludeInactiveDrivers(ReportCriteria.DEFAULT_EXCLUDE_INACTIVE_DRIVERS);
         ddlUtil = new DDLUtil();
         this.userDateTimeZone = dateTimeZone;
+        userCache = new HashMap<Integer, User>();
     }
 
     public ResourceBundle getResourceBundle() {
@@ -749,7 +755,13 @@ public class HosDailyDriverLogReportCriteria extends ReportCriteria {
 
         Integer editorID = hosRecord.getEditor();
         if (editorID != null){
-            User user = userDAO.findByID(editorID);
+
+            User user = userCache.get(editorID);
+            if (user == null){
+                user = userDAO.findByID(editorID);
+                userCache.put(editorID, user);
+            }
+
             if (user != null){
                 String editor = "";
 
@@ -771,7 +783,13 @@ public class HosDailyDriverLogReportCriteria extends ReportCriteria {
       
         if (editUserID == null || editUserID.intValue() == 0)
             return "";
-        User user = userDAO.findByID(editUserID);
+
+        User user = userCache.get(editUserID);
+        if (user == null){
+            user = userDAO.findByID(editUserID);
+            userCache.put(editUserID, user);
+        }
+
         if (user == null || user.getPerson() == null)
             return "";
         return user.getPerson().getFullName();
