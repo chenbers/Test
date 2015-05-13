@@ -23,6 +23,8 @@ public class DriverForgivenEvent {
 
     private String dateTimeStr;
 
+    private String excludedByUser;
+
     public Integer getDriverID() {
         return driverID;
     }
@@ -85,5 +87,13 @@ public class DriverForgivenEvent {
 
     public void setDateTimeStr(String dateTimeStr) {
         this.dateTimeStr = dateTimeStr;
+    }
+
+    public String getExcludedByUser() {
+        return excludedByUser;
+    }
+
+    public void setExcludedByUser(String excludedByUser) {
+        this.excludedByUser = excludedByUser;
     }
 }

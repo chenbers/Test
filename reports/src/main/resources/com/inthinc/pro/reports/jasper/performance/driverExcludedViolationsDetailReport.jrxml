@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="driverExludedViolationsReport" pageWidth="792" pageHeight="612" orientation="Landscape" whenNoDataType="NoDataSection" columnWidth="752" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="e3e99425-c3ef-4b69-b448-15979f2738bf">
-	<property name="ireport.zoom" value="1.331000000000005"/>
+	<property name="ireport.zoom" value="1.4641000000000108"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<parameter name="REPORT_LOGO_IMG" class="java.awt.Image"/>
@@ -14,6 +14,7 @@
 	<field name="driverForgivenEvent.groupID" class="java.lang.Integer"/>
 	<field name="driverForgivenEvent.reason" class="java.lang.String"/>
 	<field name="driverForgivenEvent.dateTimeStr" class="java.lang.String"/>
+	<field name="driverForgivenEvent.excludedByUser" class="java.lang.String"/>
 	<group name="GroupName">
 		<groupExpression><![CDATA[$F{driverForgivenEvent.groupID}]]></groupExpression>
 		<groupHeader>
@@ -102,7 +103,7 @@
 				</graphicElement>
 			</rectangle>
 			<textField isBlankWhenNull="false">
-				<reportElement key="textField-14" positionType="FixRelativeToBottom" mode="Transparent" x="0" y="0" width="181" height="22" forecolor="#000000" uuid="a7fa15ad-3ca7-49ff-95ea-85f717186f4d"/>
+				<reportElement key="textField-14" positionType="FixRelativeToBottom" mode="Transparent" x="0" y="0" width="142" height="22" forecolor="#000000" uuid="a7fa15ad-3ca7-49ff-95ea-85f717186f4d"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -121,7 +122,7 @@
 				<reportElement key="line" mode="Opaque" x="0" y="0" width="752" height="1" forecolor="#000000" backcolor="#FFFFFF" uuid="90443542-e7c3-4cf1-8431-60b0ea20603b"/>
 			</line>
 			<textField isBlankWhenNull="false">
-				<reportElement key="textField-14" positionType="FixRelativeToBottom" mode="Transparent" x="181" y="0" width="163" height="22" forecolor="#000000" uuid="3e1bc4cb-1fe8-4cf2-91f2-8eef3bbb7aae"/>
+				<reportElement key="textField-14" positionType="FixRelativeToBottom" mode="Transparent" x="142" y="0" width="121" height="22" forecolor="#000000" uuid="3e1bc4cb-1fe8-4cf2-91f2-8eef3bbb7aae"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -134,7 +135,7 @@
 				<textFieldExpression><![CDATA[$R{column.2}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="false">
-				<reportElement key="textField-14" positionType="FixRelativeToBottom" mode="Transparent" x="344" y="0" width="142" height="22" forecolor="#000000" uuid="343faac6-f7fc-40e8-a0c5-0d6cc1c978ce"/>
+				<reportElement key="textField-14" positionType="FixRelativeToBottom" mode="Transparent" x="263" y="0" width="142" height="22" forecolor="#000000" uuid="343faac6-f7fc-40e8-a0c5-0d6cc1c978ce"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -147,7 +148,7 @@
 				<textFieldExpression><![CDATA[$R{column.3}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="false">
-				<reportElement key="textField-14" positionType="FixRelativeToBottom" mode="Transparent" x="537" y="0" width="211" height="22" forecolor="#000000" uuid="4f9d3516-09a9-4665-b32a-fdad38201094"/>
+				<reportElement key="textField-14" positionType="FixRelativeToBottom" mode="Transparent" x="405" y="0" width="151" height="22" forecolor="#000000" uuid="4f9d3516-09a9-4665-b32a-fdad38201094"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -159,29 +160,47 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$R{column.4}]]></textFieldExpression>
 			</textField>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField-14" positionType="FixRelativeToBottom" mode="Transparent" x="589" y="1" width="159" height="22" forecolor="#000000" uuid="9789704b-0d09-434f-af9f-665b7c887486"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="SansSerif" size="10" isBold="false" pdfFontName="Helvetica"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$R{column.5}]]></textFieldExpression>
+			</textField>
 		</band>
 	</columnHeader>
 	<detail>
 		<band height="24" splitType="Stretch">
 			<textField>
-				<reportElement mode="Transparent" x="0" y="1" width="181" height="20" uuid="77cb764b-6bbe-4f07-babd-e9c6c1fcab53"/>
+				<reportElement mode="Transparent" x="0" y="1" width="142" height="20" uuid="77cb764b-6bbe-4f07-babd-e9c6c1fcab53"/>
 				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{driverForgivenEvent.driverName}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement mode="Transparent" x="181" y="1" width="163" height="20" uuid="f1f5fe3b-6950-4f91-ad3e-6c2ea6f4a940"/>
+				<reportElement mode="Transparent" x="142" y="1" width="121" height="20" uuid="f1f5fe3b-6950-4f91-ad3e-6c2ea6f4a940"/>
 				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[str($F{driverForgivenEvent.eventType}.toString())]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement mode="Transparent" x="344" y="1" width="142" height="20" uuid="237ac1fe-3b1a-4710-9b33-29d3f6bbafb1"/>
+				<reportElement mode="Transparent" x="263" y="1" width="142" height="20" uuid="237ac1fe-3b1a-4710-9b33-29d3f6bbafb1"/>
 				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{driverForgivenEvent.dateTimeStr}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement mode="Transparent" x="537" y="1" width="211" height="20" uuid="6b50f4b5-8066-4e40-9cf5-3d4892788579"/>
+				<reportElement mode="Transparent" x="405" y="1" width="151" height="20" uuid="6b50f4b5-8066-4e40-9cf5-3d4892788579"/>
 				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{driverForgivenEvent.reason}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement mode="Transparent" x="589" y="1" width="159" height="20" uuid="ce5c5551-3863-450b-8428-32dbf7d6cb00"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{driverForgivenEvent.excludedByUser}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>

@@ -56,6 +56,7 @@ public class EventAggregationJDBCDAO extends SimpleJdbcDaoSupport implements Eve
             +"  ,g.name AS 'groupName' "
             +"  ,f.reason AS 'reason' "
             +"  ,cnv.time AS 'dateTime' "
+            +"  ,f.forgivenByUserId AS 'forgivenByUserId' "
             +" FROM cachedNote cnv "
             +"  JOIN driver d "
             +"  ON cnv.driverID = d.driverID "
@@ -120,7 +121,7 @@ public class EventAggregationJDBCDAO extends SimpleJdbcDaoSupport implements Eve
                         driverForgivenEventTotal.setEventCountForgiven(driverForgivenEventTotal.getEventCountForgiven() + rs.getInt("eventCountForgiven"));
                     } else {
                         Driver driver = driverDAO.findByID(rs.getInt("driverID"));
-                        
+
                         List<Trip> trips = driverDAO.getTrips(driver.getDriverID(), interval);
                         Integer totalMiles = 0;
                         for (Trip trip : trips) {
@@ -225,6 +226,7 @@ public class EventAggregationJDBCDAO extends SimpleJdbcDaoSupport implements Eve
                     dfe.setDateTime(rs.getTimestamp("dateTime"));
                     dfe.setReason(rs.getString("reason"));
                     dfe.setEventType(eventType);
+                    dfe.setExcludedByUser(rs.getString("forgivenByUserId"));
 
                     if (dfe.getDateTime() != null) {
                         dfe.setDateTimeStr(sdf.format(dfe.getDateTime()));
