@@ -3,10 +3,12 @@ package com.inthinc.pro.dao.jdbc;
 import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.dao.EventAggregationDAO;
 import com.inthinc.pro.dao.LocationDAO;
+import com.inthinc.pro.dao.UserDAO;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Person;
 import com.inthinc.pro.model.Status;
 import com.inthinc.pro.model.Trip;
+import com.inthinc.pro.model.User;
 import com.inthinc.pro.model.aggregation.DriverForgivenEvent;
 import com.inthinc.pro.model.aggregation.DriverForgivenEventTotal;
 import com.inthinc.pro.model.event.EventType;
@@ -35,6 +37,7 @@ public class EventAggregationJDBCDAO extends SimpleJdbcDaoSupport implements Eve
     protected static final boolean ZERO_MILES_DRIVERS_DEFAULT = false;
     private DriverDAO driverDAO;
     private LocationDAO locationDAO;
+    private UserDAO userDAO;
     
     /* Query to return the total number of forgiven events for a single driver by event type */
     private static final String SELECT_FORGIVEN_EVENT_TOTALS = "SELECT cnv.driverID AS 'driverId', cnv.driverName AS 'driverName', cnv.type AS 'type',cnv.aggType as 'aggType',g.groupID as 'groupID', g.name AS 'groupName', count(noteID) AS 'eventCount', "
@@ -180,6 +183,7 @@ public class EventAggregationJDBCDAO extends SimpleJdbcDaoSupport implements Eve
 
         // holds already found driver info from driverDao
         final Map<Integer, Driver> driverInfoCache = new HashMap<Integer, Driver>();
+        final Map<Integer, User> userInfoCache = new HashMap<Integer, User>();
         final Map<Integer, Integer> driverTripMileageCache = new HashMap<Integer, Integer>();
 
         return getSimpleJdbcTemplate().query(forgivenEvents, new ParameterizedRowMapper<DriverForgivenEvent>() {
@@ -226,7 +230,21 @@ public class EventAggregationJDBCDAO extends SimpleJdbcDaoSupport implements Eve
                     dfe.setDateTime(rs.getTimestamp("dateTime"));
                     dfe.setReason(rs.getString("reason"));
                     dfe.setEventType(eventType);
-                    dfe.setExcludedByUser(rs.getString("forgivenByUserId"));
+
+                    Integer forgivenByUserId = rs.getInt("forgivenByUserId");
+                    if (forgivenByUserId != 0){
+                        User user = userInfoCache.get(forgivenByUserId);
+                        if (user == null){
+                            user = userDAO.findByID(forgivenByUserId);
+                            if (user != null) {
+                                userInfoCache.put(forgivenByUserId, user);
+                            }
+                        }
+
+                        if (user != null && user.getPerson() != null){
+                            dfe.setExcludedByUser(user.getPerson().getEmpid());
+                        }
+                    }
 
                     if (dfe.getDateTime() != null) {
                         dfe.setDateTimeStr(sdf.format(dfe.getDateTime()));
@@ -430,5 +448,13 @@ public class EventAggregationJDBCDAO extends SimpleJdbcDaoSupport implements Eve
 
     public void setLocationDAO(LocationDAO locationDAO) {
         this.locationDAO = locationDAO;
+    }
+
+    public UserDAO getUserDAO() {
+        return userDAO;
+    }
+
+    public void setUserDAO(UserDAO userDAO) {
+        this.userDAO = userDAO;
     }
 }
