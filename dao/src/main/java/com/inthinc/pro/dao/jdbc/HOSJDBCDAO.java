@@ -46,16 +46,25 @@ import com.inthinc.pro.model.hos.HOSVehicleMileage;
 @SuppressWarnings("unchecked")
 public class HOSJDBCDAO extends NamedParameterJdbcDaoSupport implements HOSDAO {
     
+//    private final static String SELECT_SQL = "SELECT h.hosLogID, h.driverID, h.vehicleID, concat(h.logTime, 'FORCESTRING') logTime, "+ 
+//            "tz.tzName, h.status, h.driverDOTType, h.vehicleIsDOTFlag, h.vehicleOdometer, h.origin, coalesce(h.trailerID, '') AS trailerID, coalesce(h.serviceID, '') AS serviceID, "+
+//            "h.latitude, h.longitude, coalesce(h.location, '') AS location, coalesce(cl.location, '') AS originalLocation, " +
+//            "h.deletedFlag, h.editedFlag, h.editCount, h.editUserName, " +
+//            "h.truckGallons, h.trailerGallons, coalesce(h.tripReportFlag, 0) AS tripReportFlag, coalesce(h.tripInspectionFlag, 0) tripInspectionFlag, " + 
+//            "coalesce(v.name, '') AS vehicleName, cl.logTime AS originalLogTime, coalesce(v.license, '') as vehicleLicense, p.empid, h.editUserID, " +
+//            "IF((SELECT count(*) FROM hosvehiclelogin WHERE vehicleID = h.vehicleID AND driverID != h.driverID AND h.logTime BETWEEN loginTime AND coalesce(logoutTime, now())) > 0, 0, 1) 'singleDriver', " +
+//            "cl.status as originalStatus, h.mobileUnitId, h.inspectionType, h.reason, h.approvedBy, h.editor, h.timeStamp " +
+//            "FROM hoslog h LEFT JOIN vehicle v ON (h.vehicleID = v.vehicleID) LEFT JOIN hoslog_changelog cl ON  (h.hosLogID = cl.hosLogID), person p, driver d, timezone tz " +
+//            "WHERE h.tzID = tz.tzID AND d.driverID = h.driverID AND p.personID = d.personID ";
+    
     private final static String SELECT_SQL = "SELECT h.hosLogID, h.driverID, h.vehicleID, concat(h.logTime, 'FORCESTRING') logTime, "+ 
-            "tz.tzName, h.status, h.driverDOTType, h.vehicleIsDOTFlag, h.vehicleOdometer, h.origin, coalesce(h.trailerID, '') AS trailerID, coalesce(h.serviceID, '') AS serviceID, "+
-            "h.latitude, h.longitude, coalesce(h.location, '') AS location, coalesce(cl.location, '') AS originalLocation, " +
-            "h.deletedFlag, h.editedFlag, h.editCount, h.editUserName, " +
-            "h.truckGallons, h.trailerGallons, coalesce(h.tripReportFlag, 0) AS tripReportFlag, coalesce(h.tripInspectionFlag, 0) tripInspectionFlag, " + 
-            "coalesce(v.name, '') AS vehicleName, cl.logTime AS originalLogTime, coalesce(v.license, '') as vehicleLicense, p.empid, h.editUserID, " +
-            "IF((SELECT count(*) FROM hosvehiclelogin WHERE vehicleID = h.vehicleID AND driverID != h.driverID AND h.logTime BETWEEN loginTime AND coalesce(logoutTime, now())) > 0, 0, 1) 'singleDriver', " +
-            "cl.status as originalStatus, h.mobileUnitId, h.inspectionType, h.reason, h.approvedBy, h.editor, h.timeStamp " +
-            "FROM hoslog h LEFT JOIN vehicle v ON (h.vehicleID = v.vehicleID) LEFT JOIN hoslog_changelog cl ON  (h.hosLogID = cl.hosLogID), person p, driver d, timezone tz " +
-            "WHERE h.tzID = tz.tzID AND d.driverID = h.driverID AND p.personID = d.personID ";
+                    "tz.tzName, h.status, h.driverDOTType, h.vehicleIsDOTFlag, h.vehicleOdometer, h.origin, coalesce(h.trailerID, '') AS trailerID, coalesce(h.serviceID, '') AS serviceID, "+
+                    "h.latitude, h.longitude, coalesce(h.location, '') AS location, coalesce(cl.location, '') AS originalLocation, " +
+                    "h.deletedFlag, h.editedFlag, h.editCount, h.editUserName, " +
+                    "h.truckGallons, h.trailerGallons, coalesce(h.tripReportFlag, 0) AS tripReportFlag, coalesce(h.tripInspectionFlag, 0) tripInspectionFlag, " + 
+                    "coalesce(v.name, '') AS vehicleName, cl.logTime AS originalLogTime, coalesce(v.license, '') as vehicleLicense, p.empid, h.editUserID, cl.status as originalStatus, h.mobileUnitId, h.inspectionType, h.reason, h.approvedBy, h.editor, h.timeStamp " +
+                    "FROM hoslog h LEFT JOIN vehicle v ON (h.vehicleID = v.vehicleID) LEFT JOIN hoslog_changelog cl ON  (h.hosLogID = cl.hosLogID), person p, driver d, timezone tz " +
+                    "WHERE h.tzID = tz.tzID AND d.driverID = h.driverID AND p.personID = d.personID ";
 
     private final static String SELECT_SIMPLE_SQL = "SELECT h.hosLogID, h.driverID, h.vehicleID, h.logTime, "+ 
             "tz.tzName, h.status, h.driverDOTType, h.vehicleIsDOTFlag, h.vehicleOdometer, h.origin, coalesce(h.trailerID, '') AS trailerID, coalesce(h.serviceID, '') AS serviceID, "+
@@ -83,7 +92,9 @@ public class HOSJDBCDAO extends NamedParameterJdbcDaoSupport implements HOSDAO {
     public HOSRecord findByID(Long id) {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("id", id);
-        return (HOSRecord) getNamedParameterJdbcTemplate().queryForObject(FIND_BY_ID_SQL, params, new HOSRecordRowMapper());
+        HOSRecord hosRecord = (HOSRecord) getNamedParameterJdbcTemplate().queryForObject(FIND_BY_ID_SQL, params, new HOSRecordRowMapper());
+        hosRecord.setSingleDriver(isSingleDriver(hosRecord.getDriverID(), hosRecord.getVehicleID(), hosRecord.getLogTime()));
+        return hosRecord;
     }
 
     private final static String UPDATE_SQL = "UPDATE hoslog "+
@@ -150,7 +161,11 @@ public class HOSJDBCDAO extends NamedParameterJdbcDaoSupport implements HOSDAO {
         params.put("startTime", getDateString(interval.getStart().toDate()));
         params.put("endTime", getDateString(interval.getEnd().toDate()));
 
-        return getNamedParameterJdbcTemplate().query(sql, params, new HOSRecordRowMapper());
+        List<HOSRecord> hosRecords = getNamedParameterJdbcTemplate().query(sql, params, new HOSRecordRowMapper());
+        for (HOSRecord hosRecord : hosRecords) {            
+            hosRecord.setSingleDriver(isSingleDriver(hosRecord.getDriverID(), hosRecord.getVehicleID(), hosRecord.getLogTime()));
+        }        
+        return hosRecords;
     }
 
     @Override
@@ -858,7 +873,7 @@ public class HOSJDBCDAO extends NamedParameterJdbcDaoSupport implements HOSDAO {
             hosRecord.setVehicleLicense(resultSet.getString("vehicleLicense"));
             hosRecord.setEmployeeID(resultSet.getString("empid"));
             hosRecord.setEditUserID(resultSet.getInt("editUserID"));
-            hosRecord.setSingleDriver(resultSet.getBoolean("singleDriver"));
+//            hosRecord.setSingleDriver(resultSet.getBoolean("singleDriver"));
             hosRecord.setOriginalStatus(resultSet.getObject("originalStatus") == null ? null : HOSStatus.valueOf(resultSet.getInt("originalStatus")));
             hosRecord.setMobileUnitID(resultSet.getString("mobileUnitID"));
             hosRecord.setInspectionType(InspectionType.valueOf(resultSet.getInt("inspectionType")));
@@ -1097,6 +1112,59 @@ public class HOSJDBCDAO extends NamedParameterJdbcDaoSupport implements HOSDAO {
 
     private String getDayDateString(Date day) {
         return dayDateFormatter.print(day.getTime());
+    }
+    
+    class DriverLogout {
+        private Integer driverID;
+        private Date logoutTime;
+
+        public DriverLogout() {}
+
+        public Integer getDriverID() {
+            return driverID;
+        }
+
+        public void setDriverID(Integer driverID) {
+            this.driverID = driverID;
+        }
+
+        public Date getLogoutTime() {
+            return logoutTime;
+        }
+
+        public void setLogoutTime(Date logoutTime) {
+            this.logoutTime = logoutTime;
+        }
+
+    }
+    
+    private String SINGLE_DRIVER_SELECT_HELPER = "SELECT driverID, logoutTime FROM hosvehiclelogin h WHERE h.vehicleID = :vehicleID AND h.driverID != :driverID AND h.loginTime <= :logTime";
+
+    private boolean isSingleDriver(Integer driverID, Integer vehicleID, Date logTime) {
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("vehicleID", vehicleID);
+        params.put("driverID", driverID);
+        params.put("logTime", getDateString(logTime));
+        
+        List<DriverLogout> driverLogouts = getNamedParameterJdbcTemplate().query(SINGLE_DRIVER_SELECT_HELPER, params, new ParameterizedRowMapper<DriverLogout>() {
+            @Override
+            public DriverLogout mapRow(ResultSet rs, int rowNum) throws SQLException {
+                DriverLogout driverLogout = new DriverLogout();
+                driverLogout.setDriverID(rs.getInt("driverID"));
+                driverLogout.setLogoutTime(rs.getDate("logoutTime"));
+                return driverLogout;
+            }
+        });
+        
+        for (DriverLogout driverLogout : driverLogouts) {
+            if (driverLogout.getLogoutTime() == null) {
+                driverLogout.setLogoutTime(Calendar.getInstance().getTime());
+            }
+            if (logTime.before(driverLogout.getLogoutTime()) || logTime.equals(driverLogout.getLogoutTime())) {
+                return false;
+            }
+        }
+        return true;
     }
 
     // --- Miscellaneous Helper Methods ==
