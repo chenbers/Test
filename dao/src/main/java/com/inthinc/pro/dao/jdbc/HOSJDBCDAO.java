@@ -57,26 +57,26 @@ public class HOSJDBCDAO extends NamedParameterJdbcDaoSupport implements HOSDAO {
 //            "FROM hoslog h LEFT JOIN vehicle v ON (h.vehicleID = v.vehicleID) LEFT JOIN hoslog_changelog cl ON  (h.hosLogID = cl.hosLogID), person p, driver d, timezone tz " +
 //            "WHERE h.tzID = tz.tzID AND d.driverID = h.driverID AND p.personID = d.personID ";
     
-    private final static String SELECT_SQL = "SELECT h.hosLogID, h.driverID, h.vehicleID, concat(h.logTime, 'FORCESTRING') logTime, "+ 
-                    "tz.tzName, h.status, h.driverDOTType, h.vehicleIsDOTFlag, h.vehicleOdometer, h.origin, coalesce(h.trailerID, '') AS trailerID, coalesce(h.serviceID, '') AS serviceID, "+
-                    "h.latitude, h.longitude, coalesce(h.location, '') AS location, coalesce(cl.location, '') AS originalLocation, " +
-                    "h.deletedFlag, h.editedFlag, h.editCount, h.editUserName, " +
-                    "h.truckGallons, h.trailerGallons, coalesce(h.tripReportFlag, 0) AS tripReportFlag, coalesce(h.tripInspectionFlag, 0) tripInspectionFlag, " + 
-                    "coalesce(v.name, '') AS vehicleName, cl.logTime AS originalLogTime, coalesce(v.license, '') as vehicleLicense, p.empid, h.editUserID, " +
-                    "IF((SELECT driverID FROM hosvehiclelogin WHERE vehicleID = h.vehicleID AND driverID != h.driverID AND h.logTime >= loginTime limit 1) != NULL, 0, 1) 'singleDriver', " +
-                    "cl.status as originalStatus, h.mobileUnitId, h.inspectionType, h.reason, h.approvedBy, h.editor, h.timeStamp " +
-                    "FROM hoslog h LEFT JOIN vehicle v ON (h.vehicleID = v.vehicleID) LEFT JOIN hoslog_changelog cl ON  (h.hosLogID = cl.hosLogID), person p, driver d, timezone tz " +
-                    "WHERE h.tzID = tz.tzID AND d.driverID = h.driverID AND p.personID = d.personID ";    
-    
-    
 //    private final static String SELECT_SQL = "SELECT h.hosLogID, h.driverID, h.vehicleID, concat(h.logTime, 'FORCESTRING') logTime, "+ 
 //                    "tz.tzName, h.status, h.driverDOTType, h.vehicleIsDOTFlag, h.vehicleOdometer, h.origin, coalesce(h.trailerID, '') AS trailerID, coalesce(h.serviceID, '') AS serviceID, "+
 //                    "h.latitude, h.longitude, coalesce(h.location, '') AS location, coalesce(cl.location, '') AS originalLocation, " +
 //                    "h.deletedFlag, h.editedFlag, h.editCount, h.editUserName, " +
 //                    "h.truckGallons, h.trailerGallons, coalesce(h.tripReportFlag, 0) AS tripReportFlag, coalesce(h.tripInspectionFlag, 0) tripInspectionFlag, " + 
-//                    "coalesce(v.name, '') AS vehicleName, cl.logTime AS originalLogTime, coalesce(v.license, '') as vehicleLicense, p.empid, h.editUserID, cl.status as originalStatus, h.mobileUnitId, h.inspectionType, h.reason, h.approvedBy, h.editor, h.timeStamp " +
+//                    "coalesce(v.name, '') AS vehicleName, cl.logTime AS originalLogTime, coalesce(v.license, '') as vehicleLicense, p.empid, h.editUserID, " +
+//                    "IF((SELECT driverID FROM hosvehiclelogin WHERE vehicleID = h.vehicleID AND driverID != h.driverID AND h.logTime >= loginTime limit 1) != NULL, 0, 1) 'singleDriver', " +
+//                    "cl.status as originalStatus, h.mobileUnitId, h.inspectionType, h.reason, h.approvedBy, h.editor, h.timeStamp " +
 //                    "FROM hoslog h LEFT JOIN vehicle v ON (h.vehicleID = v.vehicleID) LEFT JOIN hoslog_changelog cl ON  (h.hosLogID = cl.hosLogID), person p, driver d, timezone tz " +
-//                    "WHERE h.tzID = tz.tzID AND d.driverID = h.driverID AND p.personID = d.personID ";
+//                    "WHERE h.tzID = tz.tzID AND d.driverID = h.driverID AND p.personID = d.personID ";    
+    
+    
+    private final static String SELECT_SQL = "SELECT h.hosLogID, h.driverID, h.vehicleID, concat(h.logTime, 'FORCESTRING') logTime, "+ 
+                    "tz.tzName, h.status, h.driverDOTType, h.vehicleIsDOTFlag, h.vehicleOdometer, h.origin, coalesce(h.trailerID, '') AS trailerID, coalesce(h.serviceID, '') AS serviceID, "+
+                    "h.latitude, h.longitude, coalesce(h.location, '') AS location, coalesce(cl.location, '') AS originalLocation, " +
+                    "h.deletedFlag, h.editedFlag, h.editCount, h.editUserName, " +
+                    "h.truckGallons, h.trailerGallons, coalesce(h.tripReportFlag, 0) AS tripReportFlag, coalesce(h.tripInspectionFlag, 0) tripInspectionFlag, " + 
+                    "coalesce(v.name, '') AS vehicleName, cl.logTime AS originalLogTime, coalesce(v.license, '') as vehicleLicense, p.empid, h.editUserID, cl.status as originalStatus, h.mobileUnitId, h.inspectionType, h.reason, h.approvedBy, h.editor, h.timeStamp " +
+                    "FROM hoslog h LEFT JOIN vehicle v ON (h.vehicleID = v.vehicleID) LEFT JOIN hoslog_changelog cl ON  (h.hosLogID = cl.hosLogID), person p, driver d, timezone tz " +
+                    "WHERE h.tzID = tz.tzID AND d.driverID = h.driverID AND p.personID = d.personID ";
 
     private final static String SELECT_SIMPLE_SQL = "SELECT h.hosLogID, h.driverID, h.vehicleID, h.logTime, "+ 
             "tz.tzName, h.status, h.driverDOTType, h.vehicleIsDOTFlag, h.vehicleOdometer, h.origin, coalesce(h.trailerID, '') AS trailerID, coalesce(h.serviceID, '') AS serviceID, "+
@@ -175,7 +175,7 @@ public class HOSJDBCDAO extends NamedParameterJdbcDaoSupport implements HOSDAO {
 
         List<HOSRecord> hosRecords = getNamedParameterJdbcTemplate().query(sql, params, new HOSRecordRowMapper());
         for (HOSRecord hosRecord : hosRecords) {            
-//            hosRecord.setSingleDriver(isSingleDriver(hosRecord.getDriverID(), hosRecord.getVehicleID(), hosRecord.getLogTime()));
+            hosRecord.setSingleDriver(isSingleDriver(hosRecord.getDriverID(), hosRecord.getVehicleID(), hosRecord.getLogTime()));
         }
         return hosRecords;
     }
