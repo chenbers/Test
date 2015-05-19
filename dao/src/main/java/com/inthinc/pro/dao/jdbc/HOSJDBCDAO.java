@@ -93,7 +93,7 @@ public class HOSJDBCDAO extends NamedParameterJdbcDaoSupport implements HOSDAO {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("id", id);
         HOSRecord hosRecord = (HOSRecord) getNamedParameterJdbcTemplate().queryForObject(FIND_BY_ID_SQL, params, new HOSRecordRowMapper());
-        hosRecord.setSingleDriver(isSingleDriver(hosRecord.getDriverID(), hosRecord.getVehicleID(), hosRecord.getLogTime()));
+//        hosRecord.setSingleDriver(isSingleDriver(hosRecord.getDriverID(), hosRecord.getVehicleID(), hosRecord.getLogTime()));
         return hosRecord;
     }
 
@@ -163,7 +163,7 @@ public class HOSJDBCDAO extends NamedParameterJdbcDaoSupport implements HOSDAO {
 
         List<HOSRecord> hosRecords = getNamedParameterJdbcTemplate().query(sql, params, new HOSRecordRowMapper());
         for (HOSRecord hosRecord : hosRecords) {            
-            hosRecord.setSingleDriver(isSingleDriver(hosRecord.getDriverID(), hosRecord.getVehicleID(), hosRecord.getLogTime()));
+//            hosRecord.setSingleDriver(isSingleDriver(hosRecord.getDriverID(), hosRecord.getVehicleID(), hosRecord.getLogTime()));
         }        
         return hosRecords;
     }
