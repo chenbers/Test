@@ -152,7 +152,7 @@ public class HOSJDBCDAO extends NamedParameterJdbcDaoSupport implements HOSDAO {
             "AND h.status IN (0,1,2,3,4,7,8,24,29,30,32) ";
     @Override
     public List<HOSRecord> getHOSRecords(Integer driverID, Interval interval, Boolean driverStatusOnly) {
-        interval = getAdjustedInterval(driverID, interval);
+//        interval = getAdjustedInterval(driverID, interval);
 
         String sql = driverStatusOnly ? DRIVER_STATUS_ONLY_FILTERED_SQL : DATE_DRIVER_FILTERED_SQL;
         sql += "ORDER BY h.logTime DESC";
