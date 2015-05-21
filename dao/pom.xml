@@ -32,6 +32,22 @@
 			<artifactId>hector-core</artifactId>
 			<version>1.0-3</version>
 		</dependency>
+				<dependency>
+		  <groupId>com.datastax.cassandra</groupId>
+		  <artifactId>cassandra-driver-core</artifactId>
+		  <version>2.1.5</version>
+		</dependency>	
+		<dependency>
+		  <groupId>com.google.guava</groupId>
+		  <artifactId>guava</artifactId>
+		  <!--ADDED to make sure we are using a Guava vrsion compatable with datastax driver
+		  
+			We use an old version of Guava to be compatible with Spark 1.1.
+			Check with the spark-cassandra-connector team before upgrading this.
+		  -->
+		  <version>14.0.1</version>
+		</dependency>
+
 		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>servlet-api</artifactId>
