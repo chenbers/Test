@@ -1,34 +1,43 @@
 package com.inthinc.pro.dao.jdbc;
 
+import com.inthinc.pro.dao.DriverDAO;
+import com.inthinc.pro.dao.EventAggregationDAO;
+import com.inthinc.pro.dao.LocationDAO;
+import com.inthinc.pro.dao.UserDAO;
+import com.inthinc.pro.model.Driver;
+import com.inthinc.pro.model.Person;
+import com.inthinc.pro.model.Status;
+import com.inthinc.pro.model.Trip;
+import com.inthinc.pro.model.User;
+import com.inthinc.pro.model.aggregation.DriverForgivenEvent;
+import com.inthinc.pro.model.aggregation.DriverForgivenEventTotal;
+import com.inthinc.pro.model.event.EventType;
+import com.inthinc.pro.model.event.LastReportedEvent;
+import com.inthinc.pro.model.event.NoteType;
+import org.apache.log4j.Logger;
+import org.joda.time.Interval;
+import org.springframework.jdbc.core.simple.ParameterizedRowMapper;
+import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.joda.time.Interval;
-import org.springframework.jdbc.core.simple.ParameterizedRowMapper;
-import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
-
-import com.inthinc.pro.dao.DriverDAO;
-import com.inthinc.pro.dao.EventAggregationDAO;
-import com.inthinc.pro.model.Driver;
-import com.inthinc.pro.model.Status;
-import com.inthinc.pro.model.Trip;
-import com.inthinc.pro.model.aggregation.DriverForgivenEventTotal;
-import com.inthinc.pro.model.event.EventType;
-import com.inthinc.pro.model.event.LastReportedEvent;
-import com.inthinc.pro.model.event.NoteType;
-
 /**
  * Modified for de9040 for queries for never assigned vehicles and last note for vehicle By adding relation between groupVehicleFlat and vehicle by groupId.
  */
 public class EventAggregationJDBCDAO extends SimpleJdbcDaoSupport implements EventAggregationDAO {
+    private static final Logger logger = Logger.getLogger(EventAggregationJDBCDAO.class);
     protected static final boolean INACTIVE_DRIVERS_DEFAULT = false;
     protected static final boolean ZERO_MILES_DRIVERS_DEFAULT = false;
     private DriverDAO driverDAO;
+    private LocationDAO locationDAO;
+    private UserDAO userDAO;
     
     /* Query to return the total number of forgiven events for a single driver by event type */
     private static final String SELECT_FORGIVEN_EVENT_TOTALS = "SELECT cnv.driverID AS 'driverId', cnv.driverName AS 'driverName', cnv.type AS 'type',cnv.aggType as 'aggType',g.groupID as 'groupID', g.name AS 'groupName', count(noteID) AS 'eventCount', "
@@ -39,7 +48,35 @@ public class EventAggregationJDBCDAO extends SimpleJdbcDaoSupport implements Eve
                     + // Another way of getting a filtered count cvn.forgiven=1 returns 1 which means true and we can count that.
                     "FROM cachedNoteView cnv  INNER JOIN groups g ON g.groupID = cnv.driverGroupID "
                     + "WHERE cnv.driverGroupID IN (:groupList) AND cnv.time BETWEEN :startDate AND :endDate GROUP BY cnv.driverID,cnv.type,cnv.aggType";
-    
+
+    /* Query to return forgiven events by event type for a groupID list */
+    private static final String SELECT_FORGIVEN_EVENTS = ""
+            +"SELECT cnv.driverID AS 'driverId' "
+            +"  ,i.driverName AS 'driverName' "
+            +"  ,cnv.type AS 'type' "
+            +"  ,getAggType(`cnv`.`type`,`cnv`.`attribs`,`cnv`.`deltaX`,`cnv`.`deltaY`,`cnv`.`deltaZ`) as 'aggType' "
+            +"  ,g.groupID as 'groupID' "
+            +"  ,g.name AS 'groupName' "
+            +"  ,f.reason AS 'reason' "
+            +"  ,cnv.time AS 'dateTime' "
+            +"  ,f.forgivenByUserId AS 'forgivenByUserId' "
+            +" FROM cachedNote cnv "
+            +"  JOIN driver d "
+            +"  ON cnv.driverID = d.driverID "
+            +"  AND d.status != 3 "
+            +"  JOIN groups g "
+            +"  ON d.groupID = g.groupID "
+            +"  JOIN cachedNoteInfo i "
+            +"  ON cnv.driverID = i.driverID "
+            +"  AND cnv.vehicleID = i.vehicleID "
+            +"  AND g.groupID = i.groupID "
+            +"  JOIN forgiven f "
+            +"  ON cnv.noteID = f.noteID "
+            +" WHERE g.groupID IN (:groupList)  "
+            +"  AND cnv.time BETWEEN :startDate AND :endDate "
+            +"  AND cnv.forgiven = 1 ";
+
+
     public List<DriverForgivenEventTotal> findDriverForgivenEventTotalsByGroups(List<Integer> groupIDs, Interval interval) {
         return findDriverForgivenEventTotalsByGroups(groupIDs, interval, INACTIVE_DRIVERS_DEFAULT, ZERO_MILES_DRIVERS_DEFAULT);
     }
@@ -87,7 +124,7 @@ public class EventAggregationJDBCDAO extends SimpleJdbcDaoSupport implements Eve
                         driverForgivenEventTotal.setEventCountForgiven(driverForgivenEventTotal.getEventCountForgiven() + rs.getInt("eventCountForgiven"));
                     } else {
                         Driver driver = driverDAO.findByID(rs.getInt("driverID"));
-                        
+
                         List<Trip> trips = driverDAO.getTrips(driver.getDriverID(), interval);
                         Integer totalMiles = 0;
                         for (Trip trip : trips) {
@@ -98,9 +135,9 @@ public class EventAggregationJDBCDAO extends SimpleJdbcDaoSupport implements Eve
                         boolean includeThisZeroMilesDriver = (includeZeroMilesDrivers && driver.getStatus().equals(Status.ACTIVE));
                         if ((driver.getStatus().equals(Status.ACTIVE) && totalMiles != 0) || (includeInactiveDrivers && includeZeroMilesDrivers) || includeThisInactiveDriver
                                         || includeThisZeroMilesDriver) {
-                            System.out.println("INCLUDING: fullName: " + driver.getPerson().getFullName());
-                            System.out.println("status: " + driver.getStatus());
-                            System.out.println("totalMiles: " + totalMiles);
+                            logger.info("INCLUDING: fullName: " + driver.getPerson().getFullName());
+                            logger.info("status: " + driver.getStatus());
+                            logger.info("totalMiles: " + totalMiles);
                             driverForgivenEventTotal = new DriverForgivenEventTotal();
                             driverForgivenEventTotal.setDriverID(rs.getInt("driverID"));
                             driverForgivenEventTotal.setDriverName(rs.getString("driverName"));
@@ -112,7 +149,7 @@ public class EventAggregationJDBCDAO extends SimpleJdbcDaoSupport implements Eve
                             driverForgivenEventTotalMap.put(mapId, driverForgivenEventTotal);
 
                         } else {
-                            System.out.println(rs.getString("driverName") + " this record was returned via SQL, but filtered out in java");
+                            logger.info(rs.getString("driverName") + " this record was returned via SQL, but filtered out in java");
                             return null;
                         }
                     }
@@ -128,6 +165,100 @@ public class EventAggregationJDBCDAO extends SimpleJdbcDaoSupport implements Eve
             }
         }, params);
         return Arrays.asList(driverForgivenEventTotalMap.values().toArray(new DriverForgivenEventTotal[0]));
+    }
+
+    public List<DriverForgivenEvent> findDriverForgivenEventsByGroups(List<Integer> groupIDs, Interval interval) {
+        return findDriverForgivenEventsByGroups(groupIDs, interval, INACTIVE_DRIVERS_DEFAULT, ZERO_MILES_DRIVERS_DEFAULT);
+    }
+
+    @Override
+    public List<DriverForgivenEvent> findDriverForgivenEventsByGroups(List<Integer> groupIDs, final Interval interval, final boolean includeInactiveDrivers,
+                                                                      final boolean includeZeroMilesDrivers) {
+        String forgivenEvents = SELECT_FORGIVEN_EVENTS;
+        final SimpleDateFormat sdf = new SimpleDateFormat("yyyy.MM.dd hh:mm a");
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("groupList", groupIDs);
+        params.put("endDate", interval.getEnd().toDate());
+        params.put("startDate", interval.getStart().toDate());
+
+        // holds already found driver info from driverDao
+        final Map<Integer, Driver> driverInfoCache = new HashMap<Integer, Driver>();
+        final Map<Integer, User> userInfoCache = new HashMap<Integer, User>();
+        final Map<Integer, Integer> driverTripMileageCache = new HashMap<Integer, Integer>();
+
+        return getSimpleJdbcTemplate().query(forgivenEvents, new ParameterizedRowMapper<DriverForgivenEvent>() {
+            @Override
+            public DriverForgivenEvent mapRow(ResultSet rs, int rowNum) throws SQLException {
+                DriverForgivenEvent dfe = new DriverForgivenEvent();
+                EventType eventType = EventType.UNKNOWN;
+                if (NoteType.valueOf(rs.getInt("type")) != null) {
+                    eventType = NoteType.valueOf(rs.getInt("type")).getEventType(rs.getInt("aggType"));
+                }
+
+                Driver driver = driverInfoCache.get(rs.getInt("driverID"));
+                if (driver == null){
+                    driver = driverDAO.findByID(rs.getInt("driverID"));
+                    if (driver != null)
+                        driverInfoCache.put(driver.getDriverID(), driver);
+                }
+
+                Integer driverTripMileage = driverTripMileageCache.get(rs.getInt("driverID"));
+                if (driverTripMileage == null){
+                    driverTripMileage = locationDAO.getTripMileageCountForDriver(rs.getInt("driverID"), interval.getStart().toDate(), interval.getEnd().toDate());
+                    driverTripMileageCache.put(rs.getInt("driverID"),driverTripMileage);
+                }
+
+                if (driverTripMileage == null)
+                    driverTripMileage = 0;
+
+                boolean includeThisInactiveDriver = (includeInactiveDrivers && driverTripMileage != 0);
+                boolean includeThisZeroMilesDriver = (includeZeroMilesDrivers && driver != null && driver.getStatus().equals(Status.ACTIVE));
+                if ((driver != null && driver.getStatus().equals(Status.ACTIVE) && driverTripMileage != 0) || (includeInactiveDrivers && includeZeroMilesDrivers) || includeThisInactiveDriver
+                        || includeThisZeroMilesDriver) {
+                    Person person = driver.getPerson();
+                    String personName = "";
+                    if (person != null)
+                        personName = person.getFullName();
+                    logger.info("INCLUDING: fullName: " + personName);
+                    logger.info("status: " + driver.getStatus());
+                    logger.info("totalMiles: " + driverTripMileage);
+
+                    dfe.setDriverID(rs.getInt("driverID"));
+                    dfe.setDriverName(rs.getString("driverName"));
+                    dfe.setGroupID(rs.getInt("groupID"));
+                    dfe.setGroupName(rs.getString("groupName"));
+                    dfe.setDateTime(rs.getTimestamp("dateTime"));
+                    dfe.setReason(rs.getString("reason"));
+                    dfe.setEventType(eventType);
+
+                    // get excluded by employee id
+                    Integer forgivenByUserId = rs.getInt("forgivenByUserId");
+                    if (forgivenByUserId != 0){
+                        User user = userInfoCache.get(forgivenByUserId);
+                        if (user == null){
+                            user = userDAO.findByID(forgivenByUserId);
+                            if (user != null) {
+                                userInfoCache.put(forgivenByUserId, user);
+                            }
+                        }
+
+                        if (user != null && user.getPerson() != null){
+                            dfe.setExcludedByUser(user.getPerson().getEmpid());
+                        }
+                    }
+
+                    if (dfe.getDateTime() != null) {
+                        dfe.setDateTimeStr(sdf.format(dfe.getDateTime()));
+                    }
+
+                    return dfe;
+
+                } else {
+                    logger.info(rs.getString("driverName") + " this record was returned via SQL, but filtered out in java");
+                    return null;
+                }
+            }
+        }, params);
     }
     
     private static final String SELECT_LAST_NOTE_TEMPLATE = "SELECT * from (%s) a GROUP by vehicleID ORDER by vehicleName ASC;";
@@ -170,7 +301,7 @@ public class EventAggregationJDBCDAO extends SimpleJdbcDaoSupport implements Eve
         }
         
         String lastNotQuery = String.format(SELECT_LAST_NOTE_TEMPLATE, lastNoteQueryStringBuilder.toString());
-        System.out.println(lastNotQuery);
+        logger.info(lastNotQuery);
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("groupList", groupIDs);
         params.put("startDate", interval.getStart().toDate());
@@ -310,5 +441,21 @@ public class EventAggregationJDBCDAO extends SimpleJdbcDaoSupport implements Eve
     
     public void setDriverDAO(DriverDAO driverDAO) {
         this.driverDAO = driverDAO;
+    }
+
+    public LocationDAO getLocationDAO() {
+        return locationDAO;
+    }
+
+    public void setLocationDAO(LocationDAO locationDAO) {
+        this.locationDAO = locationDAO;
+    }
+
+    public UserDAO getUserDAO() {
+        return userDAO;
+    }
+
+    public void setUserDAO(UserDAO userDAO) {
+        this.userDAO = userDAO;
     }
 }

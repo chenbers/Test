@@ -294,6 +294,9 @@ public abstract class ReportsBean extends BaseBean {
             case DRIVER_EXCLUDED_VIOLATIONS:
                 reportCriteriaList.add(getReportCriteriaService().getDriverExcludedViolationCriteria(getAccountGroupHierarchy(),params.getGroupID(),params.getDateRange().getInterval(), getLocale(),getDateTimeZone(), params.isIncludeInactiveDrivers(), params.isIncludeZeroMilesDrivers()));
                 break;
+            case DRIVER_EXCLUDED_VIOLATIONS_DETAIL:
+                reportCriteriaList.add(getReportCriteriaService().getDriverExcludedViolationDetailCriteria(getAccountGroupHierarchy(),params.getGroupID(),params.getDateRange().getInterval(), getLocale(),getDateTimeZone(), params.isIncludeInactiveDrivers(), params.isIncludeZeroMilesDrivers()));
+                break;
             case NON_COMM:
                 reportCriteriaList.add(getReportCriteriaService().getNonCommReportCriteria(getAccountGroupHierarchy(),params.getGroupID(),params.getTimeFrameSelect().getTimeFrame(),params.getDateRange().getInterval(), getLocale(),getDateTimeZone(),params.isDontIncludeUnassignedDevice()));
                 break;

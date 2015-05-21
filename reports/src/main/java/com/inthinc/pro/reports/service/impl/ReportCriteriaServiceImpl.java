@@ -692,7 +692,7 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
         hosDailyDriverLogReportCriteria.setUserDAO(userDAO);
         hosDailyDriverLogReportCriteria.setVehicleDAO(vehicleDAO);
         hosDailyDriverLogReportCriteria.setIncludeInactiveDrivers(includeInactiveDrivers);
-        hosDailyDriverLogReportCriteria.setHosDriversOnly(hosDriversOnly==null?false:hosDriversOnly);
+        hosDailyDriverLogReportCriteria.setHosDriversOnly(hosDriversOnly == null ? false : hosDriversOnly);
 
         hosDailyDriverLogReportCriteria.init(accountGroupHierarchy, driverID, interval);
         return hosDailyDriverLogReportCriteria.getCriteriaList();
@@ -1574,6 +1574,21 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
         return builder.build();
     }
 
+    @Override
+    public ReportCriteria getDriverExcludedViolationDetailCriteria(GroupHierarchy accountGroupHierarchy, Integer groupID, Interval interval, Locale locale, DateTimeZone timeZone) {
+        return getDriverExcludedViolationDetailCriteria(accountGroupHierarchy, groupID, interval, locale, timeZone, ReportCriteria.DEFAULT_EXCLUDE_INACTIVE_DRIVERS, ReportCriteria.DEFAULT_EXCLUDE_ZERO_MILES_DRIVERS);
+    }
+
+    @Override
+    public ReportCriteria getDriverExcludedViolationDetailCriteria(GroupHierarchy accountGroupHierarchy, Integer groupID, Interval interval, Locale locale, DateTimeZone timeZone, boolean includeInactiveDrivers, boolean includeZeroMilesDrivers) {
+        // Load the group id list for the parent group and it's children
+        List<Integer> groupIDs = accountGroupHierarchy.getGroupIDList(groupID);
+        DriverExcludedViolationsDetailCriteria.Builder builder = new DriverExcludedViolationsDetailCriteria.Builder(accountGroupHierarchy, eventAggregationDAO, groupDAO, driverDAO, groupIDs, interval, includeInactiveDrivers, includeZeroMilesDrivers);
+        builder.setLocale(locale);
+        builder.setDateTimeZone(timeZone);
+        return builder.build();
+    }
+
     /* Communication */
     @Override
     public ReportCriteria getNonCommReportCriteria(GroupHierarchy accountGroupHierarchy, Integer groupID, TimeFrame timeFrame,Interval interval, Locale locale, DateTimeZone timeZone, boolean dontIncludeUnassignedDevice) {
@@ -2170,6 +2185,18 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
                                     reportSchedule.getIncludeZeroMilesDrivers()
                                     )
                                     );
+                    break;
+                case DRIVER_EXCLUDED_VIOLATIONS_DETAIL:
+                    reportCriteriaList.add(getDriverExcludedViolationDetailCriteria(
+                                    groupHierarchy,
+                                    reportSchedule.getGroupID(),
+                                    timeFrame.getInterval(),
+                                    person.getLocale(),
+                                    DateTimeZone.forTimeZone(person.getTimeZone()),
+                                    reportSchedule.getIncludeInactiveDrivers(),
+                                    reportSchedule.getIncludeZeroMilesDrivers()
+                            )
+                    );
                     break;
                 case NON_COMM:
                     reportCriteriaList.add(getNonCommReportCriteria(groupHierarchy, reportSchedule.getGroupID(), timeFrame,timeFrame.getInterval(), person.getLocale(), DateTimeZone.forTimeZone(person.getTimeZone()),reportSchedule.getDontIncludeUnassignedDevice()));

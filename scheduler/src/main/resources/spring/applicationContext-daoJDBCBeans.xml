@@ -13,11 +13,14 @@ default-autowire="byName">
 		<property name="dataSource" ref="tiwiJDBCDataSource"/>
 	</bean>
 
+  <bean id="locationJDBCDAO" class="com.inthinc.pro.dao.jdbc.LocationJDBCDAO" parent="genericJDBCDAO"/>
   <bean id="hosDAO" class="com.inthinc.pro.dao.jdbc.HOSJDBCDAO" parent="genericJDBCDAO"></bean>
   <bean id="waysmartDAO" class="com.inthinc.pro.reports.dao.impl.WaysmartDAOImpl"></bean>
   <bean id="zonePublishDAO" class="com.inthinc.pro.dao.jdbc.ZonePublishJDBCDAO" parent="genericJDBCDAO"></bean>
   <bean id="stateMileageDAO" class="com.inthinc.pro.dao.jdbc.StateMileageJDBCDAO" parent="genericJDBCDAO"/>
-  <bean id="eventAggregationDAO" class="com.inthinc.pro.dao.jdbc.EventAggregationJDBCDAO" parent="genericJDBCDAO"/>
+  <bean id="eventAggregationDAO" class="com.inthinc.pro.dao.jdbc.EventAggregationJDBCDAO" parent="genericJDBCDAO">
+      <property name="locationDAO" ref="locationJDBCDAO"/>
+  </bean>
   <bean id="alertMessageDAO" class="com.inthinc.pro.dao.jdbc.AlertMessageJDBCDAO" parent="genericJDBCDAO">
     	<property name="personDAO"     ref="personDAO"></property>
     	<property name="driverDAO"     ref="driverDAO"></property>
