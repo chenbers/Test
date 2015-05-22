@@ -63,4 +63,14 @@ public interface EventStatisticsDAO extends GenericDAO<Event, Integer> {
      * @param numberOfDays number of days
      */
     public Map<Integer, Speed> getSpeedInfoForPersons(List<Person> persons, Integer numberOfDays);
+
+    /**
+     * Gets total mileage for all trips between startDate and endDate fora driver given by driverID.
+     *
+     * @param driverID driver id
+     * @param startDate start date
+     * @param endDate end date
+     * @return total trip mileage
+     */
+    public Integer getTripMileageCountForDriver(Integer driverID, Date startDate, Date endDate);
 }

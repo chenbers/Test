@@ -297,11 +297,6 @@ public class LocationCassandraDAO extends GenericCassandraDAO implements Locatio
     }
 
     @Override
-    public Integer getTripMileageCountForDriver(Integer driverID, Date startDate, Date endDate) {
-        throw new NotImplementedException();
-    }
-
-    @Override
     public List<Trip> getTripsForDriver(Integer driverID, Date startDate, Date endDate, Boolean includeRoute) {
         logger.debug("LocationCassandraDAO getTripsForDriver() driverID = " + driverID);
         return fetchTripsForAsset(driverID, (int) DateUtil.convertDateToSeconds(startDate), (int) DateUtil.convertDateToSeconds(endDate), true, includeRoute);

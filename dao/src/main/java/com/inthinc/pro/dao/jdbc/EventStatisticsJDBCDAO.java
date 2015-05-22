@@ -25,6 +25,10 @@ public class EventStatisticsJDBCDAO extends SimpleJdbcDaoSupport implements Even
     private static SimpleDateFormat dfUTC = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
     private static final String MAX_SPEEDING_HEAD = "COALESCE(MAX(c.topSpeed),0) maxSpeed";
     private static final String SPEEDING_TIME_HEAD = "SUM(COALESCE(duration,0)) speedingTime";
+    private static final String TRIP_MILEAGE_COUNT_FOR_DRIVER_ID =    "select sum(coalesce(mileage,0)) mileageSum from trip " +
+            "where driverID = :driverID " +
+            " and startTime >= :startDate and endTime <= :endDate";
+
     private static final List<NoteType> SPEEDING_NOTE_TYPES = Arrays.asList(NoteType.SPEEDING, NoteType.SPEEDING_AV, NoteType.SPEEDING_EX, NoteType.SPEEDING_EX2, NoteType.SPEEDING_EX3, NoteType.SPEEDING_EX4, NoteType.SPEEDING_LOG4);
 
     @Override
@@ -198,6 +202,16 @@ public class EventStatisticsJDBCDAO extends SimpleJdbcDaoSupport implements Even
         }
         builder.append(" ORDER BY time DESC");
         return builder.toString();
+    }
+
+    @Override
+    public Integer getTripMileageCountForDriver(Integer driverID, Date startDate, Date endDate) {
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("driverID", driverID);
+        params.put("startDate", startDate);
+        params.put("endDate", endDate);
+
+        return getSimpleJdbcTemplate().queryForInt(TRIP_MILEAGE_COUNT_FOR_DRIVER_ID, params);
     }
 
     @Override

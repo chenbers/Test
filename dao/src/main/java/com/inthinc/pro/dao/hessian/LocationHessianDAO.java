@@ -167,11 +167,6 @@ public class LocationHessianDAO   implements LocationDAO
     }
 
     @Override
-    public Integer getTripMileageCountForDriver(Integer driverID, Date startDate, Date endDate) {
-        throw new NotImplementedException();
-    }
-
-    @Override
     public List<Trip> getTripsForDriver(Integer driverID, Date startDate, Date endDate, Boolean includeRoute)
     {
 		return getTripsForDriver(driverID, startDate, endDate);

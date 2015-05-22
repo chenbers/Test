@@ -2,6 +2,7 @@ package com.inthinc.pro.dao.jdbc;
 
 import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.dao.EventAggregationDAO;
+import com.inthinc.pro.dao.EventStatisticsDAO;
 import com.inthinc.pro.dao.LocationDAO;
 import com.inthinc.pro.dao.UserDAO;
 import com.inthinc.pro.model.Driver;
@@ -36,7 +37,7 @@ public class EventAggregationJDBCDAO extends SimpleJdbcDaoSupport implements Eve
     protected static final boolean INACTIVE_DRIVERS_DEFAULT = false;
     protected static final boolean ZERO_MILES_DRIVERS_DEFAULT = false;
     private DriverDAO driverDAO;
-    private LocationDAO locationDAO;
+    private EventStatisticsDAO eventStatisticsDAO;
     private UserDAO userDAO;
     
     /* Query to return the total number of forgiven events for a single driver by event type */
@@ -208,7 +209,7 @@ public class EventAggregationJDBCDAO extends SimpleJdbcDaoSupport implements Eve
 
                 Integer driverTripMileage = driverTripMileageCache.get(rs.getInt("driverID"));
                 if (driverTripMileage == null){
-                    driverTripMileage = locationDAO.getTripMileageCountForDriver(rs.getInt("driverID"), interval.getStart().toDate(), interval.getEnd().toDate());
+                    driverTripMileage = eventStatisticsDAO.getTripMileageCountForDriver(rs.getInt("driverID"), interval.getStart().toDate(), interval.getEnd().toDate());
                     driverTripMileageCache.put(rs.getInt("driverID"),driverTripMileage);
                 }
 
@@ -236,8 +237,9 @@ public class EventAggregationJDBCDAO extends SimpleJdbcDaoSupport implements Eve
                     dfe.setEventType(eventType);
 
                     // get excluded by employee id
-                    Integer forgivenByUserId = rs.getInt("forgivenByUserId");
-                    if (forgivenByUserId != 0){
+                    Long forgivenByUserIdL = rs.getLong("forgivenByUserId");
+                    if (forgivenByUserIdL != 0){
+                        Integer forgivenByUserId = forgivenByUserIdL.intValue();
                         User user = userInfoCache.get(forgivenByUserId);
                         if (user == null){
                             user = userDAO.findByID(forgivenByUserId);
@@ -447,12 +449,12 @@ public class EventAggregationJDBCDAO extends SimpleJdbcDaoSupport implements Eve
         this.driverDAO = driverDAO;
     }
 
-    public LocationDAO getLocationDAO() {
-        return locationDAO;
+    public EventStatisticsDAO getEventStatisticsDAO() {
+        return eventStatisticsDAO;
     }
 
-    public void setLocationDAO(LocationDAO locationDAO) {
-        this.locationDAO = locationDAO;
+    public void setEventStatisticsDAO(EventStatisticsDAO eventStatisticsDAO) {
+        this.eventStatisticsDAO = eventStatisticsDAO;
     }
 
     public UserDAO getUserDAO() {
