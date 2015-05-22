@@ -17,11 +17,22 @@ import com.inthinc.pro.model.Status;
 
 public class ReportIdlingJDBCDAO extends SimpleJdbcDaoSupport implements ReportIdlingDAO {
     //Instead of the hessian ReportDAO for idling
-    private static final String IDLING_REPORT_DATA = "SELECT di.driverID as driverID, di.driverName as driverName, di.groupID as groupID, di.groupName as groupName, sum(agg.driveTime) as driveTime,"
-            + "sum(agg.idleLo) as lowIdleTime, sum(agg.idleHi) as highIdleTime, (BIT_OR(agg.emuFeatureMask) & 4 != 0) as hasRPM, driver.status " + "FROM driverInfo di "
-            + "LEFT JOIN driver ON (driver.driverID = di.driverID) "
-            + "LEFT JOIN agg on agg.driverID=di.driverID WHERE di.groupID in (select groupID from groups where groupPath like :groupID) "
-            + "AND agg.aggDate between :intervalStart AND :intervalEnd GROUP BY di.driverID;";
+    private static final String IDLING_REPORT_DATA = "SELECT di.driverID as driverID, " +
+            "       di.driverName as driverName, " +
+            "       di.groupID as groupID, " +
+            "       di.groupName as groupName, " +
+            "       sum(agg.driveTime) as driveTime, " +
+            "       sum(agg.idleLo) as lowIdleTime, " +
+            "       sum(agg.idleHi) as highIdleTime, " +
+            "       (BIT_OR(agg.emuFeatureMask) & 4 != 0) as hasRPM, " +
+            "       driver.status " +
+            "  FROM driverInfo di " +
+            "  JOIN driver ON driver.driverID = di.driverID " +
+            "  JOIN groups g ON (di.groupID = g.groupID AND g.groupPath like :groupID) " +
+            "  LEFT JOIN agg " +
+            "    on (di.driverID = agg.driverID AND agg.aggDate between :intervalStart AND :intervalEnd)   " +
+            "   where agg.aggDate between :intervalStart AND :intervalEnd " +
+            " GROUP BY di.driverID;";
 
     @Override
     public List<IdlingReportItem> getIdlingReportData(Integer groupID, Interval interval) {
@@ -32,11 +43,7 @@ public class ReportIdlingJDBCDAO extends SimpleJdbcDaoSupport implements ReportI
         params.put("intervalStart", dbFormat.format(interval.getStart().toDate()));
         params.put("intervalEnd", dbFormat.format(interval.getEnd().toDate()));
 
-        StringBuilder idlingReportSelect = new StringBuilder(IDLING_REPORT_DATA);
-        List<IdlingReportItem> idlingReportItemList = getSimpleJdbcTemplate().query(idlingReportSelect.toString(), idlingReportRowMapper, params);
-
-        return idlingReportItemList;
-
+        return getSimpleJdbcTemplate().query(IDLING_REPORT_DATA, idlingReportRowMapper, params);
     }
 
     private ParameterizedRowMapper<IdlingReportItem> idlingReportRowMapper = new ParameterizedRowMapper<IdlingReportItem>() {
