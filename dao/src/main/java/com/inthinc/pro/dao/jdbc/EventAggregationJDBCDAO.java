@@ -233,8 +233,9 @@ public class EventAggregationJDBCDAO extends SimpleJdbcDaoSupport implements Eve
                     dfe.setEventType(eventType);
 
                     // get excluded by employee id
-                    Integer forgivenByUserId = rs.getInt("forgivenByUserId");
-                    if (forgivenByUserId != 0){
+                    Long forgivenByUserIdL = rs.getLong("forgivenByUserId");
+                    if (forgivenByUserIdL != 0){
+                        Integer forgivenByUserId = forgivenByUserIdL.intValue();
                         User user = userInfoCache.get(forgivenByUserId);
                         if (user == null){
                             user = userDAO.findByID(forgivenByUserId);
