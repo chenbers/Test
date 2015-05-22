@@ -100,6 +100,21 @@ public class EventStatisticsJDBCDAOTest {
         }
     }
 
+    /**
+     * Tests that mile sum works.
+     */
+    @Test
+    public void testSumMiles() {
+        Integer aDriverId = eventStatisticsJDBCDAO.getSimpleJdbcTemplate().queryForInt("select a.driverID from " +
+                "(select sum(coalesce(mileage,0)) mileageSum, driverID from trip " +
+                "where startTime > CURRENT_DATE() - 10 group by driverID) a " +
+                "where mileageSum > 0 limit 1");
+
+        Integer foundTripMileage = eventStatisticsJDBCDAO.getTripMileageCountForDriver(aDriverId, new DateTime().minusDays(10).toDate(), new DateTime().toDate());
+        Assert.assertNotNull(foundTripMileage);
+        Assert.assertTrue(foundTripMileage > 0);
+    }
+
     private static void createTestData() {
 
         // insert person
