@@ -192,6 +192,7 @@ public enum EventAttr {
     VB_UPTIME_SUMMARY_ADJ(239),
     
     ENGINE_HOURS_X100(240),
+    PTO_IDLE(241),
     
     // Attribute Id (255) has a stringId byte,
  	// followed by a null terminate string.

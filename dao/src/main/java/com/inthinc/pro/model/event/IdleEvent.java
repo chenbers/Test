@@ -17,15 +17,19 @@ public class IdleEvent extends Event
     /**
      * lowIdle - The duration in seconds the vehicle was idling with RPM < 1000
      * highIdle - The duration in seconds the vehicle was idling with RPM > 1000
+     * ptoIdle
      */
     @EventAttrID(name="LOW_IDLE")
     private Integer lowIdle = 0;
     @EventAttrID(name="HIGH_IDLE")
     private Integer highIdle = 0;
+    @EventAttrID(name="PTO_IDLE")
+    private Integer ptoIdle = 0;
 	
     private static EventAttr[] eventAttrList = {
         EventAttr.LOW_IDLE,
-        EventAttr.HIGH_IDLE
+        EventAttr.HIGH_IDLE,
+        EventAttr.PTO_IDLE
     };
 
 	public IdleEvent()
@@ -40,14 +44,23 @@ public class IdleEvent extends Event
 		this.highIdle = highIdle;
 		
 	}
+	public IdleEvent(Long noteID, Integer vehicleID, NoteType type, Date time, Integer speed, Integer odometer, Double latitude, Double longitude,
+                    Integer lowIdle, Integer highIdle, Integer ptoIdle)
+	{
+    this(noteID, vehicleID, type, time, speed, odometer, latitude, longitude, lowIdle, highIdle);
+    this.ptoIdle = ptoIdle;    
+	}
 	
 	public String getHighIdleDuration()
 	{
-	   if(this.highIdle != null)
-	       return DateUtil.getDurationFromSeconds(this.highIdle);
-	   else
-	       return "";
+        if (getHighIdle() != null && getHighIdle() != 0) {
+            return DateUtil.getDurationFromSeconds(getHighIdle());
+        } else if (getPtoIdle() != null && getPtoIdle() != 0) {
+            return DateUtil.getDurationFromSeconds(getPtoIdle());
+        }
+        return "";
 	}
+	
     @Override
     public EventAttr[] getEventAttrList() {
         return eventAttrList;
@@ -77,6 +90,15 @@ public class IdleEvent extends Event
     {
         this.highIdle = highIdle;
     }
+    
+    public Integer getPtoIdle() {
+        return ptoIdle;
+    }
+    
+    public void setPtoIdle(Integer ptoIdle) {
+        this.ptoIdle = ptoIdle;
+    }
+    
     public EventType getEventType()
 	{
 		return EventType.IDLING;
@@ -88,6 +110,9 @@ public class IdleEvent extends Event
         if (getHighIdle() != null) {
             totalIdling += getHighIdle();
         }
+        if (getPtoIdle() != null) {
+            totalIdling += getPtoIdle();
+        }
         if (getLowIdle() != null) {
             totalIdling += getLowIdle();
         }
@@ -96,7 +121,13 @@ public class IdleEvent extends Event
     @Override
     public String getDetails(String formatStr,MeasurementType measurementType,String... mphString)
     {
-        return MessageFormat.format(formatStr, new Object[] {getLowIdle() == null ? 0 : getLowIdle(), getHighIdle() == null ? 0 : getHighIdle()});
+        Integer highIdle = 0;
+        if (getHighIdle() != null && getHighIdle() != 0) {
+            highIdle = getHighIdle();
+        } else if (getPtoIdle() != null && getPtoIdle() != 0) {
+            highIdle = getPtoIdle();
+        }
+        return MessageFormat.format(formatStr, new Object[] {getLowIdle() == null ? 0 : getLowIdle(), highIdle});
     }
 
 }

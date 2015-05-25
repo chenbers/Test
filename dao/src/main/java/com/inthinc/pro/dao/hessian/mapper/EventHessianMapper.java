@@ -87,6 +87,78 @@ public class EventHessianMapper extends AbstractMapper
             
         }
     }
+    
+    @SuppressWarnings("unchecked")
+    @ConvertColumnToField(columnName = "attribs")
+    public void attrMapToModelAttribs(Event event, Object value)
+    {
+        if (event == null || value == null)
+            return;
+
+        if (value instanceof String) {
+            Map<Integer, Object> attrMap = new HashMap<Integer, Object>();
+            String[] attribsList = ((String) value).split(";");
+            for (String s : attribsList) {
+                if (!s.trim().equals("")) {
+                    attrMap.put(Integer.parseInt(s.split("=")[0]), Integer.parseInt(s.split("=")[1]));
+                }
+            }
+            
+            List<Field> fieldList = getAllFields(event.getClass());
+            Map<String, String> attrValueMap = new HashMap<String, String>();
+            for (Map.Entry<Integer, Object> attrEntry : attrMap.entrySet())
+            {
+                EventAttr attrID = EventAttr.valueOf(attrEntry.getKey());
+                String propertyName = attrID == null ? "UNKNOWN(" + attrEntry.getKey() + ")" : attrID.toString();
+                Object propertyData = attrEntry.getValue();
+                if (propertyName == null || propertyData == null)
+                    continue;
+                attrValueMap.put(propertyName, propertyData.toString());
+                try
+                {
+                    if (attrID != null) {
+                        PropertyUtils.setProperty(event, "attrMap", attrValueMap);
+                        for (Field field : fieldList) {
+                            if (field.isAnnotationPresent(EventAttrID.class)) {
+                                EventAttrID attributeID = field.getAnnotation(EventAttrID.class);
+                                if (attributeID.name().equals(attrID.name())) {
+                                    propertyName = field.getName();
+                                    if (BaseEnum.class.isAssignableFrom(field.getType())) {
+                                        Method valueOf = field.getType().getMethod("valueOf", Integer.class);
+                                        if (valueOf != null)
+                                            propertyData = valueOf.invoke(null, propertyData);
+                                    }
+                                    break;
+                                }
+
+                            }
+                            
+                        }
+                    }
+                    PropertyUtils.setProperty(event, propertyName, propertyData);
+                }
+                catch (IllegalAccessException e)
+                {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+                catch (InvocationTargetException e)
+                {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+                catch (NoSuchMethodException e)
+                {
+                    if (logger.isTraceEnabled())
+                    {
+                        logger.trace("The property \"" + propertyName + "\" could not be set to the value \"" + propertyData + "\"", e);
+                    }
+                }
+
+            }
+            
+        }
+    }
 
 
     @Override
