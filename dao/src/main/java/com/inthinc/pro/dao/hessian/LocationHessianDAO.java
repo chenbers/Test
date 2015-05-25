@@ -27,7 +27,6 @@ import com.inthinc.pro.model.LastLocation;
 import com.inthinc.pro.model.LatLng;
 import com.inthinc.pro.model.Trip;
 import com.inthinc.pro.model.Vehicle;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 public class LocationHessianDAO   implements LocationDAO
 {
