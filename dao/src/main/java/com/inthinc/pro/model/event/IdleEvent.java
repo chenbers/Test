@@ -110,7 +110,7 @@ public class IdleEvent extends Event
         if (getHighIdle() != null) {
             totalIdling += getHighIdle();
         }
-        if (getPtoIdle() != null) {
+        if (getPtoIdle() != null && (getHighIdle() == null || getHighIdle() == 0)) {
             totalIdling += getPtoIdle();
         }
         if (getLowIdle() != null) {
