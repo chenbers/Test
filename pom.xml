@@ -4,7 +4,7 @@
     <groupId>com.inthinc.pro</groupId>
     <artifactId>root</artifactId>
     <packaging>pom</packaging>
-    <version>2.3.2-SNAPSHOT</version>
+    <version>2.4.2-SNAPSHOT</version>
     <name>TIWI Pro Application</name>
     <url>http://www.iwiglobal.com</url>
     <organization>
@@ -594,17 +594,17 @@ mi2KFq<Nc4zYl8ZVexWN8GNR2KNYvC5rn293xhqnaa8hMH QROnTXrOnpnpNqQpRomwtNpNmPMPpMnrp
             <dependency>
                 <groupId>com.inthinc.hos</groupId>
                 <artifactId>hosRules</artifactId>
-                <version>${hos.version}</version>
+                <version>0.0.44-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>com.inthinc.hos</groupId>
                 <artifactId>hosUtils</artifactId>
-                <version>${hos.version}</version>
+                <version>0.0.44-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>com.inthinc.hos</groupId>
                 <artifactId>hosDDL</artifactId>
-                <version>${hos.version}</version>
+                <version>0.0.44-SNAPSHOT</version>
             </dependency>
             <!-- Jackson -->
             <dependency>
